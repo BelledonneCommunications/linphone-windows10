@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BB0B8F3F-8638-49CF-B968-E097A2E6CBBE}</ProjectGuid>
+    <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Linphone</RootNamespace>
+    <AssemblyName>Linphone</AssemblyName>
+    <TargetFrameworkIdentifier>WindowsPhone</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>true</SilverlightApplication>
+    <SupportedCultures>
+    </SupportedCultures>
+    <XapOutputs>true</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>Linphone_$(Configuration)_$(Platform).xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>Linphone.App</SilverlightAppEntry>
+    <ValidateXaml>true</ValidateXaml>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\x86\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\x86\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|ARM' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\ARM\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|ARM' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\ARM\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LocalizedStrings.cs" />
+    <Compile Include="Model\CallLogs.cs" />
+    <Compile Include="Model\LinphoneManager.cs" />
+    <Compile Include="Model\SettingsManager.cs" />
+    <Compile Include="Views\About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialer.xaml.cs">
+      <DependentUpon>Dialer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\AppResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\History.xaml.cs">
+      <DependentUpon>History.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings.xaml.cs">
+      <DependentUpon>Settings.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+    <Page Include="Views\About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\History.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Properties\AppManifest.xml" />
+    <None Include="Properties\WMAppManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\AppResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\AppBar\add.png" />
+    <Content Include="Assets\AppBar\back.png" />
+    <Content Include="Assets\AppBar\basecircle.png" />
+    <Content Include="Assets\AppBar\cancel.png" />
+    <Content Include="Assets\AppBar\check.png" />
+    <Content Include="Assets\AppBar\close.png" />
+    <Content Include="Assets\AppBar\delete.png" />
+    <Content Include="Assets\AppBar\download.png" />
+    <Content Include="Assets\AppBar\edit.png" />
+    <Content Include="Assets\AppBar\favs.addto.png" />
+    <Content Include="Assets\AppBar\favs.png" />
+    <Content Include="Assets\AppBar\feature.alarm.png" />
+    <Content Include="Assets\AppBar\feature.calendar.png" />
+    <Content Include="Assets\AppBar\feature.camera.png" />
+    <Content Include="Assets\AppBar\feature.email.png" />
+    <Content Include="Assets\AppBar\feature.phone.png" />
+    <Content Include="Assets\AppBar\feature.search.png" />
+    <Content Include="Assets\AppBar\feature.settings.png" />
+    <Content Include="Assets\AppBar\feature.video.png" />
+    <Content Include="Assets\AppBar\folder.png" />
+    <Content Include="Assets\AppBar\like.png" />
+    <Content Include="Assets\AppBar\microphone.png" />
+    <Content Include="Assets\AppBar\minus.png" />
+    <Content Include="Assets\AppBar\new.png" />
+    <Content Include="Assets\AppBar\next.png" />
+    <Content Include="Assets\AppBar\overflowdots.png" />
+    <Content Include="Assets\AppBar\questionmark.png" />
+    <Content Include="Assets\AppBar\refresh.png" />
+    <Content Include="Assets\AppBar\save.png" />
+    <Content Include="Assets\AppBar\share.png" />
+    <Content Include="Assets\AppBar\stop.png" />
+    <Content Include="Assets\AppBar\sync.png" />
+    <Content Include="Assets\AppBar\transport.ff.png" />
+    <Content Include="Assets\AppBar\transport.pause.png" />
+    <Content Include="Assets\AppBar\transport.play.png" />
+    <Content Include="Assets\AppBar\transport.rew.png" />
+    <Content Include="Assets\AppBar\upload.png" />
+    <Content Include="Assets\AppIcon.png" />
+    <Content Include="Assets\backspace_default.png" />
+    <Content Include="Assets\backspace_disabled.png" />
+    <Content Include="Assets\backspace_over.png" />
+    <Content Include="Assets\call_status_incoming.png" />
+    <Content Include="Assets\call_status_missed.png" />
+    <Content Include="Assets\call_status_outgoing.png" />
+    <Content Include="Assets\Numpad\numpad_eight_default.png" />
+    <Content Include="Assets\Numpad\numpad_eight_over.png" />
+    <Content Include="Assets\Numpad\numpad_five_default.png" />
+    <Content Include="Assets\Numpad\numpad_five_over.png" />
+    <Content Include="Assets\Numpad\numpad_four_default.png" />
+    <Content Include="Assets\Numpad\numpad_four_over.png" />
+    <Content Include="Assets\Numpad\numpad_nine_default.png" />
+    <Content Include="Assets\Numpad\numpad_nine_over.png" />
+    <Content Include="Assets\Numpad\numpad_one_default.png" />
+    <Content Include="Assets\Numpad\numpad_one_over.png" />
+    <Content Include="Assets\Numpad\numpad_seven_default.png" />
+    <Content Include="Assets\Numpad\numpad_seven_over.png" />
+    <Content Include="Assets\Numpad\numpad_sharp_default.png" />
+    <Content Include="Assets\Numpad\numpad_sharp_over.png" />
+    <Content Include="Assets\Numpad\numpad_six_default.png" />
+    <Content Include="Assets\Numpad\numpad_six_over.png" />
+    <Content Include="Assets\Numpad\numpad_star_default.png" />
+    <Content Include="Assets\Numpad\numpad_star_over.png" />
+    <Content Include="Assets\Numpad\numpad_three_default.png" />
+    <Content Include="Assets\Numpad\numpad_three_over.png" />
+    <Content Include="Assets\Numpad\numpad_two_default.png" />
+    <Content Include="Assets\Numpad\numpad_two_over.png" />
+    <Content Include="Assets\Numpad\numpad_zero_default.png" />
+    <Content Include="Assets\Numpad\numpad_zero_over.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Phone.Controls.Toolkit">
+      <HintPath>..\packages\WPtoolkit.4.2012.10.30\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions />
+</Project>
