@@ -102,6 +102,9 @@
     <Compile Include="Controls\Numpad.xaml.cs">
       <DependentUpon>Numpad.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TwoStateButton.xaml.cs">
+      <DependentUpon>TwoStateButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Model\CallLogs.cs" />
     <Compile Include="Model\LinphoneManager.cs" />
@@ -139,6 +142,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Numpad.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TwoStateButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -213,11 +220,13 @@
     <Content Include="Assets\AppIcon.png" />
     <Content Include="Assets\background.png" />
     <Content Include="Assets\backspace_default.png" />
-    <Content Include="Assets\backspace_disabled.png" />
     <Content Include="Assets\backspace_over.png" />
+    <Content Include="Assets\call_default.png" />
+    <Content Include="Assets\call_over.png" />
     <Content Include="Assets\call_status_incoming.png" />
     <Content Include="Assets\call_status_missed.png" />
     <Content Include="Assets\call_status_outgoing.png" />
+    <Content Include="Assets\dialer_address_background.png" />
     <Content Include="Assets\Numpad\numpad_eight_default.png" />
     <Content Include="Assets\Numpad\numpad_eight_over.png" />
     <Content Include="Assets\Numpad\numpad_five_default.png" />

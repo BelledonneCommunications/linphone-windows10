@@ -7,6 +7,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Linphone.Resources;
+using System.Windows.Media;
 
 namespace Linphone
 {
@@ -17,6 +18,14 @@ namespace Linphone
         /// </summary>
         /// <returns>The root frame of the Phone Application.</returns>
         public static PhoneApplicationFrame RootFrame { get; private set; }
+
+        /// <summary>
+        /// Hack to override some system defined colors (in this case the background of a focused PhoneTextBox.
+        /// </summary>
+        private void OverrideColorsViaCode()
+        {
+            (App.Current.Resources["PhoneTextBoxEditBackgroundBrush"] as SolidColorBrush).Color = Color.FromArgb(0, 0, 0, 0);
+        }
 
         /// <summary>
         /// Constructor for the Application object.
@@ -31,6 +40,9 @@ namespace Linphone
 
             // Phone-specific initialization
             InitializePhoneApplication();
+
+            // Override some system defined colors
+            OverrideColorsViaCode();
 
             // Language display initialization
             InitializeLanguage();
