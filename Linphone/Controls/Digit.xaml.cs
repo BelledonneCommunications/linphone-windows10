@@ -8,6 +8,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Windows.Media.Imaging;
+using System.Windows.Input;
 
 namespace Linphone.Controls
 {
@@ -41,13 +42,13 @@ namespace Linphone.Controls
             this.DataContext = this;
         }
 
-        private void Image_ManipulationStarted_1(object sender, System.Windows.Input.ManipulationStartedEventArgs e)
+        private void Image_ManipulationStarted_1(object sender, ManipulationStartedEventArgs e)
         {
             Image image = (sender as Image);
             image.Source = new BitmapImage(new Uri(OverImage, UriKind.RelativeOrAbsolute));
         }
 
-        private void Image_ManipulationCompleted_1(object sender, System.Windows.Input.ManipulationCompletedEventArgs e)
+        private void Image_ManipulationCompleted_1(object sender, ManipulationCompletedEventArgs e)
         {
             Image image = (sender as Image);
             image.Source = new BitmapImage(new Uri(DefaultImage, UriKind.RelativeOrAbsolute));

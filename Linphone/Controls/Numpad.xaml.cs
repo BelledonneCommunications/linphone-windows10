@@ -9,16 +9,17 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Windows.Threading;
 using System.Windows.Media.Imaging;
+using System.Windows.Input;
 
 namespace Linphone.Controls
 {
     public partial class Numpad : UserControl
     {
-        public static readonly DependencyProperty AddressProperty = DependencyProperty.Register("Address", typeof(PhoneTextBox), typeof(Numpad), new PropertyMetadata(new PhoneTextBox()));
+        public static readonly DependencyProperty AddressProperty = DependencyProperty.Register("Address", typeof(AddressBox), typeof(Numpad), new PropertyMetadata(new AddressBox()));
 
-        public PhoneTextBox Address
+        public AddressBox Address
         {
-            get { return (PhoneTextBox)GetValue(AddressProperty); }
+            get { return (AddressBox)GetValue(AddressProperty); }
             set { SetValue(AddressProperty, value); }
         }
 
@@ -57,14 +58,6 @@ namespace Linphone.Controls
             if (Address.Text.Length > 0)
                 Address.Text = Address.Text.Substring(0, Address.Text.Length - 1); ;
             Address.Text += "+";
-        }
-
-        private void Image_ManipulationStarted_1(object sender, System.Windows.Input.ManipulationStartedEventArgs e)
-        {
-        }
-
-        private void Image_ManipulationCompleted_1(object sender, System.Windows.Input.ManipulationCompletedEventArgs e)
-        {
         }
     }
 }

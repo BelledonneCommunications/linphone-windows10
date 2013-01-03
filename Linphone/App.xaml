@@ -8,6 +8,7 @@
     <!--Application Resources-->
     <Application.Resources>
         <local:LocalizedStrings xmlns:local="clr-namespace:Linphone" x:Key="LocalizedStrings"/>
+        <ImageBrush x:Key="BackgroundImage" ImageSource="/Assets/background.png"/>
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

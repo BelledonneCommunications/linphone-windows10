@@ -70,11 +70,5 @@ namespace Linphone
             appBarAbout.Click += about_Click_1;
             ApplicationBar.MenuItems.Add(appBarAbout);
         }
-
-        private void sipAddress_ActionIconTapped_1(object sender, EventArgs e)
-        {
-            if (sipAddress.Text.Length > 0)
-                sipAddress.Text = sipAddress.Text.Substring(0, sipAddress.Text.Length - 1);
-        }
     }
 }

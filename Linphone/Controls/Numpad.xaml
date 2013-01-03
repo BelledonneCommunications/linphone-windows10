@@ -9,8 +9,8 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     d:DesignHeight="480" d:DesignWidth="480">
-    
-    <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneChromeBrush}">
+
+    <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -29,14 +29,14 @@
                             DefaultImage="/Assets/Numpad/numpad_one_default.png"
                             OverImage="/Assets/Numpad/numpad_one_over.png">
             </controls:Digit>
-            <controls:Digit  Grid.Column="1" x:Name="two" Tag="2"
+            <controls:Digit Grid.Column="1" x:Name="two" Tag="2"
                             DefaultImage="/Assets/Numpad/numpad_two_default.png"
                             OverImage="/Assets/Numpad/numpad_two_over.png">
-            </controls:Digit >
-            <controls:Digit  Grid.Column="2" x:Name="three" Tag="3"
+            </controls:Digit>
+            <controls:Digit Grid.Column="2" x:Name="three" Tag="3"
                             DefaultImage="/Assets/Numpad/numpad_three_default.png"
                             OverImage="/Assets/Numpad/numpad_three_over.png">
-            </controls:Digit >
+            </controls:Digit>
         </Grid>
 
         <Grid Grid.Row="1" Margin="-20, 10, -20, 10">
@@ -50,14 +50,14 @@
                             DefaultImage="/Assets/Numpad/numpad_four_default.png"
                             OverImage="/Assets/Numpad/numpad_four_over.png">
             </controls:Digit>
-            <controls:Digit  Grid.Column="1" x:Name="five" Tag="5"
+            <controls:Digit Grid.Column="1" x:Name="five" Tag="5"
                             DefaultImage="/Assets/Numpad/numpad_five_default.png"
                             OverImage="/Assets/Numpad/numpad_five_over.png">
-            </controls:Digit >
-            <controls:Digit  Grid.Column="2" x:Name="six" Tag="6"
+            </controls:Digit>
+            <controls:Digit Grid.Column="2" x:Name="six" Tag="6"
                             DefaultImage="/Assets/Numpad/numpad_six_default.png"
                             OverImage="/Assets/Numpad/numpad_six_over.png">
-            </controls:Digit >
+            </controls:Digit>
             
         </Grid>
 
@@ -72,14 +72,14 @@
                             DefaultImage="/Assets/Numpad/numpad_seven_default.png"
                             OverImage="/Assets/Numpad/numpad_seven_over.png">
             </controls:Digit>
-            <controls:Digit  Grid.Column="1" x:Name="eight" Tag="8"
+            <controls:Digit Grid.Column="1" x:Name="eight" Tag="8"
                             DefaultImage="/Assets/Numpad/numpad_eight_default.png"
                             OverImage="/Assets/Numpad/numpad_eight_over.png">
-            </controls:Digit >
-            <controls:Digit  Grid.Column="2" x:Name="nine" Tag="9"
+            </controls:Digit>
+            <controls:Digit Grid.Column="2" x:Name="nine" Tag="9"
                             DefaultImage="/Assets/Numpad/numpad_nine_default.png"
                             OverImage="/Assets/Numpad/numpad_nine_over.png">
-            </controls:Digit >
+            </controls:Digit>
         </Grid>
 
         <Grid Grid.Row="3" Margin="-20, 10, -20, 10">
@@ -93,14 +93,14 @@
                             DefaultImage="/Assets/Numpad/numpad_star_default.png"
                             OverImage="/Assets/Numpad/numpad_star_over.png">
             </controls:Digit>
-            <controls:Digit  Grid.Column="1" x:Name="zero" Tag="0" Hold="zero_Hold_1"
+            <controls:Digit Grid.Column="1" x:Name="zero" Tag="0" Hold="zero_Hold_1"
                             DefaultImage="/Assets/Numpad/numpad_zero_default.png"
                             OverImage="/Assets/Numpad/numpad_zero_over.png">
-            </controls:Digit >
-            <controls:Digit  Grid.Column="2" x:Name="sharp" Tag="#"
+            </controls:Digit>
+            <controls:Digit Grid.Column="2" x:Name="sharp" Tag="#"
                             DefaultImage="/Assets/Numpad/numpad_sharp_default.png"
                             OverImage="/Assets/Numpad/numpad_sharp_over.png">
-            </controls:Digit >
+            </controls:Digit>
             
         </Grid>
     </Grid>

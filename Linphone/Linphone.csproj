@@ -93,6 +93,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\AddressBox.xaml.cs">
+      <DependentUpon>AddressBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Digit.xaml.cs">
       <DependentUpon>Digit.xaml</DependentUpon>
     </Compile>
@@ -127,6 +130,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="Controls\AddressBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Digit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -204,6 +211,7 @@
     <Content Include="Assets\AppBar\transport.rew.png" />
     <Content Include="Assets\AppBar\upload.png" />
     <Content Include="Assets\AppIcon.png" />
+    <Content Include="Assets\background.png" />
     <Content Include="Assets\backspace_default.png" />
     <Content Include="Assets\backspace_disabled.png" />
     <Content Include="Assets\backspace_over.png" />
