@@ -1,0 +1,107 @@
+﻿<UserControl x:Class="Linphone.Controls.Numpad"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="clr-namespace:Linphone.Controls"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    d:DesignHeight="480" d:DesignWidth="480">
+    
+    <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneChromeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0" Margin="-20, 10, -20, 10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <controls:Digit Grid.Column="0" x:Name="one" Tag="1"
+                            DefaultImage="/Assets/Numpad/numpad_one_default.png"
+                            OverImage="/Assets/Numpad/numpad_one_over.png">
+            </controls:Digit>
+            <controls:Digit  Grid.Column="1" x:Name="two" Tag="2"
+                            DefaultImage="/Assets/Numpad/numpad_two_default.png"
+                            OverImage="/Assets/Numpad/numpad_two_over.png">
+            </controls:Digit >
+            <controls:Digit  Grid.Column="2" x:Name="three" Tag="3"
+                            DefaultImage="/Assets/Numpad/numpad_three_default.png"
+                            OverImage="/Assets/Numpad/numpad_three_over.png">
+            </controls:Digit >
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="-20, 10, -20, 10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <controls:Digit Grid.Column="0" x:Name="four" Tag="4"
+                            DefaultImage="/Assets/Numpad/numpad_four_default.png"
+                            OverImage="/Assets/Numpad/numpad_four_over.png">
+            </controls:Digit>
+            <controls:Digit  Grid.Column="1" x:Name="five" Tag="5"
+                            DefaultImage="/Assets/Numpad/numpad_five_default.png"
+                            OverImage="/Assets/Numpad/numpad_five_over.png">
+            </controls:Digit >
+            <controls:Digit  Grid.Column="2" x:Name="six" Tag="6"
+                            DefaultImage="/Assets/Numpad/numpad_six_default.png"
+                            OverImage="/Assets/Numpad/numpad_six_over.png">
+            </controls:Digit >
+            
+        </Grid>
+
+        <Grid Grid.Row="2" Margin="-20, 10, -20, 10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <controls:Digit Grid.Column="0" x:Name="seven" Tag="7"
+                            DefaultImage="/Assets/Numpad/numpad_seven_default.png"
+                            OverImage="/Assets/Numpad/numpad_seven_over.png">
+            </controls:Digit>
+            <controls:Digit  Grid.Column="1" x:Name="eight" Tag="8"
+                            DefaultImage="/Assets/Numpad/numpad_eight_default.png"
+                            OverImage="/Assets/Numpad/numpad_eight_over.png">
+            </controls:Digit >
+            <controls:Digit  Grid.Column="2" x:Name="nine" Tag="9"
+                            DefaultImage="/Assets/Numpad/numpad_nine_default.png"
+                            OverImage="/Assets/Numpad/numpad_nine_over.png">
+            </controls:Digit >
+        </Grid>
+
+        <Grid Grid.Row="3" Margin="-20, 10, -20, 10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <controls:Digit Grid.Column="0" x:Name="star" Tag="*"
+                            DefaultImage="/Assets/Numpad/numpad_star_default.png"
+                            OverImage="/Assets/Numpad/numpad_star_over.png">
+            </controls:Digit>
+            <controls:Digit  Grid.Column="1" x:Name="zero" Tag="0" Hold="zero_Hold_1"
+                            DefaultImage="/Assets/Numpad/numpad_zero_default.png"
+                            OverImage="/Assets/Numpad/numpad_zero_over.png">
+            </controls:Digit >
+            <controls:Digit  Grid.Column="2" x:Name="sharp" Tag="#"
+                            DefaultImage="/Assets/Numpad/numpad_sharp_default.png"
+                            OverImage="/Assets/Numpad/numpad_sharp_over.png">
+            </controls:Digit >
+            
+        </Grid>
+    </Grid>
+</UserControl>

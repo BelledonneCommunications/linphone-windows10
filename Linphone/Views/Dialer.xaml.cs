@@ -10,6 +10,7 @@ using Microsoft.Phone.Shell;
 using Linphone.Resources;
 using Linphone.Model;
 using System.Windows.Threading;
+using System.Windows.Media.Imaging;
 
 namespace Linphone
 {
@@ -20,18 +21,8 @@ namespace Linphone
         public MainPage()
         {
             InitializeComponent();
+            numpad.Address = sipAddress;
             BuildLocalizedApplicationBar();
-
-            // Listener for 0 button: when long pressed, remove the 0 and put a + instead
-            DispatcherTimer holdTimer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1) };
-            zero.ManipulationStarted += (a, b) => { holdTimer.Start(); };
-            zero.ManipulationCompleted += (c, d) => { holdTimer.Stop(); };
-            holdTimer.Tick += (s1, e1) =>
-            {
-                holdTimer.Stop();
-                sipAddress.Text = sipAddress.Text.Substring(0, sipAddress.Text.Length - 1); ;
-                sipAddress.Text += "+";
-            };
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -78,13 +69,6 @@ namespace Linphone
             ApplicationBarMenuItem appBarAbout = new ApplicationBarMenuItem(AppResources.AboutMenu);
             appBarAbout.Click += about_Click_1;
             ApplicationBar.MenuItems.Add(appBarAbout);
-        }
-
-        private void digit_Click_1(object sender, RoutedEventArgs e)
-        {
-            Button button = (sender as Button);
-            String character = (button.Tag as String);
-            sipAddress.Text += character;
         }
 
         private void sipAddress_ActionIconTapped_1(object sender, EventArgs e)

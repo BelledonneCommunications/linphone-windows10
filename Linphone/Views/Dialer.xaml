@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:controls="clr-namespace:Linphone.Controls"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -31,9 +32,6 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
             
             <toolkit:PhoneTextBox 
@@ -45,126 +43,7 @@
                 ActionIconTapped="sipAddress_ActionIconTapped_1">
             </toolkit:PhoneTextBox>
             
-            <Grid Grid.Row="1" Margin="-20, 10, -20, 10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-
-                <Button Grid.Column="0" x:Name="one" Click="digit_Click_1" Tag="1" ClickMode="Press">
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_one_default.png"/>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-                <Button Grid.Column="1" x:Name="two" Click="digit_Click_1" Tag="2" ClickMode="Press">
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_two_default.png"/>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-                <Button Grid.Column="2" x:Name="three" Click="digit_Click_1" Tag="3" ClickMode="Press">
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_three_default.png"/>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-            </Grid>
-
-            <Grid Grid.Row="2" Margin="-20, 10, -20, 10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-
-                <Button Grid.Column="0" x:Name="four" Click="digit_Click_1" Tag="4" ClickMode="Press">
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_four_default.png"/>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-                <Button Grid.Column="1" x:Name="five" Click="digit_Click_1" Tag="5" ClickMode="Press">
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_five_default.png"/>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-                <Button Grid.Column="2" x:Name="six" Click="digit_Click_1" Tag="6" ClickMode="Press">
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_six_default.png"/>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-            </Grid>
-
-            <Grid Grid.Row="3" Margin="-20, 10, -20, 10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-
-                <Button Grid.Column="0" x:Name="seven" Click="digit_Click_1" Tag="7" ClickMode="Press">
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_seven_default.png"/>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-                <Button Grid.Column="1" x:Name="eight" Click="digit_Click_1" Tag="8" ClickMode="Press">
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_eight_default.png"/>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-                <Button Grid.Column="2" x:Name="nine" Click="digit_Click_1" Tag="9" ClickMode="Press">
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_nine_default.png"/>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-            </Grid>
-
-            <Grid Grid.Row="4" Margin="-20, 10, -20, 10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-
-                <Button Grid.Column="0" x:Name="star" Click="digit_Click_1" Tag="*" ClickMode="Press">
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_star_default.png"/>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-                <Button Grid.Column="1" x:Name="zero" Click="digit_Click_1" Tag="0" ClickMode="Press">
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_zero_default.png"/>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-                <Button Grid.Column="2" x:Name="sharp" Click="digit_Click_1" Tag="#" ClickMode="Press">
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_sharp_default.png"/>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-            </Grid>
-
+            <controls:Numpad x:Name="numpad" Grid.Row="1"></controls:Numpad>
         </Grid>
 
     </Grid>
