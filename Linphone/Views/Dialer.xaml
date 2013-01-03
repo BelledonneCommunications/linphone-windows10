@@ -21,25 +21,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- LOCALIZATION NOTE:
-            To localize the displayed strings copy their values to appropriately named
-            keys in the app's neutral language resource file (AppResources.resx) then
-            replace the hard-coded text value between the attributes' quotation marks
-            with the binding clause whose path points to that string name.
-
-            For example:
-
-                Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}"
-
-            This binding points to the template's string resource named "ApplicationTitle".
-
-            Adding supported languages in the Project Properties tab will create a
-            new resx file per language that can carry the translated values of your
-            UI strings. The binding in these examples will cause the value of the
-            attributes to be drawn from the .resx file that matches the
-            CurrentUICulture of the app at run time.
-         -->
-
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
             <TextBlock Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
@@ -71,21 +52,21 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" x:Name="one" Click="digit_Click_1" Tag="1">
+                <Button Grid.Column="0" x:Name="one" Click="digit_Click_1" Tag="1" ClickMode="Press">
                     <Button.Template>
                         <ControlTemplate>
                             <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_one_default.png"/>
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Grid.Column="1" x:Name="two" Click="digit_Click_1" Tag="2">
+                <Button Grid.Column="1" x:Name="two" Click="digit_Click_1" Tag="2" ClickMode="Press">
                     <Button.Template>
                         <ControlTemplate>
                             <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_two_default.png"/>
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Grid.Column="2" x:Name="three" Click="digit_Click_1" Tag="3">
+                <Button Grid.Column="2" x:Name="three" Click="digit_Click_1" Tag="3" ClickMode="Press">
                     <Button.Template>
                         <ControlTemplate>
                             <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_three_default.png"/>
@@ -101,21 +82,21 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" x:Name="four" Click="digit_Click_1" Tag="4">
+                <Button Grid.Column="0" x:Name="four" Click="digit_Click_1" Tag="4" ClickMode="Press">
                     <Button.Template>
                         <ControlTemplate>
                             <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_four_default.png"/>
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Grid.Column="1" x:Name="five" Click="digit_Click_1" Tag="5">
+                <Button Grid.Column="1" x:Name="five" Click="digit_Click_1" Tag="5" ClickMode="Press">
                     <Button.Template>
                         <ControlTemplate>
                             <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_five_default.png"/>
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Grid.Column="2" x:Name="six" Click="digit_Click_1" Tag="6">
+                <Button Grid.Column="2" x:Name="six" Click="digit_Click_1" Tag="6" ClickMode="Press">
                     <Button.Template>
                         <ControlTemplate>
                             <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_six_default.png"/>
@@ -131,21 +112,21 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" x:Name="seven" Click="digit_Click_1" Tag="7">
+                <Button Grid.Column="0" x:Name="seven" Click="digit_Click_1" Tag="7" ClickMode="Press">
                     <Button.Template>
                         <ControlTemplate>
                             <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_seven_default.png"/>
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Grid.Column="1" x:Name="eight" Click="digit_Click_1" Tag="8">
+                <Button Grid.Column="1" x:Name="eight" Click="digit_Click_1" Tag="8" ClickMode="Press">
                     <Button.Template>
                         <ControlTemplate>
                             <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_eight_default.png"/>
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Grid.Column="2" x:Name="nine" Click="digit_Click_1" Tag="9">
+                <Button Grid.Column="2" x:Name="nine" Click="digit_Click_1" Tag="9" ClickMode="Press">
                     <Button.Template>
                         <ControlTemplate>
                             <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_nine_default.png"/>
@@ -161,21 +142,21 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" x:Name="star" Click="digit_Click_1" Tag="*">
+                <Button Grid.Column="0" x:Name="star" Click="digit_Click_1" Tag="*" ClickMode="Press">
                     <Button.Template>
                         <ControlTemplate>
                             <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_star_default.png"/>
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Grid.Column="1" x:Name="zero" Click="digit_Click_1" Tag="0">
+                <Button Grid.Column="1" x:Name="zero" Click="digit_Click_1" Tag="0" ClickMode="Press">
                     <Button.Template>
                         <ControlTemplate>
                             <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_zero_default.png"/>
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Grid.Column="2" x:Name="sharp" Click="digit_Click_1" Tag="#">
+                <Button Grid.Column="2" x:Name="sharp" Click="digit_Click_1" Tag="#" ClickMode="Press">
                     <Button.Template>
                         <ControlTemplate>
                             <Image Stretch="UniformToFill" Source="/Assets/Numpad/numpad_sharp_default.png"/>
@@ -186,13 +167,6 @@
 
         </Grid>
 
-        <!--Uncomment to see an alignment grid to help ensure your controls are
-            aligned on common boundaries.  The image has a top margin of -32px to
-            account for the System Tray. Set this to 0 (or remove the margin altogether)
-            if the System Tray is hidden.
-
-            Before shipping remove this XAML and the image itself.-->
-        <!--<Image Source="/Assets/AlignmentGrid.png" VerticalAlignment="Top" Height="800" Width="480" Margin="0,-32,0,0" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False" />-->
     </Grid>
 
 </phone:PhoneApplicationPage>
