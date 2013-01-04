@@ -31,7 +31,7 @@ namespace Linphone.Controls
             address.Text = "";
         }
 
-        private void backspace_Tap_1(object sender, System.Windows.Input.GestureEventArgs e)
+        private void backspace_Click_1(object sender, RoutedEventArgs e)
         {
             if (address.Text.Length > 0)
                 address.Text = address.Text.Substring(0, address.Text.Length - 1);

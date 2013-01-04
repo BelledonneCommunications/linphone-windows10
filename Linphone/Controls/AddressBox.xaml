@@ -19,6 +19,7 @@
         <Style TargetType="toolkit:PhoneTextBox" x:Key="TransparentFocus">
             <Setter Property="Background" Value="Transparent"></Setter>
             <Setter Property="Foreground" Value="White"></Setter>
+            <Setter Property="CaretBrush" Value="White"></Setter>
         </Style>
     </UserControl.Resources>
     
@@ -27,23 +28,30 @@
             x:Name="address"
             Text="{Binding Text}"
             FontSize="40"
+            Margin="0, 0, 95, 0"
             AcceptsReturn="False" 
             BorderThickness="0"
             Style="{StaticResource TransparentFocus}"
             HintStyle="{StaticResource HintWhiteStyle}"
             Hint="{Binding Path=LocalizedResources.AddressHint, Source={StaticResource LocalizedStrings}}"/>
 
-        <Image  
-            x:Name="backspace"
-            Source="/Assets/backspace_default.png" 
-            Stretch="Uniform"
-            Width="75"
-            Hold="backspace_Hold_1"
-            Tap="backspace_Tap_1"
-            ManipulationStarted="Image_ManipulationStarted_1"
-            ManipulationCompleted="Image_ManipulationCompleted_1"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Right"
-            Margin="0,0,20,0"/>
+        <Button ClickMode="Press" Click="backspace_Click_1">
+            <Button.Template>
+                <ControlTemplate>
+                    <Image  
+                        x:Name="backspace"
+                        Source="/Assets/backspace_default.png" 
+                        Stretch="Uniform"
+                        Width="75"
+                        Hold="backspace_Hold_1"
+                        ManipulationStarted="Image_ManipulationStarted_1"
+                        ManipulationCompleted="Image_ManipulationCompleted_1"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Margin="0,0,20,0"/>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        
     </Grid>
 </UserControl>

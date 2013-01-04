@@ -39,9 +39,7 @@
                 x:Name="sipAddress"
                 Grid.Row="0"
                 BorderThickness="0"
-                FontSize="50"
-                Height="120"
-                VerticalAlignment="Center"/>
+                FontSize="50"/>
 
             <controls:Numpad x:Name="numpad" Grid.Row="1"/>
 
