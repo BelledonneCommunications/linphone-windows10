@@ -15,7 +15,7 @@
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="{StaticResource BackgroundImage}">
+    <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -24,7 +24,7 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
             <!--<TextBlock Foreground="Black" Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextNormalStyle}"/>-->
-            <TextBlock Foreground="Black" Text="{Binding Path=LocalizedResources.SettingsMenu, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="{Binding Path=LocalizedResources.SettingsMenu, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
@@ -35,19 +35,7 @@
             
             <toolkit:ToggleSwitch  Grid.Row="0"
                 x:Name="debug" 
-                Foreground="Black"
-                Background="Black"
                 Header="{Binding Path=LocalizedResources.DebugSetting, Source={StaticResource LocalizedStrings}}">
-                <toolkit:ToggleSwitch.HeaderTemplate>
-                    <DataTemplate>
-                        <ContentControl Foreground="Black" Content="{Binding}" FontSize="25"/>
-                    </DataTemplate>
-                </toolkit:ToggleSwitch.HeaderTemplate>
-                <toolkit:ToggleSwitch.ContentTemplate>
-                    <DataTemplate>
-                        <ContentControl Foreground="Black" Content="{Binding}" FontSize="20"/>
-                    </DataTemplate>
-                </toolkit:ToggleSwitch.ContentTemplate>
             </toolkit:ToggleSwitch>
         </Grid>
     </Grid>

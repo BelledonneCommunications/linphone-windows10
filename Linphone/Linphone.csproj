@@ -108,6 +108,7 @@
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Model\AlphaKeyGroup.cs" />
     <Compile Include="Model\CallLogs.cs" />
+    <Compile Include="Model\ContactPictureConverter.cs" />
     <Compile Include="Model\LinphoneManager.cs" />
     <Compile Include="Model\SettingsManager.cs" />
     <Compile Include="Views\About.xaml.cs">
