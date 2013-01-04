@@ -15,7 +15,7 @@
         <toolkit:PhoneTextBox 
             x:Name="address"
             Text="{Binding Text}"
-            FontSize="40"
+            FontSize="35"
             Margin="0, 0, 95, 0"
             AcceptsReturn="False" 
             BorderThickness="0"
