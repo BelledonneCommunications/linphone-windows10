@@ -23,6 +23,8 @@ namespace Linphone
             InitializeComponent();
             numpad.Address = sipAddress;
             BuildLocalizedApplicationBar();
+
+            ContactManager contactManager = ContactManager.Instance; //Force creation and init of ContactManager
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
