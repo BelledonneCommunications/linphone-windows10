@@ -133,6 +133,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dialer.
+        /// </summary>
+        public static string DialerMenu {
+            get {
+                return ResourceManager.GetString("DialerMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to History.
         /// </summary>
         public static string HistoryMenu {

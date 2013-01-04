@@ -14,7 +14,7 @@
         <Button x:Name="button">
             <Button.Template>
                 <ControlTemplate>
-                    <Image Stretch="UniformToFill" Source="{Binding DefaultImage}" 
+                    <Image Stretch="None" Source="{Binding DefaultImage}" 
                            ManipulationStarted="Image_ManipulationStarted_1" 
                            ManipulationCompleted="Image_ManipulationCompleted_1"/>
                 </ControlTemplate>

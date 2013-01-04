@@ -232,8 +232,8 @@
     <Content Include="Assets\background.png" />
     <Content Include="Assets\backspace_default.png" />
     <Content Include="Assets\backspace_over.png" />
-    <Content Include="Assets\call_default.png" />
-    <Content Include="Assets\call_over.png" />
+    <Content Include="Assets\call_answer_default.png" />
+    <Content Include="Assets\call_answer_over.png" />
     <Content Include="Assets\call_status_incoming.png" />
     <Content Include="Assets\call_status_missed.png" />
     <Content Include="Assets\call_status_outgoing.png" />

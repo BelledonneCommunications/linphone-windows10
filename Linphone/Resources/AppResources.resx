@@ -158,4 +158,7 @@
   <data name="ContactsMenu" xml:space="preserve">
     <value>Contacts</value>
   </data>
+  <data name="DialerMenu" xml:space="preserve">
+    <value>Dialer</value>
+  </data>
 </root>

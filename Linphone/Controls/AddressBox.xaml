@@ -11,19 +11,7 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     d:DesignHeight="100" d:DesignWidth="480">
     
-    <UserControl.Resources>
-        <ImageBrush ImageSource="/Assets/dialer_address_background.png" x:Key="FieldBackground"/>
-        <Style TargetType="ContentControl" x:Key="HintWhiteStyle">
-            <Setter Property="Foreground" Value="White"></Setter>
-        </Style>
-        <Style TargetType="toolkit:PhoneTextBox" x:Key="TransparentFocus">
-            <Setter Property="Background" Value="Transparent"></Setter>
-            <Setter Property="Foreground" Value="White"></Setter>
-            <Setter Property="CaretBrush" Value="White"></Setter>
-        </Style>
-    </UserControl.Resources>
-    
-    <Grid x:Name="LayoutRoot" VerticalAlignment="Center" Background="{StaticResource FieldBackground}">
+    <Grid x:Name="LayoutRoot" VerticalAlignment="Center">
         <toolkit:PhoneTextBox 
             x:Name="address"
             Text="{Binding Text}"
@@ -31,8 +19,6 @@
             Margin="0, 0, 95, 0"
             AcceptsReturn="False" 
             BorderThickness="0"
-            Style="{StaticResource TransparentFocus}"
-            HintStyle="{StaticResource HintWhiteStyle}"
             Hint="{Binding Path=LocalizedResources.AddressHint, Source={StaticResource LocalizedStrings}}"/>
 
         <Button ClickMode="Press" Click="backspace_Click_1">
@@ -46,7 +32,6 @@
                         Hold="backspace_Hold_1"
                         ManipulationStarted="Image_ManipulationStarted_1"
                         ManipulationCompleted="Image_ManipulationCompleted_1"
-                        VerticalAlignment="Center"
                         HorizontalAlignment="Right"
                         Margin="0,0,20,0"/>
                 </ControlTemplate>

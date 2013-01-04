@@ -23,9 +23,9 @@
         </Grid.RowDefinitions>
         
         <!--TitlePanel contains the name of the application and page title-->
-        <!--<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,0,0,28">
-            <TextBlock Foreground="Black" Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-        </StackPanel>-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,0,0,0">
+            <TextBlock Text="{Binding Path=LocalizedResources.DialerMenu, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        </StackPanel>
         
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1">
@@ -39,21 +39,19 @@
                 x:Name="sipAddress"
                 Grid.Row="0"
                 BorderThickness="0"
-                FontSize="50"/>
+                FontSize="40"/>
 
             <controls:Numpad x:Name="numpad" Grid.Row="1"/>
 
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <controls:TwoStateButton Grid.Column="1"
+                <controls:TwoStateButton
                     x:Name="call"
-                    DefaultImage="/Assets/call_default.png" 
-                    OverImage="/Assets/call_over.png"/>
+                    DefaultImage="/Assets/call_answer_default.png" 
+                    OverImage="/Assets/call_answer_over.png"/>
             </Grid>
         </Grid>
         

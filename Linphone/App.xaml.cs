@@ -20,14 +20,6 @@ namespace Linphone
         public static PhoneApplicationFrame RootFrame { get; private set; }
 
         /// <summary>
-        /// Hack to override some system defined colors (in this case the background of a focused PhoneTextBox.
-        /// </summary>
-        private void OverrideColorsViaCode()
-        {
-            (App.Current.Resources["PhoneTextBoxEditBackgroundBrush"] as SolidColorBrush).Color = Color.FromArgb(0, 0, 0, 0);
-        }
-
-        /// <summary>
         /// Constructor for the Application object.
         /// </summary>
         public App()
@@ -40,9 +32,6 @@ namespace Linphone
 
             // Phone-specific initialization
             InitializePhoneApplication();
-
-            // Override some system defined colors
-            OverrideColorsViaCode();
 
             // Language display initialization
             InitializeLanguage();
