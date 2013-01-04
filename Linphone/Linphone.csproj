@@ -106,11 +106,15 @@
       <DependentUpon>TwoStateButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="LocalizedStrings.cs" />
+    <Compile Include="Model\AlphaKeyGroup.cs" />
     <Compile Include="Model\CallLogs.cs" />
     <Compile Include="Model\LinphoneManager.cs" />
     <Compile Include="Model\SettingsManager.cs" />
     <Compile Include="Views\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Contacts.xaml.cs">
+      <DependentUpon>Contacts.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Dialer.xaml.cs">
       <DependentUpon>Dialer.xaml</DependentUpon>
@@ -150,6 +154,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Contacts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -206,12 +214,14 @@
     <Content Include="Assets\AppBar\new.png" />
     <Content Include="Assets\AppBar\next.png" />
     <Content Include="Assets\AppBar\overflowdots.png" />
+    <Content Include="Assets\AppBar\people.contacts.png" />
     <Content Include="Assets\AppBar\questionmark.png" />
     <Content Include="Assets\AppBar\refresh.png" />
     <Content Include="Assets\AppBar\save.png" />
     <Content Include="Assets\AppBar\share.png" />
     <Content Include="Assets\AppBar\stop.png" />
     <Content Include="Assets\AppBar\sync.png" />
+    <Content Include="Assets\AppBar\time.png" />
     <Content Include="Assets\AppBar\transport.ff.png" />
     <Content Include="Assets\AppBar\transport.pause.png" />
     <Content Include="Assets\AppBar\transport.play.png" />

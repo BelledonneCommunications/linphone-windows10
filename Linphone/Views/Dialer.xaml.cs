@@ -42,6 +42,11 @@ namespace Linphone
             NavigationService.Navigate(new Uri("/Views/History.xaml", UriKind.RelativeOrAbsolute));
         }
 
+        private void contacts_Click_1(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/Contacts.xaml", UriKind.RelativeOrAbsolute));
+        }
+
         private void settings_Click_1(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/Views/Settings.xaml", UriKind.RelativeOrAbsolute));
@@ -56,10 +61,15 @@ namespace Linphone
         {
             ApplicationBar = new ApplicationBar();
 
-            ApplicationBarIconButton appBarHistory = new ApplicationBarIconButton(new Uri("/Assets/AppBar/feature.phone.png", UriKind.Relative));
+            ApplicationBarIconButton appBarHistory = new ApplicationBarIconButton(new Uri("/Assets/AppBar/time.png", UriKind.Relative));
             appBarHistory.Text = AppResources.HistoryMenu;
             ApplicationBar.Buttons.Add(appBarHistory);
             appBarHistory.Click += history_Click_1;
+
+            ApplicationBarIconButton appBarContacts = new ApplicationBarIconButton(new Uri("/Assets/AppBar/people.contacts.png", UriKind.Relative));
+            appBarContacts.Text = AppResources.SettingsMenu;
+            ApplicationBar.Buttons.Add(appBarContacts);
+            appBarContacts.Click += contacts_Click_1;
 
             ApplicationBarIconButton appBarSettings = new ApplicationBarIconButton(new Uri("/Assets/AppBar/feature.settings.png", UriKind.Relative));
             appBarSettings.Text = AppResources.SettingsMenu;
@@ -69,11 +79,6 @@ namespace Linphone
             ApplicationBarMenuItem appBarAbout = new ApplicationBarMenuItem(AppResources.AboutMenu);
             appBarAbout.Click += about_Click_1;
             ApplicationBar.MenuItems.Add(appBarAbout);
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

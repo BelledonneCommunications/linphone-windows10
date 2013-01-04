@@ -97,6 +97,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contacts.
+        /// </summary>
+        public static string ContactsMenu {
+            get {
+                return ResourceManager.GetString("ContactsMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable debug.
         /// </summary>
         public static string DebugSetting {

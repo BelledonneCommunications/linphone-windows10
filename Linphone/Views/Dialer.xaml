@@ -23,8 +23,8 @@
         </Grid.RowDefinitions>
         
         <!--TitlePanel contains the name of the application and page title-->
-        <!--<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        <!--<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,0,0,28">
+            <TextBlock Foreground="Black" Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>-->
         
         <!--ContentPanel - place additional content here-->
@@ -46,11 +46,12 @@
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                
+
                 <controls:TwoStateButton Grid.Column="1"
+                    x:Name="call"
                     DefaultImage="/Assets/call_default.png" 
                     OverImage="/Assets/call_over.png"/>
             </Grid>

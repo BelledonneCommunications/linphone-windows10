@@ -155,4 +155,7 @@
   <data name="AddressHint" xml:space="preserve">
     <value>Number or address</value>
   </data>
+  <data name="ContactsMenu" xml:space="preserve">
+    <value>Contacts</value>
+  </data>
 </root>

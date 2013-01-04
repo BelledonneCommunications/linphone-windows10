@@ -1,0 +1,91 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="Linphone.Views.Contacts"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot"  Background="{StaticResource BackgroundImage}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel Grid.Row="0" Margin="12,17,0,28">
+            <!--<TextBlock Foreground="Black" Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextNormalStyle}"/>-->
+            <TextBlock Foreground="Black" Text="{Binding Path=LocalizedResources.ContactsMenu, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <Grid.Resources>
+                <phone:JumpListItemBackgroundConverter x:Key="BackgroundConverter"/>
+                <phone:JumpListItemForegroundConverter x:Key="ForegroundConverter"/>
+                <Style x:Key="ContactsJumpListStyle" TargetType="phone:LongListSelector">
+                    <Setter Property="GridCellSize"  Value="113,113"/>
+                    <Setter Property="LayoutMode" Value="Grid" />
+                    <Setter Property="ItemTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <Border Background="{Binding Converter={StaticResource BackgroundConverter}}" Width="113" Height="113" Margin="6" >
+                                    <TextBlock Text="{Binding Key}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" FontSize="48" Padding="6" 
+                                        Foreground="{Binding Converter={StaticResource ForegroundConverter}}" VerticalAlignment="Center"/>
+                                </Border>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Grid.Resources>
+            
+            <phone:LongListSelector
+                x:Name="contactsList"
+                IsGroupingEnabled="True"
+                HideEmptyGroups="True"
+                LayoutMode="List"
+                JumpListStyle="{StaticResource ContactsJumpListStyle}"
+                ItemsSource="{Binding}">
+                <phone:LongListSelector.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <Border Background="Transparent" Padding="5">
+                            <Border 
+                                Background="{StaticResource PhoneAccentBrush}" 
+                                BorderBrush="{StaticResource PhoneAccentBrush}" 
+                                BorderThickness="2" 
+                                Width="62" 
+                                Height="62" 
+                                Margin="0,0,18,0" 
+                                HorizontalAlignment="Left">
+                                
+                                <TextBlock 
+                                    Text="{Binding Key}" 
+                                    Foreground="{StaticResource PhoneForegroundBrush}" 
+                                    FontSize="48" 
+                                    Padding="6" 
+                                    FontFamily="{StaticResource PhoneFontFamilySemiLight}" 
+                                    HorizontalAlignment="Left" 
+                                    VerticalAlignment="Center"/>
+                                
+                            </Border>
+                        </Border>
+                    </DataTemplate>
+                </phone:LongListSelector.GroupHeaderTemplate>
+                <phone:LongListSelector.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding DisplayName}" Foreground="Black"></TextBlock>
+                    </DataTemplate>
+                </phone:LongListSelector.ItemTemplate>
+            </phone:LongListSelector>
+        </Grid>
+    </Grid>
+
+</phone:PhoneApplicationPage>

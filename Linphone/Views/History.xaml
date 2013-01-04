@@ -23,8 +23,8 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="{Binding Path=LocalizedResources.HistoryMenu, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <!--<TextBlock Foreground="Black" Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextNormalStyle}"/>-->
+            <TextBlock Foreground="Black" Text="{Binding Path=LocalizedResources.HistoryMenu, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
@@ -32,7 +32,7 @@
             <phone:Pivot x:Name="history" Grid.Row="1">
                 <phone:Pivot.HeaderTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Title}"/>
+                        <TextBlock Foreground="Black" Text="{Binding Title}"/>
                     </DataTemplate>
                 </phone:Pivot.HeaderTemplate>
                 <phone:Pivot.ItemTemplate>
@@ -44,7 +44,7 @@
                                         <Border Width="30" Height="30">
                                             <Image Source="{Binding StatusIcon}" Stretch="UniformToFill"/>
                                         </Border>
-                                        <Button x:Name="callLog" Content="{Binding DisplayedName}" FontSize="20" BorderThickness="0" Tag="{Binding BindsDirectlyToSource=True}" Click="callLog_Click_1"></Button>
+                                        <Button x:Name="callLog" Foreground="Black" Content="{Binding DisplayedName}" FontSize="20" FontStyle="Normal" BorderThickness="0" Tag="{Binding BindsDirectlyToSource=True}" Click="callLog_Click_1"></Button>
                                     </StackPanel>
                                 </DataTemplate>
                             </toolkit:LongListMultiSelector.ItemTemplate>
