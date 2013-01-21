@@ -34,7 +34,6 @@ namespace Linphone.Views
                     link.TargetName = "_blank";
 
                     paragraph.Inlines.Add(link);
-                    paragraph.Inlines.Add(new LineBreak());
                     i++;
                 }
                 else
