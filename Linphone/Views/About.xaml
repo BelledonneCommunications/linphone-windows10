@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -21,14 +22,32 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,0">
+        <StackPanel Grid.Row="0" Margin="12,5,0,0">
             <!--<TextBlock Foreground="Black" Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextNormalStyle}"/>-->
             <TextBlock Text="{Binding Path=LocalizedResources.AboutMenu, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                <Image 
+                    HorizontalAlignment="Center"
+                    Source="/Assets/AppIcon.png" 
+                    Width="80" />
+                <TextBlock 
+                    HorizontalAlignment="Center"
+                    Margin="0,10,0,0"
+                    FontSize="40"
+                    Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" />
+                <RichTextBox
+                    x:Name="AboutText"
+                    IsReadOnly="True"
+                    HorizontalAlignment="Center"
+                    Margin="0,20,0,0"
+                    TextWrapping="Wrap"
+                    FontSize="25"
+                    TextAlignment="Center" />
+            </StackPanel>
         </Grid>
     </Grid>
 

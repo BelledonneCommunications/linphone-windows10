@@ -161,4 +161,13 @@
   <data name="DialerMenu" xml:space="preserve">
     <value>Dialer</value>
   </data>
+  <data name="AboutText" xml:space="preserve">
+    <value>Linphone SIP (rfc 3261) compatible phone under GNU Public License V2
+http://www.linphone.org
+
+Instructions
+http://www.linphone.org/m/help
+
+©2013 Belledonne Communications</value>
+  </data>
 </root>

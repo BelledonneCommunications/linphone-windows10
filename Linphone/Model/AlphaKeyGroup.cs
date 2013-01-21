@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Linphone.Model
 {
+    /// <summary>
+    /// Extended list to allow sorting items alphabetically
+    /// </summary>
     public class AlphaKeyGroup<T> : List<T>
     {
         /// <summary>

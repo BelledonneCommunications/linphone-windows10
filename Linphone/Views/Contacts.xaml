@@ -22,7 +22,7 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,0">
+        <StackPanel Grid.Row="0" Margin="12,5,0,0">
             <!--<TextBlock Foreground="Black" Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextNormalStyle}"/>-->
             <TextBlock Text="{Binding Path=LocalizedResources.ContactsMenu, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
@@ -55,7 +55,8 @@
                 HideEmptyGroups="True"
                 LayoutMode="List"
                 JumpListStyle="{StaticResource ContactsJumpListStyle}"
-                ItemsSource="{Binding}">
+                ItemsSource="{Binding}"
+                SelectionChanged="contactsList_SelectionChanged_1">
                 <phone:LongListSelector.GroupHeaderTemplate>
                     <DataTemplate>
                         <Border Background="Transparent" Padding="0, 0, 0, 5">

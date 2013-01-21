@@ -32,9 +32,7 @@ namespace Linphone.Model
         /// Update a setting value for our application. If the setting does not
         /// exist, then add the setting.
         /// </summary>
-        /// <param name="Key"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <returns>true if the value changed, false otherwise</returns>
         public bool AddOrUpdateValue(string Key, Object value)
         {
             bool valueChanged = false;
@@ -59,10 +57,6 @@ namespace Linphone.Model
         /// Get the current value of the setting, or if it is not found, set the 
         /// setting to the default setting.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="Key"></param>
-        /// <param name="defaultValue"></param>
-        /// <returns></returns>
         public T GetValueOrDefault<T>(string Key, T defaultValue)
         {
             T value;

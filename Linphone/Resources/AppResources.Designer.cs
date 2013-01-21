@@ -70,6 +70,21 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Linphone SIP (rfc 3261) compatible phone under GNU Public License V2
+        ///http://www.linphone.org
+        ///
+        ///Instructions
+        ///http://www.linphone.org/m/help
+        ///
+        ///©2013 Belledonne Communications.
+        /// </summary>
+        public static string AboutText {
+            get {
+                return ResourceManager.GetString("AboutText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Number or address.
         /// </summary>
         public static string AddressHint {

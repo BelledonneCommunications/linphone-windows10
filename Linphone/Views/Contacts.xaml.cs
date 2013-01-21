@@ -20,5 +20,10 @@ namespace Linphone.Views
 
             contactsList.ItemsSource = ContactManager.Instance.GetContactsGroupedByLetters();
         }
+
+        private void contactsList_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {
+            Contact selectedContact = ((sender as LongListSelector).SelectedItem as Contact);
+        }
     }
 }

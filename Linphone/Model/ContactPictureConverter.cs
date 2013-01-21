@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Linphone.Model
 {
+    /// <summary>
+    /// Converter to get contacts' images without having to call Contact object methods
+    /// </summary>
     public class ContactPictureConverter : System.Windows.Data.IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

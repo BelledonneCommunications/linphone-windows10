@@ -21,7 +21,6 @@ namespace Linphone.Model
         /// Set the debug value for liblinphone
         /// </summary>
         /// <param name="enable">true to enable debug traces, false to disable them</param>
-        /// <returns></returns>
         public void EnableDebug(bool enable)
         {
 
@@ -71,6 +70,7 @@ namespace Linphone.Model
         /// <summary>
         /// Remove one or many entries from the calls' history
         /// </summary>
+        /// <param name="logsToRemove">A list of CallLog to remove from history</param>
         /// <returns>A list of CallLogs, without the removed entries</returns>
         public List<CallLogs> RemoveCallLogs(IEnumerable<CallLog> logsToRemove)
         {

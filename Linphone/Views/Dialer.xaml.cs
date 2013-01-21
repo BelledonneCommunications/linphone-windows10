@@ -69,7 +69,7 @@ namespace Linphone
             appBarHistory.Click += history_Click_1;
 
             ApplicationBarIconButton appBarContacts = new ApplicationBarIconButton(new Uri("/Assets/AppBar/people.contacts.png", UriKind.Relative));
-            appBarContacts.Text = AppResources.SettingsMenu;
+            appBarContacts.Text = AppResources.ContactsMenu;
             ApplicationBar.Buttons.Add(appBarContacts);
             appBarContacts.Click += contacts_Click_1;
 
