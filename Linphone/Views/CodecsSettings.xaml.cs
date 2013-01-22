@@ -27,8 +27,9 @@ namespace Linphone.Views
             Speex8.IsChecked = _appSettings.Speex8;
             PCMU.IsChecked = _appSettings.PCMU;
             PCMA.IsChecked = _appSettings.PCMA;
-            SILK16.IsChecked = _appSettings.SILK16;
+            G722.IsChecked = _appSettings.G722;
             ILBC.IsChecked = _appSettings.ILBC;
+            SILK16.IsChecked = _appSettings.SILK16;
             GSM.IsChecked = _appSettings.GSM;
         }
         private void cancel_Click_1(object sender, EventArgs e)
@@ -45,8 +46,9 @@ namespace Linphone.Views
             _appSettings.PCMU = PCMU.IsChecked;
             _appSettings.PCMA = PCMA.IsChecked;
             _appSettings.PCMA = PCMA.IsChecked;
-            _appSettings.SILK16 = SILK16.IsChecked;
+            _appSettings.G722 = G722.IsChecked;
             _appSettings.ILBC = ILBC.IsChecked;
+            _appSettings.SILK16 = SILK16.IsChecked;
             _appSettings.GSM = GSM.IsChecked;
 
             NavigationService.GoBack();
