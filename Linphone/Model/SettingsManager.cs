@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Linphone.Resources;
+using System;
 using System.Collections.Generic;
 using System.IO.IsolatedStorage;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,13 +12,28 @@ namespace Linphone.Model
     public class SettingsManager
     {
         private IsolatedStorageSettings settings;
+        private ResourceManager resourceManager;
 
         const string DebugSettingKeyName = "Debug";
+        const string TransportSettingKeyName = "Transport";
+        const string AMRNBSettingKeyName = "AMRNB";
+        const string AMRWBSettingKeyName = "AMRWB";
+        const string Speex16SettingKeyName = "Speex16";
+        const string Speex8SettingKeyName = "Speex8";
+        const string PCMUSettingKeyName = "PCMU";
+        const string PCMASettingKeyName = "PCMA";
+        const string G722SettingKeyName = "G722";
+        const string ILBCSettingKeyName = "ILBC";
+        const string SILK16SettingKeyName = "SILK16";
+        const string GSMSettingKeyName = "GSM";
 
         public SettingsManager()
         {
             // Get the settings for this application.
             settings = IsolatedStorageSettings.ApplicationSettings;
+
+            // Default values for the settings
+            resourceManager = new ResourceManager("Linphone.Resources.DefaultValues", typeof(DefaultValues).Assembly);
         }
 
         public static bool isDebugEnabled
@@ -94,6 +111,163 @@ namespace Linphone.Model
             set
             {
                 if (AddOrUpdateValue(DebugSettingKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+
+        public string Transport
+        {
+            get
+            {
+                return GetValueOrDefault<string>(TransportSettingKeyName, resourceManager.GetString("TransportDefault"));
+            }
+            set
+            {
+                if (AddOrUpdateValue(TransportSettingKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+
+        //Codecs Settings
+        public bool? AMRNB
+        {
+            get
+            {
+                return GetValueOrDefault<bool?>(AMRNBSettingKeyName, false);
+            }
+            set
+            {
+                if (AddOrUpdateValue(AMRNBSettingKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+        public bool? AMRWB
+        {
+            get
+            {
+                return GetValueOrDefault<bool?>(AMRWBSettingKeyName, false);
+            }
+            set
+            {
+                if (AddOrUpdateValue(AMRWBSettingKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+        public bool? Speex16
+        {
+            get
+            {
+                return GetValueOrDefault<bool?>(Speex16SettingKeyName, false);
+            }
+            set
+            {
+                if (AddOrUpdateValue(Speex16SettingKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+        public bool? Speex8
+        {
+            get
+            {
+                return GetValueOrDefault<bool?>(Speex8SettingKeyName, false);
+            }
+            set
+            {
+                if (AddOrUpdateValue(Speex8SettingKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+        public bool? PCMU
+        {
+            get
+            {
+                return GetValueOrDefault<bool?>(PCMUSettingKeyName, false);
+            }
+            set
+            {
+                if (AddOrUpdateValue(PCMUSettingKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+        public bool? PCMA
+        {
+            get
+            {
+                return GetValueOrDefault<bool?>(PCMASettingKeyName, false);
+            }
+            set
+            {
+                if (AddOrUpdateValue(PCMASettingKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+        public bool? G722
+        {
+            get
+            {
+                return GetValueOrDefault<bool?>(G722SettingKeyName, false);
+            }
+            set
+            {
+                if (AddOrUpdateValue(G722SettingKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+        public bool? ILBC
+        {
+            get
+            {
+                return GetValueOrDefault<bool?>(ILBCSettingKeyName, false);
+            }
+            set
+            {
+                if (AddOrUpdateValue(ILBCSettingKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+        public bool? SILK16
+        {
+            get
+            {
+                return GetValueOrDefault<bool?>(SILK16SettingKeyName, false);
+            }
+            set
+            {
+                if (AddOrUpdateValue(SILK16SettingKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+        public bool? GSM
+        {
+            get
+            {
+                return GetValueOrDefault<bool?>(GSMSettingKeyName, false);
+            }
+            set
+            {
+                if (AddOrUpdateValue(GSMSettingKeyName, value))
                 {
                     Save();
                 }

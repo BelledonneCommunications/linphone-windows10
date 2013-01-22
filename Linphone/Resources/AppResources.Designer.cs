@@ -94,6 +94,24 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AMR-NB.
+        /// </summary>
+        public static string AMRNBCodec {
+            get {
+                return ResourceManager.GetString("AMRNBCodec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AMR-WB.
+        /// </summary>
+        public static string AMRWBCodec {
+            get {
+                return ResourceManager.GetString("AMRWBCodec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Linphone.
         /// </summary>
         public static string ApplicationTitle {
@@ -112,6 +130,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Codecs.
+        /// </summary>
+        public static string CodecsMenu {
+            get {
+                return ResourceManager.GetString("CodecsMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contacts.
         /// </summary>
         public static string ContactsMenu {
@@ -121,7 +148,7 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enable debug.
+        ///   Looks up a localized string similar to Debug.
         /// </summary>
         public static string DebugSetting {
             get {
@@ -157,11 +184,56 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to G722.
+        /// </summary>
+        public static string G722Codec {
+            get {
+                return ResourceManager.GetString("G722Codec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GSM.
+        /// </summary>
+        public static string GSMCodec {
+            get {
+                return ResourceManager.GetString("GSMCodec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to History.
         /// </summary>
         public static string HistoryMenu {
             get {
                 return ResourceManager.GetString("HistoryMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ILBC.
+        /// </summary>
+        public static string ILBCCodec {
+            get {
+                return ResourceManager.GetString("ILBCCodec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PCMA.
+        /// </summary>
+        public static string PCMACodec {
+            get {
+                return ResourceManager.GetString("PCMACodec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PCMU.
+        /// </summary>
+        public static string PCMUCodec {
+            get {
+                return ResourceManager.GetString("PCMUCodec", resourceCulture);
             }
         }
         
@@ -198,6 +270,60 @@ namespace Linphone.Resources {
         public static string SettingsMenu {
             get {
                 return ResourceManager.GetString("SettingsMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SILK 16.
+        /// </summary>
+        public static string SILK16Codec {
+            get {
+                return ResourceManager.GetString("SILK16Codec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speex 16.
+        /// </summary>
+        public static string Speex16Codec {
+            get {
+                return ResourceManager.GetString("Speex16Codec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speex 8.
+        /// </summary>
+        public static string Speex8Codec {
+            get {
+                return ResourceManager.GetString("Speex8Codec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transport.
+        /// </summary>
+        public static string TransportSetting {
+            get {
+                return ResourceManager.GetString("TransportSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TCP.
+        /// </summary>
+        public static string TransportTCP {
+            get {
+                return ResourceManager.GetString("TransportTCP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UDP.
+        /// </summary>
+        public static string TransportUDP {
+            get {
+                return ResourceManager.GetString("TransportUDP", resourceCulture);
             }
         }
     }

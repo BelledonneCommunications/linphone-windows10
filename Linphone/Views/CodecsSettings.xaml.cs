@@ -7,36 +7,30 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using Linphone.Model;
 using Linphone.Resources;
-using System.Globalization;
-using System.Resources;
+using Linphone.Model;
 
 namespace Linphone.Views
 {
-    public partial class Settings : PhoneApplicationPage
+    public partial class CodecsSettings : PhoneApplicationPage
     {
         private SettingsManager _appSettings = new SettingsManager();
 
-        public Settings()
+        public CodecsSettings()
         {
             InitializeComponent();
             BuildLocalizedApplicationBar();
 
-            ResourceManager resourceManager = new ResourceManager("Linphone.Resources.AppResources", typeof(AppResources).Assembly);
-            string tcp = resourceManager.GetString("TransportTCP", CultureInfo.CurrentCulture);
-            string udp = resourceManager.GetString("TransportUDP", CultureInfo.CurrentCulture);
-            List<string> transports = new List<string>
-            {
-                tcp,
-                udp
-            };
-            Transport.ItemsSource = transports;
-
-            Transport.SelectedItem = _appSettings.Transport;
-            Debug.IsChecked = _appSettings.DebugEnabled;
+            AMRNB.IsChecked = _appSettings.AMRNB;
+            AMRWB.IsChecked = _appSettings.AMRWB;
+            Speex16.IsChecked = _appSettings.Speex16;
+            Speex8.IsChecked = _appSettings.Speex8;
+            PCMU.IsChecked = _appSettings.PCMU;
+            PCMA.IsChecked = _appSettings.PCMA;
+            SILK16.IsChecked = _appSettings.SILK16;
+            ILBC.IsChecked = _appSettings.ILBC;
+            GSM.IsChecked = _appSettings.GSM;
         }
-
         private void cancel_Click_1(object sender, EventArgs e)
         {
             NavigationService.GoBack();
@@ -44,17 +38,19 @@ namespace Linphone.Views
 
         private void save_Click_1(object sender, EventArgs e)
         {
-            _appSettings.DebugEnabled = Debug.IsChecked;
-            _appSettings.Transport = Transport.SelectedItem.ToString();
+            _appSettings.AMRNB = AMRNB.IsChecked;
+            _appSettings.AMRWB = AMRWB.IsChecked;
+            _appSettings.Speex16 = Speex16.IsChecked;
+            _appSettings.Speex8 = Speex8.IsChecked;
+            _appSettings.PCMU = PCMU.IsChecked;
+            _appSettings.PCMA = PCMA.IsChecked;
+            _appSettings.PCMA = PCMA.IsChecked;
+            _appSettings.SILK16 = SILK16.IsChecked;
+            _appSettings.ILBC = ILBC.IsChecked;
+            _appSettings.GSM = GSM.IsChecked;
 
             NavigationService.GoBack();
         }
-
-        private void codecs_Click_1(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/Views/CodecsSettings.xaml", UriKind.RelativeOrAbsolute));
-        }
-
         private void BuildLocalizedApplicationBar()
         {
             ApplicationBar = new ApplicationBar();

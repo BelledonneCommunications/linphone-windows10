@@ -113,8 +113,16 @@
     <Compile Include="Model\ContactPictureConverter.cs" />
     <Compile Include="Model\LinphoneManager.cs" />
     <Compile Include="Model\SettingsManager.cs" />
+    <Compile Include="Resources\DefaultValues.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DefaultValues.resx</DependentUpon>
+    </Compile>
     <Compile Include="Views\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CodecsSettings.xaml.cs">
+      <DependentUpon>CodecsSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Contacts.xaml.cs">
       <DependentUpon>Contacts.xaml</DependentUpon>
@@ -160,6 +168,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\CodecsSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Contacts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -188,6 +200,10 @@
     <EmbeddedResource Include="Resources\AppResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\DefaultValues.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DefaultValues.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -31,12 +31,27 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
             
-            <toolkit:ToggleSwitch  Grid.Row="0"
-                x:Name="debug" 
+            <toolkit:ToggleSwitch  
+                Grid.Row="0"
+                x:Name="Debug" 
                 Header="{Binding Path=LocalizedResources.DebugSetting, Source={StaticResource LocalizedStrings}}">
             </toolkit:ToggleSwitch>
+            
+            <toolkit:ListPicker 
+                Grid.Row="1"
+                x:Name="Transport"
+                Header="{Binding Path=LocalizedResources.TransportSetting, Source={StaticResource LocalizedStrings}}">
+            </toolkit:ListPicker>
+            
+            <Button
+                Grid.Row="2"
+                x:Name="Codecs"
+                Click="codecs_Click_1"
+                Content="{Binding Path=LocalizedResources.CodecsMenu, Source={StaticResource LocalizedStrings}}" />
         </Grid>
     </Grid>
 
