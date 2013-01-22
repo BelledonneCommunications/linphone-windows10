@@ -11,6 +11,7 @@ using System.Windows.Documents;
 using Linphone.Resources;
 using System.Globalization;
 using System.Resources;
+using System.Reflection;
 
 namespace Linphone.Views
 {
@@ -20,17 +21,24 @@ namespace Linphone.Views
         {
             InitializeComponent();
             ResourceManager resourceManager = new ResourceManager("Linphone.Resources.AppResources", typeof(AppResources).Assembly);
+            string versionName = new AssemblyName(Assembly.GetExecutingAssembly().FullName).Version.ToString();
 
             int i = 0;
             string text = resourceManager.GetString("AboutText", CultureInfo.CurrentCulture);
             Paragraph paragraph = new Paragraph();
             foreach (var line in text.Split('\n'))
             {
+                String textLine = line;
+                if (line.Contains("#version#"))
+                {
+                    textLine = line.Replace("#version#", versionName);
+                }
+
                 if (line.StartsWith("http://"))
                 {
                     Hyperlink link = new Hyperlink();
-                    link.NavigateUri = new Uri(line);
-                    link.Inlines.Add(line);
+                    link.NavigateUri = new Uri(textLine);
+                    link.Inlines.Add(textLine);
                     link.TargetName = "_blank";
 
                     paragraph.Inlines.Add(link);
@@ -38,7 +46,7 @@ namespace Linphone.Views
                 }
                 else
                 {
-                    paragraph.Inlines.Add(line);
+                    paragraph.Inlines.Add(textLine);
                     paragraph.Inlines.Add(new LineBreak());
                 }
             }

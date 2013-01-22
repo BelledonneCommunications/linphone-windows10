@@ -162,7 +162,7 @@
     <value>Dialer</value>
   </data>
   <data name="AboutText" xml:space="preserve">
-    <value>Linphone SIP (rfc 3261) compatible phone under GNU Public License V2
+    <value>Linphone #version# SIP (rfc 3261) compatible phone under GNU Public License V2
 http://www.linphone.org
 
 Instructions

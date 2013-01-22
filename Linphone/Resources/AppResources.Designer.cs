@@ -70,7 +70,7 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Linphone SIP (rfc 3261) compatible phone under GNU Public License V2
+        ///   Looks up a localized string similar to Linphone #version# SIP (rfc 3261) compatible phone under GNU Public License V2
         ///http://www.linphone.org
         ///
         ///Instructions

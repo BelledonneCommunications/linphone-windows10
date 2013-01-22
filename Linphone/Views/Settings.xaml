@@ -51,6 +51,7 @@
                 Grid.Row="2"
                 x:Name="Codecs"
                 Click="codecs_Click_1"
+                Margin="0,30,0,0"
                 Content="{Binding Path=LocalizedResources.CodecsMenu, Source={StaticResource LocalizedStrings}}" />
         </Grid>
     </Grid>
