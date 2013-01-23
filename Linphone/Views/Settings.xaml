@@ -33,6 +33,7 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
             
             <toolkit:ToggleSwitch  
@@ -53,6 +54,13 @@
                 Click="codecs_Click_1"
                 Margin="0,30,0,0"
                 Content="{Binding Path=LocalizedResources.CodecsMenu, Source={StaticResource LocalizedStrings}}" />
+
+            <Button
+                Grid.Row="3"
+                Click="LockScreenSettings_Click_1"
+                x:Name="LockScreenSettings"
+                Margin="0,30,0,0"
+                Content="{Binding Path=LocalizedResources.LockScreenSettings, Source={StaticResource LocalizedStrings}}" />
         </Grid>
     </Grid>
 

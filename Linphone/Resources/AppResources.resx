@@ -212,4 +212,7 @@ http://www.linphone.org/m/help
   <data name="TransportUDP" xml:space="preserve">
     <value>UDP</value>
   </data>
+  <data name="LockScreenSettings" xml:space="preserve">
+    <value>LockScreen settings</value>
+  </data>
 </root>

@@ -69,5 +69,10 @@ namespace Linphone.Views
             ApplicationBar.Buttons.Add(appBarCancel);
             appBarCancel.Click += cancel_Click_1;
         }
+
+        private async void LockScreenSettings_Click_1(object sender, RoutedEventArgs e)
+        {
+            var op = await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-settings-lock:"));
+        }
     }
 }

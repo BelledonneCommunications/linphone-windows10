@@ -116,6 +116,7 @@
     <Compile Include="Model\ContactPictureConverter.cs" />
     <Compile Include="Model\LinphoneManager.cs" />
     <Compile Include="Model\SettingsManager.cs" />
+    <Compile Include="Model\TileManager.cs" />
     <Compile Include="Resources\DefaultValues.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

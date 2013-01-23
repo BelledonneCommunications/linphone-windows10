@@ -146,7 +146,8 @@ namespace Linphone.Model
         /// <param name="sipAddress">SIP address to call</param>
         public void NewOutgoingCall(String sipAddress)
         {
-
+            //TileManager tileManager = TileManager.Instance;
+            //tileManager.UpdateTileWithMissedCalls(new Random().Next(10));
         }
     }
 }

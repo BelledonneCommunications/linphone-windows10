@@ -25,6 +25,9 @@ namespace Linphone.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            TileManager tileManager = TileManager.Instance;
+            tileManager.RemoveMissedCallsTile();
+
             List<CallLogs> callsHistory = LinphoneManager.Instance.GetCallsHistory();
             history.ItemsSource = callsHistory;
         }

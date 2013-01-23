@@ -32,6 +32,7 @@ namespace Linphone.Controls
         public RoutedEventHandler Click
         {
             set { button.Click += value; }
+            get { return null; }
         }
 
         public TwoStateButton()

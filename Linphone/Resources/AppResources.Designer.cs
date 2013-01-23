@@ -220,6 +220,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LockScreen settings.
+        /// </summary>
+        public static string LockScreenSettings {
+            get {
+                return ResourceManager.GetString("LockScreenSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PCMA.
         /// </summary>
         public static string PCMACodec {

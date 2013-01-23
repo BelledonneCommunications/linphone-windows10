@@ -25,6 +25,8 @@ namespace Linphone
             BuildLocalizedApplicationBar();
 
             ContactManager contactManager = ContactManager.Instance; //Force creation and init of ContactManager
+
+            call.Click += call_Click_1;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -37,6 +39,11 @@ namespace Linphone
                 sipAddress.Text = sipAddressToCall;
                 LinphoneManager.Instance.NewOutgoingCall(sipAddressToCall);
             }
+        }
+
+        private void call_Click_1(object sender, EventArgs e)
+        {
+            LinphoneManager.Instance.NewOutgoingCall(numpad.Address.Text);
         }
 
         private void history_Click_1(object sender, EventArgs e)
