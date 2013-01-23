@@ -5,13 +5,23 @@
     <IconPath IsRelative="true" IsResource="false">Assets\AppIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
-      <Capability Name="ID_CAP_SENSORS" />
       <Capability Name="ID_CAP_ISV_CAMERA" />
+      <Capability Name="ID_CAP_MEDIALIB_PLAYBACK" />
+      <Capability Name="ID_CAP_MICROPHONE" />
       <Capability Name="ID_CAP_PUSH_NOTIFICATION" />
+      <Capability Name="ID_CAP_SENSORS" />
+      <Capability Name="ID_CAP_WEBBROWSERCOMPONENT" />
+      <Capability Name="ID_CAP_VOIP" />
       <Capability Name="ID_CAP_CONTACTS" />
+      <Capability Name="ID_CAP_MEDIALIB_AUDIO" />
     </Capabilities>
     <Tasks>
       <DefaultTask Name="_default" NavigationPage="Views/Dialer.xaml" />
+      <ExtendedTask Name="BackgroundTask">
+        <BackgroundServiceAgent Specifier="ScheduledTaskAgent" Name="IncomingAndKeepAliveAgent" Source="Linphone.Agents" Type="Linphone.Agents.LinphoneScheduledAgent" />
+        <BackgroundServiceAgent Specifier="VoIPCallInProgressAgent" Name="CallInProgressAgent" Source="Linphone.Agents" Type="Linphone.Agents.LinphoneCallInProgressAgent" />
+        <BackgroundServiceAgent Specifier="VoIPForegroundLifetimeAgent" Name="ForegroundLifetimeAgent" Source="Linphone.Agents" Type="Linphone.Agents.LinphoneForegroundLifeTimeAgent" />
+      </ExtendedTask>
     </Tasks>
     <Tokens>
       <PrimaryToken TokenID="LinphoneToken" TaskName="_default">

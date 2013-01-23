@@ -132,7 +132,7 @@ namespace Linphone.Model
             }
         }
 
-        //Codecs Settings
+        #region Codecs Settings
         public bool? AMRNB
         {
             get
@@ -273,5 +273,6 @@ namespace Linphone.Model
                 }
             }
         }
+        #endregion
     }
 }

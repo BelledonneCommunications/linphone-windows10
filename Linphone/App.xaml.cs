@@ -8,6 +8,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Linphone.Resources;
 using System.Windows.Media;
+using Linphone.Model;
 
 namespace Linphone
 {
@@ -62,12 +63,22 @@ namespace Linphone
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+            Debug.WriteLine("[Linphone] Launching");
+
+            // Call this method below at the beginning of this handler,
+            // to let the background process that the UI is entering the foreground.
+            LinphoneManager.Instance.ConnectBackgroundProcessToInterface();
         }
 
         // Code to execute when the application is activated (brought to foreground)
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
+            Debug.WriteLine("[Linphone] Activated");
+
+            // Call this method below at the beginning of this handler,
+            // to let the background process that the UI is entering the foreground.
+            LinphoneManager.Instance.ConnectBackgroundProcessToInterface();
         }
 
         // Code to execute when the application is deactivated (sent to background)

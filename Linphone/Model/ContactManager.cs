@@ -9,10 +9,16 @@ namespace Linphone.Model
 {
     public class ContactManager
     {
-        private static ContactManager _instance = new ContactManager();
+        private static ContactManager singleton;
         public static ContactManager Instance
         {
-            get { return _instance; }
+            get 
+            {
+                if (ContactManager.singleton == null)
+                    ContactManager.singleton = new ContactManager();
+
+                return ContactManager.singleton;
+            }
         }
 
         private List<AlphaKeyGroup<Contact>> _contacts;

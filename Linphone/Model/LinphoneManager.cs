@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.Phone.Networking.Voip;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,13 +11,55 @@ namespace Linphone.Model
 {
     public class LinphoneManager
     {
-        private static LinphoneManager _instance = new LinphoneManager();
+        private static LinphoneManager singleton;
         public static LinphoneManager Instance
         {
-            get { return _instance; }
+            get
+            {
+                if (LinphoneManager.singleton == null)
+                    LinphoneManager.singleton = new LinphoneManager();
+
+                return LinphoneManager.singleton;
+            }
         }
 
         private List<CallLogs> _history;
+        private bool BackgroundProcessConnected;
+
+        public void ConnectBackgroundProcessToInterface()
+        {
+            if (BackgroundProcessConnected)
+            {
+                Debug.WriteLine("[LinphoneManager] Background process already connected to interface");
+                return;
+            }
+
+            int backgroundProcessID;
+            try
+            {
+                //VoipBackgroundProcess.Launch(out backgroundProcessID);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("[LinphoneManager] Error launching VoIP background process. Exception: " + e.Message);
+                throw;
+            }
+
+            BackgroundProcessConnected = true;
+            Debug.WriteLine("[LinphoneManager] Background process connected to interface");
+        }
+
+        public void DisconnectBackgroundProcessFromInterface()
+        {
+            if (!BackgroundProcessConnected)
+            {
+                Debug.WriteLine("[LinphoneManager] Background process not connected to interface yet");
+                return;
+            }
+
+            BackgroundProcessConnected = false;
+            Debug.WriteLine("[LinphoneManager] Background process disconnected from interface");
+        }
 
         /// <summary>
         /// Set the debug value for liblinphone
