@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Navigation;
+﻿using Linphone.Model;
 using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
-using System.Windows.Media;
+using System;
+using System.Windows;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 
 namespace Linphone.Views
 {
@@ -30,7 +25,26 @@ namespace Linphone.Views
         {
             if (NavigationContext.QueryString.ContainsKey("sip"))
             {
+                String calledNumber = NavigationContext.QueryString["sip"];
+                // While we dunno if the number matches a contact one, we consider it won't and we display the phone number as username
+                Contact.Text = calledNumber; 
 
+                ContactManager cm = ContactManager.Instance;
+                cm.ContactFound += cm_ContactFound;
+                cm.FindContactByNumber(calledNumber);
+            }
+        }
+
+        private void cm_ContactFound(object sender, ContactFoundEventArgs e)
+        {
+            Contact.Text = e.ContactFound.DisplayName;
+            if (e.PhoneLabel != null)
+            {
+                Number.Text = e.PhoneLabel + " : " + e.PhoneNumber;
+            }
+            else
+            {
+                Number.Text = e.PhoneNumber;
             }
         }
 
