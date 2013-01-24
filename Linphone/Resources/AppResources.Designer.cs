@@ -202,11 +202,29 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to hang up.
+        /// </summary>
+        public static string HangUp {
+            get {
+                return ResourceManager.GetString("HangUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to History.
         /// </summary>
         public static string HistoryMenu {
             get {
                 return ResourceManager.GetString("HistoryMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to hold.
+        /// </summary>
+        public static string Hold {
+            get {
+                return ResourceManager.GetString("Hold", resourceCulture);
             }
         }
         
@@ -225,6 +243,15 @@ namespace Linphone.Resources {
         public static string LockScreenSettings {
             get {
                 return ResourceManager.GetString("LockScreenSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to mute.
+        /// </summary>
+        public static string Mute {
+            get {
+                return ResourceManager.GetString("Mute", resourceCulture);
             }
         }
         
@@ -288,6 +315,15 @@ namespace Linphone.Resources {
         public static string SILK16Codec {
             get {
                 return ResourceManager.GetString("SILK16Codec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to speaker.
+        /// </summary>
+        public static string Speaker {
+            get {
+                return ResourceManager.GetString("Speaker", resourceCulture);
             }
         }
         

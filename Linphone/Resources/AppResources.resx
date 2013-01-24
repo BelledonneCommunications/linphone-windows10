@@ -215,4 +215,16 @@ http://www.linphone.org/m/help
   <data name="LockScreenSettings" xml:space="preserve">
     <value>LockScreen settings</value>
   </data>
+  <data name="HangUp" xml:space="preserve">
+    <value>hang up</value>
+  </data>
+  <data name="Hold" xml:space="preserve">
+    <value>hold</value>
+  </data>
+  <data name="Mute" xml:space="preserve">
+    <value>mute</value>
+  </data>
+  <data name="Speaker" xml:space="preserve">
+    <value>speaker</value>
+  </data>
 </root>

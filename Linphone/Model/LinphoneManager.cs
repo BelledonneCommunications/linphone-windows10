@@ -149,5 +149,38 @@ namespace Linphone.Model
             //TileManager tileManager = TileManager.Instance;
             //tileManager.UpdateTileWithMissedCalls(new Random().Next(10));
         }
+
+        /// <summary>
+        /// Stops the current call if any
+        /// </summary>
+        public void EndCurrentCall()
+        {
+
+        }
+
+
+        /// <summary>
+        /// Pauses the current call if any and if it's running
+        /// </summary>
+        public void PauseCurrentCall()
+        {
+
+        }
+
+        /// <summary>
+        /// Resume the current call if any and if it's paused
+        /// </summary>
+        public void ResumeCurrentCall()
+        {
+
+        }
+
+        /// <summary>
+        /// Hang up the current call if any
+        /// </summary>
+        public void HangUp()
+        {
+
+        }
     }
 }

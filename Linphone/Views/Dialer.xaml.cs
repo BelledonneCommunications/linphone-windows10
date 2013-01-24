@@ -37,13 +37,19 @@ namespace Linphone
             {
                 String sipAddressToCall = NavigationContext.QueryString["sip"];
                 sipAddress.Text = sipAddressToCall;
-                LinphoneManager.Instance.NewOutgoingCall(sipAddressToCall);
+                NewOutgoingCall(sipAddressToCall);
             }
+        }
+
+        private void NewOutgoingCall(String address)
+        {
+            NavigationService.Navigate(new Uri("/Views/InCall.xaml?sip=" + address, UriKind.RelativeOrAbsolute));
+            LinphoneManager.Instance.NewOutgoingCall(numpad.Address.Text);
         }
 
         private void call_Click_1(object sender, EventArgs e)
         {
-            LinphoneManager.Instance.NewOutgoingCall(numpad.Address.Text);
+            NewOutgoingCall(numpad.Address.Text);
         }
 
         private void history_Click_1(object sender, EventArgs e)

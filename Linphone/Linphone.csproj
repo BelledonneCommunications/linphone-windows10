@@ -143,6 +143,9 @@
     <Compile Include="Views\History.xaml.cs">
       <DependentUpon>History.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\InCall.xaml.cs">
+      <DependentUpon>InCall.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
@@ -188,6 +191,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\InCall.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -218,6 +225,7 @@
     <Content Include="Assets\AppBar\check.png" />
     <Content Include="Assets\AppBar\close.png" />
     <Content Include="Assets\AppBar\delete.png" />
+    <Content Include="Assets\AppBar\dialpad.png" />
     <Content Include="Assets\AppBar\download.png" />
     <Content Include="Assets\AppBar\edit.png" />
     <Content Include="Assets\AppBar\favs.addto.png" />
@@ -232,16 +240,20 @@
     <Content Include="Assets\AppBar\feature.video.png" />
     <Content Include="Assets\AppBar\folder.png" />
     <Content Include="Assets\AppBar\like.png" />
+    <Content Include="Assets\AppBar\mic.png" />
     <Content Include="Assets\AppBar\microphone.png" />
     <Content Include="Assets\AppBar\minus.png" />
     <Content Include="Assets\AppBar\new.png" />
     <Content Include="Assets\AppBar\next.png" />
     <Content Include="Assets\AppBar\overflowdots.png" />
+    <Content Include="Assets\AppBar\pause.png" />
     <Content Include="Assets\AppBar\people.contacts.png" />
+    <Content Include="Assets\AppBar\play.png" />
     <Content Include="Assets\AppBar\questionmark.png" />
     <Content Include="Assets\AppBar\refresh.png" />
     <Content Include="Assets\AppBar\save.png" />
     <Content Include="Assets\AppBar\share.png" />
+    <Content Include="Assets\AppBar\speaker.png" />
     <Content Include="Assets\AppBar\stop.png" />
     <Content Include="Assets\AppBar\sync.png" />
     <Content Include="Assets\AppBar\time.png" />
