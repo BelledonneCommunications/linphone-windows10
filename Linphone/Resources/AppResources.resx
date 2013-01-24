@@ -227,4 +227,7 @@ http://www.linphone.org/m/help
   <data name="Speaker" xml:space="preserve">
     <value>speaker</value>
   </data>
+  <data name="ContactMenu" xml:space="preserve">
+    <value>Contact</value>
+  </data>
 </root>

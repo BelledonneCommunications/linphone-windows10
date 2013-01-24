@@ -37,6 +37,7 @@ namespace Linphone.Model
 
         private List<AlphaKeyGroup<Contact>> _contacts;
         private String tempNumberForContactLookup;
+        public Contact TempContact;
 
         public delegate void ContactFoundEventHandler(object sender, ContactFoundEventArgs e);
         public event ContactFoundEventHandler ContactFound;
@@ -55,11 +56,19 @@ namespace Linphone.Model
                 (Contact c) => { return c.DisplayName; }, true);
         }
 
+        /// <summary>
+        /// Gets a list of contacts ordered alphabetically
+        /// </summary>
+        /// <returns>A list of AlphaKeyGroup, where each one contains the contacts starting by the letter represented by the group</returns>
         public List<AlphaKeyGroup<Contact>> GetContactsGroupedByLetters()
         {
             return _contacts;
         }
 
+        /// <summary>
+        /// Searches if a there is a contact for whom the phone number is stored 
+        /// </summary>
+        /// <param name="number">phone number to use to filter the contacts</param>
         public void FindContactByNumber(String number)
         {
             Microsoft.Phone.UserData.Contacts contacts = new Microsoft.Phone.UserData.Contacts();

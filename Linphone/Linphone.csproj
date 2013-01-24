@@ -100,6 +100,9 @@
     <Compile Include="Controls\AddressBox.xaml.cs">
       <DependentUpon>AddressBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ContactAction.xaml.cs">
+      <DependentUpon>ContactAction.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Digit.xaml.cs">
       <DependentUpon>Digit.xaml</DependentUpon>
     </Compile>
@@ -127,6 +130,9 @@
     </Compile>
     <Compile Include="Views\CodecsSettings.xaml.cs">
       <DependentUpon>CodecsSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Contact.xaml.cs">
+      <DependentUpon>Contact.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Contacts.xaml.cs">
       <DependentUpon>Contacts.xaml</DependentUpon>
@@ -159,6 +165,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\ContactAction.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Digit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -176,6 +186,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CodecsSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Contact.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

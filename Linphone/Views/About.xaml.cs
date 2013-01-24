@@ -26,6 +26,9 @@ namespace Linphone.Views
             int i = 0;
             string text = resourceManager.GetString("AboutText", CultureInfo.CurrentCulture);
             Paragraph paragraph = new Paragraph();
+
+            // Parse the text to insert clickable links when a line start with http://
+            // And replace #version# tag by actual version name
             foreach (var line in text.Split('\n'))
             {
                 String textLine = line;

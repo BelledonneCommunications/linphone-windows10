@@ -26,6 +26,10 @@ namespace Linphone.Model
 
         }
 
+        /// <summary>
+        /// Displays the number of missed call on the live tile and on the lock screen
+        /// </summary>
+        /// <param name="missedCalls">Number of missed calls</param>
         public void UpdateTileWithMissedCalls(int missedCalls)
         {
             ShellTile tile = ShellTile.ActiveTiles.FirstOrDefault();
@@ -34,6 +38,9 @@ namespace Linphone.Model
             tile.Update(data);
         }
 
+        /// <summary>
+        /// Delete the missed call display from the live tile and the lock screen
+        /// </summary>
         public void RemoveMissedCallsTile()
         {
             UpdateTileWithMissedCalls(0);

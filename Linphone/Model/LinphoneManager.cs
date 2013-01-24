@@ -26,6 +26,9 @@ namespace Linphone.Model
         private List<CallLogs> _history;
         private bool BackgroundProcessConnected;
 
+        /// <summary>
+        /// Starts and connects the LinphoneManager to the background process (linphonecore)
+        /// </summary>
         public void ConnectBackgroundProcessToInterface()
         {
             if (BackgroundProcessConnected)
@@ -49,6 +52,9 @@ namespace Linphone.Model
             Debug.WriteLine("[LinphoneManager] Background process connected to interface");
         }
 
+        /// <summary>
+        /// disconnects the LinphoneManager from the background process (linphonecore)
+        /// </summary>
         public void DisconnectBackgroundProcessFromInterface()
         {
             if (!BackgroundProcessConnected)
@@ -80,27 +86,6 @@ namespace Linphone.Model
 
             ObservableCollection<CallLog> calls = new ObservableCollection<CallLog>();
             ObservableCollection<CallLog> missedCalls = new ObservableCollection<CallLog>();
-
-            CallLog logA = new CallLog("sip:cotcot@sip.linphone.org", "sip:miaou@sip.linphone.org", true, false);
-            CallLog logB = new CallLog("sip:cotcot@sip.linphone.org", "sip:miaou@sip.linphone.org", true, true);
-            CallLog logC = new CallLog("sip:cotcot@sip.linphone.org", "sip:miaou@sip.linphone.org", false, false);
-            CallLog logD = new CallLog("sip:cotcot@sip.linphone.org", "sip:miaou@sip.linphone.org", true, true);
-            CallLog logE = new CallLog("sip:cotcot@sip.linphone.org", "sip:miaou@sip.linphone.org", false, false);
-            CallLog logF = new CallLog("sip:cotcot@sip.linphone.org", "sip:miaou@sip.linphone.org", false, false);
-            CallLog logG = new CallLog("sip:cotcot@sip.linphone.org", "sip:miaou@sip.linphone.org", true, true);
-            CallLog logH = new CallLog("sip:cotcot@sip.linphone.org", "sip:miaou@sip.linphone.org", false, false);
-
-            calls.Add(logA);
-            calls.Add(logB);
-            calls.Add(logC);
-            calls.Add(logD);
-            calls.Add(logE);
-            calls.Add(logF);
-            calls.Add(logG);
-            calls.Add(logH);
-            missedCalls.Add(logB);
-            missedCalls.Add(logD);
-            missedCalls.Add(logG);
 
             CallLogs all = new CallLogs("All", calls);
             _history.Add(all);

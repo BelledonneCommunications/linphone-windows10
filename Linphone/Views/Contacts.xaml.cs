@@ -9,6 +9,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.UserData;
 using Linphone.Model;
+using System.Diagnostics;
 
 namespace Linphone.Views
 {
@@ -23,7 +24,9 @@ namespace Linphone.Views
 
         private void contactsList_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
-            Contact selectedContact = ((sender as LongListSelector).SelectedItem as Contact);
+            Microsoft.Phone.UserData.Contact selectedContact = ((sender as LongListSelector).SelectedItem as Microsoft.Phone.UserData.Contact);
+            ContactManager.Instance.TempContact = selectedContact;
+            NavigationService.Navigate(new Uri("/Views/Contact.xaml", UriKind.RelativeOrAbsolute));
         }
     }
 }

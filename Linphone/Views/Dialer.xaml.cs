@@ -43,8 +43,11 @@ namespace Linphone
 
         private void NewOutgoingCall(String address)
         {
-            NavigationService.Navigate(new Uri("/Views/InCall.xaml?sip=" + address, UriKind.RelativeOrAbsolute));
-            LinphoneManager.Instance.NewOutgoingCall(numpad.Address.Text);
+            if (address != null && address.Length > 0)
+            {
+                NavigationService.Navigate(new Uri("/Views/InCall.xaml?sip=" + address, UriKind.RelativeOrAbsolute));
+                LinphoneManager.Instance.NewOutgoingCall(numpad.Address.Text);
+            }
         }
 
         private void call_Click_1(object sender, EventArgs e)

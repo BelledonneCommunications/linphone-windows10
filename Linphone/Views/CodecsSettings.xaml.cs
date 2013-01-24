@@ -32,6 +32,7 @@ namespace Linphone.Views
             SILK16.IsChecked = _appSettings.SILK16;
             GSM.IsChecked = _appSettings.GSM;
         }
+
         private void cancel_Click_1(object sender, EventArgs e)
         {
             NavigationService.GoBack();
@@ -53,6 +54,7 @@ namespace Linphone.Views
 
             NavigationService.GoBack();
         }
+
         private void BuildLocalizedApplicationBar()
         {
             ApplicationBar = new ApplicationBar();

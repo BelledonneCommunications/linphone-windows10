@@ -35,6 +35,10 @@ namespace Linphone.Views
             }
         }
 
+        /// <summary>
+        /// Callback called when the search on a phone number for a contact has a match
+        /// </summary>
+        /// <param name="e">The result of the search</param>
         private void cm_ContactFound(object sender, ContactFoundEventArgs e)
         {
             Contact.Text = e.ContactFound.DisplayName;
