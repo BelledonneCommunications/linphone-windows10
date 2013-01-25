@@ -350,7 +350,7 @@
                         Tag="*"
                         Background="{StaticResource PhoneChromeBrush}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="*" FontSize="30"/>
+                            <TextBlock Text="＊" FontSize="30"/>
                         </StackPanel>
                     </Button>
 
