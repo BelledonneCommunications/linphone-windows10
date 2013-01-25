@@ -38,6 +38,7 @@ namespace Linphone.Views
                 contactPicture.Height = 150;
                 contactPicture.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
                 contactPicture.Source = PictureDecoder.DecodeJpeg(imgStream);
+                contactPicture.Margin = new Thickness(0,0,0,15);
                 actions.Children.Add(contactPicture);
             }
 
@@ -46,9 +47,31 @@ namespace Linphone.Views
                 ContactAction entry = new ContactAction();
                 entry.Action = "/Assets/AppBar/feature.phone.png";
                 entry.Label = phone.Kind.ToString();
-                entry.Phone = phone.PhoneNumber;
+                entry.NumberOrAddress = phone.PhoneNumber;
+                entry.Click += action_Click_1;
                 actions.Children.Add(entry);
             }
+
+            foreach (ContactEmailAddress email in contact.EmailAddresses)
+            {
+                ContactAction entry = new ContactAction();
+                entry.Action = "/Assets/AppBar/feature.phone.png";
+                entry.Label = email.Kind.ToString();
+                entry.NumberOrAddress = email.EmailAddress;
+                entry.Click += action_Click_1;
+                actions.Children.Add(entry);
+            }
+        }
+
+        private void SetAddressGoToDialerAndCall(String address)
+        {
+            NavigationService.Navigate(new Uri("/Views/Dialer.xaml?sip=" + address, UriKind.RelativeOrAbsolute));
+        }
+
+        private void action_Click_1(object sender, EventArgs e)
+        {
+            String numberOrAddress = (sender as Button).Tag.ToString();
+            SetAddressGoToDialerAndCall(numberOrAddress);
         }
     }
 }

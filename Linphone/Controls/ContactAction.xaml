@@ -26,13 +26,14 @@
                 
             <TextBlock 
                 x:Name="phone" 
-                FontSize="35" 
+                FontSize="25" 
                 VerticalAlignment="Center" 
                 HorizontalAlignment="Left" 
                 Foreground="{StaticResource PhoneAccentBrush}"/>
         </StackPanel>
 
         <Button 
+            x:Name="button"
             Grid.Column="1"
             BorderThickness="0"
             HorizontalAlignment="Right"

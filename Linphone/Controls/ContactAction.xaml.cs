@@ -41,18 +41,28 @@ namespace Linphone.Controls
             }
         }
 
-        private String _phone;
-        public String Phone
+        private String _numberOrAddress;
+        public String NumberOrAddress
         {
             get
             {
-                return _phone;
+                return _numberOrAddress;
             }
             set
             {
-                _phone = value;
+                _numberOrAddress = value;
                 phone.Text = value;
             }
+        }
+
+        public RoutedEventHandler Click
+        {
+            set 
+            { 
+                button.Click += value;
+                button.Tag = NumberOrAddress;
+            }
+            get { return null; }
         }
 
         public ContactAction()

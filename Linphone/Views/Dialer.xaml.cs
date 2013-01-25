@@ -33,7 +33,8 @@ namespace Linphone
         {
             LinphoneManager.Instance.EnableDebug(SettingsManager.isDebugEnabled);
 
-            if (NavigationContext.QueryString.ContainsKey("sip"))
+            // Check for the navigation direction to avoid going to incall view when coming back from incall view
+            if (NavigationContext.QueryString.ContainsKey("sip") && e.NavigationMode != NavigationMode.Back)
             {
                 String sipAddressToCall = NavigationContext.QueryString["sip"];
                 sipAddress.Text = sipAddressToCall;

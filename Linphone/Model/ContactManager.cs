@@ -66,19 +66,35 @@ namespace Linphone.Model
         }
 
         /// <summary>
+        /// Searches if there is a contact for whom the phone number of the email address is stored
+        /// </summary>
+        /// <param name="numberOrAddress"></param>
+        public void FindContact(String numberOrAddress)
+        {
+            if (numberOrAddress.Contains('@'))
+            {
+                FindContactByEmail(numberOrAddress);
+            }
+            else
+            {
+                FindContactByNumber(numberOrAddress);
+            }
+        }
+
+        /// <summary>
         /// Searches if a there is a contact for whom the phone number is stored 
         /// </summary>
         /// <param name="number">phone number to use to filter the contacts</param>
-        public void FindContactByNumber(String number)
+        private void FindContactByNumber(String number)
         {
             Microsoft.Phone.UserData.Contacts contacts = new Microsoft.Phone.UserData.Contacts();
             tempNumberForContactLookup = number;
-            contacts.SearchCompleted += contact_SearchCompleted;
+            contacts.SearchCompleted += contact_PhoneSearchCompleted;
 
             contacts.SearchAsync(tempNumberForContactLookup, FilterKind.PhoneNumber, "Search by phone number");
         }
 
-        private void contact_SearchCompleted(object sender, Microsoft.Phone.UserData.ContactsSearchEventArgs e)
+        private void contact_PhoneSearchCompleted(object sender, Microsoft.Phone.UserData.ContactsSearchEventArgs e)
         {
             Contact result = e.Results.FirstOrDefault();
             if (result != null)
@@ -91,6 +107,36 @@ namespace Linphone.Model
                     if (phone.PhoneNumber.EndsWith(tempNumberForContactLookup.Substring(3)))
                     {
                         label = phone.Kind.ToString();
+                    }
+                }
+                ContactFound(this, new ContactFoundEventArgs(result, tempNumberForContactLookup, label));
+            }
+        }
+
+        /// <summary>
+        /// Searches if a there is a contact for whom the phone number is stored 
+        /// </summary>
+        /// <param name="number">phone number to use to filter the contacts</param>
+        private void FindContactByEmail(String email)
+        {
+            Microsoft.Phone.UserData.Contacts contacts = new Microsoft.Phone.UserData.Contacts();
+            tempNumberForContactLookup = email;
+            contacts.SearchCompleted += contact_EmailSearchCompleted;
+
+            contacts.SearchAsync(tempNumberForContactLookup, FilterKind.EmailAddress, "Search by email address");
+        }
+
+        private void contact_EmailSearchCompleted(object sender, Microsoft.Phone.UserData.ContactsSearchEventArgs e)
+        {
+            Contact result = e.Results.FirstOrDefault();
+            if (result != null)
+            {
+                String label = null;
+                foreach (ContactEmailAddress email in result.EmailAddresses)
+                {
+                    if (email.EmailAddress.Equals(tempNumberForContactLookup))
+                    {
+                        label = email.Kind.ToString();
                     }
                 }
                 ContactFound(this, new ContactFoundEventArgs(result, tempNumberForContactLookup, label));

@@ -31,7 +31,7 @@ namespace Linphone.Views
 
                 ContactManager cm = ContactManager.Instance;
                 cm.ContactFound += cm_ContactFound;
-                cm.FindContactByNumber(calledNumber);
+                cm.FindContact(calledNumber);
             }
         }
 
