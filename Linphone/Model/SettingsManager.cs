@@ -14,9 +14,14 @@ namespace Linphone.Model
         private IsolatedStorageSettings settings;
         private ResourceManager resourceManager;
 
+        const string UsernameKeyName = "Username";
+        const string PasswordKeyName = "Password";
+        const string DomainKeyName = "Domain";
+
         const string DebugSettingKeyName = "Debug";
         const string TransportSettingKeyName = "Transport";
         const string SendDTFMsRFC2833KeyName = "SendDTFMsRFC2833";
+
         const string AMRNBSettingKeyName = "AMRNB";
         const string AMRWBSettingKeyName = "AMRWB";
         const string Speex16SettingKeyName = "Speex16";
@@ -104,9 +109,51 @@ namespace Linphone.Model
             settings.Save();
         }
 
-        /// <summary>
-        /// Property to get and set the Debug mode
-        /// </summary>
+        public string Username
+        {
+            get
+            {
+                return GetValueOrDefault<string>(UsernameKeyName, "");
+            }
+            set
+            {
+                if (AddOrUpdateValue(UsernameKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+
+        public string Password
+        {
+            get
+            {
+                return GetValueOrDefault<string>(PasswordKeyName, "");
+            }
+            set
+            {
+                if (AddOrUpdateValue(PasswordKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+
+        public string Domain
+        {
+            get
+            {
+                return GetValueOrDefault<string>(DomainKeyName, "");
+            }
+            set
+            {
+                if (AddOrUpdateValue(DomainKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+
         public bool? DebugEnabled
         {
             get
