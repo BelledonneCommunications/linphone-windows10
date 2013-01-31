@@ -94,6 +94,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Advanced settings.
+        /// </summary>
+        public static string AdvancedSettingsMenu {
+            get {
+                return ResourceManager.GetString("AdvancedSettingsMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AMR-NB.
         /// </summary>
         public static string AMRNBCodec {
@@ -117,6 +126,15 @@ namespace Linphone.Resources {
         public static string ApplicationTitle {
             get {
                 return ResourceManager.GetString("ApplicationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Call.
+        /// </summary>
+        public static string CallMenu {
+            get {
+                return ResourceManager.GetString("CallMenu", resourceCulture);
             }
         }
         
@@ -301,6 +319,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Send DTMFs as RFC2833.
+        /// </summary>
+        public static string RFC2833Setting {
+            get {
+                return ResourceManager.GetString("RFC2833Setting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string SaveSettings {
@@ -378,6 +405,78 @@ namespace Linphone.Resources {
         public static string TransportUDP {
             get {
                 return ResourceManager.GetString("TransportUDP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel.
+        /// </summary>
+        public static string TunnelMenu {
+            get {
+                return ResourceManager.GetString("TunnelMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel mode.
+        /// </summary>
+        public static string TunnelMode {
+            get {
+                return ResourceManager.GetString("TunnelMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 3G only.
+        /// </summary>
+        public static string TunnelMode3GOnly {
+            get {
+                return ResourceManager.GetString("TunnelMode3GOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Always.
+        /// </summary>
+        public static string TunnelModeAlways {
+            get {
+                return ResourceManager.GetString("TunnelModeAlways", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto.
+        /// </summary>
+        public static string TunnelModeAuto {
+            get {
+                return ResourceManager.GetString("TunnelModeAuto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disabled.
+        /// </summary>
+        public static string TunnelModeDisabled {
+            get {
+                return ResourceManager.GetString("TunnelModeDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel port.
+        /// </summary>
+        public static string TunnelPort {
+            get {
+                return ResourceManager.GetString("TunnelPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel server.
+        /// </summary>
+        public static string TunnelServer {
+            get {
+                return ResourceManager.GetString("TunnelServer", resourceCulture);
             }
         }
     }

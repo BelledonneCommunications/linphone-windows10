@@ -61,11 +61,47 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to false.
+        /// </summary>
+        internal static string RFC2833Default {
+            get {
+                return ResourceManager.GetString("RFC2833Default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to UDP.
         /// </summary>
         internal static string TransportDefault {
             get {
                 return ResourceManager.GetString("TransportDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disabled.
+        /// </summary>
+        internal static string TunnelMode {
+            get {
+                return ResourceManager.GetString("TunnelMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 443.
+        /// </summary>
+        internal static string TunnelPort {
+            get {
+                return ResourceManager.GetString("TunnelPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to tunnel.linphone.org.
+        /// </summary>
+        internal static string TunnelServer {
+            get {
+                return ResourceManager.GetString("TunnelServer", resourceCulture);
             }
         }
     }

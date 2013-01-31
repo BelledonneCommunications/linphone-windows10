@@ -230,4 +230,37 @@ http://www.linphone.org/m/help
   <data name="ContactMenu" xml:space="preserve">
     <value>Contact</value>
   </data>
+  <data name="AdvancedSettingsMenu" xml:space="preserve">
+    <value>Advanced settings</value>
+  </data>
+  <data name="CallMenu" xml:space="preserve">
+    <value>Call</value>
+  </data>
+  <data name="RFC2833Setting" xml:space="preserve">
+    <value>Send DTMFs as RFC2833</value>
+  </data>
+  <data name="TunnelMenu" xml:space="preserve">
+    <value>Tunnel</value>
+  </data>
+  <data name="TunnelMode" xml:space="preserve">
+    <value>Tunnel mode</value>
+  </data>
+  <data name="TunnelMode3GOnly" xml:space="preserve">
+    <value>3G only</value>
+  </data>
+  <data name="TunnelModeAlways" xml:space="preserve">
+    <value>Always</value>
+  </data>
+  <data name="TunnelModeAuto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="TunnelModeDisabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="TunnelPort" xml:space="preserve">
+    <value>Tunnel port</value>
+  </data>
+  <data name="TunnelServer" xml:space="preserve">
+    <value>Tunnel server</value>
+  </data>
 </root>

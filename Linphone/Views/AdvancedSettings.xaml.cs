@@ -9,31 +9,31 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Linphone.Model;
 using Linphone.Resources;
-using System.Globalization;
-using System.Resources;
 
 namespace Linphone.Views
 {
-    public partial class Settings : PhoneApplicationPage
+    public partial class AdvancedSettings : PhoneApplicationPage
     {
         private SettingsManager _appSettings = new SettingsManager();
 
-        public Settings()
+        public AdvancedSettings()
         {
             InitializeComponent();
             BuildLocalizedApplicationBar();
 
-            string tcp = AppResources.TransportTCP;
-            string udp = AppResources.TransportUDP;
-            List<string> transports = new List<string>
-            {
-                tcp,
-                udp
-            };
-            Transport.ItemsSource = transports;
+            rfc2833.IsChecked = _appSettings.SendDTFMsRFC2833;
 
-            Transport.SelectedItem = _appSettings.Transport;
-            Debug.IsChecked = _appSettings.DebugEnabled;
+            List<string> tunnelModes = new List<string>
+            {
+                AppResources.TunnelModeDisabled,
+                AppResources.TunnelMode3GOnly,
+                AppResources.TunnelModeAlways,
+                AppResources.TunnelModeAuto
+            };
+            tunnelMode.ItemsSource = tunnelModes;
+            tunnelMode.SelectedItem = _appSettings.TunnelMode;
+            tunnelPort.Text = _appSettings.TunnelPort;
+            tunnelServer.Text = _appSettings.TunnelServer;
         }
 
         private void cancel_Click_1(object sender, EventArgs e)
@@ -43,20 +43,12 @@ namespace Linphone.Views
 
         private void save_Click_1(object sender, EventArgs e)
         {
-            _appSettings.DebugEnabled = Debug.IsChecked;
-            _appSettings.Transport = Transport.SelectedItem.ToString();
+            _appSettings.SendDTFMsRFC2833 = rfc2833.IsChecked;
+            _appSettings.TunnelMode = tunnelMode.SelectedItem.ToString();
+            _appSettings.TunnelServer = tunnelServer.Text;
+            _appSettings.TunnelPort = tunnelPort.Text;
 
             NavigationService.GoBack();
-        }
-
-        private void codecs_Click_1(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/Views/CodecsSettings.xaml", UriKind.RelativeOrAbsolute));
-        }
-
-        private void advanced_Click_1(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/Views/AdvancedSettings.xaml", UriKind.RelativeOrAbsolute));
         }
 
         private void BuildLocalizedApplicationBar()
@@ -72,11 +64,6 @@ namespace Linphone.Views
             appBarCancel.Text = AppResources.CancelChanges;
             ApplicationBar.Buttons.Add(appBarCancel);
             appBarCancel.Click += cancel_Click_1;
-        }
-
-        private async void LockScreenSettings_Click_1(object sender, RoutedEventArgs e)
-        {
-            var op = await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-settings-lock:"));
         }
     }
 }

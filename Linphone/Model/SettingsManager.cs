@@ -16,6 +16,7 @@ namespace Linphone.Model
 
         const string DebugSettingKeyName = "Debug";
         const string TransportSettingKeyName = "Transport";
+        const string SendDTFMsRFC2833KeyName = "SendDTFMsRFC2833";
         const string AMRNBSettingKeyName = "AMRNB";
         const string AMRWBSettingKeyName = "AMRWB";
         const string Speex16SettingKeyName = "Speex16";
@@ -26,6 +27,10 @@ namespace Linphone.Model
         const string ILBCSettingKeyName = "ILBC";
         const string SILK16SettingKeyName = "SILK16";
         const string GSMSettingKeyName = "GSM";
+
+        const string TunnelServerKeyName = "TunnelServer";
+        const string TunnelPortKeyName = "TunnelPort";
+        const string TunnelModeKeyName = "TunnelMode";
 
         public SettingsManager()
         {
@@ -126,6 +131,21 @@ namespace Linphone.Model
             set
             {
                 if (AddOrUpdateValue(TransportSettingKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+
+        public bool? SendDTFMsRFC2833
+        {
+            get
+            {
+                return GetValueOrDefault<bool?>(SendDTFMsRFC2833KeyName, Boolean.Parse(resourceManager.GetString("RFC2833Default")));
+            }
+            set
+            {
+                if (AddOrUpdateValue(SendDTFMsRFC2833KeyName, value))
                 {
                     Save();
                 }
@@ -268,6 +288,53 @@ namespace Linphone.Model
             set
             {
                 if (AddOrUpdateValue(GSMSettingKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+        #endregion
+
+        #region Tunnel Settings
+        public string TunnelServer
+        {
+            get
+            {
+                return GetValueOrDefault<string>(TunnelServerKeyName, resourceManager.GetString("TunnelServer"));
+            }
+            set
+            {
+                if (AddOrUpdateValue(TunnelServerKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+
+        public string TunnelPort
+        {
+            get
+            {
+                return GetValueOrDefault<string>(TunnelPortKeyName, resourceManager.GetString("TunnelPort"));
+            }
+            set
+            {
+                if (AddOrUpdateValue(TunnelPortKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+
+        public string TunnelMode
+        {
+            get
+            {
+                return GetValueOrDefault<string>(TunnelModeKeyName, resourceManager.GetString("TunnelMode"));
+            }
+            set
+            {
+                if (AddOrUpdateValue(TunnelModeKeyName, value))
                 {
                     Save();
                 }
