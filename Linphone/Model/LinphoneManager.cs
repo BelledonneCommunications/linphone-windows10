@@ -1,15 +1,19 @@
 ﻿using Microsoft.Phone.Networking.Voip;
+using Linphone.BackEnd;
+using Linphone.BackEnd.OutOfProcess;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Linphone.Model
 {
-    public class LinphoneManager
+    public sealed class LinphoneManager
     {
         private static LinphoneManager singleton;
         public static LinphoneManager Instance
@@ -26,6 +30,18 @@ namespace Linphone.Model
         private List<CallLogs> _history;
         private bool BackgroundProcessConnected;
 
+        // An event that indicates that the UI process is no longer connected to the background process 
+        private EventWaitHandle uiDisconnectedEvent;
+
+        // A proxy to the server object in the VoIP background agent host process 
+        private Server server;
+
+        // A timespan representing fifteen seconds 
+        private static readonly TimeSpan fifteenSecs = new TimeSpan(0, 0, 15);
+
+        // A timespan representing an indefinite wait 
+        private static readonly TimeSpan indefiniteWait = new TimeSpan(0, 0, 0, 0, -1); 
+
         /// <summary>
         /// Starts and connects the LinphoneManager to the background process (linphonecore)
         /// </summary>
@@ -40,7 +56,7 @@ namespace Linphone.Model
             int backgroundProcessID;
             try
             {
-                //VoipBackgroundProcess.Launch(out backgroundProcessID);
+                VoipBackgroundProcess.Launch(out backgroundProcessID);
             }
             catch (Exception e)
             {
@@ -48,6 +64,36 @@ namespace Linphone.Model
                 throw;
             }
 
+            // Wait for the background process to become ready 
+            string backgroundProcessReadyEventName = Globals.GetBackgroundProcessReadyEventName((uint)backgroundProcessID);
+            using (EventWaitHandle backgroundProcessReadyEvent = new EventWaitHandle(initialState: false, mode: EventResetMode.ManualReset, name: backgroundProcessReadyEventName))
+            {
+                TimeSpan timeout = Debugger.IsAttached ? LinphoneManager.indefiniteWait : LinphoneManager.fifteenSecs;
+                if (!backgroundProcessReadyEvent.WaitOne(timeout))
+                {
+                    // We timed out - something is wrong 
+                    throw new InvalidOperationException(string.Format("The background process did not become ready in {0} milliseconds", timeout.Milliseconds));
+                }
+                else
+                {
+                    Debug.WriteLine("[App] Background process {0} is ready", backgroundProcessID);
+                }
+            }
+            // The background process is now ready. 
+            // It is possible that the background process now becomes "not ready" again, but the chances of this happening are slim, 
+            // and in that case, the following statement would fail - so, at this point, we don't explicitly guard against this condition. 
+
+            // Create an instance of the server in the background process. 
+            this.server = (Server)WindowsRuntimeMarshal.GetActivationFactory(typeof(Server)).ActivateInstance();
+
+            // Un-set an event that indicates that the UI process is disconnected from the background process. 
+            // The VoIP background process waits for this event to get set before shutting down. 
+            // This ensures that the VoIP background agent host process doesn't shut down while the UI process is connected to it. 
+            string uiDisconnectedEventName = Globals.GetUiDisconnectedEventName((uint)backgroundProcessID);
+            this.uiDisconnectedEvent = new EventWaitHandle(initialState: false, mode: EventResetMode.ManualReset, name: uiDisconnectedEventName);
+            this.uiDisconnectedEvent.Reset();
+
+            // The UI process is now connected to the background process 
             BackgroundProcessConnected = true;
             Debug.WriteLine("[LinphoneManager] Background process connected to interface");
         }
@@ -65,6 +111,18 @@ namespace Linphone.Model
 
             BackgroundProcessConnected = false;
             Debug.WriteLine("[LinphoneManager] Background process disconnected from interface");
+            
+            // From this point onwards, it is no longer safe to use any objects in the VoIP background process, 
+            // or for the VoIP background process to call back into this process. 
+            this.server = null;
+
+            // Lastly, set the event that indicates that the UI is no longer connected to the background process. 
+            if (this.uiDisconnectedEvent == null)
+                throw new InvalidOperationException("The ConnectUi method must be called before this method is called");
+
+            this.uiDisconnectedEvent.Set();
+            this.uiDisconnectedEvent.Dispose();
+            this.uiDisconnectedEvent = null; 
         }
 
         /// <summary>

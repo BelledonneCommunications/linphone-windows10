@@ -91,9 +91,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Agents\LinphoneCallInProgressAgent.cs" />
-    <Compile Include="Agents\LinphoneForegroundLifeTimeAgent.cs" />
-    <Compile Include="Agents\LinphoneScheduledAgent.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -328,7 +325,16 @@
       <HintPath>..\packages\WPtoolkit.4.2012.10.30\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Agents\Agents.csproj">
+      <Project>{27439D4F-29EF-48D7-8F2D-76F64BAAE175}</Project>
+      <Name>Agents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BackEnd\BackEnd.vcxproj">
+      <Project>{C8D75245-FFCF-4932-A228-C9CC8BB60B03}</Project>
+      <Name>BackEnd</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

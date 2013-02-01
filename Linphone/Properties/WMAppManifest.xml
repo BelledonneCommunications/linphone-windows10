@@ -44,6 +44,42 @@
     <Extensions>
       <Extension ExtensionName="LockScreen_Notification_IconCount" ConsumerID="{111DFF24-AA15-4A96-8006-2BFF8122084F}" TaskID="_default" />
     </Extensions>
+    <ActivatableClasses>
+      <InProcessServer>
+        <Path>Linphone.BackEnd.DLL</Path>
+        <ActivatableClass ActivatableClassId="Linphone.BackEnd.CallController" ThreadingModel="MTA" />
+        <ActivatableClass ActivatableClassId="Linphone.BackEnd.Globals" ThreadingModel="MTA" />
+      </InProcessServer>
+      <InProcessServer>
+        <Path>PhoneVoIPApp.BackEnd.DLL</Path>
+        <ActivatableClass ActivatableClassId="PhoneVoIPApp.BackEnd.CallController" ThreadingModel="MTA" />
+        <ActivatableClass ActivatableClassId="PhoneVoIPApp.BackEnd.Globals" ThreadingModel="MTA" />
+      </InProcessServer>
+      <OutOfProcessServer ServerName="Linphone.BackEnd">
+        <Path>Linphone.BackEnd.DLL</Path>
+        <Instancing>multipleInstances</Instancing>
+        <ActivatableClass ActivatableClassId="Linphone.BackEnd.OutOfProcess.Server" />
+      </OutOfProcessServer>
+      <OutOfProcessServer ServerName="PhoneVoIPApp.BackEnd">
+        <Path>PhoneVoIPApp.BackEnd.DLL</Path>
+        <Instancing>multipleInstances</Instancing>
+        <ActivatableClass ActivatableClassId="PhoneVoIPApp.BackEnd.OutOfProcess.Server" />
+      </OutOfProcessServer>
+      <ProxyStub ClassId="{06B50718-3528-3B66-BE76-E183AA80D4A5}">
+        <Path>PhoneVoIPApp.BackEndProxyStub.DLL</Path>
+        <Interface Name="PhoneVoIPApp.BackEnd.__ICallControllerPublicNonVirtuals" InterfaceId="{06B50718-3528-3B66-BE76-E183AA80D4A5}" />
+        <Interface Name="PhoneVoIPApp.BackEnd.__IGlobalsPublicNonVirtuals" InterfaceId="{C8AFE1A8-92FC-3783-9520-D6BBC507B24A}" />
+        <Interface Name="PhoneVoIPApp.BackEnd.__IGlobalsStatics" InterfaceId="{2C1E9C37-6827-38F7-857C-021642CA428B}" />
+        <Interface Name="PhoneVoIPApp.BackEnd.OutOfProcess.__IServerPublicNonVirtuals" InterfaceId="{7BF79491-56BE-375A-BC22-0058B158F01F}" />
+      </ProxyStub>
+      <ProxyStub ClassId="{C140594A-6BD4-3151-944E-28C955632D15}">
+        <Path>Linphone.BackEndProxyStub.DLL</Path>
+        <Interface Name="Linphone.BackEnd.__ICallControllerPublicNonVirtuals" InterfaceId="{C140594A-6BD4-3151-944E-28C955632D15}" />
+        <Interface Name="Linphone.BackEnd.__IGlobalsPublicNonVirtuals" InterfaceId="{74C65E76-06C7-38A6-9E0A-61E3739B7E1E}" />
+        <Interface Name="Linphone.BackEnd.__IGlobalsStatics" InterfaceId="{CE34112C-C406-3477-BBB4-7E1F99EE776C}" />
+        <Interface Name="Linphone.BackEnd.OutOfProcess.__IServerPublicNonVirtuals" InterfaceId="{EBDEF036-447F-3D47-B33F-715068ACD4CC}" />
+      </ProxyStub>
+    </ActivatableClasses>
     <ScreenResolutions>
       <ScreenResolution Name="ID_RESOLUTION_WVGA" />
       <ScreenResolution Name="ID_RESOLUTION_WXGA" />

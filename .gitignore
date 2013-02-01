@@ -1,3 +1,5 @@
-Linphone/Bin/
-Linphone/obj/
-Linphone/*/Thumbs.db
+*/Bin/
+*/obj/
+*/*/Thumbs.db
+*/ARM/
+*/x86/
