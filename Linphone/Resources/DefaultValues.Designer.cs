@@ -61,20 +61,29 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 3600.
+        /// </summary>
+        internal static string KeepAlive {
+            get {
+                return ResourceManager.GetString("KeepAlive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to false.
         /// </summary>
-        internal static string RFC2833Default {
+        internal static string RFC2833 {
             get {
-                return ResourceManager.GetString("RFC2833Default", resourceCulture);
+                return ResourceManager.GetString("RFC2833", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to UDP.
         /// </summary>
-        internal static string TransportDefault {
+        internal static string Transport {
             get {
-                return ResourceManager.GetString("TransportDefault", resourceCulture);
+                return ResourceManager.GetString("Transport", resourceCulture);
             }
         }
         

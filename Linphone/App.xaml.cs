@@ -9,6 +9,9 @@ using Microsoft.Phone.Shell;
 using Linphone.Resources;
 using System.Windows.Media;
 using Linphone.Model;
+using Microsoft.Phone.Notification;
+using Microsoft.Phone.Scheduler;
+using Microsoft.Phone.Networking.Voip;
 
 namespace Linphone
 {
@@ -19,6 +22,16 @@ namespace Linphone
         /// </summary>
         /// <returns>The root frame of the Phone Application.</returns>
         public static PhoneApplicationFrame RootFrame { get; private set; }
+
+        /// <summary> 
+        /// The push channel URI for this application 
+        /// </summary> 
+        public Uri PushChannelUri { get; private set; }
+
+        /// <summary> 
+        /// An event that is raised when the push channel URI changes 
+        /// </summary> 
+        public event EventHandler<Uri> PushChannelUriChanged; 
 
         /// <summary>
         /// Constructor for the Application object.
@@ -36,6 +49,15 @@ namespace Linphone
 
             // Language display initialization
             InitializeLanguage();
+
+            // Initialize the push channel 
+            InitPushChannel();
+
+            // Initialize the task to listen to incoming call notifications on the push channel 
+            InitHttpNotificationTask();
+
+            // Initalize the task to perform periodic maintenance 
+            InitKeepAliveTask(); 
 
             // Show graphics profiling information while debugging.
             if (Debugger.IsAttached)
@@ -89,6 +111,112 @@ namespace Linphone
         {
             Debug.WriteLine("[Linphone] Closing");
             LinphoneManager.Instance.DisconnectBackgroundProcessFromInterface();
+        }
+
+        private const string pushChannelName = "Linphone.PushChannel";
+
+        private void InitPushChannel()
+        {
+            // Try to find the push channel. 
+            HttpNotificationChannel httpChannel = HttpNotificationChannel.Find(pushChannelName);
+
+            // If the channel was not found, then create a new connection to the push service. 
+            if (httpChannel == null)
+            {
+                // We need to create a new channel. 
+                httpChannel = new HttpNotificationChannel(App.pushChannelName);
+                httpChannel.Open();
+            }
+            else
+            {
+                // This is an existing channel. 
+                PushChannelUri = httpChannel.ChannelUri;
+
+                Debug.WriteLine("[Linphone] Existing Push channel URI is {0}", PushChannelUri);
+
+                //  Let listeners know that we have a push channel URI 
+                if (PushChannelUriChanged != null)
+                {
+                    PushChannelUriChanged(this, PushChannelUri);
+                }
+
+                // TODO Add pushchanneluri to contact header
+            }
+
+            httpChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
+            httpChannel.ErrorOccurred += new EventHandler<NotificationChannelErrorEventArgs>(PushChannel_ErrorOccurred);
+        }
+
+        private void PushChannel_ChannelUriUpdated(object sender, NotificationChannelUriEventArgs e)
+        {
+            Debug.WriteLine("[Linphone] New Push channel URI is {0}", e.ChannelUri);
+
+            // Store the push channel URI 
+            this.PushChannelUri = e.ChannelUri;
+
+            //  Let listeners know that we have a push channel URI 
+            if (this.PushChannelUriChanged != null)
+            {
+                this.PushChannelUriChanged(this, this.PushChannelUri);
+            }
+
+            // TODO Change pushchanneluri in contact header
+        }
+
+        private void PushChannel_ErrorOccurred(object sender, NotificationChannelErrorEventArgs e)
+        {
+
+        }
+
+        private const string incomingCallTaskName = "Linphone.IncomingCallTask";
+
+        public void InitHttpNotificationTask()
+        {
+            // Obtain a reference to the existing task, if any. 
+            VoipHttpIncomingCallTask incomingCallTask = ScheduledActionService.Find(incomingCallTaskName) as VoipHttpIncomingCallTask;
+            if (incomingCallTask != null)
+            {
+                if (incomingCallTask.IsScheduled == false)
+                {
+                    // The incoming call task has been unscheduled due to OOM or throwing an unhandled exception twice in a row 
+                    ScheduledActionService.Remove(incomingCallTaskName);
+                }
+                else
+                {
+                    // The incoming call task has been scheduled and is still scheduled so there is nothing more to do 
+                    return;
+                }
+            }
+
+            incomingCallTask = new VoipHttpIncomingCallTask(incomingCallTaskName, pushChannelName);
+            incomingCallTask.Description = "Incoming call task";
+            ScheduledActionService.Add(incomingCallTask);
+        }
+
+        private const string keepAliveTaskName = "Linphone.KeepAliveTask";
+
+        public void InitKeepAliveTask()
+        {
+            // Obtain a reference to the existing task, if any. 
+            VoipKeepAliveTask keepAliveTask = ScheduledActionService.Find(keepAliveTaskName) as VoipKeepAliveTask;
+            if (keepAliveTask != null)
+            {
+                if (keepAliveTask.IsScheduled == false)
+                {
+                    // The keep-alive task has been unscheduled due to OOM or throwing an unhandled exception twice in a row 
+                    ScheduledActionService.Remove(keepAliveTaskName);
+                }
+                else
+                {
+                    // The keep-alive task has been scheduled and is still scheduled so there is nothing more to do 
+                    return;
+                }
+            }
+
+            keepAliveTask = new VoipKeepAliveTask(keepAliveTaskName);
+            keepAliveTask.Interval = new TimeSpan(10000000 * Int32.Parse(DefaultValues.KeepAlive));
+            keepAliveTask.Description = "keep-alive task";
+            ScheduledActionService.Add(keepAliveTask);
         }
 
         // Code to execute if a navigation fails

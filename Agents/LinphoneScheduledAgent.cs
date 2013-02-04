@@ -3,17 +3,16 @@ using Microsoft.Phone.Scheduler;
 using Linphone.BackEnd;
 using Linphone.BackEnd.OutOfProcess;
 using System.Diagnostics;
+using System.IO;
+using System.Xml.Serialization;
+using System;
 
-namespace Linphone
+namespace Linphone.Agents
 {
-    class LinphoneScheduledAgent : ScheduledTaskAgent
+    public class LinphoneScheduledAgent : ScheduledTaskAgent
     {
         // Indicates if this agent instance is handling an incoming call or not
         private bool isIncomingCallAgent;
-
-        // Strings used in tracing
-        private const string keepAliveAgentId = "KeepAliveAgent";
-        private const string incomingCallAgentId = "IncomingCallAgent";
 
         public LinphoneScheduledAgent()
         {
@@ -29,14 +28,37 @@ namespace Linphone
             VoipHttpIncomingCallTask incomingCallTask = task as VoipHttpIncomingCallTask;
             if (incomingCallTask != null)
             {
-                isIncomingCallAgent = true;
+                this.isIncomingCallAgent = true;
+
+                String message = System.Text.Encoding.UTF8.GetString(incomingCallTask.MessageBody, 0, incomingCallTask.MessageBody.Length);
+                Debug.WriteLine("[LinphoneScheduledAgent] Received VoIP Incoming Call task with body {0}", message);
+                //TODO Parse the the incoming push notification message 
+                String callerName = "", callerNumber = "";
+                Debug.WriteLine("[{0}] Incoming call from caller {1}, number {2}", "KeepAliveAgent", callerName, callerNumber);
+
+                // Initiate incoming call processing 
+                // If you want to pass in additional information such as pushNotification.Number, you can 
+                bool incomingCallProcessingStarted = BackEnd.Globals.Instance.CallController.OnIncomingCallReceived(callerName, callerNumber, this.OnIncomingCallDialogDismissed);
+
+                if (!incomingCallProcessingStarted)
+                {
+                    // For some reasons, the incoming call processing was not started. 
+                    base.NotifyComplete();
+                    return;
+                }
             }
             else
             {
                 VoipKeepAliveTask keepAliveTask = task as VoipKeepAliveTask;
                 if (keepAliveTask != null)
                 {
-                    isIncomingCallAgent = false;
+                    this.isIncomingCallAgent = false;
+
+                    base.NotifyComplete();
+                }
+                else
+                {
+                    throw new InvalidOperationException(string.Format("Unknown scheduled task type {0}", task.GetType()));
                 }
             }
         }
@@ -50,7 +72,7 @@ namespace Linphone
 
         protected override void OnCancel()
         {
-            Debug.WriteLine("[{0}] Cancel requested.", this.isIncomingCallAgent ? LinphoneScheduledAgent.incomingCallAgentId : LinphoneScheduledAgent.keepAliveAgentId);
+            Debug.WriteLine("[{0}] Cancel requested.", this.isIncomingCallAgent ? "IncomingCallAgent" : "KeepAliveAgent");
 
             base.NotifyComplete();
         }

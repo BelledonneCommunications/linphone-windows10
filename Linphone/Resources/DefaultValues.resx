@@ -117,10 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="RFC2833Default" xml:space="preserve">
+  <data name="KeepAlive" xml:space="preserve">
+    <value>3600</value>
+    <comment>Seconds for keep-alive task</comment>
+  </data>
+  <data name="RFC2833" xml:space="preserve">
     <value>false</value>
   </data>
-  <data name="TransportDefault" xml:space="preserve">
+  <data name="Transport" xml:space="preserve">
     <value>UDP</value>
   </data>
   <data name="TunnelMode" xml:space="preserve">

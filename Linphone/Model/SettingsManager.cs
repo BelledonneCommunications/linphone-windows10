@@ -207,7 +207,7 @@ namespace Linphone.Model
         {
             get
             {
-                return GetValueOrDefault<string>(TransportSettingKeyName, resourceManager.GetString("TransportDefault"));
+                return GetValueOrDefault<string>(TransportSettingKeyName, resourceManager.GetString("Transport"));
             }
             set
             {
@@ -222,7 +222,7 @@ namespace Linphone.Model
         {
             get
             {
-                return GetValueOrDefault<bool?>(SendDTFMsRFC2833KeyName, Boolean.Parse(resourceManager.GetString("RFC2833Default")));
+                return GetValueOrDefault<bool?>(SendDTFMsRFC2833KeyName, Boolean.Parse(resourceManager.GetString("RFC2833")));
             }
             set
             {

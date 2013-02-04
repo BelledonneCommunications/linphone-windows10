@@ -76,7 +76,7 @@ namespace Linphone.Model
                 }
                 else
                 {
-                    Debug.WriteLine("[App] Background process {0} is ready", backgroundProcessID);
+                    Debug.WriteLine("[LinphoneManager] Background process {0} is ready", backgroundProcessID);
                 }
             }
             // The background process is now ready. 

@@ -321,6 +321,8 @@
     <Content Include="Assets\Numpad\numpad_two_over.png" />
     <Content Include="Assets\Numpad\numpad_zero_default.png" />
     <Content Include="Assets\Numpad\numpad_zero_over.png" />
+    <Content Include="Assets\Sounds\Ringtone.wma" />
+    <Content Include="Assets\unknown.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
@@ -342,6 +344,7 @@
       <Name>BackEnd</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
