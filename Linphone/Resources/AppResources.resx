@@ -263,4 +263,25 @@ http://www.linphone.org/m/help
   <data name="TunnelServer" xml:space="preserve">
     <value>Tunnel server</value>
   </data>
+  <data name="NetworkMenu" xml:space="preserve">
+    <value>Network</value>
+  </data>
+  <data name="AccountMenu" xml:space="preserve">
+    <value>SIP account</value>
+  </data>
+  <data name="SIPDomain" xml:space="preserve">
+    <value>Domain</value>
+  </data>
+  <data name="SIPOutboundProxy" xml:space="preserve">
+    <value>Outbound proxy</value>
+  </data>
+  <data name="SIPPassword" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="SIPProxy" xml:space="preserve">
+    <value>Proxy</value>
+  </data>
+  <data name="SIPUsername" xml:space="preserve">
+    <value>Username</value>
+  </data>
 </root>

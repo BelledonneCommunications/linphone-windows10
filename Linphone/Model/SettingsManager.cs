@@ -17,6 +17,8 @@ namespace Linphone.Model
         const string UsernameKeyName = "Username";
         const string PasswordKeyName = "Password";
         const string DomainKeyName = "Domain";
+        const string ProxyKeyName = "Proxy";
+        const string OutboundProxyKeyName = "OutboundProxy";
 
         const string DebugSettingKeyName = "Debug";
         const string TransportSettingKeyName = "Transport";
@@ -109,6 +111,7 @@ namespace Linphone.Model
             settings.Save();
         }
 
+        #region SIP Account
         public string Username
         {
             get
@@ -153,6 +156,37 @@ namespace Linphone.Model
                 }
             }
         }
+
+        public string Proxy
+        {
+            get
+            {
+                return GetValueOrDefault<string>(ProxyKeyName, "");
+            }
+            set
+            {
+                if (AddOrUpdateValue(ProxyKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+
+        public bool? OutboundProxy
+        {
+            get
+            {
+                return GetValueOrDefault<bool?>(OutboundProxyKeyName, false);
+            }
+            set
+            {
+                if (AddOrUpdateValue(OutboundProxyKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+        #endregion
 
         public bool? DebugEnabled
         {

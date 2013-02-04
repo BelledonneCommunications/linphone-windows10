@@ -7,22 +7,25 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using Linphone.Model;
 using Linphone.Resources;
-using System.Globalization;
-using System.Resources;
+using Linphone.Model;
 
 namespace Linphone.Views
 {
-    public partial class Settings : PhoneApplicationPage
+    public partial class AccountSettings : PhoneApplicationPage
     {
         private SettingsManager _appSettings = new SettingsManager();
 
-        public Settings()
+        public AccountSettings()
         {
             InitializeComponent();
             BuildLocalizedApplicationBar();
-            Debug.IsChecked = _appSettings.DebugEnabled;
+
+            Username.Text = _appSettings.Username;
+            Password.Password = _appSettings.Password;
+            Domain.Text = _appSettings.Domain;
+            Proxy.Text = _appSettings.Proxy;
+            OutboundProxy.IsChecked = _appSettings.OutboundProxy;
         }
 
         private void cancel_Click_1(object sender, EventArgs e)
@@ -32,24 +35,13 @@ namespace Linphone.Views
 
         private void save_Click_1(object sender, EventArgs e)
         {
-            _appSettings.DebugEnabled = Debug.IsChecked;
+            _appSettings.Username = Username.Text;
+            _appSettings.Password = Password.Password;
+            _appSettings.Domain = Domain.Text;
+            _appSettings.Proxy = Domain.Text;
+            _appSettings.OutboundProxy = OutboundProxy.IsChecked;
 
             NavigationService.GoBack();
-        }
-
-        private void account_Click_1(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/Views/AccountSettings.xaml", UriKind.RelativeOrAbsolute));
-        }
-
-        private void codecs_Click_1(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/Views/CodecsSettings.xaml", UriKind.RelativeOrAbsolute));
-        }
-
-        private void advanced_Click_1(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/Views/AdvancedSettings.xaml", UriKind.RelativeOrAbsolute));
         }
 
         private void BuildLocalizedApplicationBar()
@@ -65,11 +57,6 @@ namespace Linphone.Views
             appBarCancel.Text = AppResources.CancelChanges;
             ApplicationBar.Buttons.Add(appBarCancel);
             appBarCancel.Click += cancel_Click_1;
-        }
-
-        private async void LockScreenSettings_Click_1(object sender, RoutedEventArgs e)
-        {
-            var op = await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-settings-lock:"));
         }
     }
 }

@@ -64,9 +64,6 @@ namespace Linphone
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
             Debug.WriteLine("[Linphone] Launching");
-
-            // Call this method below at the beginning of this handler,
-            // to let the background process that the UI is entering the foreground.
             LinphoneManager.Instance.ConnectBackgroundProcessToInterface();
         }
 
@@ -75,9 +72,6 @@ namespace Linphone
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
             Debug.WriteLine("[Linphone] Activated");
-
-            // Call this method below at the beginning of this handler,
-            // to let the background process that the UI is entering the foreground.
             LinphoneManager.Instance.ConnectBackgroundProcessToInterface();
         }
 
@@ -85,12 +79,16 @@ namespace Linphone
         // This code will not execute when the application is closing
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
+            Debug.WriteLine("[Linphone] Deactivated");
+            LinphoneManager.Instance.DisconnectBackgroundProcessFromInterface();
         }
 
         // Code to execute when the application is closing (eg, user hit Back)
         // This code will not execute when the application is deactivated
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
+            Debug.WriteLine("[Linphone] Closing");
+            LinphoneManager.Instance.DisconnectBackgroundProcessFromInterface();
         }
 
         // Code to execute if a navigation fails

@@ -18,42 +18,52 @@
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <!--Pivot Control-->
         <phone:Pivot Title="{Binding Path=LocalizedResources.AdvancedSettingsMenu, Source={StaticResource LocalizedStrings}}">
-            <!--Pivot item one-->
-            <phone:PivotItem Header="{Binding Path=LocalizedResources.TunnelMenu, Source={StaticResource LocalizedStrings}}">
-                <StackPanel Orientation="Vertical">
-                    <TextBlock
-                        Text="{Binding Path=LocalizedResources.TunnelServer, Source={StaticResource LocalizedStrings}}" />
-                    
-                    <TextBox
-                        x:Name="tunnelServer"
-                        IsEnabled="True"
-                        IsReadOnly="False">
-                        <TextBox.InputScope>
-                            <InputScope>
-                                <InputScopeName NameValue="Url" />
-                            </InputScope>
-                        </TextBox.InputScope>
-                    </TextBox>
+            <phone:PivotItem Header="{Binding Path=LocalizedResources.NetworkMenu, Source={StaticResource LocalizedStrings}}">
+                <ScrollViewer>
+                    <StackPanel Orientation="Vertical">
+                        <toolkit:ListPicker 
+                            Grid.Row="1"
+                            x:Name="Transport"
+                            Header="{Binding Path=LocalizedResources.TransportSetting, Source={StaticResource LocalizedStrings}}">
+                        </toolkit:ListPicker>
 
-                    <TextBlock
-                        Text="{Binding Path=LocalizedResources.TunnelPort, Source={StaticResource LocalizedStrings}}" />
+                        <toolkit:ListPicker 
+                            Margin="12,20,0,0"
+                            x:Name="tunnelMode"
+                            Header="{Binding Path=LocalizedResources.TunnelMode, Source={StaticResource LocalizedStrings}}">
+                        </toolkit:ListPicker>
+                        
+                        <TextBlock
+                            Margin="12,20,0,0"
+                            Text="{Binding Path=LocalizedResources.TunnelServer, Source={StaticResource LocalizedStrings}}" />
 
-                    <TextBox
-                        x:Name="tunnelPort"
-                        IsEnabled="True"
-                        IsReadOnly="False">
-                        <TextBox.InputScope>
-                            <InputScope>
-                                <InputScopeName NameValue="Number" />
-                            </InputScope>
-                        </TextBox.InputScope>
-                    </TextBox>
+                        <TextBox
+                            x:Name="tunnelServer"
+                            IsEnabled="True"
+                            IsReadOnly="False">
+                            <TextBox.InputScope>
+                                <InputScope>
+                                    <InputScopeName NameValue="Url" />
+                                </InputScope>
+                            </TextBox.InputScope>
+                        </TextBox>
 
-                    <toolkit:ListPicker 
-                        x:Name="tunnelMode"
-                        Header="{Binding Path=LocalizedResources.TunnelMode, Source={StaticResource LocalizedStrings}}">
-                    </toolkit:ListPicker>
-                </StackPanel>
+                        <TextBlock
+                            Margin="12,0,0,0"
+                            Text="{Binding Path=LocalizedResources.TunnelPort, Source={StaticResource LocalizedStrings}}" />
+
+                        <TextBox
+                            x:Name="tunnelPort"
+                            IsEnabled="True"
+                            IsReadOnly="False">
+                            <TextBox.InputScope>
+                                <InputScope>
+                                    <InputScopeName NameValue="Number" />
+                                </InputScope>
+                            </TextBox.InputScope>
+                        </TextBox>
+                    </StackPanel>
+                </ScrollViewer>
             </phone:PivotItem>
 
             <!--Pivot item two-->

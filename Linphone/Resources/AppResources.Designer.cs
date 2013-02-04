@@ -85,6 +85,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SIP account.
+        /// </summary>
+        public static string AccountMenu {
+            get {
+                return ResourceManager.GetString("AccountMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Number or address.
         /// </summary>
         public static string AddressHint {
@@ -283,6 +292,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Network.
+        /// </summary>
+        public static string NetworkMenu {
+            get {
+                return ResourceManager.GetString("NetworkMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PCMA.
         /// </summary>
         public static string PCMACodec {
@@ -351,6 +369,51 @@ namespace Linphone.Resources {
         public static string SILK16Codec {
             get {
                 return ResourceManager.GetString("SILK16Codec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Domain.
+        /// </summary>
+        public static string SIPDomain {
+            get {
+                return ResourceManager.GetString("SIPDomain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Outbound proxy.
+        /// </summary>
+        public static string SIPOutboundProxy {
+            get {
+                return ResourceManager.GetString("SIPOutboundProxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string SIPPassword {
+            get {
+                return ResourceManager.GetString("SIPPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proxy.
+        /// </summary>
+        public static string SIPProxy {
+            get {
+                return ResourceManager.GetString("SIPProxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username.
+        /// </summary>
+        public static string SIPUsername {
+            get {
+                return ResourceManager.GetString("SIPUsername", resourceCulture);
             }
         }
         

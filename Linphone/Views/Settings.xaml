@@ -28,48 +28,51 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-            </Grid.RowDefinitions>
+        <ScrollViewer x:Name="ContentPanel" Grid.Row="1">
+            <Grid Margin="12,0,12,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
             
-            <toolkit:ToggleSwitch  
-                Grid.Row="0"
-                x:Name="Debug" 
-                Header="{Binding Path=LocalizedResources.DebugSetting, Source={StaticResource LocalizedStrings}}">
-            </toolkit:ToggleSwitch>
+                <toolkit:ToggleSwitch  
+                    Grid.Row="0"
+                    x:Name="Debug" 
+                    Header="{Binding Path=LocalizedResources.DebugSetting, Source={StaticResource LocalizedStrings}}">
+                </toolkit:ToggleSwitch>
+                
+                <Button
+                    Grid.Row="1"
+                    x:Name="Account"
+                    Click="account_Click_1"
+                    Margin="0,30,0,0"
+                    Content="{Binding Path=LocalizedResources.AccountMenu, Source={StaticResource LocalizedStrings}}" />
             
-            <toolkit:ListPicker 
-                Grid.Row="1"
-                x:Name="Transport"
-                Header="{Binding Path=LocalizedResources.TransportSetting, Source={StaticResource LocalizedStrings}}">
-            </toolkit:ListPicker>
-            
-            <Button
-                Grid.Row="2"
-                x:Name="Codecs"
-                Click="codecs_Click_1"
-                Margin="0,30,0,0"
-                Content="{Binding Path=LocalizedResources.CodecsMenu, Source={StaticResource LocalizedStrings}}" />
+                <Button
+                    Grid.Row="2"
+                    x:Name="Codecs"
+                    Click="codecs_Click_1"
+                    Margin="0,30,0,0"
+                    Content="{Binding Path=LocalizedResources.CodecsMenu, Source={StaticResource LocalizedStrings}}" />
 
-            <Button
-                Grid.Row="3"
-                x:Name="Advanced"
-                Click="advanced_Click_1"
-                Margin="0,30,0,0"
-                Content="{Binding Path=LocalizedResources.AdvancedSettingsMenu, Source={StaticResource LocalizedStrings}}" />
+                <Button
+                    Grid.Row="3"
+                    x:Name="Advanced"
+                    Click="advanced_Click_1"
+                    Margin="0,30,0,0"
+                    Content="{Binding Path=LocalizedResources.AdvancedSettingsMenu, Source={StaticResource LocalizedStrings}}" />
 
-            <Button
-                Grid.Row="4"
-                Click="LockScreenSettings_Click_1"
-                x:Name="LockScreenSettings"
-                Margin="0,30,0,0"
-                Content="{Binding Path=LocalizedResources.LockScreenSettings, Source={StaticResource LocalizedStrings}}" />
-        </Grid>
+                <Button
+                    Grid.Row="4"
+                    Click="LockScreenSettings_Click_1"
+                    x:Name="LockScreenSettings"
+                    Margin="0,30,0,0"
+                    Content="{Binding Path=LocalizedResources.LockScreenSettings, Source={StaticResource LocalizedStrings}}" />
+            </Grid>
+        </ScrollViewer>
     </Grid>
 
 </phone:PhoneApplicationPage>

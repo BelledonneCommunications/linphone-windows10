@@ -34,6 +34,14 @@ namespace Linphone.Views
             tunnelMode.SelectedItem = _appSettings.TunnelMode;
             tunnelPort.Text = _appSettings.TunnelPort;
             tunnelServer.Text = _appSettings.TunnelServer;
+
+            List<string> transports = new List<string>
+            {
+                AppResources.TransportUDP,
+                AppResources.TransportTCP
+            };
+            Transport.ItemsSource = transports;
+            Transport.SelectedItem = _appSettings.Transport;
         }
 
         private void cancel_Click_1(object sender, EventArgs e)
@@ -47,6 +55,7 @@ namespace Linphone.Views
             _appSettings.TunnelMode = tunnelMode.SelectedItem.ToString();
             _appSettings.TunnelServer = tunnelServer.Text;
             _appSettings.TunnelPort = tunnelPort.Text;
+            _appSettings.Transport = Transport.SelectedItem.ToString();
 
             NavigationService.GoBack();
         }

@@ -81,14 +81,6 @@ void Globals::StartServer(const Platform::Array<Platform::String^>^ outOfProcSer
     this->started = true;
 }
 
-void Globals::DoPeriodicKeepAlive()
-{
-    // Make sure only one API call is in progress at a time
-    std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-
-    // TODO: Do stuff here - refresh tokens, get new certs from server, etc.
-}
-
 unsigned int Globals::GetCurrentProcessId()
 {
     return ::GetCurrentProcessId();

@@ -18,9 +18,6 @@ namespace Linphone
             // Start the out-of-process WinRT server, so that the UI process can instantiate WinRT objects in this process.
             void StartServer(const Platform::Array<Platform::String^>^ outOfProcServerClassNames);
 
-            // Do some app-specific periodic tasks, to let the remote server know that this endpoint is still alive.
-            void DoPeriodicKeepAlive();
-
             // Get the process id of the current process
             static unsigned int GetCurrentProcessId();
 
