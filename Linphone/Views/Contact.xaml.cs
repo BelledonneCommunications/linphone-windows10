@@ -27,6 +27,11 @@ namespace Linphone.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            while (actions.Children.Count > 0)
+            {
+                actions.Children.RemoveAt(0);
+            }
+
             contact = ContactManager.Instance.TempContact;
             contactName.Text = contact.DisplayName;
 
