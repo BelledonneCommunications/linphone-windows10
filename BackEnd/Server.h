@@ -13,17 +13,14 @@ namespace Linphone
             public ref class Server sealed
             {
             public:
-                // Constructor
                 Server()
                 {
                 }
 
-                // Destructor
                 virtual ~Server()
                 {
                 }
 
-                // Called by the UI process to get the call controller object
                 property CallController^ CallController
                 {
                     Linphone::BackEnd::CallController^ get()
@@ -32,7 +29,21 @@ namespace Linphone
                     };
                 }
 
-                // Add methods and properties to get other objects here, as required.
+				property LinphoneCoreFactory^ LinphoneCoreFactory
+                {
+                    Linphone::BackEnd::LinphoneCoreFactory^ get()
+                    {
+                        return Globals::Instance->LinphoneCoreFactory;
+                    };
+                }
+
+                property LinphoneCore^ LinphoneCore
+                {
+                    Linphone::BackEnd::LinphoneCore^ get()
+                    {
+                        return Globals::Instance->LinphoneCore;
+                    };
+                }
             };
         }
     }

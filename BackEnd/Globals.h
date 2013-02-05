@@ -1,6 +1,7 @@
 #pragma once
 
 #include <roapi.h>
+#include "LinphoneCoreFactory.h"
 
 namespace Linphone
 {
@@ -8,6 +9,8 @@ namespace Linphone
     {
         // Forward declarations
         ref class CallController;
+		ref class LinphoneCoreFactory;
+		ref class LinphoneCore;
         
         // A singleton container that is used to hold other global singletons and background process-wide static state.
         // Another purpose of this class is to start the out-of-process WinRT server, so that the UI process
@@ -37,6 +40,16 @@ namespace Linphone
             property Linphone::BackEnd::CallController^ CallController
             {
                 Linphone::BackEnd::CallController^ get();
+            }
+
+			property Linphone::BackEnd::LinphoneCoreFactory^ LinphoneCoreFactory
+            {
+                Linphone::BackEnd::LinphoneCoreFactory^ get();
+            }
+
+			property Linphone::BackEnd::LinphoneCore^ LinphoneCore
+            {
+                Linphone::BackEnd::LinphoneCore^ get();
             }
 
         private:
@@ -72,6 +85,8 @@ namespace Linphone
 
             // The call controller object
             Linphone::BackEnd::CallController^ callController;
+
+			Linphone::BackEnd::LinphoneCoreFactory^ linphoneCoreFactory;
         };
     }
 }

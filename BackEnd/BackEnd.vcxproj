@@ -118,12 +118,18 @@
     <ClInclude Include="ApiLock.h" />
     <ClInclude Include="CallController.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="LinphoneCoreFactory.h" />
+    <ClInclude Include="LinphoneAuthInfo.h" />
+    <ClInclude Include="LinphoneCore.h" />
+    <ClInclude Include="LinphoneProxyConfig.h" />
     <ClInclude Include="Server.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ApiLock.cpp" />
     <ClCompile Include="CallController.cpp" />
     <ClCompile Include="Globals.cpp" />
+    <ClCompile Include="LinphoneCore.cpp" />
+    <ClCompile Include="LinphoneCoreFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OopServerRegistrationHelper.exe">

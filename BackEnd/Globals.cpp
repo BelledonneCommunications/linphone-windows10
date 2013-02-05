@@ -140,10 +140,32 @@ CallController^ Globals::CallController::get()
     return this->callController;
 }
 
+LinphoneCoreFactory^ Globals::LinphoneCoreFactory::get()
+{
+	if (this->linphoneCoreFactory == nullptr)
+    {
+        // Make sure only one API call is in progress at a time
+        std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
+        if (this->linphoneCoreFactory == nullptr)
+        {
+            this->linphoneCoreFactory = ref new Linphone::BackEnd::LinphoneCoreFactory();
+        }
+    }
+
+	return this->linphoneCoreFactory;
+}
+
+LinphoneCore^ Globals::LinphoneCore::get()
+{
+	return this->linphoneCoreFactory->LinphoneCore;
+}
+
 Globals::Globals() :
     started(false),
     serverRegistrationCookie(NULL),
     callController(nullptr),
+	linphoneCoreFactory(nullptr),
     noOtherBackgroundProcessEvent(NULL),
     backgroundReadyEvent(NULL)
 {
