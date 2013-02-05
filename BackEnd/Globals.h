@@ -1,7 +1,6 @@
 #pragma once
 
 #include <roapi.h>
-#include "LinphoneCoreFactory.h"
 
 namespace Linphone
 {

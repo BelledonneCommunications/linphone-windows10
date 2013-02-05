@@ -53,6 +53,7 @@ namespace Linphone.Agents
                 if (keepAliveTask != null)
                 {
                     this.isIncomingCallAgent = false;
+                    Debug.WriteLine("[LinphoneSchedulerAgent] Calling NotifyComplete");
 
                     base.NotifyComplete();
                 }

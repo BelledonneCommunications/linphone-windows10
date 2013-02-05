@@ -76,30 +76,28 @@
       <SubSystem>Console</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <AdditionalDependencies>windowsphonecore.lib;runtimeobject.lib;PhoneAudioSes.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>ole32.lib</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>ole32.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateWindowsMetadata Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</GenerateWindowsMetadata>
       <GenerateWindowsMetadata Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">true</GenerateWindowsMetadata>
     </Link>
     <CustomBuildStep>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-        pushd "$(OutDir)"
-        WinMdIdl.exe "$(OutDir)$(RootNamespace).winmd"
-        MIdl.exe /env $(MidlEnv) /winrt /ns_prefix /metadata_dir "$(FrameworkSdkDir)Windows Metadata" /out "$(SolutionDir)$(ProjectName)ProxyStub" "$(OutDir)$(RootNamespace).idl"
-        MIdl.exe /env $(MidlEnv) /winrt /ns_prefix /metadata_dir "$(FrameworkSdkDir)Windows Metadata" /out "$(SolutionDir)$(ProjectName)ProxyStub" "$(OutDir)$(RootNamespace).OutOfProcess.idl"
-        "$(ProjectDir)OopServerRegistrationHelper.exe" /winmd:"$(OutDir)$(RootNamespace).winmd" /dll_name:$(TargetName) /namespace:$(RootNamespace).OutOfProcess /app_manifest:"$(SolutionDir)Linphone\Properties\WMAppManifest.xml" /helper_dir:"$(SolutionDir)Agents"
-        popd</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">pushd "$(OutDir)"
+WinMdIdl.exe "$(OutDir)$(RootNamespace).winmd"
+MIdl.exe /env $(MidlEnv) /winrt /ns_prefix /metadata_dir "$(FrameworkSdkDir)Windows Metadata" /out "$(SolutionDir)$(ProjectName)ProxyStub" "$(OutDir)$(RootNamespace).idl"
+MIdl.exe /env $(MidlEnv) /winrt /ns_prefix /metadata_dir "$(FrameworkSdkDir)Windows Metadata" /out "$(SolutionDir)$(ProjectName)ProxyStub" "$(OutDir)$(RootNamespace).OutOfProcess.idl"
+"$(ProjectDir)OopServerRegistrationHelper.exe" /winmd:"$(OutDir)$(RootNamespace).winmd" /dll_name:$(TargetName) /namespace:$(RootNamespace).OutOfProcess /app_manifest:"$(SolutionDir)Linphone\Properties\WMAppManifest.xml" /helper_dir:"$(SolutionDir)Agents"
+popd</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">$(OutDir)$(RootNamespace).idl;$(OutDir)$(RootNamespace).OutOfProcess.idl;$(SolutionDir)$(ProjectName)ProxyStub\dlldata.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace)_i.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace)_p.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).h;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).OutOfProcess.h;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).OutOfProcess_i.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).OutOfProcess_p.c;$(SolutionDir)Agents\RegistrationHelper.cs;%(Outputs)</Outputs>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
-        pushd "$(OutDir)"
-        WinMdIdl.exe "$(OutDir)$(RootNamespace).winmd"
-        MIdl.exe /env $(MidlEnv) /winrt /ns_prefix /metadata_dir "$(FrameworkSdkDir)Windows Metadata" /out "$(SolutionDir)$(ProjectName)ProxyStub" "$(OutDir)$(RootNamespace).idl"
-        MIdl.exe /env $(MidlEnv) /winrt /ns_prefix /metadata_dir "$(FrameworkSdkDir)Windows Metadata" /out "$(SolutionDir)$(ProjectName)ProxyStub" "$(OutDir)$(RootNamespace).OutOfProcess.idl"
-        "$(ProjectDir)OopServerRegistrationHelper.exe" /winmd:"$(OutDir)$(RootNamespace).winmd" /dll_name:$(TargetName) /namespace:$(RootNamespace).OutOfProcess /app_manifest:"$(SolutionDir)Linphone\Properties\WMAppManifest.xml" /helper_dir:"$(SolutionDir)Agents"
-        popd</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">pushd "$(OutDir)"
+WinMdIdl.exe "$(OutDir)$(RootNamespace).winmd"
+MIdl.exe /env $(MidlEnv) /winrt /ns_prefix /metadata_dir "$(FrameworkSdkDir)Windows Metadata" /out "$(SolutionDir)$(ProjectName)ProxyStub" "$(OutDir)$(RootNamespace).idl"
+MIdl.exe /env $(MidlEnv) /winrt /ns_prefix /metadata_dir "$(FrameworkSdkDir)Windows Metadata" /out "$(SolutionDir)$(ProjectName)ProxyStub" "$(OutDir)$(RootNamespace).OutOfProcess.idl"
+"$(ProjectDir)OopServerRegistrationHelper.exe" /winmd:"$(OutDir)$(RootNamespace).winmd" /dll_name:$(TargetName) /namespace:$(RootNamespace).OutOfProcess /app_manifest:"$(SolutionDir)Linphone\Properties\WMAppManifest.xml" /helper_dir:"$(SolutionDir)Agents"
+popd</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">$(OutDir)$(RootNamespace).idl;$(OutDir)$(RootNamespace).OutOfProcess.idl;$(SolutionDir)$(ProjectName)ProxyStub\dlldata.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace)_i.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace)_p.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).h;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).OutOfProcess.h;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).OutOfProcess_i.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).OutOfProcess_p.c;$(SolutionDir)Agents\RegistrationHelper.cs;%(Outputs)</Outputs>

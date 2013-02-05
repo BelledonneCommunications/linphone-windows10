@@ -1,13 +1,15 @@
 #pragma once
 
-#include "LinphoneCore.h";
+#include "LinphoneCore.h"
+#include "Server.h"
 
 namespace Linphone
 {
 	namespace BackEnd
 	{
+		ref class Globals;
 		ref class LinphoneCore;
-		
+
 		public ref class LinphoneCoreFactory sealed
 		{
 		public:
@@ -15,13 +17,13 @@ namespace Linphone
             {
                 Linphone::BackEnd::LinphoneCore^ get();
             }
-
-			LinphoneCoreFactory();
+			
 			void CreateLinphoneCore();
 
 		private:
+			friend ref class Linphone::BackEnd::Globals;
 			Linphone::BackEnd::LinphoneCore^ linphoneCore;
-
+			LinphoneCoreFactory();
 			~LinphoneCoreFactory();
 		};
 	}

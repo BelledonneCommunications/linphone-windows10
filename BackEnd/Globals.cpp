@@ -6,6 +6,8 @@
 #include "Globals.h"
 #include "ApiLock.h"
 #include "CallController.h"
+#include "LinphoneCoreFactory.h"
+#include "LinphoneCore.h"
 
 using namespace Linphone::BackEnd;
 using namespace Windows::Foundation;

@@ -85,6 +85,7 @@ namespace Linphone.Model
 
             // Create an instance of the server in the background process. 
             server = (Server)WindowsRuntimeMarshal.GetActivationFactory(typeof(Server)).ActivateInstance();
+            server.CallController.ToString();
 
             // Un-set an event that indicates that the UI process is disconnected from the background process. 
             // The VoIP background process waits for this event to get set before shutting down. 

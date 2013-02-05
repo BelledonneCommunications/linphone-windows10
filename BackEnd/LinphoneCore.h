@@ -7,10 +7,11 @@ namespace Linphone
 {
 	namespace BackEnd
 	{
+		ref class LinphoneCoreFactory;
+
 		public ref class LinphoneCore sealed
 		{
 		public:
-			LinphoneCore();
 			Platform::String^ ToString();
 
 			/*void ClearProxyConfigs();
@@ -22,6 +23,8 @@ namespace Linphone
 			void AddAuthInfo(LinphoneAuthInfo^ info);*/
 
 		private:
+			friend ref class Linphone::BackEnd::LinphoneCoreFactory;
+			LinphoneCore();
 			~LinphoneCore();
 		};
 	}
