@@ -125,11 +125,13 @@ popd</Command>
   <ItemGroup>
     <ClInclude Include="ApiLock.h" />
     <ClInclude Include="CallController.h" />
+    <ClInclude Include="CallDirection.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="LinphoneAddress.h" />
     <ClInclude Include="LinphoneCall.h" />
     <ClInclude Include="LinphoneCallLog.h" />
     <ClInclude Include="LinphoneCallParams.h" />
+    <ClInclude Include="LinphoneCallStats.h" />
     <ClInclude Include="LinphoneCoreFactory.h" />
     <ClInclude Include="LinphoneAuthInfo.h" />
     <ClInclude Include="LinphoneCore.h" />
@@ -143,12 +145,14 @@ popd</Command>
   <ItemGroup>
     <ClCompile Include="ApiLock.cpp" />
     <ClCompile Include="CallController.cpp" />
+    <ClCompile Include="CallDirection.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="LinphoneAddress.cpp" />
     <ClCompile Include="LinphoneAuthInfo.cpp" />
     <ClCompile Include="LinphoneCall.cpp" />
     <ClCompile Include="LinphoneCallLog.cpp" />
     <ClCompile Include="LinphoneCallParams.cpp" />
+    <ClCompile Include="LinphoneCallStats.cpp" />
     <ClCompile Include="LinphoneCore.cpp" />
     <ClCompile Include="LinphoneCoreFactory.cpp" />
     <ClCompile Include="LinphoneProxyConfig.cpp" />

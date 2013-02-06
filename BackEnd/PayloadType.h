@@ -6,6 +6,9 @@ namespace Linphone
 	{
 		public ref class PayloadType sealed
 		{
+		public:
+			Platform::String^ GetMime();
+			int GetRate();
 		};
 	}
 }

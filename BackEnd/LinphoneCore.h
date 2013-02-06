@@ -15,6 +15,10 @@ namespace Linphone
 		ref class OnlineStatus;
 		ref class LpConfig;
 
+		public ref class RegistrationState sealed
+		{
+		};
+
 		public ref class MediaEncryption sealed
 		{
 		};
