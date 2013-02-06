@@ -4,7 +4,6 @@
 using namespace Linphone::BackEnd;
 using namespace Platform;
 using namespace Windows::Foundation;
-using namespace Windows::Phone::Media::Devices;
 using namespace Windows::Phone::Networking::Voip;
 
 bool CallController::OnIncomingCallReceived(Platform::String^ contactName, Platform::String^ contactNumber, IncomingCallDialogDismissedCallback^ incomingCallDialogDismissedCallback) 
@@ -47,10 +46,12 @@ bool CallController::OnIncomingCallReceived(Platform::String^ contactName, Platf
 
 void CallController::OnAcceptCallRequested(VoipPhoneCall^ sender, CallAnswerEventArgs^ args) 
 { 
+
 } 
  
 void CallController::OnRejectCallRequested(VoipPhoneCall^ sender, CallRejectEventArgs^ args) 
 { 
+
 } 
 
 CallController::CallController() :
@@ -75,4 +76,5 @@ CallController::CallController() :
 
 CallController::~CallController()
 {
+
 }

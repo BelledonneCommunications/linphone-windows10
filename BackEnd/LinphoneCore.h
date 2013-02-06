@@ -24,6 +24,7 @@ namespace Linphone
 
 		private:
 			friend ref class Linphone::BackEnd::LinphoneCoreFactory;
+
 			LinphoneCore();
 			~LinphoneCore();
 		};

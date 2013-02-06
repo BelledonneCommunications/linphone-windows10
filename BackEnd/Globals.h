@@ -6,7 +6,6 @@ namespace Linphone
 {
     namespace BackEnd
     {
-        // Forward declarations
         ref class CallController;
 		ref class LinphoneCoreFactory;
 		ref class LinphoneCore;
@@ -20,7 +19,6 @@ namespace Linphone
             // Start the out-of-process WinRT server, so that the UI process can instantiate WinRT objects in this process.
             void StartServer(const Platform::Array<Platform::String^>^ outOfProcServerClassNames);
 
-            // Get the process id of the current process
             static unsigned int GetCurrentProcessId();
 
             // Get the name of the event that indicates if the UI is connected to the background process or not
@@ -29,13 +27,11 @@ namespace Linphone
             // Get the name of the event that indicates if the background process is ready or not
             static Platform::String^ GetBackgroundProcessReadyEventName(unsigned int backgroundProcessId);
 
-            // Get the single instance of this class
             static property Globals^ Instance
             {
                 Globals^ get();
             }
 
-            // Get the call controller singleton object
             property Linphone::BackEnd::CallController^ CallController
             {
                 Linphone::BackEnd::CallController^ get();
@@ -52,10 +48,7 @@ namespace Linphone
             }
 
         private:
-            // Default constructor
             Globals();
-
-            // Destructor
             ~Globals();
 
             // Name of the event that indicates if another instance of the VoIP background process exists or not
@@ -67,10 +60,8 @@ namespace Linphone
             // Name of the event that indicates if the background process is ready or not
             static const LPCWSTR backgroundProcessReadyEventName;
 
-            // The single instance of this class
             static Globals^ singleton;
 
-            // Indicates if the out-of-process server has started or not
             bool started;
 
             // A cookie that is used to unregister remotely activatable objects in this process
@@ -82,7 +73,6 @@ namespace Linphone
             // An event that indicates that the background process is ready
             HANDLE backgroundReadyEvent;
 
-            // The call controller object
             Linphone::BackEnd::CallController^ callController;
 
 			Linphone::BackEnd::LinphoneCoreFactory^ linphoneCoreFactory;

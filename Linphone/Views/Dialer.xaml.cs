@@ -14,11 +14,11 @@ using System.Windows.Media.Imaging;
 
 namespace Linphone
 {
-    public partial class MainPage : PhoneApplicationPage
+    public partial class Dialer : PhoneApplicationPage
     {
         private LocalizedStrings _appStrings = new LocalizedStrings();
 
-        public MainPage()
+        public Dialer()
         {
             InitializeComponent();
             numpad.Address = sipAddress;

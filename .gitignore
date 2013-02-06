@@ -1,6 +1,8 @@
 */Bin/
 */obj/
+*/Thumbs.db
 */*/Thumbs.db
+*/*/*/Thumbs.db
 */ARM/
 */x86/
 BackEndProxyStub/Linphone.BackEnd*

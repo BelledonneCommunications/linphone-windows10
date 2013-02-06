@@ -136,7 +136,6 @@ CallController^ Globals::CallController::get()
         {
             this->callController = ref new Linphone::BackEnd::CallController();
         }
-        // else: some other thread has created an instance of the call controller
     }
 
     return this->callController;

@@ -1,7 +1,6 @@
 #pragma once
 
-#include "LinphoneCore.h"
-#include "Server.h"
+#include "ApiLock.h"
 
 namespace Linphone
 {
@@ -22,7 +21,9 @@ namespace Linphone
 
 		private:
 			friend ref class Linphone::BackEnd::Globals;
+
 			Linphone::BackEnd::LinphoneCore^ linphoneCore;
+
 			LinphoneCoreFactory();
 			~LinphoneCoreFactory();
 		};

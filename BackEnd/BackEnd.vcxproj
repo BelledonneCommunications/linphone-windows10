@@ -82,10 +82,15 @@
     </Link>
     <CustomBuildStep>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">pushd "$(OutDir)"
+
 WinMdIdl.exe "$(OutDir)$(RootNamespace).winmd"
+
 MIdl.exe /env $(MidlEnv) /winrt /ns_prefix /metadata_dir "$(FrameworkSdkDir)Windows Metadata" /out "$(SolutionDir)$(ProjectName)ProxyStub" "$(OutDir)$(RootNamespace).idl"
+
 MIdl.exe /env $(MidlEnv) /winrt /ns_prefix /metadata_dir "$(FrameworkSdkDir)Windows Metadata" /out "$(SolutionDir)$(ProjectName)ProxyStub" "$(OutDir)$(RootNamespace).OutOfProcess.idl"
+
 "$(ProjectDir)OopServerRegistrationHelper.exe" /winmd:"$(OutDir)$(RootNamespace).winmd" /dll_name:$(TargetName) /namespace:$(RootNamespace).OutOfProcess /app_manifest:"$(SolutionDir)Linphone\Properties\WMAppManifest.xml" /helper_dir:"$(SolutionDir)Agents"
+
 popd</Command>
     </CustomBuildStep>
     <CustomBuildStep>
@@ -93,10 +98,15 @@ popd</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">pushd "$(OutDir)"
+
 WinMdIdl.exe "$(OutDir)$(RootNamespace).winmd"
+
 MIdl.exe /env $(MidlEnv) /winrt /ns_prefix /metadata_dir "$(FrameworkSdkDir)Windows Metadata" /out "$(SolutionDir)$(ProjectName)ProxyStub" "$(OutDir)$(RootNamespace).idl"
+
 MIdl.exe /env $(MidlEnv) /winrt /ns_prefix /metadata_dir "$(FrameworkSdkDir)Windows Metadata" /out "$(SolutionDir)$(ProjectName)ProxyStub" "$(OutDir)$(RootNamespace).OutOfProcess.idl"
+
 "$(ProjectDir)OopServerRegistrationHelper.exe" /winmd:"$(OutDir)$(RootNamespace).winmd" /dll_name:$(TargetName) /namespace:$(RootNamespace).OutOfProcess /app_manifest:"$(SolutionDir)Linphone\Properties\WMAppManifest.xml" /helper_dir:"$(SolutionDir)Agents"
+
 popd</Command>
     </CustomBuildStep>
     <CustomBuildStep>
