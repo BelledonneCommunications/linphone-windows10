@@ -2,7 +2,10 @@
 
 namespace Linphone
 {
-    public ref class LinphoneAuthInfo sealed
-    {
-	};
+	namespace BackEnd
+	{
+		public ref class LinphoneAuthInfo sealed
+		{
+		};
+	}
 }

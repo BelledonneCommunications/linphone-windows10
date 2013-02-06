@@ -4,7 +4,7 @@ namespace Linphone
 {
 	namespace BackEnd
 	{
-		public ref class LinphoneProxyConfig sealed
+		public ref class OnlineStatus sealed
 		{
 		};
 	}

@@ -10,6 +10,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Linphone.Resources;
 
 namespace Linphone.Model
 {
@@ -24,6 +25,17 @@ namespace Linphone.Model
                     LinphoneManager.singleton = new LinphoneManager();
 
                 return LinphoneManager.singleton;
+            }
+        }
+
+        public LinphoneCore LinphoneCore
+        {
+            get
+            {
+                if (server.LinphoneCore == null)
+                    server.LinphoneCoreFactory.CreateLinphoneCore(null);
+
+                return server.LinphoneCore;
             }
         }
 
@@ -85,8 +97,6 @@ namespace Linphone.Model
 
             // Create an instance of the server in the background process. 
             server = (Server)WindowsRuntimeMarshal.GetActivationFactory(typeof(Server)).ActivateInstance();
-            server.LinphoneCoreFactory.CreateLinphoneCore();
-            Debug.WriteLine(server.LinphoneCore.ToString());
 
             // Un-set an event that indicates that the UI process is disconnected from the background process. 
             // The VoIP background process waits for this event to get set before shutting down. 
@@ -133,7 +143,7 @@ namespace Linphone.Model
         /// <param name="enable">true to enable debug traces, false to disable them</param>
         public void EnableDebug(bool enable)
         {
-
+            server.LinphoneCoreFactory.SetDebugMode(enable, AppResources.ApplicationTitle);
         }
 
         /// <summary>
@@ -182,7 +192,7 @@ namespace Linphone.Model
         /// </summary>
         public void ClearCallLogs()
         {
-
+            LinphoneCore.ClearCallLogs();
         }
 
         /// <summary>
@@ -191,7 +201,7 @@ namespace Linphone.Model
         /// <param name="sipAddress">SIP address to call</param>
         public void NewOutgoingCall(String sipAddress)
         {
-
+            LinphoneCore.Invite(sipAddress);
         }
 
         /// <summary>
@@ -199,16 +209,20 @@ namespace Linphone.Model
         /// </summary>
         public void EndCurrentCall()
         {
-
+            if (LinphoneCore.GetCallsNb() > 0)
+            {
+                LinphoneCall call = LinphoneCore.GetCalls().First();
+                LinphoneCore.TerminateCall(call);
+            }
         }
-
 
         /// <summary>
         /// Pauses the current call if any and if it's running
         /// </summary>
         public void PauseCurrentCall()
         {
-
+            LinphoneCall call = LinphoneCore.GetCurrentCall();
+            LinphoneCore.PauseCall(call);
         }
 
         /// <summary>
@@ -216,15 +230,11 @@ namespace Linphone.Model
         /// </summary>
         public void ResumeCurrentCall()
         {
-
-        }
-
-        /// <summary>
-        /// Hang up the current call if any
-        /// </summary>
-        public void HangUp()
-        {
-
+            if (LinphoneCore.GetCallsNb() > 0)
+            {
+                LinphoneCall call = LinphoneCore.GetCalls().First();
+                LinphoneCore.ResumeCall(call);
+            }
         }
     }
 }

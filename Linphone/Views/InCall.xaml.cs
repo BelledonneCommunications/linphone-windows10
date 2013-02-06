@@ -2,6 +2,7 @@
 using Microsoft.Phone.Controls;
 using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 
@@ -54,6 +55,7 @@ namespace Linphone.Views
 
         private void hangUp_Click(object sender, RoutedEventArgs e)
         {
+            LinphoneManager.Instance.EndCurrentCall();
             NavigationService.GoBack();
         }
 
@@ -61,18 +63,24 @@ namespace Linphone.Views
         {
             bool isSpeakerToggled = (bool)speaker.IsChecked;
             speakerImg.Source = new BitmapImage(new Uri(isSpeakerToggled ? speakerOn : speakerOff, UriKind.RelativeOrAbsolute));
+            LinphoneManager.Instance.LinphoneCore.EnableSpeaker(isSpeakerToggled);
         }
 
         private void microphone_Click_1(object sender, RoutedEventArgs e)
         {
             bool isMicToggled = (bool)microphone.IsChecked;
             microImg.Source = new BitmapImage(new Uri(isMicToggled ? micOn : micOff, UriKind.RelativeOrAbsolute));
+            LinphoneManager.Instance.LinphoneCore.MuteMic(isMicToggled);
         }
 
         private void pause_Click_1(object sender, RoutedEventArgs e)
         {
             bool isPauseToggled = (bool)pause.IsChecked;
             pauseImg.Source = new BitmapImage(new Uri(isPauseToggled ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
+            if (isPauseToggled)
+                LinphoneManager.Instance.PauseCurrentCall();
+            else
+                LinphoneManager.Instance.ResumeCurrentCall();
         }
 
         private void dialpad_Click_1(object sender, RoutedEventArgs e)
@@ -86,7 +94,9 @@ namespace Linphone.Views
 
         private void Numpad_Click_1(object sender, RoutedEventArgs e)
         {
-
+            Button button = sender as Button;
+            String tag = button.Tag as String;
+            LinphoneManager.Instance.LinphoneCore.SendDTMF(Convert.ToChar(tag));
         }
     }
 }

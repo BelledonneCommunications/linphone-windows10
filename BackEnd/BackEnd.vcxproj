@@ -126,18 +126,35 @@ popd</Command>
     <ClInclude Include="ApiLock.h" />
     <ClInclude Include="CallController.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="LinphoneAddress.h" />
+    <ClInclude Include="LinphoneCall.h" />
+    <ClInclude Include="LinphoneCallLog.h" />
+    <ClInclude Include="LinphoneCallParams.h" />
     <ClInclude Include="LinphoneCoreFactory.h" />
     <ClInclude Include="LinphoneAuthInfo.h" />
     <ClInclude Include="LinphoneCore.h" />
+    <ClInclude Include="LinphoneCoreListener.h" />
     <ClInclude Include="LinphoneProxyConfig.h" />
+    <ClInclude Include="LpConfig.h" />
+    <ClInclude Include="OnlineStatus.h" />
+    <ClInclude Include="PayloadType.h" />
     <ClInclude Include="Server.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ApiLock.cpp" />
     <ClCompile Include="CallController.cpp" />
     <ClCompile Include="Globals.cpp" />
+    <ClCompile Include="LinphoneAddress.cpp" />
+    <ClCompile Include="LinphoneAuthInfo.cpp" />
+    <ClCompile Include="LinphoneCall.cpp" />
+    <ClCompile Include="LinphoneCallLog.cpp" />
+    <ClCompile Include="LinphoneCallParams.cpp" />
     <ClCompile Include="LinphoneCore.cpp" />
     <ClCompile Include="LinphoneCoreFactory.cpp" />
+    <ClCompile Include="LinphoneProxyConfig.cpp" />
+    <ClCompile Include="LpConfig.cpp" />
+    <ClCompile Include="OnlineStatus.cpp" />
+    <ClCompile Include="PayloadType.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OopServerRegistrationHelper.exe">
