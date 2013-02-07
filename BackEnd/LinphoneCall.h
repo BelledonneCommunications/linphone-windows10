@@ -1,25 +1,45 @@
 #pragma once
 
+#include "CallDirection.h"
+
 namespace Linphone
 {
 	namespace BackEnd
 	{
 		ref class LinphoneAddress;
-		ref class CallDirection;
 		ref class LinphoneCallLog;
 		ref class LinphoneCallStats;
 		ref class LinphoneCallParams;
 
-		public ref class LinphoneCallState sealed
+		public enum class LinphoneCallState : int
 		{
+			Idle = 0,
+			IncomingReceived = 1,
+			OutgoingInit = 2,
+			OutgoingProgress = 3,
+			OutgoingRinging = 4,
+			OutgoingEarlyMedia = 5,
+			Connected = 6,
+			StreamsRunning = 7,
+			Pausing = 8,
+			Paused = 9,
+			Resuming = 10,
+			Refered = 11,
+			Error = 12,
+			CallEnd = 13,
+			PausedByRemote = 14,
+			UpdatedByRemote = 15,
+			IncomingEarlyMedia = 16,
+			Udating = 17,
+			Released = 18
 		};
 
 		public ref class LinphoneCall sealed
 		{
 		public:
-			LinphoneCallState^ GetState();
+			LinphoneCallState GetState();
 			LinphoneAddress^ GetRemoteAddress();
-			CallDirection^ GetDirection();
+			CallDirection GetDirection();
 			LinphoneCallLog^ GetCallLog();
 			LinphoneCallStats^ GetAudioStats();
 			LinphoneCallParams^ GetRemoteParams();

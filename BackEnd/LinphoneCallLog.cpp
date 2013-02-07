@@ -15,14 +15,14 @@ LinphoneAddress^ LinphoneCallLog::GetTo()
 	return nullptr;
 }
 
-CallDirection^ LinphoneCallLog::GetDirection()
+CallDirection LinphoneCallLog::GetDirection()
 {
-	return nullptr;
+	return CallDirection::Incoming;
 }
 
-LinphoneCallStatus^ LinphoneCallLog::GetStatus()
+LinphoneCallStatus LinphoneCallLog::GetStatus()
 {
-	return nullptr;
+	return LinphoneCallStatus::Aborted;
 }
 
 Platform::String^ LinphoneCallLog::GetStartDate()

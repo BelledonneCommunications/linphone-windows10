@@ -10,12 +10,12 @@ void LinphoneCallParams::SetAudioBandwidth()
 
 }
 
-MediaEncryption^ LinphoneCallParams::GetMediaEncryption()
+MediaEncryption LinphoneCallParams::GetMediaEncryption()
 {
-	return nullptr;
+	return MediaEncryption::None;
 }
 
-void LinphoneCallParams::SetMediaEncryption(MediaEncryption^ menc)
+void LinphoneCallParams::SetMediaEncryption(MediaEncryption menc)
 {
 
 }

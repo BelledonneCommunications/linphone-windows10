@@ -145,7 +145,6 @@ popd</Command>
   <ItemGroup>
     <ClCompile Include="ApiLock.cpp" />
     <ClCompile Include="CallController.cpp" />
-    <ClCompile Include="CallDirection.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="LinphoneAddress.cpp" />
     <ClCompile Include="LinphoneAuthInfo.cpp" />
@@ -157,7 +156,6 @@ popd</Command>
     <ClCompile Include="LinphoneCoreFactory.cpp" />
     <ClCompile Include="LinphoneProxyConfig.cpp" />
     <ClCompile Include="LpConfig.cpp" />
-    <ClCompile Include="OnlineStatus.cpp" />
     <ClCompile Include="PayloadType.cpp" />
   </ItemGroup>
   <ItemGroup>

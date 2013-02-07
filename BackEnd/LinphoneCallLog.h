@@ -1,15 +1,19 @@
 #pragma once
 
+#include "CallDirection.h"
+
 namespace Linphone
 {
 	namespace BackEnd
 	{
 		ref class LinphoneAddress;
-		ref class CallDirection;
 
-		public ref class LinphoneCallStatus sealed
+		public enum class LinphoneCallStatus : int
 		{
-
+			Success = 0,
+			Aborted = 1,
+			Missed = 2,
+			Declined = 3
 		};
 
 		public ref class LinphoneCallLog sealed
@@ -17,8 +21,8 @@ namespace Linphone
 		public:
 			LinphoneAddress^ GetFrom();
 			LinphoneAddress^ GetTo();
-			CallDirection^ GetDirection();
-			LinphoneCallStatus^ GetStatus();
+			CallDirection GetDirection();
+			LinphoneCallStatus GetStatus();
 			Platform::String^ GetStartDate();
 			int64 GetTimestamp();
 			int GetCallDuration();

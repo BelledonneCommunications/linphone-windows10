@@ -3,14 +3,14 @@
 
 using namespace Linphone::BackEnd;
 
-MediaType^ LinphoneCallStats::GetMediaType()
+MediaType LinphoneCallStats::GetMediaType()
 {
-	return nullptr;
+	return MediaType::Audio;
 }
 
-IceState^ LinphoneCallStats::GetIceState()
+IceState LinphoneCallStats::GetIceState()
 {
-	return nullptr;
+	return IceState::Failed;
 }
 
 float LinphoneCallStats::GetDownloadBandwidth()

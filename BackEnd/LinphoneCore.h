@@ -1,5 +1,7 @@
 #pragma once
 
+#include "OnlineStatus.h"
+
 namespace Linphone
 {
 	namespace BackEnd
@@ -12,19 +14,46 @@ namespace Linphone
 		ref class LinphoneCallParams;
 		ref class LinphoneCallLog;
 		ref class PayloadType;
-		ref class OnlineStatus;
 		ref class LpConfig;
 
-		public ref class RegistrationState sealed
+		public enum class GlobalState : int
 		{
+			GlobalOff = 0,
+			GlobalStartup = 1,
+			GlobalOn = 2,
+			GlobalShutdown = 3
 		};
 
-		public ref class MediaEncryption sealed
+		public enum class RegistrationState : int
 		{
+			RegistrationNone = 0,
+			RegistrationInProgress = 1,
+			RegistrationOk = 2,
+			RegistrationCleared = 3,
+			RegistrationFailed = 4
 		};
 
-		public ref class FirewallPolicy sealed
+		public enum class MediaEncryption : int
 		{
+			None = 0,
+			SRTP = 1,
+			ZRTP = 2
+		};
+
+		public enum class FirewallPolicy : int
+		{
+			NoFirewall = 0,
+			UseNatAddress = 1,
+			UseStun = 2,
+			UseIce = 3
+		};
+
+		public enum class EcCalibratorStatus : int
+		{
+			InProgress = 0,
+			Done = 1,
+			Failed = 2,
+			DoneNoEcho = 3
 		};
 
 		public ref class Transports sealed
@@ -83,7 +112,7 @@ namespace Linphone
 			void UpdateCall(LinphoneCall^ call, LinphoneCallParams^ params);
 			LinphoneCallParams^ CreateDefaultCallParameters();
 
-			Windows::Foundation::Collections::IVector<LinphoneCallLog^>^ GetCallLOgs();
+			Windows::Foundation::Collections::IVector<LinphoneCallLog^>^ GetCallLogs();
 			void ClearCallLogs();
 			void RemoveCallLog(LinphoneCallLog^ log);
 
@@ -118,13 +147,13 @@ namespace Linphone
 			Transports^ GetSignalingTransportsPorts();
 			void EnableIPv6(Platform::Boolean enable);
 
-			void SetPresenceInfo(int minuteAway, Platform::String^ alternativeContact, OnlineStatus^ status);
+			void SetPresenceInfo(int minuteAway, Platform::String^ alternativeContact, OnlineStatus status);
 
 			void SetStunServer(Platform::String^ stun);
 			Platform::String^ GetStunServer();
 
-			void SetFirewallPolicy(FirewallPolicy^ policy);
-			FirewallPolicy^ GetFirewallPolicy();
+			void SetFirewallPolicy(FirewallPolicy policy);
+			FirewallPolicy GetFirewallPolicy();
 
 			void SetRootCA(Platform::String^ path);
 			void SetUploadBandwidth(int bw);
@@ -157,9 +186,9 @@ namespace Linphone
 			Platform::Boolean IsMyself(Platform::String^ uri);
 
 			Platform::Boolean IsSoundResourcesLocked();
-			Platform::Boolean IsMediaEncryptionSupported(MediaEncryption^ menc);
-			void SetMediaEncryption(MediaEncryption^ menc);
-			MediaEncryption^ GetMediaEncryption();
+			Platform::Boolean IsMediaEncryptionSupported(MediaEncryption menc);
+			void SetMediaEncryption(MediaEncryption menc);
+			MediaEncryption GetMediaEncryption();
 			void SetMediaEncryptionMandatory(Platform::Boolean yesno);
 			Platform::Boolean IsMediaEncryptionMandatory();
 

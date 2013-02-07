@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ApiLock.h"
+#include "LinphoneCoreListener.h"
 
 namespace Linphone
 {
@@ -10,7 +11,6 @@ namespace Linphone
 		ref class LinphoneCore;
 		ref class LinphoneAuthInfo;
 		ref class LinphoneAddress;
-		ref class LinphoneCoreListener;
 
 		public ref class LinphoneCoreFactory sealed
 		{

@@ -14,7 +14,7 @@ using Linphone.Resources;
 
 namespace Linphone.Model
 {
-    public sealed class LinphoneManager
+    public sealed class LinphoneManager : LinphoneCoreListener
     {
         private static LinphoneManager singleton;
         public static LinphoneManager Instance
@@ -32,9 +32,6 @@ namespace Linphone.Model
         {
             get
             {
-                if (server.LinphoneCore == null)
-                    server.LinphoneCoreFactory.CreateLinphoneCore(null);
-
                 return server.LinphoneCore;
             }
         }
@@ -45,14 +42,14 @@ namespace Linphone.Model
         // An event that indicates that the UI process is no longer connected to the background process 
         private EventWaitHandle uiDisconnectedEvent;
 
-        // A proxy to the server object in the VoIP background agent host process 
+        // A proxy to the server object in the background agent host process 
         private Server server;
 
         // A timespan representing fifteen seconds 
         private static readonly TimeSpan fifteenSecs = new TimeSpan(0, 0, 15);
 
         // A timespan representing an indefinite wait 
-        private static readonly TimeSpan indefiniteWait = new TimeSpan(0, 0, 0, 0, -1); 
+        private static readonly TimeSpan indefiniteWait = new TimeSpan(0, 0, 0, 0, -1);
 
         /// <summary>
         /// Starts and connects the UI to the background process
@@ -99,13 +96,12 @@ namespace Linphone.Model
             server = (Server)WindowsRuntimeMarshal.GetActivationFactory(typeof(Server)).ActivateInstance();
 
             // Un-set an event that indicates that the UI process is disconnected from the background process. 
-            // The VoIP background process waits for this event to get set before shutting down. 
-            // This ensures that the VoIP background agent host process doesn't shut down while the UI process is connected to it. 
+            // The background process waits for this event to get set before shutting down. 
+            // This ensures that the background agent host process doesn't shut down while the UI process is connected to it. 
             string uiDisconnectedEventName = Globals.GetUiDisconnectedEventName((uint)backgroundProcessID);
             uiDisconnectedEvent = new EventWaitHandle(initialState: false, mode: EventResetMode.ManualReset, name: uiDisconnectedEventName);
             uiDisconnectedEvent.Reset();
 
-            // The UI process is now connected to the background process 
             BackgroundProcessConnected = true;
             Debug.WriteLine("[LinphoneManager] Background process connected to interface");
         }
@@ -123,9 +119,9 @@ namespace Linphone.Model
 
             BackgroundProcessConnected = false;
             Debug.WriteLine("[LinphoneManager] Background process disconnected from interface");
-            
-            // From this point onwards, it is no longer safe to use any objects in the VoIP background process, 
-            // or for the VoIP background process to call back into this process. 
+
+            // From this point onwards, it is no longer safe to use any objects in the background process, 
+            // or for the background process to call back into this process. 
             server = null;
 
             // Lastly, set the event that indicates that the UI is no longer connected to the background process. 
@@ -134,7 +130,18 @@ namespace Linphone.Model
 
             uiDisconnectedEvent.Set();
             uiDisconnectedEvent.Dispose();
-            uiDisconnectedEvent = null; 
+            uiDisconnectedEvent = null;
+        }
+
+        /// <summary>
+        /// Creates a new LinphoneCore using a LinphoneCoreFactory
+        /// </summary>
+        public void InitLinphoneCore()
+        {
+            if (LinphoneCore != null)
+                return;
+
+            server.LinphoneCoreFactory.CreateLinphoneCore(this);
         }
 
         /// <summary>
@@ -157,6 +164,28 @@ namespace Linphone.Model
             ObservableCollection<CallLog> calls = new ObservableCollection<CallLog>();
             ObservableCollection<CallLog> missedCalls = new ObservableCollection<CallLog>();
 
+            if (LinphoneCore.GetCallLogs() != null)
+            {
+                foreach (LinphoneCallLog log in LinphoneCore.GetCallLogs())
+                {
+                    string from = log.GetFrom().GetDisplayName();
+                    if (from == null)
+                        from = log.GetFrom().AsStringUriOnly();
+
+                    string to = log.GetTo().GetDisplayName();
+                    if (to == null)
+                        to = log.GetTo().AsStringUriOnly();
+
+                    bool isMissed = log.GetStatus() == LinphoneCallStatus.Missed;
+
+                    CallLog callLog = new CallLog(log, from, to, log.GetDirection() == CallDirection.Incoming, isMissed);
+
+                    calls.Add(callLog);
+                    if (isMissed)
+                        missedCalls.Add(callLog);
+                }
+            }
+
             CallLogs all = new CallLogs("All", calls);
             _history.Add(all);
 
@@ -178,10 +207,7 @@ namespace Linphone.Model
             while (logsToRemove.Count() > 0)
             {
                 CallLog logToRemove = logsToRemove.First();
-                foreach (CallLogs logs in _history)
-                {
-                    logs.Calls.Remove(logToRemove);
-                }
+                LinphoneCore.RemoveCallLog(logToRemove.NativeLog as LinphoneCallLog);
             }
 
             return _history;
@@ -236,5 +262,42 @@ namespace Linphone.Model
                 LinphoneCore.ResumeCall(call);
             }
         }
+
+        #region LinphoneCoreListener Callbacks
+        public void GlobalState(GlobalState state, string message)
+        {
+
+        }
+
+        public void CallState(LinphoneCall call, LinphoneCallState state)
+        {
+
+        }
+
+        public void RegistrationState(LinphoneProxyConfig config, RegistrationState state, string message)
+        {
+
+        }
+
+        public void DTMFReceived(LinphoneCall call, int dtmf)
+        {
+
+        }
+
+        public void EcCalibrationStatus(EcCalibratorStatus status, int delay_ms, object data)
+        {
+
+        }
+
+        public void CallEncryptionChanged(LinphoneCall call, bool encrypted, string authenticationToken)
+        {
+
+        }
+
+        public void CallStatsUpdated(LinphoneCall call, LinphoneCallStats stats)
+        {
+
+        }
+        #endregion
     }
 }

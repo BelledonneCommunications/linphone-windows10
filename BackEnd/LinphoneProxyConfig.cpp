@@ -84,9 +84,9 @@ Platform::Boolean LinphoneProxyConfig::IsPublishEnabled()
 	return false;
 }
 
-RegistrationState^ LinphoneProxyConfig::GetState()
+RegistrationState LinphoneProxyConfig::GetState()
 {
-	return nullptr;
+	return RegistrationState::RegistrationNone;
 }
 
 void LinphoneProxyConfig::SetExpires(int delay)

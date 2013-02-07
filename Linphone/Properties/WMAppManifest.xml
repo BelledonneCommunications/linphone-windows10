@@ -50,25 +50,18 @@
         <ActivatableClass ActivatableClassId="Linphone.BackEnd.IncomingCallDialogDismissedCallback" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.BackEnd.CallController" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.BackEnd.Globals" ThreadingModel="MTA" />
-        <ActivatableClass ActivatableClassId="Linphone.BackEnd.CallDirection" ThreadingModel="MTA" />
-        <ActivatableClass ActivatableClassId="Linphone.BackEnd.LinphoneCoreFactory" ThreadingModel="MTA" />
-        <ActivatableClass ActivatableClassId="Linphone.BackEnd.RegistrationState" ThreadingModel="MTA" />
-        <ActivatableClass ActivatableClassId="Linphone.BackEnd.MediaEncryption" ThreadingModel="MTA" />
-        <ActivatableClass ActivatableClassId="Linphone.BackEnd.FirewallPolicy" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.BackEnd.Transports" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.BackEnd.LinphoneCore" ThreadingModel="MTA" />
+        <ActivatableClass ActivatableClassId="Linphone.BackEnd.LinphoneCall" ThreadingModel="MTA" />
+        <ActivatableClass ActivatableClassId="Linphone.BackEnd.LinphoneCoreFactory" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.BackEnd.LinphoneAddress" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.BackEnd.LinphoneAuthInfo" ThreadingModel="MTA" />
-        <ActivatableClass ActivatableClassId="Linphone.BackEnd.LinphoneCallState" ThreadingModel="MTA" />
-        <ActivatableClass ActivatableClassId="Linphone.BackEnd.LinphoneCall" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.BackEnd.LinphoneCallStats" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.BackEnd.LinphoneCallLog" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.BackEnd.LinphoneCallParams" ThreadingModel="MTA" />
+        <ActivatableClass ActivatableClassId="Linphone.BackEnd.PayloadType" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.BackEnd.LinphoneProxyConfig" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.BackEnd.LpConfig" ThreadingModel="MTA" />
-        <ActivatableClass ActivatableClassId="Linphone.BackEnd.OnlineStatus" ThreadingModel="MTA" />
-        <ActivatableClass ActivatableClassId="Linphone.BackEnd.PayloadType" ThreadingModel="MTA" />
-        <ActivatableClass ActivatableClassId="Linphone.BackEnd.LinphoneCoreListener" ThreadingModel="MTA" />
       </InProcessServer>
       <OutOfProcessServer ServerName="Linphone.BackEnd">
         <Path>Linphone.BackEnd.DLL</Path>
@@ -81,26 +74,20 @@
         <Interface Name="Linphone.BackEnd.__IGlobalsPublicNonVirtuals" InterfaceId="{74C65E76-06C7-38A6-9E0A-61E3739B7E1E}" />
         <Interface Name="Linphone.BackEnd.__IGlobalsStatics" InterfaceId="{CE34112C-C406-3477-BBB4-7E1F99EE776C}" />
         <Interface Name="Linphone.BackEnd.OutOfProcess.__IServerPublicNonVirtuals" InterfaceId="{EBDEF036-447F-3D47-B33F-715068ACD4CC}" />
-        <Interface Name="Linphone.BackEnd.__ICallDirectionPublicNonVirtuals" InterfaceId="{3793A6CD-23C7-3BBF-82FB-69B4418FF6B0}" />
-        <Interface Name="Linphone.BackEnd.__ILinphoneCoreFactoryPublicNonVirtuals" InterfaceId="{3597B0A3-1ABD-3226-88B2-7E1A95D0182D}" />
-        <Interface Name="Linphone.BackEnd.__IRegistrationStatePublicNonVirtuals" InterfaceId="{8D5660E8-6D83-3F5C-9820-77791EA0A00A}" />
-        <Interface Name="Linphone.BackEnd.__IMediaEncryptionPublicNonVirtuals" InterfaceId="{EC8AB5BB-BA4E-3F2F-A44D-7D9324C64001}" />
-        <Interface Name="Linphone.BackEnd.__IFirewallPolicyPublicNonVirtuals" InterfaceId="{9F1937EF-510D-31FD-899B-714F11BF92C3}" />
         <Interface Name="Linphone.BackEnd.__ITransportsPublicNonVirtuals" InterfaceId="{37D83750-9A77-3CD6-B5E5-4073760A6F03}" />
         <Interface Name="Linphone.BackEnd.__ITransportsFactory" InterfaceId="{79FEC6A6-2D73-321F-936D-21AA5FD582C9}" />
         <Interface Name="Linphone.BackEnd.__ILinphoneCorePublicNonVirtuals" InterfaceId="{AD1665A5-4674-381B-8F09-A529144A2E95}" />
+        <Interface Name="Linphone.BackEnd.__ILinphoneCallPublicNonVirtuals" InterfaceId="{1C55F149-797F-3C38-836B-7EDD524242E4}" />
+        <Interface Name="Linphone.BackEnd.LinphoneCoreListener" InterfaceId="{FD0B7C4D-7AFC-3987-A427-1E7E0BEFEBB9}" />
+        <Interface Name="Linphone.BackEnd.__ILinphoneCoreFactoryPublicNonVirtuals" InterfaceId="{3597B0A3-1ABD-3226-88B2-7E1A95D0182D}" />
         <Interface Name="Linphone.BackEnd.__ILinphoneAddressPublicNonVirtuals" InterfaceId="{9AAD9E9B-8491-3D4C-8D09-C7B6A55CCE57}" />
         <Interface Name="Linphone.BackEnd.__ILinphoneAuthInfoPublicNonVirtuals" InterfaceId="{761FC860-80AD-3D53-B77D-557B65367AFF}" />
-        <Interface Name="Linphone.BackEnd.__ILinphoneCallStatePublicNonVirtuals" InterfaceId="{9B338D4F-3D97-36A6-9C98-0A687FE363FF}" />
-        <Interface Name="Linphone.BackEnd.__ILinphoneCallPublicNonVirtuals" InterfaceId="{1C55F149-797F-3C38-836B-7EDD524242E4}" />
         <Interface Name="Linphone.BackEnd.__ILinphoneCallStatsPublicNonVirtuals" InterfaceId="{BB9E9373-D45B-3212-9AA8-48B8674FFEA0}" />
         <Interface Name="Linphone.BackEnd.__ILinphoneCallLogPublicNonVirtuals" InterfaceId="{C7C61538-A827-31B7-84F7-197010C6764E}" />
         <Interface Name="Linphone.BackEnd.__ILinphoneCallParamsPublicNonVirtuals" InterfaceId="{D904B84C-CFA8-3332-B47E-8CD9DB5D1EBC}" />
+        <Interface Name="Linphone.BackEnd.__IPayloadTypePublicNonVirtuals" InterfaceId="{18E6B8BB-6D95-3A21-9CC0-BD12BF6C6974}" />
         <Interface Name="Linphone.BackEnd.__ILinphoneProxyConfigPublicNonVirtuals" InterfaceId="{D406824A-58A0-3EDD-B3B5-2BDED03BE788}" />
         <Interface Name="Linphone.BackEnd.__ILpConfigPublicNonVirtuals" InterfaceId="{9D341F75-D5C7-3E15-894E-4BB309345E3E}" />
-        <Interface Name="Linphone.BackEnd.__IOnlineStatusPublicNonVirtuals" InterfaceId="{6E965506-B07F-351E-8EA7-EB28B601A6BA}" />
-        <Interface Name="Linphone.BackEnd.__IPayloadTypePublicNonVirtuals" InterfaceId="{18E6B8BB-6D95-3A21-9CC0-BD12BF6C6974}" />
-        <Interface Name="Linphone.BackEnd.__ILinphoneCoreListenerPublicNonVirtuals" InterfaceId="{8F273578-2E04-30DA-9E7C-3248DED25440}" />
       </ProxyStub>
     </ActivatableClasses>
     <ScreenResolutions>

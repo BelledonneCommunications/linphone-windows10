@@ -1,11 +1,11 @@
 #pragma once
 
+#include "LinphoneCore.h"
+
 namespace Linphone
 {
 	namespace BackEnd
 	{
-		ref class RegistrationState;
-
 		public ref class LinphoneProxyConfig sealed
 		{
 		public:
@@ -25,7 +25,7 @@ namespace Linphone
 			Platform::String^ GetRoute();
 			void EnablePublish(Platform::Boolean enable);
 			Platform::Boolean IsPublishEnabled();
-			RegistrationState^ GetState();
+			RegistrationState GetState();
 			void SetExpires(int delay);
 			void SetContactParameters(Platform::String^ params);
 			int LookupCCCFromIso(Platform::String^ iso);

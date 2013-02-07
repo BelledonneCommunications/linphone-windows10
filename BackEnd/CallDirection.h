@@ -4,9 +4,10 @@ namespace Linphone
 {
 	namespace BackEnd
 	{
-		public ref class CallDirection sealed
+		public enum class CallDirection : int
 		{
-
+			Outgoing, 
+			Incoming
 		};
 	}
 }

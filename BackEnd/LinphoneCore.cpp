@@ -165,7 +165,7 @@ LinphoneCallParams^ LinphoneCore::CreateDefaultCallParameters()
 	return nullptr;
 }
 
-Windows::Foundation::Collections::IVector<LinphoneCallLog^>^ LinphoneCore::GetCallLOgs() 
+Windows::Foundation::Collections::IVector<LinphoneCallLog^>^ LinphoneCore::GetCallLogs() 
 {
 	return nullptr;
 }
@@ -305,7 +305,7 @@ void LinphoneCore::EnableIPv6(Platform::Boolean enable)
 
 }
 
-void LinphoneCore::SetPresenceInfo(int minuteAway, Platform::String^ alternativeContact, OnlineStatus^ status) 
+void LinphoneCore::SetPresenceInfo(int minuteAway, Platform::String^ alternativeContact, OnlineStatus status) 
 {
 
 }
@@ -320,14 +320,14 @@ Platform::String^ LinphoneCore::GetStunServer()
 	return nullptr;
 }
 
-void LinphoneCore::SetFirewallPolicy(FirewallPolicy^ policy) 
+void LinphoneCore::SetFirewallPolicy(FirewallPolicy policy) 
 {
 
 }
 
-FirewallPolicy^ LinphoneCore::GetFirewallPolicy() 
+FirewallPolicy LinphoneCore::GetFirewallPolicy() 
 {
-	return nullptr;
+	return FirewallPolicy::NoFirewall;
 }
 
 void LinphoneCore::SetRootCA(Platform::String^ path) 
@@ -465,19 +465,19 @@ Platform::Boolean LinphoneCore::IsSoundResourcesLocked()
 	return false;
 }
 
-Platform::Boolean LinphoneCore::IsMediaEncryptionSupported(MediaEncryption^ menc) 
+Platform::Boolean LinphoneCore::IsMediaEncryptionSupported(MediaEncryption menc) 
 {
 	return false;
 }
 
-void LinphoneCore::SetMediaEncryption(MediaEncryption^ menc) 
+void LinphoneCore::SetMediaEncryption(MediaEncryption menc) 
 {
 
 }
 
-MediaEncryption^ LinphoneCore::GetMediaEncryption() 
+MediaEncryption LinphoneCore::GetMediaEncryption() 
 {
-	return nullptr;
+	return MediaEncryption::None;
 }
 
 void LinphoneCore::SetMediaEncryptionMandatory(Platform::Boolean yesno) 

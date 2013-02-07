@@ -38,6 +38,19 @@ namespace Linphone.Model
         private static BitmapImage _outgoingIcon = new BitmapImage(new Uri("/Assets/call_status_outgoing.png", UriKind.Relative));
         private static BitmapImage _missedIcon = new BitmapImage(new Uri("/Assets/call_status_missed.png", UriKind.Relative));
 
+        private Object _nativeLog;
+        public Object NativeLog
+        {
+            get
+            {
+                return _nativeLog;
+            }
+            set
+            {
+                _nativeLog = value;
+            }
+        }
+
         private String _from;
         public String From
         {
@@ -117,8 +130,9 @@ namespace Linphone.Model
             }
         }
 
-        public CallLog(String from, String to, bool isIncoming, bool isMissed)
+        public CallLog(Object nativeLog, String from, String to, bool isIncoming, bool isMissed)
         {
+            _nativeLog = nativeLog;
             _from = from;
             _to = to;
             _isIncoming = isIncoming;

@@ -8,9 +8,9 @@
 
 using namespace Linphone::BackEnd;
 
-LinphoneCallState^ LinphoneCall::GetState()
+LinphoneCallState LinphoneCall::GetState()
 {
-	return nullptr;
+	return LinphoneCallState::Error;
 }
 
 LinphoneAddress^ LinphoneCall::GetRemoteAddress()
@@ -18,9 +18,9 @@ LinphoneAddress^ LinphoneCall::GetRemoteAddress()
 	return nullptr;
 }
 
-CallDirection^ LinphoneCall::GetDirection()
+CallDirection LinphoneCall::GetDirection()
 {
-	return nullptr;
+	return CallDirection::Incoming;
 }
 
 LinphoneCallLog^ LinphoneCall::GetCallLog()
