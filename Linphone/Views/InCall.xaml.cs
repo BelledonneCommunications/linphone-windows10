@@ -24,6 +24,10 @@ namespace Linphone.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            LinphoneManager.Instance.EnableDebug(SettingsManager.isDebugEnabled);
+            // Create LinphoneCore if not created yet, otherwise do nothing
+            LinphoneManager.Instance.InitLinphoneCore();
+
             if (NavigationContext.QueryString.ContainsKey("sip"))
             {
                 String calledNumber = NavigationContext.QueryString["sip"];
@@ -56,7 +60,9 @@ namespace Linphone.Views
         private void hangUp_Click(object sender, RoutedEventArgs e)
         {
             LinphoneManager.Instance.EndCurrentCall();
-            NavigationService.GoBack();
+
+            if (NavigationService.CanGoBack)
+                NavigationService.GoBack();
         }
 
         private void speaker_Click_1(object sender, RoutedEventArgs e)

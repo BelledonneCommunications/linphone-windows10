@@ -11,7 +11,7 @@ namespace Linphone
  
         // A method that is called back when the incoming call dialog has been dismissed. 
         // This callback is used to complete the incoming call agent. 
-        public delegate void IncomingCallDialogDismissedCallback(); 
+        public delegate void IncomingCallViewDismissedCallback(); 
 
         // A class that provides methods and properties related to VoIP calls.
         // It wraps Windows.Phone.Networking.Voip.VoipCallCoordinator, and provides app-specific call functionality.
@@ -20,8 +20,9 @@ namespace Linphone
         public:
 			// Start processing an incoming call. Called by managed code in this process (the VoIP agent host process). 
             // Returns true if the incoming call processing was started, false otherwise. 
-            bool OnIncomingCallReceived(Platform::String^ contactName, Platform::String^ contactNumber, IncomingCallDialogDismissedCallback^ incomingCallDialogDismissedCallback); 
+            bool OnIncomingCallReceived(Platform::String^ contactName, Platform::String^ contactNumber, IncomingCallViewDismissedCallback^ incomingCallViewDismissedCallback); 
  
+			void EndCurrentCall();
         private:
             friend ref class Linphone::BackEnd::Globals;
  
@@ -36,10 +37,13 @@ namespace Linphone
             // The URI to the linphone icon, 128kb max ! 
             Windows::Foundation::Uri^ linphoneImageUri; 
 
-			 // The URI to the ringtone file, mp3 or wma, 1mb max !
             Windows::Foundation::Uri^ ringtoneUri; 
 
             Windows::Phone::Networking::Voip::VoipCallCoordinator^ callCoordinator; 
+
+			IncomingCallViewDismissedCallback^ onIncomingCallViewDismissed;
+
+			Windows::Phone::Networking::Voip::VoipPhoneCall^ currentCall;
 
 			 // Called by the VoipCallCoordinator when the user accepts an incoming call. 
             void OnAcceptCallRequested(Windows::Phone::Networking::Voip::VoipPhoneCall^ sender, Windows::Phone::Networking::Voip::CallAnswerEventArgs^ args); 

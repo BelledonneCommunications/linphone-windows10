@@ -36,7 +36,7 @@ namespace Linphone.Model
             }
         }
 
-        private List<CallLogs> _history;
+        #region Background Process
         private bool BackgroundProcessConnected;
 
         // An event that indicates that the UI process is no longer connected to the background process 
@@ -132,9 +132,10 @@ namespace Linphone.Model
             uiDisconnectedEvent.Dispose();
             uiDisconnectedEvent = null;
         }
+        #endregion
 
         /// <summary>
-        /// Creates a new LinphoneCore using a LinphoneCoreFactory
+        /// Creates a new LinphoneCore (if not created yet) using a LinphoneCoreFactory
         /// </summary>
         public void InitLinphoneCore()
         {
@@ -152,6 +153,9 @@ namespace Linphone.Model
         {
             server.LinphoneCoreFactory.SetDebugMode(enable, AppResources.ApplicationTitle);
         }
+
+        #region CallLogs
+        private List<CallLogs> _history;
 
         /// <summary>
         /// Get the calls' history
@@ -238,7 +242,7 @@ namespace Linphone.Model
             if (LinphoneCore.GetCallsNb() > 0)
             {
                 LinphoneCall call = LinphoneCore.GetCalls().First();
-                LinphoneCore.TerminateCall(call);
+                LinphoneCore.TerminateCall(null);
             }
         }
 
@@ -262,6 +266,7 @@ namespace Linphone.Model
                 LinphoneCore.ResumeCall(call);
             }
         }
+        #endregion
 
         #region LinphoneCoreListener Callbacks
         public void GlobalState(GlobalState state, string message)

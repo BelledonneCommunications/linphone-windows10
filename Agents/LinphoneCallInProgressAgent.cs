@@ -9,12 +9,13 @@ namespace Linphone.Agents
     {
         public LinphoneCallInProgressAgent() : base()
         {
-            Globals.Instance.StartServer(RegistrationHelper.OutOfProcServerClassNames);
         }
 
         protected override void OnFirstCallStarting()
         {
             Debug.WriteLine("[LinphoneCallInProgressAgent] The first call has started.");
+
+            Globals.Instance.StartServer(RegistrationHelper.OutOfProcServerClassNames);
         }
 
         protected override void OnCancel()

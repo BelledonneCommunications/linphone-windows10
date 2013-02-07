@@ -36,15 +36,11 @@ namespace Linphone.Agents
                 String callerName = "", callerNumber = "";
                 Debug.WriteLine("[{0}] Incoming call from caller {1}, number {2}", "KeepAliveAgent", callerName, callerNumber);
 
-                // Initiate incoming call processing 
-                // If you want to pass in additional information such as pushNotification.Number, you can 
-                bool incomingCallProcessingStarted = BackEnd.Globals.Instance.CallController.OnIncomingCallReceived(callerName, callerNumber, this.OnIncomingCallDialogDismissed);
+                bool incomingCallProcessingStarted = BackEnd.Globals.Instance.CallController.OnIncomingCallReceived(callerName, "+33609668573", this.OnIncomingCallViewDismissed);
 
                 if (!incomingCallProcessingStarted)
                 {
-                    // For some reasons, the incoming call processing was not started. 
                     base.NotifyComplete();
-                    return;
                 }
             }
             else
@@ -64,7 +60,7 @@ namespace Linphone.Agents
             }
         }
 
-        private void OnIncomingCallDialogDismissed()
+        private void OnIncomingCallViewDismissed()
         {
             Debug.WriteLine("[IncomingCallAgent] Incoming call processing is now complete.");
 

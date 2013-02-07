@@ -220,6 +220,7 @@
     <Content Include="Assets\call_status_missed.png" />
     <Content Include="Assets\call_status_outgoing.png" />
     <Content Include="Assets\dialer_address_background.png" />
+    <Content Include="Assets\pnicon.png" />
     <Content Include="Assets\Numpad\numpad_eight_default.png" />
     <Content Include="Assets\Numpad\numpad_eight_over.png" />
     <Content Include="Assets\Numpad\numpad_five_default.png" />

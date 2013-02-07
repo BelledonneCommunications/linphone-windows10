@@ -32,6 +32,7 @@ namespace Linphone
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             LinphoneManager.Instance.EnableDebug(SettingsManager.isDebugEnabled);
+            // Create LinphoneCore if not created yet, otherwise do nothing
             LinphoneManager.Instance.InitLinphoneCore();
 
             // Check for the navigation direction to avoid going to incall view when coming back from incall view

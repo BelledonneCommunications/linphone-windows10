@@ -6,7 +6,7 @@ using namespace Platform;
 using namespace Windows::Foundation;
 using namespace Windows::Phone::Networking::Voip;
 
-bool CallController::OnIncomingCallReceived(Platform::String^ contactName, Platform::String^ contactNumber, IncomingCallDialogDismissedCallback^ incomingCallDialogDismissedCallback) 
+bool CallController::OnIncomingCallReceived(Platform::String^ contactName, Platform::String^ contactNumber, IncomingCallViewDismissedCallback^ incomingCallViewDismissedCallback) 
 { 
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock); 
 
@@ -16,43 +16,64 @@ bool CallController::OnIncomingCallReceived(Platform::String^ contactName, Platf
         TimeSpan ringingTimeout; 
         ringingTimeout.Duration = 90 * 10 * 1000 * 1000; // in 100ns units 
  
-        ::OutputDebugString(L"[CallController::OnIncomingCallReceived] => Will time out in 90 seconds\n"); 
- 
+		this->onIncomingCallViewDismissed = incomingCallViewDismissedCallback;
+
         // Ask the Phone Service to start a new incoming call 
-        this->callCoordinator->RequestNewIncomingCall( 
-            this->callInProgressPageUri, 
+        this->callCoordinator->RequestNewIncomingCall(
+			this->callInProgressPageUri + "?sip=" + contactNumber, 
             contactName, 
             contactNumber, 
             this->defaultContactImageUri, 
             this->voipServiceName, 
             this->linphoneImageUri, 
             "",
-            this->ringtoneUri, 
+			this->ringtoneUri, 
             VoipCallMedia::Audio, 
             ringingTimeout,
-            &incomingCall); 
+            &incomingCall);
     } 
     catch(...) 
     {
         return false; 
     } 
  
-    // Register for events about this incoming call. 
     incomingCall->AnswerRequested += this->acceptCallRequestedHandler; 
     incomingCall->RejectRequested += this->rejectCallRequestedHandler; 
  
     return true; 
 }
 
-void CallController::OnAcceptCallRequested(VoipPhoneCall^ sender, CallAnswerEventArgs^ args) 
+void CallController::OnAcceptCallRequested(VoipPhoneCall^ incomingCall, CallAnswerEventArgs^ args) 
 { 
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 
+	incomingCall->NotifyCallActive();
+	this->currentCall = incomingCall;
+
+	if (this->onIncomingCallViewDismissed != nullptr)
+		this->onIncomingCallViewDismissed();
 } 
  
-void CallController::OnRejectCallRequested(VoipPhoneCall^ sender, CallRejectEventArgs^ args) 
+void CallController::OnRejectCallRequested(VoipPhoneCall^ incomingCall, CallRejectEventArgs^ args) 
 { 
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 
+	incomingCall->NotifyCallEnded();
+
+	if (this->onIncomingCallViewDismissed != nullptr)
+		this->onIncomingCallViewDismissed();
 } 
+
+void CallController::EndCurrentCall()
+{
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
+	if (this->currentCall == nullptr)
+		return;
+
+	this->currentCall->NotifyCallEnded();
+	this->currentCall = nullptr;
+}
 
 CallController::CallController() :
 		callInProgressPageUri(L"/Views/InCall.xaml"), 
@@ -67,8 +88,8 @@ CallController::CallController() :
     String^ installFolder = String::Concat(Windows::ApplicationModel::Package::Current->InstalledLocation->Path, "\\"); 
     this->defaultContactImageUri = ref new Uri(installFolder, "Assets\\unknown.png"); 
     this->voipServiceName = ref new String(L"Linphone"); 
-	this->linphoneImageUri = ref new Uri(installFolder, "Assets\\AppIcon.png"); 
-    this->ringtoneUri = ref new Uri(installFolder, "Assets\\Sounds\\Ringtone.wma"); 
+	this->linphoneImageUri = ref new Uri(installFolder, "Assets\\pnicon.png"); 
+	this->ringtoneUri = ref new Uri(installFolder, "Assets\\Sounds\\Ringtone.wma");
 
 	this->acceptCallRequestedHandler = ref new TypedEventHandler<VoipPhoneCall^, CallAnswerEventArgs^>(this, &CallController::OnAcceptCallRequested); 
     this->rejectCallRequestedHandler = ref new TypedEventHandler<VoipPhoneCall^, CallRejectEventArgs^>(this, &CallController::OnRejectCallRequested); 

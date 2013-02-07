@@ -8,6 +8,7 @@
 #include "OnlineStatus.h"
 #include "PayloadType.h"
 #include "Server.h"
+#include "CallController.h"
 
 using namespace Linphone::BackEnd;
 using namespace Platform;
@@ -112,7 +113,7 @@ LinphoneCall^ LinphoneCore::InviteAddressWithParams(LinphoneAddress^ destination
 
 void LinphoneCore::TerminateCall(LinphoneCall^ call) 
 {
-
+	Globals::Instance->CallController->EndCurrentCall();
 }
 
 LinphoneCall^ LinphoneCore::GetCurrentCall() 

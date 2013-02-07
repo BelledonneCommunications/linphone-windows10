@@ -36,6 +36,7 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
             
                 <toolkit:ToggleSwitch  
@@ -71,6 +72,13 @@
                     x:Name="LockScreenSettings"
                     Margin="0,30,0,0"
                     Content="{Binding Path=LocalizedResources.LockScreenSettings, Source={StaticResource LocalizedStrings}}" />
+
+                <Button
+                    Grid.Row="5"
+                    Click="Simulate_Click_1"
+                    x:Name="Simulate"
+                    Margin="0,30,0,0"
+                    Content="Simulate incoming call" />
             </Grid>
         </ScrollViewer>
     </Grid>

@@ -47,7 +47,7 @@
     <ActivatableClasses>
       <InProcessServer>
         <Path>Linphone.BackEnd.DLL</Path>
-        <ActivatableClass ActivatableClassId="Linphone.BackEnd.IncomingCallDialogDismissedCallback" ThreadingModel="MTA" />
+        <ActivatableClass ActivatableClassId="Linphone.BackEnd.IncomingCallViewDismissedCallback" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.BackEnd.CallController" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.BackEnd.Globals" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.BackEnd.Transports" ThreadingModel="MTA" />
