@@ -1,6 +1,7 @@
 #pragma once
 
 #include <windows.phone.networking.voip.h>
+#include "CallControllerListener.h"
 #include "ApiLock.h"
 
 namespace Linphone
@@ -23,13 +24,19 @@ namespace Linphone
             bool OnIncomingCallReceived(Platform::String^ contactName, Platform::String^ contactNumber, IncomingCallViewDismissedCallback^ incomingCallViewDismissedCallback); 
  
 			void EndCurrentCall();
+
+			void SetCallControllerListener(CallControllerListener^ listener);
         private:
             friend ref class Linphone::BackEnd::Globals;
+
+			CallControllerListener^ callControllerListener;
  
             Platform::String^ voipServiceName; 
+
+			Platform::String^ callerNumber;
 			
             // The relative URI to the call-in-progress page 
-            Platform::String ^callInProgressPageUri; 
+            Platform::String^ callInProgressPageUri; 
 			
             // The URI to the contact image, jpg or png, 1mb max ! 
             Windows::Foundation::Uri^ defaultContactImageUri; 

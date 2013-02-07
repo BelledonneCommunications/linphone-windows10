@@ -16,7 +16,7 @@ using System.Text;
 
 namespace Linphone.Views
 {
-    public partial class Settings : PhoneApplicationPage
+    public partial class Settings : BasePage
     {
         private SettingsManager _appSettings = new SettingsManager();
 

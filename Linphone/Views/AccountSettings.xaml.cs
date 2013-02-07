@@ -12,7 +12,7 @@ using Linphone.Model;
 
 namespace Linphone.Views
 {
-    public partial class AccountSettings : PhoneApplicationPage
+    public partial class AccountSettings : BasePage
     {
         private SettingsManager _appSettings = new SettingsManager();
 

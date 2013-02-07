@@ -13,7 +13,7 @@ using System.Diagnostics;
 
 namespace Linphone.Views
 {
-    public partial class Contacts : PhoneApplicationPage
+    public partial class Contacts : BasePage
     {
         public Contacts()
         {

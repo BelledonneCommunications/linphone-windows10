@@ -12,7 +12,7 @@ using Linphone.Model;
 
 namespace Linphone.Views
 {
-    public partial class CodecsSettings : PhoneApplicationPage
+    public partial class CodecsSettings : BasePage
     {
         private SettingsManager _appSettings = new SettingsManager();
 

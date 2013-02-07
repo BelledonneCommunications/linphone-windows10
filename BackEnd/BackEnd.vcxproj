@@ -125,6 +125,7 @@ popd</Command>
   <ItemGroup>
     <ClInclude Include="ApiLock.h" />
     <ClInclude Include="CallController.h" />
+    <ClInclude Include="CallControllerListener.h" />
     <ClInclude Include="CallDirection.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="LinphoneAddress.h" />

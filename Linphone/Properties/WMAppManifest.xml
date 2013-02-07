@@ -68,8 +68,9 @@
         <Instancing>multipleInstances</Instancing>
         <ActivatableClass ActivatableClassId="Linphone.BackEnd.OutOfProcess.Server" />
       </OutOfProcessServer>
-      <ProxyStub ClassId="{C140594A-6BD4-3151-944E-28C955632D15}">
+      <ProxyStub ClassId="{5D9117DB-3F7A-3A97-B117-A5939C332AB5}">
         <Path>Linphone.BackEndProxyStub.DLL</Path>
+        <Interface Name="Linphone.BackEnd.CallControllerListener" InterfaceId="{5D9117DB-3F7A-3A97-B117-A5939C332AB5}" />
         <Interface Name="Linphone.BackEnd.__ICallControllerPublicNonVirtuals" InterfaceId="{C140594A-6BD4-3151-944E-28C955632D15}" />
         <Interface Name="Linphone.BackEnd.__IGlobalsPublicNonVirtuals" InterfaceId="{74C65E76-06C7-38A6-9E0A-61E3739B7E1E}" />
         <Interface Name="Linphone.BackEnd.__IGlobalsStatics" InterfaceId="{CE34112C-C406-3477-BBB4-7E1F99EE776C}" />

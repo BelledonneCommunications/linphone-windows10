@@ -8,7 +8,7 @@ using System.Windows.Navigation;
 
 namespace Linphone.Views
 {
-    public partial class InCall : PhoneApplicationPage
+    public partial class InCall : BasePage
     {
         private const string speakerOn = "/Assets/AppBar/speaker.png";
         private const string speakerOff = "/Assets/AppBar/speaker.png";
@@ -32,11 +32,14 @@ namespace Linphone.Views
             {
                 String calledNumber = NavigationContext.QueryString["sip"];
                 // While we dunno if the number matches a contact one, we consider it won't and we display the phone number as username
-                Contact.Text = calledNumber; 
+                Contact.Text = calledNumber;
 
-                ContactManager cm = ContactManager.Instance;
-                cm.ContactFound += cm_ContactFound;
-                cm.FindContact(calledNumber);
+                if (calledNumber != null && calledNumber.Length > 0)
+                {
+                    ContactManager cm = ContactManager.Instance;
+                    cm.ContactFound += cm_ContactFound;
+                    cm.FindContact(calledNumber);
+                }
             }
         }
 

@@ -12,7 +12,7 @@ using Linphone.Resources;
 
 namespace Linphone.Views
 {
-    public partial class History : PhoneApplicationPage
+    public partial class History : BasePage
     {
         private bool _usingSelectionAppBar = false;
         private IEnumerable<CallLog> _selection;

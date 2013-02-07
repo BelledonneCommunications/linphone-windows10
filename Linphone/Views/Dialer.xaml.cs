@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 
 namespace Linphone
 {
-    public partial class Dialer : PhoneApplicationPage
+    public partial class Dialer : BasePage
     {
         private LocalizedStrings _appStrings = new LocalizedStrings();
 

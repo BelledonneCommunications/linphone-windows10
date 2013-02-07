@@ -16,7 +16,7 @@ using Linphone.Controls;
 
 namespace Linphone.Views
 {
-    public partial class Contact : PhoneApplicationPage
+    public partial class Contact : BasePage
     {
         private Microsoft.Phone.UserData.Contact contact { get; set; }
 

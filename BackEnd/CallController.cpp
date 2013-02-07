@@ -6,11 +6,19 @@ using namespace Platform;
 using namespace Windows::Foundation;
 using namespace Windows::Phone::Networking::Voip;
 
+void CallController::SetCallControllerListener(CallControllerListener^ listener)
+{
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	this->callControllerListener = listener;
+}
+
 bool CallController::OnIncomingCallReceived(Platform::String^ contactName, Platform::String^ contactNumber, IncomingCallViewDismissedCallback^ incomingCallViewDismissedCallback) 
 { 
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock); 
 
 	VoipPhoneCall^ incomingCall = nullptr; 
+	this->callerNumber = contactNumber;
+
 	try 
     { 
         TimeSpan ringingTimeout; 
@@ -52,6 +60,9 @@ void CallController::OnAcceptCallRequested(VoipPhoneCall^ incomingCall, CallAnsw
 
 	if (this->onIncomingCallViewDismissed != nullptr)
 		this->onIncomingCallViewDismissed();
+
+	if (this->callControllerListener != nullptr)
+		this->callControllerListener->NewCallStarted(this->callerNumber);
 } 
  
 void CallController::OnRejectCallRequested(VoipPhoneCall^ incomingCall, CallRejectEventArgs^ args) 
@@ -62,6 +73,8 @@ void CallController::OnRejectCallRequested(VoipPhoneCall^ incomingCall, CallReje
 
 	if (this->onIncomingCallViewDismissed != nullptr)
 		this->onIncomingCallViewDismissed();
+
+	this->callerNumber = nullptr;
 } 
 
 void CallController::EndCurrentCall()
@@ -80,7 +93,9 @@ CallController::CallController() :
 		voipServiceName(nullptr), 
 		defaultContactImageUri(nullptr), 
 		linphoneImageUri(nullptr),
-		ringtoneUri(nullptr)
+		ringtoneUri(nullptr),
+		callerNumber(nullptr),
+		callControllerListener(nullptr)
 {
 	this->callCoordinator = VoipCallCoordinator::GetDefault(); 
 

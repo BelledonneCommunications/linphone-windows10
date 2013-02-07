@@ -15,7 +15,7 @@ using System.Reflection;
 
 namespace Linphone.Views
 {
-    public partial class About : PhoneApplicationPage
+    public partial class About : BasePage
     {
         public About()
         {

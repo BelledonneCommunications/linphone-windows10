@@ -36,6 +36,14 @@ namespace Linphone.Model
             }
         }
 
+        public CallController CallController
+        {
+            get
+            {
+                return server.CallController;
+            }
+        }
+
         #region Background Process
         private bool BackgroundProcessConnected;
 
