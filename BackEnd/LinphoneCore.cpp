@@ -113,7 +113,7 @@ LinphoneCall^ LinphoneCore::InviteAddressWithParams(LinphoneAddress^ destination
 
 void LinphoneCore::TerminateCall(LinphoneCall^ call) 
 {
-	Globals::Instance->CallController->EndCurrentCall();
+	
 }
 
 LinphoneCall^ LinphoneCore::GetCurrentCall() 

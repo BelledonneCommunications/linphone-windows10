@@ -7,6 +7,8 @@ namespace Linphone
 		public interface class CallControllerListener
 		{
 			void NewCallStarted(Platform::String^ callerNumber);
+
+			void CallEnded();
 		};
 	}
 }

@@ -27,12 +27,17 @@ namespace Linphone
             });
         }
 
-        public virtual void OnNavigatedTo(NavigationEventArgs nee)
+        public void CallEnded()
+        {
+
+        }
+
+        public virtual void OnNavigatedTo(NavigationEventArgs nea)
         {
             LinphoneManager.Instance.CallController.SetCallControllerListener(this);
         }
 
-        public virtual void OnNavigatedFrom(NavigationEventArgs nee)
+        public virtual void OnNavigatedFrom(NavigationEventArgs nea)
         {
             LinphoneManager.Instance.CallController.SetCallControllerListener(null);
         } 

@@ -239,6 +239,7 @@ namespace Linphone.Model
         /// <param name="sipAddress">SIP address to call</param>
         public void NewOutgoingCall(String sipAddress)
         {
+            CallController.NewOutgoingCall(sipAddress, "");
             LinphoneCore.Invite(sipAddress);
         }
 
@@ -250,8 +251,9 @@ namespace Linphone.Model
             if (LinphoneCore.GetCallsNb() > 0)
             {
                 LinphoneCall call = LinphoneCore.GetCalls().First();
-                LinphoneCore.TerminateCall(null);
+                LinphoneCore.TerminateCall(call);
             }
+            CallController.EndCurrentCall();
         }
 
         /// <summary>
@@ -284,7 +286,12 @@ namespace Linphone.Model
 
         public void CallState(LinphoneCall call, LinphoneCallState state)
         {
-
+            if (state == LinphoneCallState.CallEnd ||
+                state == LinphoneCallState.Error ||
+                state == LinphoneCallState.Released)
+            {
+                CallController.EndCurrentCall();
+            }
         }
 
         public void RegistrationState(LinphoneProxyConfig config, RegistrationState state, string message)

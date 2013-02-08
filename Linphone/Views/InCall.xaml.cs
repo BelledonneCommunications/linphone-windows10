@@ -66,6 +66,13 @@ namespace Linphone.Views
 
             if (NavigationService.CanGoBack)
                 NavigationService.GoBack();
+            else
+            {
+                //If incall view directly accessed from home page, backstack is empty
+                //If so, instead of keeping the incall view, launch the Dialer and remove the incall view from the backstack
+                NavigationService.Navigate(new Uri("/Views/Dialer.xaml", UriKind.RelativeOrAbsolute));
+                NavigationService.RemoveBackEntry();
+            }
         }
 
         private void speaker_Click_1(object sender, RoutedEventArgs e)

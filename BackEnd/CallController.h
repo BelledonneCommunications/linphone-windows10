@@ -25,6 +25,8 @@ namespace Linphone
  
 			void EndCurrentCall();
 
+			Platform::Boolean NewOutgoingCall(Platform::String^ number, Platform::String^ name);
+
 			void SetCallControllerListener(CallControllerListener^ listener);
         private:
             friend ref class Linphone::BackEnd::Globals;

@@ -9,6 +9,7 @@ using namespace Windows::Phone::Networking::Voip;
 void CallController::SetCallControllerListener(CallControllerListener^ listener)
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
 	this->callControllerListener = listener;
 }
 
@@ -85,7 +86,37 @@ void CallController::EndCurrentCall()
 		return;
 
 	this->currentCall->NotifyCallEnded();
+
+	if (this->callControllerListener != nullptr)
+		this->callControllerListener->CallEnded();
+
 	this->currentCall = nullptr;
+}
+
+Platform::Boolean CallController::NewOutgoingCall(Platform::String^ number, Platform::String^ name)
+{
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
+	if (this->currentCall != nullptr)
+		return false;
+	
+	VoipPhoneCall^ outgoingCall = nullptr;
+
+	this->callCoordinator->RequestNewOutgoingCall(
+		this->callInProgressPageUri + "?sip=" + number, 
+        name, 
+        this->voipServiceName, 
+        VoipCallMedia::Audio,
+		&outgoingCall);
+
+	outgoingCall->NotifyCallActive();
+	this->currentCall = outgoingCall;
+	this->callerNumber = number;
+
+	if (this->callControllerListener != nullptr)
+		this->callControllerListener->NewCallStarted(number);
+
+	return true;
 }
 
 CallController::CallController() :
