@@ -228,9 +228,23 @@ namespace Linphone.Model
         /// <summary>
         /// Remove all calls' history from LinphoneCore
         /// </summary>
-        public void ClearCallLogs()
+        /// <returns>An empty list</returns>
+        public List<CallLogs> ClearCallLogs()
         {
             LinphoneCore.ClearCallLogs();
+
+            _history = new List<CallLogs>();
+
+            ObservableCollection<CallLog> calls = new ObservableCollection<CallLog>();
+            ObservableCollection<CallLog> missedCalls = new ObservableCollection<CallLog>();
+
+            CallLogs all = new CallLogs("All", calls);
+            _history.Add(all);
+
+            CallLogs missed = new CallLogs("Missed", missedCalls);
+            _history.Add(missed);
+
+            return _history;
         }
 
         /// <summary>

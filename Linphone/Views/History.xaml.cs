@@ -34,8 +34,7 @@ namespace Linphone.Views
 
         private void deleteAll_Click_1(object sender, EventArgs e)
         {
-            history.ItemsSource = null;
-            LinphoneManager.Instance.ClearCallLogs();
+            history.ItemsSource = LinphoneManager.Instance.ClearCallLogs();
         }
 
         private void deleteSelection_Click_1(object sender, EventArgs e)
