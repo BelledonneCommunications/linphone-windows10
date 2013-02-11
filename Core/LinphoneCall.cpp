@@ -113,12 +113,12 @@ Platform::String^ LinphoneCall::GetRemoteContact()
 	return nullptr;
 }
 
-void LinphoneCall::UserPointer::set(Platform::Object^ up)
+void LinphoneCall::CallContext::set(Platform::Object^ cc)
 {
-	this->userPointer = up;
+	this->callContext = cc;
 }
 
-Platform::Object^  LinphoneCall::UserPointer::get()
+Platform::Object^  LinphoneCall::CallContext::get()
 {
-	return this->userPointer;
+	return this->callContext;
 }

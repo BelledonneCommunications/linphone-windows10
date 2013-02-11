@@ -62,14 +62,14 @@ namespace Linphone
 			Platform::String^ GetRemoteUserAgent();
 			Platform::String^ GetRemoteContact();
 
-			property Platform::Object^ UserPointer
+			property Platform::Object^ CallContext
             {
                 Platform::Object^ get();
-				void set(Platform::Object^ up);
+				void set(Platform::Object^ cc);
             }
 
 		private:
-			Platform::Object^ userPointer;
+			Platform::Object^ callContext;
 		};
 	}
 }

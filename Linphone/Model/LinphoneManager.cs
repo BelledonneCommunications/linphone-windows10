@@ -258,7 +258,7 @@ namespace Linphone.Model
             if (call != null)
             {
                 VoipPhoneCall voipCall = CallController.NewOutgoingCall(sipAddress, "");
-                call.UserPointer = voipCall;
+                call.CallContext = voipCall;
             }
         }
 
@@ -271,7 +271,7 @@ namespace Linphone.Model
             {
                 LinphoneCall call = LinphoneCore.GetCalls().First();
                 LinphoneCore.TerminateCall(call);
-                CallController.EndCall(call.UserPointer as VoipPhoneCall);
+                CallController.EndCall(call.CallContext as VoipPhoneCall);
             }
         }
 
@@ -309,7 +309,7 @@ namespace Linphone.Model
                 state == LinphoneCallState.Error ||
                 state == LinphoneCallState.Released)
             {
-                CallController.EndCall(call.UserPointer as VoipPhoneCall);
+                CallController.EndCall(call.CallContext as VoipPhoneCall);
             }
         }
 
