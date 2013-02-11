@@ -90,7 +90,7 @@
     <Compile Include="RegistrationHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BackEnd\BackEnd.vcxproj">
+    <ProjectReference Include="..\Core\Core.vcxproj">
       <Project>{C8D75245-FFCF-4932-A228-C9CC8BB60B03}</Project>
       <Name>BackEnd</Name>
     </ProjectReference>

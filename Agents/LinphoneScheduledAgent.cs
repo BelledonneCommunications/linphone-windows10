@@ -1,7 +1,7 @@
 ﻿using Microsoft.Phone.Networking.Voip;
 using Microsoft.Phone.Scheduler;
-using Linphone.BackEnd;
-using Linphone.BackEnd.OutOfProcess;
+using Linphone.Core;
+using Linphone.Core.OutOfProcess;
 using System.Diagnostics;
 using System.IO;
 using System.Xml.Serialization;
@@ -36,7 +36,7 @@ namespace Linphone.Agents
                 String callerName = "", callerNumber = "";
                 Debug.WriteLine("[{0}] Incoming call from caller {1}, number {2}", "KeepAliveAgent", callerName, callerNumber);
 
-                bool incomingCallProcessingStarted = BackEnd.Globals.Instance.CallController.OnIncomingCallReceived(callerName, "+33609668573", this.OnIncomingCallViewDismissed);
+                bool incomingCallProcessingStarted = Globals.Instance.CallController.OnIncomingCallReceived(callerName, "+33609668573", this.OnIncomingCallViewDismissed);
 
                 if (!incomingCallProcessingStarted)
                 {

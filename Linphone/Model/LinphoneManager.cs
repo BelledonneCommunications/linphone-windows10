@@ -1,6 +1,6 @@
 ﻿using Microsoft.Phone.Networking.Voip;
-using Linphone.BackEnd;
-using Linphone.BackEnd.OutOfProcess;
+using Linphone.Core;
+using Linphone.Core.OutOfProcess;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Linphone.Resources;
+using Windows.Phone.Networking.Voip;
 
 namespace Linphone.Model
 {
@@ -253,8 +254,12 @@ namespace Linphone.Model
         /// <param name="sipAddress">SIP address to call</param>
         public void NewOutgoingCall(String sipAddress)
         {
-            CallController.NewOutgoingCall(sipAddress, "");
-            LinphoneCore.Invite(sipAddress);
+            LinphoneCall call = LinphoneCore.Invite(sipAddress);
+            if (call != null)
+            {
+                VoipPhoneCall voipCall = CallController.NewOutgoingCall(sipAddress, "");
+                call.UserPointer = voipCall;
+            }
         }
 
         /// <summary>
@@ -266,8 +271,8 @@ namespace Linphone.Model
             {
                 LinphoneCall call = LinphoneCore.GetCalls().First();
                 LinphoneCore.TerminateCall(call);
+                CallController.EndCall(call.UserPointer as VoipPhoneCall);
             }
-            CallController.EndCurrentCall();
         }
 
         /// <summary>
@@ -304,7 +309,7 @@ namespace Linphone.Model
                 state == LinphoneCallState.Error ||
                 state == LinphoneCallState.Released)
             {
-                CallController.EndCurrentCall();
+                CallController.EndCall(call.UserPointer as VoipPhoneCall);
             }
         }
 

@@ -5,6 +5,6 @@
 */*/*/Thumbs.db
 */ARM/
 */x86/
-BackEndProxyStub/Linphone.BackEnd*
+CoreProxyStub/Linphone.Core*
 ARM/
 Linphone.sdf

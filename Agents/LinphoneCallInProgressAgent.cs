@@ -1,6 +1,6 @@
 ﻿using Microsoft.Phone.Networking.Voip;
-using Linphone.BackEnd;
-using Linphone.BackEnd.OutOfProcess;
+using Linphone.Core;
+using Linphone.Core.OutOfProcess;
 using System.Diagnostics;
 
 namespace Linphone.Agents

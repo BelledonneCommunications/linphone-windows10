@@ -248,7 +248,7 @@
     <Content Include="Assets\Numpad\numpad_zero_default.png" />
     <Content Include="Assets\Numpad\numpad_zero_over.png" />
     <Content Include="Assets\Sounds\Ringtone.wma" />
-    <Content Include="$(SolutionDir)$(PlatformName)\$(ConfigurationName)\BackEndProxyStub\Linphone.BackEndProxyStub.dll" />
+    <Content Include="$(SolutionDir)$(PlatformName)\$(ConfigurationName)\CoreProxyStub\Linphone.CoreProxyStub.dll" />
     <Content Include="Assets\unknown.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
@@ -260,9 +260,9 @@
       <Project>{820034C1-645D-4340-8813-D980C1EF77DE}</Project>
       <Name>Agents</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BackEnd\BackEnd.vcxproj">
+    <ProjectReference Include="..\Core\Core.vcxproj">
       <Project>{C8D75245-FFCF-4932-A228-C9CC8BB60B03}</Project>
-      <Name>BackEnd</Name>
+      <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

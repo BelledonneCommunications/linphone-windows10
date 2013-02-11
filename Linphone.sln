@@ -1,8 +1,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2012 for Windows Phone
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BackEnd", "BackEnd\BackEnd.vcxproj", "{C8D75245-FFCF-4932-A228-C9CC8BB60B03}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Core", "Core\Core.vcxproj", "{C8D75245-FFCF-4932-A228-C9CC8BB60B03}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BackEndProxyStub", "BackEndProxyStub\BackEndProxyStub.vcxproj", "{BBABEEA1-494C-4618-96E3-399873A5558B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CoreProxyStub", "CoreProxyStub\CoreProxyStub.vcxproj", "{BBABEEA1-494C-4618-96E3-399873A5558B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{C8D75245-FFCF-4932-A228-C9CC8BB60B03} = {C8D75245-FFCF-4932-A228-C9CC8BB60B03}
 	EndProjectSection
