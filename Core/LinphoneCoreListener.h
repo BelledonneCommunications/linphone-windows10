@@ -9,6 +9,8 @@ namespace Linphone
 	{
 		public interface class LinphoneCoreListener
 		{
+			void AuthInfoRequested(Platform::String^ realm, Platform::String^ username);
+
 			void GlobalState(GlobalState state, Platform::String^ message);
 
 			void CallState(LinphoneCall^ call, LinphoneCallState state);

@@ -28,6 +28,11 @@ namespace Linphone
 			LinphoneAuthInfo^ CreateAuthInfo(Platform::String^ username, Platform::String^ password, Platform::String^ realm);
 
 			LinphoneAddress^ CreateLinphoneAddress(Platform::String^ username, Platform::String^ domain, Platform::String^ displayName);
+
+			/// <summary>
+			/// Constructs a LinphoneAddress object by parsing the user supplied address, given as a string.
+			/// </summary>
+			/// <param name="address">address, should be like "sip:joe@sip.linphone.org"</param>
 			LinphoneAddress^ CreateLinphoneAddress(Platform::String^ address);
 
 		private:

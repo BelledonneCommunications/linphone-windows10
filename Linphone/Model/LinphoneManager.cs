@@ -298,6 +298,11 @@ namespace Linphone.Model
         #endregion
 
         #region LinphoneCoreListener Callbacks
+        public void AuthInfoRequested(string realm, string username)
+        {
+
+        }
+
         public void GlobalState(GlobalState state, string message)
         {
 

@@ -5,7 +5,7 @@
 
 using namespace Linphone::Core;
 
-void LinphoneCallParams::SetAudioBandwidth()
+void LinphoneCallParams::SetAudioBandwidth(int value)
 {
 
 }

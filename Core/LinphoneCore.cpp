@@ -46,6 +46,11 @@ Platform::String^ Transports::ToString()
 	return "udp[" + udp + "] tcp[" + tcp + "] tls[" + tls + "]";
 }
 
+void LinphoneCore::SetContext(Platform::Object^ object)
+{
+
+}
+
 void LinphoneCore::ClearProxyConfigs()
 {
 

@@ -25,14 +25,33 @@ namespace Linphone
 		public:
 			MediaType GetMediaType();
 			IceState GetIceState();
+
+			/// <summary>
+			/// Gets the download bandwidth in kbits/s.
+			/// </summary>
 			float GetDownloadBandwidth();
+
+			/// <summary>
+			/// Gets the upload bandwidth in kbits/s.
+			/// </summary>
 			float GetUploadBandwidth();
 			float GetSenderLossRate();
 			float GetReceiverLossRate();
 			float GetSenderInterarrivalJitter();
 			float GetReceiverInterarrivalJitter();
+
+			/// <summary>
+			/// Gets the round trip delay in seconds.
+			/// </summary>
+			/// <returns>
+			/// -1 if the information is not available.
+			/// </returns>
 			float GetRoundTripDelay();
 			int64 GetLatePacketsCumulativeNumber();
+
+			/// <summary>
+			/// Gets the jitter buffer size in milliseconds.
+			/// </summary>
 			float GetJitterBufferSize();
 		};
 	}

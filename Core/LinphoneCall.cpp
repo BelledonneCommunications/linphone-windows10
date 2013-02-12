@@ -63,7 +63,7 @@ Platform::Boolean LinphoneCall::IsEchoLimiterEnabled()
 	return false;
 }
 
-int LinphoneCall::GetDuraction()
+int LinphoneCall::GetDuration()
 {
 	return -1;
 }
