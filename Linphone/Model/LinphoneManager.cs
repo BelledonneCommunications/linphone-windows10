@@ -60,6 +60,9 @@ namespace Linphone.Model
         // A timespan representing an indefinite wait 
         private static readonly TimeSpan indefiniteWait = new TimeSpan(0, 0, 0, 0, -1);
 
+        // A timer to invoke LinphoneCore.Iterate()
+        private static Timer timer;
+
         /// <summary>
         /// Starts and connects the UI to the background process
         /// </summary>
@@ -152,6 +155,18 @@ namespace Linphone.Model
                 return;
 
             server.LinphoneCoreFactory.CreateLinphoneCore(this);
+            timer = new Timer(LinphoneCoreIterate, null, 1, 20);
+        }
+
+        private void LinphoneCoreIterate(object o)
+        {
+            if (LinphoneCore == null && timer != null)
+            {
+                timer.Dispose();
+                return;
+            }
+
+            LinphoneCore.Iterate();
         }
 
         /// <summary>
