@@ -8,8 +8,9 @@ namespace Linphone
     {
         namespace OutOfProcess
         {
-            // A remotely activatable class that is used by the UI process and managed code within
-            // the VoIP background process to get access to native objects that exist in the VoIP background process.
+            /// <summary>
+			/// A remotely activatable class that is used by the UI process and managed code within the VoIP background process to get access to native objects that exist in the VoIP background process.
+			/// </summary>
             public ref class Server sealed
             {
             public:
