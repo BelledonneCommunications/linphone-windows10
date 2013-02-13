@@ -13,16 +13,28 @@ using System.Windows.Input;
 
 namespace Linphone.Controls
 {
+    /// <summary>
+    /// Custom control to represent a numpad (composed of Digits and an AddressBox).
+    /// </summary>
     public partial class Numpad : UserControl
     {
+        /// <summary>
+        /// Dependency property for the AddressBox.
+        /// </summary>
         public static readonly DependencyProperty AddressProperty = DependencyProperty.Register("Address", typeof(AddressBox), typeof(Numpad), new PropertyMetadata(new AddressBox()));
 
+        /// <summary>
+        /// AddressBox (custom control) in which to append the clicked digits.
+        /// </summary>
         public AddressBox Address
         {
             get { return (AddressBox)GetValue(AddressProperty); }
             set { SetValue(AddressProperty, value); }
         }
 
+        /// <summary>
+        /// Public constructor.
+        /// </summary>
         public Numpad()
         {
             InitializeComponent();
@@ -46,6 +58,11 @@ namespace Linphone.Controls
             sharp.Numpad = this;
         }
 
+        /// <summary>
+        /// Event triggered when a Digit is pressed and released.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void digit_Click_1(object sender, RoutedEventArgs e)
         {
             Digit button = (sender as Digit);

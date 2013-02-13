@@ -11,9 +11,15 @@ using System.Windows.Media.Imaging;
 
 namespace Linphone.Controls
 {
+    /// <summary>
+    /// Custom user control representing a possible action on a phone number or email (in the Contact.xaml view).
+    /// </summary>
     public partial class ContactAction : UserControl
     {
         private String _action;
+        /// <summary>
+        /// URI of an Image that represents the action.
+        /// </summary>
         public String Action
         {
             get
@@ -28,6 +34,9 @@ namespace Linphone.Controls
         }
 
         private String _label;
+        /// <summary>
+        /// Label of the phone number or the email displayed.
+        /// </summary>
         public String Label
         {
             get
@@ -42,6 +51,9 @@ namespace Linphone.Controls
         }
 
         private String _numberOrAddress;
+        /// <summary>
+        /// Phone number or email address to display.
+        /// </summary>
         public String NumberOrAddress
         {
             get
@@ -55,6 +67,9 @@ namespace Linphone.Controls
             }
         }
 
+        /// <summary>
+        /// Event triggered when action image is clicked.
+        /// </summary>
         public RoutedEventHandler Click
         {
             set 
@@ -65,6 +80,9 @@ namespace Linphone.Controls
             get { return null; }
         }
 
+        /// <summary>
+        /// Public constructor.
+        /// </summary>
         public ContactAction()
         {
             InitializeComponent();

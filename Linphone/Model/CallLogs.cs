@@ -8,9 +8,15 @@ using System.Windows.Media.Imaging;
 
 namespace Linphone.Model
 {
+    /// <summary>
+    /// Object that represents a list of call logs.
+    /// </summary>
     public class CallLogs
     {
         private String _title;
+        /// <summary>
+        /// Title for this list of call logs, will be displayed as header in the pivot control.
+        /// </summary>
         public String Title
         {
             get
@@ -23,8 +29,14 @@ namespace Linphone.Model
             }
         }
 
+        /// <summary>
+        /// List of callLogs.
+        /// </summary>
         public ObservableCollection<CallLog> Calls { get; set; }
 
+        /// <summary>
+        /// Public constructor.
+        /// </summary>
         public CallLogs(String title, ObservableCollection<CallLog> calls)
         {
             _title = title;
@@ -32,6 +44,10 @@ namespace Linphone.Model
         }
     }
 
+    /// <summary>
+    /// Object representing a call log.
+    /// Keeps a reference to a C++/CX CallLog object and provides some useful methods.
+    /// </summary>
     public class CallLog
     {
         private static BitmapImage _incomingIcon = new BitmapImage(new Uri("/Assets/call_status_incoming.png", UriKind.Relative));
@@ -39,6 +55,9 @@ namespace Linphone.Model
         private static BitmapImage _missedIcon = new BitmapImage(new Uri("/Assets/call_status_missed.png", UriKind.Relative));
 
         private Object _nativeLog;
+        /// <summary>
+        /// C++/CX call log object.
+        /// </summary>
         public Object NativeLog
         {
             get
@@ -52,6 +71,9 @@ namespace Linphone.Model
         }
 
         private String _from;
+        /// <summary>
+        /// Call initiator name or address.
+        /// </summary>
         public String From
         {
             get
@@ -65,6 +87,9 @@ namespace Linphone.Model
         }
 
         private String _to;
+        /// <summary>
+        /// Call receiver name or address.
+        /// </summary>
         public String To
         {
             get
@@ -78,6 +103,9 @@ namespace Linphone.Model
         }
 
         private bool _isIncoming;
+        /// <summary>
+        /// For the user, has the call been outgoing or incoming.
+        /// </summary>
         public bool IsIncoming
         {
             get
@@ -91,6 +119,9 @@ namespace Linphone.Model
         }
 
         private bool _isMissed;
+        /// <summary>
+        /// Indicated whether or not the call has been missed by the user.
+        /// </summary>
         public bool IsMissed
         {
             get
@@ -102,7 +133,10 @@ namespace Linphone.Model
                 _isMissed = value;
             }
         }
-
+        
+        /// <summary>
+        /// Returns a BitmapImage representing the status of the call (incoming, outgoing or missed).
+        /// </summary>
         public BitmapImage StatusIcon
         {
             get
@@ -119,6 +153,9 @@ namespace Linphone.Model
             }
         }
 
+        /// <summary>
+        /// Named displayed for the caller/callee.
+        /// </summary>
         public String DisplayedName
         {
             get
@@ -130,6 +167,9 @@ namespace Linphone.Model
             }
         }
 
+        /// <summary>
+        /// Public constructor.
+        /// </summary>
         public CallLog(Object nativeLog, String from, String to, bool isIncoming, bool isMissed)
         {
             _nativeLog = nativeLog;

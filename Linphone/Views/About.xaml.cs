@@ -15,8 +15,14 @@ using System.Reflection;
 
 namespace Linphone.Views
 {
+    /// <summary>
+    /// Page used to display message about the app.
+    /// </summary>
     public partial class About : BasePage
     {
+        /// <summary>
+        /// Public constructor.
+        /// </summary>
         public About()
         {
             InitializeComponent();

@@ -14,10 +14,16 @@ using System.Windows.Media.Imaging;
 
 namespace Linphone
 {
+    /// <summary>
+    /// Home page for the application, displays a numpad and links to Settings/History/Contacts pages.
+    /// </summary>
     public partial class Dialer : BasePage
     {
         private LocalizedStrings _appStrings = new LocalizedStrings();
 
+        /// <summary>
+        /// Public constructor.
+        /// </summary>
         public Dialer()
         {
             InitializeComponent();
@@ -29,6 +35,11 @@ namespace Linphone
             call.Click += call_Click_1;
         }
 
+        /// <summary>
+        /// Method called when the page is displayed.
+        /// Check if the uri contains a sip address, if yes, it starts a call to this address.
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             LinphoneManager.Instance.EnableDebug(SettingsManager.isDebugEnabled);

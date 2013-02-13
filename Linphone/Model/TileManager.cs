@@ -7,9 +7,15 @@ using System.Threading.Tasks;
 
 namespace Linphone.Model
 {
+    /// <summary>
+    /// Utility class used to handle everything that is Tile related
+    /// </summary>
     public class TileManager
     {
         private static TileManager singleton;
+        /// <summary>
+        /// Static instance to access the class.
+        /// </summary>
         public static TileManager Instance
         {
             get
@@ -21,6 +27,9 @@ namespace Linphone.Model
             }
         }
 
+        /// <summary>
+        /// Public constructor.
+        /// </summary>
         public TileManager()
         {
 

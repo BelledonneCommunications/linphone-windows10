@@ -16,15 +16,24 @@ using Linphone.Controls;
 
 namespace Linphone.Views
 {
+    /// <summary>
+    /// Page displaying contact information + action buttons associated to phone numbers and email addresses.
+    /// </summary>
     public partial class Contact : BasePage
     {
         private Microsoft.Phone.UserData.Contact contact { get; set; }
 
+        /// <summary>
+        /// Public constructor.
+        /// </summary>
         public Contact()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Method called when the page is displayed, fetches and display contact information and create actions.
+        /// </summary>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             while (actions.Children.Count > 0)

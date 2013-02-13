@@ -13,8 +13,14 @@ using System.Diagnostics;
 
 namespace Linphone.Views
 {
+    /// <summary>
+    /// Page using native style list to display phone contacts.
+    /// </summary>
     public partial class Contacts : BasePage
     {
+        /// <summary>
+        /// Public constructor.
+        /// </summary>
         public Contacts()
         {
             InitializeComponent();

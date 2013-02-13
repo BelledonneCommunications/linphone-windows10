@@ -8,6 +8,9 @@ using System.Windows.Navigation;
 
 namespace Linphone.Views
 {
+    /// <summary>
+    /// InCall page, displayed for both incoming and outgoing calls.
+    /// </summary>
     public partial class InCall : BasePage
     {
         private const string speakerOn = "/Assets/AppBar/speaker.png";
@@ -17,11 +20,19 @@ namespace Linphone.Views
         private const string pauseOn = "/Assets/AppBar/play.png";
         private const string pauseOff = "/Assets/AppBar/pause.png";
 
+        /// <summary>
+        /// Public constructor.
+        /// </summary>
         public InCall()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Method called when the page is displayed.
+        /// Searches for a matching contact using the current call address or number and display information if found.
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             LinphoneManager.Instance.EnableDebug(SettingsManager.isDebugEnabled);
@@ -46,7 +57,6 @@ namespace Linphone.Views
         /// <summary>
         /// Callback called when the search on a phone number for a contact has a match
         /// </summary>
-        /// <param name="e">The result of the search</param>
         private void cm_ContactFound(object sender, ContactFoundEventArgs e)
         {
             Contact.Text = e.ContactFound.DisplayName;

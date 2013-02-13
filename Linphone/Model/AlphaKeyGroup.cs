@@ -21,7 +21,7 @@ namespace Linphone.Model
         public delegate string GetKeyDelegate(T item);
 
         /// <summary>
-        /// The Key of this group.
+        /// The Key for this group.
         /// </summary>
         public string Key { get; private set; }
 
@@ -37,7 +37,6 @@ namespace Linphone.Model
         /// <summary>
         /// Create a list of AlphaGroup<T> with keys set by a SortedLocaleGrouping.
         /// </summary>
-        /// <param name="slg">The </param>
         /// <returns>Theitems source for a LongListSelector</returns>
         private static List<AlphaKeyGroup<T>> CreateGroups(SortedLocaleGrouping slg)
         {
@@ -67,13 +66,7 @@ namespace Linphone.Model
             foreach (T item in items)
             {
                 int index = 0;
-                if (slg.SupportsPhonetics)
-                {
-                    //check if your database has yomi string for item
-                    //if it does not, then do you want to generate Yomi or ask the user for this item.
-                    //index = slg.GetGroupIndex(getKey(Yomiof(item)));
-                }
-                else
+                if (!slg.SupportsPhonetics)
                 {
                     index = slg.GetGroupIndex(getKey(item));
                 }

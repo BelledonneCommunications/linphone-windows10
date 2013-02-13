@@ -13,6 +13,9 @@ namespace Linphone.Agents
 
         }
 
+        /// <summary>
+        /// Called when the app is in foreground (when it starts or when it's resumed)
+        /// </summary>
         protected override void OnLaunched()
         {
             Debug.WriteLine("[LinphoneForegroundLifeTimeAgent] The UI has entered the foreground.");
@@ -20,6 +23,9 @@ namespace Linphone.Agents
             Globals.Instance.StartServer(RegistrationHelper.OutOfProcServerClassNames);
         }
 
+        /// <summary>
+        /// Called when the app is in background
+        /// </summary>
         protected override void OnCancel()
         {
             Debug.WriteLine("[LinphoneForegroundLifeTimeAgent] The UI is leaving the foreground");

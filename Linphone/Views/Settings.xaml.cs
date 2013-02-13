@@ -16,10 +16,16 @@ using System.Text;
 
 namespace Linphone.Views
 {
+    /// <summary>
+    /// Base setting page, provides access to each detailled settings + debug setting.
+    /// </summary>
     public partial class Settings : BasePage
     {
         private SettingsManager _appSettings = new SettingsManager();
 
+        /// <summary>
+        /// Public constructor.
+        /// </summary>
         public Settings()
         {
             InitializeComponent();
@@ -74,7 +80,7 @@ namespace Linphone.Views
             var op = await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-settings-lock:"));
         }
 
-        //TODO: Remove later
+        #region Simulate Incoming Call, to remove
         private void Simulate_Click_1(object sender, RoutedEventArgs e)
         {
             try
@@ -84,10 +90,10 @@ namespace Linphone.Views
                 sendNotificationRequest.Method = "POST";
 
                 string rawMessage = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
-                "<root>" +
-                    "<Value1>" + "Sylvain Berfini" + "<Value1>" +
-                    "<Value2>" + "+33952636505" + "<Value2>" +
-                "</root>";
+                "<IncomingCall>" +
+                    "<Name>" + "Belledonne Comm." + "</Name>" +
+                    "<Number>" + "+33952636505" + "</Number>" +
+                "</IncomingCall>";
                 byte[] notificationMessage = Encoding.UTF8.GetBytes(rawMessage);
 
                 sendNotificationRequest.ContentLength = notificationMessage.Length;
@@ -125,7 +131,8 @@ namespace Linphone.Views
             }
             catch (Exception)
             {
-            } 
+            }
         }
+        #endregion
     }
 }

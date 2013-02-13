@@ -8,11 +8,29 @@ using System.Threading.Tasks;
 
 namespace Linphone.Model
 {
+    /// <summary>
+    /// Param object for contact found event listener.
+    /// </summary>
     public class ContactFoundEventArgs : EventArgs
     {
+        /// <summary>
+        /// Contact found if actually found.
+        /// </summary>
         public Contact ContactFound;
+
+        /// <summary>
+        /// Phone number used to find this contact.
+        /// </summary>
         public String PhoneNumber;
+
+        /// <summary>
+        /// Phone label associated to the phone number.
+        /// </summary>
         public String PhoneLabel;
+
+        /// <summary>
+        /// Public constructor.
+        /// </summary>
         public ContactFoundEventArgs(Contact contact, String number, String label = null)
         {
             ContactFound = contact;
@@ -21,9 +39,15 @@ namespace Linphone.Model
         }
     }
 
+    /// <summary>
+    /// Utility class used to handle every contact related requests.
+    /// </summary>
     public class ContactManager
     {
         private static ContactManager singleton;
+        /// <summary>
+        /// Static instance for this class.
+        /// </summary>
         public static ContactManager Instance
         {
             get 
@@ -37,11 +61,26 @@ namespace Linphone.Model
 
         private List<AlphaKeyGroup<Contact>> _contacts;
         private String tempNumberForContactLookup;
+
+        /// <summary>
+        /// Represents the selected contact clicked on by the user.
+        /// We keep it here to avoid giving it as param when navigating from Contacts.xaml to Contact.xaml
+        /// </summary>
         public Contact TempContact;
 
+        /// <summary>
+        /// Delegate for contact found event.
+        /// </summary>
         public delegate void ContactFoundEventHandler(object sender, ContactFoundEventArgs e);
+
+        /// <summary>
+        /// Handler for contact found event.
+        /// </summary>
         public event ContactFoundEventHandler ContactFound;
 
+        /// <summary>
+        /// Public constructor.
+        /// </summary>
         public ContactManager()
         {
             Microsoft.Phone.UserData.Contacts contacts = new Microsoft.Phone.UserData.Contacts();
@@ -114,9 +153,9 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Searches if a there is a contact for whom the phone number is stored 
+        /// Searches if a there is a contact for whom the email is stored 
         /// </summary>
-        /// <param name="number">phone number to use to filter the contacts</param>
+        /// <param name="email">email to use to filter the contacts</param>
         private void FindContactByEmail(String email)
         {
             Microsoft.Phone.UserData.Contacts contacts = new Microsoft.Phone.UserData.Contacts();

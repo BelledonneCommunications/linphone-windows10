@@ -15,6 +15,9 @@ using Microsoft.Phone.Networking.Voip;
 
 namespace Linphone
 {
+    /// <summary>
+    /// Root frame for the application.
+    /// </summary>
     public partial class App : Application
     {
         /// <summary>
@@ -170,6 +173,9 @@ namespace Linphone
 
         private const string incomingCallTaskName = "Linphone.IncomingCallTask";
 
+        /// <summary>
+        /// Starts the push notification task.
+        /// </summary>
         public void InitHttpNotificationTask()
         {
             // Obtain a reference to the existing task, if any. 
@@ -195,6 +201,9 @@ namespace Linphone
 
         private const string keepAliveTaskName = "Linphone.KeepAliveTask";
 
+        /// <summary>
+        /// Starts the keep alive task agent
+        /// </summary>
         public void InitKeepAliveTask()
         {
             // Obtain a reference to the existing task, if any. 

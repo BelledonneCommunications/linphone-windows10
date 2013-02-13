@@ -12,10 +12,16 @@ using Linphone.Resources;
 
 namespace Linphone.Views
 {
+    /// <summary>
+    ///  Page displaying advanced settings (such as Tunnel, DTMFs, ...)
+    /// </summary>
     public partial class AdvancedSettings : BasePage
     {
         private SettingsManager _appSettings = new SettingsManager();
 
+        /// <summary>
+        /// Public constructor.
+        /// </summary>
         public AdvancedSettings()
         {
             InitializeComponent();

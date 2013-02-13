@@ -15,9 +15,15 @@ using Windows.Phone.Networking.Voip;
 
 namespace Linphone.Model
 {
+    /// <summary>
+    /// Utility class to handle most of the LinphoneCore (and more globally the C++/CX API) methods calls.
+    /// </summary>
     public sealed class LinphoneManager : LinphoneCoreListener
     {
         private static LinphoneManager singleton;
+        /// <summary>
+        /// Static instance of the class.
+        /// </summary>
         public static LinphoneManager Instance
         {
             get
@@ -29,6 +35,9 @@ namespace Linphone.Model
             }
         }
 
+        /// <summary>
+        /// Quick accessor for the LinphoneCore object through the OoP server.
+        /// </summary>
         public LinphoneCore LinphoneCore
         {
             get
@@ -37,6 +46,9 @@ namespace Linphone.Model
             }
         }
 
+        /// <summary>
+        /// Quick accessor for the CallController object through the OoP server.
+        /// </summary>
         public CallController CallController
         {
             get
@@ -64,7 +76,7 @@ namespace Linphone.Model
         private static Timer timer;
 
         /// <summary>
-        /// Starts and connects the UI to the background process
+        /// Starts and connects the UI to the background process.
         /// </summary>
         public void ConnectBackgroundProcessToInterface()
         {
@@ -119,7 +131,7 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Disconnects the UI from the background process
+        /// Disconnects the UI from the background process.
         /// </summary>
         public void DisconnectBackgroundProcessFromInterface()
         {
@@ -147,7 +159,7 @@ namespace Linphone.Model
         #endregion
 
         /// <summary>
-        /// Creates a new LinphoneCore (if not created yet) using a LinphoneCoreFactory
+        /// Creates a new LinphoneCore (if not created yet) using a LinphoneCoreFactory.
         /// </summary>
         public void InitLinphoneCore()
         {
@@ -160,17 +172,25 @@ namespace Linphone.Model
 
         private void LinphoneCoreIterate(object o)
         {
-            if (LinphoneCore == null && timer != null)
+            // Handle exception that can occurs when app is quickly closed/restarted
+            try
+            {
+                if (LinphoneCore == null && timer != null)
+                {
+                    timer.Dispose();
+                    return;
+                }
+
+                LinphoneCore.Iterate();
+            }
+            catch (Exception)
             {
                 timer.Dispose();
-                return;
             }
-
-            LinphoneCore.Iterate();
         }
 
         /// <summary>
-        /// Set the debug value for liblinphone
+        /// Set the debug value for liblinphone.
         /// </summary>
         /// <param name="enable">true to enable debug traces, false to disable them</param>
         public void EnableDebug(bool enable)
@@ -182,7 +202,7 @@ namespace Linphone.Model
         private List<CallLogs> _history;
 
         /// <summary>
-        /// Get the calls' history
+        /// Get the calls' history.
         /// </summary>
         /// <returns>A list of CallLogs, each one representing a type of calls (All, Missed, ...)</returns>
         public List<CallLogs> GetCallsHistory()
@@ -224,7 +244,7 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Remove one or many entries from the calls' history
+        /// Remove one or many entries from the calls' history.
         /// </summary>
         /// <param name="logsToRemove">A list of CallLog to remove from history</param>
         /// <returns>A list of CallLogs, without the removed entries</returns>
@@ -242,7 +262,7 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Remove all calls' history from LinphoneCore
+        /// Remove all calls' history from LinphoneCore.
         /// </summary>
         /// <returns>An empty list</returns>
         public List<CallLogs> ClearCallLogs()
@@ -264,7 +284,7 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Start a new call to a sip address
+        /// Start a new call to a sip address.
         /// </summary>
         /// <param name="sipAddress">SIP address to call</param>
         public void NewOutgoingCall(String sipAddress)
@@ -278,7 +298,7 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Stops the current call if any
+        /// Stops the current call if any.
         /// </summary>
         public void EndCurrentCall()
         {
@@ -291,7 +311,7 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Pauses the current call if any and if it's running
+        /// Pauses the current call if any and if it's running.
         /// </summary>
         public void PauseCurrentCall()
         {
@@ -300,7 +320,7 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Resume the current call if any and if it's paused
+        /// Resume the current call if any and if it's paused.
         /// </summary>
         public void ResumeCurrentCall()
         {
@@ -313,16 +333,25 @@ namespace Linphone.Model
         #endregion
 
         #region LinphoneCoreListener Callbacks
+        /// <summary>
+        /// Callback for LinphoneCoreListener
+        /// </summary>
         public void AuthInfoRequested(string realm, string username)
         {
 
         }
 
+        /// <summary>
+        /// Callback for LinphoneCoreListener
+        /// </summary>
         public void GlobalState(GlobalState state, string message)
         {
 
         }
 
+        /// <summary>
+        /// Callback for LinphoneCoreListener
+        /// </summary>
         public void CallState(LinphoneCall call, LinphoneCallState state)
         {
             if (state == LinphoneCallState.CallEnd ||
@@ -333,26 +362,41 @@ namespace Linphone.Model
             }
         }
 
+        /// <summary>
+        /// Callback for LinphoneCoreListener
+        /// </summary>
         public void RegistrationState(LinphoneProxyConfig config, RegistrationState state, string message)
         {
 
         }
 
+        /// <summary>
+        /// Callback for LinphoneCoreListener
+        /// </summary>
         public void DTMFReceived(LinphoneCall call, int dtmf)
         {
 
         }
 
+        /// <summary>
+        /// Callback for LinphoneCoreListener
+        /// </summary>
         public void EcCalibrationStatus(EcCalibratorStatus status, int delay_ms, object data)
         {
 
         }
 
+        /// <summary>
+        /// Callback for LinphoneCoreListener
+        /// </summary>
         public void CallEncryptionChanged(LinphoneCall call, bool encrypted, string authenticationToken)
         {
 
         }
 
+        /// <summary>
+        /// Callback for LinphoneCoreListener
+        /// </summary>
         public void CallStatsUpdated(LinphoneCall call, LinphoneCallStats stats)
         {
 

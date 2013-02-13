@@ -12,17 +12,28 @@ using Linphone.Resources;
 
 namespace Linphone.Views
 {
+    /// <summary>
+    /// Page displaying the call logs.
+    /// </summary>
     public partial class History : BasePage
     {
         private bool _usingSelectionAppBar = false;
         private IEnumerable<CallLog> _selection;
 
+        /// <summary>
+        /// Public constructor.
+        /// </summary>
         public History()
         {
             InitializeComponent();
             BuildLocalizedApplicationBar();
         }
 
+        /// <summary>
+        /// Method called when the page is displayed.
+        /// Fetches the logs from the LinphoneManager and displays them.
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             TileManager tileManager = TileManager.Instance;

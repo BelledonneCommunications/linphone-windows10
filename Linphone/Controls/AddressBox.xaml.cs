@@ -12,14 +12,23 @@ using System.Windows.Media.Imaging;
 
 namespace Linphone.Controls
 {
+    /// <summary>
+    /// Custom control representing a textbox that contains a SIP address
+    /// </summary>
     public partial class AddressBox : UserControl
     {
+        /// <summary>
+        /// String content of the textbox.
+        /// </summary>
         public String Text
         {
             get { return address.Text; }
             set { address.Text = value; }
         }
 
+        /// <summary>
+        /// Public constructor.
+        /// </summary>
         public AddressBox()
         {
             InitializeComponent();

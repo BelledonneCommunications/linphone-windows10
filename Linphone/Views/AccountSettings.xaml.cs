@@ -12,10 +12,16 @@ using Linphone.Model;
 
 namespace Linphone.Views
 {
+    /// <summary>
+    /// Page used to display SIP account settings
+    /// </summary>
     public partial class AccountSettings : BasePage
     {
         private SettingsManager _appSettings = new SettingsManager();
 
+        /// <summary>
+        /// Public constructor.
+        /// </summary>
         public AccountSettings()
         {
             InitializeComponent();

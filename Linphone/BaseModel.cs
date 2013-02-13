@@ -10,15 +10,29 @@ using System.Windows.Navigation;
 
 namespace Linphone
 {
+    /// <summary>
+    /// Model view for each page implementing the call controller listener to adjust displayed page depending on call events.
+    /// </summary>
     public class BaseModel : CallControllerListener
     {
+        /// <summary>
+        /// Public constructor.
+        /// </summary>
         public BaseModel()
         {
 
         }
 
+        /// <summary>
+        /// Page currently displayed.
+        /// </summary>
         public BasePage Page { get; set; }
 
+        /// <summary>
+        /// Called when a call is starting.
+        /// Displays the InCall.xaml page.
+        /// </summary>
+        /// <param name="callerNumber"></param>
         public void NewCallStarted(string callerNumber)
         {
             this.Page.Dispatcher.BeginInvoke(() =>
@@ -27,6 +41,10 @@ namespace Linphone
                 });
         }
 
+        /// <summary>
+        /// Called when a call is finished.
+        /// Goes back to the last page if possible, else displays Dialer.xaml.
+        /// </summary>
         public void CallEnded()
         {
             this.Page.Dispatcher.BeginInvoke(() =>
@@ -43,11 +61,19 @@ namespace Linphone
                 });
         }
 
+        /// <summary>
+        /// Actualises the listener when the pages changes.
+        /// </summary>
+        /// <param name="nea"></param>
         public virtual void OnNavigatedTo(NavigationEventArgs nea)
         {
             LinphoneManager.Instance.CallController.SetCallControllerListener(this);
         }
 
+        /// <summary>
+        /// Actualises the listener when the pages changes.
+        /// </summary>
+        /// <param name="nea"></param>
         public virtual void OnNavigatedFrom(NavigationEventArgs nea)
         {
             LinphoneManager.Instance.CallController.SetCallControllerListener(null);

@@ -6,6 +6,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Xml.Serialization;
 using System;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace Linphone.Agents
 {
@@ -32,11 +34,17 @@ namespace Linphone.Agents
 
                 String message = System.Text.Encoding.UTF8.GetString(incomingCallTask.MessageBody, 0, incomingCallTask.MessageBody.Length);
                 Debug.WriteLine("[LinphoneScheduledAgent] Received VoIP Incoming Call task with body {0}", message);
-                //TODO Parse the the incoming push notification message 
+
+                XDocument doc = XDocument.Parse(message);
                 String callerName = "", callerNumber = "";
+                var incomingCallPN = from prop in doc.Descendants("IncomingCall") select prop.Element("Name").Value;
+                callerName = incomingCallPN.First().ToString();
+                incomingCallPN = from prop in doc.Descendants("IncomingCall") select prop.Element("Number").Value;
+                callerNumber = incomingCallPN.First().ToString();
+
                 Debug.WriteLine("[{0}] Incoming call from caller {1}, number {2}", "KeepAliveAgent", callerName, callerNumber);
 
-                bool incomingCallProcessingStarted = Globals.Instance.CallController.OnIncomingCallReceived(callerName, "+33609668573", this.OnIncomingCallViewDismissed);
+                bool incomingCallProcessingStarted = Globals.Instance.CallController.OnIncomingCallReceived(callerName, callerNumber, this.OnIncomingCallViewDismissed);
 
                 if (!incomingCallProcessingStarted)
                 {
@@ -60,6 +68,9 @@ namespace Linphone.Agents
             }
         }
 
+        /// <summary>
+        /// Called when the incoming call view is dismissed, either by accepting or denying the call
+        /// </summary>
         private void OnIncomingCallViewDismissed()
         {
             Debug.WriteLine("[IncomingCallAgent] Incoming call processing is now complete.");

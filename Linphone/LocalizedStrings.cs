@@ -9,6 +9,9 @@ namespace Linphone
     {
         private static AppResources _localizedResources = new AppResources();
 
+        /// <summary>
+        /// Provides easy access to localized resources.
+        /// </summary>
         public AppResources LocalizedResources { get { return _localizedResources; } }
     }
 }

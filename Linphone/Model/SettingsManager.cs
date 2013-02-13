@@ -9,11 +9,15 @@ using System.Threading.Tasks;
 
 namespace Linphone.Model
 {
+    /// <summary>
+    /// Utility class used to handle everything that's application setting related.
+    /// </summary>
     public class SettingsManager
     {
         private IsolatedStorageSettings settings;
         private ResourceManager resourceManager;
 
+        #region Constants settings names
         const string UsernameKeyName = "Username";
         const string PasswordKeyName = "Password";
         const string DomainKeyName = "Domain";
@@ -38,7 +42,11 @@ namespace Linphone.Model
         const string TunnelServerKeyName = "TunnelServer";
         const string TunnelPortKeyName = "TunnelPort";
         const string TunnelModeKeyName = "TunnelMode";
+        #endregion
 
+        /// <summary>
+        /// Public constructor.
+        /// </summary>
         public SettingsManager()
         {
             // Get the settings for this application.
@@ -48,6 +56,9 @@ namespace Linphone.Model
             resourceManager = new ResourceManager("Linphone.Resources.DefaultValues", typeof(DefaultValues).Assembly);
         }
 
+        /// <summary>
+        /// Static access to the debug enabled setting.
+        /// </summary>
         public static bool isDebugEnabled
         {
             get
@@ -58,8 +69,7 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Update a setting value for our application. If the setting does not
-        /// exist, then add the setting.
+        /// Update a setting value for our application. If the setting does not exist, then add the setting.
         /// </summary>
         /// <returns>true if the value changed, false otherwise</returns>
         public bool AddOrUpdateValue(string Key, Object value)
@@ -83,8 +93,7 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Get the current value of the setting, or if it is not found, set the 
-        /// setting to the default setting.
+        /// Get the current value of the setting, or if it is not found, set the setting to the default setting.
         /// </summary>
         public T GetValueOrDefault<T>(string Key, T defaultValue)
         {
@@ -112,6 +121,9 @@ namespace Linphone.Model
         }
 
         #region SIP Account
+        /// <summary>
+        /// SIP Account username setting (String).
+        /// </summary>
         public string Username
         {
             get
@@ -127,6 +139,9 @@ namespace Linphone.Model
             }
         }
 
+        /// <summary>
+        /// SIP account password setting (String).
+        /// </summary>
         public string Password
         {
             get
@@ -142,6 +157,9 @@ namespace Linphone.Model
             }
         }
 
+        /// <summary>
+        /// SIP account domain setting (String).
+        /// </summary>
         public string Domain
         {
             get
@@ -157,6 +175,9 @@ namespace Linphone.Model
             }
         }
 
+        /// <summary>
+        /// SIP account proxy setting (String).
+        /// </summary>
         public string Proxy
         {
             get
@@ -172,6 +193,9 @@ namespace Linphone.Model
             }
         }
 
+        /// <summary>
+        /// SIP account outbound proxy setting (Bool).
+        /// </summary>
         public bool? OutboundProxy
         {
             get
@@ -188,6 +212,9 @@ namespace Linphone.Model
         }
         #endregion
 
+        /// <summary>
+        /// Debug enabled setting (Bool).
+        /// </summary>
         public bool? DebugEnabled
         {
             get
@@ -203,6 +230,9 @@ namespace Linphone.Model
             }
         }
 
+        /// <summary>
+        /// Transport setting (UDP or TCP).
+        /// </summary>
         public string Transport
         {
             get
@@ -218,6 +248,9 @@ namespace Linphone.Model
             }
         }
 
+        /// <summary>
+        /// DTMFs using RFC2833 setting (Bool).
+        /// </summary>
         public bool? SendDTFMsRFC2833
         {
             get
@@ -234,6 +267,9 @@ namespace Linphone.Model
         }
 
         #region Codecs Settings
+        /// <summary>
+        /// Is this codec enabled or disabled ? (Boolean)
+        /// </summary>
         public bool? AMRNB
         {
             get
@@ -248,6 +284,10 @@ namespace Linphone.Model
                 }
             }
         }
+
+        /// <summary>
+        /// Is this codec enabled or disabled ? (Boolean)
+        /// </summary>
         public bool? AMRWB
         {
             get
@@ -262,6 +302,10 @@ namespace Linphone.Model
                 }
             }
         }
+
+        /// <summary>
+        /// Is this codec enabled or disabled ? (Boolean)
+        /// </summary>
         public bool? Speex16
         {
             get
@@ -276,6 +320,10 @@ namespace Linphone.Model
                 }
             }
         }
+
+        /// <summary>
+        /// Is this codec enabled or disabled ? (Boolean)
+        /// </summary>
         public bool? Speex8
         {
             get
@@ -290,6 +338,10 @@ namespace Linphone.Model
                 }
             }
         }
+
+        /// <summary>
+        /// Is this codec enabled or disabled ? (Boolean)
+        /// </summary>
         public bool? PCMU
         {
             get
@@ -304,6 +356,10 @@ namespace Linphone.Model
                 }
             }
         }
+
+        /// <summary>
+        /// Is this codec enabled or disabled ? (Boolean)
+        /// </summary>
         public bool? PCMA
         {
             get
@@ -318,6 +374,10 @@ namespace Linphone.Model
                 }
             }
         }
+
+        /// <summary>
+        /// Is this codec enabled or disabled ? (Boolean)
+        /// </summary>
         public bool? G722
         {
             get
@@ -332,6 +392,10 @@ namespace Linphone.Model
                 }
             }
         }
+
+        /// <summary>
+        /// Is this codec enabled or disabled ? (Boolean)
+        /// </summary>
         public bool? ILBC
         {
             get
@@ -346,6 +410,10 @@ namespace Linphone.Model
                 }
             }
         }
+
+        /// <summary>
+        /// Is this codec enabled or disabled ? (Boolean)
+        /// </summary>
         public bool? SILK16
         {
             get
@@ -360,6 +428,10 @@ namespace Linphone.Model
                 }
             }
         }
+
+        /// <summary>
+        /// Is this codec enabled or disabled ? (Boolean)
+        /// </summary>
         public bool? GSM
         {
             get
@@ -377,6 +449,9 @@ namespace Linphone.Model
         #endregion
 
         #region Tunnel Settings
+        /// <summary>
+        /// Tunnel server setting (String).
+        /// </summary>
         public string TunnelServer
         {
             get
@@ -392,6 +467,9 @@ namespace Linphone.Model
             }
         }
 
+        /// <summary>
+        /// Tunnel port setting (Integer).
+        /// </summary>
         public string TunnelPort
         {
             get
@@ -407,6 +485,9 @@ namespace Linphone.Model
             }
         }
 
+        /// <summary>
+        /// Tunnel mode setting (Auto, Disabled, 3G Only or Always).
+        /// </summary>
         public string TunnelMode
         {
             get

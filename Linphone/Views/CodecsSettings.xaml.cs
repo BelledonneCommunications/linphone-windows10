@@ -12,10 +12,16 @@ using Linphone.Model;
 
 namespace Linphone.Views
 {
+    /// <summary>
+    /// Page displaying each available codec along as a switch to let the user enabling/disabling them.
+    /// </summary>
     public partial class CodecsSettings : BasePage
     {
         private SettingsManager _appSettings = new SettingsManager();
 
+        /// <summary>
+        /// Public constructor.
+        /// </summary>
         public CodecsSettings()
         {
             InitializeComponent();

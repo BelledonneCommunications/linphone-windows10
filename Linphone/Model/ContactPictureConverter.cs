@@ -14,6 +14,9 @@ namespace Linphone.Model
     /// </summary>
     public class ContactPictureConverter : System.Windows.Data.IValueConverter
     {
+        /// <summary>
+        /// Converts the picture of a contact (an ImageStream) into an Image object.
+        /// </summary>
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             Contact c = value as Contact;
@@ -27,6 +30,9 @@ namespace Linphone.Model
             return null;
         }
 
+        /// <summary>
+        /// Not implemented (not needed).
+        /// </summary>
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();
