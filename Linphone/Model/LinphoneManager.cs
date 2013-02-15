@@ -47,7 +47,7 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Quick accessor for the CallController object through the OoP server.
+        /// Call coordinator used to manage system VoIP call objects.
         /// </summary>
         public VoipCallCoordinator CallController
         {
@@ -57,6 +57,9 @@ namespace Linphone.Model
             }
         }
 
+        /// <summary>
+        /// Simple listener to notify pages' viewmodel when a call ends or starts
+        /// </summary>
         public CallControllerListener CallListener { get; set; }
 
         #region Background Process
@@ -296,7 +299,7 @@ namespace Linphone.Model
             CallController.RequestNewOutgoingCall(sipAddress, "", "Linphone", VoipCallMedia.Audio, out call);
             call.NotifyCallActive();
             LinphoneCall LCall = LinphoneCore.Invite(sipAddress);
-            LCall.CallContext = call;
+            //LCall.CallContext = call;
 
             if (CallListener != null)
                 CallListener.NewCallStarted(sipAddress);
