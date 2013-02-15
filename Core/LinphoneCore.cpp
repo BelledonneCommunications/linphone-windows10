@@ -4,11 +4,12 @@
 #include "LinphoneCall.h"
 #include "LinphoneCallParams.h"
 #include "LinphoneProxyConfig.h"
+#include "LinphoneCoreListener.h"
 #include "LpConfig.h"
-#include "OnlineStatus.h"
 #include "PayloadType.h"
 #include "Server.h"
-#include "CallController.h"
+#include "ApiLock.h"
+#include <collection.h>
 
 using namespace Linphone::Core;
 using namespace Platform;
@@ -88,7 +89,14 @@ void LinphoneCore::AddAuthInfo(LinphoneAuthInfo^ info)
 
 void LinphoneCore::Iterate() 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 
+	if (this->incomingcall != nullptr && this->listener != nullptr)
+	{
+		this->listener->CallState(this->incomingcall, LinphoneCallState::IncomingReceived);
+		this->call = incomingcall;
+		this->incomingcall = nullptr;
+	}
 }
 
 void LinphoneCore::Destroy() 
@@ -103,7 +111,9 @@ LinphoneAddress^ LinphoneCore::InterpretURL(Platform::String^ destination)
 
 LinphoneCall^ LinphoneCore::Invite(Platform::String^ destination) 
 {
-	return nullptr;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
+	return ref new LinphoneCall("", destination);
 }
 
 LinphoneCall^ LinphoneCore::InviteAddress(LinphoneAddress^ to) 
@@ -118,12 +128,13 @@ LinphoneCall^ LinphoneCore::InviteAddressWithParams(LinphoneAddress^ destination
 
 void LinphoneCore::TerminateCall(LinphoneCall^ call) 
 {
-	
+	call = nullptr;
+	this->call = nullptr;
 }
 
 LinphoneCall^ LinphoneCore::GetCurrentCall() 
 {
-	return nullptr;
+	return this->call;
 }
 
 LinphoneAddress^ LinphoneCore::GetRemoteAddress() 
@@ -438,7 +449,9 @@ void LinphoneCore::TerminateAllCalls()
 
 Windows::Foundation::Collections::IVector<LinphoneCall^>^ LinphoneCore::GetCalls() 
 {
-	return nullptr;
+	auto calls = ref new Platform::Collections::Vector<LinphoneCall^>();
+	calls->Append(this->call);
+	return calls;
 }
 
 int LinphoneCore::GetCallsNb() 
@@ -601,7 +614,34 @@ LpConfig^ LinphoneCore::GetConfig()
 	return nullptr;
 }
 
-LinphoneCore::LinphoneCore()
+LinphoneCall^ LinphoneCore::Call::get()
+{
+	return this->call;
+}
+
+void LinphoneCore::Call::set(LinphoneCall^ call)
+{
+	this->call = call;
+}
+
+LinphoneCall^ LinphoneCore::IncomingCall::get()
+{
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
+	return this->incomingcall;
+}
+
+void LinphoneCore::IncomingCall::set(LinphoneCall^ call)
+{
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
+	this->incomingcall = call;
+}
+
+LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener) :
+	call(nullptr),
+	incomingcall(nullptr),
+	listener(coreListener)
 {
 
 }

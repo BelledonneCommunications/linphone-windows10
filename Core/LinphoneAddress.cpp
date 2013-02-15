@@ -50,15 +50,20 @@ void LinphoneAddress::Clean()
 
 Platform::String^ LinphoneAddress::AsString()
 {
-	return nullptr;
+	return this->address;
 }
 
 Platform::String^ LinphoneAddress::AsStringUriOnly()
 {
-	return nullptr;
+	return this->address;
 }
 
 Platform::String^ LinphoneAddress::ToString()
 {
-	return nullptr;
+	return this->address;
+}
+
+LinphoneAddress::LinphoneAddress(Platform::String^ address)
+{
+	this->address = address;
 }

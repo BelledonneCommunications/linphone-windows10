@@ -1,14 +1,18 @@
 #pragma once
 
-#include "LinphoneCore.h"
-#include "LinphoneCall.h"
+#include "Enums.h"
 
 namespace Linphone
 {
 	namespace Core
 	{
+		ref class LinphoneCall;
+		ref class LinphoneProxyConfig;
+		ref class LinphoneCallStats;
+
 		public interface class LinphoneCoreListener
 		{
+		public:
 			void AuthInfoRequested(Platform::String^ realm, Platform::String^ username);
 
 			void GlobalState(GlobalState state, Platform::String^ message);

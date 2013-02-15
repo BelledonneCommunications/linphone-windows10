@@ -125,9 +125,6 @@ popd</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ApiLock.h" />
-    <ClInclude Include="CallController.h" />
-    <ClInclude Include="CallControllerListener.h" />
-    <ClInclude Include="CallDirection.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="LinphoneAddress.h" />
     <ClInclude Include="LinphoneCall.h" />
@@ -140,13 +137,12 @@ popd</Command>
     <ClInclude Include="LinphoneCoreListener.h" />
     <ClInclude Include="LinphoneProxyConfig.h" />
     <ClInclude Include="LpConfig.h" />
-    <ClInclude Include="OnlineStatus.h" />
+    <ClInclude Include="Enums.h" />
     <ClInclude Include="PayloadType.h" />
     <ClInclude Include="Server.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ApiLock.cpp" />
-    <ClCompile Include="CallController.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="LinphoneAddress.cpp" />
     <ClCompile Include="LinphoneAuthInfo.cpp" />

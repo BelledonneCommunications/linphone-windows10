@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CallDirection.h"
+#include "Enums.h"
 
 namespace Linphone
 {

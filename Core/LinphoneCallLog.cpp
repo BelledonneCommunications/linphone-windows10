@@ -1,6 +1,6 @@
 #include "LinphoneCallLog.h"
 #include "LinphoneAddress.h"
-#include "CallDirection.h"
+#include "Enums.h"
 #include "Server.h"
 
 using namespace Linphone::Core;

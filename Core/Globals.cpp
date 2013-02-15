@@ -5,7 +5,6 @@
 #include <crtdbg.h>
 #include "Globals.h"
 #include "ApiLock.h"
-#include "CallController.h"
 #include "LinphoneCoreFactory.h"
 #include "LinphoneCore.h"
 
@@ -125,22 +124,6 @@ Globals^ Globals::Instance::get()
     return Globals::singleton;
 }
 
-CallController^ Globals::CallController::get()
-{
-    if (this->callController == nullptr)
-    {
-        // Make sure only one API call is in progress at a time
-        std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-
-        if (this->callController == nullptr)
-        {
-            this->callController = ref new Linphone::Core::CallController();
-        }
-    }
-
-    return this->callController;
-}
-
 LinphoneCoreFactory^ Globals::LinphoneCoreFactory::get()
 {
 	if (this->linphoneCoreFactory == nullptr)
@@ -165,7 +148,6 @@ LinphoneCore^ Globals::LinphoneCore::get()
 Globals::Globals() :
     started(false),
     serverRegistrationCookie(NULL),
-    callController(nullptr),
 	linphoneCoreFactory(nullptr),
     noOtherBackgroundProcessEvent(NULL),
     backgroundReadyEvent(NULL)
@@ -203,9 +185,6 @@ Globals::Globals() :
         HRESULT hr = HRESULT_FROM_WIN32(dwErr);
         throw ref new Platform::COMException(hr, L"An error occurred trying to reset the event that indicates if the background process exists or not");
     }
-    
-    // Initialize the call controller
-    this->callController = ref new Linphone::Core::CallController();    
 }
 
 Globals::~Globals()

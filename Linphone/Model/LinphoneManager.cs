@@ -49,13 +49,15 @@ namespace Linphone.Model
         /// <summary>
         /// Quick accessor for the CallController object through the OoP server.
         /// </summary>
-        public CallController CallController
+        public VoipCallCoordinator CallController
         {
             get
             {
-                return server.CallController;
+                return VoipCallCoordinator.GetDefault();
             }
         }
+
+        public CallControllerListener CallListener { get; set; }
 
         #region Background Process
         private bool BackgroundProcessConnected;
@@ -168,6 +170,7 @@ namespace Linphone.Model
 
             server.LinphoneCoreFactory.CreateLinphoneCore(this);
             timer = new Timer(LinphoneCoreIterate, null, 1, 20);
+            Debug.WriteLine("[LinphoneManager] LinphoneCore created");
         }
 
         private void LinphoneCoreIterate(object o)
@@ -289,12 +292,14 @@ namespace Linphone.Model
         /// <param name="sipAddress">SIP address to call</param>
         public void NewOutgoingCall(String sipAddress)
         {
-            LinphoneCall call = LinphoneCore.Invite(sipAddress);
-            if (call != null)
-            {
-                VoipPhoneCall voipCall = CallController.NewOutgoingCall(sipAddress, "");
-                call.CallContext = voipCall;
-            }
+            VoipPhoneCall call;
+            CallController.RequestNewOutgoingCall(sipAddress, "", "Linphone", VoipCallMedia.Audio, out call);
+            call.NotifyCallActive();
+            LinphoneCall LCall = LinphoneCore.Invite(sipAddress);
+            LCall.CallContext = call;
+
+            if (CallListener != null)
+                CallListener.NewCallStarted(sipAddress);
         }
 
         /// <summary>
@@ -302,12 +307,14 @@ namespace Linphone.Model
         /// </summary>
         public void EndCurrentCall()
         {
-            if (LinphoneCore.GetCallsNb() > 0)
-            {
-                LinphoneCall call = LinphoneCore.GetCalls().First();
+            //if (LinphoneCore.GetCallsNb() > 0)
+            //{
+                LinphoneCall call = LinphoneCore.GetCurrentCall();
+                call.CallContext.NotifyCallEnded();
                 LinphoneCore.TerminateCall(call);
-                CallController.EndCall(call.CallContext as VoipPhoneCall);
-            }
+                if (CallListener != null)
+                    CallListener.CallEnded();
+            //}
         }
 
         /// <summary>
@@ -316,6 +323,7 @@ namespace Linphone.Model
         public void PauseCurrentCall()
         {
             LinphoneCall call = LinphoneCore.GetCurrentCall();
+            //call.CallContext.NotifyCallHeld();
             LinphoneCore.PauseCall(call);
         }
 
@@ -327,6 +335,7 @@ namespace Linphone.Model
             if (LinphoneCore.GetCallsNb() > 0)
             {
                 LinphoneCall call = LinphoneCore.GetCalls().First();
+                //call.CallContext.NotifyCallActive();
                 LinphoneCore.ResumeCall(call);
             }
         }
@@ -354,11 +363,35 @@ namespace Linphone.Model
         /// </summary>
         public void CallState(LinphoneCall call, LinphoneCallState state)
         {
-            if (state == LinphoneCallState.CallEnd ||
+            if (state == LinphoneCallState.IncomingReceived)
+            {
+                String contact = call.GetRemoteContact();
+                String number = call.GetRemoteAddress().AsStringUriOnly();
+                Debug.WriteLine("[LinphoneManager] Incoming received: " + contact + " (" + number + ")");
+
+                VoipPhoneCall vcall = null;
+                Uri contactUri = new Uri("ms-appx:///Assets/unknown.png", UriKind.Absolute);
+                Uri iconUri = new Uri("ms-appx:///Assets/pnicon.png", UriKind.Absolute);
+                Uri ringtoneUri = new Uri("ms-appx:///Assets/Sounds/Ringtone.wma", UriKind.Absolute);
+                CallController.RequestNewIncomingCall("/Views/InCall.xaml", contact, number, contactUri, "Linphone", iconUri, "", ringtoneUri, VoipCallMedia.Audio, new TimeSpan(90*10*1000*1000), out vcall);
+                vcall.AnswerRequested += ((c, eventargs) =>
+                    {
+                        vcall.NotifyCallActive();
+                        if (CallListener != null)
+                            CallListener.NewCallStarted(number);
+                        LinphoneCore.AcceptCall(call);
+                    });
+                vcall.EndRequested += ((c, eventargs) =>
+                    {
+                        vcall.NotifyCallEnded();
+                        LinphoneCore.TerminateCall(call);
+                    });
+            }
+            else if (state == LinphoneCallState.CallEnd ||
                 state == LinphoneCallState.Error ||
                 state == LinphoneCallState.Released)
             {
-                CallController.EndCall(call.CallContext as VoipPhoneCall);
+                call.CallContext.NotifyCallEnded();
             }
         }
 

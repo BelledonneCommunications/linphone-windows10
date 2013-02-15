@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CallDirection.h"
+#include "Enums.h"
 
 namespace Linphone
 {
@@ -10,32 +10,7 @@ namespace Linphone
 		ref class LinphoneCallLog;
 		ref class LinphoneCallStats;
 		ref class LinphoneCallParams;
-
-		/// <summary>
-		/// Linphone call states
-		/// </summary>
-		public enum class LinphoneCallState : int
-		{
-			Idle = 0,
-			IncomingReceived = 1,
-			OutgoingInit = 2,
-			OutgoingProgress = 3,
-			OutgoingRinging = 4,
-			OutgoingEarlyMedia = 5,
-			Connected = 6,
-			StreamsRunning = 7,
-			Pausing = 8,
-			Paused = 9,
-			Resuming = 10,
-			Refered = 11,
-			Error = 12,
-			CallEnd = 13,
-			PausedByRemote = 14,
-			UpdatedByRemote = 15,
-			IncomingEarlyMedia = 16,
-			Udating = 17,
-			Released = 18
-		};
+		ref class LinphoneCore;
 
 		/// <summary>
 		/// Object representing a call.
@@ -113,14 +88,21 @@ namespace Linphone
 			Platform::String^ GetRemoteUserAgent();
 			Platform::String^ GetRemoteContact();
 
-			property Platform::Object^ CallContext
+			property Windows::Phone::Networking::Voip::VoipPhoneCall^ CallContext
             {
-                Platform::Object^ get();
-				void set(Platform::Object^ cc);
+                Windows::Phone::Networking::Voip::VoipPhoneCall^ get();
+				void set(Windows::Phone::Networking::Voip::VoipPhoneCall^ cc);
             }
 
+			LinphoneCall(Platform::String^ contact, Platform::String^ number);
+
 		private:
-			Platform::Object^ callContext;
+			friend ref class Linphone::Core::LinphoneCore;
+			
+			Windows::Phone::Networking::Voip::VoipPhoneCall^ callContext;
+
+			Platform::String^ contact;
+			Platform::String^ number;
 		};
 	}
 }

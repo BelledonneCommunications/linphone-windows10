@@ -1,6 +1,7 @@
 #pragma once
 
-#include "OnlineStatus.h"
+#include "Enums.h"
+#include "LinphoneCoreListener.h"
 
 namespace Linphone
 {
@@ -13,54 +14,9 @@ namespace Linphone
 		ref class LinphoneCall;
 		ref class LinphoneCallParams;
 		ref class LinphoneCallLog;
+		ref class LinphoneCallStats;
 		ref class PayloadType;
 		ref class LpConfig;
-
-		/// <summary>
-		/// Linphone core states
-		/// </summary>
-		public enum class GlobalState : int
-		{
-			GlobalOff = 0,
-			GlobalStartup = 1,
-			GlobalOn = 2,
-			GlobalShutdown = 3
-		};
-
-		/// <summary>
-		/// Proxy registration states
-		/// </summary>
-		public enum class RegistrationState : int
-		{
-			RegistrationNone = 0,
-			RegistrationInProgress = 1,
-			RegistrationOk = 2,
-			RegistrationCleared = 3,
-			RegistrationFailed = 4
-		};
-
-		public enum class MediaEncryption : int
-		{
-			None = 0,
-			SRTP = 1,
-			ZRTP = 2
-		};
-
-		public enum class FirewallPolicy : int
-		{
-			NoFirewall = 0,
-			UseNatAddress = 1,
-			UseStun = 2,
-			UseIce = 3
-		};
-
-		public enum class EcCalibratorStatus : int
-		{
-			InProgress = 0,
-			Done = 1,
-			Failed = 2,
-			DoneNoEcho = 3
-		};
 
 		/// <summary>
 		/// Signaling transports ports
@@ -436,10 +392,27 @@ namespace Linphone
 			/// Returns the LpConfig object to read/write to the config file: useful if you wish to extend the config file with your own sections.
 			/// </summary>
 			LpConfig^ GetConfig();
+
+			property LinphoneCall^ Call
+            {
+                LinphoneCall^ get();
+				void set(LinphoneCall^ call);
+            }
+
+			property LinphoneCall^ IncomingCall
+            {
+                LinphoneCall^ get();
+				void set(LinphoneCall^ call);
+            }
+
 		private:
 			friend ref class Linphone::Core::LinphoneCoreFactory;
 
-			LinphoneCore();
+			LinphoneCoreListener^ listener;
+			LinphoneCall^ call;
+			LinphoneCall^ incomingcall;
+
+			LinphoneCore(LinphoneCoreListener^ coreListener);
 			~LinphoneCore();
 		};
 	}

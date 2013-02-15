@@ -47,15 +47,13 @@
     <ActivatableClasses>
       <InProcessServer>
         <Path>Linphone.Core.DLL</Path>
-        <ActivatableClass ActivatableClassId="Linphone.Core.IncomingCallViewDismissedCallback" ThreadingModel="MTA" />
-        <ActivatableClass ActivatableClassId="Linphone.Core.CallController" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.Core.Globals" ThreadingModel="MTA" />
+        <ActivatableClass ActivatableClassId="Linphone.Core.LinphoneCoreFactory" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.Core.Transports" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.Core.LinphoneCore" ThreadingModel="MTA" />
-        <ActivatableClass ActivatableClassId="Linphone.Core.LinphoneCall" ThreadingModel="MTA" />
-        <ActivatableClass ActivatableClassId="Linphone.Core.LinphoneCoreFactory" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.Core.LinphoneAddress" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.Core.LinphoneAuthInfo" ThreadingModel="MTA" />
+        <ActivatableClass ActivatableClassId="Linphone.Core.LinphoneCall" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.Core.LinphoneCallStats" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.Core.LinphoneCallLog" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.Core.LinphoneCallParams" ThreadingModel="MTA" />
@@ -68,21 +66,21 @@
         <Instancing>multipleInstances</Instancing>
         <ActivatableClass ActivatableClassId="Linphone.Core.OutOfProcess.Server" />
       </OutOfProcessServer>
-      <ProxyStub ClassId="{E188F6FF-7F86-312E-9113-189A5EA2FCBE}">
+      <ProxyStub ClassId="{01600449-19D0-3E52-80E3-382A2C93CBB1}">
         <Path>Linphone.CoreProxyStub.DLL</Path>
-        <Interface Name="Linphone.Core.CallControllerListener" InterfaceId="{E188F6FF-7F86-312E-9113-189A5EA2FCBE}" />
-        <Interface Name="Linphone.Core.__ICallControllerPublicNonVirtuals" InterfaceId="{C50D71F8-F4D8-3871-ADDA-739A4E312CED}" />
         <Interface Name="Linphone.Core.__IGlobalsPublicNonVirtuals" InterfaceId="{01600449-19D0-3E52-80E3-382A2C93CBB1}" />
         <Interface Name="Linphone.Core.__IGlobalsStatics" InterfaceId="{828E0FFB-4077-39EF-A334-6F19365E4FFE}" />
-        <Interface Name="Linphone.Core.OutOfProcess.__IServerPublicNonVirtuals" InterfaceId="{46DDE636-87D1-3A06-9D4A-D0753804368A}" />
+        <Interface Name="Linphone.Core.LinphoneCoreListener" InterfaceId="{638C6F72-6792-3858-80B6-2DC341C00F6F}" />
+        <Interface Name="Linphone.Core.__ILinphoneCoreFactoryPublicNonVirtuals" InterfaceId="{C83B6E96-A239-311E-BD2B-880114A4E240}" />
         <Interface Name="Linphone.Core.__ITransportsPublicNonVirtuals" InterfaceId="{9CF934BB-9476-3105-B0DF-49E2F4B2A580}" />
         <Interface Name="Linphone.Core.__ITransportsFactory" InterfaceId="{3376B207-4618-313D-B564-D5500B8EFB64}" />
         <Interface Name="Linphone.Core.__ILinphoneCorePublicNonVirtuals" InterfaceId="{5D15EB8C-4443-3BC3-BC3D-A319DDE8A2BE}" />
-        <Interface Name="Linphone.Core.__ILinphoneCallPublicNonVirtuals" InterfaceId="{0985A9C4-838F-3350-AA92-3D22BCBA35D9}" />
-        <Interface Name="Linphone.Core.LinphoneCoreListener" InterfaceId="{638C6F72-6792-3858-80B6-2DC341C00F6F}" />
-        <Interface Name="Linphone.Core.__ILinphoneCoreFactoryPublicNonVirtuals" InterfaceId="{C83B6E96-A239-311E-BD2B-880114A4E240}" />
         <Interface Name="Linphone.Core.__ILinphoneAddressPublicNonVirtuals" InterfaceId="{1EB65211-A8E9-3139-96CA-CD6CD0348372}" />
+        <Interface Name="Linphone.Core.__ILinphoneAddressFactory" InterfaceId="{E327C2D1-4A54-36A3-A35D-D2B5ED7CF202}" />
+        <Interface Name="Linphone.Core.OutOfProcess.__IServerPublicNonVirtuals" InterfaceId="{46DDE636-87D1-3A06-9D4A-D0753804368A}" />
         <Interface Name="Linphone.Core.__ILinphoneAuthInfoPublicNonVirtuals" InterfaceId="{C7039DF8-D910-3633-A2E1-FB0B176790C0}" />
+        <Interface Name="Linphone.Core.__ILinphoneCallPublicNonVirtuals" InterfaceId="{0985A9C4-838F-3350-AA92-3D22BCBA35D9}" />
+        <Interface Name="Linphone.Core.__ILinphoneCallFactory" InterfaceId="{95F1BD28-F1E2-379F-B44C-1553EEA60023}" />
         <Interface Name="Linphone.Core.__ILinphoneCallStatsPublicNonVirtuals" InterfaceId="{87BCE67E-109C-3429-9255-76FC496C3382}" />
         <Interface Name="Linphone.Core.__ILinphoneCallLogPublicNonVirtuals" InterfaceId="{F3C079C9-0A9C-3B02-A1CC-C61991D09E18}" />
         <Interface Name="Linphone.Core.__ILinphoneCallParamsPublicNonVirtuals" InterfaceId="{26EFBF2D-6F46-35DE-9CFA-1A784C3C5A35}" />

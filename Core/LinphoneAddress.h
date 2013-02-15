@@ -65,6 +65,11 @@ namespace Linphone
 			/// Same as AsString.
 			/// </summary>
 			Platform::String^ ToString();
+
+			LinphoneAddress(Platform::String^ address);
+
+		private:
+			Platform::String^ address;
 		};
 	}
 }

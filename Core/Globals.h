@@ -33,11 +33,6 @@ namespace Linphone
                 Globals^ get();
             }
 
-            property CallController^ CallController
-            {
-                Linphone::Core::CallController^ get();
-            }
-
 			property LinphoneCoreFactory^ LinphoneCoreFactory
             {
                 Linphone::Core::LinphoneCoreFactory^ get();
@@ -68,8 +63,6 @@ namespace Linphone
             HANDLE noOtherBackgroundProcessEvent;
 
             HANDLE backgroundReadyEvent;
-
-            Linphone::Core::CallController^ callController;
 
 			Linphone::Core::LinphoneCoreFactory^ linphoneCoreFactory;
         };

@@ -22,14 +22,6 @@ namespace Linphone
                 {
                 }
 
-				property CallController^ CallController
-                {
-                    Linphone::Core::CallController^ get()
-                    {
-                        return Globals::Instance->CallController;
-                    };
-                }
-
 				property LinphoneCoreFactory^ LinphoneCoreFactory
                 {
                     Linphone::Core::LinphoneCoreFactory^ get()

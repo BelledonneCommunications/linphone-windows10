@@ -10,16 +10,16 @@ void LinphoneCoreFactory::SetDebugMode(Platform::Boolean enable, Platform::Strin
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 }
 
-void LinphoneCoreFactory::CreateLinphoneCore(LinphoneCoreListener^ listener, Platform::String^ userConfig, Platform::String^ factoryConfig, Platform::Object^ userData)
+void LinphoneCoreFactory::CreateLinphoneCore(Linphone::Core::LinphoneCoreListener^ listener, Platform::String^ userConfig, Platform::String^ factoryConfig, Platform::Object^ userData)
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock); 
-	this->linphoneCore = ref new Linphone::Core::LinphoneCore();
+	this->linphoneCore = ref new Linphone::Core::LinphoneCore(listener);
 }
 
-void LinphoneCoreFactory::CreateLinphoneCore(LinphoneCoreListener^ listener)
+void LinphoneCoreFactory::CreateLinphoneCore(Linphone::Core::LinphoneCoreListener^ listener)
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock); 
-	this->linphoneCore = ref new Linphone::Core::LinphoneCore();
+	this->linphoneCore = ref new Linphone::Core::LinphoneCore(listener);
 }
 
 LinphoneAuthInfo^ LinphoneCoreFactory::CreateAuthInfo(Platform::String^ username, Platform::String^ password, Platform::String^ realm)

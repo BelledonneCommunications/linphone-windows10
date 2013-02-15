@@ -67,7 +67,7 @@ namespace Linphone
         /// <param name="nea"></param>
         public virtual void OnNavigatedTo(NavigationEventArgs nea)
         {
-            LinphoneManager.Instance.CallController.SetCallControllerListener(this);
+            LinphoneManager.Instance.CallListener = this;
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Linphone
         /// <param name="nea"></param>
         public virtual void OnNavigatedFrom(NavigationEventArgs nea)
         {
-            LinphoneManager.Instance.CallController.SetCallControllerListener(null);
+            LinphoneManager.Instance.CallListener = null;
         } 
     }
 }

@@ -43,13 +43,10 @@ namespace Linphone.Agents
                 callerNumber = incomingCallPN.First().ToString();
 
                 Debug.WriteLine("[{0}] Incoming call from caller {1}, number {2}", "KeepAliveAgent", callerName, callerNumber);
+                LinphoneCall call = new LinphoneCall(callerName, callerNumber);
+                Globals.Instance.LinphoneCore.IncomingCall = call;
 
-                bool incomingCallProcessingStarted = Globals.Instance.CallController.OnIncomingCallReceived(callerName, callerNumber, this.OnIncomingCallViewDismissed);
-
-                if (!incomingCallProcessingStarted)
-                {
-                    base.NotifyComplete();
-                }
+                base.NotifyComplete();
             }
             else
             {
@@ -66,16 +63,6 @@ namespace Linphone.Agents
                     throw new InvalidOperationException(string.Format("Unknown scheduled task type {0}", task.GetType()));
                 }
             }
-        }
-
-        /// <summary>
-        /// Called when the incoming call view is dismissed, either by accepting or denying the call
-        /// </summary>
-        private void OnIncomingCallViewDismissed()
-        {
-            Debug.WriteLine("[IncomingCallAgent] Incoming call processing is now complete.");
-
-            base.NotifyComplete();
         }
 
         protected override void OnCancel()

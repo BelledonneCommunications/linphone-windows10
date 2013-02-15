@@ -107,6 +107,7 @@
     </Compile>
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Model\AlphaKeyGroup.cs" />
+    <Compile Include="Model\CallControllerListener.cs" />
     <Compile Include="Model\CallLogs.cs" />
     <Compile Include="Model\ContactManager.cs" />
     <Compile Include="Model\ContactPictureConverter.cs" />
