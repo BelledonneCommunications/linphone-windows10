@@ -376,7 +376,8 @@ namespace Linphone.Model
                 Uri contactUri = new Uri("ms-appx:///Assets/unknown.png", UriKind.Absolute);
                 Uri iconUri = new Uri("ms-appx:///Assets/pnicon.png", UriKind.Absolute);
                 Uri ringtoneUri = new Uri("ms-appx:///Assets/Sounds/Ringtone.wma", UriKind.Absolute);
-                CallController.RequestNewIncomingCall("/Views/InCall.xaml", contact, number, contactUri, "Linphone", iconUri, "", ringtoneUri, VoipCallMedia.Audio, new TimeSpan(90*10*1000*1000), out vcall);
+
+                CallController.RequestNewIncomingCall("/Views/InCall.xaml?sip=" + number, contact, number, contactUri, "Linphone", iconUri, "", ringtoneUri, VoipCallMedia.Audio, new TimeSpan(), out vcall);
                 vcall.AnswerRequested += ((c, eventargs) =>
                     {
                         vcall.NotifyCallActive();
@@ -384,11 +385,13 @@ namespace Linphone.Model
                             CallListener.NewCallStarted(number);
                         LinphoneCore.AcceptCall(call);
                     });
-                vcall.EndRequested += ((c, eventargs) =>
+                vcall.RejectRequested += ((c, eventargs) =>
                     {
                         vcall.NotifyCallEnded();
                         LinphoneCore.TerminateCall(call);
                     });
+
+                call.CallContext = vcall;
             }
             else if (state == LinphoneCallState.CallEnd ||
                 state == LinphoneCallState.Error ||
