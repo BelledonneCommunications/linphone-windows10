@@ -1,8 +1,0 @@
-02-15-2012:
-* C++ API stubbed
-* Interface almost finished, some API calls are included
-* Background process and agents running depending on the interface status
-* Incoming call using push notification 
-(button is available in setting page to send one to itself)
-* Interface designed to be launched on a phone running a Dark theme (for now), Ligth
-theme not yet supported.

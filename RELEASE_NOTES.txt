@@ -12,3 +12,9 @@ automatically once built.
 /!\ Please check the Linphone project in the solution is set as startup project.
 (The startup project is in bold in the project list)
 If not, right click on Linphone project and choose the menu "Set as StartUp project".
+
+See README.txt file for an explanation about how the project is working.
+
+02-15-2013:
+* Liblinphone documented C++/Cx wrapper directly usable in C#
+* Part of the graphical interface (call related interface not working)
