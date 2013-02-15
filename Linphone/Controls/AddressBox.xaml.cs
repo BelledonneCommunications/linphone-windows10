@@ -57,5 +57,11 @@ namespace Linphone.Controls
             Image image = (sender as Image);
             image.Source = new BitmapImage(new Uri("/Assets/backspace_default.png", UriKind.RelativeOrAbsolute));
         }
+
+        // This is needed for the textbox hack, see comment in .xaml file
+        private void address_TextChanged_1(object sender, TextChangedEventArgs e)
+        {
+            behindAddress.Text = address.Text;
+        }
     }
 }

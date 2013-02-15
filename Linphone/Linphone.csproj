@@ -102,12 +102,6 @@
     <Compile Include="Controls\ContactAction.xaml.cs">
       <DependentUpon>ContactAction.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Digit.xaml.cs">
-      <DependentUpon>Digit.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Numpad.xaml.cs">
-      <DependentUpon>Numpad.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\TwoStateButton.xaml.cs">
       <DependentUpon>TwoStateButton.xaml</DependentUpon>
     </Compile>
@@ -275,14 +269,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ContactAction.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Digit.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Numpad.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

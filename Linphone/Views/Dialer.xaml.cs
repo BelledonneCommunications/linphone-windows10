@@ -27,7 +27,6 @@ namespace Linphone
         public Dialer()
         {
             InitializeComponent();
-            numpad.Address = sipAddress;
             BuildLocalizedApplicationBar();
 
             ContactManager contactManager = ContactManager.Instance; //Force creation and init of ContactManager
@@ -50,7 +49,7 @@ namespace Linphone
             if (NavigationContext.QueryString.ContainsKey("sip") && e.NavigationMode != NavigationMode.Back)
             {
                 String sipAddressToCall = NavigationContext.QueryString["sip"];
-                sipAddress.Text = sipAddressToCall;
+                addressBox.Text = sipAddressToCall;
                 NewOutgoingCall(sipAddressToCall);
             }
         }
@@ -60,13 +59,29 @@ namespace Linphone
             if (address != null && address.Length > 0)
             {
                 NavigationService.Navigate(new Uri("/Views/InCall.xaml?sip=" + address, UriKind.RelativeOrAbsolute));
-                LinphoneManager.Instance.NewOutgoingCall(numpad.Address.Text);
+                LinphoneManager.Instance.NewOutgoingCall(addressBox.Text);
             }
         }
 
         private void call_Click_1(object sender, EventArgs e)
         {
-            NewOutgoingCall(numpad.Address.Text);
+            NewOutgoingCall(addressBox.Text);
+        }
+
+        private void Numpad_Click_1(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+            String tag = button.Tag as String;
+            LinphoneManager.Instance.LinphoneCore.PlayDTMF(Convert.ToChar(tag), 500);
+
+            addressBox.Text += tag;
+        }
+
+        private void zero_Hold_1(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            if (addressBox.Text.Length > 0)
+                addressBox.Text = addressBox.Text.Substring(0, addressBox.Text.Length - 1); ;
+            addressBox.Text += "+";
         }
 
         private void history_Click_1(object sender, EventArgs e)

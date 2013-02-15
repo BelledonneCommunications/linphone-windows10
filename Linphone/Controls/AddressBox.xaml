@@ -11,17 +11,35 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     d:DesignHeight="100" d:DesignWidth="480">
     
-    <Grid x:Name="LayoutRoot" VerticalAlignment="Center">
+    <Grid x:Name="LayoutRoot">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        
+        <!-- This is a hack needed to be able to edit the text box 
+        without displaying the focused state of the box -->
         <toolkit:PhoneTextBox 
-            x:Name="address"
-            Text="{Binding Text}"
+            Grid.Column="0"
+            x:Name="behindAddress"
             FontSize="35"
-            Margin="0, 0, 95, 0"
-            AcceptsReturn="False" 
+            IsReadOnly="True"
             BorderThickness="0"
+            Foreground="White"
+            Background="Transparent"
             Hint="{Binding Path=LocalizedResources.AddressHint, Source={StaticResource LocalizedStrings}}"/>
 
-        <Button ClickMode="Press" Click="backspace_Click_1">
+        <toolkit:PhoneTextBox 
+            Grid.Column="0"
+            x:Name="address"
+            FontSize="35"
+            Text="{Binding Text}"
+            TextChanged="address_TextChanged_1"
+            AcceptsReturn="False" 
+            BorderThickness="0"
+            Opacity="0"/>
+
+        <Button ClickMode="Press" Click="backspace_Click_1" Grid.Column="1">
             <Button.Template>
                 <ControlTemplate>
                     <Image  
@@ -37,6 +55,5 @@
                 </ControlTemplate>
             </Button.Template>
         </Button>
-        
     </Grid>
 </UserControl>

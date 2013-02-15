@@ -32,19 +32,201 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <controls:AddressBox
-                x:Name="sipAddress"
+                x:Name="addressBox"
                 Grid.Row="0"
                 BorderThickness="0"
                 FontSize="40"/>
 
-            <controls:Numpad x:Name="numpad" Grid.Row="1"/>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
 
-            <Grid Grid.Row="2">
+                <Button
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    BorderThickness="0"
+                    Margin="-10"
+                    Click="Numpad_Click_1"
+                    ClickMode="Press"
+                    Tag="1"
+                    Background="{StaticResource PhoneChromeBrush}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="1" FontSize="50"/>
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    BorderThickness="0"
+                    Margin="-10"
+                    Click="Numpad_Click_1"
+                    ClickMode="Press"
+                    Tag="2"
+                    Background="{StaticResource PhoneChromeBrush}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="2" FontSize="50"/>
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    BorderThickness="0"
+                    Margin="-10"
+                    Click="Numpad_Click_1"
+                    ClickMode="Press"
+                    Tag="3"
+                    Background="{StaticResource PhoneChromeBrush}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="3" FontSize="50"/>
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    BorderThickness="0"
+                    Margin="-10"
+                    Click="Numpad_Click_1"
+                    ClickMode="Press"
+                    Tag="4"
+                    Background="{StaticResource PhoneChromeBrush}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="4" FontSize="50"/>
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    BorderThickness="0"
+                    Margin="-10"
+                    Click="Numpad_Click_1"
+                    ClickMode="Press"
+                    Tag="5"
+                    Background="{StaticResource PhoneChromeBrush}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="5" FontSize="50"/>
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    BorderThickness="0"
+                    Margin="-10"
+                    Click="Numpad_Click_1"
+                    ClickMode="Press"
+                    Tag="6"
+                    Background="{StaticResource PhoneChromeBrush}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="6" FontSize="50"/>
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    BorderThickness="0"
+                    Margin="-10"
+                    Click="Numpad_Click_1"
+                    ClickMode="Press"
+                    Tag="7"
+                    Background="{StaticResource PhoneChromeBrush}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="7" FontSize="50"/>
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    BorderThickness="0"
+                    Margin="-10"
+                    Click="Numpad_Click_1"
+                    ClickMode="Press"
+                    Tag="8"
+                    Background="{StaticResource PhoneChromeBrush}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="8" FontSize="50"/>
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    BorderThickness="0"
+                    Margin="-10"
+                    Click="Numpad_Click_1"
+                    ClickMode="Press"
+                    Tag="9"
+                    Background="{StaticResource PhoneChromeBrush}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="9" FontSize="50"/>
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    BorderThickness="0"
+                    Margin="-10"
+                    Click="Numpad_Click_1"
+                    ClickMode="Press"
+                    Tag="*"
+                    Background="{StaticResource PhoneChromeBrush}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="＊" FontSize="50"/>
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    BorderThickness="0"
+                    Margin="-10"
+                    Click="Numpad_Click_1" 
+                    Hold="zero_Hold_1"
+                    ClickMode="Press"
+                    Tag="0"
+                    Background="{StaticResource PhoneChromeBrush}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="0" FontSize="50"/>
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Grid.Row="3"
+                    Grid.Column="2"
+                    BorderThickness="0"
+                    Margin="-10"
+                    Click="Numpad_Click_1"
+                    ClickMode="Press"
+                    Tag="#"
+                    Background="{StaticResource PhoneChromeBrush}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="#" FontSize="50"/>
+                    </StackPanel>
+                </Button>
+                
+            </Grid>
+
+            <Grid Grid.Row="2" Margin="0,20,0,20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
