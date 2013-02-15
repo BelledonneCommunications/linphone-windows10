@@ -17,7 +17,7 @@ the Linphone project to make calls to the C++ API
 /!\ Do not touch anything in this project!
 * Linphone: the interface project
 
-To compile and run it, attach a windows phone 8 device or choose an emulator 
+To compile and run it, plug a windows phone 8 device or choose an emulator 
 and run the build/install (using F5 or the green triangle). The app will start
 automatically once built.
 
