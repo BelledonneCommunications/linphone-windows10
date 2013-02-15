@@ -37,6 +37,17 @@ namespace Linphone
                         return Globals::Instance->LinphoneCore;
                     };
                 }
+
+				/// <summary>
+				/// Returns the install location of the app, used to get the uri of resources needed for the incoming call view
+				/// </summary>
+				property Platform::String^ Path
+				{
+					Platform::String^ get()
+					{
+						return Windows::ApplicationModel::Package::Current->InstalledLocation->Path;
+					};
+				}
             };
         }
     }

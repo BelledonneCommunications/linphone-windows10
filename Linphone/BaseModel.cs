@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Navigation;
+using System.Windows.Threading;
 
 namespace Linphone
 {
@@ -27,6 +28,8 @@ namespace Linphone
         /// Page currently displayed.
         /// </summary>
         public BasePage Page { get; set; }
+
+        public static Dispatcher UIDispatcher;
 
         /// <summary>
         /// Called when a call is starting.
@@ -68,6 +71,7 @@ namespace Linphone
         public virtual void OnNavigatedTo(NavigationEventArgs nea)
         {
             LinphoneManager.Instance.CallListener = this;
+            UIDispatcher = this.Page.Dispatcher;
         }
 
         /// <summary>

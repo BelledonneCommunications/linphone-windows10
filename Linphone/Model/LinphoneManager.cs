@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Linphone.Resources;
 using Windows.Phone.Networking.Voip;
+using System.Windows.Media.Imaging;
 
 namespace Linphone.Model
 {
@@ -299,7 +300,7 @@ namespace Linphone.Model
             CallController.RequestNewOutgoingCall(sipAddress, "", "Linphone", VoipCallMedia.Audio, out call);
             call.NotifyCallActive();
             LinphoneCall LCall = LinphoneCore.Invite(sipAddress);
-            //LCall.CallContext = call;
+            LCall.CallContext = call;
 
             if (CallListener != null)
                 CallListener.NewCallStarted(sipAddress);
@@ -313,7 +314,7 @@ namespace Linphone.Model
             //if (LinphoneCore.GetCallsNb() > 0)
             //{
                 LinphoneCall call = LinphoneCore.GetCurrentCall();
-                call.CallContext.NotifyCallEnded();
+                ((VoipPhoneCall)call.CallContext).NotifyCallEnded();
                 LinphoneCore.TerminateCall(call);
                 if (CallListener != null)
                     CallListener.CallEnded();
@@ -373,11 +374,11 @@ namespace Linphone.Model
                 Debug.WriteLine("[LinphoneManager] Incoming received: " + contact + " (" + number + ")");
 
                 VoipPhoneCall vcall = null;
-                Uri contactUri = new Uri("ms-appx:///Assets/unknown.png", UriKind.Absolute);
-                Uri iconUri = new Uri("ms-appx:///Assets/pnicon.png", UriKind.Absolute);
-                Uri ringtoneUri = new Uri("ms-appx:///Assets/Sounds/Ringtone.wma", UriKind.Absolute);
+                Uri contactUri = new Uri(server.Path + "\\Assets\\unknown.png", UriKind.Absolute);
+                Uri iconUri = new Uri(server.Path + "\\Assets\\pnicon.png", UriKind.Absolute);
+                Uri ringtoneUri = new Uri(server.Path + "\\Assets\\Sounds\\Ringtone.wma", UriKind.Absolute);
 
-                CallController.RequestNewIncomingCall("/Views/InCall.xaml?sip=" + number, contact, number, contactUri, "Linphone", iconUri, "", ringtoneUri, VoipCallMedia.Audio, new TimeSpan(), out vcall);
+                CallController.RequestNewIncomingCall("/Views/InCall.xaml?sip=" + number, contact, number, contactUri, "Linphone", iconUri, "", ringtoneUri, VoipCallMedia.Audio, fifteenSecs, out vcall);
                 vcall.AnswerRequested += ((c, eventargs) =>
                     {
                         vcall.NotifyCallActive();
@@ -397,7 +398,7 @@ namespace Linphone.Model
                 state == LinphoneCallState.Error ||
                 state == LinphoneCallState.Released)
             {
-                call.CallContext.NotifyCallEnded();
+                ((VoipPhoneCall)call.CallContext).NotifyCallEnded();
             }
         }
 
