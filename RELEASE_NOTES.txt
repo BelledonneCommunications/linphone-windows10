@@ -3,19 +3,7 @@ In order to compile Linphone, you need:
 * Visual Studio 11 (2012)
 * The Windows Phone 8 SDK
 
-The documentation is directly included in the code using Intellisense,
-but a .xml file with the C++ API documentation is also generated at the 
-compilation as Linphone.Core.xml.
-
 To import the solution, open the Linphone.sln file at the root of the project.
-
-The solution is composed of four projects:
-* Agents: contains the background agents for the VoIP application
-* Core: contains the C++ API wrapper for Linphone Core
-* CoreProxyStub: contains only generated files allowing 
-the Linphone project to make calls to the C++ API
-/!\ Do not touch anything in this project!
-* Linphone: the interface project
 
 To compile and run it, plug a windows phone 8 device or choose an emulator 
 and run the build/install (using F5 or the green triangle). The app will start
@@ -24,12 +12,3 @@ automatically once built.
 /!\ Please check the Linphone project in the solution is set as startup project.
 (The startup project is in bold in the project list)
 If not, right click on Linphone project and choose the menu "Set as StartUp project".
-
-02-15-2012:
-* C++ API stubbed
-* Interface almost finished, some API calls are included
-* Background process and agents running depending on the interface status
-* Incoming call using push notification 
-(button is available in setting page to send one to itself)
-* Interface designed to be launched on a phone running a Dark theme (for now), Ligth
-theme not yet supported.
