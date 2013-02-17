@@ -29,6 +29,8 @@ namespace Linphone
         /// </summary>
         public BasePage Page { get; set; }
 
+        public static Dispatcher UIDispatcher;
+
         /// <summary>
         /// Called when a call is starting.
         /// Displays the InCall.xaml page.
@@ -70,6 +72,7 @@ namespace Linphone
         public virtual void OnNavigatedTo(NavigationEventArgs nea)
         {
             LinphoneManager.Instance.CallListener = this;
+            UIDispatcher = this.Page.Dispatcher;
         }
 
         /// <summary>
