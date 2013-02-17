@@ -297,10 +297,11 @@ namespace Linphone.Model
         public void NewOutgoingCall(String sipAddress)
         {
             VoipPhoneCall call;
-            CallController.RequestNewOutgoingCall(sipAddress, "", "Linphone", VoipCallMedia.Audio, out call);
+            CallController.RequestNewOutgoingCall("/Linphone;component/Views/InCall.xaml?sip=" + sipAddress, sipAddress, "Linphone", VoipCallMedia.Audio, out call);
             call.NotifyCallActive();
             LinphoneCall LCall = LinphoneCore.Invite(sipAddress);
             LCall.CallContext = call;
+            LinphoneCore.Call = LCall;
 
             if (CallListener != null)
                 CallListener.NewCallStarted(sipAddress);
@@ -378,21 +379,27 @@ namespace Linphone.Model
                 Uri iconUri = new Uri(server.Path + "\\Assets\\pnicon.png", UriKind.Absolute);
                 Uri ringtoneUri = new Uri(server.Path + "\\Assets\\Sounds\\Ringtone.wma", UriKind.Absolute);
 
-                CallController.RequestNewIncomingCall("/Views/InCall.xaml?sip=" + number, contact, number, contactUri, "Linphone", iconUri, "", ringtoneUri, VoipCallMedia.Audio, fifteenSecs, out vcall);
+                CallController.RequestNewIncomingCall("/Linphone;component/Views/InCall.xaml?sip=" + number, contact, number, contactUri, "Linphone", iconUri, "", ringtoneUri, VoipCallMedia.Audio, fifteenSecs, out vcall);
                 vcall.AnswerRequested += ((c, eventargs) =>
                     {
+                        Debug.WriteLine("[LinphoneManager] Call accepted");
+
                         vcall.NotifyCallActive();
+                        LinphoneCore.AcceptCall(call);
+
                         if (CallListener != null)
                             CallListener.NewCallStarted(number);
-                        LinphoneCore.AcceptCall(call);
                     });
                 vcall.RejectRequested += ((c, eventargs) =>
                     {
+                        Debug.WriteLine("[LinphoneManager] Call rejected");
+
                         vcall.NotifyCallEnded();
                         LinphoneCore.TerminateCall(call);
                     });
 
                 call.CallContext = vcall;
+                LinphoneCore.Call = call;
             }
             else if (state == LinphoneCallState.CallEnd ||
                 state == LinphoneCallState.Error ||

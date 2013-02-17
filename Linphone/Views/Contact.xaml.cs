@@ -36,6 +36,8 @@ namespace Linphone.Views
         /// </summary>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            base.OnNavigatedTo(e);
+
             while (actions.Children.Count > 0)
             {
                 actions.Children.RemoveAt(0);

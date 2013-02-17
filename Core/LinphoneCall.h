@@ -88,10 +88,10 @@ namespace Linphone
 			Platform::String^ GetRemoteUserAgent();
 			Platform::String^ GetRemoteContact();
 
-			property Windows::Phone::Networking::Voip::VoipPhoneCall^ CallContext
+			property Platform::Object^ CallContext
             {
-                Windows::Phone::Networking::Voip::VoipPhoneCall^ get();
-				void set(Windows::Phone::Networking::Voip::VoipPhoneCall^ cc);
+                Platform::Object^ get();
+				void set(Platform::Object^ cc);
             }
 
 			LinphoneCall(Platform::String^ contact, Platform::String^ number);
@@ -99,7 +99,7 @@ namespace Linphone
 		private:
 			friend ref class Linphone::Core::LinphoneCore;
 			
-			Windows::Phone::Networking::Voip::VoipPhoneCall^ callContext;
+			Platform::Object^ callContext;
 
 			Platform::String^ contact;
 			Platform::String^ number;

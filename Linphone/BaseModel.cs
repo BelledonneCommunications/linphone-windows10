@@ -29,8 +29,6 @@ namespace Linphone
         /// </summary>
         public BasePage Page { get; set; }
 
-        public static Dispatcher UIDispatcher;
-
         /// <summary>
         /// Called when a call is starting.
         /// Displays the InCall.xaml page.
@@ -52,6 +50,8 @@ namespace Linphone
         {
             this.Page.Dispatcher.BeginInvoke(() =>
                 {
+                    System.Diagnostics.Debug.WriteLine("[CallListener] Call ended, can go back ? " + this.Page.NavigationService.CanGoBack);
+
                     if (this.Page.NavigationService.CanGoBack)
                         this.Page.NavigationService.GoBack();
                     else
@@ -67,17 +67,14 @@ namespace Linphone
         /// <summary>
         /// Actualises the listener when the pages changes.
         /// </summary>
-        /// <param name="nea"></param>
         public virtual void OnNavigatedTo(NavigationEventArgs nea)
         {
             LinphoneManager.Instance.CallListener = this;
-            UIDispatcher = this.Page.Dispatcher;
         }
 
         /// <summary>
         /// Actualises the listener when the pages changes.
         /// </summary>
-        /// <param name="nea"></param>
         public virtual void OnNavigatedFrom(NavigationEventArgs nea)
         {
             LinphoneManager.Instance.CallListener = null;

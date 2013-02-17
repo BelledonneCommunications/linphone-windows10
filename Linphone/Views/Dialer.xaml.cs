@@ -38,9 +38,10 @@ namespace Linphone
         /// Method called when the page is displayed.
         /// Check if the uri contains a sip address, if yes, it starts a call to this address.
         /// </summary>
-        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            base.OnNavigatedTo(e);
+
             LinphoneManager.Instance.EnableDebug(SettingsManager.isDebugEnabled);
             // Create LinphoneCore if not created yet, otherwise do nothing
             LinphoneManager.Instance.InitLinphoneCore();

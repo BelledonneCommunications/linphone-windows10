@@ -32,9 +32,10 @@ namespace Linphone.Views
         /// Method called when the page is displayed.
         /// Searches for a matching contact using the current call address or number and display information if found.
         /// </summary>
-        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            base.OnNavigatedTo(e);
+            
             LinphoneManager.Instance.EnableDebug(SettingsManager.isDebugEnabled);
             // Create LinphoneCore if not created yet, otherwise do nothing
             LinphoneManager.Instance.InitLinphoneCore();

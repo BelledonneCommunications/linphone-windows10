@@ -7,6 +7,7 @@
 #include "ApiLock.h"
 
 using namespace Linphone::Core;
+using namespace Windows::Phone::Networking::Voip;
 
 LinphoneCallState LinphoneCall::GetState()
 {
@@ -113,14 +114,14 @@ Platform::String^ LinphoneCall::GetRemoteContact()
 	return this->contact;
 }
 
-void LinphoneCall::CallContext::set(Windows::Phone::Networking::Voip::VoipPhoneCall^ cc)
+void LinphoneCall::CallContext::set(Platform::Object^ cc)
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 
 	this->callContext = cc;
 }
 
-Windows::Phone::Networking::Voip::VoipPhoneCall^  LinphoneCall::CallContext::get()
+Platform::Object^  LinphoneCall::CallContext::get()
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 
