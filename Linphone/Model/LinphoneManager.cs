@@ -302,9 +302,6 @@ namespace Linphone.Model
             LinphoneCall LCall = LinphoneCore.Invite(sipAddress);
             LCall.CallContext = call;
             LinphoneCore.Call = LCall;
-
-            if (CallListener != null)
-                CallListener.NewCallStarted(sipAddress);
         }
 
         /// <summary>
@@ -365,7 +362,7 @@ namespace Linphone.Model
         /// </summary>
         public void CallState(LinphoneCall call, LinphoneCallState state)
         {
-            Debug.WriteLine("[LinphoneManager] Call state changed: " + call.GetRemoteContact() + " => " + state.ToString());
+            Debug.WriteLine("[LinphoneManager] Call state changed: " + call.GetRemoteAddress().AsStringUriOnly() + " => " + state.ToString());
             if (state == LinphoneCallState.IncomingReceived)
             {
                 String contact = call.GetRemoteContact();
@@ -386,9 +383,6 @@ namespace Linphone.Model
 
                             vcall.NotifyCallActive();
                             LinphoneCore.AcceptCall(call);
-
-                            if (CallListener != null)
-                                CallListener.NewCallStarted(number);
                         });
                     vcall.RejectRequested += ((c, eventargs) =>
                         {
@@ -405,6 +399,9 @@ namespace Linphone.Model
             else if (state == LinphoneCallState.StreamsRunning)
             {
                 Debug.WriteLine("[LinphoneManager] Call accepted and running");
+
+                if (CallListener != null)
+                    CallListener.NewCallStarted(call.GetRemoteAddress().AsStringUriOnly());
             }
             else if (state == LinphoneCallState.CallEnd ||
                 state == LinphoneCallState.Error ||

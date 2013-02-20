@@ -127,7 +127,8 @@ LinphoneAddress^ LinphoneCore::InterpretURL(Platform::String^ destination)
 LinphoneCall^ LinphoneCore::Invite(Platform::String^ destination) 
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-
+	
+	this->callAccepted = true;
 	return ref new LinphoneCall("", destination);
 }
 
