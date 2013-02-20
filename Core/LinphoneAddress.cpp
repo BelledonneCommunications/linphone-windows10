@@ -5,17 +5,17 @@ using namespace Linphone::Core;
 
 Platform::String^ LinphoneAddress::GetDisplayName()
 {
-	return nullptr;
+	return this->displayName;
 }
 
 Platform::String^ LinphoneAddress::GetUserName()
 {
-	return nullptr;
+	return this->username;
 }
 
 Platform::String^ LinphoneAddress::GetDomain()
 {
-	return nullptr;
+	return this->domain;
 }
 
 int LinphoneAddress::GetPort()
@@ -25,17 +25,17 @@ int LinphoneAddress::GetPort()
 
 void LinphoneAddress::SetDisplayName(Platform::String^ name)
 {
-
+	this->displayName = name;
 }
 
 void LinphoneAddress::SetUserName(Platform::String^ username)
 {
-
+	this->username = username;
 }
 
 void LinphoneAddress::SetDomain(Platform::String^ domain)
 {
-
+	this->domain = domain;
 }
 
 void LinphoneAddress::SetPort(int port)
@@ -63,7 +63,25 @@ Platform::String^ LinphoneAddress::ToString()
 	return this->address;
 }
 
-LinphoneAddress::LinphoneAddress(Platform::String^ address)
+LinphoneAddress::LinphoneAddress(Platform::String^ address) :
+	address(address),
+	displayName(nullptr),
+	username(nullptr),
+	domain(nullptr)
 {
-	this->address = address;
+
+}
+
+LinphoneAddress::LinphoneAddress(Platform::String^ username, Platform::String^ domain, Platform::String^ displayName) :
+	address("sip:" + username + "@" + domain),
+	displayName(displayName),
+	username(username),
+	domain(domain)
+{
+
+}
+
+LinphoneAddress::~LinphoneAddress()
+{
+
 }

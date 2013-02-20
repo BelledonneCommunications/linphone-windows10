@@ -29,6 +29,9 @@ namespace Linphone
         /// </summary>
         public BasePage Page { get; set; }
 
+        /// <summary>
+        /// Dispatcher used to run tasks on the UI thread.
+        /// </summary>
         public static Dispatcher UIDispatcher;
 
         /// <summary>

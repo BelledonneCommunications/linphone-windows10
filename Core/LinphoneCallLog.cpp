@@ -2,27 +2,29 @@
 #include "LinphoneAddress.h"
 #include "Enums.h"
 #include "Server.h"
+#include "Globals.h"
+#include "LinphoneCoreFactory.h"
 
 using namespace Linphone::Core;
 
 LinphoneAddress^ LinphoneCallLog::GetFrom()
 {
-	return nullptr;
+	return this->from;
 }
 
 LinphoneAddress^ LinphoneCallLog::GetTo()
 {
-	return nullptr;
+	return this->to;
 }
 
 CallDirection LinphoneCallLog::GetDirection()
 {
-	return CallDirection::Incoming;
+	return this->direction;
 }
 
 LinphoneCallStatus LinphoneCallLog::GetStatus()
 {
-	return LinphoneCallStatus::Aborted;
+	return this->status;
 }
 
 Platform::String^ LinphoneCallLog::GetStartDate()
@@ -43,4 +45,18 @@ int LinphoneCallLog::GetCallDuration()
 int LinphoneCallLog::GetCallId()
 {
 	return -1;
+}
+
+LinphoneCallLog::LinphoneCallLog(Platform::String^ from, Platform::String^ to, LinphoneCallStatus status, CallDirection direction) :
+	status(status),
+	direction(direction)
+{
+	LinphoneCoreFactory^ lcf = Globals::Instance->LinphoneCoreFactory;
+	this->from = lcf->CreateLinphoneAddress(from);
+	this->to = lcf->CreateLinphoneAddress(to);
+}
+
+LinphoneCallLog::~LinphoneCallLog()
+{
+
 }

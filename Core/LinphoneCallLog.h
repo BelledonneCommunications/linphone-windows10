@@ -6,18 +6,8 @@ namespace Linphone
 {
 	namespace Core
 	{
+		ref class LinphoneCore;
 		ref class LinphoneAddress;
-
-		/// <summary>
-		/// Represents a call status
-		/// </summary>
-		public enum class LinphoneCallStatus : int
-		{
-			Success = 0,
-			Aborted = 1,
-			Missed = 2,
-			Declined = 3
-		};
 
 		/// <summary>
 		/// Call data records object
@@ -49,6 +39,17 @@ namespace Linphone
 			/// Returns the call id from signaling.
 			/// </summary>
 			int GetCallId();
+
+		private:
+			friend ref class Linphone::Core::LinphoneCore;
+
+			LinphoneAddress^ from;
+			LinphoneAddress^ to;
+			LinphoneCallStatus status;
+			CallDirection direction;
+
+			LinphoneCallLog(Platform::String^ from, Platform::String^ to, LinphoneCallStatus status, CallDirection direction);
+			~LinphoneCallLog();
 		};
 	}
 }

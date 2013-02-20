@@ -162,7 +162,7 @@ namespace Linphone
 			void UpdateCall(LinphoneCall^ call, LinphoneCallParams^ params);
 			LinphoneCallParams^ CreateDefaultCallParameters();
 
-			Windows::Foundation::Collections::IVector<LinphoneCallLog^>^ GetCallLogs();
+			Windows::Foundation::Collections::IVector<Platform::Object^>^ GetCallLogs();
 			void ClearCallLogs();
 			void RemoveCallLog(LinphoneCallLog^ log);
 
@@ -411,6 +411,8 @@ namespace Linphone
 			LinphoneCoreListener^ listener;
 			LinphoneCall^ call;
 			LinphoneCall^ incomingcall;
+			bool callAccepted;
+			bool callEnded;
 
 			LinphoneCore(LinphoneCoreListener^ coreListener);
 			~LinphoneCore();

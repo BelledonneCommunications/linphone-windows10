@@ -312,14 +312,11 @@ namespace Linphone.Model
         /// </summary>
         public void EndCurrentCall()
         {
-            //if (LinphoneCore.GetCallsNb() > 0)
-            //{
+            if (LinphoneCore.GetCallsNb() > 0)
+            {
                 LinphoneCall call = LinphoneCore.GetCurrentCall();
-                ((VoipPhoneCall)call.CallContext).NotifyCallEnded();
                 LinphoneCore.TerminateCall(call);
-                if (CallListener != null)
-                    CallListener.CallEnded();
-            //}
+            }
         }
 
         /// <summary>
@@ -368,6 +365,7 @@ namespace Linphone.Model
         /// </summary>
         public void CallState(LinphoneCall call, LinphoneCallState state)
         {
+            Debug.WriteLine("[LinphoneManager] Call state changed: " + call.GetRemoteContact() + " => " + state.ToString());
             if (state == LinphoneCallState.IncomingReceived)
             {
                 String contact = call.GetRemoteContact();
@@ -404,11 +402,19 @@ namespace Linphone.Model
                     LinphoneCore.Call = call;
                 });
             }
+            else if (state == LinphoneCallState.StreamsRunning)
+            {
+                Debug.WriteLine("[LinphoneManager] Call accepted and running");
+            }
             else if (state == LinphoneCallState.CallEnd ||
                 state == LinphoneCallState.Error ||
                 state == LinphoneCallState.Released)
             {
+                Debug.WriteLine("[LinphoneManager] Call ended");
                 ((VoipPhoneCall)call.CallContext).NotifyCallEnded();
+
+                if (CallListener != null)
+                    CallListener.CallEnded();
             }
         }
 

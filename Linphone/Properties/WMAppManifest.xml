@@ -83,6 +83,7 @@
         <Interface Name="Linphone.Core.__ILinphoneCallFactory" InterfaceId="{95F1BD28-F1E2-379F-B44C-1553EEA60023}" />
         <Interface Name="Linphone.Core.__ILinphoneCallStatsPublicNonVirtuals" InterfaceId="{87BCE67E-109C-3429-9255-76FC496C3382}" />
         <Interface Name="Linphone.Core.__ILinphoneCallLogPublicNonVirtuals" InterfaceId="{F3C079C9-0A9C-3B02-A1CC-C61991D09E18}" />
+        <Interface Name="Linphone.Core.__ILinphoneCallLogFactory" InterfaceId="{30A22A32-F8CD-3801-AA3C-62DB05EF8662}" />
         <Interface Name="Linphone.Core.__ILinphoneCallParamsPublicNonVirtuals" InterfaceId="{26EFBF2D-6F46-35DE-9CFA-1A784C3C5A35}" />
         <Interface Name="Linphone.Core.__IPayloadTypePublicNonVirtuals" InterfaceId="{BF73ED50-6AF0-3E18-9C7B-F81A8E91287B}" />
         <Interface Name="Linphone.Core.__ILinphoneProxyConfigPublicNonVirtuals" InterfaceId="{FD2DF2D0-E760-354B-AD77-D0C81FBACE0B}" />

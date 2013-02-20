@@ -4,6 +4,8 @@ namespace Linphone
 {
 	namespace Core
 	{
+		ref class LinphoneCoreFactory;
+
 		/// <summary>
 		/// Object that represents a SIP address.
 		/// It's an opaque object that represents a SIP address, i.e. the content of SIP's "from" and "to" headers.
@@ -66,10 +68,17 @@ namespace Linphone
 			/// </summary>
 			Platform::String^ ToString();
 
-			LinphoneAddress(Platform::String^ address);
-
 		private:
+			friend ref class Linphone::Core::LinphoneCoreFactory;
+			
+			LinphoneAddress(Platform::String^ address);
+			LinphoneAddress::LinphoneAddress(Platform::String^ username, Platform::String^ domain, Platform::String^ displayName);
+			~LinphoneAddress();
+
 			Platform::String^ address;
+			Platform::String^ username;
+			Platform::String^ domain;
+			Platform::String^ displayName;
 		};
 	}
 }

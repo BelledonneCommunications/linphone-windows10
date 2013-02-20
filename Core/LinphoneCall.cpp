@@ -5,6 +5,8 @@
 #include "LinphoneCallParams.h"
 #include "Server.h"
 #include "ApiLock.h"
+#include "LinphoneCoreFactory.h"
+#include "Globals.h"
 
 using namespace Linphone::Core;
 using namespace Windows::Phone::Networking::Voip;
@@ -16,7 +18,8 @@ LinphoneCallState LinphoneCall::GetState()
 
 LinphoneAddress^ LinphoneCall::GetRemoteAddress()
 {
-	return ref new LinphoneAddress(this->number);
+	LinphoneCoreFactory^ lcf = Globals::Instance->LinphoneCoreFactory;
+	return lcf->CreateLinphoneAddress(this->number);
 }
 
 CallDirection LinphoneCall::GetDirection()
@@ -116,15 +119,11 @@ Platform::String^ LinphoneCall::GetRemoteContact()
 
 void LinphoneCall::CallContext::set(Platform::Object^ cc)
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-
 	this->callContext = cc;
 }
 
 Platform::Object^  LinphoneCall::CallContext::get()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-
 	return this->callContext;
 }
 

@@ -96,5 +96,16 @@ namespace Linphone
 			Udating = 17,
 			Released = 18
 		};
+
+		/// <summary>
+		/// Represents a call status
+		/// </summary>
+		public enum class LinphoneCallStatus : int
+		{
+			Success = 0,
+			Aborted = 1,
+			Missed = 2,
+			Declined = 3
+		};
 	}
 }

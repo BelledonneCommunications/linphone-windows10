@@ -2,17 +2,21 @@
 #include "LinphoneAddress.h"
 #include "LinphoneAuthInfo.h"
 #include "LinphoneCall.h"
+#include "LinphoneCallLog.h"
 #include "LinphoneCallParams.h"
 #include "LinphoneProxyConfig.h"
 #include "LinphoneCoreListener.h"
 #include "LpConfig.h"
 #include "PayloadType.h"
 #include "Server.h"
+#include "Enums.h"
 #include "ApiLock.h"
 #include <collection.h>
 
 using namespace Linphone::Core;
 using namespace Platform;
+using namespace Platform::Collections;
+using namespace Windows::Foundation::Collections;
 
 Transports::Transports()
 {
@@ -96,6 +100,17 @@ void LinphoneCore::Iterate()
 		this->listener->CallState(this->incomingcall, LinphoneCallState::IncomingReceived);
 		this->call = incomingcall;
 		this->incomingcall = nullptr;
+	} 
+	else if (this->call != nullptr && this->callAccepted && this->listener != nullptr)
+	{
+		this->callAccepted = false;
+		this->listener->CallState(this->call, LinphoneCallState::StreamsRunning);
+	}
+	else if (this->call != nullptr && this->callEnded && this->listener != nullptr)
+	{
+		this->callEnded = false;
+		this->listener->CallState(this->call, LinphoneCallState::CallEnd);
+		this->call = nullptr;
 	}
 }
 
@@ -128,8 +143,7 @@ LinphoneCall^ LinphoneCore::InviteAddressWithParams(LinphoneAddress^ destination
 
 void LinphoneCore::TerminateCall(LinphoneCall^ call) 
 {
-	call = nullptr;
-	this->call = nullptr;
+	this->callEnded = true;
 }
 
 LinphoneCall^ LinphoneCore::GetCurrentCall() 
@@ -154,7 +168,8 @@ Platform::Boolean LinphoneCore::IsIncomingInvitePending()
 
 void LinphoneCore::AcceptCall(LinphoneCall^ call) 
 {
-
+	this->call = call;
+	this->callAccepted = true;
 }
 
 void LinphoneCore::AcceptCallWithParams(LinphoneCall^ call, LinphoneCallParams^ params) 
@@ -182,9 +197,20 @@ LinphoneCallParams^ LinphoneCore::CreateDefaultCallParameters()
 	return nullptr;
 }
 
-Windows::Foundation::Collections::IVector<LinphoneCallLog^>^ LinphoneCore::GetCallLogs() 
+IVector<Object^>^ LinphoneCore::GetCallLogs() 
 {
-	return nullptr;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
+	IVector<Object^>^ logs = ref new Vector<Object^>();
+
+	LinphoneCallLog^ log = ref new LinphoneCallLog(L"sip:miaou@sip.linphone.org", L"sip:waouf@sip.linphone.org", LinphoneCallStatus::Missed, CallDirection::Incoming);
+	logs->Append(log);
+	log = ref new LinphoneCallLog(L"sip:waouf@sip.linphone.org", L"sip:miaou@sip.linphone.org", LinphoneCallStatus::Success, CallDirection::Outgoing);
+	logs->Append(log);
+	log = ref new LinphoneCallLog(L"sip:cotcot@sip.linphone.org", L"sip:miaou@sip.linphone.org", LinphoneCallStatus::Success, CallDirection::Incoming);
+	logs->Append(log);
+
+	return logs;
 }
 
 void LinphoneCore::ClearCallLogs() 
@@ -447,16 +473,21 @@ void LinphoneCore::TerminateAllCalls()
 
 }
 
-Windows::Foundation::Collections::IVector<LinphoneCall^>^ LinphoneCore::GetCalls() 
+IVector<LinphoneCall^>^ LinphoneCore::GetCalls() 
 {
-	auto calls = ref new Platform::Collections::Vector<LinphoneCall^>();
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	
+	Vector<LinphoneCall^>^ calls = ref new Vector<LinphoneCall^>();
 	calls->Append(this->call);
 	return calls;
 }
 
 int LinphoneCore::GetCallsNb() 
 {
-	return -1;
+	if (this->Call != nullptr)
+		return 1;
+	else
+		return 0;
 }
 
 LinphoneCall^ LinphoneCore::FindCallFromUri(Platform::String^ uri) 
@@ -641,6 +672,8 @@ void LinphoneCore::IncomingCall::set(LinphoneCall^ call)
 LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener) :
 	call(nullptr),
 	incomingcall(nullptr),
+	callAccepted(false),
+	callEnded(false),
 	listener(coreListener)
 {
 

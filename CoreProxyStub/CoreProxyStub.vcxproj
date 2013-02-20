@@ -67,6 +67,7 @@
     <TargetName>Linphone.$(ProjectName)</TargetName>
     <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
     <IntDir>$(PlatformTarget)\$(Configuration)\</IntDir>
+    <ExtensionsToDeleteOnClean>*winmd;$(ExtensionsToDeleteOnClean)</ExtensionsToDeleteOnClean>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <TargetName>Linphone.$(ProjectName)</TargetName>
