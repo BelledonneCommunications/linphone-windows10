@@ -161,7 +161,11 @@ namespace Linphone
 			void DeferCallUpdate(LinphoneCall^ call);
 			void UpdateCall(LinphoneCall^ call, LinphoneCallParams^ params);
 			LinphoneCallParams^ CreateDefaultCallParameters();
-
+			
+			/// <summary>
+			/// This is a temporary workaround since the call to this method crash if it returns a IVector&lt;LinphoneCallLog^&gt;^.
+			/// Returns a IList&lt;Object&gt; where each object is a LinphoneCallLog.
+			/// </summary>
 			Windows::Foundation::Collections::IVector<Platform::Object^>^ GetCallLogs();
 			void ClearCallLogs();
 			void RemoveCallLog(LinphoneCallLog^ log);

@@ -388,7 +388,6 @@ namespace Linphone.Model
                         {
                             Debug.WriteLine("[LinphoneManager] Call rejected");
 
-                            vcall.NotifyCallEnded();
                             LinphoneCore.TerminateCall(call);
                         });
 

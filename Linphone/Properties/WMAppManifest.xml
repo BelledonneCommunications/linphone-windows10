@@ -43,6 +43,7 @@
     </Tokens>
     <Extensions>
       <Extension ExtensionName="LockScreen_Notification_IconCount" ConsumerID="{111DFF24-AA15-4A96-8006-2BFF8122084F}" TaskID="_default" />
+      <Protocol Name="sip" NavUriFragment="encodedLaunchUri=%s" TaskID="_default" />
     </Extensions>
     <ActivatableClasses>
       <InProcessServer>

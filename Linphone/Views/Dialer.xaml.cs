@@ -51,7 +51,6 @@ namespace Linphone
             {
                 String sipAddressToCall = NavigationContext.QueryString["sip"];
                 addressBox.Text = sipAddressToCall;
-                NewOutgoingCall(sipAddressToCall);
             }
         }
 

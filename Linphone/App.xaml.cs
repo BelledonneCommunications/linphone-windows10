@@ -264,6 +264,9 @@ namespace Linphone
             RootFrame = new PhoneApplicationFrame();
             RootFrame.Navigated += CompleteInitializePhoneApplication;
 
+            // Assign custom URI mapper
+            RootFrame.UriMapper = new AssociationUriMapper();
+
             // Handle navigation failures
             RootFrame.NavigationFailed += RootFrame_NavigationFailed;
 
