@@ -322,7 +322,7 @@ namespace Linphone.Model
         public void PauseCurrentCall()
         {
             LinphoneCall call = LinphoneCore.GetCurrentCall();
-            //call.CallContext.NotifyCallHeld();
+            ((VoipPhoneCall)call.CallContext).NotifyCallHeld();
             LinphoneCore.PauseCall(call);
         }
 
@@ -333,8 +333,8 @@ namespace Linphone.Model
         {
             if (LinphoneCore.GetCallsNb() > 0)
             {
-                LinphoneCall call = LinphoneCore.GetCalls().First();
-                //call.CallContext.NotifyCallActive();
+                LinphoneCall call = LinphoneCore.GetCurrentCall();
+                ((VoipPhoneCall)call.CallContext).NotifyCallActive();
                 LinphoneCore.ResumeCall(call);
             }
         }
