@@ -21,6 +21,11 @@ namespace Linphone.Model
     /// </summary>
     public sealed class LinphoneManager : LinphoneCoreListener
     {
+        private LinphoneManager()
+        {
+            LastKnownState = Linphone.Core.RegistrationState.RegistrationNone;
+        }
+
         private static LinphoneManager singleton;
         /// <summary>
         /// Static instance of the class.
@@ -57,6 +62,11 @@ namespace Linphone.Model
                 return VoipCallCoordinator.GetDefault();
             }
         }
+
+        /// <summary>
+        /// Used to set the default registration state on the status bar when the view is changed.
+        /// </summary>
+        public RegistrationState LastKnownState { get; set; }
 
         /// <summary>
         /// Simple listener to notify pages' viewmodel when a call ends or starts
@@ -409,9 +419,7 @@ namespace Linphone.Model
                 if (CallListener != null)
                     CallListener.NewCallStarted(call.GetRemoteAddress().AsStringUriOnly());
             }
-            else if (state == LinphoneCallState.CallEnd ||
-                state == LinphoneCallState.Error ||
-                state == LinphoneCallState.Released)
+            else if (state == LinphoneCallState.CallEnd || state == LinphoneCallState.Error)
             {
                 Debug.WriteLine("[LinphoneManager] Call ended");
                 ((VoipPhoneCall)call.CallContext).NotifyCallEnded();
@@ -427,6 +435,9 @@ namespace Linphone.Model
         public void RegistrationState(LinphoneProxyConfig config, RegistrationState state, string message)
         {
             Debug.WriteLine("[LinphoneManager] Registration state changed: " + state.ToString() + ", message=" + message);
+            LastKnownState = state;
+            if (BasePage.StatusBar != null)
+                BasePage.StatusBar.RefreshStatusIcon(state);
         }
 
         /// <summary>

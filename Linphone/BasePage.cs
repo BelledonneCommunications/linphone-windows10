@@ -1,4 +1,5 @@
-﻿using Microsoft.Phone.Controls;
+﻿using Linphone.Controls;
+using Microsoft.Phone.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,11 @@ namespace Linphone
         }
 
         /// <summary>
+        /// The status bar displayed on the page if present.
+        /// </summary>
+        public static StatusBar StatusBar { get; set; }
+
+        /// <summary>
         /// View model linked to the page, implements the call state listener.
         /// </summary>
         protected readonly BaseModel ViewModel;
@@ -62,6 +68,7 @@ namespace Linphone
         protected override void OnNavigatedFrom(NavigationEventArgs nee)
         {
             base.OnNavigatedFrom(nee);
+            StatusBar = null;
 
             this.ViewModel.OnNavigatedFrom(nee);
         } 

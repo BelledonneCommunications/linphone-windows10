@@ -102,6 +102,9 @@
     <Compile Include="Controls\ContactAction.xaml.cs">
       <DependentUpon>ContactAction.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\StatusBar.xaml.cs">
+      <DependentUpon>StatusBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TwoStateButton.xaml.cs">
       <DependentUpon>TwoStateButton.xaml</DependentUpon>
     </Compile>
@@ -210,7 +213,6 @@
     <Content Include="Assets\AppBar\transport.rew.png" />
     <Content Include="Assets\AppBar\upload.png" />
     <Content Include="Assets\AppIcon.png" />
-    <Content Include="Assets\background.png" />
     <Content Include="Assets\backspace_default.png" />
     <Content Include="Assets\backspace_over.png" />
     <Content Include="Assets\call_answer_default.png" />
@@ -218,32 +220,11 @@
     <Content Include="Assets\call_status_incoming.png" />
     <Content Include="Assets\call_status_missed.png" />
     <Content Include="Assets\call_status_outgoing.png" />
-    <Content Include="Assets\dialer_address_background.png" />
+    <Content Include="Assets\led_connected.png" />
+    <Content Include="Assets\led_disconnected.png" />
+    <Content Include="Assets\led_error.png" />
+    <Content Include="Assets\led_inprogress.png" />
     <Content Include="Assets\pnicon.png" />
-    <Content Include="Assets\Numpad\numpad_eight_default.png" />
-    <Content Include="Assets\Numpad\numpad_eight_over.png" />
-    <Content Include="Assets\Numpad\numpad_five_default.png" />
-    <Content Include="Assets\Numpad\numpad_five_over.png" />
-    <Content Include="Assets\Numpad\numpad_four_default.png" />
-    <Content Include="Assets\Numpad\numpad_four_over.png" />
-    <Content Include="Assets\Numpad\numpad_nine_default.png" />
-    <Content Include="Assets\Numpad\numpad_nine_over.png" />
-    <Content Include="Assets\Numpad\numpad_one_default.png" />
-    <Content Include="Assets\Numpad\numpad_one_over.png" />
-    <Content Include="Assets\Numpad\numpad_seven_default.png" />
-    <Content Include="Assets\Numpad\numpad_seven_over.png" />
-    <Content Include="Assets\Numpad\numpad_sharp_default.png" />
-    <Content Include="Assets\Numpad\numpad_sharp_over.png" />
-    <Content Include="Assets\Numpad\numpad_six_default.png" />
-    <Content Include="Assets\Numpad\numpad_six_over.png" />
-    <Content Include="Assets\Numpad\numpad_star_default.png" />
-    <Content Include="Assets\Numpad\numpad_star_over.png" />
-    <Content Include="Assets\Numpad\numpad_three_default.png" />
-    <Content Include="Assets\Numpad\numpad_three_over.png" />
-    <Content Include="Assets\Numpad\numpad_two_default.png" />
-    <Content Include="Assets\Numpad\numpad_two_over.png" />
-    <Content Include="Assets\Numpad\numpad_zero_default.png" />
-    <Content Include="Assets\Numpad\numpad_zero_over.png" />
     <Content Include="Assets\Sounds\Ringtone.wma" />
     <Content Include="$(SolutionDir)$(PlatformName)\$(ConfigurationName)\CoreProxyStub\Linphone.CoreProxyStub.dll" />
     <Content Include="Assets\unknown.png" />
@@ -271,6 +252,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ContactAction.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\StatusBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

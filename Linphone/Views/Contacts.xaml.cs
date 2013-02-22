@@ -28,6 +28,16 @@ namespace Linphone.Views
             contactsList.ItemsSource = ContactManager.Instance.GetContactsGroupedByLetters();
         }
 
+        /// <summary>
+        /// Method called when the page is displayed.
+        /// </summary>
+        /// <param name="nee"></param>
+        protected override void OnNavigatedTo(NavigationEventArgs nee)
+        {
+            base.OnNavigatedTo(nee);
+            StatusBar = status;
+        }
+
         private void contactsList_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
             Microsoft.Phone.UserData.Contact selectedContact = ((sender as LongListSelector).SelectedItem as Microsoft.Phone.UserData.Contact);

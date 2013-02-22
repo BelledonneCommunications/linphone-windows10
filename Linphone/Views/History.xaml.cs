@@ -36,6 +36,9 @@ namespace Linphone.Views
         /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            base.OnNavigatedTo(e);
+            StatusBar = status;
+
             TileManager tileManager = TileManager.Instance;
             tileManager.RemoveMissedCallsTile();
 

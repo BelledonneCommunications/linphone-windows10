@@ -37,6 +37,7 @@ namespace Linphone.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            StatusBar = status;
 
             while (actions.Children.Count > 0)
             {
