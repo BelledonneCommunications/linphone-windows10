@@ -173,6 +173,13 @@ namespace Linphone.Model
                 return;
 
             server.LinphoneCoreFactory.CreateLinphoneCore(this);
+
+            SettingsManager sm = new SettingsManager();
+            if (sm.Username != null && sm.Username.Length > 0 && sm.Domain != null && sm.Domain.Length > 0)
+            {
+                server.LinphoneCore.AddProxyConfig(null);
+            }
+
             timer = new Timer(LinphoneCoreIterate, null, 1, 20);
             Debug.WriteLine("[LinphoneManager] LinphoneCore created");
         }
@@ -354,7 +361,7 @@ namespace Linphone.Model
         /// </summary>
         public void GlobalState(GlobalState state, string message)
         {
-
+            Debug.WriteLine("[LinphoneManager] Global state changed: " + state.ToString() + ", message=" + message);
         }
 
         /// <summary>
@@ -419,7 +426,7 @@ namespace Linphone.Model
         /// </summary>
         public void RegistrationState(LinphoneProxyConfig config, RegistrationState state, string message)
         {
-
+            Debug.WriteLine("[LinphoneManager] Registration state changed: " + state.ToString() + ", message=" + message);
         }
 
         /// <summary>

@@ -418,6 +418,12 @@ namespace Linphone
 			bool callAccepted;
 			bool callEnded;
 			bool callConnected;
+			
+			bool proxyCfgAdded;
+			bool proxyCfgRegistered;
+
+			bool startup;
+			bool on;
 
 			LinphoneCore(LinphoneCoreListener^ coreListener);
 			~LinphoneCore();

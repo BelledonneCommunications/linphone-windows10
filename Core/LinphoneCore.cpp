@@ -51,6 +51,7 @@ Platform::String^ Transports::ToString()
 	return "udp[" + udp + "] tcp[" + tcp + "] tls[" + tls + "]";
 }
 
+
 void LinphoneCore::SetContext(Platform::Object^ object)
 {
 
@@ -63,7 +64,7 @@ void LinphoneCore::ClearProxyConfigs()
 
 void LinphoneCore::AddProxyConfig(LinphoneProxyConfig^ proxyCfg)
 {
-
+	this->proxyCfgAdded = true;
 }
 
 void LinphoneCore::SetDefaultProxyConfig(LinphoneProxyConfig^ proxyCfg)
@@ -117,6 +118,30 @@ void LinphoneCore::Iterate()
 		this->callEnded = false;
 		this->listener->CallState(this->call, LinphoneCallState::CallEnd);
 		this->call = nullptr;
+	}
+
+	if (this->listener != nullptr && this->startup)
+	{
+		this->listener->GlobalState(GlobalState::GlobalStartup, L"");
+		this->startup = false;
+		this->on = true;
+	}
+	else if (this->listener != nullptr && this->on)
+	{
+		this->listener->GlobalState(GlobalState::GlobalOn, L"");
+		this->on = false;
+	}
+
+	if (this->listener != nullptr && this->proxyCfgAdded && !this->on)
+	{
+		this->listener->RegistrationState(nullptr, RegistrationState::RegistrationInProgress, L"");
+		this->proxyCfgAdded = false;
+		this->proxyCfgRegistered = true;
+	}
+	else if (this->listener != nullptr && this->proxyCfgRegistered)
+	{
+		this->listener->RegistrationState(nullptr, RegistrationState::RegistrationOk, L"");
+		this->proxyCfgRegistered = false;
 	}
 }
 
@@ -686,9 +711,13 @@ LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener) :
 	callAccepted(false),
 	callEnded(false),
 	callConnected(false),
+	proxyCfgAdded(false),
+	proxyCfgRegistered(false),
+	startup(true),
+	on(false),
 	listener(coreListener)
 {
-
+	
 }
 
 LinphoneCore::~LinphoneCore()
