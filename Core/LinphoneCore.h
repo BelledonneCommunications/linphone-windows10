@@ -417,6 +417,7 @@ namespace Linphone
 			LinphoneCall^ incomingcall;
 			bool callAccepted;
 			bool callEnded;
+			bool callConnected;
 
 			LinphoneCore(LinphoneCoreListener^ coreListener);
 			~LinphoneCore();

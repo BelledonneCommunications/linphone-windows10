@@ -100,10 +100,16 @@ void LinphoneCore::Iterate()
 		this->listener->CallState(this->incomingcall, LinphoneCallState::IncomingReceived);
 		this->call = incomingcall;
 		this->incomingcall = nullptr;
-	} 
+	}
 	else if (this->call != nullptr && this->callAccepted && this->listener != nullptr)
 	{
 		this->callAccepted = false;
+		this->listener->CallState(this->call, LinphoneCallState::Connected);
+		this->callConnected = true;
+	}
+	else if (this->call != nullptr && this->callConnected && this->listener != nullptr)
+	{
+		this->callConnected = false;
 		this->listener->CallState(this->call, LinphoneCallState::StreamsRunning);
 	}
 	else if (this->call != nullptr && this->callEnded && this->listener != nullptr)
@@ -127,9 +133,13 @@ LinphoneAddress^ LinphoneCore::InterpretURL(Platform::String^ destination)
 LinphoneCall^ LinphoneCore::Invite(Platform::String^ destination) 
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-	
+
+	LinphoneCall^ call = ref new LinphoneCall("", destination);
+	if (this->listener != nullptr)
+		this->listener->CallState(call, LinphoneCallState::OutgoingInit);
+
 	this->callAccepted = true;
-	return ref new LinphoneCall("", destination);
+	return call;
 }
 
 LinphoneCall^ LinphoneCore::InviteAddress(LinphoneAddress^ to) 
@@ -675,6 +685,7 @@ LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener) :
 	incomingcall(nullptr),
 	callAccepted(false),
 	callEnded(false),
+	callConnected(false),
 	listener(coreListener)
 {
 
