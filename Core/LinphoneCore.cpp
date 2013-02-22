@@ -239,7 +239,7 @@ IVector<Object^>^ LinphoneCore::GetCallLogs()
 
 	IVector<Object^>^ logs = ref new Vector<Object^>();
 
-	LinphoneCallLog^ log = ref new LinphoneCallLog(L"sip:miaou@sip.linphone.org", L"sip:waouf@sip.linphone.org", LinphoneCallStatus::Missed, CallDirection::Incoming);
+	LinphoneCallLog^ log = ref new LinphoneCallLog(L"sip:waouf@sip.linphone.org", L"sip:miaou@sip.linphone.org", LinphoneCallStatus::Missed, CallDirection::Incoming);
 	logs->Append(log);
 	log = ref new LinphoneCallLog(L"sip:waouf@sip.linphone.org", L"sip:miaou@sip.linphone.org", LinphoneCallStatus::Success, CallDirection::Outgoing);
 	logs->Append(log);

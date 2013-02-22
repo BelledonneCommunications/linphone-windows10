@@ -241,11 +241,11 @@ namespace Linphone.Model
                 foreach (LinphoneCallLog log in LinphoneCore.GetCallLogs())
                 {
                     string from = log.GetFrom().GetDisplayName();
-                    if (from == null)
+                    if (from.Length == 0)
                         from = log.GetFrom().AsStringUriOnly();
 
                     string to = log.GetTo().GetDisplayName();
-                    if (to == null)
+                    if (to.Length == 0)
                         to = log.GetTo().AsStringUriOnly();
 
                     bool isMissed = log.GetStatus() == LinphoneCallStatus.Missed;

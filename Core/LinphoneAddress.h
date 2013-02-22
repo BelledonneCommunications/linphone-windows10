@@ -30,17 +30,17 @@ namespace Linphone
 			/// Human display name
 			/// </summary>
 			/// <returns>
-			/// null if not set
+			/// an empty string if not set
 			/// </returns>
 			Platform::String^ GetDisplayName();
 
 			/// <returns>
-			/// null if not set
+			/// an empty string if not set
 			/// </returns>
 			Platform::String^ GetUserName();
 
 			/// <returns>
-			/// null if not set
+			/// an empty string if not set
 			/// </returns>
 			Platform::String^ GetDomain();
 

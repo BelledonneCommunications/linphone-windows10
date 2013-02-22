@@ -64,16 +64,13 @@ Platform::String^ LinphoneAddress::ToString()
 }
 
 LinphoneAddress::LinphoneAddress(Platform::String^ address) :
-	address(address),
-	displayName(nullptr),
-	username(nullptr),
-	domain(nullptr)
+	address(address)
 {
 
 }
 
 LinphoneAddress::LinphoneAddress(Platform::String^ username, Platform::String^ domain, Platform::String^ displayName) :
-	address("sip:" + username + "@" + domain),
+	address(L"sip:" + username + "@" + domain),
 	displayName(displayName),
 	username(username),
 	domain(domain)
