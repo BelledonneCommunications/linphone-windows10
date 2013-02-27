@@ -1,0 +1,24 @@
+[submodule "submodules/antlr3"]
+	path = submodules/antlr3
+	url = gitosis@git.linphone.org:antlr3.git
+[submodule "submodules/belle-sip"]
+	path = submodules/belle-sip
+	url = gitosis@git.linphone.org:belle-sip.git
+[submodule "submodules/gsm"]
+	path = submodules/gsm
+	url = gitosis@git.linphone.org:gsm.git
+[submodule "submodules/mediastreamer2"]
+	path = submodules/mediastreamer2
+	url = gitosis@git.linphone.org:mediastreamer2-private.git
+[submodule "submodules/oRTP"]
+	path = submodules/oRTP
+	url = gitosis@git.linphone.org:ortp.git
+[submodule "submodules/speex"]
+	path = submodules/speex
+	url = gitosis@git.linphone.org:speex.git
+[submodule "submodules/linphone"]
+	path = submodules/linphone
+	url = gitosis@git.linphone.org:linphone-private.git
+[submodule "submodules/tunnel"]
+	path = submodules/tunnel
+	url = gitosis@git.linphone.org:tunnel.git
