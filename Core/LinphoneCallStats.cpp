@@ -1,59 +1,57 @@
 #include "LinphoneCallStats.h"
 #include "Server.h"
 
-using namespace Linphone::Core;
-
-MediaType LinphoneCallStats::GetMediaType()
+Linphone::Core::MediaType Linphone::Core::LinphoneCallStats::GetMediaType()
 {
-	return MediaType::Audio;
+	return Linphone::Core::MediaType::Audio;
 }
 
-IceState LinphoneCallStats::GetIceState()
+Linphone::Core::IceState Linphone::Core::LinphoneCallStats::GetIceState()
 {
-	return IceState::Failed;
+	return Linphone::Core::IceState::Failed;
 }
 
-float LinphoneCallStats::GetDownloadBandwidth()
+float Linphone::Core::LinphoneCallStats::GetDownloadBandwidth()
 {
 	return -1;
 }
 
-float LinphoneCallStats::GetUploadBandwidth()
+float Linphone::Core::LinphoneCallStats::GetUploadBandwidth()
 {
 	return -1;
 }
 
-float LinphoneCallStats::GetSenderLossRate()
+float Linphone::Core::LinphoneCallStats::GetSenderLossRate()
 {
 	return -1;
 }
 
-float LinphoneCallStats::GetReceiverLossRate()
+float Linphone::Core::LinphoneCallStats::GetReceiverLossRate()
 {
 	return -1;
 }
 
-float LinphoneCallStats::GetSenderInterarrivalJitter()
+float Linphone::Core::LinphoneCallStats::GetSenderInterarrivalJitter()
 {
 	return -1;
 }
 
-float LinphoneCallStats::GetReceiverInterarrivalJitter()
+float Linphone::Core::LinphoneCallStats::GetReceiverInterarrivalJitter()
 {
 	return -1;
 }
 
-float LinphoneCallStats::GetRoundTripDelay()
+float Linphone::Core::LinphoneCallStats::GetRoundTripDelay()
 {
 	return -1;
 }
 
-int64 LinphoneCallStats::GetLatePacketsCumulativeNumber()
+int64 Linphone::Core::LinphoneCallStats::GetLatePacketsCumulativeNumber()
 {
 	return -1;
 }
 
-float LinphoneCallStats::GetJitterBufferSize()
+float Linphone::Core::LinphoneCallStats::GetJitterBufferSize()
 {
 	return -1;
 }

@@ -2,109 +2,107 @@
 #include "LinphoneCore.h"
 #include "Server.h"
 
-using namespace Linphone::Core;
-
-void LinphoneProxyConfig::Edit()
+void Linphone::Core::LinphoneProxyConfig::Edit()
 {
 
 }
 
-void LinphoneProxyConfig::Done()
+void Linphone::Core::LinphoneProxyConfig::Done()
 {
 
 }
 
-void LinphoneProxyConfig::SetIdentity(Platform::String^ identity)
+void Linphone::Core::LinphoneProxyConfig::SetIdentity(Platform::String^ identity)
 {
 
 }
 
-Platform::String^ LinphoneProxyConfig::GetIdentity()
+Platform::String^ Linphone::Core::LinphoneProxyConfig::GetIdentity()
 {
 	return nullptr;
 }
 
-void LinphoneProxyConfig::SetProxy(Platform::String^ proxyUri)
+void Linphone::Core::LinphoneProxyConfig::SetProxy(Platform::String^ proxyUri)
 {
 
 }
 
-void LinphoneProxyConfig::EnableRegister(Platform::Boolean enable)
+void Linphone::Core::LinphoneProxyConfig::EnableRegister(Platform::Boolean enable)
 {
 
 }
 
-Platform::Boolean LinphoneProxyConfig::IsRegisterEnabled()
+Platform::Boolean Linphone::Core::LinphoneProxyConfig::IsRegisterEnabled()
 {
 	return false;
 }
 
-Platform::String^ LinphoneProxyConfig::NormalizePhoneNumber(Platform::String^ phoneNumber)
+Platform::String^ Linphone::Core::LinphoneProxyConfig::NormalizePhoneNumber(Platform::String^ phoneNumber)
 {
 	return nullptr;
 }
 
-void LinphoneProxyConfig::SetDialPrefix(Platform::String^ prefix)
+void Linphone::Core::LinphoneProxyConfig::SetDialPrefix(Platform::String^ prefix)
 {
 
 }
 
-void LinphoneProxyConfig::SetDialEscapePlus(Platform::Boolean value)
+void Linphone::Core::LinphoneProxyConfig::SetDialEscapePlus(Platform::Boolean value)
 {
 
 }
 
-Platform::String^ LinphoneProxyConfig::GetDomain()
+Platform::String^ Linphone::Core::LinphoneProxyConfig::GetDomain()
 {
 	return nullptr;
 }
 
-Platform::Boolean LinphoneProxyConfig::IsRegistered()
+Platform::Boolean Linphone::Core::LinphoneProxyConfig::IsRegistered()
 {
 	return false;
 }
 
-void LinphoneProxyConfig::SetRoute(Platform::String^ routeUri)
+void Linphone::Core::LinphoneProxyConfig::SetRoute(Platform::String^ routeUri)
 {
 
 }
 
-Platform::String^ LinphoneProxyConfig::GetRoute()
+Platform::String^ Linphone::Core::LinphoneProxyConfig::GetRoute()
 {
 	return nullptr;
 }
 
-void LinphoneProxyConfig::EnablePublish(Platform::Boolean enable)
+void Linphone::Core::LinphoneProxyConfig::EnablePublish(Platform::Boolean enable)
 {
 
 }
 
-Platform::Boolean LinphoneProxyConfig::IsPublishEnabled()
+Platform::Boolean Linphone::Core::LinphoneProxyConfig::IsPublishEnabled()
 {
 	return false;
 }
 
-RegistrationState LinphoneProxyConfig::GetState()
+Linphone::Core::RegistrationState Linphone::Core::LinphoneProxyConfig::GetState()
 {
-	return RegistrationState::RegistrationNone;
+	return Linphone::Core::RegistrationState::RegistrationNone;
 }
 
-void LinphoneProxyConfig::SetExpires(int delay)
-{
-
-}
-
-void LinphoneProxyConfig::SetContactParameters(Platform::String^ params)
+void Linphone::Core::LinphoneProxyConfig::SetExpires(int delay)
 {
 
 }
 
-int LinphoneProxyConfig::LookupCCCFromIso(Platform::String^ iso)
+void Linphone::Core::LinphoneProxyConfig::SetContactParameters(Platform::String^ params)
+{
+
+}
+
+int Linphone::Core::LinphoneProxyConfig::LookupCCCFromIso(Platform::String^ iso)
 {
 	return -1;
 }
 
-int LinphoneProxyConfig::LookupCCCFromE164(Platform::String^ e164)
+int Linphone::Core::LinphoneProxyConfig::LookupCCCFromE164(Platform::String^ e164)
 {
 	return -1;
 }

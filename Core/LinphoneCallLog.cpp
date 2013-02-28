@@ -5,49 +5,47 @@
 #include "Globals.h"
 #include "LinphoneCoreFactory.h"
 
-using namespace Linphone::Core;
-
-LinphoneAddress^ LinphoneCallLog::GetFrom()
+Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCallLog::GetFrom()
 {
 	return this->from;
 }
 
-LinphoneAddress^ LinphoneCallLog::GetTo()
+Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCallLog::GetTo()
 {
 	return this->to;
 }
 
-CallDirection LinphoneCallLog::GetDirection()
+Linphone::Core::CallDirection Linphone::Core::LinphoneCallLog::GetDirection()
 {
 	return this->direction;
 }
 
-LinphoneCallStatus LinphoneCallLog::GetStatus()
+Linphone::Core::LinphoneCallStatus Linphone::Core::LinphoneCallLog::GetStatus()
 {
 	return this->status;
 }
 
-Platform::String^ LinphoneCallLog::GetStartDate()
+Platform::String^ Linphone::Core::LinphoneCallLog::GetStartDate()
 {
 	return nullptr;
 }
 
-int64 LinphoneCallLog::GetTimestamp()
+int64 Linphone::Core::LinphoneCallLog::GetTimestamp()
 {
 	return -1;
 }
 
-int LinphoneCallLog::GetCallDuration()
+int Linphone::Core::LinphoneCallLog::GetCallDuration()
 {
 	return -1;
 }
 
-int LinphoneCallLog::GetCallId()
+int Linphone::Core::LinphoneCallLog::GetCallId()
 {
 	return -1;
 }
 
-LinphoneCallLog::LinphoneCallLog(Platform::String^ from, Platform::String^ to, LinphoneCallStatus status, CallDirection direction) :
+Linphone::Core::LinphoneCallLog::LinphoneCallLog(Platform::String^ from, Platform::String^ to, Linphone::Core::LinphoneCallStatus status, Linphone::Core::CallDirection direction) :
 	status(status),
 	direction(direction)
 {
@@ -56,7 +54,7 @@ LinphoneCallLog::LinphoneCallLog(Platform::String^ from, Platform::String^ to, L
 	this->to = lcf->CreateLinphoneAddress(to);
 }
 
-LinphoneCallLog::~LinphoneCallLog()
+Linphone::Core::LinphoneCallLog::~LinphoneCallLog()
 {
 
 }

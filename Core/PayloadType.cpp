@@ -1,14 +1,12 @@
 #include "PayloadType.h"
 #include "Server.h"
 
-using namespace Linphone::Core;
-
-Platform::String^ PayloadType::GetMime()
+Platform::String^ Linphone::Core::PayloadType::GetMime()
 {
 	return nullptr;
 }
 
-int PayloadType::GetRate()
+int Linphone::Core::PayloadType::GetRate()
 {
 	return -1;
 }

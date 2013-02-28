@@ -3,34 +3,32 @@
 #include "PayloadType.h"
 #include "Server.h"
 
-using namespace Linphone::Core;
-
-void LinphoneCallParams::SetAudioBandwidth(int value)
+void Linphone::Core::LinphoneCallParams::SetAudioBandwidth(int value)
 {
 
 }
 
-MediaEncryption LinphoneCallParams::GetMediaEncryption()
+Linphone::Core::MediaEncryption Linphone::Core::LinphoneCallParams::GetMediaEncryption()
 {
-	return MediaEncryption::None;
+	return Linphone::Core::MediaEncryption::None;
 }
 
-void LinphoneCallParams::SetMediaEncryption(MediaEncryption menc)
+void Linphone::Core::LinphoneCallParams::SetMediaEncryption(Linphone::Core::MediaEncryption menc)
 {
 
 }
 
-PayloadType^ LinphoneCallParams::GetUsedAudioCodec()
+Linphone::Core::PayloadType^ Linphone::Core::LinphoneCallParams::GetUsedAudioCodec()
 {
 	return nullptr;
 }
 
-void LinphoneCallParams::EnableLowBandwidth(Platform::Boolean enable)
+void Linphone::Core::LinphoneCallParams::EnableLowBandwidth(Platform::Boolean enable)
 {
 
 }
 
-Platform::Boolean LinphoneCallParams::IsLowBandwidthEnabled()
+Platform::Boolean Linphone::Core::LinphoneCallParams::IsLowBandwidthEnabled()
 {
 	return false;
 }

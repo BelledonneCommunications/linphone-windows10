@@ -13,17 +13,16 @@
 #include "ApiLock.h"
 #include <collection.h>
 
-using namespace Linphone::Core;
 using namespace Platform;
 using namespace Platform::Collections;
 using namespace Windows::Foundation::Collections;
 
-Transports::Transports()
+Linphone::Core::Transports::Transports()
 {
 
 }
 
-Transports::Transports(Transports^ t) :
+Linphone::Core::Transports::Transports(Linphone::Core::Transports^ t) :
 	udp(t->UDP),
 	tcp(t->TCP),
 	tls(t->TLS)
@@ -31,494 +30,494 @@ Transports::Transports(Transports^ t) :
 
 }
 
-int Transports::UDP::get()
+int Linphone::Core::Transports::UDP::get()
 {
 	return udp;
 }
 
-int Transports::TCP::get()
+int Linphone::Core::Transports::TCP::get()
 {
 	return tcp;
 }
 
-int Transports::TLS::get()
+int Linphone::Core::Transports::TLS::get()
 {
 	return tls;
 }
 
-Platform::String^ Transports::ToString()
+Platform::String^ Linphone::Core::Transports::ToString()
 {
 	return "udp[" + udp + "] tcp[" + tcp + "] tls[" + tls + "]";
 }
 
 
-void LinphoneCore::SetContext(Platform::Object^ object)
+void Linphone::Core::LinphoneCore::SetContext(Platform::Object^ object)
 {
 
 }
 
-void LinphoneCore::ClearProxyConfigs()
+void Linphone::Core::LinphoneCore::ClearProxyConfigs()
 {
 
 }
 
-void LinphoneCore::AddProxyConfig(LinphoneProxyConfig^ proxyCfg)
+void Linphone::Core::LinphoneCore::AddProxyConfig(Linphone::Core::LinphoneProxyConfig^ proxyCfg)
 {
 	this->proxyCfgAdded = true;
 }
 
-void LinphoneCore::SetDefaultProxyConfig(LinphoneProxyConfig^ proxyCfg)
+void Linphone::Core::LinphoneCore::SetDefaultProxyConfig(Linphone::Core::LinphoneProxyConfig^ proxyCfg)
 {
 
 }
 
-LinphoneProxyConfig^ LinphoneCore::GetDefaultProxyConfig()
-{
-	return nullptr;
-}
-
-Windows::Foundation::Collections::IVector<LinphoneProxyConfig^>^ LinphoneCore::GetProxyConfigList() 
+Linphone::Core::LinphoneProxyConfig^ Linphone::Core::LinphoneCore::GetDefaultProxyConfig()
 {
 	return nullptr;
 }
 
-void LinphoneCore::ClearAuthInfos() 
+Windows::Foundation::Collections::IVector<Linphone::Core::LinphoneProxyConfig^>^ Linphone::Core::LinphoneCore::GetProxyConfigList() 
+{
+	return nullptr;
+}
+
+void Linphone::Core::LinphoneCore::ClearAuthInfos() 
 {
 
 }
 
-void LinphoneCore::AddAuthInfo(LinphoneAuthInfo^ info) 
+void Linphone::Core::LinphoneCore::AddAuthInfo(Linphone::Core::LinphoneAuthInfo^ info) 
 {
 
 }
 
-void LinphoneCore::Iterate() 
+void Linphone::Core::LinphoneCore::Iterate() 
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 
 	if (this->incomingcall != nullptr && this->listener != nullptr)
 	{
-		this->listener->CallState(this->incomingcall, LinphoneCallState::IncomingReceived);
+		this->listener->CallState(this->incomingcall, Linphone::Core::LinphoneCallState::IncomingReceived);
 		this->call = incomingcall;
 		this->incomingcall = nullptr;
 	}
 	else if (this->call != nullptr && this->callAccepted && this->listener != nullptr)
 	{
 		this->callAccepted = false;
-		this->listener->CallState(this->call, LinphoneCallState::Connected);
+		this->listener->CallState(this->call, Linphone::Core::LinphoneCallState::Connected);
 		this->callConnected = true;
 	}
 	else if (this->call != nullptr && this->callConnected && this->listener != nullptr)
 	{
 		this->callConnected = false;
-		this->listener->CallState(this->call, LinphoneCallState::StreamsRunning);
+		this->listener->CallState(this->call, Linphone::Core::LinphoneCallState::StreamsRunning);
 	}
 	else if (this->call != nullptr && this->callEnded && this->listener != nullptr)
 	{
 		this->callEnded = false;
-		this->listener->CallState(this->call, LinphoneCallState::CallEnd);
+		this->listener->CallState(this->call, Linphone::Core::LinphoneCallState::CallEnd);
 		this->call = nullptr;
 	}
 
 	if (this->listener != nullptr && this->startup)
 	{
-		this->listener->GlobalState(GlobalState::GlobalStartup, L"");
+		this->listener->GlobalState(Linphone::Core::GlobalState::GlobalStartup, L"");
 		this->startup = false;
 		this->on = true;
 	}
 	else if (this->listener != nullptr && this->on)
 	{
-		this->listener->GlobalState(GlobalState::GlobalOn, L"");
+		this->listener->GlobalState(Linphone::Core::GlobalState::GlobalOn, L"");
 		this->on = false;
 	}
 
 	if (this->listener != nullptr && this->proxyCfgAdded && !this->on)
 	{
-		this->listener->RegistrationState(nullptr, RegistrationState::RegistrationInProgress, L"");
+		this->listener->RegistrationState(nullptr, Linphone::Core::RegistrationState::RegistrationInProgress, L"");
 		this->proxyCfgAdded = false;
 		this->proxyCfgRegistered = true;
 	}
 	else if (this->listener != nullptr && this->proxyCfgRegistered)
 	{
-		this->listener->RegistrationState(nullptr, RegistrationState::RegistrationOk, L"");
+		this->listener->RegistrationState(nullptr, Linphone::Core::RegistrationState::RegistrationOk, L"");
 		this->proxyCfgRegistered = false;
 	}
 }
 
-void LinphoneCore::Destroy() 
+void Linphone::Core::LinphoneCore::Destroy() 
 {
 
 }
 
-LinphoneAddress^ LinphoneCore::InterpretURL(Platform::String^ destination) 
+Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCore::InterpretURL(Platform::String^ destination) 
 {
 	return nullptr;
 }
 
-LinphoneCall^ LinphoneCore::Invite(Platform::String^ destination) 
+Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::Invite(Platform::String^ destination) 
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 
-	LinphoneCall^ call = ref new LinphoneCall("", destination);
+	Linphone::Core::LinphoneCall^ call = ref new Linphone::Core::LinphoneCall("", destination);
 	if (this->listener != nullptr)
-		this->listener->CallState(call, LinphoneCallState::OutgoingInit);
+		this->listener->CallState(call, Linphone::Core::LinphoneCallState::OutgoingInit);
 
 	this->callAccepted = true;
 	return call;
 }
 
-LinphoneCall^ LinphoneCore::InviteAddress(LinphoneAddress^ to) 
+Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddress(Linphone::Core::LinphoneAddress^ to) 
 {
 	return nullptr;
 }
 
-LinphoneCall^ LinphoneCore::InviteAddressWithParams(LinphoneAddress^ destination, LinphoneCallParams^ params) 
+Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddressWithParams(Linphone::Core::LinphoneAddress^ destination, LinphoneCallParams^ params) 
 {
 	return nullptr;
 }
 
-void LinphoneCore::TerminateCall(LinphoneCall^ call) 
+void Linphone::Core::LinphoneCore::TerminateCall(Linphone::Core::LinphoneCall^ call) 
 {
 	this->callEnded = true;
 }
 
-LinphoneCall^ LinphoneCore::GetCurrentCall() 
+Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::GetCurrentCall() 
 {
 	return this->call;
 }
 
-LinphoneAddress^ LinphoneCore::GetRemoteAddress() 
+Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCore::GetRemoteAddress() 
 {
 	return nullptr;
 }
 
-Platform::Boolean LinphoneCore::IsInCall() 
+Platform::Boolean Linphone::Core::LinphoneCore::IsInCall() 
 {
 	return false;
 }
 
-Platform::Boolean LinphoneCore::IsIncomingInvitePending() 
+Platform::Boolean Linphone::Core::LinphoneCore::IsIncomingInvitePending() 
 {
 	return false;
 }
 
-void LinphoneCore::AcceptCall(LinphoneCall^ call) 
+void Linphone::Core::LinphoneCore::AcceptCall(Linphone::Core::LinphoneCall^ call) 
 {
 	this->call = call;
 	this->callAccepted = true;
 }
 
-void LinphoneCore::AcceptCallWithParams(LinphoneCall^ call, LinphoneCallParams^ params) 
+void Linphone::Core::LinphoneCore::AcceptCallWithParams(Linphone::Core::LinphoneCall^ call, Linphone::Core::LinphoneCallParams^ params) 
 {
 
 }
 
-void LinphoneCore::AcceptCallUpdate(LinphoneCall^ call, LinphoneCallParams^ params) 
+void Linphone::Core::LinphoneCore::AcceptCallUpdate(Linphone::Core::LinphoneCall^ call, LinphoneCallParams^ params) 
 {
 
 }
 
-void LinphoneCore::DeferCallUpdate(LinphoneCall^ call) 
+void Linphone::Core::LinphoneCore::DeferCallUpdate(Linphone::Core::LinphoneCall^ call) 
 {
 
 }
 
-void LinphoneCore::UpdateCall(LinphoneCall^ call, LinphoneCallParams^ params) 
+void Linphone::Core::LinphoneCore::UpdateCall(Linphone::Core::LinphoneCall^ call, Linphone::Core::LinphoneCallParams^ params) 
 {
 
 }
 
-LinphoneCallParams^ LinphoneCore::CreateDefaultCallParameters() 
+Linphone::Core::LinphoneCallParams^ Linphone::Core::LinphoneCore::CreateDefaultCallParameters() 
 {
 	return nullptr;
 }
 
-IVector<Object^>^ LinphoneCore::GetCallLogs() 
+IVector<Object^>^ Linphone::Core::LinphoneCore::GetCallLogs() 
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 
 	IVector<Object^>^ logs = ref new Vector<Object^>();
 
-	LinphoneCallLog^ log = ref new LinphoneCallLog(L"sip:waouf@sip.linphone.org", L"sip:miaou@sip.linphone.org", LinphoneCallStatus::Missed, CallDirection::Incoming);
+	Linphone::Core::LinphoneCallLog^ log = ref new Linphone::Core::LinphoneCallLog(L"sip:waouf@sip.linphone.org", L"sip:miaou@sip.linphone.org", Linphone::Core::LinphoneCallStatus::Missed, Linphone::Core::CallDirection::Incoming);
 	logs->Append(log);
-	log = ref new LinphoneCallLog(L"sip:waouf@sip.linphone.org", L"sip:miaou@sip.linphone.org", LinphoneCallStatus::Success, CallDirection::Outgoing);
+	log = ref new Linphone::Core::LinphoneCallLog(L"sip:waouf@sip.linphone.org", L"sip:miaou@sip.linphone.org", Linphone::Core::LinphoneCallStatus::Success, Linphone::Core::CallDirection::Outgoing);
 	logs->Append(log);
-	log = ref new LinphoneCallLog(L"sip:cotcot@sip.linphone.org", L"sip:miaou@sip.linphone.org", LinphoneCallStatus::Success, CallDirection::Incoming);
+	log = ref new Linphone::Core::LinphoneCallLog(L"sip:cotcot@sip.linphone.org", L"sip:miaou@sip.linphone.org", Linphone::Core::LinphoneCallStatus::Success, Linphone::Core::CallDirection::Incoming);
 	logs->Append(log);
 
 	return logs;
 }
 
-void LinphoneCore::ClearCallLogs() 
+void Linphone::Core::LinphoneCore::ClearCallLogs() 
 {
 
 }
 
-void LinphoneCore::RemoveCallLog(LinphoneCallLog^ log) 
+void Linphone::Core::LinphoneCore::RemoveCallLog(Linphone::Core::LinphoneCallLog^ log) 
 {
 
 }
 
-void LinphoneCore::SetNetworkReachable(Platform::Boolean isReachable) 
+void Linphone::Core::LinphoneCore::SetNetworkReachable(Platform::Boolean isReachable) 
 {
 
 }
 
-Platform::Boolean LinphoneCore::IsNetworkReachable() 
+Platform::Boolean Linphone::Core::LinphoneCore::IsNetworkReachable() 
 {
 	return false;
 }
 
-void LinphoneCore::SetPlaybackGain(float gain) 
+void Linphone::Core::LinphoneCore::SetPlaybackGain(float gain) 
 {
 
 }
 
-float LinphoneCore::GetPlaybackGain() 
+float Linphone::Core::LinphoneCore::GetPlaybackGain() 
 {
 	return -1;
 }
 
-void LinphoneCore::SetPlayLevel(int level) 
+void Linphone::Core::LinphoneCore::SetPlayLevel(int level) 
 {
 
 }
 
-int LinphoneCore::GetPlayLevel() 
+int Linphone::Core::LinphoneCore::GetPlayLevel() 
 {
 	return -1;
 }
 
-void LinphoneCore::MuteMic(Platform::Boolean isMuted) 
+void Linphone::Core::LinphoneCore::MuteMic(Platform::Boolean isMuted) 
 {
 
 }
 
-Platform::Boolean LinphoneCore::IsMicMuted() 
-{
-	return false;
-}
-
-void LinphoneCore::EnableSpeaker(Platform::Boolean enable) 
-{
-
-}
-
-Platform::Boolean LinphoneCore::IsSpeakerEnabled() 
+Platform::Boolean Linphone::Core::LinphoneCore::IsMicMuted() 
 {
 	return false;
 }
 
-void LinphoneCore::SendDTMF(char16 number) 
+void Linphone::Core::LinphoneCore::EnableSpeaker(Platform::Boolean enable) 
 {
 
 }
 
-void LinphoneCore::PlayDTMF(char16 number, int duration) 
-{
-
-}
-
-void LinphoneCore::StopDTMF() 
-{
-
-}
-
-PayloadType^ LinphoneCore::FindPayloadType(Platform::String^ mime, int clockRate, int channels) 
-{
-	return nullptr;
-}
-
-PayloadType^ LinphoneCore::FindPayloadType(Platform::String^ mime, int clockRate) 
-{
-	return nullptr;
-}
-
-void LinphoneCore::EnablePayloadType(PayloadType^ pt, Platform::Boolean enable) 
-{
-
-}
-
-Windows::Foundation::Collections::IVector<PayloadType^>^ LinphoneCore::GetAudioCodecs() 
-{
-	return nullptr;
-}
-
-void LinphoneCore::EnableEchoCancellation(Platform::Boolean enable) 
-{
-
-}
-
-Platform::Boolean LinphoneCore::IsEchoCancellationEnabled() 
+Platform::Boolean Linphone::Core::LinphoneCore::IsSpeakerEnabled() 
 {
 	return false;
 }
 
-Platform::Boolean LinphoneCore::IsEchoLimiterEnabled() 
+void Linphone::Core::LinphoneCore::SendDTMF(char16 number) 
+{
+
+}
+
+void Linphone::Core::LinphoneCore::PlayDTMF(char16 number, int duration) 
+{
+
+}
+
+void Linphone::Core::LinphoneCore::StopDTMF() 
+{
+
+}
+
+Linphone::Core::PayloadType^ Linphone::Core::LinphoneCore::FindPayloadType(Platform::String^ mime, int clockRate, int channels) 
+{
+	return nullptr;
+}
+
+Linphone::Core::PayloadType^ Linphone::Core::LinphoneCore::FindPayloadType(Platform::String^ mime, int clockRate) 
+{
+	return nullptr;
+}
+
+void Linphone::Core::LinphoneCore::EnablePayloadType(PayloadType^ pt, Platform::Boolean enable) 
+{
+
+}
+
+Windows::Foundation::Collections::IVector<Linphone::Core::PayloadType^>^ Linphone::Core::LinphoneCore::GetAudioCodecs() 
+{
+	return nullptr;
+}
+
+void Linphone::Core::LinphoneCore::EnableEchoCancellation(Platform::Boolean enable) 
+{
+
+}
+
+Platform::Boolean Linphone::Core::LinphoneCore::IsEchoCancellationEnabled() 
 {
 	return false;
 }
 
-void LinphoneCore::StartEchoCalibration(Platform::Object^ data) 
+Platform::Boolean Linphone::Core::LinphoneCore::IsEchoLimiterEnabled() 
+{
+	return false;
+}
+
+void Linphone::Core::LinphoneCore::StartEchoCalibration(Platform::Object^ data) 
 {
 
 }
 
-void LinphoneCore::EnableEchoLimiter(Platform::Boolean enable) 
+void Linphone::Core::LinphoneCore::EnableEchoLimiter(Platform::Boolean enable) 
 {
 
 }
 
-void LinphoneCore::SetSignalingTransportsPorts(Transports^ transports) 
+void Linphone::Core::LinphoneCore::SetSignalingTransportsPorts(Transports^ transports) 
 {
 
 }
 
-Transports^ LinphoneCore::GetSignalingTransportsPorts() 
-{
-	return nullptr;
-}
-
-void LinphoneCore::EnableIPv6(Platform::Boolean enable) 
-{
-
-}
-
-void LinphoneCore::SetPresenceInfo(int minuteAway, Platform::String^ alternativeContact, OnlineStatus status) 
-{
-
-}
-
-void LinphoneCore::SetStunServer(Platform::String^ stun) 
-{
-
-}
-
-Platform::String^ LinphoneCore::GetStunServer() 
+Linphone::Core::Transports^ Linphone::Core::LinphoneCore::GetSignalingTransportsPorts() 
 {
 	return nullptr;
 }
 
-void LinphoneCore::SetFirewallPolicy(FirewallPolicy policy) 
+void Linphone::Core::LinphoneCore::EnableIPv6(Platform::Boolean enable) 
 {
 
 }
 
-FirewallPolicy LinphoneCore::GetFirewallPolicy() 
+void Linphone::Core::LinphoneCore::SetPresenceInfo(int minuteAway, Platform::String^ alternativeContact, OnlineStatus status) 
+{
+
+}
+
+void Linphone::Core::LinphoneCore::SetStunServer(Platform::String^ stun) 
+{
+
+}
+
+Platform::String^ Linphone::Core::LinphoneCore::GetStunServer() 
+{
+	return nullptr;
+}
+
+void Linphone::Core::LinphoneCore::SetFirewallPolicy(FirewallPolicy policy) 
+{
+
+}
+
+Linphone::Core::FirewallPolicy Linphone::Core::LinphoneCore::GetFirewallPolicy() 
 {
 	return FirewallPolicy::NoFirewall;
 }
 
-void LinphoneCore::SetRootCA(Platform::String^ path) 
+void Linphone::Core::LinphoneCore::SetRootCA(Platform::String^ path) 
 {
 
 }
 
-void LinphoneCore::SetUploadBandwidth(int bw) 
+void Linphone::Core::LinphoneCore::SetUploadBandwidth(int bw) 
 {
 
 }
 
-void LinphoneCore::SetDownloadBandwidth(int bw) 
+void Linphone::Core::LinphoneCore::SetDownloadBandwidth(int bw) 
 {
 
 }
 
-void LinphoneCore::SetDownloadPTime(int ptime) 
+void Linphone::Core::LinphoneCore::SetDownloadPTime(int ptime) 
 {
 
 }
 
-void LinphoneCore::SetUploadPTime(int ptime) 
+void Linphone::Core::LinphoneCore::SetUploadPTime(int ptime) 
 {
 
 }
 
-void LinphoneCore::EnableKeepAlive(Platform::Boolean enable)
+void Linphone::Core::LinphoneCore::EnableKeepAlive(Platform::Boolean enable)
 {
 
 }
 
-Platform::Boolean LinphoneCore::IsKeepAliveEnabled() 
-{
-	return false;
-}
-
-void LinphoneCore::SetPlayFile(Platform::String^ path) 
-{
-
-}
-
-Platform::Boolean LinphoneCore::PauseCall(LinphoneCall^ call) 
+Platform::Boolean Linphone::Core::LinphoneCore::IsKeepAliveEnabled() 
 {
 	return false;
 }
 
-Platform::Boolean LinphoneCore::ResumeCall(LinphoneCall^ call) 
+void Linphone::Core::LinphoneCore::SetPlayFile(Platform::String^ path) 
+{
+
+}
+
+Platform::Boolean Linphone::Core::LinphoneCore::PauseCall(LinphoneCall^ call) 
 {
 	return false;
 }
 
-Platform::Boolean LinphoneCore::PauseAllCalls() 
+Platform::Boolean Linphone::Core::LinphoneCore::ResumeCall(LinphoneCall^ call) 
 {
 	return false;
 }
 
-Platform::Boolean LinphoneCore::IsInConference() 
+Platform::Boolean Linphone::Core::LinphoneCore::PauseAllCalls() 
 {
 	return false;
 }
 
-Platform::Boolean LinphoneCore::EnterConference() 
+Platform::Boolean Linphone::Core::LinphoneCore::IsInConference() 
 {
 	return false;
 }
 
-void LinphoneCore::LeaveConference() 
+Platform::Boolean Linphone::Core::LinphoneCore::EnterConference() 
+{
+	return false;
+}
+
+void Linphone::Core::LinphoneCore::LeaveConference() 
 {
 
 }
 
-void LinphoneCore::AddToConference(LinphoneCall^ call) 
+void Linphone::Core::LinphoneCore::AddToConference(LinphoneCall^ call) 
 {
 
 }
 
-void LinphoneCore::AddAllToConference() 
+void Linphone::Core::LinphoneCore::AddAllToConference() 
 {
 
 }
 
-void LinphoneCore::RemoveFromConference() 
+void Linphone::Core::LinphoneCore::RemoveFromConference() 
 {
 
 }
 
-void LinphoneCore::TerminateConference() 
+void Linphone::Core::LinphoneCore::TerminateConference() 
 {
 
 }
 
-int LinphoneCore::GetConferenceSize() 
+int Linphone::Core::LinphoneCore::GetConferenceSize() 
 {
 	return -1;
 }
 
-void LinphoneCore::TerminateAllCalls() 
+void Linphone::Core::LinphoneCore::TerminateAllCalls() 
 {
 
 }
 
-IVector<LinphoneCall^>^ LinphoneCore::GetCalls() 
+IVector<Linphone::Core::LinphoneCall^>^ Linphone::Core::LinphoneCore::GetCalls() 
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	
-	Vector<LinphoneCall^>^ calls = ref new Vector<LinphoneCall^>();
+	Vector<Linphone::Core::LinphoneCall^>^ calls = ref new Vector<Linphone::Core::LinphoneCall^>();
 	calls->Append(this->call);
 	return calls;
 }
 
-int LinphoneCore::GetCallsNb() 
+int Linphone::Core::LinphoneCore::GetCallsNb() 
 {
 	if (this->Call != nullptr)
 		return 1;
@@ -526,186 +525,186 @@ int LinphoneCore::GetCallsNb()
 		return 0;
 }
 
-LinphoneCall^ LinphoneCore::FindCallFromUri(Platform::String^ uri) 
+Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::FindCallFromUri(Platform::String^ uri) 
 {
 	return nullptr;
 }
 
-int LinphoneCore::GetMaxCalls() 
+int Linphone::Core::LinphoneCore::GetMaxCalls() 
 {
 	return -1;
 }
 
-void LinphoneCore::SetMaxCalls(int max) 
+void Linphone::Core::LinphoneCore::SetMaxCalls(int max) 
 {
 
 }
 
-Platform::Boolean LinphoneCore::IsMyself(Platform::String^ uri) 
-{
-	return false;
-}
-
-Platform::Boolean LinphoneCore::IsSoundResourcesLocked() 
+Platform::Boolean Linphone::Core::LinphoneCore::IsMyself(Platform::String^ uri) 
 {
 	return false;
 }
 
-Platform::Boolean LinphoneCore::IsMediaEncryptionSupported(MediaEncryption menc) 
+Platform::Boolean Linphone::Core::LinphoneCore::IsSoundResourcesLocked() 
 {
 	return false;
 }
 
-void LinphoneCore::SetMediaEncryption(MediaEncryption menc) 
+Platform::Boolean Linphone::Core::LinphoneCore::IsMediaEncryptionSupported(MediaEncryption menc) 
+{
+	return false;
+}
+
+void Linphone::Core::LinphoneCore::SetMediaEncryption(MediaEncryption menc) 
 {
 
 }
 
-MediaEncryption LinphoneCore::GetMediaEncryption() 
+Linphone::Core::MediaEncryption Linphone::Core::LinphoneCore::GetMediaEncryption() 
 {
 	return MediaEncryption::None;
 }
 
-void LinphoneCore::SetMediaEncryptionMandatory(Platform::Boolean yesno) 
+void Linphone::Core::LinphoneCore::SetMediaEncryptionMandatory(Platform::Boolean yesno) 
 {
 
 }
 
-Platform::Boolean LinphoneCore::IsMediaEncryptionMandatory() 
-{
-	return false;
-}
-
-void LinphoneCore::EnableTunnel(Platform::Boolean enable) 
-{
-
-}
-
-void LinphoneCore::TunnelAutoDetect() 
-{
-
-}
-
-void LinphoneCore::TunnelCleanServers() 
-{
-
-}
-
-void LinphoneCore::TunnelSetHttpProxy(Platform::String^ host, int port, Platform::String^ username, Platform::String^ password) 
-{
-
-}
-
-void LinphoneCore::TunnelAddServerAndMirror(Platform::String^ host, int port, int udpMirrorPort, int roundTripDelay) 
-{
-
-}
-
-Platform::Boolean LinphoneCore::IsTunnelAvailable() 
+Platform::Boolean Linphone::Core::LinphoneCore::IsMediaEncryptionMandatory() 
 {
 	return false;
 }
 
-void LinphoneCore::SetUserAgent(Platform::String^ name, Platform::String^ version) 
+void Linphone::Core::LinphoneCore::EnableTunnel(Platform::Boolean enable) 
 {
 
 }
 
-void LinphoneCore::SetCPUCount(int count) 
+void Linphone::Core::LinphoneCore::TunnelAutoDetect() 
 {
 
 }
 
-int LinphoneCore::GetMissedCallsCount() 
+void Linphone::Core::LinphoneCore::TunnelCleanServers() 
+{
+
+}
+
+void Linphone::Core::LinphoneCore::TunnelSetHttpProxy(Platform::String^ host, int port, Platform::String^ username, Platform::String^ password) 
+{
+
+}
+
+void Linphone::Core::LinphoneCore::TunnelAddServerAndMirror(Platform::String^ host, int port, int udpMirrorPort, int roundTripDelay) 
+{
+
+}
+
+Platform::Boolean Linphone::Core::LinphoneCore::IsTunnelAvailable() 
+{
+	return false;
+}
+
+void Linphone::Core::LinphoneCore::SetUserAgent(Platform::String^ name, Platform::String^ version) 
+{
+
+}
+
+void Linphone::Core::LinphoneCore::SetCPUCount(int count) 
+{
+
+}
+
+int Linphone::Core::LinphoneCore::GetMissedCallsCount() 
 {
 	return -1;
 }
 
-void LinphoneCore::ResetMissedCallsCount() 
+void Linphone::Core::LinphoneCore::ResetMissedCallsCount() 
 {
 
 }
 
-void LinphoneCore::RefreshRegisters() 
+void Linphone::Core::LinphoneCore::RefreshRegisters() 
 {
 
 }
 
-Platform::String^ LinphoneCore::GetVersion() 
-{
-	return nullptr;
-}
-
-void LinphoneCore::SetAudioPort(int port) 
-{
-
-}
-
-void LinphoneCore::SetAudioPortRange(int minP, int maxP) 
-{
-
-}
-
-void LinphoneCore::SetIncomingTimeout(int timeout) 
-{
-
-}
-
-void LinphoneCore::SetInCallTimeout(int timeout) 
-{
-
-}
-
-void LinphoneCore::SetMicrophoneGain(float gain) 
-{
-
-}
-
-void LinphoneCore::SetPrimaryContact(Platform::String^ displayName, Platform::String^ userName) 
-{
-
-}
-
-void LinphoneCore::SetUseSipInfoForDTMFs(Platform::Boolean use) 
-{
-
-}
-
-void LinphoneCore::SetUseRFC2833ForDTMFs(Platform::Boolean use) 
-{
-
-}
-
-LpConfig^ LinphoneCore::GetConfig() 
+Platform::String^ Linphone::Core::LinphoneCore::GetVersion() 
 {
 	return nullptr;
 }
 
-LinphoneCall^ LinphoneCore::Call::get()
+void Linphone::Core::LinphoneCore::SetAudioPort(int port) 
+{
+
+}
+
+void Linphone::Core::LinphoneCore::SetAudioPortRange(int minP, int maxP) 
+{
+
+}
+
+void Linphone::Core::LinphoneCore::SetIncomingTimeout(int timeout) 
+{
+
+}
+
+void Linphone::Core::LinphoneCore::SetInCallTimeout(int timeout) 
+{
+
+}
+
+void Linphone::Core::LinphoneCore::SetMicrophoneGain(float gain) 
+{
+
+}
+
+void Linphone::Core::LinphoneCore::SetPrimaryContact(Platform::String^ displayName, Platform::String^ userName) 
+{
+
+}
+
+void Linphone::Core::LinphoneCore::SetUseSipInfoForDTMFs(Platform::Boolean use) 
+{
+
+}
+
+void Linphone::Core::LinphoneCore::SetUseRFC2833ForDTMFs(Platform::Boolean use) 
+{
+
+}
+
+Linphone::Core::LpConfig^ Linphone::Core::LinphoneCore::GetConfig() 
+{
+	return nullptr;
+}
+
+Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::Call::get()
 {
 	return this->call;
 }
 
-void LinphoneCore::Call::set(LinphoneCall^ call)
+void Linphone::Core::LinphoneCore::Call::set(Linphone::Core::LinphoneCall^ call)
 {
 	this->call = call;
 }
 
-LinphoneCall^ LinphoneCore::IncomingCall::get()
+Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::IncomingCall::get()
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 
 	return this->incomingcall;
 }
 
-void LinphoneCore::IncomingCall::set(LinphoneCall^ call)
+void Linphone::Core::LinphoneCore::IncomingCall::set(Linphone::Core::LinphoneCall^ call)
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 
 	this->incomingcall = call;
 }
 
-LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener) :
+Linphone::Core::LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener) :
 	call(nullptr),
 	incomingcall(nullptr),
 	callAccepted(false),
@@ -717,10 +716,10 @@ LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener) :
 	on(false),
 	listener(coreListener)
 {
-	
+
 }
 
-LinphoneCore::~LinphoneCore()
+Linphone::Core::LinphoneCore::~LinphoneCore()
 {
-
+	
 }

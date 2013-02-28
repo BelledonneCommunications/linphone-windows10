@@ -8,126 +8,125 @@
 #include "LinphoneCoreFactory.h"
 #include "Globals.h"
 
-using namespace Linphone::Core;
 using namespace Windows::Phone::Networking::Voip;
 
-LinphoneCallState LinphoneCall::GetState()
+Linphone::Core::LinphoneCallState Linphone::Core::LinphoneCall::GetState()
 {
-	return LinphoneCallState::Error;
+	return Linphone::Core::LinphoneCallState::Error;
 }
 
-LinphoneAddress^ LinphoneCall::GetRemoteAddress()
+Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCall::GetRemoteAddress()
 {
-	LinphoneCoreFactory^ lcf = Globals::Instance->LinphoneCoreFactory;
+	Linphone::Core::LinphoneCoreFactory^ lcf = Globals::Instance->LinphoneCoreFactory;
 	return lcf->CreateLinphoneAddress(this->number);
 }
 
-CallDirection LinphoneCall::GetDirection()
+Linphone::Core::CallDirection Linphone::Core::LinphoneCall::GetDirection()
 {
-	return CallDirection::Incoming;
+	return Linphone::Core::CallDirection::Incoming;
 }
 
-LinphoneCallLog^ LinphoneCall::GetCallLog()
-{
-	return nullptr;
-}
-
-LinphoneCallStats^ LinphoneCall::GetAudioStats()
+Linphone::Core::LinphoneCallLog^ Linphone::Core::LinphoneCall::GetCallLog()
 {
 	return nullptr;
 }
 
-LinphoneCallParams^ LinphoneCall::GetRemoteParams()
+Linphone::Core::LinphoneCallStats^ Linphone::Core::LinphoneCall::GetAudioStats()
 {
 	return nullptr;
 }
 
-LinphoneCallParams^ LinphoneCall::GetCurrentParamsCopy()
+Linphone::Core::LinphoneCallParams^ Linphone::Core::LinphoneCall::GetRemoteParams()
 {
 	return nullptr;
 }
 
-void LinphoneCall::EnableEchoCancellation(Platform::Boolean enable)
+Linphone::Core::LinphoneCallParams^ Linphone::Core::LinphoneCall::GetCurrentParamsCopy()
+{
+	return nullptr;
+}
+
+void Linphone::Core::LinphoneCall::EnableEchoCancellation(Platform::Boolean enable)
 {
 
 }
 
-Platform::Boolean LinphoneCall::IsEchoCancellationEnabled()
+Platform::Boolean Linphone::Core::LinphoneCall::IsEchoCancellationEnabled()
 {
 	return false;
 }
 
-void LinphoneCall::EnableEchoLimiter(Platform::Boolean enable)
+void Linphone::Core::LinphoneCall::EnableEchoLimiter(Platform::Boolean enable)
 {
 
 }
 
-Platform::Boolean LinphoneCall::IsEchoLimiterEnabled()
+Platform::Boolean Linphone::Core::LinphoneCall::IsEchoLimiterEnabled()
 {
 	return false;
 }
 
-int LinphoneCall::GetDuration()
+int Linphone::Core::LinphoneCall::GetDuration()
 {
 	return -1;
 }
 
-float LinphoneCall::GetCurrentQuality()
+float Linphone::Core::LinphoneCall::GetCurrentQuality()
 {
 	return -1;
 }
 
-float LinphoneCall::GetAverageQuality()
+float Linphone::Core::LinphoneCall::GetAverageQuality()
 {
 	return -1;
 }
 
-Platform::String^ LinphoneCall::GetAuthenticationToken()
+Platform::String^ Linphone::Core::LinphoneCall::GetAuthenticationToken()
 {
 	return nullptr;
 }
 
-Platform::Boolean LinphoneCall::IsAuthenticationTokenVerified()
+Platform::Boolean Linphone::Core::LinphoneCall::IsAuthenticationTokenVerified()
 {
 	return false;
 }
 
-void LinphoneCall::SetAuthenticationTokenVerified(Platform::Boolean verified)
+void Linphone::Core::LinphoneCall::SetAuthenticationTokenVerified(Platform::Boolean verified)
 {
 
 }
 
-Platform::Boolean LinphoneCall::IsInConference()
+Platform::Boolean Linphone::Core::LinphoneCall::IsInConference()
 {
 	return false;
 }
 
-float LinphoneCall::GetPlayVolume()
+float Linphone::Core::LinphoneCall::GetPlayVolume()
 {
 	return -1;
 }
 
-Platform::String^ LinphoneCall::GetRemoteUserAgent()
+Platform::String^ Linphone::Core::LinphoneCall::GetRemoteUserAgent()
 {
 	return nullptr;
 }
 
-Platform::String^ LinphoneCall::GetRemoteContact()
+Platform::String^ Linphone::Core::LinphoneCall::GetRemoteContact()
 {
 	return this->contact;
 }
 
-void LinphoneCall::CallContext::set(Platform::Object^ cc)
+void Linphone::Core::LinphoneCall::CallContext::set(Platform::Object^ cc)
 {
 	this->callContext = cc;
 }
 
-Platform::Object^  LinphoneCall::CallContext::get()
+Platform::Object^  Linphone::Core::LinphoneCall::CallContext::get()
 {
 	return this->callContext;
 }
 
-LinphoneCall::LinphoneCall(Platform::String^ contact, Platform::String^ number) :
+Linphone::Core::LinphoneCall::LinphoneCall(Platform::String^ contact, Platform::String^ number) :
 	contact(contact),
 	number(number)
 {
