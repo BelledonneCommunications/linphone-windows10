@@ -15,6 +15,10 @@ If not, right click on Linphone project and choose the menu "Set as StartUp proj
 
 See README.txt file for an explanation about how the project is working.
 
+03-01-2013:
+* Improved stubs to mimic liblinphone behavior (registration states, call states, global states) amd fake call logs
+* Can simulate incoming/outcoing calls 
+
 02-15-2013:
 * Liblinphone documented C++/Cx wrapper directly usable in C#
 * Part of the graphical interface (call related interface not working)
