@@ -22,3 +22,6 @@
 [submodule "submodules/tunnel"]
 	path = submodules/tunnel
 	url = gitosis@git.linphone.org:tunnel.git
+[submodule "submodules/cunit"]
+	path = submodules/cunit
+	url = gitosis@git.linphone.org:cunit.git
