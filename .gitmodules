@@ -25,3 +25,6 @@
 [submodule "submodules/cunit"]
 	path = submodules/cunit
 	url = gitosis@git.linphone.org:cunit.git
+[submodule "submodules/mswasapi"]
+	path = submodules/mswasapi
+	url = gitosis@git.linphone.org:mswasapi.git
