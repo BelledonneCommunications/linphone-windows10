@@ -40,6 +40,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibLinphone", "submodules\l
 		{4C225A82-800B-427B-BA7B-61686A9B347F} = {4C225A82-800B-427B-BA7B-61686A9B347F}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libmswasapi", "submodules\mswasapi\mswasapi\mswasapi\mswasapi.vcxproj", "{D22BD217-D0F8-4274-9B3A-F3F35F46482C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -306,6 +308,26 @@ Global
 		{08DD0D38-D9B5-4626-B60D-B4D76B571142}.Release|x64.ActiveCfg = Release|Win32
 		{08DD0D38-D9B5-4626-B60D-B4D76B571142}.Release|x86.ActiveCfg = Release|Win32
 		{08DD0D38-D9B5-4626-B60D-B4D76B571142}.Release|x86.Build.0 = Release|Win32
+		{D22BD217-D0F8-4274-9B3A-F3F35F46482C}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{D22BD217-D0F8-4274-9B3A-F3F35F46482C}.Debug|ARM.ActiveCfg = Debug|ARM
+		{D22BD217-D0F8-4274-9B3A-F3F35F46482C}.Debug|ARM.Build.0 = Debug|ARM
+		{D22BD217-D0F8-4274-9B3A-F3F35F46482C}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{D22BD217-D0F8-4274-9B3A-F3F35F46482C}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{D22BD217-D0F8-4274-9B3A-F3F35F46482C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D22BD217-D0F8-4274-9B3A-F3F35F46482C}.Debug|Win32.Build.0 = Debug|Win32
+		{D22BD217-D0F8-4274-9B3A-F3F35F46482C}.Debug|x64.ActiveCfg = Debug|Win32
+		{D22BD217-D0F8-4274-9B3A-F3F35F46482C}.Debug|x86.ActiveCfg = Debug|Win32
+		{D22BD217-D0F8-4274-9B3A-F3F35F46482C}.Debug|x86.Build.0 = Debug|Win32
+		{D22BD217-D0F8-4274-9B3A-F3F35F46482C}.Release|Any CPU.ActiveCfg = Release|Win32
+		{D22BD217-D0F8-4274-9B3A-F3F35F46482C}.Release|ARM.ActiveCfg = Release|ARM
+		{D22BD217-D0F8-4274-9B3A-F3F35F46482C}.Release|ARM.Build.0 = Release|ARM
+		{D22BD217-D0F8-4274-9B3A-F3F35F46482C}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{D22BD217-D0F8-4274-9B3A-F3F35F46482C}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{D22BD217-D0F8-4274-9B3A-F3F35F46482C}.Release|Win32.ActiveCfg = Release|Win32
+		{D22BD217-D0F8-4274-9B3A-F3F35F46482C}.Release|Win32.Build.0 = Release|Win32
+		{D22BD217-D0F8-4274-9B3A-F3F35F46482C}.Release|x64.ActiveCfg = Release|Win32
+		{D22BD217-D0F8-4274-9B3A-F3F35F46482C}.Release|x86.ActiveCfg = Release|Win32
+		{D22BD217-D0F8-4274-9B3A-F3F35F46482C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

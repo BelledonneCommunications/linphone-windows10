@@ -3,6 +3,8 @@
 #include "Enums.h"
 #include "LinphoneCoreListener.h"
 
+#include "coreapi\linphonecore.h"
+
 namespace Linphone
 {
 	namespace Core
@@ -75,6 +77,12 @@ namespace Linphone
 			/// null if no default proxy config.
 			/// </returns>
 			LinphoneProxyConfig^ GetDefaultProxyConfig();
+
+			/// <summary>
+			/// Creates an empty proxy config.
+			/// </summary>
+			LinphoneProxyConfig^ CreateEmptyProxyConfig();
+
 			Windows::Foundation::Collections::IVector<LinphoneProxyConfig^>^ GetProxyConfigList();
 
 			void ClearAuthInfos();
@@ -428,6 +436,8 @@ namespace Linphone
 
 			LinphoneCore(LinphoneCoreListener^ coreListener);
 			~LinphoneCore();
+
+			::LinphoneCore *lc;
 		};
 	}
 }

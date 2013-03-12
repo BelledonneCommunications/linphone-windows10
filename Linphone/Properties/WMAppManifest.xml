@@ -72,6 +72,7 @@
         <Interface Name="Linphone.Core.__IGlobalsPublicNonVirtuals" InterfaceId="{01600449-19D0-3E52-80E3-382A2C93CBB1}" />
         <Interface Name="Linphone.Core.__IGlobalsStatics" InterfaceId="{828E0FFB-4077-39EF-A334-6F19365E4FFE}" />
         <Interface Name="Linphone.Core.LinphoneCoreListener" InterfaceId="{638C6F72-6792-3858-80B6-2DC341C00F6F}" />
+        <Interface Name="Linphone.Core.OutputTraceListener" InterfaceId="{4610D6D0-5644-3B6D-B42D-04C95ED4BFFD}" />
         <Interface Name="Linphone.Core.__ILinphoneCoreFactoryPublicNonVirtuals" InterfaceId="{C83B6E96-A239-311E-BD2B-880114A4E240}" />
         <Interface Name="Linphone.Core.__ITransportsPublicNonVirtuals" InterfaceId="{9CF934BB-9476-3105-B0DF-49E2F4B2A580}" />
         <Interface Name="Linphone.Core.__ITransportsFactory" InterfaceId="{3376B207-4618-313D-B564-D5500B8EFB64}" />

@@ -19,7 +19,7 @@ namespace Linphone.Model
     /// <summary>
     /// Utility class to handle most of the LinphoneCore (and more globally the C++/CX API) methods calls.
     /// </summary>
-    public sealed class LinphoneManager : LinphoneCoreListener
+    public sealed class LinphoneManager : LinphoneCoreListener, OutputTraceListener
     {
         private LinphoneManager()
         {
@@ -175,6 +175,21 @@ namespace Linphone.Model
         #endregion
 
         /// <summary>
+        /// Creates and adds the LinphoneProxyConfig in LinphoneCore.
+        /// </summary>
+        public void InitProxyConfig()
+        {
+            server.LinphoneCore.ClearProxyConfigs();
+
+            SettingsManager sm = new SettingsManager();
+            if (sm.Username != null && sm.Username.Length > 0 && sm.Domain != null && sm.Domain.Length > 0)
+            {
+                var proxy = server.LinphoneCore.CreateEmptyProxyConfig();
+                server.LinphoneCore.AddProxyConfig(proxy);
+            }
+        }
+
+        /// <summary>
         /// Creates a new LinphoneCore (if not created yet) using a LinphoneCoreFactory.
         /// </summary>
         public void InitLinphoneCore()
@@ -184,11 +199,7 @@ namespace Linphone.Model
 
             server.LinphoneCoreFactory.CreateLinphoneCore(this);
 
-            SettingsManager sm = new SettingsManager();
-            if (sm.Username != null && sm.Username.Length > 0 && sm.Domain != null && sm.Domain.Length > 0)
-            {
-                server.LinphoneCore.AddProxyConfig(null);
-            }
+            InitProxyConfig();
 
             timer = new Timer(LinphoneCoreIterate, null, 1, 20);
             Debug.WriteLine("[LinphoneManager] LinphoneCore created");
@@ -219,7 +230,7 @@ namespace Linphone.Model
         /// <param name="enable">true to enable debug traces, false to disable them</param>
         public void EnableDebug(bool enable)
         {
-            server.LinphoneCoreFactory.SetDebugMode(enable, AppResources.ApplicationTitle);
+            server.LinphoneCoreFactory.SetDebugMode(enable, this);
         }
 
         #region CallLogs
@@ -472,5 +483,10 @@ namespace Linphone.Model
 
         }
         #endregion
+
+        public void outputTrace(int level, String msg)
+        {
+            System.Diagnostics.Debug.WriteLine(msg);
+        }
     }
 }

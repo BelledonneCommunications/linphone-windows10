@@ -64,6 +64,7 @@ void Linphone::Core::LinphoneCore::ClearProxyConfigs()
 void Linphone::Core::LinphoneCore::AddProxyConfig(Linphone::Core::LinphoneProxyConfig^ proxyCfg)
 {
 	this->proxyCfgAdded = true;
+	linphone_core_add_proxy_config(this->lc, proxyCfg->proxy_config);
 }
 
 void Linphone::Core::LinphoneCore::SetDefaultProxyConfig(Linphone::Core::LinphoneProxyConfig^ proxyCfg)
@@ -74,6 +75,12 @@ void Linphone::Core::LinphoneCore::SetDefaultProxyConfig(Linphone::Core::Linphon
 Linphone::Core::LinphoneProxyConfig^ Linphone::Core::LinphoneCore::GetDefaultProxyConfig()
 {
 	return nullptr;
+}
+
+Linphone::Core::LinphoneProxyConfig^ Linphone::Core::LinphoneCore::CreateEmptyProxyConfig()
+{
+	Linphone::Core::LinphoneProxyConfig^ proxyConfig = ref new Linphone::Core::LinphoneProxyConfig(this->lc);
+	return proxyConfig;
 }
 
 Windows::Foundation::Collections::IVector<Linphone::Core::LinphoneProxyConfig^>^ Linphone::Core::LinphoneCore::GetProxyConfigList() 
@@ -704,6 +711,21 @@ void Linphone::Core::LinphoneCore::IncomingCall::set(Linphone::Core::LinphoneCal
 	this->incomingcall = call;
 }
 
+void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCallState cstate, const char *msg) 
+{
+	
+}
+
+void registration_state_changed(::LinphoneCore *lc, ::LinphoneProxyConfig *cfg, ::LinphoneRegistrationState cstate, const char *message)
+{
+
+}
+
+void global_state_changed(::LinphoneCore *lc, ::LinphoneGlobalState gstate, const char *msg)
+{
+
+}
+
 Linphone::Core::LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener) :
 	call(nullptr),
 	incomingcall(nullptr),
@@ -714,12 +736,18 @@ Linphone::Core::LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener) :
 	proxyCfgRegistered(false),
 	startup(true),
 	on(false),
-	listener(coreListener)
+	listener(coreListener),
+	lc(nullptr)
 {
-
+	LinphoneCoreVTable *vtable = (LinphoneCoreVTable*) malloc(sizeof(LinphoneCoreVTable));
+	memset (vtable, 0, sizeof(LinphoneCoreVTable));
+	vtable->global_state_changed = global_state_changed;
+	vtable->registration_state_changed = registration_state_changed;
+	vtable->call_state_changed = call_state_changed;
+	this->lc = linphone_core_new(vtable, NULL, "Assets/linphone_rc", NULL);
 }
 
 Linphone::Core::LinphoneCore::~LinphoneCore()
 {
-	
+	free(this->lc);
 }

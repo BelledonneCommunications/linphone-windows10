@@ -12,6 +12,12 @@ namespace Linphone
 		ref class LinphoneAuthInfo;
 		ref class LinphoneAddress;
 
+		public interface class OutputTraceListener
+		{
+		public:
+			void outputTrace(int level, Platform::String^ msg);
+		};
+
 		public ref class LinphoneCoreFactory sealed
 		{
 		public:
@@ -20,7 +26,7 @@ namespace Linphone
                 Linphone::Core::LinphoneCore^ get();
             }
 
-			void SetDebugMode(Platform::Boolean enable, Platform::String^ tag);
+			void SetDebugMode(Platform::Boolean enable, OutputTraceListener^ traceListener);
 			
 			void CreateLinphoneCore(LinphoneCoreListener^ listener, Platform::String^ userConfig, Platform::String^ factoryConfig, Platform::Object^ userData);
 			void CreateLinphoneCore(LinphoneCoreListener^ listener);

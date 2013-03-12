@@ -47,8 +47,7 @@ namespace Linphone.Views
             _appSettings.Proxy = Domain.Text;
             _appSettings.OutboundProxy = OutboundProxy.IsChecked;
 
-            LinphoneManager.Instance.LinphoneCore.ClearProxyConfigs();
-            LinphoneManager.Instance.LinphoneCore.AddProxyConfig(new Core.LinphoneProxyConfig());
+            LinphoneManager.Instance.InitProxyConfig();
 
             NavigationService.GoBack();
         }

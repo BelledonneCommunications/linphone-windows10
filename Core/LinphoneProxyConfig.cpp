@@ -1,30 +1,35 @@
 #include "LinphoneProxyConfig.h"
 #include "LinphoneCore.h"
 #include "Server.h"
+#include "Utils.h"
 
 void Linphone::Core::LinphoneProxyConfig::Edit()
 {
-
+	linphone_proxy_config_edit(this->proxy_config);
 }
 
 void Linphone::Core::LinphoneProxyConfig::Done()
 {
-
+	linphone_proxy_config_done(this->proxy_config);
 }
 
 void Linphone::Core::LinphoneProxyConfig::SetIdentity(Platform::String^ identity)
 {
-
+	const char* cc = Utils::pstoccs(identity);
+	linphone_proxy_config_set_identity(this->proxy_config, cc);
+	delete(cc);
 }
 
 Platform::String^ Linphone::Core::LinphoneProxyConfig::GetIdentity()
 {
-	return nullptr;
+	return Utils::cctops(linphone_proxy_config_get_identity(this->proxy_config));
 }
 
 void Linphone::Core::LinphoneProxyConfig::SetProxy(Platform::String^ proxyUri)
 {
-
+	const char* cc = Utils::pstoccs(proxyUri);
+	linphone_proxy_config_set_server_addr(this->proxy_config, cc);
+	delete(cc);
 }
 
 void Linphone::Core::LinphoneProxyConfig::EnableRegister(Platform::Boolean enable)
@@ -54,7 +59,7 @@ void Linphone::Core::LinphoneProxyConfig::SetDialEscapePlus(Platform::Boolean va
 
 Platform::String^ Linphone::Core::LinphoneProxyConfig::GetDomain()
 {
-	return nullptr;
+	return Utils::cctops(linphone_proxy_config_get_domain(this->proxy_config));
 }
 
 Platform::Boolean Linphone::Core::LinphoneProxyConfig::IsRegistered()
@@ -64,12 +69,14 @@ Platform::Boolean Linphone::Core::LinphoneProxyConfig::IsRegistered()
 
 void Linphone::Core::LinphoneProxyConfig::SetRoute(Platform::String^ routeUri)
 {
-
+	const char* cc = Utils::pstoccs(routeUri);
+	linphone_proxy_config_set_route(this->proxy_config, cc);
+	delete(cc);
 }
 
 Platform::String^ Linphone::Core::LinphoneProxyConfig::GetRoute()
 {
-	return nullptr;
+	return Utils::cctops(linphone_proxy_config_get_route(this->proxy_config));
 }
 
 void Linphone::Core::LinphoneProxyConfig::EnablePublish(Platform::Boolean enable)
@@ -105,4 +112,14 @@ int Linphone::Core::LinphoneProxyConfig::LookupCCCFromIso(Platform::String^ iso)
 int Linphone::Core::LinphoneProxyConfig::LookupCCCFromE164(Platform::String^ e164)
 {
 	return -1;
+}
+
+Linphone::Core::LinphoneProxyConfig::LinphoneProxyConfig(::LinphoneCore *lc)
+{
+	this->proxy_config = linphone_core_create_proxy_config(lc);
+}
+
+Linphone::Core::LinphoneProxyConfig::~LinphoneProxyConfig()
+{
+	free(this->proxy_config);
 }

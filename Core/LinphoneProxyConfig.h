@@ -114,6 +114,14 @@ namespace Linphone
 			/// Returns the international prefix for the given country.
 			/// </summary>
 			int LookupCCCFromE164(Platform::String^ e164);
+
+		private:
+			friend ref class Linphone::Core::LinphoneCore;
+
+			LinphoneProxyConfig(::LinphoneCore *lc);
+			~LinphoneProxyConfig();
+
+			::LinphoneProxyConfig *proxy_config;
 		};
 	}
 }

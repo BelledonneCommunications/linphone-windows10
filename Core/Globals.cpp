@@ -140,7 +140,7 @@ LinphoneCoreFactory^ Globals::LinphoneCoreFactory::get()
 	return this->linphoneCoreFactory;
 }
 
-LinphoneCore^ Globals::LinphoneCore::get()
+Linphone::Core::LinphoneCore^ Globals::LinphoneCore::get()
 {
 	return this->linphoneCoreFactory->LinphoneCore;
 }
