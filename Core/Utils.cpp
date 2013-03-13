@@ -14,6 +14,9 @@ std::string Linphone::Core::Utils::pstos(Platform::String^ ps)
 
 const char* Linphone::Core::Utils::pstoccs(Platform::String^ ps)
 {
+	if (ps == nullptr || ps->Length() == 0)
+		return NULL;
+
 	std::string s = pstos(ps);
 	char* cc = (char*) malloc(s.length()+1);
 	memcpy(cc, s.c_str(), s.length());
@@ -23,6 +26,9 @@ const char* Linphone::Core::Utils::pstoccs(Platform::String^ ps)
 
 Platform::String^ Linphone::Core::Utils::cctops(const char* cc)
 {
+	if (cc == NULL)
+		return nullptr;
+
 	std::string s_str = std::string(cc);
 	std::wstring wid_str = std::wstring(s_str.begin(), s_str.end());
 	const wchar_t* w_char = wid_str.c_str();

@@ -179,13 +179,21 @@ namespace Linphone.Model
         /// </summary>
         public void InitProxyConfig()
         {
+            server.LinphoneCore.ClearAuthInfos();
             server.LinphoneCore.ClearProxyConfigs();
 
             SettingsManager sm = new SettingsManager();
             if (sm.Username != null && sm.Username.Length > 0 && sm.Domain != null && sm.Domain.Length > 0)
             {
                 var proxy = server.LinphoneCore.CreateEmptyProxyConfig();
+                proxy.SetIdentity(sm.Username, sm.Username, sm.Domain);
+                proxy.EnableRegister(true);
                 server.LinphoneCore.AddProxyConfig(proxy);
+                server.LinphoneCore.SetDefaultProxyConfig(proxy);
+
+                // Can't set string to null: http://stackoverflow.com/questions/12980915/exception-when-trying-to-read-null-string-in-c-sharp-winrt-component-from-winjs
+                var auth = server.LinphoneCore.CreateAuthInfo(sm.Username, "", sm.Password, "", sm.Domain);
+                server.LinphoneCore.AddAuthInfo(auth);
             }
         }
 
@@ -329,7 +337,6 @@ namespace Linphone.Model
             call.NotifyCallActive();
             LinphoneCall LCall = LinphoneCore.Invite(sipAddress);
             LCall.CallContext = call;
-            LinphoneCore.Call = LCall;
         }
 
         /// <summary>
@@ -374,7 +381,7 @@ namespace Linphone.Model
         /// </summary>
         public void AuthInfoRequested(string realm, string username)
         {
-
+            Debug.WriteLine("[LinphoneManager] Auth info requested: realm=" + realm + ", username=" + username);
         }
 
         /// <summary>
@@ -420,7 +427,6 @@ namespace Linphone.Model
                         });
 
                     call.CallContext = vcall;
-                    LinphoneCore.Call = call;
                 });
             }
             else if (state == LinphoneCallState.StreamsRunning)

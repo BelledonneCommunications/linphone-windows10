@@ -29,11 +29,7 @@ namespace Linphone
 			/// </summary>
 			void Done();
 
-			/// <param name="identity">
-			/// identity is normally formed with display name, username and domain, such as: Alice &lt;sip:alice@example.net&gt;.
-			/// The REGISTER messages will have from and to set to this identity.
-			/// </param>
-			void SetIdentity(Platform::String^ identity);
+			void SetIdentity(Platform::String^ displayname, Platform::String^ username, Platform::String^ domain);
 			Platform::String^ GetIdentity();
 
 			/// <summary>
@@ -118,7 +114,7 @@ namespace Linphone
 		private:
 			friend ref class Linphone::Core::LinphoneCore;
 
-			LinphoneProxyConfig(::LinphoneCore *lc);
+			LinphoneProxyConfig();
 			~LinphoneProxyConfig();
 
 			::LinphoneProxyConfig *proxy_config;

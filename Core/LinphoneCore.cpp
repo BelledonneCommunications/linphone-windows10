@@ -58,12 +58,11 @@ void Linphone::Core::LinphoneCore::SetContext(Platform::Object^ object)
 
 void Linphone::Core::LinphoneCore::ClearProxyConfigs()
 {
-
+	linphone_core_clear_proxy_config(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::AddProxyConfig(Linphone::Core::LinphoneProxyConfig^ proxyCfg)
 {
-	this->proxyCfgAdded = true;
 	linphone_core_add_proxy_config(this->lc, proxyCfg->proxy_config);
 }
 
@@ -79,7 +78,7 @@ Linphone::Core::LinphoneProxyConfig^ Linphone::Core::LinphoneCore::GetDefaultPro
 
 Linphone::Core::LinphoneProxyConfig^ Linphone::Core::LinphoneCore::CreateEmptyProxyConfig()
 {
-	Linphone::Core::LinphoneProxyConfig^ proxyConfig = ref new Linphone::Core::LinphoneProxyConfig(this->lc);
+	Linphone::Core::LinphoneProxyConfig^ proxyConfig = ref new Linphone::Core::LinphoneProxyConfig();
 	return proxyConfig;
 }
 
@@ -90,65 +89,24 @@ Windows::Foundation::Collections::IVector<Linphone::Core::LinphoneProxyConfig^>^
 
 void Linphone::Core::LinphoneCore::ClearAuthInfos() 
 {
-
+	linphone_core_clear_all_auth_info(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::AddAuthInfo(Linphone::Core::LinphoneAuthInfo^ info) 
 {
+	linphone_core_add_auth_info(this->lc, info->auth_info);
+}
 
+Linphone::Core::LinphoneAuthInfo^ Linphone::Core::LinphoneCore::CreateAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm)
+{
+	Linphone::Core::LinphoneAuthInfo^ authInfo = ref new Linphone::Core::LinphoneAuthInfo(username, userid, password, ha1, realm);
+	return authInfo;
 }
 
 void Linphone::Core::LinphoneCore::Iterate() 
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-
-	if (this->incomingcall != nullptr && this->listener != nullptr)
-	{
-		this->listener->CallState(this->incomingcall, Linphone::Core::LinphoneCallState::IncomingReceived);
-		this->call = incomingcall;
-		this->incomingcall = nullptr;
-	}
-	else if (this->call != nullptr && this->callAccepted && this->listener != nullptr)
-	{
-		this->callAccepted = false;
-		this->listener->CallState(this->call, Linphone::Core::LinphoneCallState::Connected);
-		this->callConnected = true;
-	}
-	else if (this->call != nullptr && this->callConnected && this->listener != nullptr)
-	{
-		this->callConnected = false;
-		this->listener->CallState(this->call, Linphone::Core::LinphoneCallState::StreamsRunning);
-	}
-	else if (this->call != nullptr && this->callEnded && this->listener != nullptr)
-	{
-		this->callEnded = false;
-		this->listener->CallState(this->call, Linphone::Core::LinphoneCallState::CallEnd);
-		this->call = nullptr;
-	}
-
-	if (this->listener != nullptr && this->startup)
-	{
-		this->listener->GlobalState(Linphone::Core::GlobalState::GlobalStartup, L"");
-		this->startup = false;
-		this->on = true;
-	}
-	else if (this->listener != nullptr && this->on)
-	{
-		this->listener->GlobalState(Linphone::Core::GlobalState::GlobalOn, L"");
-		this->on = false;
-	}
-
-	if (this->listener != nullptr && this->proxyCfgAdded && !this->on)
-	{
-		this->listener->RegistrationState(nullptr, Linphone::Core::RegistrationState::RegistrationInProgress, L"");
-		this->proxyCfgAdded = false;
-		this->proxyCfgRegistered = true;
-	}
-	else if (this->listener != nullptr && this->proxyCfgRegistered)
-	{
-		this->listener->RegistrationState(nullptr, Linphone::Core::RegistrationState::RegistrationOk, L"");
-		this->proxyCfgRegistered = false;
-	}
+	linphone_core_iterate(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::Destroy() 
@@ -163,14 +121,7 @@ Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCore::InterpretURL(Plat
 
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::Invite(Platform::String^ destination) 
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-
-	Linphone::Core::LinphoneCall^ call = ref new Linphone::Core::LinphoneCall("", destination);
-	if (this->listener != nullptr)
-		this->listener->CallState(call, Linphone::Core::LinphoneCallState::OutgoingInit);
-
-	this->callAccepted = true;
-	return call;
+	return nullptr;
 }
 
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddress(Linphone::Core::LinphoneAddress^ to) 
@@ -185,12 +136,12 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddressWithPar
 
 void Linphone::Core::LinphoneCore::TerminateCall(Linphone::Core::LinphoneCall^ call) 
 {
-	this->callEnded = true;
+	
 }
 
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::GetCurrentCall() 
 {
-	return this->call;
+	return nullptr;
 }
 
 Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCore::GetRemoteAddress() 
@@ -210,8 +161,7 @@ Platform::Boolean Linphone::Core::LinphoneCore::IsIncomingInvitePending()
 
 void Linphone::Core::LinphoneCore::AcceptCall(Linphone::Core::LinphoneCall^ call) 
 {
-	this->call = call;
-	this->callAccepted = true;
+	
 }
 
 void Linphone::Core::LinphoneCore::AcceptCallWithParams(Linphone::Core::LinphoneCall^ call, Linphone::Core::LinphoneCallParams^ params) 
@@ -520,16 +470,12 @@ IVector<Linphone::Core::LinphoneCall^>^ Linphone::Core::LinphoneCore::GetCalls()
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	
 	Vector<Linphone::Core::LinphoneCall^>^ calls = ref new Vector<Linphone::Core::LinphoneCall^>();
-	calls->Append(this->call);
 	return calls;
 }
 
 int Linphone::Core::LinphoneCore::GetCallsNb() 
 {
-	if (this->Call != nullptr)
-		return 1;
-	else
-		return 0;
+	return 0;
 }
 
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::FindCallFromUri(Platform::String^ uri) 
@@ -687,63 +633,54 @@ Linphone::Core::LpConfig^ Linphone::Core::LinphoneCore::GetConfig()
 	return nullptr;
 }
 
-Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::Call::get()
+Linphone::Core::LinphoneCoreListener^ Linphone::Core::LinphoneCore::CoreListener::get()
 {
-	return this->call;
-}
-
-void Linphone::Core::LinphoneCore::Call::set(Linphone::Core::LinphoneCall^ call)
-{
-	this->call = call;
-}
-
-Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::IncomingCall::get()
-{
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-
-	return this->incomingcall;
-}
-
-void Linphone::Core::LinphoneCore::IncomingCall::set(Linphone::Core::LinphoneCall^ call)
-{
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-
-	this->incomingcall = call;
+	return this->listener;
 }
 
 void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCallState cstate, const char *msg) 
 {
-	
+	/*Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
+	if (listener != nullptr)
+	{
+		listener->CallState(call, cstate);
+	}*/
 }
 
-void registration_state_changed(::LinphoneCore *lc, ::LinphoneProxyConfig *cfg, ::LinphoneRegistrationState cstate, const char *message)
+void registration_state_changed(::LinphoneCore *lc, ::LinphoneProxyConfig *cfg, ::LinphoneRegistrationState cstate, const char *msg)
 {
-
+	/*Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
+	if (listener != nullptr)
+	{
+		listener->RegistrationState(cfg, cstate, Linphone::Core::Utils::cctops(msg));
+	}*/
 }
 
 void global_state_changed(::LinphoneCore *lc, ::LinphoneGlobalState gstate, const char *msg)
 {
-
+	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
+	if (listener != nullptr)
+	{
+		Linphone::Core::GlobalState state = (Linphone::Core::GlobalState) gstate;
+		listener->GlobalState(state, Linphone::Core::Utils::cctops(msg));
+	}
 }
 
 Linphone::Core::LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener) :
-	call(nullptr),
-	incomingcall(nullptr),
-	callAccepted(false),
-	callEnded(false),
-	callConnected(false),
-	proxyCfgAdded(false),
-	proxyCfgRegistered(false),
-	startup(true),
-	on(false),
 	listener(coreListener),
 	lc(nullptr)
+{
+
+}
+
+void Linphone::Core::LinphoneCore::Init()
 {
 	LinphoneCoreVTable *vtable = (LinphoneCoreVTable*) malloc(sizeof(LinphoneCoreVTable));
 	memset (vtable, 0, sizeof(LinphoneCoreVTable));
 	vtable->global_state_changed = global_state_changed;
 	vtable->registration_state_changed = registration_state_changed;
 	vtable->call_state_changed = call_state_changed;
+
 	this->lc = linphone_core_new(vtable, NULL, "Assets/linphone_rc", NULL);
 }
 

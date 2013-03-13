@@ -44,7 +44,6 @@ namespace Linphone.Agents
 
                 Debug.WriteLine("[{0}] Incoming call from caller {1}, number {2}", "KeepAliveAgent", callerName, callerNumber);
                 LinphoneCall call = new LinphoneCall(callerName, callerNumber);
-                Globals.Instance.LinphoneCore.IncomingCall = call;
 
                 Debug.WriteLine("[KeepAliveAgent] Incoming call added to LinphoneCore, notifyComplete");
                 base.NotifyComplete();

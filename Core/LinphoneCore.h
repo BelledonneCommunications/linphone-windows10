@@ -2,7 +2,7 @@
 
 #include "Enums.h"
 #include "LinphoneCoreListener.h"
-
+#include "Utils.h"
 #include "coreapi\linphonecore.h"
 
 namespace Linphone
@@ -92,6 +92,11 @@ namespace Linphone
 			/// This information will be used during all SIP transactions which requieres authentication.
 			/// </summary>
 			void AddAuthInfo(LinphoneAuthInfo^ info);
+
+			/// <summary>
+			/// Creates an empty auth info.
+			/// </summary>
+			LinphoneAuthInfo^ CreateAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm);
 			
 			/// <summary>
 			/// Main loop function. It is crucial that your application calls it periodically.
@@ -405,36 +410,18 @@ namespace Linphone
 			/// </summary>
 			LpConfig^ GetConfig();
 
-			property LinphoneCall^ Call
+			property LinphoneCoreListener^ CoreListener
             {
-                LinphoneCall^ get();
-				void set(LinphoneCall^ call);
-            }
-
-			property LinphoneCall^ IncomingCall
-            {
-                LinphoneCall^ get();
-				void set(LinphoneCall^ call);
+                LinphoneCoreListener^ get();
             }
 
 		private:
 			friend ref class Linphone::Core::LinphoneCoreFactory;
 
 			LinphoneCoreListener^ listener;
-			LinphoneCall^ call;
-			LinphoneCall^ incomingcall;
-
-			bool callAccepted;
-			bool callEnded;
-			bool callConnected;
-			
-			bool proxyCfgAdded;
-			bool proxyCfgRegistered;
-
-			bool startup;
-			bool on;
 
 			LinphoneCore(LinphoneCoreListener^ coreListener);
+			void Init();
 			~LinphoneCore();
 
 			::LinphoneCore *lc;

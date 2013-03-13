@@ -42,6 +42,7 @@ void LinphoneCoreFactory::CreateLinphoneCore(Linphone::Core::LinphoneCoreListene
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock); 
 	linphone_core_enable_logs_with_cb(LinphoneNativeOutputTraceHandler);
 	this->linphoneCore = ref new Linphone::Core::LinphoneCore(listener);
+	this->linphoneCore->Init();
 }
 
 void LinphoneCoreFactory::CreateLinphoneCore(Linphone::Core::LinphoneCoreListener^ listener)

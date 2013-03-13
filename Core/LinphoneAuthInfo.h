@@ -1,5 +1,7 @@
 #pragma once
 
+#include "LinphoneCore.h"
+
 namespace Linphone
 {
 	namespace Core
@@ -28,6 +30,14 @@ namespace Linphone
 			Platform::String^ GetRealm();
 
 			void SetRealm(Platform::String^ realm);
+
+		private:
+			friend ref class Linphone::Core::LinphoneCore;
+
+			LinphoneAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm);
+			~LinphoneAuthInfo();
+
+			::LinphoneAuthInfo *auth_info;
 		};
 	}
 }

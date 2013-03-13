@@ -44,7 +44,7 @@ namespace Linphone.Views
             _appSettings.Username = Username.Text;
             _appSettings.Password = Password.Password;
             _appSettings.Domain = Domain.Text;
-            _appSettings.Proxy = Domain.Text;
+            _appSettings.Proxy = Proxy.Text;
             _appSettings.OutboundProxy = OutboundProxy.IsChecked;
 
             LinphoneManager.Instance.InitProxyConfig();

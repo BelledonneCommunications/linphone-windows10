@@ -12,3 +12,6 @@ the Linphone project to make calls to the C++ API
 
 If you have a FileNotFoundException is mscorlib during debug phase, 
 open DEBUG->Exceptions and uncheck Common Language Runtime Exceptions->System.IO.FileNotFoundException
+
+YOU CAN'T PASS A NULL STRING FROM C# TO C++/CX (it has to be empty) AND YOU CAN'T RECEIVE A NULL STRING FROM C++/CX (It will always be an empty string).
+See http://stackoverflow.com/questions/12980915/exception-when-trying-to-read-null-string-in-c-sharp-winrt-component-from-winjs
