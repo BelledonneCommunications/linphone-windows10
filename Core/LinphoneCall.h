@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Enums.h"
+#include "LinphoneCore.h"
 
 namespace Linphone
 {
@@ -94,15 +95,15 @@ namespace Linphone
 				void set(Platform::Object^ cc);
             }
 
-			LinphoneCall(Platform::String^ contact, Platform::String^ number);
-
 		private:
+			friend class Linphone::Core::Utils;
 			friend ref class Linphone::Core::LinphoneCore;
+
+			LinphoneCall(::LinphoneCall *call);
+			~LinphoneCall();
 			
 			Platform::Object^ callContext;
-
-			Platform::String^ contact;
-			Platform::String^ number;
+			::LinphoneCall *call;
 		};
 	}
 }

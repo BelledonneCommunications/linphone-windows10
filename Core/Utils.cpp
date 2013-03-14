@@ -1,4 +1,5 @@
 #include "Utils.h"
+#include "LinphoneCall.h"
 
 std::string Linphone::Core::Utils::wstos(std::wstring ws)
 {
@@ -38,4 +39,9 @@ Platform::String^ Linphone::Core::Utils::cctops(const char* cc)
 void* Linphone::Core::Utils::GetRawPointer(Platform::Object^ object)
 {
     return reinterpret_cast<IInspectable*>(object);
+}
+
+Platform::Object^ Linphone::Core::Utils::CreateLinphoneCall(void* call)
+{
+	return ref new Linphone::Core::LinphoneCall((::LinphoneCall*)call);
 }

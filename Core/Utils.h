@@ -16,6 +16,8 @@ namespace Linphone
 
 			static void* GetRawPointer(Platform::Object^ object);
 
+			static Platform::Object^ CreateLinphoneCall(void* call);
+
 		private:
 			static std::string wstos(std::wstring ws);
 

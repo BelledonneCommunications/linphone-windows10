@@ -58,7 +58,7 @@ namespace Linphone
         {
             if (address != null && address.Length > 0)
             {
-                NavigationService.Navigate(new Uri("/Views/InCall.xaml?sip=" + address, UriKind.RelativeOrAbsolute));
+                //NavigationService.Navigate(new Uri("/Views/InCall.xaml?sip=" + address, UriKind.RelativeOrAbsolute));
                 LinphoneManager.Instance.NewOutgoingCall(addressBox.Text);
             }
         }

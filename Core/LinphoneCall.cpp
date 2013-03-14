@@ -17,8 +17,7 @@ Linphone::Core::LinphoneCallState Linphone::Core::LinphoneCall::GetState()
 
 Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCall::GetRemoteAddress()
 {
-	Linphone::Core::LinphoneCoreFactory^ lcf = Globals::Instance->LinphoneCoreFactory;
-	return lcf->CreateLinphoneAddress(this->number);
+	return nullptr;
 }
 
 Linphone::Core::CallDirection Linphone::Core::LinphoneCall::GetDirection()
@@ -113,7 +112,7 @@ Platform::String^ Linphone::Core::LinphoneCall::GetRemoteUserAgent()
 
 Platform::String^ Linphone::Core::LinphoneCall::GetRemoteContact()
 {
-	return this->contact;
+	return nullptr;
 }
 
 void Linphone::Core::LinphoneCall::CallContext::set(Platform::Object^ cc)
@@ -126,8 +125,13 @@ Platform::Object^  Linphone::Core::LinphoneCall::CallContext::get()
 	return this->callContext;
 }
 
-Linphone::Core::LinphoneCall::LinphoneCall(Platform::String^ contact, Platform::String^ number) :
-	contact(contact),
-	number(number)
+Linphone::Core::LinphoneCall::LinphoneCall(::LinphoneCall *call) :
+	call(call)
 {
+	linphone_call_set_user_pointer(this->call, Linphone::Core::Utils::GetRawPointer(this));
+}
+
+Linphone::Core::LinphoneCall::~LinphoneCall()
+{
+
 }

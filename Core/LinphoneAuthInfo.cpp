@@ -49,5 +49,5 @@ Linphone::Core::LinphoneAuthInfo::LinphoneAuthInfo(Platform::String^ username, P
 
 Linphone::Core::LinphoneAuthInfo::~LinphoneAuthInfo()
 {
-	delete(this->auth_info);
+	
 }

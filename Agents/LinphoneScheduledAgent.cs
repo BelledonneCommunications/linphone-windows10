@@ -43,7 +43,6 @@ namespace Linphone.Agents
                 callerNumber = incomingCallPN.First().ToString();
 
                 Debug.WriteLine("[{0}] Incoming call from caller {1}, number {2}", "KeepAliveAgent", callerName, callerNumber);
-                LinphoneCall call = new LinphoneCall(callerName, callerNumber);
 
                 Debug.WriteLine("[KeepAliveAgent] Incoming call added to LinphoneCore, notifyComplete");
                 base.NotifyComplete();
