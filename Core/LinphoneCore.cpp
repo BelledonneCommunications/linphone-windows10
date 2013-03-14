@@ -58,26 +58,34 @@ void Linphone::Core::LinphoneCore::SetContext(Platform::Object^ object)
 
 void Linphone::Core::LinphoneCore::ClearProxyConfigs()
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	linphone_core_clear_proxy_config(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::AddProxyConfig(Linphone::Core::LinphoneProxyConfig^ proxyCfg)
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	linphone_core_add_proxy_config(this->lc, proxyCfg->proxy_config);
 }
 
 void Linphone::Core::LinphoneCore::SetDefaultProxyConfig(Linphone::Core::LinphoneProxyConfig^ proxyCfg)
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_set_default_proxy(this->lc, proxyCfg->proxy_config);
 }
 
 Linphone::Core::LinphoneProxyConfig^ Linphone::Core::LinphoneCore::GetDefaultProxyConfig()
 {
-	return nullptr;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	::LinphoneProxyConfig *proxy=NULL;
+	linphone_core_get_default_proxy(this->lc,&proxy);
+	Linphone::Core::LinphoneProxyConfig^ defaultProxy = reinterpret_cast<Linphone::Core::LinphoneProxyConfig^>(proxy);
+	return defaultProxy;
 }
 
 Linphone::Core::LinphoneProxyConfig^ Linphone::Core::LinphoneCore::CreateEmptyProxyConfig()
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	Linphone::Core::LinphoneProxyConfig^ proxyConfig = ref new Linphone::Core::LinphoneProxyConfig();
 	return proxyConfig;
 }
@@ -89,16 +97,19 @@ Windows::Foundation::Collections::IVector<Linphone::Core::LinphoneProxyConfig^>^
 
 void Linphone::Core::LinphoneCore::ClearAuthInfos() 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	linphone_core_clear_all_auth_info(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::AddAuthInfo(Linphone::Core::LinphoneAuthInfo^ info) 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	linphone_core_add_auth_info(this->lc, info->auth_info);
 }
 
 Linphone::Core::LinphoneAuthInfo^ Linphone::Core::LinphoneCore::CreateAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm)
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	Linphone::Core::LinphoneAuthInfo^ authInfo = ref new Linphone::Core::LinphoneAuthInfo(username, userid, password, ha1, realm);
 	return authInfo;
 }
@@ -698,5 +709,5 @@ void Linphone::Core::LinphoneCore::Init()
 
 Linphone::Core::LinphoneCore::~LinphoneCore()
 {
-	delete(this->lc);
+	
 }

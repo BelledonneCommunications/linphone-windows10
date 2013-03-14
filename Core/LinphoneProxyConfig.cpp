@@ -142,5 +142,5 @@ Linphone::Core::LinphoneProxyConfig::LinphoneProxyConfig()
 
 Linphone::Core::LinphoneProxyConfig::~LinphoneProxyConfig()
 {
-	delete(this->proxy_config);
+	
 }

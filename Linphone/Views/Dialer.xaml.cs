@@ -43,7 +43,6 @@ namespace Linphone
             base.OnNavigatedTo(e);
             StatusBar = status;
 
-            LinphoneManager.Instance.EnableDebug(SettingsManager.isDebugEnabled);
             // Create LinphoneCore if not created yet, otherwise do nothing
             LinphoneManager.Instance.InitLinphoneCore();
 

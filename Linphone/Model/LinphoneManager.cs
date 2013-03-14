@@ -204,7 +204,7 @@ namespace Linphone.Model
         /// </summary>
         public void InitLinphoneCore()
         {
-            if (LinphoneCore != null)
+            if (server.LinphoneCore != null)
                 return;
 
             server.LinphoneCoreFactory.CreateLinphoneCore(this);
@@ -228,8 +228,9 @@ namespace Linphone.Model
 
                 LinphoneCore.Iterate();
             }
-            catch (Exception)
+            catch
             {
+                Debug.WriteLine("[LinphoneManager] Exception during iterate...");
                 timer.Dispose();
             }
         }

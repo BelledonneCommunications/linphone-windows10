@@ -1,6 +1,7 @@
 #pragma once
 
 #include "LinphoneCore.h"
+#include "ApiLock.h"
 
 namespace Linphone
 {
