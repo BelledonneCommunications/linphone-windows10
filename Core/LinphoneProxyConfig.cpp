@@ -137,6 +137,7 @@ int Linphone::Core::LinphoneProxyConfig::LookupCCCFromE164(Platform::String^ e16
 Linphone::Core::LinphoneProxyConfig::LinphoneProxyConfig()
 {
 	this->proxy_config = linphone_proxy_config_new();
+	linphone_proxy_config_set_user_data(this->proxy_config, Linphone::Core::Utils::GetRawPointer(this));
 }
 
 Linphone::Core::LinphoneProxyConfig::~LinphoneProxyConfig()

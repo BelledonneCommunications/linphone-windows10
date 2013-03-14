@@ -34,3 +34,8 @@ Platform::String^ Linphone::Core::Utils::cctops(const char* cc)
 	const wchar_t* w_char = wid_str.c_str();
 	return ref new Platform::String(w_char);
 }
+
+void* Linphone::Core::Utils::GetRawPointer(Platform::Object^ object)
+{
+    return reinterpret_cast<IInspectable*>(object);
+}

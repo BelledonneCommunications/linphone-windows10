@@ -649,11 +649,13 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 
 void registration_state_changed(::LinphoneCore *lc, ::LinphoneProxyConfig *cfg, ::LinphoneRegistrationState cstate, const char *msg)
 {
-	/*Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
+	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr)
 	{
-		listener->RegistrationState(cfg, cstate, Linphone::Core::Utils::cctops(msg));
-	}*/
+		Linphone::Core::RegistrationState state = (Linphone::Core::RegistrationState) cstate;
+		Linphone::Core::LinphoneProxyConfig^ config = reinterpret_cast<Linphone::Core::LinphoneProxyConfig^>(linphone_proxy_config_get_user_data(cfg));
+		listener->RegistrationState(config, state, Linphone::Core::Utils::cctops(msg));
+	}
 }
 
 void global_state_changed(::LinphoneCore *lc, ::LinphoneGlobalState gstate, const char *msg)
@@ -663,6 +665,15 @@ void global_state_changed(::LinphoneCore *lc, ::LinphoneGlobalState gstate, cons
 	{
 		Linphone::Core::GlobalState state = (Linphone::Core::GlobalState) gstate;
 		listener->GlobalState(state, Linphone::Core::Utils::cctops(msg));
+	}
+}
+
+void auth_info_requested(LinphoneCore *lc, const char *realm, const char *username) 
+{
+	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
+	if (listener != nullptr)
+	{
+		listener->AuthInfoRequested(Linphone::Core::Utils::cctops(realm), Linphone::Core::Utils::cctops(username));
 	}
 }
 
@@ -680,11 +691,12 @@ void Linphone::Core::LinphoneCore::Init()
 	vtable->global_state_changed = global_state_changed;
 	vtable->registration_state_changed = registration_state_changed;
 	vtable->call_state_changed = call_state_changed;
+	vtable->auth_info_requested = auth_info_requested;
 
 	this->lc = linphone_core_new(vtable, NULL, "Assets/linphone_rc", NULL);
 }
 
 Linphone::Core::LinphoneCore::~LinphoneCore()
 {
-	free(this->lc);
+	delete(this->lc);
 }

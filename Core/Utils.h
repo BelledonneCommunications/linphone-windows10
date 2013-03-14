@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <inspectable.h>
 
 namespace Linphone
 {
@@ -12,6 +13,8 @@ namespace Linphone
 			static const char* pstoccs(Platform::String^ ps);
 
 			static Platform::String^ Linphone::Core::Utils::cctops(const char*);
+
+			static void* GetRawPointer(Platform::Object^ object);
 
 		private:
 			static std::string wstos(std::wstring ws);

@@ -187,7 +187,9 @@ namespace Linphone.Model
             {
                 var proxy = server.LinphoneCore.CreateEmptyProxyConfig();
                 proxy.SetIdentity(sm.Username, sm.Username, sm.Domain);
+                proxy.SetProxy(sm.Domain);
                 proxy.EnableRegister(true);
+
                 server.LinphoneCore.AddProxyConfig(proxy);
                 server.LinphoneCore.SetDefaultProxyConfig(proxy);
 
@@ -451,7 +453,7 @@ namespace Linphone.Model
         /// </summary>
         public void RegistrationState(LinphoneProxyConfig config, RegistrationState state, string message)
         {
-            Debug.WriteLine("[LinphoneManager] Registration state changed: " + state.ToString() + ", message=" + message);
+            Debug.WriteLine("[LinphoneManager] Registration state changed: " + state.ToString() + ", message=" + message + " for identity " + config.GetIdentity());
             LastKnownState = state;
             if (BasePage.StatusBar != null)
                 BasePage.StatusBar.RefreshStatusIcon(state);
@@ -490,7 +492,10 @@ namespace Linphone.Model
         }
         #endregion
 
-        public void outputTrace(int level, String msg)
+        /// <summary>
+        /// Handler to get native traces and display them into VS debug console
+        /// </summary>
+        public void OutputTrace(int level, String msg)
         {
             System.Diagnostics.Debug.WriteLine(msg);
         }
