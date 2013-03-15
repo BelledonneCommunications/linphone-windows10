@@ -404,7 +404,7 @@ namespace Linphone.Model
             if (state == LinphoneCallState.OutgoingProgress)
             {
                 if (CallListener != null)
-                    CallListener.NewCallStarted("");
+                    CallListener.NewCallStarted(call.GetRemoteContact());
             }
             //if (state == LinphoneCallState.IncomingReceived)
             //{

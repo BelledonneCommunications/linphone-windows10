@@ -292,12 +292,12 @@ void Linphone::Core::LinphoneCore::SendDTMF(char16 number)
 
 void Linphone::Core::LinphoneCore::PlayDTMF(char16 number, int duration) 
 {
-
+	linphone_core_play_dtmf(this->lc, number, duration);
 }
 
 void Linphone::Core::LinphoneCore::StopDTMF() 
 {
-
+	linphone_core_stop_dtmf(this->lc);
 }
 
 Linphone::Core::PayloadType^ Linphone::Core::LinphoneCore::FindPayloadType(Platform::String^ mime, int clockRate, int channels) 

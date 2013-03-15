@@ -112,7 +112,7 @@ Platform::String^ Linphone::Core::LinphoneCall::GetRemoteUserAgent()
 
 Platform::String^ Linphone::Core::LinphoneCall::GetRemoteContact()
 {
-	return nullptr;
+	return Linphone::Core::Utils::cctops(linphone_call_get_remote_contact(this->call));
 }
 
 void Linphone::Core::LinphoneCall::CallContext::set(Platform::Object^ cc)
