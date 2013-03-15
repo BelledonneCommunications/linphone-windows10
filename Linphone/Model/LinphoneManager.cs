@@ -404,13 +404,13 @@ namespace Linphone.Model
                 Debug.WriteLine("[LinphoneManager] Call state changed: " + sipAddress + " => " + state.ToString());
                 if (state == LinphoneCallState.OutgoingProgress)
                 {
-                    VoipPhoneCall voipcall;
-                    CallController.RequestNewOutgoingCall("/Linphone;component/Views/InCall.xaml?sip=" + sipAddress, sipAddress, "Linphone", VoipCallMedia.Audio, out voipcall);
-                    voipcall.NotifyCallActive();
-                    call.CallContext = voipcall;
+                //    VoipPhoneCall voipcall;
+                //    CallController.RequestNewOutgoingCall("/Linphone;component/Views/InCall.xaml?sip=" + sipAddress, sipAddress, "Linphone", VoipCallMedia.Audio, out voipcall);
+                //    voipcall.NotifyCallActive();
+                //    call.CallContext = voipcall;
 
                     if (CallListener != null)
-                        CallListener.NewCallStarted(sipAddress);
+                        CallListener.NewCallStarted(sipAddress); //FIXME Crash !!
                 }
                 //if (state == LinphoneCallState.IncomingReceived)
                 //{
@@ -453,7 +453,7 @@ namespace Linphone.Model
                 else if (state == LinphoneCallState.CallEnd || state == LinphoneCallState.Error)
                 {
                     Debug.WriteLine("[LinphoneManager] Call ended");
-                    ((VoipPhoneCall)call.CallContext).NotifyCallEnded();
+                    //((VoipPhoneCall)call.CallContext).NotifyCallEnded();
 
                     if (CallListener != null)
                         CallListener.CallEnded();
@@ -466,10 +466,13 @@ namespace Linphone.Model
         /// </summary>
         public void RegistrationState(LinphoneProxyConfig config, RegistrationState state, string message)
         {
-            Debug.WriteLine("[LinphoneManager] Registration state changed: " + state.ToString() + ", message=" + message + " for identity " + config.GetIdentity());
-            LastKnownState = state;
-            if (BasePage.StatusBar != null)
-                BasePage.StatusBar.RefreshStatusIcon(state);
+            BaseModel.UIDispatcher.BeginInvoke(() =>
+            {
+                Debug.WriteLine("[LinphoneManager] Registration state changed: " + state.ToString() + ", message=" + message + " for identity " + config.GetIdentity());
+                LastKnownState = state;
+                if (BasePage.StatusBar != null)
+                    BasePage.StatusBar.RefreshStatusIcon(state);
+            });
         }
 
         /// <summary>

@@ -675,22 +675,15 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr)
 	{
+		Linphone::Core::LinphoneCallState state = (Linphone::Core::LinphoneCallState) cstate;
 		Linphone::Core::LinphoneCall^ lCall;
 
-		Linphone::Core::LinphoneCallState state = (Linphone::Core::LinphoneCallState) cstate;
-		void* wrapperCall = (::LinphoneCall*)linphone_call_get_user_pointer(call);
-		if(wrapperCall != NULL)
-		{
-			lCall = reinterpret_cast<Linphone::Core::LinphoneCall^>(wrapperCall);
-			if (lCall == nullptr)  
-			{
-				lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
-			}
-		}
-		else 
-		{
+		if (state == Linphone::Core::LinphoneCallState::OutgoingInit) {
 			lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
 		}
+		else
+			lCall = reinterpret_cast<Linphone::Core::LinphoneCall^>(linphone_call_get_user_pointer(call));
+
 		listener->CallState(lCall, state);
 	}
 }

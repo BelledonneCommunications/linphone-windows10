@@ -36,7 +36,6 @@ namespace Linphone.Views
         {
             base.OnNavigatedTo(e);
             
-            LinphoneManager.Instance.EnableDebug(SettingsManager.isDebugEnabled);
             // Create LinphoneCore if not created yet, otherwise do nothing
             LinphoneManager.Instance.InitLinphoneCore();
 

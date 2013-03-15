@@ -122,6 +122,7 @@ void Linphone::Core::LinphoneCall::CallContext::set(Platform::Object^ cc)
 	this->callContext = cc;
 }
 
+
 Platform::Object^  Linphone::Core::LinphoneCall::CallContext::get()
 {
 	return this->callContext;

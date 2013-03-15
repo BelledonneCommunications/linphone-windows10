@@ -33,6 +33,7 @@ namespace Linphone.Controls
         {
             InitializeComponent();
             this.DataContext = this;
+            Text = "miaou@sip.linphone.org";
         }
 
         private void backspace_Hold_1(object sender, System.Windows.Input.GestureEventArgs e)

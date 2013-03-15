@@ -39,7 +39,7 @@ Platform::String^ Linphone::Core::Utils::cctops(const char* cc)
 
 void* Linphone::Core::Utils::GetRawPointer(Platform::Object^ object)
 {
-    return reinterpret_cast<IInspectable*>(object);
+    return reinterpret_cast<void*>(object);
 }
 
 Platform::Object^ Linphone::Core::Utils::CreateLinphoneCall(void* call)
