@@ -57,12 +57,12 @@ Linphone::Core::LinphoneAuthInfo^ LinphoneCoreFactory::CreateAuthInfo(Platform::
 
 Linphone::Core::LinphoneAddress^ LinphoneCoreFactory::CreateLinphoneAddress(Platform::String^ username, Platform::String^ domain, Platform::String^ displayName)
 {
-	return ref new LinphoneAddress(username, domain, displayName);
+	return nullptr;
 }
 
 Linphone::Core::LinphoneAddress^ LinphoneCoreFactory::CreateLinphoneAddress(Platform::String^ address)
 {
-	return ref new LinphoneAddress(address);
+	return nullptr;
 }
 
 Linphone::Core::LinphoneCore^ LinphoneCoreFactory::LinphoneCore::get()

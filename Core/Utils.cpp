@@ -1,5 +1,6 @@
 #include "Utils.h"
 #include "LinphoneCall.h"
+#include "LinphoneAddress.h"
 
 std::string Linphone::Core::Utils::wstos(std::wstring ws)
 {
@@ -44,4 +45,9 @@ void* Linphone::Core::Utils::GetRawPointer(Platform::Object^ object)
 Platform::Object^ Linphone::Core::Utils::CreateLinphoneCall(void* call)
 {
 	return ref new Linphone::Core::LinphoneCall((::LinphoneCall*)call);
+}
+
+Platform::Object^ Linphone::Core::Utils::CreateLinphoneAddress(void* address)
+{
+	return ref new Linphone::Core::LinphoneAddress((::LinphoneAddress*)address);
 }

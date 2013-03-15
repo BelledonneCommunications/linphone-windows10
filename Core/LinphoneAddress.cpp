@@ -3,17 +3,17 @@
 
 Platform::String^ Linphone::Core::LinphoneAddress::GetDisplayName()
 {
-	return this->displayName;
+	return Linphone::Core::Utils::cctops(linphone_address_get_display_name(this->address));
 }
 
 Platform::String^ Linphone::Core::LinphoneAddress::GetUserName()
 {
-	return this->username;
+	return Linphone::Core::Utils::cctops(linphone_address_get_username(this->address));
 }
 
 Platform::String^ Linphone::Core::LinphoneAddress::GetDomain()
 {
-	return this->domain;
+	return Linphone::Core::Utils::cctops(linphone_address_get_domain(this->address));
 }
 
 int Linphone::Core::LinphoneAddress::GetPort()
@@ -23,17 +23,23 @@ int Linphone::Core::LinphoneAddress::GetPort()
 
 void Linphone::Core::LinphoneAddress::SetDisplayName(Platform::String^ name)
 {
-	this->displayName = name;
+	const char *cc = Linphone::Core::Utils::pstoccs(name);
+	linphone_address_set_display_name(this->address, cc);
+	delete(cc);
 }
 
 void Linphone::Core::LinphoneAddress::SetUserName(Platform::String^ username)
 {
-	this->username = username;
+	const char *cc = Linphone::Core::Utils::pstoccs(username);
+	linphone_address_set_username(this->address, cc);
+	delete(cc);
 }
 
 void Linphone::Core::LinphoneAddress::SetDomain(Platform::String^ domain)
 {
-	this->domain = domain;
+	const char *cc = Linphone::Core::Utils::pstoccs(domain);
+	linphone_address_set_domain(this->address, cc);
+	delete(cc);
 }
 
 void Linphone::Core::LinphoneAddress::SetPort(int port)
@@ -48,30 +54,21 @@ void Linphone::Core::LinphoneAddress::Clean()
 
 Platform::String^ Linphone::Core::LinphoneAddress::AsString()
 {
-	return this->address;
+	return Linphone::Core::Utils::cctops(linphone_address_as_string(this->address));
 }
 
 Platform::String^ Linphone::Core::LinphoneAddress::AsStringUriOnly()
 {
-	return this->address;
+	return Linphone::Core::Utils::cctops(linphone_address_as_string_uri_only(this->address));
 }
 
 Platform::String^ Linphone::Core::LinphoneAddress::ToString()
 {
-	return this->address;
+	return this->AsString();
 }
 
-Linphone::Core::LinphoneAddress::LinphoneAddress(Platform::String^ address) :
-	address(address)
-{
-
-}
-
-Linphone::Core::LinphoneAddress::LinphoneAddress(Platform::String^ username, Platform::String^ domain, Platform::String^ displayName) :
-	address(L"sip:" + username + "@" + domain),
-	displayName(displayName),
-	username(username),
-	domain(domain)
+Linphone::Core::LinphoneAddress::LinphoneAddress(::LinphoneAddress *addr) :
+	address(addr)
 {
 
 }

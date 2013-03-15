@@ -1,5 +1,7 @@
 #pragma once
 
+#include "LinphoneCore.h"
+
 namespace Linphone
 {
 	namespace Core
@@ -69,16 +71,13 @@ namespace Linphone
 			Platform::String^ ToString();
 
 		private:
+			friend class Linphone::Core::Utils;
 			friend ref class Linphone::Core::LinphoneCoreFactory;
 			
-			LinphoneAddress(Platform::String^ address);
-			LinphoneAddress::LinphoneAddress(Platform::String^ username, Platform::String^ domain, Platform::String^ displayName);
+			LinphoneAddress(::LinphoneAddress *addr);
 			~LinphoneAddress();
 
-			Platform::String^ address;
-			Platform::String^ username;
-			Platform::String^ domain;
-			Platform::String^ displayName;
+			::LinphoneAddress *address;
 		};
 	}
 }

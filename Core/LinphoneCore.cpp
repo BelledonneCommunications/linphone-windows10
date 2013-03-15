@@ -138,8 +138,16 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::Invite(Platform::Str
 	::LinphoneCall *call = linphone_core_invite(this->lc, cc);
 	delete(cc);
 	
-	Linphone::Core::LinphoneCall^ lCall = reinterpret_cast<Linphone::Core::LinphoneCall^>(linphone_call_get_user_pointer(call));
-	return lCall;
+	if(call != NULL)
+	{
+		Linphone::Core::LinphoneCall^ lCall;
+		if(linphone_call_get_user_pointer(call) != NULL) 
+			lCall = reinterpret_cast<Linphone::Core::LinphoneCall^>(linphone_call_get_user_pointer(call));
+		else
+			lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
+		return lCall;
+	}
+	return nullptr;
 }
 
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddress(Linphone::Core::LinphoneAddress^ to) 
@@ -667,9 +675,19 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr)
 	{
+		Linphone::Core::LinphoneCall^ lCall;
+
 		Linphone::Core::LinphoneCallState state = (Linphone::Core::LinphoneCallState) cstate;
-		Linphone::Core::LinphoneCall^ lCall = reinterpret_cast<Linphone::Core::LinphoneCall^>(linphone_call_get_user_pointer(call));
-		if (lCall == nullptr)  
+		void* wrapperCall = (::LinphoneCall*)linphone_call_get_user_pointer(call);
+		if(wrapperCall != NULL)
+		{
+			lCall = reinterpret_cast<Linphone::Core::LinphoneCall^>(wrapperCall);
+			if (lCall == nullptr)  
+			{
+				lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
+			}
+		}
+		else 
 		{
 			lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
 		}

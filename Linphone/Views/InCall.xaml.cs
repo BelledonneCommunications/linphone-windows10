@@ -88,6 +88,11 @@ namespace Linphone.Views
             bool isMicToggled = (bool)microphone.IsChecked;
             microImg.Source = new BitmapImage(new Uri(isMicToggled ? micOn : micOff, UriKind.RelativeOrAbsolute));
             LinphoneManager.Instance.LinphoneCore.MuteMic(isMicToggled);
+
+            if (isMicToggled)
+                LinphoneManager.Instance.CallController.NotifyMuted();
+            else
+                LinphoneManager.Instance.CallController.NotifyUnmuted();
         }
 
         private void pause_Click_1(object sender, RoutedEventArgs e)

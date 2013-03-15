@@ -17,7 +17,9 @@ Linphone::Core::LinphoneCallState Linphone::Core::LinphoneCall::GetState()
 
 Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCall::GetRemoteAddress()
 {
-	return nullptr;
+	const ::LinphoneAddress *addr = linphone_call_get_remote_address(this->call);
+	Linphone::Core::LinphoneAddress^ address = (Linphone::Core::LinphoneAddress^)Linphone::Core::Utils::CreateLinphoneAddress((void*)addr);
+	return address;
 }
 
 Linphone::Core::CallDirection Linphone::Core::LinphoneCall::GetDirection()
