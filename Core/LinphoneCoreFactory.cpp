@@ -7,7 +7,7 @@
 using namespace Linphone::Core;
 using namespace Platform;
 
-#define MAX_TRACE_SIZE		1024
+#define MAX_TRACE_SIZE		2048
 #define MAX_SUITE_NAME_SIZE	128
 
 static OutputTraceListener^ sTraceListener;

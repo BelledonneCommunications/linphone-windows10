@@ -328,18 +328,20 @@ namespace Linphone.Model
 
             return _history;
         }
+        #endregion
 
+        #region Call Management
         /// <summary>
         /// Start a new call to a sip address.
         /// </summary>
         /// <param name="sipAddress">SIP address to call</param>
         public void NewOutgoingCall(String sipAddress)
         {
-            //VoipPhoneCall call;
-            //CallController.RequestNewOutgoingCall("/Linphone;component/Views/InCall.xaml?sip=" + sipAddress, sipAddress, "Linphone", VoipCallMedia.Audio, out call);
-            //call.NotifyCallActive();
             LinphoneCall LCall = LinphoneCore.Invite(sipAddress);
-            //LCall.CallContext = call;
+            VoipPhoneCall call;
+            CallController.RequestNewOutgoingCall("/Linphone;component/Views/InCall.xaml?sip=" + sipAddress, sipAddress, "Linphone", VoipCallMedia.Audio, out call);
+            call.NotifyCallActive();
+            LCall.CallContext = call;
         }
 
         /// <summary>
@@ -447,7 +449,7 @@ namespace Linphone.Model
             else if (state == LinphoneCallState.CallEnd || state == LinphoneCallState.Error)
             {
                 Debug.WriteLine("[LinphoneManager] Call ended");
-                //((VoipPhoneCall)call.CallContext).NotifyCallEnded();
+                ((VoipPhoneCall)call.CallContext).NotifyCallEnded();
 
                 if (CallListener != null)
                     CallListener.CallEnded();

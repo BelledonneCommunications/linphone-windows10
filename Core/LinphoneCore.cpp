@@ -154,6 +154,7 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddressWithPar
 
 void Linphone::Core::LinphoneCore::TerminateCall(Linphone::Core::LinphoneCall^ call) 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	linphone_core_terminate_call(this->lc, call->call);
 }
 
@@ -237,12 +238,13 @@ void Linphone::Core::LinphoneCore::RemoveCallLog(Linphone::Core::LinphoneCallLog
 
 void Linphone::Core::LinphoneCore::SetNetworkReachable(Platform::Boolean isReachable) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_set_network_reachable(this->lc, isReachable);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsNetworkReachable() 
 {
-	return false;
+	return linphone_core_is_network_reachable(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::SetPlaybackGain(float gain) 
@@ -267,12 +269,13 @@ int Linphone::Core::LinphoneCore::GetPlayLevel()
 
 void Linphone::Core::LinphoneCore::MuteMic(Platform::Boolean isMuted) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_mute_mic(this->lc, isMuted);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsMicMuted() 
 {
-	return false;
+	return linphone_core_is_mic_muted(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::EnableSpeaker(Platform::Boolean enable) 
@@ -287,7 +290,8 @@ Platform::Boolean Linphone::Core::LinphoneCore::IsSpeakerEnabled()
 
 void Linphone::Core::LinphoneCore::SendDTMF(char16 number) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_send_dtmf(this->lc, number);
 }
 
 void Linphone::Core::LinphoneCore::PlayDTMF(char16 number, int duration) 
