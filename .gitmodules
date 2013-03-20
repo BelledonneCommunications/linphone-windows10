@@ -28,3 +28,6 @@
 [submodule "submodules/mswasapi"]
 	path = submodules/mswasapi
 	url = gitosis@git.linphone.org:mswasapi.git
+[submodule "submodules/webrtc"]
+	path = submodules/webrtc
+	url = git://git.linphone.org/webrtc.git
