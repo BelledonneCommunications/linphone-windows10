@@ -136,11 +136,18 @@ int Linphone::Core::LinphoneProxyConfig::LookupCCCFromE164(Platform::String^ e16
 
 Linphone::Core::LinphoneProxyConfig::LinphoneProxyConfig()
 {
+	LinphoneProxyConfigPtrStub *ptrstub = (LinphoneProxyConfigPtrStub*) malloc(sizeof(LinphoneProxyConfigPtrStub));
+	memset(ptrstub, 0, sizeof(ptrstub));
 	this->proxy_config = linphone_proxy_config_new();
-	linphone_proxy_config_set_user_data(this->proxy_config, Linphone::Core::Utils::GetRawPointer(this));
+	ptrstub->proxyConfig = this;
+	linphone_proxy_config_set_user_data(this->proxy_config, ptrstub);
 }
 
 Linphone::Core::LinphoneProxyConfig::~LinphoneProxyConfig()
 {
-	
+	LinphoneProxyConfigPtrStub *ptrstub = (LinphoneProxyConfigPtrStub *) linphone_proxy_config_get_user_data(this->proxy_config);
+	if (ptrstub) {
+		ptrstub->proxyConfig = NULL;
+		free(ptrstub);
+	}
 }

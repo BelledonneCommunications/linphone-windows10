@@ -14,13 +14,13 @@ namespace Linphone
 
 			static Platform::String^ Linphone::Core::Utils::cctops(const char*);
 
-			static void* GetRawPointer(Platform::Object^ object);
-
 			static Platform::Object^ CreateLinphoneCall(void* call);
 
 			static Platform::Object^ CreateLinphoneAddress(void* addr);
 
-			static Platform::Object^ LinphoneCallfromCallPtr(void *ptr);
+			static Platform::Object^ LinphoneCallFromCallPtr(void *ptr);
+
+			static Platform::Object^ LinphoneProxyConfigFromProxyConfigPtr(void *ptr);
 
 		private:
 			static std::string wstos(std::wstring ws);
@@ -31,5 +31,9 @@ namespace Linphone
 		typedef struct {
 			Platform::Object^ call;
 		} LinphoneCallPtrStub;
+
+		typedef struct {
+			Platform::Object^ proxyConfig;
+		} LinphoneProxyConfigPtrStub;
 	}
 }

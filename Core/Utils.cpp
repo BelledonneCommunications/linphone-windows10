@@ -37,11 +37,6 @@ Platform::String^ Linphone::Core::Utils::cctops(const char* cc)
 	return ref new Platform::String(w_char);
 }
 
-void* Linphone::Core::Utils::GetRawPointer(Platform::Object^ object)
-{
-    return reinterpret_cast<void*>(object);
-}
-
 Platform::Object^ Linphone::Core::Utils::CreateLinphoneCall(void* call)
 {
 	return ref new Linphone::Core::LinphoneCall((::LinphoneCall*)call);
@@ -52,10 +47,18 @@ Platform::Object^ Linphone::Core::Utils::CreateLinphoneAddress(void* address)
 	return ref new Linphone::Core::LinphoneAddress((::LinphoneAddress*)address);
 }
 
-Platform::Object^ Linphone::Core::Utils::LinphoneCallfromCallPtr(void *ptr)
+Platform::Object^ Linphone::Core::Utils::LinphoneCallFromCallPtr(void *ptr)
 {
 	::LinphoneCall *callptr = reinterpret_cast<::LinphoneCall *>(ptr);
 	Linphone::Core::LinphoneCallPtrStub *ptrstub = (Linphone::Core::LinphoneCallPtrStub *) linphone_call_get_user_pointer(callptr);
 	if (ptrstub) return ptrstub->call;
+	return nullptr;
+}
+
+Platform::Object^ Linphone::Core::Utils::LinphoneProxyConfigFromProxyConfigPtr(void *ptr)
+{
+	::LinphoneProxyConfig *proxyconfigptr = reinterpret_cast<::LinphoneProxyConfig *>(ptr);
+	Linphone::Core::LinphoneProxyConfigPtrStub *ptrstub = (Linphone::Core::LinphoneProxyConfigPtrStub *) linphone_proxy_config_get_user_data(proxyconfigptr);
+	if (ptrstub) return ptrstub->proxyConfig;
 	return nullptr;
 }

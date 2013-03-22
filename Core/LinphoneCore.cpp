@@ -140,7 +140,7 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::Invite(Platform::Str
 	
 	if(call != NULL)
 	{
-		Linphone::Core::LinphoneCall^ lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::LinphoneCallfromCallPtr(call);
+		Linphone::Core::LinphoneCall^ lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::LinphoneCallFromCallPtr(call);
 		if (lCall == nullptr)
 			lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
 		return lCall;
@@ -167,7 +167,7 @@ void Linphone::Core::LinphoneCore::TerminateCall(Linphone::Core::LinphoneCall^ c
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::GetCurrentCall() 
 {
 	::LinphoneCall *call = linphone_core_get_current_call(this->lc);
-	return (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::LinphoneCallfromCallPtr(call);
+	return (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::LinphoneCallFromCallPtr(call);
 }
 
 Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCore::GetRemoteAddress() 
@@ -679,7 +679,7 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 			lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
 		}
 		else {
-			lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::LinphoneCallfromCallPtr(call);
+			lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::LinphoneCallFromCallPtr(call);
 		}
 
 		listener->CallState(lCall, state);
@@ -692,7 +692,7 @@ void registration_state_changed(::LinphoneCore *lc, ::LinphoneProxyConfig *cfg, 
 	if (listener != nullptr)
 	{
 		Linphone::Core::RegistrationState state = (Linphone::Core::RegistrationState) cstate;
-		Linphone::Core::LinphoneProxyConfig^ config = reinterpret_cast<Linphone::Core::LinphoneProxyConfig^>(linphone_proxy_config_get_user_data(cfg));
+		Linphone::Core::LinphoneProxyConfig^ config = reinterpret_cast<Linphone::Core::LinphoneProxyConfig^>(Linphone::Core::Utils::LinphoneProxyConfigFromProxyConfigPtr(cfg));
 		listener->RegistrationState(config, state, Linphone::Core::Utils::cctops(msg));
 	}
 }
