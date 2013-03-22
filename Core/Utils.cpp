@@ -51,3 +51,11 @@ Platform::Object^ Linphone::Core::Utils::CreateLinphoneAddress(void* address)
 {
 	return ref new Linphone::Core::LinphoneAddress((::LinphoneAddress*)address);
 }
+
+Platform::Object^ Linphone::Core::Utils::LinphoneCallfromCallPtr(void *ptr)
+{
+	::LinphoneCall *callptr = reinterpret_cast<::LinphoneCall *>(ptr);
+	Linphone::Core::LinphoneCallPtrStub *ptrstub = (Linphone::Core::LinphoneCallPtrStub *) linphone_call_get_user_pointer(callptr);
+	if (ptrstub) return ptrstub->call;
+	return nullptr;
+}

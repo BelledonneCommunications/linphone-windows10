@@ -140,10 +140,8 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::Invite(Platform::Str
 	
 	if(call != NULL)
 	{
-		Linphone::Core::LinphoneCall^ lCall;
-		if(linphone_call_get_user_pointer(call) != NULL) 
-			lCall = reinterpret_cast<Linphone::Core::LinphoneCall^>(linphone_call_get_user_pointer(call));
-		else
+		Linphone::Core::LinphoneCall^ lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::LinphoneCallfromCallPtr(call);
+		if (lCall == nullptr)
 			lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
 		return lCall;
 	}
@@ -169,8 +167,7 @@ void Linphone::Core::LinphoneCore::TerminateCall(Linphone::Core::LinphoneCall^ c
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::GetCurrentCall() 
 {
 	::LinphoneCall *call = linphone_core_get_current_call(this->lc);
-	Linphone::Core::LinphoneCall^ lCall = reinterpret_cast<Linphone::Core::LinphoneCall^>(linphone_call_get_user_pointer(call));
-	return lCall;
+	return (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::LinphoneCallfromCallPtr(call);
 }
 
 Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCore::GetRemoteAddress() 
@@ -681,8 +678,9 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 		if (state == Linphone::Core::LinphoneCallState::OutgoingInit) {
 			lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
 		}
-		else
-			lCall = reinterpret_cast<Linphone::Core::LinphoneCall^>(linphone_call_get_user_pointer(call));
+		else {
+			lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::LinphoneCallfromCallPtr(call);
+		}
 
 		listener->CallState(lCall, state);
 	}

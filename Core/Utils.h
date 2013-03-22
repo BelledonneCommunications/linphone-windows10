@@ -20,10 +20,16 @@ namespace Linphone
 
 			static Platform::Object^ CreateLinphoneAddress(void* addr);
 
+			static Platform::Object^ LinphoneCallfromCallPtr(void *ptr);
+
 		private:
 			static std::string wstos(std::wstring ws);
 
 			static std::string pstos(Platform::String^ ps);
 		};
+
+		typedef struct {
+			Platform::Object^ call;
+		} LinphoneCallPtrStub;
 	}
 }
