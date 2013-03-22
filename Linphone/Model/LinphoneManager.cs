@@ -228,9 +228,9 @@ namespace Linphone.Model
 
                 LinphoneCore.Iterate();
             }
-            catch
+            catch (Exception Ex)
             {
-                Debug.WriteLine("[LinphoneManager] Exception during iterate...");
+                Debug.WriteLine("[LinphoneManager] Exception during iterate:\n\tMessage: " + Ex.Message + "\n\tCall stack: " + Ex.StackTrace);
                 timer.Dispose();
             }
         }
