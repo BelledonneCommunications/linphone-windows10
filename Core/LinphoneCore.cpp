@@ -673,13 +673,9 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 	if (listener != nullptr)
 	{
 		Linphone::Core::LinphoneCallState state = (Linphone::Core::LinphoneCallState) cstate;
-		Linphone::Core::LinphoneCall^ lCall;
-
-		if (state == Linphone::Core::LinphoneCallState::OutgoingInit) {
+		Linphone::Core::LinphoneCall^ lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::LinphoneCallFromCallPtr(call);
+		if (lCall == nullptr) {
 			lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
-		}
-		else {
-			lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::LinphoneCallFromCallPtr(call);
 		}
 
 		listener->CallState(lCall, state);
