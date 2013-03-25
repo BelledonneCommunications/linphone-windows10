@@ -187,7 +187,8 @@ Platform::Boolean Linphone::Core::LinphoneCore::IsIncomingInvitePending()
 
 void Linphone::Core::LinphoneCore::AcceptCall(Linphone::Core::LinphoneCall^ call) 
 {
-	
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_accept_call(this->lc, call->call);
 }
 
 void Linphone::Core::LinphoneCore::AcceptCallWithParams(Linphone::Core::LinphoneCall^ call, Linphone::Core::LinphoneCallParams^ params) 
