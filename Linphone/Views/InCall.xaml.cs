@@ -79,7 +79,7 @@ namespace Linphone.Views
         {
             bool isSpeakerToggled = (bool)speaker.IsChecked;
             speakerImg.Source = new BitmapImage(new Uri(isSpeakerToggled ? speakerOn : speakerOff, UriKind.RelativeOrAbsolute));
-            LinphoneManager.Instance.LinphoneCore.EnableSpeaker(isSpeakerToggled);
+            LinphoneManager.Instance.EnableSpeaker(isSpeakerToggled);
         }
 
         private void microphone_Click_1(object sender, RoutedEventArgs e)

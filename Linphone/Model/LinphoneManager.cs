@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Linphone.Resources;
 using Windows.Phone.Networking.Voip;
 using System.Windows.Media.Imaging;
+using Windows.Phone.Media.Devices;
 
 namespace Linphone.Model
 {
@@ -213,6 +214,8 @@ namespace Linphone.Model
 
             timer = new Timer(LinphoneCoreIterate, null, 1, 20);
             Debug.WriteLine("[LinphoneManager] LinphoneCore created");
+
+            AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;
         }
 
         private void LinphoneCoreIterate(object o)
@@ -372,6 +375,25 @@ namespace Linphone.Model
                 LinphoneCall call = LinphoneCore.GetCurrentCall();
                 ((VoipPhoneCall)call.CallContext).NotifyCallActive();
                 LinphoneCore.ResumeCall(call);
+            }
+        }
+        #endregion
+
+        #region Audio route handling
+        private void AudioEndpointChanged(AudioRoutingManager sender, object args)
+        {
+            Debug.WriteLine("[LinphoneManager] AudioEndpointChanged:" + sender.GetAudioEndpoint().ToString());
+        }
+
+        public void EnableSpeaker(bool enable)
+        {
+            if (enable)
+            {
+                AudioRoutingManager.GetDefault().SetAudioEndpoint(AudioRoutingEndpoint.Speakerphone);
+            }
+            else
+            {
+                AudioRoutingManager.GetDefault().SetAudioEndpoint(AudioRoutingEndpoint.Earpiece);
             }
         }
         #endregion
