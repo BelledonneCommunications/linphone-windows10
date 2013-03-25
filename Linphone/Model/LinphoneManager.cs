@@ -423,7 +423,7 @@ namespace Linphone.Model
                     VoipPhoneCall vcall = null;
                     Uri contactUri = new Uri(server.Path + "\\Assets\\unknown.png", UriKind.Absolute);
                     Uri iconUri = new Uri(server.Path + "\\Assets\\pnicon.png", UriKind.Absolute);
-                    Uri ringtoneUri = new Uri(server.Path + "\\Assets\\Sounds\\Ringtone.wma", UriKind.Absolute);
+                    Uri ringtoneUri = new Uri(server.Path + "\\Assets\\Sounds\\oldphone.wma", UriKind.Absolute);
 
                     CallController.RequestNewIncomingCall("/Linphone;component/Views/InCall.xaml?sip=" + number, contact, number, contactUri, "Linphone", iconUri, "", ringtoneUri, VoipCallMedia.Audio, fifteenSecs, out vcall);
                     vcall.AnswerRequested += ((c, eventargs) =>

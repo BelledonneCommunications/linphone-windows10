@@ -226,6 +226,7 @@
     <Content Include="Assets\led_error.png" />
     <Content Include="Assets\led_inprogress.png" />
     <Content Include="Assets\pnicon.png" />
+    <Content Include="Assets\Sounds\oldphone.wma" />
     <Content Include="Assets\Sounds\ringback.wav" />
     <Content Include="Assets\Sounds\Ringtone.wma" />
     <Content Include="$(SolutionDir)$(PlatformName)\$(ConfigurationName)\CoreProxyStub\Linphone.CoreProxyStub.dll" />
