@@ -18,7 +18,8 @@ static void nativeOutputTraceHandler(int lev, const char *fmt, va_list args)
 		wchar_t wstr[MAX_TRACE_SIZE];
 		std::string str;
 		str.resize(MAX_TRACE_SIZE);
-		vsnprintf((char *)str.c_str(), MAX_TRACE_SIZE, fmt, args);
+		size_t len = vsnprintf((char *)str.c_str(), MAX_TRACE_SIZE, fmt, args);
+		if (len >= MAX_TRACE_SIZE) ((char *)str.c_str())[MAX_TRACE_SIZE - 1] = '\0';
 		mbstowcs(wstr, str.c_str(), sizeof(wstr));
 		String^ msg = ref new String(wstr);
 		sTraceListener->OutputTrace(lev, msg);
