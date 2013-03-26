@@ -136,7 +136,8 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::Invite(Platform::Str
 	
 	if(call != NULL)
 	{
-		Linphone::Core::LinphoneCall^ lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::LinphoneCallFromCallPtr(call);
+		Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
+		Linphone::Core::LinphoneCall^ lCall = (proxy) ? proxy->Ref() : nullptr;
 		if (lCall == nullptr)
 			lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
 		return lCall;
@@ -163,7 +164,9 @@ void Linphone::Core::LinphoneCore::TerminateCall(Linphone::Core::LinphoneCall^ c
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::GetCurrentCall() 
 {
 	::LinphoneCall *call = linphone_core_get_current_call(this->lc);
-	return (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::LinphoneCallFromCallPtr(call);
+	Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
+	Linphone::Core::LinphoneCall^ lCall = (proxy) ? proxy->Ref() : nullptr;
+	return lCall;
 }
 
 Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCore::GetRemoteAddress() 
@@ -670,7 +673,8 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 	if (listener != nullptr)
 	{
 		Linphone::Core::LinphoneCallState state = (Linphone::Core::LinphoneCallState) cstate;
-		Linphone::Core::LinphoneCall^ lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::LinphoneCallFromCallPtr(call);
+		Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
+		Linphone::Core::LinphoneCall^ lCall = (proxy) ? proxy->Ref() : nullptr;
 		if (lCall == nullptr) {
 			lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
 		}
@@ -685,7 +689,8 @@ void registration_state_changed(::LinphoneCore *lc, ::LinphoneProxyConfig *cfg, 
 	if (listener != nullptr)
 	{
 		Linphone::Core::RegistrationState state = (Linphone::Core::RegistrationState) cstate;
-		Linphone::Core::LinphoneProxyConfig^ config = reinterpret_cast<Linphone::Core::LinphoneProxyConfig^>(Linphone::Core::Utils::LinphoneProxyConfigFromProxyConfigPtr(cfg));
+		Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneProxyConfig^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneProxyConfig^> *>(linphone_proxy_config_get_user_data(cfg));
+		Linphone::Core::LinphoneProxyConfig^ config = (proxy) ? proxy->Ref() : nullptr;
 		listener->RegistrationState(config, state, Linphone::Core::Utils::cctops(msg));
 	}
 }

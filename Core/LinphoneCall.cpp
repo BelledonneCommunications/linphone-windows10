@@ -131,17 +131,12 @@ Platform::Object^  Linphone::Core::LinphoneCall::CallContext::get()
 Linphone::Core::LinphoneCall::LinphoneCall(::LinphoneCall *call) :
 	call(call)
 {
-	LinphoneCallPtrStub *ptrstub = (LinphoneCallPtrStub*) malloc(sizeof(LinphoneCallPtrStub));
-	memset(ptrstub, 0, sizeof(ptrstub));
-	ptrstub->call = this;
-	linphone_call_set_user_pointer(this->call, ptrstub);
+	RefToPtrProxy<LinphoneCall^> *proxy = new RefToPtrProxy<LinphoneCall^>(this);
+	linphone_call_set_user_pointer(this->call, proxy);
 }
 
 Linphone::Core::LinphoneCall::~LinphoneCall()
 {
-	LinphoneCallPtrStub *ptrstub = (LinphoneCallPtrStub *) linphone_call_get_user_pointer(this->call);
-	if (ptrstub) {
-		ptrstub->call = NULL;
-		free(ptrstub);
-	}
+	RefToPtrProxy<LinphoneCall^> *proxy = reinterpret_cast< RefToPtrProxy<LinphoneCall^> *>(linphone_call_get_user_pointer(this->call));
+	delete proxy;
 }
