@@ -15,7 +15,9 @@
 
 using namespace Platform;
 using namespace Platform::Collections;
+using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
+using namespace Windows::System::Threading;
 
 Linphone::Core::Transports::Transports()
 {
@@ -114,15 +116,9 @@ Linphone::Core::LinphoneAuthInfo^ Linphone::Core::LinphoneCore::CreateAuthInfo(P
 	return authInfo;
 }
 
-void Linphone::Core::LinphoneCore::Iterate() 
-{
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-	linphone_core_iterate(this->lc);
-}
-
 void Linphone::Core::LinphoneCore::Destroy() 
 {
-
+	IterateTimer->Cancel();
 }
 
 Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCore::InterpretURL(Platform::String^ destination) 
@@ -742,6 +738,18 @@ void Linphone::Core::LinphoneCore::Init()
 	if((pt = linphone_core_find_payload_type(lc,"PCMU",8000,1))) {
 		linphone_core_enable_payload_type(lc,pt, 1);
 	}
+
+	// Launch iterate timer
+	TimeSpan period;
+	period.Duration = 20 * 10000;
+	IterateTimer = ThreadPoolTimer::CreatePeriodicTimer(
+		ref new TimerElapsedHandler([this](ThreadPoolTimer^ source)
+		{
+			if (source == IterateTimer) {
+				std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+				linphone_core_iterate(this->lc);
+			}
+		}), period);
 }
 
 Linphone::Core::LinphoneCore::~LinphoneCore()

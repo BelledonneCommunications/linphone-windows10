@@ -89,9 +89,6 @@ namespace Linphone.Model
         // A timespan representing an indefinite wait 
         private static readonly TimeSpan indefiniteWait = new TimeSpan(0, 0, 0, 0, -1);
 
-        // A timer to invoke LinphoneCore.Iterate()
-        private static Timer timer;
-
         /// <summary>
         /// Starts and connects the UI to the background process.
         /// </summary>
@@ -209,33 +206,9 @@ namespace Linphone.Model
                 return;
 
             server.LinphoneCoreFactory.CreateLinphoneCore(this);
-
             InitProxyConfig();
-
-            timer = new Timer(LinphoneCoreIterate, null, 1, 20);
             Debug.WriteLine("[LinphoneManager] LinphoneCore created");
-
             AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;
-        }
-
-        private void LinphoneCoreIterate(object o)
-        {
-            // Handle exception that can occurs when app is quickly closed/restarted
-            try
-            {
-                if (LinphoneCore == null && timer != null)
-                {
-                    timer.Dispose();
-                    return;
-                }
-
-                LinphoneCore.Iterate();
-            }
-            catch (Exception Ex)
-            {
-                Debug.WriteLine("[LinphoneManager] Exception during iterate:\n\tMessage: " + Ex.Message + "\n\tCall stack: " + Ex.StackTrace);
-                timer.Dispose();
-            }
         }
 
         /// <summary>

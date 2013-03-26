@@ -99,20 +99,6 @@ namespace Linphone
 			LinphoneAuthInfo^ CreateAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm);
 			
 			/// <summary>
-			/// Main loop function. It is crucial that your application calls it periodically.
-			/// It performs various background tasks:
-			/// <list type="bullet">
-			/// <item>receiving of SIP messages</item>
-			/// <item>handles timers and timeout</item>
-			/// <item>performs registration to proxies</item>
-			/// <item>authentication retries</item>
-			/// </list>
-			/// Be careful that this function must be called from the same thread as other Linphone.Core methods.
-			/// If not, make sure all calls are serialized with a mutex.
-			/// </summary>
-			void Iterate();
-
-			/// <summary>
 			/// Destroys LinphoneCore and free all underlying resources.
 			/// </summary>
 			void Destroy();
@@ -425,6 +411,7 @@ namespace Linphone
 			~LinphoneCore();
 
 			::LinphoneCore *lc;
+			Windows::System::Threading::ThreadPoolTimer ^IterateTimer;
 		};
 	}
 }
