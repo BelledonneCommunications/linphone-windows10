@@ -10,11 +10,12 @@ using namespace Platform;
 #define MAX_TRACE_SIZE		2048
 #define MAX_SUITE_NAME_SIZE	128
 
+static bool sDebugEnabled = false;
 static OutputTraceListener^ sTraceListener;
 
 static void nativeOutputTraceHandler(int lev, const char *fmt, va_list args)
 {
-	if (sTraceListener) {
+	if (sDebugEnabled) {
 		wchar_t wstr[MAX_TRACE_SIZE];
 		std::string str;
 		str.resize(MAX_TRACE_SIZE);
@@ -22,7 +23,9 @@ static void nativeOutputTraceHandler(int lev, const char *fmt, va_list args)
 		if (len >= MAX_TRACE_SIZE) ((char *)str.c_str())[MAX_TRACE_SIZE - 1] = '\0';
 		mbstowcs(wstr, str.c_str(), sizeof(wstr));
 		String^ msg = ref new String(wstr);
-		sTraceListener->OutputTrace(lev, msg);
+		if (sTraceListener) {
+			sTraceListener->OutputTrace(lev, msg);
+		}
 	}
 }
 
@@ -35,7 +38,12 @@ static void LinphoneNativeOutputTraceHandler(OrtpLogLevel lev, const char *fmt, 
 
 void LinphoneCoreFactory::SetDebugMode(Platform::Boolean enable, OutputTraceListener^ traceListener)
 {
-	sTraceListener = traceListener;
+	if (enable) {
+		sTraceListener = traceListener;
+	} else {
+		sTraceListener = nullptr;
+	}
+	sDebugEnabled = enable;
 }
 
 void LinphoneCoreFactory::CreateLinphoneCore(Linphone::Core::LinphoneCoreListener^ listener, Platform::String^ userConfig, Platform::String^ factoryConfig, Platform::Object^ userData)

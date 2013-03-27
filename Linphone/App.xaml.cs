@@ -90,7 +90,6 @@ namespace Linphone
         {
             Debug.WriteLine("[Linphone] Launching");
             LinphoneManager.Instance.ConnectBackgroundProcessToInterface();
-            LinphoneManager.Instance.EnableDebug(SettingsManager.isDebugEnabled);
         }
 
         // Code to execute when the application is activated (brought to foreground)
@@ -99,7 +98,6 @@ namespace Linphone
         {
             Debug.WriteLine("[Linphone] Activated");
             LinphoneManager.Instance.ConnectBackgroundProcessToInterface();
-            LinphoneManager.Instance.EnableDebug(SettingsManager.isDebugEnabled);
         }
 
         // Code to execute when the application is deactivated (sent to background)

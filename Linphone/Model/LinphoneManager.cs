@@ -155,6 +155,10 @@ namespace Linphone.Model
                 return;
             }
 
+            // Disconnect the listeners to prevent crash of the background process
+            server.LinphoneCoreFactory.SetDebugMode(SettingsManager.isDebugEnabled, null);
+            server.LinphoneCore.CoreListener = null;
+
             BackgroundProcessConnected = false;
             Debug.WriteLine("[LinphoneManager] Background process disconnected from interface");
 
@@ -202,8 +206,14 @@ namespace Linphone.Model
         /// </summary>
         public void InitLinphoneCore()
         {
+            server.LinphoneCoreFactory.SetDebugMode(SettingsManager.isDebugEnabled, this);
+
             if (server.LinphoneCore != null)
+            {
+                // Reconnect the listeners when coming back from background mode
+                server.LinphoneCore.CoreListener = this;
                 return;
+            }
 
             server.LinphoneCoreFactory.CreateLinphoneCore(this);
             InitProxyConfig();

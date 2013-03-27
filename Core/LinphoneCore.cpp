@@ -667,6 +667,11 @@ Linphone::Core::LinphoneCoreListener^ Linphone::Core::LinphoneCore::CoreListener
 	return this->listener;
 }
 
+void Linphone::Core::LinphoneCore::CoreListener::set(LinphoneCoreListener^ listener)
+{
+	this->listener = listener;
+}
+
 void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCallState cstate, const char *msg) 
 {
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;

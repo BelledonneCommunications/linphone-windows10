@@ -399,6 +399,7 @@ namespace Linphone
 			property LinphoneCoreListener^ CoreListener
             {
                 LinphoneCoreListener^ get();
+                void set(LinphoneCoreListener^ listener);
             }
 
 		private:
