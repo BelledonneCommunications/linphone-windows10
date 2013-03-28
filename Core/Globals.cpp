@@ -7,6 +7,7 @@
 #include "ApiLock.h"
 #include "LinphoneCoreFactory.h"
 #include "LinphoneCore.h"
+#include "BackgroundModeLogger.h"
 
 using namespace Linphone::Core;
 using namespace Windows::Foundation;
@@ -145,10 +146,27 @@ Linphone::Core::LinphoneCore^ Globals::LinphoneCore::get()
 	return this->linphoneCoreFactory->LinphoneCore;
 }
 
+Linphone::Core::BackgroundModeLogger^ Globals::BackgroundModeLogger::get()
+{
+	if (this->backgroundModeLogger == nullptr)
+	{
+		// Make sure only one API call is in progress at a time
+		std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
+		if (this->backgroundModeLogger == nullptr)
+		{
+			this->backgroundModeLogger = ref new Linphone::Core::BackgroundModeLogger();
+		}
+	}
+
+	return this->backgroundModeLogger;
+}
+
 Globals::Globals() :
     started(false),
     serverRegistrationCookie(NULL),
 	linphoneCoreFactory(nullptr),
+	backgroundModeLogger(nullptr),
     noOtherBackgroundProcessEvent(NULL),
     backgroundReadyEvent(NULL)
 {

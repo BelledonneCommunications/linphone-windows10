@@ -38,6 +38,14 @@ namespace Linphone
                     };
                 }
 
+				property BackgroundModeLogger^ BackgroundModeLogger
+				{
+					Linphone::Core::BackgroundModeLogger^ get()
+					{
+						return Globals::Instance->BackgroundModeLogger;
+					};
+				}
+
 				/// <summary>
 				/// Returns the install location of the app, used to get the uri of resources needed for the incoming call view
 				/// </summary>

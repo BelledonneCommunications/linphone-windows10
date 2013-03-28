@@ -9,6 +9,7 @@ namespace Linphone
         ref class CallController;
 		ref class LinphoneCoreFactory;
 		ref class LinphoneCore;
+		ref class BackgroundModeLogger;
         
 		/// <summary>
 		/// Singleton container used to hold global singletons and background process-wide objects.
@@ -43,6 +44,11 @@ namespace Linphone
                 Linphone::Core::LinphoneCore^ get();
             }
 
+			property BackgroundModeLogger^ BackgroundModeLogger
+			{
+				Linphone::Core::BackgroundModeLogger^ get();
+			}
+
         private:
             Globals();
             ~Globals();
@@ -65,6 +71,8 @@ namespace Linphone
             HANDLE backgroundReadyEvent;
 
 			Linphone::Core::LinphoneCoreFactory^ linphoneCoreFactory;
+
+			Linphone::Core::BackgroundModeLogger^ backgroundModeLogger;
         };
     }
 }
