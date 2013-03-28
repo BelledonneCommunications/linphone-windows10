@@ -1,5 +1,6 @@
 #pragma once
 
+#include "LinphoneCore.h"
 #include "Enums.h"
 
 namespace Linphone
@@ -41,15 +42,13 @@ namespace Linphone
 			int GetCallId();
 
 		private:
+			friend class Linphone::Core::Utils;
 			friend ref class Linphone::Core::LinphoneCore;
 
-			LinphoneAddress^ from;
-			LinphoneAddress^ to;
-			LinphoneCallStatus status;
-			CallDirection direction;
-
-			LinphoneCallLog(Platform::String^ from, Platform::String^ to, LinphoneCallStatus status, CallDirection direction);
+			LinphoneCallLog(::LinphoneCallLog *cl);
 			~LinphoneCallLog();
+
+			::LinphoneCallLog *callLog;
 		};
 	}
 }

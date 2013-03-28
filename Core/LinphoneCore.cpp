@@ -215,18 +215,25 @@ Linphone::Core::LinphoneCallParams^ Linphone::Core::LinphoneCore::CreateDefaultC
 	return nullptr;
 }
 
+void AddLogToVector(void* nLog, void* vector)
+{
+	::LinphoneCallLog *cl = (LinphoneCallLog*)nLog;
+	Linphone::Core::RefToPtrProxy<IVector<Object^>^> *list = reinterpret_cast< Linphone::Core::RefToPtrProxy<IVector<Object^>^> *>(vector);
+	IVector<Object^>^ logs = (list) ? list->Ref() : nullptr;
+
+	Linphone::Core::LinphoneCallLog^ log = (Linphone::Core::LinphoneCallLog^)Linphone::Core::Utils::CreateLinphoneCallLog(cl);
+	logs->Append(log);
+}
+
 IVector<Object^>^ Linphone::Core::LinphoneCore::GetCallLogs() 
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 
 	IVector<Object^>^ logs = ref new Vector<Object^>();
 
-	Linphone::Core::LinphoneCallLog^ log = ref new Linphone::Core::LinphoneCallLog(L"sip:waouf@sip.linphone.org", L"sip:miaou@sip.linphone.org", Linphone::Core::LinphoneCallStatus::Missed, Linphone::Core::CallDirection::Incoming);
-	logs->Append(log);
-	log = ref new Linphone::Core::LinphoneCallLog(L"sip:waouf@sip.linphone.org", L"sip:miaou@sip.linphone.org", Linphone::Core::LinphoneCallStatus::Success, Linphone::Core::CallDirection::Outgoing);
-	logs->Append(log);
-	log = ref new Linphone::Core::LinphoneCallLog(L"sip:cotcot@sip.linphone.org", L"sip:miaou@sip.linphone.org", Linphone::Core::LinphoneCallStatus::Success, Linphone::Core::CallDirection::Incoming);
-	logs->Append(log);
+	const MSList* logslist = linphone_core_get_call_logs(this->lc);
+	RefToPtrProxy<IVector<Object^>^> *logsptr = new RefToPtrProxy<IVector<Object^>^>(logs);
+	ms_list_for_each2(logslist, AddLogToVector, logsptr);
 
 	return logs;
 }

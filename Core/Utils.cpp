@@ -1,6 +1,7 @@
 #include "Utils.h"
 #include "LinphoneCall.h"
 #include "LinphoneAddress.h"
+#include "LinphoneCallLog.h"
 
 std::string Linphone::Core::Utils::wstos(std::wstring ws)
 {
@@ -46,3 +47,9 @@ Platform::Object^ Linphone::Core::Utils::CreateLinphoneAddress(void* address)
 {
 	return ref new Linphone::Core::LinphoneAddress((::LinphoneAddress*)address);
 }
+
+Platform::Object^ Linphone::Core::Utils::CreateLinphoneCallLog(void* callLog)
+{
+	return ref new Linphone::Core::LinphoneCallLog((::LinphoneCallLog*)callLog);
+}
+

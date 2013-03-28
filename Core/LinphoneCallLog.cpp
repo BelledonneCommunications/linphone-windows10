@@ -7,22 +7,22 @@
 
 Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCallLog::GetFrom()
 {
-	return this->from;
+	return (Linphone::Core::LinphoneAddress^)Linphone::Core::Utils::CreateLinphoneAddress((void*)linphone_call_log_get_from(this->callLog));
 }
 
 Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCallLog::GetTo()
 {
-	return this->to;
+	return (Linphone::Core::LinphoneAddress^)Linphone::Core::Utils::CreateLinphoneAddress((void*)linphone_call_log_get_to(this->callLog));
 }
 
 Linphone::Core::CallDirection Linphone::Core::LinphoneCallLog::GetDirection()
 {
-	return this->direction;
+	return (Linphone::Core::CallDirection)linphone_call_log_get_dir(this->callLog);
 }
 
 Linphone::Core::LinphoneCallStatus Linphone::Core::LinphoneCallLog::GetStatus()
 {
-	return this->status;
+	return (Linphone::Core::LinphoneCallStatus)linphone_call_log_get_status(this->callLog);
 }
 
 Platform::String^ Linphone::Core::LinphoneCallLog::GetStartDate()
@@ -45,16 +45,15 @@ int Linphone::Core::LinphoneCallLog::GetCallId()
 	return -1;
 }
 
-Linphone::Core::LinphoneCallLog::LinphoneCallLog(Platform::String^ from, Platform::String^ to, Linphone::Core::LinphoneCallStatus status, Linphone::Core::CallDirection direction) :
-	status(status),
-	direction(direction)
+Linphone::Core::LinphoneCallLog::LinphoneCallLog(::LinphoneCallLog *cl) :
+	callLog(cl)
 {
-	LinphoneCoreFactory^ lcf = Globals::Instance->LinphoneCoreFactory;
-	this->from = lcf->CreateLinphoneAddress(from);
-	this->to = lcf->CreateLinphoneAddress(to);
+	RefToPtrProxy<LinphoneCallLog^> *log = new RefToPtrProxy<LinphoneCallLog^>(this);
+	linphone_call_log_set_user_pointer(this->callLog, log);
 }
 
 Linphone::Core::LinphoneCallLog::~LinphoneCallLog()
 {
-
+	RefToPtrProxy<LinphoneCallLog^> *log = reinterpret_cast< RefToPtrProxy<LinphoneCallLog^> *>(linphone_call_log_get_user_pointer(this->callLog));
+	delete log;
 }
