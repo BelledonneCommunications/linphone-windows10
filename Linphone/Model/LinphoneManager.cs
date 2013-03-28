@@ -20,7 +20,7 @@ namespace Linphone.Model
     /// <summary>
     /// Utility class to handle most of the LinphoneCore (and more globally the C++/CX API) methods calls.
     /// </summary>
-    public sealed class LinphoneManager : LinphoneCoreListener, OutputTraceListener
+    public sealed class LinphoneManager : LinphoneCoreListener
     {
         private LinphoneManager()
         {
@@ -156,7 +156,7 @@ namespace Linphone.Model
             }
 
             // Disconnect the listeners to prevent crash of the background process
-            server.LinphoneCoreFactory.SetDebugMode(SettingsManager.isDebugEnabled, null);
+            server.LinphoneCoreFactory.SetDebugMode(SettingsManager.isDebugEnabled, server.BackgroundModeLogger);
             server.LinphoneCore.CoreListener = null;
 
             BackgroundProcessConnected = false;
@@ -206,7 +206,7 @@ namespace Linphone.Model
         /// </summary>
         public void InitLinphoneCore()
         {
-            server.LinphoneCoreFactory.SetDebugMode(SettingsManager.isDebugEnabled, this);
+            server.LinphoneCoreFactory.SetDebugMode(SettingsManager.isDebugEnabled, Logger.Instance);
 
             if (server.LinphoneCore != null)
             {
@@ -217,19 +217,10 @@ namespace Linphone.Model
 
             server.LinphoneCoreFactory.CreateLinphoneCore(this);
             InitProxyConfig();
-            Debug.WriteLine("[LinphoneManager] LinphoneCore created");
+            Logger.WriteLine("[LinphoneManager] LinphoneCore created");
             AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;
             CallController.MuteRequested += MuteRequested;
             CallController.UnmuteRequested += UnmuteRequested;
-        }
-
-        /// <summary>
-        /// Set the debug value for liblinphone.
-        /// </summary>
-        /// <param name="enable">true to enable debug traces, false to disable them</param>
-        public void EnableDebug(bool enable)
-        {
-            server.LinphoneCoreFactory.SetDebugMode(enable, this);
         }
 
         #region CallLogs
@@ -411,7 +402,7 @@ namespace Linphone.Model
         #region Audio route handling
         private void AudioEndpointChanged(AudioRoutingManager sender, object args)
         {
-            Debug.WriteLine("[LinphoneManager] AudioEndpointChanged:" + sender.GetAudioEndpoint().ToString());
+            Logger.WriteLine("[LinphoneManager] AudioEndpointChanged:" + sender.GetAudioEndpoint().ToString());
         }
 
         public void EnableSpeaker(bool enable)
@@ -433,7 +424,7 @@ namespace Linphone.Model
         /// </summary>
         public void AuthInfoRequested(string realm, string username)
         {
-            Debug.WriteLine("[LinphoneManager] Auth info requested: realm=" + realm + ", username=" + username);
+            Logger.WriteLine("[LinphoneManager] Auth info requested: realm=" + realm + ", username=" + username);
         }
 
         /// <summary>
@@ -441,7 +432,7 @@ namespace Linphone.Model
         /// </summary>
         public void GlobalState(GlobalState state, string message)
         {
-            Debug.WriteLine("[LinphoneManager] Global state changed: " + state.ToString() + ", message=" + message);
+            Logger.WriteLine("[LinphoneManager] Global state changed: " + state.ToString() + ", message=" + message);
         }
 
         /// <summary>
@@ -450,7 +441,7 @@ namespace Linphone.Model
         public void CallState(LinphoneCall call, LinphoneCallState state)
         {
             string sipAddress = call.GetRemoteAddress().AsStringUriOnly();
-            Debug.WriteLine("[LinphoneManager] Call state changed: " + sipAddress + " => " + state.ToString());
+            Logger.WriteLine("[LinphoneManager] Call state changed: " + sipAddress + " => " + state.ToString());
             if (state == LinphoneCallState.OutgoingProgress)
             {
                 BaseModel.UIDispatcher.BeginInvoke(() =>
@@ -470,7 +461,7 @@ namespace Linphone.Model
             {
                 String contact = call.GetRemoteContact();
                 String number = call.GetRemoteAddress().AsStringUriOnly();
-                Debug.WriteLine("[LinphoneManager] Incoming received: " + contact + " (" + number + ")");
+                Logger.WriteLine("[LinphoneManager] Incoming received: " + contact + " (" + number + ")");
 
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
@@ -482,7 +473,7 @@ namespace Linphone.Model
                     CallController.RequestNewIncomingCall("/Linphone;component/Views/InCall.xaml?sip=" + number, contact, number, contactUri, "Linphone", iconUri, "", ringtoneUri, VoipCallMedia.Audio, fifteenSecs, out vcall);
                     vcall.AnswerRequested += ((c, eventargs) =>
                     {
-                        Debug.WriteLine("[LinphoneManager] Call accepted");
+                        Logger.WriteLine("[LinphoneManager] Call accepted");
                         vcall.NotifyCallActive();
                         LinphoneCore.AcceptCall(call);
                         BaseModel.UIDispatcher.BeginInvoke(() =>
@@ -493,7 +484,7 @@ namespace Linphone.Model
                     });
                     vcall.RejectRequested += ((c, eventargs) =>
                     {
-                        Debug.WriteLine("[LinphoneManager] Call rejected");
+                        Logger.WriteLine("[LinphoneManager] Call rejected");
                         LinphoneCore.TerminateCall(call);
                     });
                     vcall.HoldRequested += CallHoldRequested;
@@ -503,7 +494,7 @@ namespace Linphone.Model
             }
             else if (state == LinphoneCallState.CallEnd || state == LinphoneCallState.Error)
             {
-                Debug.WriteLine("[LinphoneManager] Call ended");
+                Logger.WriteLine("[LinphoneManager] Call ended");
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
                     ((VoipPhoneCall)call.CallContext).NotifyCallEnded();
@@ -540,7 +531,7 @@ namespace Linphone.Model
         {
             BaseModel.UIDispatcher.BeginInvoke(() =>
             {
-                Debug.WriteLine("[LinphoneManager] Registration state changed: " + state.ToString() + ", message=" + message + " for identity " + config.GetIdentity());
+                Logger.WriteLine("[LinphoneManager] Registration state changed: " + state.ToString() + ", message=" + message + " for identity " + config.GetIdentity());
                 LastKnownState = state;
                 if (BasePage.StatusBar != null)
                     BasePage.StatusBar.RefreshStatusIcon(state);
@@ -579,13 +570,5 @@ namespace Linphone.Model
 
         }
         #endregion
-
-        /// <summary>
-        /// Handler to get native traces and display them into VS debug console
-        /// </summary>
-        public void OutputTrace(int level, String msg)
-        {
-            System.Diagnostics.Debug.WriteLine(msg);
-        }
     }
 }
