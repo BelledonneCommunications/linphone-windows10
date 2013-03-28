@@ -11,7 +11,7 @@ namespace Linphone.Views
     /// <summary>
     /// InCall page, displayed for both incoming and outgoing calls.
     /// </summary>
-    public partial class InCall : BasePage
+    public partial class InCall : BasePage, MuteChangedListener, PauseChangedListener
     {
         private const string speakerOn = "/Assets/AppBar/speaker.png";
         private const string speakerOff = "/Assets/AppBar/speaker.png";
@@ -32,9 +32,11 @@ namespace Linphone.Views
         /// Method called when the page is displayed.
         /// Searches for a matching contact using the current call address or number and display information if found.
         /// </summary>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs nee)
         {
-            base.OnNavigatedTo(e);
+            base.OnNavigatedTo(nee);
+            this.ViewModel.MuteListener = this;
+            this.ViewModel.PauseListener = this;
             
             // Create LinphoneCore if not created yet, otherwise do nothing
             LinphoneManager.Instance.InitLinphoneCore();
@@ -52,6 +54,16 @@ namespace Linphone.Views
                     cm.FindContact(calledNumber);
                 }
             }
+        }
+
+        /// <summary>
+        /// Method called when the page is leaved.
+        /// </summary>
+        protected override void OnNavigatedFrom(NavigationEventArgs nee)
+        {
+            base.OnNavigatedFrom(nee);
+            this.ViewModel.MuteListener = null;
+            this.ViewModel.PauseListener = null;
         }
 
         /// <summary>
@@ -85,8 +97,7 @@ namespace Linphone.Views
         private void microphone_Click_1(object sender, RoutedEventArgs e)
         {
             bool isMicToggled = (bool)microphone.IsChecked;
-            microImg.Source = new BitmapImage(new Uri(isMicToggled ? micOn : micOff, UriKind.RelativeOrAbsolute));
-            LinphoneManager.Instance.LinphoneCore.MuteMic(isMicToggled);
+            LinphoneManager.Instance.MuteMic(isMicToggled);
 
             if (isMicToggled)
                 LinphoneManager.Instance.CallController.NotifyMuted();
@@ -94,14 +105,29 @@ namespace Linphone.Views
                 LinphoneManager.Instance.CallController.NotifyUnmuted();
         }
 
+        /// <summary>
+        /// Called when the mute status of the microphone changes.
+        /// </summary>
+        public void MuteStateChanged(Boolean isMicMuted)
+        {
+            microImg.Source = new BitmapImage(new Uri(isMicMuted ? micOn : micOff, UriKind.RelativeOrAbsolute));
+        }
+
         private void pause_Click_1(object sender, RoutedEventArgs e)
         {
             bool isPauseToggled = (bool)pause.IsChecked;
-            pauseImg.Source = new BitmapImage(new Uri(isPauseToggled ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
             if (isPauseToggled)
                 LinphoneManager.Instance.PauseCurrentCall();
             else
                 LinphoneManager.Instance.ResumeCurrentCall();
+        }
+
+        /// <summary>
+        /// Called when the call changes its state to paused or resumed.
+        /// </summary>
+        public void PauseStateChanged(bool isCallPaused)
+        {
+            pauseImg.Source = new BitmapImage(new Uri(isCallPaused ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
         }
 
         private void dialpad_Click_1(object sender, RoutedEventArgs e)

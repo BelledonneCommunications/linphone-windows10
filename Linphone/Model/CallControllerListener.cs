@@ -20,5 +20,15 @@ namespace Linphone.Model
         /// Called when a call is ended.
         /// </summary>
         void CallEnded();
+
+        /// <summary>
+        /// Called when the mute status of the microphone changes.
+        /// </summary>
+        void MuteStateChanged(bool isMicMuted);
+
+        /// <summary>
+        /// Called when the call changes its state to paused or resumed.
+        /// </summary>
+        void PauseStateChanged(bool isCallPaused); 
     }
 }

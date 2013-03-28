@@ -206,8 +206,6 @@ namespace Linphone
 			/// </summary>
 			void MuteMic(Platform::Boolean isMuted);
 			Platform::Boolean IsMicMuted();
-			void EnableSpeaker(Platform::Boolean enable);
-			Platform::Boolean IsSpeakerEnabled();
 
 			/// <summary>
 			/// Initiates a dtmf signal if in call

@@ -12,10 +12,42 @@ using System.Windows.Threading;
 namespace Linphone
 {
     /// <summary>
+    /// Specific listener for any view which want to be notified when the mute state changes.
+    /// </summary>
+    public interface MuteChangedListener
+    {
+        /// <summary>
+        /// Called when the mute status of the microphone changes.
+        /// </summary>
+        void MuteStateChanged(bool isMicMuted);
+    }
+
+    /// <summary>
+    /// Specific listener for any view which want to be notified when the pause state changes.
+    /// </summary>
+    public interface PauseChangedListener
+    {
+        /// <summary>
+        /// Called when the call changes its state to paused or resumed.
+        /// </summary>
+        void PauseStateChanged(bool isMicMuted);
+    }
+
+    /// <summary>
     /// Model view for each page implementing the call controller listener to adjust displayed page depending on call events.
     /// </summary>
     public class BaseModel : CallControllerListener
     {
+        /// <summary>
+        /// Specific listener for any view which want to be notified when the mute state changes.
+        /// </summary>
+        public MuteChangedListener MuteListener { get; set; }
+
+        /// <summary>
+        /// Specific listener for any view which want to be notified when the pause state changes.
+        /// </summary>
+        public PauseChangedListener PauseListener { get; set; }
+
         /// <summary>
         /// Public constructor.
         /// </summary>
@@ -61,6 +93,24 @@ namespace Linphone
                 this.Page.NavigationService.Navigate(new Uri("/Views/Dialer.xaml", UriKind.RelativeOrAbsolute));
                 this.Page.NavigationService.RemoveBackEntry();
             }
+        }
+
+        /// <summary>
+        /// Called when the mute status of the microphone changes.
+        /// </summary>
+        public void MuteStateChanged(Boolean isMicMuted)
+        {
+            if (this.MuteListener != null)
+                this.MuteListener.MuteStateChanged(isMicMuted);
+        }
+
+        /// <summary>
+        /// Called when the call changes its state to paused or resumed.
+        /// </summary>
+        public void PauseStateChanged(bool isCallPaused)
+        {
+            if (this.PauseListener != null)
+                this.PauseListener.PauseStateChanged(isCallPaused);
         }
 
         /// <summary>

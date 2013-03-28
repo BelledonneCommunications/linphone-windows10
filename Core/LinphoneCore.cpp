@@ -290,16 +290,6 @@ Platform::Boolean Linphone::Core::LinphoneCore::IsMicMuted()
 	return linphone_core_is_mic_muted(this->lc);
 }
 
-void Linphone::Core::LinphoneCore::EnableSpeaker(Platform::Boolean enable) 
-{
-
-}
-
-Platform::Boolean Linphone::Core::LinphoneCore::IsSpeakerEnabled() 
-{
-	return false;
-}
-
 void Linphone::Core::LinphoneCore::SendDTMF(char16 number) 
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
@@ -443,12 +433,12 @@ void Linphone::Core::LinphoneCore::SetPlayFile(Platform::String^ path)
 
 Platform::Boolean Linphone::Core::LinphoneCore::PauseCall(LinphoneCall^ call) 
 {
-	return false;
+	return linphone_core_pause_call(this->lc, call->call);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::ResumeCall(LinphoneCall^ call) 
 {
-	return false;
+	return linphone_core_resume_call(this->lc, call->call);;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::PauseAllCalls() 

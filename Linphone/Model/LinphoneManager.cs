@@ -219,6 +219,8 @@ namespace Linphone.Model
             InitProxyConfig();
             Debug.WriteLine("[LinphoneManager] LinphoneCore created");
             AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;
+            CallController.MuteRequested += MuteRequested;
+            CallController.UnmuteRequested += UnmuteRequested;
         }
 
         /// <summary>
@@ -339,13 +341,46 @@ namespace Linphone.Model
         }
 
         /// <summary>
+        /// Enable or disable sound capture using the device microphone
+        /// </summary>
+        public void MuteMic(Boolean isMicMuted)
+        {
+            BaseModel.UIDispatcher.BeginInvoke(() =>
+            {
+                if (isMicMuted)
+                    CallController.NotifyMuted();
+                else
+                    CallController.NotifyUnmuted();
+
+                if (CallListener != null)
+                    CallListener.MuteStateChanged(isMicMuted);
+            });
+
+            LinphoneCore.MuteMic(isMicMuted);
+        }
+
+        private void UnmuteRequested(VoipCallCoordinator sender, MuteChangeEventArgs args)
+        {
+            Debug.WriteLine("[LinphoneManager] Unmute requested");
+            MuteMic(true);
+        }
+
+        private void MuteRequested(VoipCallCoordinator sender, MuteChangeEventArgs args)
+        {
+            Debug.WriteLine("[LinphoneManager] mute requested");
+            MuteMic(false);
+        }
+
+        /// <summary>
         /// Pauses the current call if any and if it's running.
         /// </summary>
         public void PauseCurrentCall()
         {
-            LinphoneCall call = LinphoneCore.GetCurrentCall();
-            ((VoipPhoneCall)call.CallContext).NotifyCallHeld();
-            LinphoneCore.PauseCall(call);
+            if (LinphoneCore.GetCallsNb() > 0)
+            {
+                LinphoneCall call = LinphoneCore.GetCurrentCall();
+                LinphoneCore.PauseCall(call);
+            }
         }
 
         /// <summary>
@@ -356,9 +391,20 @@ namespace Linphone.Model
             if (LinphoneCore.GetCallsNb() > 0)
             {
                 LinphoneCall call = LinphoneCore.GetCurrentCall();
-                ((VoipPhoneCall)call.CallContext).NotifyCallActive();
                 LinphoneCore.ResumeCall(call);
             }
+        }
+
+        private void CallResumeRequested(VoipPhoneCall sender, CallStateChangeEventArgs args)
+        {
+            Debug.WriteLine("[LinphoneManager] Resume requested");
+            ResumeCurrentCall();
+        }
+
+        private void CallHoldRequested(VoipPhoneCall sender, CallStateChangeEventArgs args)
+        {
+            Debug.WriteLine("[LinphoneManager] Pause requested");
+            PauseCurrentCall();
         }
         #endregion
 
@@ -412,7 +458,10 @@ namespace Linphone.Model
                     VoipPhoneCall vcall;
                     CallController.RequestNewOutgoingCall("/Linphone;component/Views/InCall.xaml?sip=" + sipAddress, sipAddress, "Linphone", VoipCallMedia.Audio, out vcall);
                     vcall.NotifyCallActive();
+                    vcall.HoldRequested += CallHoldRequested;
+                    vcall.ResumeRequested += CallResumeRequested;
                     call.CallContext = vcall;
+
                     if (CallListener != null)
                         CallListener.NewCallStarted(sipAddress);
                 });
@@ -447,15 +496,11 @@ namespace Linphone.Model
                         Debug.WriteLine("[LinphoneManager] Call rejected");
                         LinphoneCore.TerminateCall(call);
                     });
+                    vcall.HoldRequested += CallHoldRequested;
+                    vcall.ResumeRequested += CallResumeRequested;
                     call.CallContext = vcall;
                 });
             }
-            //else if (state == LinphoneCallState.StreamsRunning)
-            //{
-                //Debug.WriteLine("[LinphoneManager] Call accepted and running");
-                //if (CallListener != null)
-                    //CallListener.NewCallStarted(call.GetRemoteAddress().AsStringUriOnly());
-            //}
             else if (state == LinphoneCallState.CallEnd || state == LinphoneCallState.Error)
             {
                 Debug.WriteLine("[LinphoneManager] Call ended");
@@ -464,6 +509,26 @@ namespace Linphone.Model
                     ((VoipPhoneCall)call.CallContext).NotifyCallEnded();
                     if (CallListener != null)
                         CallListener.CallEnded();
+                });
+            }
+            else if (state == LinphoneCallState.Paused || state == LinphoneCallState.PausedByRemote)
+            {
+                Debug.WriteLine("[LinphoneManager] Call paused");
+                BaseModel.UIDispatcher.BeginInvoke(() =>
+                {
+                    ((VoipPhoneCall)call.CallContext).NotifyCallHeld();
+                    if (CallListener != null)
+                        CallListener.PauseStateChanged(true);
+                });
+            }
+            else if (state == LinphoneCallState.StreamsRunning)
+            {
+                Debug.WriteLine("[LinphoneManager] Call running");
+                BaseModel.UIDispatcher.BeginInvoke(() =>
+                {
+                    ((VoipPhoneCall)call.CallContext).NotifyCallActive();
+                    if (CallListener != null)
+                        CallListener.PauseStateChanged(false);
                 });
             }
         }
