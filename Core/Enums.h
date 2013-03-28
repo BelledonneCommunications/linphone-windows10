@@ -107,5 +107,17 @@ namespace Linphone
 			Missed = 2,
 			Declined = 3
 		};
+
+		/// <summary>
+		/// Levels for trace output
+		/// </summary>
+		public enum class OutputTraceLevel : int
+		{
+			Debug = 0,
+			Message = 1,
+			Warning = 2,
+			Error = 3,
+			Raw = 4
+		};
 	}
 }

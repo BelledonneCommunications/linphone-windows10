@@ -156,7 +156,7 @@ namespace Linphone.Model
             }
 
             // Disconnect the listeners to prevent crash of the background process
-            server.LinphoneCoreFactory.SetDebugMode(SettingsManager.isDebugEnabled, server.BackgroundModeLogger);
+            BackgroundModeDebug();
             server.LinphoneCore.CoreListener = null;
 
             BackgroundProcessConnected = false;
@@ -206,7 +206,7 @@ namespace Linphone.Model
         /// </summary>
         public void InitLinphoneCore()
         {
-            server.LinphoneCoreFactory.SetDebugMode(SettingsManager.isDebugEnabled, Logger.Instance);
+            ForegroundModeDebug();
 
             if (server.LinphoneCore != null)
             {
@@ -217,11 +217,25 @@ namespace Linphone.Model
 
             server.LinphoneCoreFactory.CreateLinphoneCore(this);
             InitProxyConfig();
-            Logger.WriteLine("[LinphoneManager] LinphoneCore created");
+            Logger.Msg("[LinphoneManager] LinphoneCore created");
             AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;
             CallController.MuteRequested += MuteRequested;
             CallController.UnmuteRequested += UnmuteRequested;
         }
+
+        #region Debug handling
+        private void ForegroundModeDebug()
+        {
+            Logger.Instance.Enable = SettingsManager.isDebugEnabled;
+            server.LinphoneCoreFactory.SetDebugMode(SettingsManager.isDebugEnabled, Logger.Instance);
+        }
+
+        private void BackgroundModeDebug()
+        {
+            Logger.Instance.Enable = SettingsManager.isDebugEnabled;
+            server.LinphoneCoreFactory.SetDebugMode(SettingsManager.isDebugEnabled, server.BackgroundModeLogger);
+        }
+        #endregion
 
         #region CallLogs
         private List<CallLogs> _history;
@@ -402,7 +416,7 @@ namespace Linphone.Model
         #region Audio route handling
         private void AudioEndpointChanged(AudioRoutingManager sender, object args)
         {
-            Logger.WriteLine("[LinphoneManager] AudioEndpointChanged:" + sender.GetAudioEndpoint().ToString());
+            Logger.Msg("[LinphoneManager] AudioEndpointChanged:" + sender.GetAudioEndpoint().ToString());
         }
 
         public void EnableSpeaker(bool enable)
@@ -424,7 +438,7 @@ namespace Linphone.Model
         /// </summary>
         public void AuthInfoRequested(string realm, string username)
         {
-            Logger.WriteLine("[LinphoneManager] Auth info requested: realm=" + realm + ", username=" + username);
+            Logger.Msg("[LinphoneManager] Auth info requested: realm=" + realm + ", username=" + username);
         }
 
         /// <summary>
@@ -432,7 +446,7 @@ namespace Linphone.Model
         /// </summary>
         public void GlobalState(GlobalState state, string message)
         {
-            Logger.WriteLine("[LinphoneManager] Global state changed: " + state.ToString() + ", message=" + message);
+            Logger.Msg("[LinphoneManager] Global state changed: " + state.ToString() + ", message=" + message);
         }
 
         /// <summary>
@@ -441,7 +455,7 @@ namespace Linphone.Model
         public void CallState(LinphoneCall call, LinphoneCallState state)
         {
             string sipAddress = call.GetRemoteAddress().AsStringUriOnly();
-            Logger.WriteLine("[LinphoneManager] Call state changed: " + sipAddress + " => " + state.ToString());
+            Logger.Msg("[LinphoneManager] Call state changed: " + sipAddress + " => " + state.ToString());
             if (state == LinphoneCallState.OutgoingProgress)
             {
                 BaseModel.UIDispatcher.BeginInvoke(() =>
@@ -461,7 +475,7 @@ namespace Linphone.Model
             {
                 String contact = call.GetRemoteContact();
                 String number = call.GetRemoteAddress().AsStringUriOnly();
-                Logger.WriteLine("[LinphoneManager] Incoming received: " + contact + " (" + number + ")");
+                Logger.Msg("[LinphoneManager] Incoming received: " + contact + " (" + number + ")");
 
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
@@ -473,7 +487,7 @@ namespace Linphone.Model
                     CallController.RequestNewIncomingCall("/Linphone;component/Views/InCall.xaml?sip=" + number, contact, number, contactUri, "Linphone", iconUri, "", ringtoneUri, VoipCallMedia.Audio, fifteenSecs, out vcall);
                     vcall.AnswerRequested += ((c, eventargs) =>
                     {
-                        Logger.WriteLine("[LinphoneManager] Call accepted");
+                        Logger.Msg("[LinphoneManager] Call accepted");
                         vcall.NotifyCallActive();
                         LinphoneCore.AcceptCall(call);
                         BaseModel.UIDispatcher.BeginInvoke(() =>
@@ -484,7 +498,7 @@ namespace Linphone.Model
                     });
                     vcall.RejectRequested += ((c, eventargs) =>
                     {
-                        Logger.WriteLine("[LinphoneManager] Call rejected");
+                        Logger.Msg("[LinphoneManager] Call rejected");
                         LinphoneCore.TerminateCall(call);
                     });
                     vcall.HoldRequested += CallHoldRequested;
@@ -494,7 +508,7 @@ namespace Linphone.Model
             }
             else if (state == LinphoneCallState.CallEnd || state == LinphoneCallState.Error)
             {
-                Logger.WriteLine("[LinphoneManager] Call ended");
+                Logger.Msg("[LinphoneManager] Call ended");
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
                     ((VoipPhoneCall)call.CallContext).NotifyCallEnded();
@@ -531,7 +545,7 @@ namespace Linphone.Model
         {
             BaseModel.UIDispatcher.BeginInvoke(() =>
             {
-                Logger.WriteLine("[LinphoneManager] Registration state changed: " + state.ToString() + ", message=" + message + " for identity " + config.GetIdentity());
+                Logger.Msg("[LinphoneManager] Registration state changed: " + state.ToString() + ", message=" + message + " for identity " + config.GetIdentity());
                 LastKnownState = state;
                 if (BasePage.StatusBar != null)
                     BasePage.StatusBar.RefreshStatusIcon(state);

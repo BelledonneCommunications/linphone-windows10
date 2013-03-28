@@ -13,7 +13,7 @@ using namespace Platform;
 static bool sDebugEnabled = false;
 static OutputTraceListener^ sTraceListener;
 
-static void nativeOutputTraceHandler(int lev, const char *fmt, va_list args)
+static void nativeOutputTraceHandler(OutputTraceLevel lev, const char *fmt, va_list args)
 {
 	if (sDebugEnabled) {
 		wchar_t wstr[MAX_TRACE_SIZE];
@@ -31,9 +31,16 @@ static void nativeOutputTraceHandler(int lev, const char *fmt, va_list args)
 
 static void LinphoneNativeOutputTraceHandler(OrtpLogLevel lev, const char *fmt, va_list args)
 {
+	OutputTraceLevel level = OutputTraceLevel::Message;
 	char fmt2[MAX_TRACE_SIZE];
 	snprintf(fmt2, MAX_TRACE_SIZE, "%s\n", fmt);
-	nativeOutputTraceHandler((int)lev, fmt2, args);
+	if (lev == ORTP_DEBUG) level = OutputTraceLevel::Debug;
+	else if (lev == ORTP_MESSAGE) level = OutputTraceLevel::Message;
+	else if (lev == ORTP_TRACE) level = OutputTraceLevel::Message;
+	else if (lev == ORTP_WARNING) level = OutputTraceLevel::Warning;
+	else if (lev == ORTP_ERROR) level = OutputTraceLevel::Error;
+	else if (lev == ORTP_FATAL) level = OutputTraceLevel::Error;
+	nativeOutputTraceHandler(level, fmt2, args);
 }
 
 void LinphoneCoreFactory::SetDebugMode(Platform::Boolean enable, OutputTraceListener^ traceListener)

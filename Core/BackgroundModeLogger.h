@@ -14,7 +14,7 @@ namespace Linphone
 		public ref class BackgroundModeLogger sealed : OutputTraceListener
 		{
 		public:
-			virtual void OutputTrace(int level, Platform::String^ msg);
+			virtual void OutputTrace(OutputTraceLevel level, Platform::String^ msg);
 
 		private:
 			friend ref class Linphone::Core::Globals;

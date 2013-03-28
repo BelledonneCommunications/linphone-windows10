@@ -17,7 +17,7 @@ Linphone::Core::BackgroundModeLogger::~BackgroundModeLogger()
 {
 }
 
-void Linphone::Core::BackgroundModeLogger::OutputTrace(int level, Platform::String^ msg)
+void Linphone::Core::BackgroundModeLogger::OutputTrace(OutputTraceLevel level, Platform::String^ msg)
 {
 	if (!dataWriter) {
 		StorageFolder^ localFolder = ApplicationData::Current->LocalFolder;

@@ -15,7 +15,7 @@ namespace Linphone
 		public interface class OutputTraceListener
 		{
 		public:
-			void OutputTrace(int level, Platform::String^ msg);
+			void OutputTrace(OutputTraceLevel level, Platform::String^ msg);
 		};
 
 		public ref class LinphoneCoreFactory sealed

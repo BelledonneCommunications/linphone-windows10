@@ -18,13 +18,30 @@ namespace Linphone.Model
     /// </summary>
     public sealed class Logger : OutputTraceListener
     {
-        [Flags] public enum Output {
+        /// <summary>
+        /// Type of outputs to write the logs to
+        /// </summary>
+        [Flags] public enum Output
+        {
+            /// <summary>Write to a file synchronously</summary>
             FILE_SYNCHRONOUS,
+            /// <summary>Write to the standard debug output (Visual Studio output)</summary>
             DEBUG_WRITE
         };
 
+        /// <summary>
+        /// The outputs to which to write the logs
+        /// </summary>
         public Output Outputs { get; set; }
+
+        /// <summary>
+        /// The name of the file to write the logs to if using the FILE_SYNCHRONOUS output
+        /// </summary>
         public String Filename { get; set; }
+
+        /// <summary>
+        /// Whether the logger is enabled or not
+        /// </summary>
         public bool Enable { get; set; }
 
         private Logger()
@@ -74,7 +91,11 @@ namespace Linphone.Model
             }
         }
 
-        public void Write(String msg)
+        /// <summary>
+        /// Write a message to the configured outputs
+        /// </summary>
+        /// <param name="msg">The message to be written</param>
+        private void Write(OutputTraceLevel level, String msg)
         {
             if (Outputs.HasFlag(Output.FILE_SYNCHRONOUS))
             {
@@ -86,17 +107,48 @@ namespace Linphone.Model
             }
         }
 
-        public static void WriteLine(string msg)
+        /// <summary>
+        /// Write a debug message
+        /// </summary>
+        /// <param name="msg">The message to be written</param>
+        public static void Dbg(String msg)
         {
-            Logger.Instance.Write(msg);
+            Logger.Instance.Write(OutputTraceLevel.Debug, msg);
+        }
+
+        /// <summary>
+        /// Write a standard message
+        /// </summary>
+        /// <param name="msg">The message to be written</param>
+        public static void Msg(String msg)
+        {
+            Logger.Instance.Write(OutputTraceLevel.Message, msg);
+        }
+
+        /// <summary>
+        /// Write a warning message
+        /// </summary>
+        /// <param name="msg">The message to be written</param>
+        public static void Warn(String msg)
+        {
+            Logger.Instance.Write(OutputTraceLevel.Warning, msg);
+        }
+
+        /// <summary>
+        /// Write an error message
+        /// </summary>
+        /// <param name="msg">The message to be written</param>
+        public static void Err(String msg)
+        {
+            Logger.Instance.Write(OutputTraceLevel.Error, msg);
         }
 
         /// <summary>
         /// Handler to get and output native traces
         /// </summary>
-        public void OutputTrace(int level, String msg)
+        public void OutputTrace(OutputTraceLevel level, String msg)
         {
-            Write(msg);
+            Write(level, msg);
         }
     }
 }
