@@ -1,35 +1,38 @@
 #include "BackgroundModeLogger.h"
+#include "Utils.h"
 
 #include <ppltasks.h>
 
 using namespace concurrency;
-using namespace Windows::Foundation;
 using namespace Windows::Storage;
-using namespace Windows::Storage::Streams;
 using namespace Linphone::Core;
 
 
-Linphone::Core::BackgroundModeLogger::BackgroundModeLogger()
+Linphone::Core::BackgroundModeLogger::BackgroundModeLogger() :
+	stream(nullptr)
 {
 }
 
 Linphone::Core::BackgroundModeLogger::~BackgroundModeLogger()
 {
+	if (stream) {
+		stream->close();
+		delete stream;
+		stream = nullptr;
+	}
 }
 
 void Linphone::Core::BackgroundModeLogger::OutputTrace(OutputTraceLevel level, Platform::String^ msg)
 {
-	if (!dataWriter) {
+	std::lock_guard<std::recursive_mutex> lock(lock);
+	if (!stream) {
 		StorageFolder^ localFolder = ApplicationData::Current->LocalFolder;
-		task<StorageFile^>(localFolder->CreateFileAsync("Linphone.log", CreationCollisionOption::OpenIfExists)).then([this](StorageFile^ file) {
-			storageFile = file;
-			task<IRandomAccessStream^>(storageFile->OpenAsync(FileAccessMode::ReadWrite)).then([this](IRandomAccessStream^ stream) {
-				dataWriter = ref new DataWriter(stream);
-			});
+		task<StorageFile^>(localFolder->CreateFileAsync("Linphone.log", CreationCollisionOption::ReplaceExisting)).then([this](StorageFile^ file) {
+			stream = new std::ofstream(file->Path->Data());
 		}).wait();
 	}
-	if (dataWriter) {
-		dataWriter->WriteString(msg);
-		task<unsigned int>(dataWriter->StoreAsync()).wait();
+	if (stream) {
+		*stream << Utils::pstoccs(msg);
+		stream->flush();
 	}
 }

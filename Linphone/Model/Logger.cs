@@ -1,53 +1,24 @@
 ﻿using Linphone.Core;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Windows.Storage;
-using Windows.Storage.Streams;
+
 
 namespace Linphone.Model
 {
     /// <summary>
     /// Class to handle the logging of the application
     /// </summary>
-    public sealed class Logger : OutputTraceListener
+    public sealed class Logger
     {
         /// <summary>
-        /// Type of outputs to write the logs to
+        /// The trace listener to which to send the messages to be logged
         /// </summary>
-        [Flags] public enum Output
-        {
-            /// <summary>Write to a file synchronously</summary>
-            FILE_SYNCHRONOUS,
-            /// <summary>Write to the standard debug output (Visual Studio output)</summary>
-            DEBUG_WRITE
-        };
-
-        /// <summary>
-        /// The outputs to which to write the logs
-        /// </summary>
-        public Output Outputs { get; set; }
-
-        /// <summary>
-        /// The name of the file to write the logs to if using the FILE_SYNCHRONOUS output
-        /// </summary>
-        public String Filename { get; set; }
-
-        /// <summary>
-        /// Whether the logger is enabled or not
-        /// </summary>
-        public bool Enable { get; set; }
+        public OutputTraceListener TraceListener { get;  set; }
 
         private Logger()
         {
-            Outputs = Output.FILE_SYNCHRONOUS;
-            Filename = "Linphone.log";
         }
 
         private static Logger singleton;
@@ -66,44 +37,16 @@ namespace Linphone.Model
             }
         }
 
-        private StorageFile storageFile;
-        private StreamWriter streamWriter;
-
-        private async Task<bool> CreateFileIfNeeded()
-        {
-            if (Filename == null) return false;
-            if (streamWriter == null)
-            {
-                StorageFolder localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-                storageFile = await localFolder.CreateFileAsync(Filename, CreationCollisionOption.ReplaceExisting);
-                streamWriter = new StreamWriter(storageFile.Path);
-            }
-            return true;
-        }
-
-        private async void WriteToFile(String msg)
-        {
-            bool fileExists = await CreateFileIfNeeded();
-            if (fileExists)
-            {
-                streamWriter.WriteLine(msg);
-                streamWriter.Flush();
-            }
-        }
-
         /// <summary>
-        /// Write a message to the configured outputs
+        /// Write a message to the logs
         /// </summary>
+        /// <param name="level">The trace level of the message to be written</param>
         /// <param name="msg">The message to be written</param>
         private void Write(OutputTraceLevel level, String msg)
         {
-            if (Outputs.HasFlag(Output.FILE_SYNCHRONOUS))
+            if (TraceListener != null)
             {
-                WriteToFile(msg);
-            }
-            if (Outputs.HasFlag(Output.DEBUG_WRITE))
-            {
-                Debug.WriteLine(msg);
+                TraceListener.OutputTrace(level, msg);
             }
         }
 
@@ -141,14 +84,6 @@ namespace Linphone.Model
         public static void Err(String msg)
         {
             Logger.Instance.Write(OutputTraceLevel.Error, msg);
-        }
-
-        /// <summary>
-        /// Handler to get and output native traces
-        /// </summary>
-        public void OutputTrace(OutputTraceLevel level, String msg)
-        {
-            Write(level, msg);
         }
     }
 }

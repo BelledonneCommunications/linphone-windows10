@@ -156,7 +156,6 @@ namespace Linphone.Model
             }
 
             // Disconnect the listeners to prevent crash of the background process
-            BackgroundModeDebug();
             server.LinphoneCore.CoreListener = null;
 
             BackgroundProcessConnected = false;
@@ -206,7 +205,8 @@ namespace Linphone.Model
         /// </summary>
         public void InitLinphoneCore()
         {
-            ForegroundModeDebug();
+            server.LinphoneCoreFactory.SetDebugMode(SettingsManager.isDebugEnabled, server.BackgroundModeLogger);
+            Logger.Instance.TraceListener = server.BackgroundModeLogger;
 
             if (server.LinphoneCore != null)
             {
@@ -222,20 +222,6 @@ namespace Linphone.Model
             CallController.MuteRequested += MuteRequested;
             CallController.UnmuteRequested += UnmuteRequested;
         }
-
-        #region Debug handling
-        private void ForegroundModeDebug()
-        {
-            Logger.Instance.Enable = SettingsManager.isDebugEnabled;
-            server.LinphoneCoreFactory.SetDebugMode(SettingsManager.isDebugEnabled, Logger.Instance);
-        }
-
-        private void BackgroundModeDebug()
-        {
-            Logger.Instance.Enable = SettingsManager.isDebugEnabled;
-            server.LinphoneCoreFactory.SetDebugMode(SettingsManager.isDebugEnabled, server.BackgroundModeLogger);
-        }
-        #endregion
 
         #region CallLogs
         private List<CallLogs> _history;

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "LinphoneCoreFactory.h"
+#include <iostream>
+#include <fstream>
 
-using namespace Windows::Storage;
-using namespace Windows::Storage::Streams;
 
 namespace Linphone
 {
@@ -22,8 +22,8 @@ namespace Linphone
 			BackgroundModeLogger();
 			~BackgroundModeLogger();
 
-			StorageFile^ storageFile;
-			DataWriter^ dataWriter;
+			std::ofstream *stream;
+			std::recursive_mutex lock;
 		};
 	}
 }
