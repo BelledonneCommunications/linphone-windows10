@@ -110,6 +110,7 @@ namespace Linphone.Views
         /// </summary>
         public void MuteStateChanged(Boolean isMicMuted)
         {
+            microphone.IsChecked = isMicMuted;
             microImg.Source = new BitmapImage(new Uri(isMicMuted ? micOn : micOff, UriKind.RelativeOrAbsolute));
         }
 
@@ -127,6 +128,7 @@ namespace Linphone.Views
         /// </summary>
         public void PauseStateChanged(bool isCallPaused)
         {
+            pause.IsChecked = isCallPaused;
             pauseImg.Source = new BitmapImage(new Uri(isCallPaused ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
         }
 
