@@ -1,5 +1,7 @@
 #pragma once
 
+#include "LinphoneCore.h"
+
 namespace Linphone
 {
 	namespace Core
@@ -9,6 +11,14 @@ namespace Linphone
 		public:
 			Platform::String^ GetMime();
 			int GetRate();
+
+		private:
+			friend ref class Linphone::Core::LinphoneCore;
+
+			PayloadType(::PayloadType *payload);
+			~PayloadType();
+
+			::PayloadType *payload;
 		};
 	}
 }

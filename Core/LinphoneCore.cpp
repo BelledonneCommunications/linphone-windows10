@@ -298,27 +298,42 @@ void Linphone::Core::LinphoneCore::SendDTMF(char16 number)
 
 void Linphone::Core::LinphoneCore::PlayDTMF(char16 number, int duration) 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	linphone_core_play_dtmf(this->lc, number, duration);
 }
 
 void Linphone::Core::LinphoneCore::StopDTMF() 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	linphone_core_stop_dtmf(this->lc);
 }
 
 Linphone::Core::PayloadType^ Linphone::Core::LinphoneCore::FindPayloadType(Platform::String^ mime, int clockRate, int channels) 
 {
-	return nullptr;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
+	const char* type = Linphone::Core::Utils::pstoccs(mime);
+	::PayloadType* pt = linphone_core_find_payload_type(this->lc, type, clockRate, channels);
+	delete type;
+	return ref new Linphone::Core::PayloadType(pt);
 }
 
 Linphone::Core::PayloadType^ Linphone::Core::LinphoneCore::FindPayloadType(Platform::String^ mime, int clockRate) 
 {
-	return nullptr;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
+	const char* type = Linphone::Core::Utils::pstoccs(mime);
+	::PayloadType* pt = linphone_core_find_payload_type(this->lc, type, clockRate, 1);
+	delete type;
+	return ref new Linphone::Core::PayloadType(pt);
 }
 
 void Linphone::Core::LinphoneCore::EnablePayloadType(PayloadType^ pt, Platform::Boolean enable) 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 
+	::PayloadType *payload = pt->payload;
+	linphone_core_enable_payload_type(this->lc, payload, enable);
 }
 
 Windows::Foundation::Collections::IVector<Linphone::Core::PayloadType^>^ Linphone::Core::LinphoneCore::GetAudioCodecs() 
@@ -734,16 +749,11 @@ void Linphone::Core::LinphoneCore::Init()
 
 	this->lc = linphone_core_new(vtable, NULL, "Assets/linphone_rc", NULL);
 	
-	//TODO: Remove
+	//Disable all codecs
 	MSList* codecs=ms_list_copy(linphone_core_get_audio_codecs(lc));
 	MSList* codecs_it;
-	::PayloadType* pt;
 	for (codecs_it=codecs;codecs_it!=NULL;codecs_it=codecs_it->next) {
 			linphone_core_enable_payload_type(lc,(::PayloadType*)codecs_it->data,0);
-	}
-
-	if((pt = linphone_core_find_payload_type(lc,"PCMU",8000,1))) {
-		linphone_core_enable_payload_type(lc,pt, 1);
 	}
 
 	// Launch iterate timer

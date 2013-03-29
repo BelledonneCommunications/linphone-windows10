@@ -200,6 +200,12 @@ namespace Linphone.Model
             }
         }
 
+        public void InitCodecs()
+        {
+            PayloadType pt = LinphoneCore.FindPayloadType("PCMU", 8000);
+            LinphoneCore.EnablePayloadType(pt, true);
+        }
+
         /// <summary>
         /// Creates a new LinphoneCore (if not created yet) using a LinphoneCoreFactory.
         /// </summary>
@@ -221,6 +227,7 @@ namespace Linphone.Model
 
             server.LinphoneCoreFactory.CreateLinphoneCore(this);
             InitProxyConfig();
+            InitCodecs();
             Logger.Msg("[LinphoneManager] LinphoneCore created");
             AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;
             CallController.MuteRequested += MuteRequested;

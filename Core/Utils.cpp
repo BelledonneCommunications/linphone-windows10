@@ -2,6 +2,7 @@
 #include "LinphoneCall.h"
 #include "LinphoneAddress.h"
 #include "LinphoneCallLog.h"
+#include "PayloadType.h"
 
 std::string Linphone::Core::Utils::wstos(std::wstring ws)
 {
@@ -52,4 +53,3 @@ Platform::Object^ Linphone::Core::Utils::CreateLinphoneCallLog(void* callLog)
 {
 	return ref new Linphone::Core::LinphoneCallLog((::LinphoneCallLog*)callLog);
 }
-
