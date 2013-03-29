@@ -1,6 +1,7 @@
 ﻿using Linphone.Model;
 using Microsoft.Phone.Controls;
 using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -146,6 +147,15 @@ namespace Linphone.Views
             Button button = sender as Button;
             String tag = button.Tag as String;
             LinphoneManager.Instance.LinphoneCore.SendDTMF(Convert.ToChar(tag));
+        }
+
+        /// <summary>
+        /// Do not allow user to leave the incall page while call is active
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnBackKeyPress(CancelEventArgs e)
+        {
+            e.Cancel = true;
         }
     }
 }

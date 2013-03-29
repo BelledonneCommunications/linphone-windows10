@@ -25,6 +25,8 @@ See README.txt file for an explanation about how the project is working.
 * Call can be paused/resumed (from other side only for now, crash if trying to do from wp) 
 * Speaker and mute are working 
 * Can register sip account from settings
+* Logging of linphone messages in separate file, see README to know how to retrieve it
+* Prevent user to leave the incall page using back button (can lead to close app during call unexpectedly)
 
 03-01-2013:
 * Improved stubs to mimic liblinphone behavior (registration states, call states, global states) amd fake call logs
