@@ -200,8 +200,12 @@ namespace Linphone.Model
             }
         }
 
+        /// <summary>
+        /// Enables codecs using settings values
+        /// </summary>
         public void InitCodecs()
         {
+            //TODO
             PayloadType pt = LinphoneCore.FindPayloadType("PCMU", 8000);
             LinphoneCore.EnablePayloadType(pt, true);
         }
