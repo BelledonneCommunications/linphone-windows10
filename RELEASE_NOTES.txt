@@ -18,6 +18,8 @@ See README.txt file for an explanation about how the project is working.
 03-29-2013:
 * Outgoing calls are working
 * Incoming calls are working when the app is in foreground
+* The only codec available for now is PCMU/8000
+* Only UDP is supported as transport at the moment
 * Can go to background when a call is running without killing the app
 * History is displaying all calls logs correctly until reboot (no persistence yet)
 * Call can be paused/resumed (from other side only for now, crash if trying to do from wp) 
