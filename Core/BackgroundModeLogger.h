@@ -15,6 +15,7 @@ namespace Linphone
 		{
 		public:
 			virtual void OutputTrace(OutputTraceLevel level, Platform::String^ msg);
+			void Configure(bool enable, OutputTraceDest dest, Platform::String^ filename);
 
 		private:
 			friend ref class Linphone::Core::Globals;
@@ -24,6 +25,9 @@ namespace Linphone
 
 			std::ofstream *stream;
 			std::recursive_mutex lock;
+			bool enabled;
+			OutputTraceDest dest;
+			Platform::String^ filename;
 		};
 	}
 }

@@ -26,8 +26,12 @@ namespace Linphone
                 Linphone::Core::LinphoneCore^ get();
             }
 
-			void SetDebugMode(Platform::Boolean enable, OutputTraceListener^ traceListener);
-			
+			property OutputTraceListener^ OutputTraceListener
+			{
+				Linphone::Core::OutputTraceListener^ get();
+				void set(Linphone::Core::OutputTraceListener^ listener);
+			}
+
 			void CreateLinphoneCore(LinphoneCoreListener^ listener, Platform::String^ userConfig, Platform::String^ factoryConfig, Platform::Object^ userData);
 			void CreateLinphoneCore(LinphoneCoreListener^ listener);
 
@@ -45,6 +49,7 @@ namespace Linphone
 			friend ref class Linphone::Core::Globals;
 
 			Linphone::Core::LinphoneCore^ linphoneCore;
+			Linphone::Core::OutputTraceListener^ outputTraceListener;
 
 			LinphoneCoreFactory();
 			~LinphoneCoreFactory();

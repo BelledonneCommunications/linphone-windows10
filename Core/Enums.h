@@ -119,5 +119,14 @@ namespace Linphone
 			Error = 3,
 			Raw = 4
 		};
+
+		/// <summary>
+		/// The output destinations for logging
+		/// </summary>
+		public enum class OutputTraceDest : int
+		{
+			Debugger = 0,
+			File = 1
+		};
 	}
 }

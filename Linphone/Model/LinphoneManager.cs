@@ -205,15 +205,19 @@ namespace Linphone.Model
         /// </summary>
         public void InitLinphoneCore()
         {
-            server.LinphoneCoreFactory.SetDebugMode(SettingsManager.isDebugEnabled, server.BackgroundModeLogger);
-            Logger.Instance.TraceListener = server.BackgroundModeLogger;
-
-            if (server.LinphoneCore != null)
+            if ((server.LinphoneCoreFactory != null) && (server.LinphoneCore != null))
             {
                 // Reconnect the listeners when coming back from background mode
                 server.LinphoneCore.CoreListener = this;
                 return;
             }
+
+            // To have the debug output in the debugger use the following commented configure and set your debugger to native mode
+            //server.BackgroundModeLogger.Configure(SettingsManager.isDebugEnabled, OutputTraceDest.Debugger, "");
+            // Else output the debug traces to a file
+            server.BackgroundModeLogger.Configure(SettingsManager.isDebugEnabled, OutputTraceDest.File, "Linphone.log");
+            server.LinphoneCoreFactory.OutputTraceListener = server.BackgroundModeLogger;
+            Logger.Instance.TraceListener = server.BackgroundModeLogger;
 
             server.LinphoneCoreFactory.CreateLinphoneCore(this);
             InitProxyConfig();
