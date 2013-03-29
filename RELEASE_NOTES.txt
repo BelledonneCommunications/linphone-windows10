@@ -15,6 +15,15 @@ If not, right click on Linphone project and choose the menu "Set as StartUp proj
 
 See README.txt file for an explanation about how the project is working.
 
+03-29-2013:
+* Outgoing calls are working
+* Incoming calls are working when the app is in foreground
+* Can go to background when a call is running without killing the app
+* History is displaying all calls logs correctly until reboot (no persistence yet)
+* Call can be paused/resumed (from other side only for now, crash if trying to do from wp) 
+* Speaker and mute are working 
+* Can register sip account from settings
+
 03-01-2013:
 * Improved stubs to mimic liblinphone behavior (registration states, call states, global states) amd fake call logs
 * Can simulate incoming/outcoing calls 

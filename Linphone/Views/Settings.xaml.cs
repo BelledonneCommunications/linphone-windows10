@@ -81,58 +81,58 @@ namespace Linphone.Views
         }
 
         #region Simulate Incoming Call, to remove
-        private void Simulate_Click_1(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                // Create an HTTPWebRequest that posts the raw notification to the Microsoft Push Notification Service. 
-                HttpWebRequest sendNotificationRequest = (HttpWebRequest)WebRequest.Create(((App)App.Current).PushChannelUri);
-                sendNotificationRequest.Method = "POST";
+        //private void Simulate_Click_1(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        // Create an HTTPWebRequest that posts the raw notification to the Microsoft Push Notification Service. 
+        //        HttpWebRequest sendNotificationRequest = (HttpWebRequest)WebRequest.Create(((App)App.Current).PushChannelUri);
+        //        sendNotificationRequest.Method = "POST";
 
-                string rawMessage = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
-                "<IncomingCall>" +
-                    "<Name>" + "Belledonne Comm." + "</Name>" +
-                    "<Number>" + "+33952636505" + "</Number>" +
-                "</IncomingCall>";
-                byte[] notificationMessage = Encoding.UTF8.GetBytes(rawMessage);
+        //        string rawMessage = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
+        //        "<IncomingCall>" +
+        //            "<Name>" + "Belledonne Comm." + "</Name>" +
+        //            "<Number>" + "+33952636505" + "</Number>" +
+        //        "</IncomingCall>";
+        //        byte[] notificationMessage = Encoding.UTF8.GetBytes(rawMessage);
 
-                sendNotificationRequest.ContentLength = notificationMessage.Length;
-                sendNotificationRequest.ContentType = "text/xml";
-                sendNotificationRequest.Headers["X-NotificationClass"] = "4";
-                // 4 is the type of VoIP PNs
+        //        sendNotificationRequest.ContentLength = notificationMessage.Length;
+        //        sendNotificationRequest.ContentType = "text/xml";
+        //        sendNotificationRequest.Headers["X-NotificationClass"] = "4";
+        //        // 4 is the type of VoIP PNs
 
-                sendNotificationRequest.BeginGetRequestStream((IAsyncResult arRequest) =>
-                {
-                    try
-                    {
-                        using (Stream requestStream = sendNotificationRequest.EndGetRequestStream(arRequest))
-                        {
-                            requestStream.Write(notificationMessage, 0, notificationMessage.Length);
-                        }
+        //        sendNotificationRequest.BeginGetRequestStream((IAsyncResult arRequest) =>
+        //        {
+        //            try
+        //            {
+        //                using (Stream requestStream = sendNotificationRequest.EndGetRequestStream(arRequest))
+        //                {
+        //                    requestStream.Write(notificationMessage, 0, notificationMessage.Length);
+        //                }
 
-                        sendNotificationRequest.BeginGetResponse((IAsyncResult arResponse) =>
-                        {
-                            try
-                            {
-                                HttpWebResponse response = (HttpWebResponse)sendNotificationRequest.EndGetResponse(arResponse);
-                                string notificationStatus = response.Headers["X-NotificationStatus"];
-                                string subscriptionStatus = response.Headers["X-SubscriptionStatus"];
-                                string deviceConnectionStatus = response.Headers["X-DeviceConnectionStatus"];
-                            }
-                            catch (Exception)
-                            {
-                            }
-                        }, null);
-                    }
-                    catch (Exception)
-                    {
-                    }
-                }, null);
-            }
-            catch (Exception)
-            {
-            }
-        }
+        //                sendNotificationRequest.BeginGetResponse((IAsyncResult arResponse) =>
+        //                {
+        //                    try
+        //                    {
+        //                        HttpWebResponse response = (HttpWebResponse)sendNotificationRequest.EndGetResponse(arResponse);
+        //                        string notificationStatus = response.Headers["X-NotificationStatus"];
+        //                        string subscriptionStatus = response.Headers["X-SubscriptionStatus"];
+        //                        string deviceConnectionStatus = response.Headers["X-DeviceConnectionStatus"];
+        //                    }
+        //                    catch (Exception)
+        //                    {
+        //                    }
+        //                }, null);
+        //            }
+        //            catch (Exception)
+        //            {
+        //            }
+        //        }, null);
+        //    }
+        //    catch (Exception)
+        //    {
+        //    }
+        //}
         #endregion
     }
 }

@@ -74,12 +74,12 @@
                     Margin="0,30,0,0"
                     Content="{Binding Path=LocalizedResources.LockScreenSettings, Source={StaticResource LocalizedStrings}}" />
 
-                <Button
+                <!--<Button
                     Grid.Row="5"
                     Click="Simulate_Click_1"
                     x:Name="Simulate"
                     Margin="0,30,0,0"
-                    Content="Simulate incoming call" />
+                    Content="Simulate incoming call" />-->
             </Grid>
         </ScrollViewer>
     </Grid>
