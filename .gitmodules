@@ -6,7 +6,7 @@
 	url = gitosis@git.linphone.org:belle-sip.git
 [submodule "submodules/gsm"]
 	path = submodules/gsm
-	url = gitosis@git.linphone.org:gsm.git
+	url = git://git.linphone.org/gsm.git
 [submodule "submodules/mediastreamer2"]
 	path = submodules/mediastreamer2
 	url = gitosis@git.linphone.org:mediastreamer2-private.git
