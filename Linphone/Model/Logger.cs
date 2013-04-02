@@ -60,12 +60,32 @@ namespace Linphone.Model
         }
 
         /// <summary>
+        /// Write a debug message with a format and some arguments
+        /// </summary>
+        /// <param name="fmt">The format of the message to be written</param>
+        /// <param name="args">The arguments to fill the format with</param>
+        public static void Dbg(String fmt, params object[] args)
+        {
+            Logger.Instance.Write(OutputTraceLevel.Debug, String.Format(fmt, args));
+        }
+
+        /// <summary>
         /// Write a standard message
         /// </summary>
         /// <param name="msg">The message to be written</param>
         public static void Msg(String msg)
         {
             Logger.Instance.Write(OutputTraceLevel.Message, msg);
+        }
+
+        /// <summary>
+        /// Write a standard message with a format and some arguments
+        /// </summary>
+        /// <param name="fmt">The format of the message to be written</param>
+        /// <param name="args">The arguments to fill the format with</param>
+        public static void Msg(String fmt, params object[] args)
+        {
+            Logger.Instance.Write(OutputTraceLevel.Message, String.Format(fmt, args));
         }
 
         /// <summary>
@@ -78,12 +98,32 @@ namespace Linphone.Model
         }
 
         /// <summary>
+        /// Write a warning message with a format and some arguments
+        /// </summary>
+        /// <param name="fmt">The format of the message to be written</param>
+        /// <param name="args">The arguments to fill the format with</param>
+        public static void Warn(String fmt, params object[] args)
+        {
+            Logger.Instance.Write(OutputTraceLevel.Warning, String.Format(fmt, args));
+        }
+
+        /// <summary>
         /// Write an error message
         /// </summary>
         /// <param name="msg">The message to be written</param>
         public static void Err(String msg)
         {
             Logger.Instance.Write(OutputTraceLevel.Error, msg);
+        }
+
+        /// <summary>
+        /// Write an error message with a format and some arguments
+        /// </summary>
+        /// <param name="fmt">The format of the message to be written</param>
+        /// <param name="args">The arguments to fill the format with</param>
+        public static void Err(String fmt, params object[] args)
+        {
+            Logger.Instance.Write(OutputTraceLevel.Error, String.Format(fmt, args));
         }
     }
 }
