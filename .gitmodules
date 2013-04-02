@@ -15,7 +15,7 @@
 	url = git://git.linphone.org/ortp.git
 [submodule "submodules/speex"]
 	path = submodules/speex
-	url = gitosis@git.linphone.org:speex.git
+	url = git://git.linphone.org/speex.git
 [submodule "submodules/linphone"]
 	path = submodules/linphone
 	url = gitosis@git.linphone.org:linphone-private.git
