@@ -1,0 +1,10 @@
+[net]
+firewall_policy=0
+
+[sip]
+sip_random_port=1
+default_proxy=0
+
+[rtp]
+audio_rtp_port=7076
+video_rtp_port=9078
