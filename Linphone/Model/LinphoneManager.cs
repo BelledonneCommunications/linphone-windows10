@@ -367,13 +367,13 @@ namespace Linphone.Model
 
         private void UnmuteRequested(VoipCallCoordinator sender, MuteChangeEventArgs args)
         {
-            Debug.WriteLine("[LinphoneManager] Unmute requested");
+            Logger.Msg("[LinphoneManager] Unmute requested");
             MuteMic(true);
         }
 
         private void MuteRequested(VoipCallCoordinator sender, MuteChangeEventArgs args)
         {
-            Debug.WriteLine("[LinphoneManager] mute requested");
+            Logger.Msg("[LinphoneManager] Mute requested");
             MuteMic(false);
         }
 
@@ -403,13 +403,13 @@ namespace Linphone.Model
 
         private void CallResumeRequested(VoipPhoneCall sender, CallStateChangeEventArgs args)
         {
-            Debug.WriteLine("[LinphoneManager] Resume requested");
+            Logger.Msg("[LinphoneManager] Resume requested");
             ResumeCurrentCall();
         }
 
         private void CallHoldRequested(VoipPhoneCall sender, CallStateChangeEventArgs args)
         {
-            Debug.WriteLine("[LinphoneManager] Pause requested");
+            Logger.Msg("[LinphoneManager] Pause requested");
             PauseCurrentCall();
         }
         #endregion
@@ -519,7 +519,7 @@ namespace Linphone.Model
             }
             else if (state == LinphoneCallState.Paused || state == LinphoneCallState.PausedByRemote)
             {
-                Debug.WriteLine("[LinphoneManager] Call paused");
+                Logger.Msg("[LinphoneManager] Call paused");
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
                     ((VoipPhoneCall)call.CallContext).NotifyCallHeld();
@@ -529,7 +529,7 @@ namespace Linphone.Model
             }
             else if (state == LinphoneCallState.StreamsRunning)
             {
-                Debug.WriteLine("[LinphoneManager] Call running");
+                Logger.Msg("[LinphoneManager] Call running");
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
                     ((VoipPhoneCall)call.CallContext).NotifyCallActive();

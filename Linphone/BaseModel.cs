@@ -82,7 +82,7 @@ namespace Linphone
         /// </summary>
         public void CallEnded()
         {
-            System.Diagnostics.Debug.WriteLine("[CallListener] Call ended, can go back ? " + this.Page.NavigationService.CanGoBack);
+            Logger.Msg("[CallListener] Call ended, can go back ? " + this.Page.NavigationService.CanGoBack);
 
             if (this.Page.NavigationService.CanGoBack)
                 this.Page.NavigationService.GoBack();
