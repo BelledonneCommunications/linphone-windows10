@@ -408,6 +408,8 @@ namespace Linphone
 			LinphoneCore(LinphoneCoreListener^ coreListener);
 			void Init();
 			~LinphoneCore();
+			void InstallLinphoneRc();
+			Platform::String^ LinphoneRcPath();
 
 			::LinphoneCore *lc;
 			Windows::System::Threading::ThreadPoolTimer ^IterateTimer;

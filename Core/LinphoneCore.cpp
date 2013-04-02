@@ -12,11 +12,18 @@
 #include "Enums.h"
 #include "ApiLock.h"
 #include <collection.h>
+#include <ppltasks.h>
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
+using namespace concurrency;
 using namespace Platform;
 using namespace Platform::Collections;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
+using namespace Windows::Storage;
+using namespace Windows::Storage::Streams;
 using namespace Windows::System::Threading;
 
 Linphone::Core::Transports::Transports()
@@ -738,6 +745,63 @@ Linphone::Core::LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener) :
 
 }
 
+ref class LinphoneRcInstallation sealed
+{
+public:
+	LinphoneRcInstallation() {}
+
+	property Windows::Storage::Streams::IOutputStream^ OutputStream
+	{
+		Windows::Storage::Streams::IOutputStream^ get() { return _outputStream; }
+		void set(Windows::Storage::Streams::IOutputStream^ stream) { _outputStream = stream; }
+	};
+private:
+	Windows::Storage::Streams::IOutputStream^ _outputStream;
+};
+
+void Linphone::Core::LinphoneCore::InstallLinphoneRc()
+{
+	LinphoneRcInstallation^ install = ref new LinphoneRcInstallation;
+	StorageFolder^ localFolder = ApplicationData::Current->LocalFolder;
+	IAsyncOperation<StorageFile^>^ createOp = localFolder->CreateFileAsync("linphonerc", CreationCollisionOption::FailIfExists);
+	auto createTask = create_task(createOp);
+	createTask.then([install](StorageFile^ destFile) {
+		return destFile->OpenAsync(FileAccessMode::ReadWrite);
+	}).then([install](IRandomAccessStream^ writeStream) {
+		install->OutputStream = writeStream->GetOutputStreamAt(0);
+		DataWriter^ dataWriter = ref new DataWriter(install->OutputStream);
+		std::ifstream inputStream("Assets/linphonerc", std::ifstream::in);
+		std::stringstream buffer;
+		buffer << inputStream.rdbuf();
+		String^ content = Utils::cctops(buffer.str().c_str());
+		dataWriter->WriteString(content);
+		DataWriterStoreOperation^ storeOp = dataWriter->StoreAsync();
+		auto storeTask = create_task(storeOp);
+		storeTask.then([install](size_t size) {
+			return install->OutputStream->FlushAsync();
+		}).then([](task<bool> t) {
+			try {
+				t.get();
+				ms_message("The linphonerc file has been installed successfully");
+			} catch (Platform::COMException^ e) {
+				OutputDebugString(e->Message->Data());
+			}
+		}).wait();
+	}).then([](task<void> t) {
+		try {
+			t.get();
+		} catch (Platform::COMException^ e) {
+			ms_message("The linphonerc file has already been installed");
+		}
+	}).wait();
+}
+
+Platform::String^ Linphone::Core::LinphoneCore::LinphoneRcPath()
+{
+	StorageFolder^ localFolder = ApplicationData::Current->LocalFolder;
+	return localFolder->Path + "\\linphonerc";
+}
+
 void Linphone::Core::LinphoneCore::Init()
 {
 	LinphoneCoreVTable *vtable = (LinphoneCoreVTable*) malloc(sizeof(LinphoneCoreVTable));
@@ -747,7 +811,8 @@ void Linphone::Core::LinphoneCore::Init()
 	vtable->call_state_changed = call_state_changed;
 	vtable->auth_info_requested = auth_info_requested;
 
-	this->lc = linphone_core_new(vtable, NULL, "Assets/linphone_rc", NULL);
+	InstallLinphoneRc();
+	this->lc = linphone_core_new(vtable, Utils::pstoccs(LinphoneRcPath()), "Assets/linphonerc-factory", NULL);
 	
 	//Disable all codecs
 	MSList* codecs=ms_list_copy(linphone_core_get_audio_codecs(lc));
