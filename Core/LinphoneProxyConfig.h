@@ -79,6 +79,7 @@ namespace Linphone
 			/// Sets whether Linphone should replace "+" by "00" in dialed numbers passed to LinphoneCore::Invite.
 			/// </summary>
 			void SetDialEscapePlus(Platform::Boolean value);
+			Platform::String^ GetAddr();
 			Platform::String^ GetDomain();
 			Platform::Boolean IsRegistered();
 

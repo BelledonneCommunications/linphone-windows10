@@ -64,6 +64,7 @@ Linphone::Core::LinphoneAddress^ LinphoneCoreFactory::CreateLinphoneAddress(Plat
 
 Linphone::Core::LinphoneAddress^ LinphoneCoreFactory::CreateLinphoneAddress(Platform::String^ uri)
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return (Linphone::Core::LinphoneAddress^)Utils::CreateLinphoneAddressFromUri(Utils::pstoccs(uri));
 }
 
