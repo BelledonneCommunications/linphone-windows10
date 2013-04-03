@@ -18,7 +18,7 @@ Platform::String^ Linphone::Core::LinphoneAddress::GetDomain()
 
 int Linphone::Core::LinphoneAddress::GetPort()
 {
-	return -1;
+	return linphone_address_get_port_int(this->address);
 }
 
 void Linphone::Core::LinphoneAddress::SetDisplayName(Platform::String^ name)
