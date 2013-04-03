@@ -44,7 +44,8 @@ namespace Linphone.Views
             List<string> transports = new List<string>
             {
                 AppResources.TransportUDP,
-                AppResources.TransportTCP
+                AppResources.TransportTCP,
+                AppResources.TransportTLS
             };
             Transport.ItemsSource = transports;
             Transport.SelectedItem = _appSettings.Transport;
@@ -62,6 +63,7 @@ namespace Linphone.Views
             _appSettings.TunnelServer = tunnelServer.Text;
             _appSettings.TunnelPort = tunnelPort.Text;
             _appSettings.Transport = Transport.SelectedItem.ToString();
+            _appSettings.Save();
 
             NavigationService.GoBack();
         }

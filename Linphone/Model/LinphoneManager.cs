@@ -43,6 +43,17 @@ namespace Linphone.Model
         }
 
         /// <summary>
+        /// Quick accessor for the LinphoneCoreFactory object through the Oop server.
+        /// </summary>
+        public LinphoneCoreFactory LinphoneCoreFactory
+        {
+            get
+            {
+                return server.LinphoneCoreFactory;
+            }
+        }
+
+        /// <summary>
         /// Quick accessor for the LinphoneCore object through the OoP server.
         /// </summary>
         public LinphoneCore LinphoneCore
@@ -176,41 +187,6 @@ namespace Linphone.Model
         #endregion
 
         /// <summary>
-        /// Creates and adds the LinphoneProxyConfig in LinphoneCore.
-        /// </summary>
-        public void InitProxyConfig()
-        {
-            server.LinphoneCore.ClearAuthInfos();
-            server.LinphoneCore.ClearProxyConfigs();
-
-            SettingsManager sm = new SettingsManager();
-            if (sm.Username != null && sm.Username.Length > 0 && sm.Domain != null && sm.Domain.Length > 0)
-            {
-                var proxy = server.LinphoneCore.CreateEmptyProxyConfig();
-                proxy.SetIdentity(sm.Username, sm.Username, sm.Domain);
-                proxy.SetProxy(sm.Domain);
-                proxy.EnableRegister(true);
-
-                server.LinphoneCore.AddProxyConfig(proxy);
-                server.LinphoneCore.SetDefaultProxyConfig(proxy);
-
-                // Can't set string to null: http://stackoverflow.com/questions/12980915/exception-when-trying-to-read-null-string-in-c-sharp-winrt-component-from-winjs
-                var auth = server.LinphoneCore.CreateAuthInfo(sm.Username, "", sm.Password, "", sm.Domain);
-                server.LinphoneCore.AddAuthInfo(auth);
-            }
-        }
-
-        /// <summary>
-        /// Enables codecs using settings values
-        /// </summary>
-        public void InitCodecs()
-        {
-            //TODO
-            PayloadType pt = LinphoneCore.FindPayloadType("PCMU", 8000);
-            LinphoneCore.EnablePayloadType(pt, true);
-        }
-
-        /// <summary>
         /// Creates a new LinphoneCore (if not created yet) using a LinphoneCoreFactory.
         /// </summary>
         public void InitLinphoneCore()
@@ -222,20 +198,25 @@ namespace Linphone.Model
                 return;
             }
 
+            server.LinphoneCoreFactory.CreateLinphoneCore(this);
+            ConfigureLogger();
+            Logger.Msg("[LinphoneManager] LinphoneCore created");
+            AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;
+            CallController.MuteRequested += MuteRequested;
+            CallController.UnmuteRequested += UnmuteRequested;
+        }
+
+        /// <summary>
+        /// Configures the Logger
+        /// </summary>
+        public void ConfigureLogger()
+        {
             // To have the debug output in the debugger use the following commented configure and set your debugger to native mode
             //server.BackgroundModeLogger.Configure(SettingsManager.isDebugEnabled, OutputTraceDest.Debugger, "");
             // Else output the debug traces to a file
             server.BackgroundModeLogger.Configure(SettingsManager.isDebugEnabled, OutputTraceDest.File, "Linphone.log");
             server.LinphoneCoreFactory.OutputTraceListener = server.BackgroundModeLogger;
             Logger.Instance.TraceListener = server.BackgroundModeLogger;
-
-            server.LinphoneCoreFactory.CreateLinphoneCore(this);
-            InitProxyConfig();
-            InitCodecs();
-            Logger.Msg("[LinphoneManager] LinphoneCore created");
-            AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;
-            CallController.MuteRequested += MuteRequested;
-            CallController.UnmuteRequested += UnmuteRequested;
         }
 
         #region CallLogs

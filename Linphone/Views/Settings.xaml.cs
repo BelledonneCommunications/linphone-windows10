@@ -40,7 +40,10 @@ namespace Linphone.Views
 
         private void save_Click_1(object sender, EventArgs e)
         {
-            _appSettings.DebugEnabled = Debug.IsChecked;
+            bool? enabled = Debug.IsChecked;
+            if (!enabled.HasValue) enabled = false;
+            _appSettings.DebugEnabled = (bool)enabled;
+            _appSettings.Save();
 
             NavigationService.GoBack();
         }

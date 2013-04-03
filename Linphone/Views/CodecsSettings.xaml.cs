@@ -44,19 +44,27 @@ namespace Linphone.Views
             NavigationService.GoBack();
         }
 
+        private bool ToBool(bool? enabled)
+        {
+            if (!enabled.HasValue) enabled = false;
+            return (bool)enabled;
+        }
+
         private void save_Click_1(object sender, EventArgs e)
         {
-            _appSettings.AMRNB = AMRNB.IsChecked;
-            _appSettings.AMRWB = AMRWB.IsChecked;
-            _appSettings.Speex16 = Speex16.IsChecked;
-            _appSettings.Speex8 = Speex8.IsChecked;
-            _appSettings.PCMU = PCMU.IsChecked;
-            _appSettings.PCMA = PCMA.IsChecked;
-            _appSettings.PCMA = PCMA.IsChecked;
-            _appSettings.G722 = G722.IsChecked;
-            _appSettings.ILBC = ILBC.IsChecked;
-            _appSettings.SILK16 = SILK16.IsChecked;
-            _appSettings.GSM = GSM.IsChecked;
+            _appSettings.AMRNB = ToBool(AMRNB.IsChecked);
+            _appSettings.AMRNB = ToBool(AMRNB.IsChecked);
+            _appSettings.AMRWB = ToBool(AMRWB.IsChecked);
+            _appSettings.Speex16 = ToBool(Speex16.IsChecked);
+            _appSettings.Speex8 = ToBool(Speex8.IsChecked);
+            _appSettings.PCMU = ToBool(PCMU.IsChecked);
+            _appSettings.PCMA = ToBool(PCMA.IsChecked);
+            _appSettings.PCMA = ToBool(PCMA.IsChecked);
+            _appSettings.G722 = ToBool(G722.IsChecked);
+            _appSettings.ILBC = ToBool(ILBC.IsChecked);
+            _appSettings.SILK16 = ToBool(SILK16.IsChecked);
+            _appSettings.GSM = ToBool(GSM.IsChecked);
+            _appSettings.Save();
 
             NavigationService.GoBack();
         }

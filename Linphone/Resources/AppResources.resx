@@ -284,4 +284,7 @@ http://www.linphone.org/m/help
   <data name="SIPUsername" xml:space="preserve">
     <value>Username</value>
   </data>
+  <data name="TransportTLS" xml:space="preserve">
+    <value>TLS</value>
+  </data>
 </root>
