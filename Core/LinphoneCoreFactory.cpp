@@ -62,9 +62,9 @@ Linphone::Core::LinphoneAddress^ LinphoneCoreFactory::CreateLinphoneAddress(Plat
 	return nullptr;
 }
 
-Linphone::Core::LinphoneAddress^ LinphoneCoreFactory::CreateLinphoneAddress(Platform::String^ address)
+Linphone::Core::LinphoneAddress^ LinphoneCoreFactory::CreateLinphoneAddress(Platform::String^ uri)
 {
-	return nullptr;
+	return (Linphone::Core::LinphoneAddress^)Utils::CreateLinphoneAddressFromUri(Utils::pstoccs(uri));
 }
 
 Linphone::Core::LinphoneCore^ LinphoneCoreFactory::LinphoneCore::get()

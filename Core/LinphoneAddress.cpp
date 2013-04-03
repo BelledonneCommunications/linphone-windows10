@@ -73,6 +73,11 @@ Linphone::Core::LinphoneAddress::LinphoneAddress(::LinphoneAddress *addr) :
 
 }
 
+Linphone::Core::LinphoneAddress::LinphoneAddress(const char *uri)
+{
+	this->address = linphone_address_new(uri);
+}
+
 Linphone::Core::LinphoneAddress::~LinphoneAddress()
 {
 

@@ -18,6 +18,8 @@ namespace Linphone
 
 			static Platform::Object^ CreateLinphoneAddress(void* addr);
 
+			static Platform::Object^ CreateLinphoneAddressFromUri(const char *uri);
+
 			static Platform::Object^ CreateLinphoneCallLog(void* calllog);
 
 		private:

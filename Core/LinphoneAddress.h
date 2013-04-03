@@ -18,11 +18,11 @@ namespace Linphone
 		/// <example>
 		/// Can be instancied using
 		/// <code>
-		/// LinphoneAddress addr = LinphoneCoreFactory.CreateLinphoneAddress("sip:alice@example.net");
+		/// LinphoneAddress addr = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress("sip:alice@example.net");
 		/// </code>
 		/// or
 		/// <code>
-		/// LinphoneAddress addr = LinphoneCoreFactory.CreateLinphoneAddress("alice", "example.net", "Alice B.");
+		/// LinphoneAddress addr = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress("alice", "example.net", "Alice B.");
 		/// </code>
 		/// </example>
 		public ref class LinphoneAddress sealed
@@ -75,6 +75,7 @@ namespace Linphone
 			friend ref class Linphone::Core::LinphoneCoreFactory;
 			
 			LinphoneAddress(::LinphoneAddress *addr);
+			LinphoneAddress(const char *uri);
 			~LinphoneAddress();
 
 			::LinphoneAddress *address;

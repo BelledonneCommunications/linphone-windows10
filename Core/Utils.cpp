@@ -49,6 +49,11 @@ Platform::Object^ Linphone::Core::Utils::CreateLinphoneAddress(void* address)
 	return ref new Linphone::Core::LinphoneAddress((::LinphoneAddress*)address);
 }
 
+Platform::Object^ Linphone::Core::Utils::CreateLinphoneAddressFromUri(const char *uri)
+{
+	return ref new Linphone::Core::LinphoneAddress(uri);
+}
+
 Platform::Object^ Linphone::Core::Utils::CreateLinphoneCallLog(void* callLog)
 {
 	return ref new Linphone::Core::LinphoneCallLog((::LinphoneCallLog*)callLog);

@@ -42,8 +42,8 @@ namespace Linphone
 			/// <summary>
 			/// Constructs a LinphoneAddress object by parsing the user supplied address, given as a string.
 			/// </summary>
-			/// <param name="address">address, should be like "sip:joe@sip.linphone.org"</param>
-			LinphoneAddress^ CreateLinphoneAddress(Platform::String^ address);
+			/// <param name="uri">address, should be like "sip:joe@sip.linphone.org"</param>
+			LinphoneAddress^ CreateLinphoneAddress(Platform::String^ uri);
 
 		private:
 			friend ref class Linphone::Core::Globals;
