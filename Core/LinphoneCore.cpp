@@ -699,9 +699,10 @@ void Linphone::Core::LinphoneCore::SetUseRFC2833ForDTMFs(Platform::Boolean use)
 
 }
 
-Linphone::Core::LpConfig^ Linphone::Core::LinphoneCore::GetConfig() 
+Linphone::Core::LpConfig^ Linphone::Core::LinphoneCore::GetConfig()
 {
-	return nullptr;
+	::LpConfig *config = linphone_core_get_config(this->lc);
+	return (Linphone::Core::LpConfig^)Linphone::Core::Utils::CreateLpConfig(config);
 }
 
 Linphone::Core::LinphoneCoreListener^ Linphone::Core::LinphoneCore::CoreListener::get()

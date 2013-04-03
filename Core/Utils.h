@@ -14,6 +14,8 @@ namespace Linphone
 
 			static Platform::String^ Linphone::Core::Utils::cctops(const char*);
 
+			static Platform::Object^ CreateLpConfig(void *config);
+
 			static Platform::Object^ CreateLinphoneCall(void* call);
 
 			static Platform::Object^ CreateLinphoneAddress(void* addr);

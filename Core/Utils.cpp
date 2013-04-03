@@ -3,6 +3,7 @@
 #include "LinphoneAddress.h"
 #include "LinphoneAuthInfo.h"
 #include "LinphoneCallLog.h"
+#include "LpConfig.h"
 #include "PayloadType.h"
 
 std::string Linphone::Core::Utils::wstos(std::wstring ws)
@@ -38,6 +39,11 @@ Platform::String^ Linphone::Core::Utils::cctops(const char* cc)
 	std::wstring wid_str = std::wstring(s_str.begin(), s_str.end());
 	const wchar_t* w_char = wid_str.c_str();
 	return ref new Platform::String(w_char);
+}
+
+Platform::Object^ Linphone::Core::Utils::CreateLpConfig(void *config)
+{
+	return ref new Linphone::Core::LpConfig((::LpConfig *)config);
 }
 
 Platform::Object^ Linphone::Core::Utils::CreateLinphoneCall(void* call)

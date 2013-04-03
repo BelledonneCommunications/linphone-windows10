@@ -4,6 +4,7 @@
 #include "LinphoneCoreListener.h"
 #include "Utils.h"
 #include "coreapi\linphonecore.h"
+#include "coreapi\lpconfig.h"
 
 namespace Linphone
 {
