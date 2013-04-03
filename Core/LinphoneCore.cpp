@@ -88,8 +88,11 @@ Linphone::Core::LinphoneProxyConfig^ Linphone::Core::LinphoneCore::GetDefaultPro
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	::LinphoneProxyConfig *proxy=NULL;
 	linphone_core_get_default_proxy(this->lc,&proxy);
-	Linphone::Core::LinphoneProxyConfig^ defaultProxy = reinterpret_cast<Linphone::Core::LinphoneProxyConfig^>(proxy);
-	return defaultProxy;
+	if (proxy != nullptr) {
+		LinphoneProxyConfig^ defaultProxy = ref new Linphone::Core::LinphoneProxyConfig(proxy);
+		return defaultProxy;
+	}
+	return nullptr;
 }
 
 Linphone::Core::LinphoneProxyConfig^ Linphone::Core::LinphoneCore::CreateEmptyProxyConfig()

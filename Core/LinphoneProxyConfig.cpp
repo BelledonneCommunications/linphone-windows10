@@ -163,6 +163,13 @@ Linphone::Core::LinphoneProxyConfig::LinphoneProxyConfig()
 	linphone_proxy_config_set_user_data(this->proxy_config, proxy);
 }
 
+Linphone::Core::LinphoneProxyConfig::LinphoneProxyConfig(::LinphoneProxyConfig* proxy_config)
+{
+	this->proxy_config = proxy_config;
+	RefToPtrProxy<LinphoneProxyConfig^> *proxy = new RefToPtrProxy<LinphoneProxyConfig^>(this);
+	linphone_proxy_config_set_user_data(this->proxy_config, proxy);
+}
+
 Linphone::Core::LinphoneProxyConfig::~LinphoneProxyConfig()
 {
 	RefToPtrProxy<LinphoneProxyConfig^> *proxy = reinterpret_cast< RefToPtrProxy<LinphoneProxyConfig^> *>(linphone_proxy_config_get_user_data(this->proxy_config));

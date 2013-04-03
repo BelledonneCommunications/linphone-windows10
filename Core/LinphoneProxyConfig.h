@@ -116,6 +116,7 @@ namespace Linphone
 			friend ref class Linphone::Core::LinphoneCore;
 
 			LinphoneProxyConfig();
+			LinphoneProxyConfig(::LinphoneProxyConfig* proxy_config);
 			~LinphoneProxyConfig();
 
 			::LinphoneProxyConfig *proxy_config;
