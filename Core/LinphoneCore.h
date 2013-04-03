@@ -97,6 +97,11 @@ namespace Linphone
 			/// Creates an empty auth info.
 			/// </summary>
 			LinphoneAuthInfo^ CreateAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm);
+
+			/// <summary>
+			/// Gets the current auth infos.
+			/// </summary>
+			Windows::Foundation::Collections::IVector<Platform::Object^>^ GetAuthInfos();
 			
 			/// <summary>
 			/// Destroys LinphoneCore and free all underlying resources.

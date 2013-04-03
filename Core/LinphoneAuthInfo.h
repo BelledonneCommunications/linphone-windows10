@@ -24,6 +24,10 @@ namespace Linphone
 
 			void SetUsername(Platform::String^ username);
 
+			Platform::String^ GetUserId();
+
+			void SetUserId(Platform::String^ userid);
+
 			Platform::String^ GetPassword();
 
 			void SetPassword(Platform::String^ password);
@@ -32,10 +36,16 @@ namespace Linphone
 
 			void SetRealm(Platform::String^ realm);
 
+			Platform::String^ GetHa1();
+
+			void SetHa1(Platform::String^ ha1);
+
 		private:
+			friend class Linphone::Core::Utils;
 			friend ref class Linphone::Core::LinphoneCore;
 
 			LinphoneAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm);
+			LinphoneAuthInfo(::LinphoneAuthInfo *auth_info);
 			~LinphoneAuthInfo();
 
 			::LinphoneAuthInfo *auth_info;

@@ -126,6 +126,26 @@ Linphone::Core::LinphoneAuthInfo^ Linphone::Core::LinphoneCore::CreateAuthInfo(P
 	return authInfo;
 }
 
+static void AddAuthInfoToVector(void *vAuthInfo, void *vector)
+{
+	::LinphoneAuthInfo *ai = (LinphoneAuthInfo *)vAuthInfo;
+	Linphone::Core::RefToPtrProxy<IVector<Object^>^> *list = reinterpret_cast< Linphone::Core::RefToPtrProxy<IVector<Object^>^> *>(vector);
+	IVector<Object^>^ authInfos = (list) ? list->Ref() : nullptr;
+
+	Linphone::Core::LinphoneAuthInfo^ authInfo = (Linphone::Core::LinphoneAuthInfo^)Linphone::Core::Utils::CreateLinphoneAuthInfo(ai);
+	authInfos->Append(authInfo);
+}
+
+IVector<Object^>^ Linphone::Core::LinphoneCore::GetAuthInfos()
+{
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	IVector<Object^>^ authInfos = ref new Vector<Object^>();
+	const MSList *authlist = linphone_core_get_auth_info_list(this->lc);
+	RefToPtrProxy<IVector<Object^>^> *authInfosPtr = new RefToPtrProxy<IVector<Object^>^>(authInfos);
+	ms_list_for_each2(authlist, AddAuthInfoToVector, authInfosPtr);
+	return authInfos;
+}
+
 void Linphone::Core::LinphoneCore::Destroy() 
 {
 	IterateTimer->Cancel();

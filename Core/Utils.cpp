@@ -1,6 +1,7 @@
 #include "Utils.h"
 #include "LinphoneCall.h"
 #include "LinphoneAddress.h"
+#include "LinphoneAuthInfo.h"
 #include "LinphoneCallLog.h"
 #include "PayloadType.h"
 
@@ -52,6 +53,11 @@ Platform::Object^ Linphone::Core::Utils::CreateLinphoneAddress(void* address)
 Platform::Object^ Linphone::Core::Utils::CreateLinphoneAddressFromUri(const char *uri)
 {
 	return ref new Linphone::Core::LinphoneAddress(uri);
+}
+
+Platform::Object^ Linphone::Core::Utils::CreateLinphoneAuthInfo(void *auth_info)
+{
+	return ref new Linphone::Core::LinphoneAuthInfo((::LinphoneAuthInfo *)auth_info);
 }
 
 Platform::Object^ Linphone::Core::Utils::CreateLinphoneCallLog(void* callLog)
