@@ -28,20 +28,24 @@ namespace Linphone
 		{
 		public:
 			Transports();
+			Transports(int udp_port, int tcp_port, int tls_port);
 			Transports(Transports^ t);
 			Platform::String^ ToString();
 
 			property int UDP
             {
                 int get();
+				void set(int value);
             }
 			property int TCP
             {
                 int get();
+				void set(int value);
             }
 			property int TLS
             {
                 int get();
+				void set(int value);
             }
 		private:
 			int udp;

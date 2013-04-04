@@ -26,9 +26,19 @@ using namespace Windows::Storage;
 using namespace Windows::Storage::Streams;
 using namespace Windows::System::Threading;
 
-Linphone::Core::Transports::Transports()
+Linphone::Core::Transports::Transports() :
+	udp(5060),
+	tcp(0),
+	tls(0)
 {
 
+}
+
+Linphone::Core::Transports::Transports(int udp_port, int tcp_port, int tls_port) :
+	udp(udp_port),
+	tcp(tcp_port),
+	tls(tls_port)
+{
 }
 
 Linphone::Core::Transports::Transports(Linphone::Core::Transports^ t) :
@@ -44,14 +54,35 @@ int Linphone::Core::Transports::UDP::get()
 	return udp;
 }
 
+void Linphone::Core::Transports::UDP::set(int value)
+{
+	this->udp = value;
+	this->tcp = 0;
+	this->tls = 0;
+}
+
 int Linphone::Core::Transports::TCP::get()
 {
 	return tcp;
 }
 
+void Linphone::Core::Transports::TCP::set(int value)
+{
+	this->udp = 0;
+	this->tcp = value;
+	this->tls = 0;
+}
+
 int Linphone::Core::Transports::TLS::get()
 {
 	return tls;
+}
+
+void Linphone::Core::Transports::TLS::set(int value)
+{
+	this->udp = 0;
+	this->tcp = 0;
+	this->tls = value;
 }
 
 Platform::String^ Linphone::Core::Transports::ToString()
@@ -418,14 +449,21 @@ void Linphone::Core::LinphoneCore::EnableEchoLimiter(Platform::Boolean enable)
 
 }
 
-void Linphone::Core::LinphoneCore::SetSignalingTransportsPorts(Transports^ transports) 
+void Linphone::Core::LinphoneCore::SetSignalingTransportsPorts(Transports^ t) 
 {
-
+	::LCSipTransports transports;
+	memset(&transports, 0, sizeof(LCSipTransports));
+	transports.udp_port = t->UDP;
+	transports.tcp_port = t->TCP;
+	transports.tls_port = t->TLS;
+	linphone_core_set_sip_transports(this->lc, &transports);
 }
 
-Linphone::Core::Transports^ Linphone::Core::LinphoneCore::GetSignalingTransportsPorts() 
+Linphone::Core::Transports^ Linphone::Core::LinphoneCore::GetSignalingTransportsPorts()
 {
-	return nullptr;
+	::LCSipTransports transports;
+	linphone_core_get_sip_transports(this->lc, &transports);
+	return ref new Transports(transports.udp_port, transports.tcp_port, transports.tls_port);
 }
 
 void Linphone::Core::LinphoneCore::EnableIPv6(Platform::Boolean enable) 
