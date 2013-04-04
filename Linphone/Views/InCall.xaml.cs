@@ -152,7 +152,6 @@ namespace Linphone.Views
         /// <summary>
         /// Do not allow user to leave the incall page while call is active
         /// </summary>
-        /// <param name="e"></param>
         protected override void OnBackKeyPress(CancelEventArgs e)
         {
             e.Cancel = true;

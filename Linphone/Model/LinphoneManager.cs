@@ -14,6 +14,7 @@ using Linphone.Resources;
 using Windows.Phone.Networking.Voip;
 using System.Windows.Media.Imaging;
 using Windows.Phone.Media.Devices;
+using System.Reflection;
 
 namespace Linphone.Model
 {
@@ -204,6 +205,12 @@ namespace Linphone.Model
             AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;
             CallController.MuteRequested += MuteRequested;
             CallController.UnmuteRequested += UnmuteRequested;
+            
+            var nameHelper = new AssemblyName(Assembly.GetExecutingAssembly().FullName);
+            var version = nameHelper.Version;
+            LinphoneCore.GetDefaultProxyConfig().SetContactParameters("app-id=" + version + ";pn-type=wp;pn-tok=" + ((App)App.Current).PushChannelUri);
+
+            LinphoneCore.SetNetworkReachable(true);
         }
 
         /// <summary>
