@@ -102,7 +102,7 @@ Linphone::Core::LinphoneProxyConfig^ Linphone::Core::LinphoneCore::CreateEmptyPr
 	return proxyConfig;
 }
 
-Windows::Foundation::Collections::IVector<Linphone::Core::LinphoneProxyConfig^>^ Linphone::Core::LinphoneCore::GetProxyConfigList() 
+IVector<Object^>^ Linphone::Core::LinphoneCore::GetProxyConfigList() 
 {
 	return nullptr;
 }
@@ -353,9 +353,16 @@ Linphone::Core::PayloadType^ Linphone::Core::LinphoneCore::FindPayloadType(Platf
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 
 	const char* type = Linphone::Core::Utils::pstoccs(mime);
-	::PayloadType* pt = linphone_core_find_payload_type(this->lc, type, clockRate, 1);
+	::PayloadType* pt = linphone_core_find_payload_type(this->lc, type, clockRate, LINPHONE_FIND_PAYLOAD_IGNORE_CHANNELS);
 	delete type;
 	return ref new Linphone::Core::PayloadType(pt);
+}
+
+bool Linphone::Core::LinphoneCore::PayloadTypeEnabled(PayloadType^ pt)
+{
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	::PayloadType *payload = pt->payload;
+	return linphone_core_payload_type_enabled(this->lc, payload);
 }
 
 void Linphone::Core::LinphoneCore::EnablePayloadType(PayloadType^ pt, Platform::Boolean enable) 
@@ -366,9 +373,24 @@ void Linphone::Core::LinphoneCore::EnablePayloadType(PayloadType^ pt, Platform::
 	linphone_core_enable_payload_type(this->lc, payload, enable);
 }
 
-Windows::Foundation::Collections::IVector<Linphone::Core::PayloadType^>^ Linphone::Core::LinphoneCore::GetAudioCodecs() 
+static void AddCodecToVector(void *vCodec, void *vector)
 {
-	return nullptr;
+	::PayloadType *pt = (PayloadType *)vCodec;
+	Linphone::Core::RefToPtrProxy<IVector<Object^>^> *list = reinterpret_cast< Linphone::Core::RefToPtrProxy<IVector<Object^>^> *>(vector);
+	IVector<Object^>^ codecs = (list) ? list->Ref() : nullptr;
+
+	Linphone::Core::PayloadType^ codec = (Linphone::Core::PayloadType^)Linphone::Core::Utils::CreatePayloadType(pt);
+	codecs->Append(codec);
+}
+
+IVector<Object^>^ Linphone::Core::LinphoneCore::GetAudioCodecs()
+{
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	IVector<Object^>^ codecs = ref new Vector<Object^>();
+	const MSList *codecslist = linphone_core_get_audio_codecs(this->lc);
+	RefToPtrProxy<IVector<Object^>^> *codecsPtr = new RefToPtrProxy<IVector<Object^>^>(codecs);
+	ms_list_for_each2(codecslist, AddCodecToVector, codecsPtr);
+	return codecs;
 }
 
 void Linphone::Core::LinphoneCore::EnableEchoCancellation(Platform::Boolean enable) 
@@ -838,13 +860,6 @@ void Linphone::Core::LinphoneCore::Init()
 	InstallLinphoneRc();
 	this->lc = linphone_core_new(vtable, Utils::pstoccs(LinphoneRcPath()), "Assets/linphonerc-factory", NULL);
 	
-	//Disable all codecs
-	MSList* codecs=ms_list_copy(linphone_core_get_audio_codecs(lc));
-	MSList* codecs_it;
-	for (codecs_it=codecs;codecs_it!=NULL;codecs_it=codecs_it->next) {
-			linphone_core_enable_payload_type(lc,(::PayloadType*)codecs_it->data,0);
-	}
-
 	// Launch iterate timer
 	TimeSpan period;
 	period.Duration = 20 * 10000;

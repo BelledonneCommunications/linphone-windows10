@@ -46,6 +46,11 @@ Platform::Object^ Linphone::Core::Utils::CreateLpConfig(void *config)
 	return ref new Linphone::Core::LpConfig((::LpConfig *)config);
 }
 
+Platform::Object^ Linphone::Core::Utils::CreatePayloadType(void *pt)
+{
+	return ref new Linphone::Core::PayloadType((::PayloadType *)pt);
+}
+
 Platform::Object^ Linphone::Core::Utils::CreateLinphoneCall(void* call)
 {
 	return ref new Linphone::Core::LinphoneCall((::LinphoneCall*)call);

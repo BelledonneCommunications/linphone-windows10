@@ -1,14 +1,17 @@
+#include "ApiLock.h"
 #include "PayloadType.h"
 #include "Server.h"
 
-Platform::String^ Linphone::Core::PayloadType::GetMime()
+Platform::String^ Linphone::Core::PayloadType::GetMimeType()
 {
-	return nullptr;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return Utils::cctops(this->payload->mime_type);
 }
 
-int Linphone::Core::PayloadType::GetRate()
+int Linphone::Core::PayloadType::GetClockRate()
 {
-	return -1;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return this->payload->clock_rate;
 }
 
 Linphone::Core::PayloadType::PayloadType(::PayloadType *payload) :

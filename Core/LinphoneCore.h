@@ -84,7 +84,7 @@ namespace Linphone
 			/// </summary>
 			LinphoneProxyConfig^ CreateEmptyProxyConfig();
 
-			Windows::Foundation::Collections::IVector<LinphoneProxyConfig^>^ GetProxyConfigList();
+			Windows::Foundation::Collections::IVector<Platform::Object^>^ GetProxyConfigList();
 
 			void ClearAuthInfos();
 
@@ -234,6 +234,11 @@ namespace Linphone
 			PayloadType^ FindPayloadType(Platform::String^ mime, int clockRate);
 
 			/// <summary>
+			/// Tells whether a payload type is enabled or not.
+			/// </summary>
+			bool PayloadTypeEnabled(PayloadType^ pt);
+
+			/// <summary>
 			/// Not implemented yet.
 			/// </summary>
 			void EnablePayloadType(PayloadType^ pt, Platform::Boolean enable);
@@ -241,7 +246,7 @@ namespace Linphone
 			/// <summary>
 			/// Returns the currently supported audio codecs, as PayloadType elements.
 			/// </summary>
-			Windows::Foundation::Collections::IVector<PayloadType^>^ GetAudioCodecs();
+			Windows::Foundation::Collections::IVector<Platform::Object^>^ GetAudioCodecs();
 
 			void EnableEchoCancellation(Platform::Boolean enable);
 			Platform::Boolean IsEchoCancellationEnabled();
