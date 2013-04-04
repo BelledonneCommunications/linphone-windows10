@@ -168,7 +168,10 @@ namespace Linphone.Model
             }
 
             // Disconnect the listeners to prevent crash of the background process
-            server.LinphoneCore.CoreListener = null;
+            try
+            {
+                server.LinphoneCore.CoreListener = null;
+            } catch {}
 
             BackgroundProcessConnected = false;
             Debug.WriteLine("[LinphoneManager] Background process disconnected from interface");
@@ -205,10 +208,11 @@ namespace Linphone.Model
             AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;
             CallController.MuteRequested += MuteRequested;
             CallController.UnmuteRequested += UnmuteRequested;
-            
-            var nameHelper = new AssemblyName(Assembly.GetExecutingAssembly().FullName);
-            var version = nameHelper.Version;
-            LinphoneCore.GetDefaultProxyConfig().SetContactParameters("app-id=" + version + ";pn-type=wp;pn-tok=" + ((App)App.Current).PushChannelUri);
+
+            string host, token;
+            host = ((App)App.Current).PushChannelUri.Host;
+            token = ((App)App.Current).PushChannelUri.AbsolutePath;
+            LinphoneCore.GetDefaultProxyConfig().SetContactParameters("app-id=" + host + ";pn-type=wp;pn-tok=" + token + ";pn-msg-str=IM_MSG;pn-call-str=IC_MSG;pn-call-snd=ring.caf;pn-msg-snd=msg.caf");
 
             LinphoneCore.SetNetworkReachable(true);
         }

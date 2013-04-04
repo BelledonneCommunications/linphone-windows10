@@ -711,7 +711,9 @@ void Linphone::Core::LinphoneCore::ResetMissedCallsCount()
 
 void Linphone::Core::LinphoneCore::RefreshRegisters() 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 
+	linphone_core_refresh_registers(this->lc);
 }
 
 Platform::String^ Linphone::Core::LinphoneCore::GetVersion() 

@@ -31,20 +31,8 @@ namespace Linphone.Agents
             if (incomingCallTask != null)
             {
                 this.isIncomingCallAgent = true;
-
-                String message = System.Text.Encoding.UTF8.GetString(incomingCallTask.MessageBody, 0, incomingCallTask.MessageBody.Length);
-                Debug.WriteLine("[LinphoneScheduledAgent] Received VoIP Incoming Call task with body {0}", message);
-
-                XDocument doc = XDocument.Parse(message);
-                String callerName = "", callerNumber = "";
-                var incomingCallPN = from prop in doc.Descendants("IncomingCall") select prop.Element("Name").Value;
-                callerName = incomingCallPN.First().ToString();
-                incomingCallPN = from prop in doc.Descendants("IncomingCall") select prop.Element("Number").Value;
-                callerNumber = incomingCallPN.First().ToString();
-
-                Debug.WriteLine("[{0}] Incoming call from caller {1}, number {2}", "KeepAliveAgent", callerName, callerNumber);
-
-                Debug.WriteLine("[KeepAliveAgent] Incoming call added to LinphoneCore, notifyComplete");
+                Debug.WriteLine("[LinphoneScheduledAgent] Received VoIP Incoming Call task");
+                Globals.Instance.LinphoneCoreFactory.LinphoneCore.RefreshRegisters();
                 base.NotifyComplete();
             }
             else
