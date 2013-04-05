@@ -15,6 +15,7 @@ using Windows.Phone.Networking.Voip;
 using System.Windows.Media.Imaging;
 using Windows.Phone.Media.Devices;
 using System.Reflection;
+using Microsoft.Phone.Net.NetworkInformation;
 
 namespace Linphone.Model
 {
@@ -211,12 +212,15 @@ namespace Linphone.Model
             CallController.MuteRequested += MuteRequested;
             CallController.UnmuteRequested += UnmuteRequested;
 
-            string host, token;
-            host = ((App)App.Current).PushChannelUri.Host;
-            token = ((App)App.Current).PushChannelUri.AbsolutePath;
-            LinphoneCore.GetDefaultProxyConfig().SetContactParameters("app-id=" + host + ";pn-type=wp;pn-tok=" + token + ";pn-msg-str=IM_MSG;pn-call-str=IC_MSG;pn-call-snd=ring.caf;pn-msg-snd=msg.caf");
+            if (LinphoneCore.GetDefaultProxyConfig() != null)
+            {
+                string host, token;
+                host = ((App)App.Current).PushChannelUri.Host;
+                token = ((App)App.Current).PushChannelUri.AbsolutePath;
+                LinphoneCore.GetDefaultProxyConfig().SetContactParameters("app-id=" + host + ";pn-type=wp;pn-tok=" + token + ";pn-msg-str=IM_MSG;pn-call-str=IC_MSG;pn-call-snd=ring.caf;pn-msg-snd=msg.caf");
+            }
 
-            LinphoneCore.SetNetworkReachable(true);
+            LinphoneCore.SetNetworkReachable(DeviceNetworkInformation.IsNetworkAvailable);
 
             isLinphoneRunning = true;
         }
