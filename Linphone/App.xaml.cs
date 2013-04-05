@@ -142,8 +142,6 @@ namespace Linphone
                 {
                     PushChannelUriChanged(this, PushChannelUri);
                 }
-
-                // TODO Add pushchanneluri to contact header
             }
 
             httpChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
@@ -162,8 +160,6 @@ namespace Linphone
             {
                 this.PushChannelUriChanged(this, this.PushChannelUri);
             }
-
-            // TODO Change pushchanneluri in contact header
         }
 
         private void PushChannel_ErrorOccurred(object sender, NotificationChannelErrorEventArgs e)
@@ -273,8 +269,21 @@ namespace Linphone
             // Handle reset requests for clearing the backstack
             RootFrame.Navigated += CheckForResetNavigation;
 
+            RootFrame.Navigating += RootFrame_Navigating;
+
             // Ensure we don't initialize again
             phoneApplicationInitialized = true;
+        }
+
+        private void RootFrame_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+            if (!e.IsNavigationInitiator && LinphoneManager.Instance.isLinphoneRunning)
+            {
+                // Disconnect the listeners to prevent crash of the background process
+                LinphoneManager.Instance.LinphoneCore.CoreListener = null;
+                LinphoneManager.Instance.isLinphoneRunning = false;
+                Debug.WriteLine("[App] Removed listener");
+            }
         }
 
         // Do not add any additional code to this method

@@ -8,6 +8,7 @@
 #include "LinphoneCoreListener.h"
 #include "LpConfig.h"
 #include "PayloadType.h"
+#include "CallController.h"
 #include "Server.h"
 #include "Enums.h"
 #include "ApiLock.h"
@@ -778,17 +779,39 @@ void Linphone::Core::LinphoneCore::CoreListener::set(LinphoneCoreListener^ liste
 }
 
 void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCallState cstate, const char *msg) 
-{
+{	
+	Linphone::Core::LinphoneCallState state = (Linphone::Core::LinphoneCallState) cstate;
+	Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
+	Linphone::Core::LinphoneCall^ lCall = (proxy) ? proxy->Ref() : nullptr;
+	if (lCall == nullptr) {
+		lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
+	}
+		
+	Linphone::Core::CallController^ callController = Linphone::Core::Globals::Instance->CallController;
+	if (state == Linphone::Core::LinphoneCallState::IncomingReceived) {
+		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = callController->OnIncomingCallReceived(lCall, lCall->GetRemoteContact(), lCall->GetRemoteAddress()->AsStringUriOnly(), nullptr);
+		lCall->CallContext = platformCall;
+	} 
+	else if (state == Linphone::Core::LinphoneCallState::OutgoingInit) {
+		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = callController->NewOutgoingCall(lCall->GetRemoteContact(), lCall->GetRemoteAddress()->AsStringUriOnly());
+		lCall->CallContext = platformCall;
+	}
+	else if (state == Linphone::Core::LinphoneCallState::CallEnd || state == Linphone::Core::LinphoneCallState::Error) {
+		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = (Windows::Phone::Networking::Voip::VoipPhoneCall^) lCall->CallContext;
+		platformCall->NotifyCallEnded();
+	}
+	else if (state == Linphone::Core::LinphoneCallState::Paused || state == Linphone::Core::LinphoneCallState::PausedByRemote) {
+		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = (Windows::Phone::Networking::Voip::VoipPhoneCall^) lCall->CallContext;
+		platformCall->NotifyCallHeld();
+	}
+	else if (state == Linphone::Core::LinphoneCallState::StreamsRunning) {
+		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = (Windows::Phone::Networking::Voip::VoipPhoneCall^) lCall->CallContext;
+		platformCall->NotifyCallActive();
+	}
+
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr)
 	{
-		Linphone::Core::LinphoneCallState state = (Linphone::Core::LinphoneCallState) cstate;
-		Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
-		Linphone::Core::LinphoneCall^ lCall = (proxy) ? proxy->Ref() : nullptr;
-		if (lCall == nullptr) {
-			lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
-		}
-
 		listener->CallState(lCall, state);
 	}
 }

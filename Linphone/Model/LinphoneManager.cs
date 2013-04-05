@@ -102,6 +102,11 @@ namespace Linphone.Model
         private static readonly TimeSpan indefiniteWait = new TimeSpan(0, 0, 0, 0, -1);
 
         /// <summary>
+        /// Used to know when linphoneCore has been initialized
+        /// </summary>
+        public bool isLinphoneRunning = false;
+
+        /// <summary>
         /// Starts and connects the UI to the background process.
         /// </summary>
         public void ConnectBackgroundProcessToInterface()
@@ -167,13 +172,8 @@ namespace Linphone.Model
                 return;
             }
 
-            // Disconnect the listeners to prevent crash of the background process
-            try
-            {
-                server.LinphoneCore.CoreListener = null;
-            } catch {}
-
             BackgroundProcessConnected = false;
+            isLinphoneRunning = false;
             Debug.WriteLine("[LinphoneManager] Background process disconnected from interface");
 
             // From this point onwards, it is no longer safe to use any objects in the background process, 
@@ -198,7 +198,9 @@ namespace Linphone.Model
             if ((server.LinphoneCoreFactory != null) && (server.LinphoneCore != null))
             {
                 // Reconnect the listeners when coming back from background mode
+                Logger.Msg("[LinphoneManager] LinphoneCore alread created, skipping");
                 server.LinphoneCore.CoreListener = this;
+                isLinphoneRunning = true;
                 return;
             }
 
@@ -215,6 +217,8 @@ namespace Linphone.Model
             LinphoneCore.GetDefaultProxyConfig().SetContactParameters("app-id=" + host + ";pn-type=wp;pn-tok=" + token + ";pn-msg-str=IM_MSG;pn-call-str=IC_MSG;pn-call-snd=ring.caf;pn-msg-snd=msg.caf");
 
             LinphoneCore.SetNetworkReachable(true);
+
+            isLinphoneRunning = true;
         }
 
         /// <summary>
@@ -451,52 +455,20 @@ namespace Linphone.Model
             Logger.Msg("[LinphoneManager] Call state changed: " + sipAddress + " => " + state.ToString());
             if (state == LinphoneCallState.OutgoingProgress)
             {
+                Logger.Msg("[LinphoneManager] Outgoing progress");
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    VoipPhoneCall vcall;
-                    CallController.RequestNewOutgoingCall("/Linphone;component/Views/InCall.xaml?sip=" + sipAddress, sipAddress, "Linphone", VoipCallMedia.Audio, out vcall);
-                    vcall.NotifyCallActive();
-                    vcall.HoldRequested += CallHoldRequested;
-                    vcall.ResumeRequested += CallResumeRequested;
-                    call.CallContext = vcall;
-
                     if (CallListener != null)
                         CallListener.NewCallStarted(sipAddress);
                 });
             }
-            else if (state == LinphoneCallState.IncomingReceived)
+            else if (state == LinphoneCallState.Connected)
             {
-                String contact = call.GetRemoteContact();
-                String number = call.GetRemoteAddress().AsStringUriOnly();
-                Logger.Msg("[LinphoneManager] Incoming received: " + contact + " (" + number + ")");
-
+                Logger.Msg("[LinphoneManager] Incoming received");
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    VoipPhoneCall vcall = null;
-                    Uri contactUri = new Uri(server.Path + "\\Assets\\unknown.png", UriKind.Absolute);
-                    Uri iconUri = new Uri(server.Path + "\\Assets\\pnicon.png", UriKind.Absolute);
-                    Uri ringtoneUri = new Uri(server.Path + "\\Assets\\Sounds\\oldphone.wma", UriKind.Absolute);
-
-                    CallController.RequestNewIncomingCall("/Linphone;component/Views/InCall.xaml?sip=" + number, contact, number, contactUri, "Linphone", iconUri, "", ringtoneUri, VoipCallMedia.Audio, fifteenSecs, out vcall);
-                    vcall.AnswerRequested += ((c, eventargs) =>
-                    {
-                        Logger.Msg("[LinphoneManager] Call accepted");
-                        vcall.NotifyCallActive();
-                        LinphoneCore.AcceptCall(call);
-                        BaseModel.UIDispatcher.BeginInvoke(() =>
-                        {
-                            if (CallListener != null)
-                                CallListener.NewCallStarted(number);
-                        });
-                    });
-                    vcall.RejectRequested += ((c, eventargs) =>
-                    {
-                        Logger.Msg("[LinphoneManager] Call rejected");
-                        LinphoneCore.TerminateCall(call);
-                    });
-                    vcall.HoldRequested += CallHoldRequested;
-                    vcall.ResumeRequested += CallResumeRequested;
-                    call.CallContext = vcall;
+                    if (CallListener != null)
+                        CallListener.NewCallStarted(sipAddress);
                 });
             }
             else if (state == LinphoneCallState.CallEnd || state == LinphoneCallState.Error)
@@ -504,7 +476,6 @@ namespace Linphone.Model
                 Logger.Msg("[LinphoneManager] Call ended");
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    ((VoipPhoneCall)call.CallContext).NotifyCallEnded();
                     if (CallListener != null)
                         CallListener.CallEnded();
                 });
@@ -514,7 +485,6 @@ namespace Linphone.Model
                 Logger.Msg("[LinphoneManager] Call paused");
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    ((VoipPhoneCall)call.CallContext).NotifyCallHeld();
                     if (CallListener != null)
                         CallListener.PauseStateChanged(true);
                 });
@@ -524,7 +494,6 @@ namespace Linphone.Model
                 Logger.Msg("[LinphoneManager] Call running");
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    ((VoipPhoneCall)call.CallContext).NotifyCallActive();
                     if (CallListener != null)
                         CallListener.PauseStateChanged(false);
                 });

@@ -8,6 +8,7 @@
 #include "LinphoneCoreFactory.h"
 #include "LinphoneCore.h"
 #include "BackgroundModeLogger.h"
+#include "CallController.h"
 
 using namespace Linphone::Core;
 using namespace Windows::Foundation;
@@ -144,6 +145,23 @@ LinphoneCoreFactory^ Globals::LinphoneCoreFactory::get()
 Linphone::Core::LinphoneCore^ Globals::LinphoneCore::get()
 {
 	return this->linphoneCoreFactory->LinphoneCore;
+}
+
+Linphone::Core::CallController^ Globals::CallController::get()
+{
+	if (this->callController == nullptr) 
+    { 
+        // Make sure only one API call is in progress at a time 
+        std::lock_guard<std::recursive_mutex> lock(g_apiLock); 
+ 
+        if (this->callController == nullptr) 
+        { 
+			this->callController = ref new Linphone::Core::CallController(); 
+        } 
+        // else: some other thread has created an instance of the call controller 
+    } 
+ 
+    return this->callController; 
 }
 
 Linphone::Core::BackgroundModeLogger^ Globals::BackgroundModeLogger::get()

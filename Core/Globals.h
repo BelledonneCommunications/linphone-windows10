@@ -48,6 +48,11 @@ namespace Linphone
 			{
 				Linphone::Core::BackgroundModeLogger^ get();
 			}
+ 
+            property CallController^ CallController 
+            { 
+                Linphone::Core::CallController^ get(); 
+            } 
 
         private:
             Globals();
@@ -73,6 +78,8 @@ namespace Linphone
 			Linphone::Core::LinphoneCoreFactory^ linphoneCoreFactory;
 
 			Linphone::Core::BackgroundModeLogger^ backgroundModeLogger;
+
+            Linphone::Core::CallController^ callController; 
         };
     }
 }

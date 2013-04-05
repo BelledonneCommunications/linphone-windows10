@@ -8,6 +8,8 @@ using System.Xml.Serialization;
 using System;
 using System.Linq;
 using System.Xml.Linq;
+using Microsoft.Phone.Shell;
+using Windows.Phone.Networking.Voip;
 
 namespace Linphone.Agents
 {
@@ -31,9 +33,24 @@ namespace Linphone.Agents
             if (incomingCallTask != null)
             {
                 this.isIncomingCallAgent = true;
-                Debug.WriteLine("[LinphoneScheduledAgent] Received VoIP Incoming Call task");
-                Globals.Instance.LinphoneCoreFactory.LinphoneCore.RefreshRegisters();
-                base.NotifyComplete();
+                Debug.WriteLine("[IncomingCallAgent] Received VoIP Incoming Call task");
+
+                //ShellToast toast = new Microsoft.Phone.Shell.ShellToast();
+                //toast.Content = "PN received";
+                //toast.Title = "Linphone";
+                //toast.NavigationUri = new System.Uri("/Views/Dialer.xaml", System.UriKind.RelativeOrAbsolute);
+                //toast.Show();
+
+                // Initiate incoming call processing 
+                // If you want to pass in additional information such as pushNotification.Number, you can 
+                VoipPhoneCall call = Globals.Instance.CallController.OnIncomingCallReceived(null, "miaou", "miaou@sip.linphone.org", this.OnIncomingCallDialogDismissed);
+
+                if (call == null)
+                {
+                    // For some reasons, the incoming call processing was not started. 
+                    // There is nothing more to do. 
+                    base.NotifyComplete();
+                }
             }
             else
             {
@@ -41,8 +58,6 @@ namespace Linphone.Agents
                 if (keepAliveTask != null)
                 {
                     this.isIncomingCallAgent = false;
-                    Debug.WriteLine("[LinphoneSchedulerAgent] Calling NotifyComplete");
-
                     base.NotifyComplete();
                 }
                 else
@@ -51,6 +66,13 @@ namespace Linphone.Agents
                 }
             }
         }
+
+        // This method is called when the incoming call processing is complete 
+        private void OnIncomingCallDialogDismissed()
+        {
+            Debug.WriteLine("[IncomingCallAgent] Incoming call processing is now complete.");
+            base.NotifyComplete();
+        } 
 
         protected override void OnCancel()
         {

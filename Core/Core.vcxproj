@@ -131,6 +131,7 @@ popd</Command>
   <ItemGroup>
     <ClInclude Include="ApiLock.h" />
     <ClInclude Include="BackgroundModeLogger.h" />
+    <ClInclude Include="CallController.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="LinphoneAddress.h" />
     <ClInclude Include="LinphoneCall.h" />
@@ -151,6 +152,7 @@ popd</Command>
   <ItemGroup>
     <ClCompile Include="ApiLock.cpp" />
     <ClCompile Include="BackgroundModeLogger.cpp" />
+    <ClCompile Include="CallController.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="LinphoneAddress.cpp" />
     <ClCompile Include="LinphoneAuthInfo.cpp" />
