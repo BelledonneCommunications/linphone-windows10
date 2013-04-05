@@ -27,6 +27,14 @@ namespace Linphone.Model
         private LinphoneManager()
         {
             LastKnownState = Linphone.Core.RegistrationState.RegistrationNone;
+
+            DeviceNetworkInformation.NetworkAvailabilityChanged += new EventHandler<NetworkNotificationEventArgs>(OnNetworkStatusChanged);
+        }
+
+        private void OnNetworkStatusChanged(object sender, NetworkNotificationEventArgs e)
+        {
+            Debug.WriteLine("[LinphoneManager] Network state changed:" + (DeviceNetworkInformation.IsNetworkAvailable ? "Available" : "Unavailable"));
+            LinphoneCore.SetNetworkReachable(DeviceNetworkInformation.IsNetworkAvailable);
         }
 
         private static LinphoneManager singleton;
