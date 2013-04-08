@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
@@ -16,6 +17,7 @@ using System.Windows.Media.Imaging;
 using Windows.Phone.Media.Devices;
 using System.Reflection;
 using Microsoft.Phone.Net.NetworkInformation;
+using Windows.Storage;
 
 namespace Linphone.Model
 {
@@ -199,6 +201,20 @@ namespace Linphone.Model
         }
         #endregion
 
+        private void InstallConfig()
+        {
+            if (!File.Exists(GetConfigPath()))
+            {
+                File.Copy("Assets/linphonerc", GetConfigPath());
+            }
+        }
+
+        private String GetConfigPath()
+        {
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+	        return localFolder.Path + "\\linphonerc";
+        }
+
         /// <summary>
         /// Creates a new LinphoneCore (if not created yet) using a LinphoneCoreFactory.
         /// </summary>
@@ -213,7 +229,8 @@ namespace Linphone.Model
                 return;
             }
 
-            server.LinphoneCoreFactory.CreateLinphoneCore(this);
+            InstallConfig();
+            server.LinphoneCoreFactory.CreateLinphoneCore(this, GetConfigPath(), "Assets/linphonerc-factory");
             ConfigureLogger();
             Logger.Msg("[LinphoneManager] LinphoneCore created");
             AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;

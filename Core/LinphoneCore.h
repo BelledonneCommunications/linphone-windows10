@@ -418,15 +418,15 @@ namespace Linphone
 		private:
 			friend ref class Linphone::Core::LinphoneCoreFactory;
 
-			LinphoneCoreListener^ listener;
-
 			LinphoneCore(LinphoneCoreListener^ coreListener);
+			LinphoneCore(LinphoneCoreListener^ coreListener, Platform::String^ configPath, Platform::String^ factoryConfigPath);
 			void Init();
 			~LinphoneCore();
-			void InstallLinphoneRc();
-			Platform::String^ LinphoneRcPath();
 
 			::LinphoneCore *lc;
+			LinphoneCoreListener^ listener;
+			Platform::String^ ConfigPath;
+			Platform::String^ FactoryConfigPath;
 			Windows::System::Threading::ThreadPoolTimer ^IterateTimer;
 		};
 	}

@@ -32,8 +32,8 @@ namespace Linphone
 				void set(Linphone::Core::OutputTraceListener^ listener);
 			}
 
-			void CreateLinphoneCore(LinphoneCoreListener^ listener, Platform::String^ userConfig, Platform::String^ factoryConfig, Platform::Object^ userData);
 			void CreateLinphoneCore(LinphoneCoreListener^ listener);
+			void CreateLinphoneCore(LinphoneCoreListener^ listener, Platform::String^ configPath, Platform::String^ factoryConfigPath);
 
 			LinphoneAuthInfo^ CreateAuthInfo(Platform::String^ username, Platform::String^ password, Platform::String^ realm);
 
