@@ -11,42 +11,28 @@ using System.Threading.Tasks;
 namespace Linphone.Model
 {
     /// <summary>
+    /// Interface describing the methods that each setting manager must implement.
+    /// </summary>
+    public interface ISettingsManager
+    {
+        /// <summary>
+        /// Load some settings.
+        /// </summary>
+        void Load();
+
+        /// <summary>
+        /// Save some settings.
+        /// </summary>
+        void Save();
+    }
+
+    /// <summary>
     /// Utility class used to handle everything that's application setting related.
     /// </summary>
     public class SettingsManager
     {
-        private Dictionary<String, String> dict;
-        private Dictionary<String, String> changesDict;
-
-        private const string ApplicationSection = "app";
-
-        #region Constants settings names
-        private const string UsernameKeyName = "Username";
-        private const string PasswordKeyName = "Password";
-        private const string DomainKeyName = "Domain";
-        private const string ProxyKeyName = "Proxy";
-        private const string OutboundProxyKeyName = "OutboundProxy";
-
-        private const string DebugSettingKeyName = "Debug";
-        private const string SIPTransportSettingKeyName = "SIPTransport";
-        private const string SIPPortKeyName = "SIPPort";
-        private const string SendDTFMsRFC2833KeyName = "SendDTFMsRFC2833";
-
-        private const string AMRNBSettingKeyName = "CodecAMRNB";
-        private const string AMRWBSettingKeyName = "CodecAMRWB";
-        private const string Speex16SettingKeyName = "CodecSpeex16";
-        private const string Speex8SettingKeyName = "CodecSpeex8";
-        private const string PCMUSettingKeyName = "CodecPCMU";
-        private const string PCMASettingKeyName = "CodecPCMA";
-        private const string G722SettingKeyName = "CodecG722";
-        private const string ILBCSettingKeyName = "CodecILBC";
-        private const string SILK16SettingKeyName = "CodecSILK16";
-        private const string GSMSettingKeyName = "CodecGSM";
-
-        private const string TunnelServerKeyName = "TunnelServer";
-        private const string TunnelPortKeyName = "TunnelPort";
-        private const string TunnelModeKeyName = "TunnelMode";
-        #endregion
+        protected Dictionary<String, String> dict;
+        protected Dictionary<String, String> changesDict;
 
         /// <summary>
         /// Public constructor.
@@ -55,13 +41,135 @@ namespace Linphone.Model
         {
             dict = new Dictionary<String, String>();
             changesDict = new Dictionary<String, String>();
-            Load();
         }
 
         /// <summary>
+        /// Static access to the debug enabled setting.
+        /// </summary>
+        public static bool isDebugEnabled
+        {
+            get
+            {
+                ApplicationSettingsManager asm = new ApplicationSettingsManager();
+                asm.Load();
+                return asm.DebugEnabled;
+            }
+        }
+
+        protected String Get(String Key)
+        {
+            if (dict.ContainsKey(Key))
+            {
+                return dict[Key];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        protected String GetNew(String Key)
+        {
+            if (changesDict.ContainsKey(Key))
+            {
+                return changesDict[Key];
+            }
+            else if (dict.ContainsKey(Key))
+            {
+                return dict[Key];
+            }
+            return null;
+        }
+
+        protected void Set(String Key, String Value)
+        {
+            if (dict.ContainsKey(Key))
+            {
+                if (dict[Key] != Value)
+                {
+                    changesDict[Key] = Value;
+                }
+            }
+            else
+            {
+                changesDict[Key] = Value;
+            }
+        }
+
+        protected bool ValueChanged(String Key)
+        {
+            return changesDict.ContainsKey(Key);
+        }
+    }
+
+    /// <summary>
+    /// Utility class used to handle application settings.
+    /// </summary>
+    public class ApplicationSettingsManager : SettingsManager, ISettingsManager
+    {
+        private const string ApplicationSection = "app";
+
+        #region Constants settings names
+        private const string DebugSettingKeyName = "Debug";
+        #endregion
+
+        #region Implementation of the ISettingsManager interface
+        /// <summary>
+        /// Load the application settings.
+        /// </summary>
+        public void Load()
+        {
+            dict[DebugSettingKeyName] = LinphoneManager.Instance.LinphoneCore.GetConfig().GetBool(ApplicationSection, DebugSettingKeyName, false).ToString();
+        }
+
+        /// <summary>
+        /// Save the application settings.
+        /// </summary>
+        public void Save()
+        {
+            LinphoneCore lc = LinphoneManager.Instance.LinphoneCore;
+            bool debugEnabled = Convert.ToBoolean(GetNew(DebugSettingKeyName));
+            lc.GetConfig().SetBool(ApplicationSection, DebugSettingKeyName, debugEnabled);
+            LinphoneManager.Instance.ConfigureLogger();
+        }
+        #endregion
+
+        #region Accessors
+        /// <summary>
+        /// Debug enabled setting (Bool).
+        /// </summary>
+        public bool DebugEnabled
+        {
+            get
+            {
+                return Convert.ToBoolean(Get(DebugSettingKeyName));
+            }
+            set
+            {
+                Set(DebugSettingKeyName, value.ToString());
+            }
+        }
+        #endregion
+    }
+
+    /// <summary>
+    /// Utility class to handle SIP account settings.
+    /// </summary>
+    public class SIPAccountSettingsManager : SettingsManager, ISettingsManager
+    {
+        #region Constants settings names
+        private const string UsernameKeyName = "Username";
+        private const string PasswordKeyName = "Password";
+        private const string DomainKeyName = "Domain";
+        private const string ProxyKeyName = "Proxy";
+        private const string OutboundProxyKeyName = "OutboundProxy";
+        #endregion
+
+        #region Implementation of the ISettingsManager interface
+        /// <summary>
         /// Load the SIP account settings.
         /// </summary>
-        private void LoadSIPAccount()
+        public void Load()
         {
             dict[UsernameKeyName] = "";
             dict[DomainKeyName] = "";
@@ -96,154 +204,10 @@ namespace Linphone.Model
             }
         }
 
-        private String GetKeyNameForCodec(String mimeType, int clockRate)
-        {
-            Dictionary<Tuple<String, int>, String> map = new Dictionary<Tuple<String, int>, String>
-            {
-                { new Tuple<String, int>("amr", 8000), AMRNBSettingKeyName },
-                { new Tuple<String, int>("amr", 16000), AMRWBSettingKeyName },
-                { new Tuple<String, int>("speex", 16000), Speex16SettingKeyName },
-                { new Tuple<String, int>("speex", 8000), Speex8SettingKeyName },
-                { new Tuple<String, int>("pcmu", 8000), PCMUSettingKeyName },
-                { new Tuple<String, int>("pcma", 8000), PCMASettingKeyName },
-                { new Tuple<String, int>("g722", 8000), G722SettingKeyName },
-                { new Tuple<String, int>("ilbc", 8000), ILBCSettingKeyName },
-                { new Tuple<String, int>("silk", 16000), SILK16SettingKeyName },
-                { new Tuple<String, int>("gsm", 8000), GSMSettingKeyName },
-            };
-
-            Tuple<String, int> key = new Tuple<String, int>(mimeType.ToLower(), clockRate);
-            if (map.ContainsKey(key))
-            {
-                return map[key];
-            }
-            return null;
-        }
-
-        private void LoadCodecs(IList<Object> ptlist)
-        {
-            foreach (PayloadType pt in ptlist)
-            {
-                String keyname = GetKeyNameForCodec(pt.GetMimeType(), pt.GetClockRate());
-                if (keyname != null)
-                {
-                    dict[keyname] = LinphoneManager.Instance.LinphoneCore.PayloadTypeEnabled(pt).ToString();
-                }
-                else
-                {
-                    Logger.Warn("Codec {0}/{1} supported by core is not shown in the settings view, disable it", pt.GetMimeType(), pt.GetClockRate());
-                    LinphoneManager.Instance.LinphoneCore.EnablePayloadType(pt, false);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Load the codecs settings.
-        /// </summary>
-        private void LoadCodecs()
-        {
-            LoadCodecs(LinphoneManager.Instance.LinphoneCore.GetAudioCodecs());
-        }
-
-        /// <summary>
-        /// Load the network settings.
-        /// </summary>
-        private void LoadNetwork()
-        {
-            Transports transports = LinphoneManager.Instance.LinphoneCore.GetSignalingTransportsPorts();
-            String tname = AppResources.TransportUDP;
-            int port = 5060;
-            if (transports.UDP > 0)
-            {
-                tname = AppResources.TransportUDP;
-                port = transports.UDP;
-            }
-            else if (transports.TCP > 0)
-            {
-                tname = AppResources.TransportTCP;
-                port = transports.TCP;
-            }
-            else if (transports.TLS > 0)
-            {
-                tname = AppResources.TransportTLS;
-                port = transports.TLS;
-            }
-            dict[SIPTransportSettingKeyName] = tname;
-            dict[SIPPortKeyName] = port.ToString();
-        }
-
-        /// <summary>
-        /// Load the settings.
-        /// </summary>
-        private void Load()
-        {
-            LoadSIPAccount();
-            LoadCodecs();
-            LoadNetwork();
-            dict[DebugSettingKeyName] = LinphoneManager.Instance.LinphoneCore.GetConfig().GetBool(ApplicationSection, DebugSettingKeyName, false).ToString();
-        }
-
-        /// <summary>
-        /// Static access to the debug enabled setting.
-        /// </summary>
-        public static bool isDebugEnabled
-        {
-            get
-            {
-                SettingsManager sm = new SettingsManager();
-                return sm.DebugEnabled;
-            }
-        }
-
-        private String Get(String Key)
-        {
-            if (dict.ContainsKey(Key))
-            {
-                return dict[Key];
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        private String GetNew(String Key)
-        {
-            if (changesDict.ContainsKey(Key))
-            {
-                return changesDict[Key];
-            }
-            else if (dict.ContainsKey(Key))
-            {
-                return dict[Key];
-            }
-            return null;
-        }
-
-        private void Set(String Key, String Value)
-        {
-            if (dict.ContainsKey(Key))
-            {
-                if (dict[Key] != Value)
-                {
-                    changesDict[Key] = Value;
-                }
-            }
-            else
-            {
-                changesDict[Key] = Value;
-            }
-        }
-
-        private bool ValueChanged(String Key)
-        {
-            return changesDict.ContainsKey(Key);
-        }
-
         /// <summary>
         /// Save the SIP account settings.
         /// </summary>
-        private void SaveSIPAccount()
+        public void Save()
         {
             bool AccountChanged = ValueChanged(UsernameKeyName) || ValueChanged(PasswordKeyName) || ValueChanged(DomainKeyName)
                 || ValueChanged(ProxyKeyName) || ValueChanged(OutboundProxyKeyName);
@@ -293,68 +257,9 @@ namespace Linphone.Model
                 }
             }
         }
+        #endregion
 
-        private void SaveCodecs(IList<Object> ptlist)
-        {
-            foreach (PayloadType pt in ptlist)
-            {
-                String keyname = GetKeyNameForCodec(pt.GetMimeType(), pt.GetClockRate());
-                if ((keyname != null) && ValueChanged(keyname))
-                {
-                    LinphoneManager.Instance.LinphoneCore.EnablePayloadType(pt, Convert.ToBoolean(GetNew(keyname)));
-                }
-            }
-        }
-
-        /// <summary>
-        /// Save the codecs settings.
-        /// </summary>
-        private void SaveCodecs()
-        {
-            SaveCodecs(LinphoneManager.Instance.LinphoneCore.GetAudioCodecs());
-        }
-
-        /// <summary>
-        /// Save the network settings.
-        /// </summary>
-        private void SaveNetwork()
-        {
-            if (ValueChanged(SIPTransportSettingKeyName))
-            {
-                Transports transports = LinphoneManager.Instance.LinphoneCore.GetSignalingTransportsPorts();
-                int port = Convert.ToInt32(GetNew(SIPPortKeyName));
-                if (GetNew(SIPTransportSettingKeyName) == AppResources.TransportUDP)
-                {
-                    transports.UDP = port;
-                }
-                else if (GetNew(SIPTransportSettingKeyName) == AppResources.TransportTCP)
-                {
-                    transports.TCP = port;
-                }
-                else if (GetNew(SIPTransportSettingKeyName) == AppResources.TransportTLS)
-                {
-                    transports.TLS = port;
-                }
-                LinphoneManager.Instance.LinphoneCore.SetSignalingTransportsPorts(transports);
-            }
-        }
-
-        /// <summary>
-        /// Save the settings.
-        /// </summary>
-        public void Save()
-        {
-            SaveSIPAccount();
-            SaveCodecs();
-            SaveNetwork();
-
-            LinphoneCore lc = LinphoneManager.Instance.LinphoneCore;
-            bool debugEnabled = Convert.ToBoolean(GetNew(DebugSettingKeyName));
-            lc.GetConfig().SetBool(ApplicationSection, DebugSettingKeyName, debugEnabled);
-            LinphoneManager.Instance.ConfigureLogger();
-        }
-
-        #region SIP Account
+        #region Accessors
         /// <summary>
         /// SIP Account username setting (String).
         /// </summary>
@@ -430,53 +335,98 @@ namespace Linphone.Model
             }
         }
         #endregion
+    }
 
-        /// <summary>
-        /// Debug enabled setting (Bool).
-        /// </summary>
-        public bool DebugEnabled
+    /// <summary>
+    /// Utility class to handle codecs settings.
+    /// </summary>
+    public class CodecsSettingsManager : SettingsManager, ISettingsManager
+    {
+        #region Constants settings names
+        private const string AMRNBSettingKeyName = "CodecAMRNB";
+        private const string AMRWBSettingKeyName = "CodecAMRWB";
+        private const string Speex16SettingKeyName = "CodecSpeex16";
+        private const string Speex8SettingKeyName = "CodecSpeex8";
+        private const string PCMUSettingKeyName = "CodecPCMU";
+        private const string PCMASettingKeyName = "CodecPCMA";
+        private const string G722SettingKeyName = "CodecG722";
+        private const string ILBCSettingKeyName = "CodecILBC";
+        private const string SILK16SettingKeyName = "CodecSILK16";
+        private const string GSMSettingKeyName = "CodecGSM";
+        #endregion
+
+        private String GetKeyNameForCodec(String mimeType, int clockRate)
         {
-            get
+            Dictionary<Tuple<String, int>, String> map = new Dictionary<Tuple<String, int>, String>
             {
-                return Convert.ToBoolean(Get(DebugSettingKeyName));
+                { new Tuple<String, int>("amr", 8000), AMRNBSettingKeyName },
+                { new Tuple<String, int>("amr", 16000), AMRWBSettingKeyName },
+                { new Tuple<String, int>("speex", 16000), Speex16SettingKeyName },
+                { new Tuple<String, int>("speex", 8000), Speex8SettingKeyName },
+                { new Tuple<String, int>("pcmu", 8000), PCMUSettingKeyName },
+                { new Tuple<String, int>("pcma", 8000), PCMASettingKeyName },
+                { new Tuple<String, int>("g722", 8000), G722SettingKeyName },
+                { new Tuple<String, int>("ilbc", 8000), ILBCSettingKeyName },
+                { new Tuple<String, int>("silk", 16000), SILK16SettingKeyName },
+                { new Tuple<String, int>("gsm", 8000), GSMSettingKeyName },
+            };
+
+            Tuple<String, int> key = new Tuple<String, int>(mimeType.ToLower(), clockRate);
+            if (map.ContainsKey(key))
+            {
+                return map[key];
             }
-            set
+            return null;
+        }
+
+        #region Implementation of the ISettingsManager interface
+        private void LoadCodecs(IList<Object> ptlist)
+        {
+            foreach (PayloadType pt in ptlist)
             {
-                Set(DebugSettingKeyName, value.ToString());
+                String keyname = GetKeyNameForCodec(pt.GetMimeType(), pt.GetClockRate());
+                if (keyname != null)
+                {
+                    dict[keyname] = LinphoneManager.Instance.LinphoneCore.PayloadTypeEnabled(pt).ToString();
+                }
+                else
+                {
+                    Logger.Warn("Codec {0}/{1} supported by core is not shown in the settings view, disable it", pt.GetMimeType(), pt.GetClockRate());
+                    LinphoneManager.Instance.LinphoneCore.EnablePayloadType(pt, false);
+                }
             }
         }
 
         /// <summary>
-        /// Transport setting (UDP or TCP).
+        /// Load the codecs settings.
         /// </summary>
-        public string Transport
+        public void Load()
         {
-            get
+            LoadCodecs(LinphoneManager.Instance.LinphoneCore.GetAudioCodecs());
+        }
+
+        private void SaveCodecs(IList<Object> ptlist)
+        {
+            foreach (PayloadType pt in ptlist)
             {
-                return Get(SIPTransportSettingKeyName);
-            }
-            set
-            {
-                Set(SIPTransportSettingKeyName, value);
+                String keyname = GetKeyNameForCodec(pt.GetMimeType(), pt.GetClockRate());
+                if ((keyname != null) && ValueChanged(keyname))
+                {
+                    LinphoneManager.Instance.LinphoneCore.EnablePayloadType(pt, Convert.ToBoolean(GetNew(keyname)));
+                }
             }
         }
 
         /// <summary>
-        /// DTMFs using RFC2833 setting (Bool).
+        /// Save the codecs settings.
         /// </summary>
-        public bool? SendDTFMsRFC2833
+        public void Save()
         {
-            get
-            {
-                return false;   // TODO
-            }
-            set
-            {
-                // TODO
-            }
+            SaveCodecs(LinphoneManager.Instance.LinphoneCore.GetAudioCodecs());
         }
+        #endregion
 
-        #region Codecs Settings
+        #region Accessors
         /// <summary>
         /// Is this codec enabled or disabled ? (Boolean)
         /// </summary>
@@ -627,8 +577,130 @@ namespace Linphone.Model
             }
         }
         #endregion
+    }
 
-        #region Tunnel Settings
+    /// <summary>
+    /// Utility class to handle call settings.
+    /// </summary>
+    public class CallSettingsManager : SettingsManager, ISettingsManager
+    {
+        #region Constants settings names
+        private const string SendDTFMsRFC2833KeyName = "SendDTFMsRFC2833";
+        #endregion
+
+        #region Implementation of the ISettingsManager interface
+        public void Load()
+        {
+            // TODO
+        }
+
+        public void Save()
+        {
+            // TODO
+        }
+        #endregion
+
+        #region Accessors
+        /// <summary>
+        /// DTMFs using RFC2833 setting (Bool).
+        /// </summary>
+        public bool? SendDTFMsRFC2833
+        {
+            get
+            {
+                return false;   // TODO
+            }
+            set
+            {
+                // TODO
+            }
+        }
+        #endregion
+    }
+
+    /// <summary>
+    /// Utility class to handle network settings.
+    /// </summary>
+    public class NetworkSettingsManager : SettingsManager, ISettingsManager
+    {
+        #region Constants settings names
+        private const string SIPTransportSettingKeyName = "SIPTransport";
+        private const string SIPPortKeyName = "SIPPort";
+        private const string TunnelServerKeyName = "TunnelServer";
+        private const string TunnelPortKeyName = "TunnelPort";
+        private const string TunnelModeKeyName = "TunnelMode";
+        #endregion
+
+        #region Implementation of the ISettingsManager interface
+        /// <summary>
+        /// Load the network settings.
+        /// </summary>
+        public void Load()
+        {
+            Transports transports = LinphoneManager.Instance.LinphoneCore.GetSignalingTransportsPorts();
+            String tname = AppResources.TransportUDP;
+            int port = 5060;
+            if (transports.UDP > 0)
+            {
+                tname = AppResources.TransportUDP;
+                port = transports.UDP;
+            }
+            else if (transports.TCP > 0)
+            {
+                tname = AppResources.TransportTCP;
+                port = transports.TCP;
+            }
+            else if (transports.TLS > 0)
+            {
+                tname = AppResources.TransportTLS;
+                port = transports.TLS;
+            }
+            dict[SIPTransportSettingKeyName] = tname;
+            dict[SIPPortKeyName] = port.ToString();
+        }
+
+        /// <summary>
+        /// Save the network settings.
+        /// </summary>
+        public void Save()
+        {
+            if (ValueChanged(SIPTransportSettingKeyName))
+            {
+                Transports transports = LinphoneManager.Instance.LinphoneCore.GetSignalingTransportsPorts();
+                int port = Convert.ToInt32(GetNew(SIPPortKeyName));
+                if (GetNew(SIPTransportSettingKeyName) == AppResources.TransportUDP)
+                {
+                    transports.UDP = port;
+                }
+                else if (GetNew(SIPTransportSettingKeyName) == AppResources.TransportTCP)
+                {
+                    transports.TCP = port;
+                }
+                else if (GetNew(SIPTransportSettingKeyName) == AppResources.TransportTLS)
+                {
+                    transports.TLS = port;
+                }
+                LinphoneManager.Instance.LinphoneCore.SetSignalingTransportsPorts(transports);
+            }
+        }
+        #endregion
+
+        #region Accessors
+        /// <summary>
+        /// Transport setting (UDP or TCP).
+        /// </summary>
+        public string Transport
+        {
+            get
+            {
+                return Get(SIPTransportSettingKeyName);
+            }
+            set
+            {
+                Set(SIPTransportSettingKeyName, value);
+            }
+        }
+
         /// <summary>
         /// Tunnel server setting (String).
         /// </summary>

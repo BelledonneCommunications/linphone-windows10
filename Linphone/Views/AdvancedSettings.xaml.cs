@@ -17,7 +17,8 @@ namespace Linphone.Views
     /// </summary>
     public partial class AdvancedSettings : BasePage
     {
-        private SettingsManager _appSettings = new SettingsManager();
+        private CallSettingsManager _callSettings = new CallSettingsManager();
+        private NetworkSettingsManager _networkSettings = new NetworkSettingsManager();
 
         /// <summary>
         /// Public constructor.
@@ -27,7 +28,9 @@ namespace Linphone.Views
             InitializeComponent();
             BuildLocalizedApplicationBar();
 
-            rfc2833.IsChecked = _appSettings.SendDTFMsRFC2833;
+            _callSettings.Load();
+            _networkSettings.Load();
+            rfc2833.IsChecked = _callSettings.SendDTFMsRFC2833;
 
             List<string> tunnelModes = new List<string>
             {
@@ -37,9 +40,9 @@ namespace Linphone.Views
                 AppResources.TunnelModeAuto
             };
             tunnelMode.ItemsSource = tunnelModes;
-            tunnelMode.SelectedItem = _appSettings.TunnelMode;
-            tunnelPort.Text = _appSettings.TunnelPort;
-            tunnelServer.Text = _appSettings.TunnelServer;
+            tunnelMode.SelectedItem = _networkSettings.TunnelMode;
+            tunnelPort.Text = _networkSettings.TunnelPort;
+            tunnelServer.Text = _networkSettings.TunnelServer;
 
             List<string> transports = new List<string>
             {
@@ -48,7 +51,7 @@ namespace Linphone.Views
                 AppResources.TransportTLS
             };
             Transport.ItemsSource = transports;
-            Transport.SelectedItem = _appSettings.Transport;
+            Transport.SelectedItem = _networkSettings.Transport;
         }
 
         private void cancel_Click_1(object sender, EventArgs e)
@@ -58,12 +61,12 @@ namespace Linphone.Views
 
         private void save_Click_1(object sender, EventArgs e)
         {
-            _appSettings.SendDTFMsRFC2833 = rfc2833.IsChecked;
-            _appSettings.TunnelMode = tunnelMode.SelectedItem.ToString();
-            _appSettings.TunnelServer = tunnelServer.Text;
-            _appSettings.TunnelPort = tunnelPort.Text;
-            _appSettings.Transport = Transport.SelectedItem.ToString();
-            _appSettings.Save();
+            _callSettings.SendDTFMsRFC2833 = rfc2833.IsChecked;
+            _networkSettings.TunnelMode = tunnelMode.SelectedItem.ToString();
+            _networkSettings.TunnelServer = tunnelServer.Text;
+            _networkSettings.TunnelPort = tunnelPort.Text;
+            _networkSettings.Transport = Transport.SelectedItem.ToString();
+            _networkSettings.Save();
 
             NavigationService.GoBack();
         }

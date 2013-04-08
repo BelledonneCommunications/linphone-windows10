@@ -21,7 +21,7 @@ namespace Linphone.Views
     /// </summary>
     public partial class Settings : BasePage
     {
-        private SettingsManager _appSettings = new SettingsManager();
+        private ApplicationSettingsManager _settings = new ApplicationSettingsManager();
 
         /// <summary>
         /// Public constructor.
@@ -30,7 +30,8 @@ namespace Linphone.Views
         {
             InitializeComponent();
             BuildLocalizedApplicationBar();
-            Debug.IsChecked = _appSettings.DebugEnabled;
+            _settings.Load();
+            Debug.IsChecked = _settings.DebugEnabled;
         }
 
         private void cancel_Click_1(object sender, EventArgs e)
@@ -42,8 +43,8 @@ namespace Linphone.Views
         {
             bool? enabled = Debug.IsChecked;
             if (!enabled.HasValue) enabled = false;
-            _appSettings.DebugEnabled = (bool)enabled;
-            _appSettings.Save();
+            _settings.DebugEnabled = (bool)enabled;
+            _settings.Save();
 
             NavigationService.GoBack();
         }

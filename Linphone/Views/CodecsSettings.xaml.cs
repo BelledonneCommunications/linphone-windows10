@@ -17,7 +17,7 @@ namespace Linphone.Views
     /// </summary>
     public partial class CodecsSettings : BasePage
     {
-        private SettingsManager _appSettings = new SettingsManager();
+        private CodecsSettingsManager _settings = new CodecsSettingsManager();
 
         /// <summary>
         /// Public constructor.
@@ -27,16 +27,17 @@ namespace Linphone.Views
             InitializeComponent();
             BuildLocalizedApplicationBar();
 
-            AMRNB.IsChecked = _appSettings.AMRNB;
-            AMRWB.IsChecked = _appSettings.AMRWB;
-            Speex16.IsChecked = _appSettings.Speex16;
-            Speex8.IsChecked = _appSettings.Speex8;
-            PCMU.IsChecked = _appSettings.PCMU;
-            PCMA.IsChecked = _appSettings.PCMA;
-            G722.IsChecked = _appSettings.G722;
-            ILBC.IsChecked = _appSettings.ILBC;
-            SILK16.IsChecked = _appSettings.SILK16;
-            GSM.IsChecked = _appSettings.GSM;
+            _settings.Load();
+            AMRNB.IsChecked = _settings.AMRNB;
+            AMRWB.IsChecked = _settings.AMRWB;
+            Speex16.IsChecked = _settings.Speex16;
+            Speex8.IsChecked = _settings.Speex8;
+            PCMU.IsChecked = _settings.PCMU;
+            PCMA.IsChecked = _settings.PCMA;
+            G722.IsChecked = _settings.G722;
+            ILBC.IsChecked = _settings.ILBC;
+            SILK16.IsChecked = _settings.SILK16;
+            GSM.IsChecked = _settings.GSM;
         }
 
         private void cancel_Click_1(object sender, EventArgs e)
@@ -52,19 +53,19 @@ namespace Linphone.Views
 
         private void save_Click_1(object sender, EventArgs e)
         {
-            _appSettings.AMRNB = ToBool(AMRNB.IsChecked);
-            _appSettings.AMRNB = ToBool(AMRNB.IsChecked);
-            _appSettings.AMRWB = ToBool(AMRWB.IsChecked);
-            _appSettings.Speex16 = ToBool(Speex16.IsChecked);
-            _appSettings.Speex8 = ToBool(Speex8.IsChecked);
-            _appSettings.PCMU = ToBool(PCMU.IsChecked);
-            _appSettings.PCMA = ToBool(PCMA.IsChecked);
-            _appSettings.PCMA = ToBool(PCMA.IsChecked);
-            _appSettings.G722 = ToBool(G722.IsChecked);
-            _appSettings.ILBC = ToBool(ILBC.IsChecked);
-            _appSettings.SILK16 = ToBool(SILK16.IsChecked);
-            _appSettings.GSM = ToBool(GSM.IsChecked);
-            _appSettings.Save();
+            _settings.AMRNB = ToBool(AMRNB.IsChecked);
+            _settings.AMRNB = ToBool(AMRNB.IsChecked);
+            _settings.AMRWB = ToBool(AMRWB.IsChecked);
+            _settings.Speex16 = ToBool(Speex16.IsChecked);
+            _settings.Speex8 = ToBool(Speex8.IsChecked);
+            _settings.PCMU = ToBool(PCMU.IsChecked);
+            _settings.PCMA = ToBool(PCMA.IsChecked);
+            _settings.PCMA = ToBool(PCMA.IsChecked);
+            _settings.G722 = ToBool(G722.IsChecked);
+            _settings.ILBC = ToBool(ILBC.IsChecked);
+            _settings.SILK16 = ToBool(SILK16.IsChecked);
+            _settings.GSM = ToBool(GSM.IsChecked);
+            _settings.Save();
 
             NavigationService.GoBack();
         }

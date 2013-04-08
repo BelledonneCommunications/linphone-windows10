@@ -17,7 +17,7 @@ namespace Linphone.Views
     /// </summary>
     public partial class AccountSettings : BasePage
     {
-        private SettingsManager _appSettings = new SettingsManager();
+        private SIPAccountSettingsManager _settings = new SIPAccountSettingsManager();
 
         /// <summary>
         /// Public constructor.
@@ -27,11 +27,12 @@ namespace Linphone.Views
             InitializeComponent();
             BuildLocalizedApplicationBar();
 
-            Username.Text = _appSettings.Username;
-            Password.Password = _appSettings.Password;
-            Domain.Text = _appSettings.Domain;
-            Proxy.Text = _appSettings.Proxy;
-            OutboundProxy.IsChecked = _appSettings.OutboundProxy;
+            _settings.Load();
+            Username.Text = _settings.Username;
+            Password.Password = _settings.Password;
+            Domain.Text = _settings.Domain;
+            Proxy.Text = _settings.Proxy;
+            OutboundProxy.IsChecked = _settings.OutboundProxy;
         }
 
         private void cancel_Click_1(object sender, EventArgs e)
@@ -41,12 +42,12 @@ namespace Linphone.Views
 
         private void save_Click_1(object sender, EventArgs e)
         {
-            _appSettings.Username = Username.Text;
-            _appSettings.Password = Password.Password;
-            _appSettings.Domain = Domain.Text;
-            _appSettings.Proxy = Proxy.Text;
-            _appSettings.OutboundProxy = OutboundProxy.IsChecked;
-            _appSettings.Save();
+            _settings.Username = Username.Text;
+            _settings.Password = Password.Password;
+            _settings.Domain = Domain.Text;
+            _settings.Proxy = Proxy.Text;
+            _settings.OutboundProxy = OutboundProxy.IsChecked;
+            _settings.Save();
 
             NavigationService.GoBack();
         }
