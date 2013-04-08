@@ -229,6 +229,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dialing....
+        /// </summary>
+        public static string Dialing {
+            get {
+                return ResourceManager.GetString("Dialing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to G722.
         /// </summary>
         public static string G722Codec {

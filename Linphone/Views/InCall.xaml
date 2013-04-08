@@ -46,7 +46,7 @@
                 Grid.Row="0"
                 x:Name="Status"
                 Style="{StaticResource PhoneTextAccentStyle}"
-                Text="NUMEROTATION..."
+                Text="{Binding Path=LocalizedResources.Dialing, Source={StaticResource LocalizedStrings}}"
                 Margin="12,0,12,0"
                 FontSize="20" />
             

@@ -52,18 +52,12 @@ namespace Linphone
             }
         }
 
-        private void NewOutgoingCall(String address)
-        {
-            if (address != null && address.Length > 0)
-            {
-                //NavigationService.Navigate(new Uri("/Views/InCall.xaml?sip=" + address, UriKind.RelativeOrAbsolute));
-                LinphoneManager.Instance.NewOutgoingCall(address);
-            }
-        }
-
         private void call_Click_1(object sender, EventArgs e)
         {
-            NewOutgoingCall(addressBox.Text);
+            if (addressBox.Text.Length > 0)
+            {
+                LinphoneManager.Instance.NewOutgoingCall(addressBox.Text);
+            }
         }
 
         private void Numpad_Click_1(object sender, RoutedEventArgs e)

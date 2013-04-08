@@ -290,4 +290,7 @@ http://www.linphone.org/m/help
   <data name="Call" xml:space="preserve">
     <value>Call</value>
   </data>
+  <data name="Dialing" xml:space="preserve">
+    <value>Dialing...</value>
+  </data>
 </root>
