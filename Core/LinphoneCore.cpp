@@ -445,6 +445,7 @@ void Linphone::Core::LinphoneCore::EnableEchoLimiter(Platform::Boolean enable)
 
 void Linphone::Core::LinphoneCore::SetSignalingTransportsPorts(Transports^ t) 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	::LCSipTransports transports;
 	memset(&transports, 0, sizeof(LCSipTransports));
 	transports.udp_port = t->UDP;
@@ -455,6 +456,7 @@ void Linphone::Core::LinphoneCore::SetSignalingTransportsPorts(Transports^ t)
 
 Linphone::Core::Transports^ Linphone::Core::LinphoneCore::GetSignalingTransportsPorts()
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	::LCSipTransports transports;
 	linphone_core_get_sip_transports(this->lc, &transports);
 	return ref new Transports(transports.udp_port, transports.tcp_port, transports.tls_port);
