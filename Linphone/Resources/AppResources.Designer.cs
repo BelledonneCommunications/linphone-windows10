@@ -141,6 +141,15 @@ namespace Linphone.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Call.
         /// </summary>
+        public static string Call {
+            get {
+                return ResourceManager.GetString("Call", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Call.
+        /// </summary>
         public static string CallMenu {
             get {
                 return ResourceManager.GetString("CallMenu", resourceCulture);

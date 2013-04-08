@@ -30,8 +30,6 @@ namespace Linphone
             BuildLocalizedApplicationBar();
 
             ContactManager contactManager = ContactManager.Instance; //Force creation and init of ContactManager
-
-            call.Click += call_Click_1;
         }
 
         /// <summary>
@@ -126,6 +124,11 @@ namespace Linphone
             ApplicationBarMenuItem appBarAbout = new ApplicationBarMenuItem(AppResources.AboutMenu);
             appBarAbout.Click += about_Click_1;
             ApplicationBar.MenuItems.Add(appBarAbout);
+        }
+
+        private void Title_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            LinphoneManager.Instance.LinphoneCore.RefreshRegisters();
         }
     }
 }

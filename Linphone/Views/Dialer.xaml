@@ -28,7 +28,7 @@
         
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="1" Margin="12,5,0,0">
-            <TextBlock Text="{Binding Path=LocalizedResources.DialerMenu, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="{Binding Path=LocalizedResources.DialerMenu, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" Tap="Title_Tap"/>
         </StackPanel>
         
         <!--ContentPanel - place additional content here-->
@@ -232,12 +232,20 @@
             <Grid Grid.Row="2" Margin="0,20,0,20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <controls:TwoStateButton
+                <Button 
+                    Grid.Column="1"
                     x:Name="call"
-                    DefaultImage="/Assets/call_answer_default.png" 
-                    OverImage="/Assets/call_answer_over.png"/>
+                    Background="{StaticResource PhoneAccentBrush}"
+                    Content="{Binding Path=LocalizedResources.Call, Source={StaticResource LocalizedStrings}}"
+                    Click="call_Click_1"
+                    ClickMode="Release">
+                    <Button.Style>
+                        <StaticResource ResourceKey="AccentColorButton"/>
+                    </Button.Style>
+                </Button>
             </Grid>
         </Grid>
         

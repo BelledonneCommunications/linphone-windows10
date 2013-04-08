@@ -287,4 +287,7 @@ http://www.linphone.org/m/help
   <data name="TransportTLS" xml:space="preserve">
     <value>TLS</value>
   </data>
+  <data name="Call" xml:space="preserve">
+    <value>Call</value>
+  </data>
 </root>

@@ -10,8 +10,13 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     d:DesignHeight="100" d:DesignWidth="480">
-    
-    <Grid x:Name="LayoutRoot">
+
+    <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneAccentBrush}">
+        <Grid.Resources>
+            <Style TargetType="ContentControl" x:Key="HintCustomStyle">
+                <Setter Property="Foreground" Value="LightGray"/>
+            </Style>
+        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -27,6 +32,7 @@
             BorderThickness="0"
             Foreground="White"
             Background="Transparent"
+            HintStyle="{StaticResource HintCustomStyle}"
             Hint="{Binding Path=LocalizedResources.AddressHint, Source={StaticResource LocalizedStrings}}"/>
 
         <toolkit:PhoneTextBox 
