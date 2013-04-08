@@ -21,6 +21,8 @@ namespace Linphone.Agents
             Debug.WriteLine("[LinphoneForegroundLifeTimeAgent] The UI has entered the foreground.");
 
             Globals.Instance.StartServer(RegistrationHelper.OutOfProcServerClassNames);
+            //Force the callController to be initialized now to avoid creating it at the last moment (workaroud outgoing call crash after app started)
+            Globals.Instance.CallController.ToString();
         }
 
         /// <summary>

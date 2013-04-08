@@ -107,9 +107,9 @@ CallController::CallController() :
 		defaultContactImageUri(nullptr), 
 		linphoneImageUri(nullptr),
 		ringtoneUri(nullptr),
-		callerNumber(nullptr)
+		callerNumber(nullptr),
+		callCoordinator(VoipCallCoordinator::GetDefault())
 {
-	this->callCoordinator = VoipCallCoordinator::GetDefault(); 
 
 	// URIs required for interactions with the VoipCallCoordinator 
     String^ installFolder = String::Concat(Windows::ApplicationModel::Package::Current->InstalledLocation->Path, "\\"); 

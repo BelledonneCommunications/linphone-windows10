@@ -787,7 +787,7 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = callController->OnIncomingCallReceived(lCall, lCall->GetRemoteContact(), lCall->GetRemoteAddress()->AsStringUriOnly(), nullptr);
 		lCall->CallContext = platformCall;
 	} 
-	else if (state == Linphone::Core::LinphoneCallState::OutgoingInit) {
+	else if (state == Linphone::Core::LinphoneCallState::OutgoingProgress) {
 		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = callController->NewOutgoingCall(lCall->GetRemoteContact(), lCall->GetRemoteAddress()->AsStringUriOnly());
 		lCall->CallContext = platformCall;
 	}
