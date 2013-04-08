@@ -40,3 +40,6 @@
 [submodule "submodules/mssilk"]
 	path = submodules/mssilk
 	url = git://git.linphone.org/mssilk.git
+[submodule "submodules/polarssl"]
+	path = submodules/polarssl
+	url = git://github.com/polarssl/polarssl.git
