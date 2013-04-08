@@ -216,8 +216,6 @@
     <Content Include="Assets\AppBar\transport.rew.png" />
     <Content Include="Assets\AppBar\upload.png" />
     <Content Include="Assets\AppIcon.png" />
-    <Content Include="Assets\backspace_default.png" />
-    <Content Include="Assets\backspace_over.png" />
     <Content Include="Assets\call_status_incoming.png" />
     <Content Include="Assets\call_status_missed.png" />
     <Content Include="Assets\call_status_outgoing.png" />
