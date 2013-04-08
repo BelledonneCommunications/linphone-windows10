@@ -50,14 +50,10 @@
                 <ControlTemplate>
                     <Image  
                         x:Name="backspace"
-                        Source="/Assets/backspace_default.png" 
-                        Stretch="Uniform"
-                        Width="75"
+                        Source="/Assets/AppBar/clear.png" 
+                        Stretch="UniformToFill"
                         Hold="backspace_Hold_1"
-                        ManipulationStarted="Image_ManipulationStarted_1"
-                        ManipulationCompleted="Image_ManipulationCompleted_1"
-                        HorizontalAlignment="Right"
-                        Margin="0,0,20,0"/>
+                        HorizontalAlignment="Right"/>
                 </ControlTemplate>
             </Button.Template>
         </Button>

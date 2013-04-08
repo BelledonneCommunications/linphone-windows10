@@ -46,18 +46,6 @@ namespace Linphone.Controls
                 address.Text = address.Text.Substring(0, address.Text.Length - 1);
         }
 
-        private void Image_ManipulationStarted_1(object sender, ManipulationStartedEventArgs e)
-        {
-            Image image = (sender as Image);
-            image.Source = new BitmapImage(new Uri("/Assets/backspace_over.png", UriKind.RelativeOrAbsolute));
-        }
-
-        private void Image_ManipulationCompleted_1(object sender, ManipulationCompletedEventArgs e)
-        {
-            Image image = (sender as Image);
-            image.Source = new BitmapImage(new Uri("/Assets/backspace_default.png", UriKind.RelativeOrAbsolute));
-        }
-
         // This is needed for the textbox hack, see comment in .xaml file
         private void address_TextChanged_1(object sender, TextChangedEventArgs e)
         {
