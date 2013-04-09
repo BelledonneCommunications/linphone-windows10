@@ -10,6 +10,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Microsoft.Phone.Shell;
 using Windows.Phone.Networking.Voip;
+using Windows.Storage;
 
 namespace Linphone.Agents
 {
@@ -35,16 +36,19 @@ namespace Linphone.Agents
                 this.isIncomingCallAgent = true;
                 Debug.WriteLine("[IncomingCallAgent] Received VoIP Incoming Call task");
 
-                TileManager.Instance.UpdateTileWithMissedCalls(Globals.Instance.LinphoneCore.GetMissedCallsCount());
+                Globals.Instance.CallController.IncomingCallViewDismissed = OnIncomingCallDialogDismissed;
+                CreateLinphoneCore();
             }
             else
             {
                 VoipKeepAliveTask keepAliveTask = task as VoipKeepAliveTask;
-                Debug.WriteLine("[KeepAliveAgent] Keep Alive");
                 if (keepAliveTask != null)
                 {
                     this.isIncomingCallAgent = false;
-                    base.NotifyComplete();
+                    Debug.WriteLine("[KeepAliveAgent] Keep Alive");
+
+                    CreateLinphoneCore();
+                    Globals.Instance.LinphoneCore.RefreshRegisters();
                 }
                 else
                 {
@@ -53,10 +57,29 @@ namespace Linphone.Agents
             }
         }
 
+        private void CreateLinphoneCore()
+        {
+            // Initiate incoming call processing by creating the Linphone Core
+            Globals.Instance.LinphoneCoreFactory.CreateLinphoneCore(null, ApplicationData.Current.LocalFolder.Path + "\\linphonerc", "Assets/linphonerc-factory");
+
+            //Globals.Instance.BackgroundModeLogger.Configure(true, OutputTraceDest.TCPRemote, "192.168.0.217:38954");
+            //Globals.Instance.LinphoneCoreFactory.OutputTraceListener = Globals.Instance.BackgroundModeLogger;
+
+            //if (Globals.Instance.LinphoneCore.GetDefaultProxyConfig() != null)
+            //{
+            //    string host, token;
+            //    host = ((App)App.Current).PushChannelUri.Host;
+            //    token = ((App)App.Current).PushChannelUri.AbsolutePath;
+            //    Globals.Instance.LinphoneCore.GetDefaultProxyConfig().SetContactParameters("app-id=" + host + ";pn-type=wp;pn-tok=" + token + ";pn-msg-str=IM_MSG;pn-call-str=IC_MSG;pn-call-snd=ring.caf;pn-msg-snd=msg.caf");
+            //}
+            Globals.Instance.LinphoneCore.SetNetworkReachable(true);
+        }
+
         // This method is called when the incoming call processing is complete 
         private void OnIncomingCallDialogDismissed()
         {
             Debug.WriteLine("[IncomingCallAgent] Incoming call processing is now complete.");
+            Globals.Instance.CallController.IncomingCallViewDismissed = null;
             base.NotifyComplete();
         } 
 

@@ -60,7 +60,7 @@ namespace Linphone
         {
             Button button = sender as Button;
             String tag = button.Tag as String;
-            LinphoneManager.Instance.LinphoneCore.PlayDTMF(Convert.ToChar(tag), 500);
+            LinphoneManager.Instance.LinphoneCore.PlayDTMF(Convert.ToChar(tag), 1000);
 
             addressBox.Text += tag;
         }

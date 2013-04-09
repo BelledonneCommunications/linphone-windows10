@@ -41,12 +41,12 @@ namespace Linphone.Views
         /// </summary>
         protected override void OnNavigatedTo(NavigationEventArgs nee)
         {
+            // Create LinphoneCore if not created yet, otherwise do nothing
+            LinphoneManager.Instance.LinphoneCore.CoreListener = LinphoneManager.Instance;
+
             base.OnNavigatedTo(nee);
             this.ViewModel.MuteListener = this;
             this.ViewModel.PauseListener = this;
-            
-            // Create LinphoneCore if not created yet, otherwise do nothing
-            LinphoneManager.Instance.InitLinphoneCore();
 
             if (NavigationContext.QueryString.ContainsKey("sip"))
             {
@@ -142,14 +142,17 @@ namespace Linphone.Views
             pause.IsChecked = isCallPaused;
             pauseImg.Source = new BitmapImage(new Uri(isCallPaused ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
 
-            if (!isCallPaused)
+            if (!isCallPaused && timer == null)
             {
                 timer = new Timer(new TimerCallback(timerTick), null, 0, 1000);
                 watch.Start();
             }
             else
             {
-                timer.Dispose();
+                if (timer != null)
+                {
+                    timer.Dispose();
+                }
                 watch.Stop();
             }
         }

@@ -24,6 +24,12 @@ namespace Linphone
 
 			Windows::Phone::Networking::Voip::VoipPhoneCall^ NewOutgoingCall(Platform::String^ number, Platform::String^ name);
 
+			property IncomingCallViewDismissedCallback^ IncomingCallViewDismissed
+            {
+                IncomingCallViewDismissedCallback^ get();
+				void set(IncomingCallViewDismissedCallback^ cb);
+            }
+
         private:
             friend ref class Linphone::Core::Globals;
  

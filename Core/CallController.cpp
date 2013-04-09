@@ -101,6 +101,16 @@ VoipPhoneCall^ CallController::NewOutgoingCall(Platform::String^ number, Platfor
 	return outgoingCall;
 }
 
+IncomingCallViewDismissedCallback^ CallController::IncomingCallViewDismissed::get()
+{
+	return this->onIncomingCallViewDismissed;
+}
+
+void CallController::IncomingCallViewDismissed::set(IncomingCallViewDismissedCallback^ cb)
+{
+	this->onIncomingCallViewDismissed = cb;
+}
+
 CallController::CallController() :
 		callInProgressPageUri(L"/Views/InCall.xaml"), 
 		voipServiceName(nullptr), 
