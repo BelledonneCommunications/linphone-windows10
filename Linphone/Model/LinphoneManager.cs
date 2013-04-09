@@ -189,7 +189,7 @@ namespace Linphone.Model
             Debug.WriteLine("[LinphoneManager] Background process disconnected from interface");
 
             // From this point onwards, it is no longer safe to use any objects in the background process, 
-            // or for the background process to call back into this process. 
+            // or for the background process to call back into this process.
             server = null;
 
             // Lastly, set the event that indicates that the UI is no longer connected to the background process. 

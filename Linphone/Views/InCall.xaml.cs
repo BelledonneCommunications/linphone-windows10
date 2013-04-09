@@ -33,6 +33,12 @@ namespace Linphone.Views
         {
             InitializeComponent();
             watch = new Stopwatch();
+
+            var call = LinphoneManager.Instance.LinphoneCore.GetCurrentCall();
+            if (call != null && call.GetState() == Core.LinphoneCallState.StreamsRunning)
+            {
+                PauseStateChanged(false);
+            }
         }
 
         /// <summary>
@@ -142,7 +148,7 @@ namespace Linphone.Views
             pause.IsChecked = isCallPaused;
             pauseImg.Source = new BitmapImage(new Uri(isCallPaused ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
 
-            if (!isCallPaused && timer == null)
+            if (!isCallPaused)
             {
                 timer = new Timer(new TimerCallback(timerTick), null, 0, 1000);
                 watch.Start();

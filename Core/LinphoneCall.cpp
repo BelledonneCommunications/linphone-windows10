@@ -12,7 +12,7 @@ using namespace Windows::Phone::Networking::Voip;
 
 Linphone::Core::LinphoneCallState Linphone::Core::LinphoneCall::GetState()
 {
-	return Linphone::Core::LinphoneCallState::Error;
+	return (Linphone::Core::LinphoneCallState)linphone_call_get_state(this->call);
 }
 
 Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCall::GetRemoteAddress()

@@ -47,8 +47,8 @@ namespace Linphone.Agents
                     this.isIncomingCallAgent = false;
                     Debug.WriteLine("[KeepAliveAgent] Keep Alive");
 
-                    CreateLinphoneCore();
-                    Globals.Instance.LinphoneCore.RefreshRegisters();
+                    //CreateLinphoneCore();
+                    //Globals.Instance.LinphoneCore.RefreshRegisters();
                 }
                 else
                 {
