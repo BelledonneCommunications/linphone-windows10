@@ -116,8 +116,7 @@ namespace Linphone
 			Debug = 0,
 			Message = 1,
 			Warning = 2,
-			Error = 3,
-			Raw = 4
+			Error = 3
 		};
 
 		/// <summary>
@@ -126,7 +125,8 @@ namespace Linphone
 		public enum class OutputTraceDest : int
 		{
 			Debugger = 0,
-			File = 1
+			File = 1,
+			TCPRemote = 2
 		};
 	}
 }
