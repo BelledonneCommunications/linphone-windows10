@@ -39,7 +39,7 @@ namespace Linphone
 			/// <summary>
 			/// Returns the call id from signaling.
 			/// </summary>
-			int GetCallId();
+			Platform::String^ GetCallId();
 
 		private:
 			friend class Linphone::Core::Utils;

@@ -37,12 +37,12 @@ int64 Linphone::Core::LinphoneCallLog::GetTimestamp()
 
 int Linphone::Core::LinphoneCallLog::GetCallDuration()
 {
-	return -1;
+	return linphone_call_log_get_duration(this->callLog);
 }
 
-int Linphone::Core::LinphoneCallLog::GetCallId()
+Platform::String^ Linphone::Core::LinphoneCallLog::GetCallId()
 {
-	return -1;
+	return Linphone::Core::Utils::cctops(linphone_call_log_get_call_id(this->callLog));
 }
 
 Linphone::Core::LinphoneCallLog::LinphoneCallLog(::LinphoneCallLog *cl) :

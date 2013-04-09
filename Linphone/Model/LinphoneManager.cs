@@ -313,39 +313,24 @@ namespace Linphone.Model
         /// </summary>
         /// <param name="logsToRemove">A list of CallLog to remove from history</param>
         /// <returns>A list of CallLogs, without the removed entries</returns>
-        public List<CallLogs> RemoveCallLogs(IEnumerable<CallLog> logsToRemove)
+        public void RemoveCallLogs(IEnumerable<CallLog> logsToRemove)
         {
             // When removing log from history, it will be removed from logsToRemove list too. 
             // Using foreach causing the app to crash on a InvalidOperationException, so we are using while
-            while (logsToRemove.Count() > 0)
+            for (int i = 0; i < logsToRemove.Count(); i++)
             {
-                CallLog logToRemove = logsToRemove.First();
+                CallLog logToRemove = logsToRemove.ElementAt(i);
                 LinphoneCore.RemoveCallLog(logToRemove.NativeLog as LinphoneCallLog);
             }
-
-            return _history;
         }
 
         /// <summary>
         /// Remove all calls' history from LinphoneCore.
         /// </summary>
         /// <returns>An empty list</returns>
-        public List<CallLogs> ClearCallLogs()
+        public void ClearCallLogs()
         {
             LinphoneCore.ClearCallLogs();
-
-            _history = new List<CallLogs>();
-
-            ObservableCollection<CallLog> calls = new ObservableCollection<CallLog>();
-            ObservableCollection<CallLog> missedCalls = new ObservableCollection<CallLog>();
-
-            CallLogs all = new CallLogs("All", calls);
-            _history.Add(all);
-
-            CallLogs missed = new CallLogs("Missed", missedCalls);
-            _history.Add(missed);
-
-            return _history;
         }
         #endregion
 

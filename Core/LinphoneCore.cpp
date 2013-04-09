@@ -295,12 +295,14 @@ IVector<Object^>^ Linphone::Core::LinphoneCore::GetCallLogs()
 
 void Linphone::Core::LinphoneCore::ClearCallLogs() 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_clear_call_logs(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::RemoveCallLog(Linphone::Core::LinphoneCallLog^ log) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_remove_call_log(this->lc, log->callLog);
 }
 
 void Linphone::Core::LinphoneCore::SetNetworkReachable(Platform::Boolean isReachable) 

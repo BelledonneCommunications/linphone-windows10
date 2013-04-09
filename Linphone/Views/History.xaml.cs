@@ -48,12 +48,21 @@ namespace Linphone.Views
 
         private void deleteAll_Click_1(object sender, EventArgs e)
         {
-            history.ItemsSource = LinphoneManager.Instance.ClearCallLogs();
+            LinphoneManager.Instance.ClearCallLogs();
+
+            List<CallLogs> callsHistory = LinphoneManager.Instance.GetCallsHistory();
+            history.ItemsSource = callsHistory;
         }
 
         private void deleteSelection_Click_1(object sender, EventArgs e)
         {
-            history.ItemsSource = LinphoneManager.Instance.RemoveCallLogs(_selection);
+            LinphoneManager.Instance.RemoveCallLogs(_selection);
+
+            List<CallLogs> callsHistory = LinphoneManager.Instance.GetCallsHistory();
+            history.ItemsSource = callsHistory;
+
+            ClearApplicationBar();
+            SetupAppBarForEmptySelection();
         }
 
         private void BuildLocalizedApplicationBar()
