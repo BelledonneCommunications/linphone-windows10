@@ -12,11 +12,19 @@ using System.Windows.Media.Imaging;
 
 namespace Linphone.Controls
 {
+    public interface AddressBoxFocused
+    {
+        void Focused();
+        void UnFocused();
+    }
+
     /// <summary>
     /// Custom control representing a textbox that contains a SIP address
     /// </summary>
     public partial class AddressBox : UserControl
     {
+        public AddressBoxFocused FocusListener;
+
         /// <summary>
         /// String content of the textbox.
         /// </summary>
@@ -50,6 +58,18 @@ namespace Linphone.Controls
         private void address_TextChanged_1(object sender, TextChangedEventArgs e)
         {
             behindAddress.Text = address.Text;
+        }
+
+        private void address_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (FocusListener != null)
+                FocusListener.Focused();
+        }
+
+        private void address_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (FocusListener != null)
+                FocusListener.UnFocused();
         }
     }
 }

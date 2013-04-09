@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using Linphone.Controls;
+using Linphone.Model;
+using Linphone.Resources;
+using Microsoft.Phone.Shell;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
-using Linphone.Resources;
-using Linphone.Model;
-using System.Windows.Threading;
-using System.Windows.Media.Imaging;
 
 namespace Linphone
 {
     /// <summary>
     /// Home page for the application, displays a numpad and links to Settings/History/Contacts pages.
     /// </summary>
-    public partial class Dialer : BasePage
+    public partial class Dialer : BasePage, AddressBoxFocused
     {
         private LocalizedStrings _appStrings = new LocalizedStrings();
 
@@ -28,6 +23,7 @@ namespace Linphone
         {
             InitializeComponent();
             BuildLocalizedApplicationBar();
+            addressBox.FocusListener = this;
 
             ContactManager contactManager = ContactManager.Instance; //Force creation and init of ContactManager
         }
@@ -123,6 +119,16 @@ namespace Linphone
         private void Title_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             LinphoneManager.Instance.LinphoneCore.RefreshRegisters();
+        }
+
+        public void Focused()
+        {
+            numpad.Visibility = Visibility.Collapsed;
+        }
+
+        public void UnFocused()
+        {
+            numpad.Visibility = Visibility.Visible;
         }
     }
 }

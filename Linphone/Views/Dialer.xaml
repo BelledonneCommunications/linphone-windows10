@@ -35,7 +35,7 @@
         <Grid x:Name="ContentPanel" Grid.Row="2" Margin="12,0,12,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
@@ -45,7 +45,7 @@
                 BorderThickness="0"
                 FontSize="40"/>
 
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="1" x:Name="numpad">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
@@ -68,7 +68,7 @@
                     Tag="1"
                     Background="{StaticResource PhoneChromeBrush}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="1" FontSize="50"/>
+                        <TextBlock Text="1" FontSize="60"/>
                     </StackPanel>
                 </Button>
 
@@ -82,7 +82,7 @@
                     Tag="2"
                     Background="{StaticResource PhoneChromeBrush}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="2" FontSize="50"/>
+                        <TextBlock Text="2" FontSize="60"/>
                     </StackPanel>
                 </Button>
 
@@ -96,7 +96,7 @@
                     Tag="3"
                     Background="{StaticResource PhoneChromeBrush}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="3" FontSize="50"/>
+                        <TextBlock Text="3" FontSize="60"/>
                     </StackPanel>
                 </Button>
 
@@ -110,7 +110,7 @@
                     Tag="4"
                     Background="{StaticResource PhoneChromeBrush}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="4" FontSize="50"/>
+                        <TextBlock Text="4" FontSize="60"/>
                     </StackPanel>
                 </Button>
 
@@ -124,7 +124,7 @@
                     Tag="5"
                     Background="{StaticResource PhoneChromeBrush}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="5" FontSize="50"/>
+                        <TextBlock Text="5" FontSize="60"/>
                     </StackPanel>
                 </Button>
 
@@ -138,7 +138,7 @@
                     Tag="6"
                     Background="{StaticResource PhoneChromeBrush}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="6" FontSize="50"/>
+                        <TextBlock Text="6" FontSize="60"/>
                     </StackPanel>
                 </Button>
 
@@ -152,7 +152,7 @@
                     Tag="7"
                     Background="{StaticResource PhoneChromeBrush}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="7" FontSize="50"/>
+                        <TextBlock Text="7" FontSize="60"/>
                     </StackPanel>
                 </Button>
 
@@ -166,7 +166,7 @@
                     Tag="8"
                     Background="{StaticResource PhoneChromeBrush}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="8" FontSize="50"/>
+                        <TextBlock Text="8" FontSize="60"/>
                     </StackPanel>
                 </Button>
 
@@ -180,7 +180,7 @@
                     Tag="9"
                     Background="{StaticResource PhoneChromeBrush}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="9" FontSize="50"/>
+                        <TextBlock Text="9" FontSize="60"/>
                     </StackPanel>
                 </Button>
 
@@ -194,7 +194,7 @@
                     Tag="*"
                     Background="{StaticResource PhoneChromeBrush}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="＊" FontSize="50"/>
+                        <TextBlock Text="＊" FontSize="60"/>
                     </StackPanel>
                 </Button>
 
@@ -209,7 +209,7 @@
                     Tag="0"
                     Background="{StaticResource PhoneChromeBrush}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="0" FontSize="50"/>
+                        <TextBlock Text="0" FontSize="60"/>
                     </StackPanel>
                 </Button>
 
@@ -223,7 +223,7 @@
                     Tag="#"
                     Background="{StaticResource PhoneChromeBrush}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="#" FontSize="50"/>
+                        <TextBlock Text="#" FontSize="60"/>
                     </StackPanel>
                 </Button>
                 

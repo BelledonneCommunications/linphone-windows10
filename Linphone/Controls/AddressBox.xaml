@@ -40,6 +40,8 @@
             x:Name="address"
             FontSize="35"
             Text="{Binding Text}"
+            GotFocus="address_GotFocus"
+            LostFocus="address_LostFocus"
             TextChanged="address_TextChanged_1"
             AcceptsReturn="False" 
             BorderThickness="0"
