@@ -121,11 +121,17 @@ namespace Linphone
             LinphoneManager.Instance.LinphoneCore.RefreshRegisters();
         }
 
+        /// <summary>
+        /// Called wheh the addressbox get focused.
+        /// </summary>
         public void Focused()
         {
             numpad.Visibility = Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// Called when the addressbox lost its focus.
+        /// </summary>
         public void UnFocused()
         {
             numpad.Visibility = Visibility.Visible;

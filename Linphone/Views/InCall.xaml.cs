@@ -2,6 +2,8 @@
 using Microsoft.Phone.Controls;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -21,12 +23,16 @@ namespace Linphone.Views
         private const string pauseOn = "/Assets/AppBar/play.png";
         private const string pauseOff = "/Assets/AppBar/pause.png";
 
+        private Timer timer;
+        private Stopwatch watch;
+
         /// <summary>
         /// Public constructor.
         /// </summary>
         public InCall()
         {
             InitializeComponent();
+            watch = new Stopwatch();
         }
 
         /// <summary>
@@ -45,6 +51,10 @@ namespace Linphone.Views
             if (NavigationContext.QueryString.ContainsKey("sip"))
             {
                 String calledNumber = NavigationContext.QueryString["sip"];
+                if (calledNumber.StartsWith("sip:"))
+                {
+                    calledNumber = calledNumber.Substring(4);
+                }
                 // While we dunno if the number matches a contact one, we consider it won't and we display the phone number as username
                 Contact.Text = calledNumber;
 
@@ -131,6 +141,28 @@ namespace Linphone.Views
         {
             pause.IsChecked = isCallPaused;
             pauseImg.Source = new BitmapImage(new Uri(isCallPaused ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
+
+            if (!isCallPaused)
+            {
+                timer = new Timer(new TimerCallback(timerTick), null, 0, 1000);
+                watch.Start();
+            }
+            else
+            {
+                timer.Dispose();
+                watch.Stop();
+            }
+        }
+
+        private void timerTick(Object state)
+        {
+            var ss = watch.ElapsedMilliseconds / 1000;
+            var mm = ss / 60;
+            ss = ss % 60;
+            Status.Dispatcher.BeginInvoke(delegate()
+            {
+                Status.Text = mm.ToString("00") + ":" + ss.ToString("00");
+            });
         }
 
         private void dialpad_Click_1(object sender, RoutedEventArgs e)

@@ -12,17 +12,30 @@ using System.Windows.Media.Imaging;
 
 namespace Linphone.Controls
 {
+    /// <summary>
+    /// Listener to throw events depending on the focus state of this control.
+    /// </summary>
     public interface AddressBoxFocused
     {
+        /// <summary>
+        /// Called wheh the addressbox get focused.
+        /// </summary>
         void Focused();
+
+        /// <summary>
+        /// Called when the addressbox lost its focus.
+        /// </summary>
         void UnFocused();
     }
 
     /// <summary>
-    /// Custom control representing a textbox that contains a SIP address
+    /// Custom control representing a textbox that contains a SIP address.
     /// </summary>
     public partial class AddressBox : UserControl
     {
+        /// <summary>
+        /// Listener to throw events depending on the focus state of this control.
+        /// </summary>
         public AddressBoxFocused FocusListener;
 
         /// <summary>
