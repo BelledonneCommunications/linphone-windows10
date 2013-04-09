@@ -496,7 +496,10 @@ Linphone::Core::FirewallPolicy Linphone::Core::LinphoneCore::GetFirewallPolicy()
 
 void Linphone::Core::LinphoneCore::SetRootCA(Platform::String^ path) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	const char *ccPath = Utils::pstoccs(path);
+	linphone_core_set_root_ca(this->lc, ccPath);
+	delete ccPath;
 }
 
 void Linphone::Core::LinphoneCore::SetUploadBandwidth(int bw) 

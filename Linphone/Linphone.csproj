@@ -165,6 +165,7 @@
     <Content Include="Assets\AppBar\clear.png" />
     <Content Include="Assets\linphonerc" />
     <Content Include="Assets\linphonerc-factory" />
+    <Content Include="Assets\rootca.pem" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">

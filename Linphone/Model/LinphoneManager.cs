@@ -232,6 +232,7 @@ namespace Linphone.Model
             InstallConfig();
             server.LinphoneCoreFactory.CreateLinphoneCore(this, GetConfigPath(), "Assets/linphonerc-factory");
             ConfigureLogger();
+            server.LinphoneCore.SetRootCA("Assets/rootca.pem");
             Logger.Msg("[LinphoneManager] LinphoneCore created");
             AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;
             CallController.MuteRequested += MuteRequested;
