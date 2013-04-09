@@ -59,6 +59,8 @@ namespace Linphone
 		public ref class LinphoneCore sealed
 		{
 		public:
+			static void SetLogLevel(OutputTraceLevel logLevel);
+
 			void SetContext(Platform::Object^ object);
 			void ClearProxyConfigs();
 

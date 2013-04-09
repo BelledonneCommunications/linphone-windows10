@@ -14,6 +14,20 @@ namespace Linphone
 
 			static Platform::String^ Linphone::Core::Utils::cctops(const char*);
 
+			/// <summary>
+			/// Define a log handler.
+			/// <param name="logfunc">The function pointer of the log handler.</param>
+			/// </summary>
+			static void LinphoneCoreSetLogHandler(void *logfunc);
+
+			/// <summary>
+			/// Define the log level.
+			/// The loglevel parameter is a bitmask parameter. Therefore to enable only warning and error
+			/// messages, use ORTP_WARNING | ORTP_ERROR. To disable logs, simply set loglevel to 0.
+			/// <param name="loglevel">A bitmask of the log levels to set.</param>
+			/// </summary>
+			static void LinphoneCoreSetLogLevel(int loglevel);
+
 			static Platform::Object^ CreateLpConfig(void *config);
 
 			static Platform::Object^ CreatePayloadType(void *pt);

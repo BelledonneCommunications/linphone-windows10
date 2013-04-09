@@ -129,6 +129,12 @@ namespace Linphone.Model
         {
             LinphoneCore lc = LinphoneManager.Instance.LinphoneCore;
             bool debugEnabled = Convert.ToBoolean(GetNew(DebugSettingKeyName));
+            OutputTraceLevel logLevel = OutputTraceLevel.None;
+            if (debugEnabled)
+            {
+                logLevel = OutputTraceLevel.Message;
+            }
+            LinphoneManager.Instance.SetLogLevel(logLevel);
             lc.GetConfig().SetBool(ApplicationSection, DebugSettingKeyName, debugEnabled);
             LinphoneManager.Instance.ConfigureLogger();
         }

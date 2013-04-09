@@ -85,6 +85,24 @@ Platform::String^ Linphone::Core::Transports::ToString()
 }
 
 
+void Linphone::Core::LinphoneCore::SetLogLevel(OutputTraceLevel logLevel)
+{
+	int coreLogLevel = 0;
+	if (logLevel == OutputTraceLevel::Error) {
+		coreLogLevel = ORTP_ERROR | ORTP_FATAL;
+	}
+	else if (logLevel == OutputTraceLevel::Warning) {
+		coreLogLevel = ORTP_WARNING | ORTP_ERROR | ORTP_FATAL;
+	}
+	else if (logLevel == OutputTraceLevel::Message) {
+		coreLogLevel = ORTP_MESSAGE | ORTP_WARNING | ORTP_ERROR | ORTP_FATAL;
+	}
+	else if (logLevel == OutputTraceLevel::Debug) {
+		coreLogLevel = ORTP_DEBUG | ORTP_MESSAGE | ORTP_WARNING | ORTP_ERROR | ORTP_FATAL;
+	}
+	Utils::LinphoneCoreSetLogLevel(coreLogLevel);
+}
+
 void Linphone::Core::LinphoneCore::SetContext(Platform::Object^ object)
 {
 

@@ -265,6 +265,11 @@ namespace Linphone.Model
             Logger.Instance.TraceListener = server.BackgroundModeLogger;
         }
 
+        public void SetLogLevel(OutputTraceLevel logLevel)
+        {
+            server.SetLogLevel(logLevel);
+        }
+
         #region CallLogs
         private List<CallLogs> _history;
 

@@ -41,6 +41,18 @@ Platform::String^ Linphone::Core::Utils::cctops(const char* cc)
 	return ref new Platform::String(w_char);
 }
 
+void Linphone::Core::Utils::LinphoneCoreSetLogHandler(void *logfunc)
+{
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_set_log_handler(static_cast<OrtpLogFunc>(logfunc));
+}
+
+void Linphone::Core::Utils::LinphoneCoreSetLogLevel(int loglevel)
+{
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_set_log_level(static_cast<OrtpLogLevel>(loglevel));
+}
+
 Platform::Object^ Linphone::Core::Utils::CreateLpConfig(void *config)
 {
 	return ref new Linphone::Core::LpConfig((::LpConfig *)config);
