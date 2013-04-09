@@ -9,6 +9,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Linphone.Model;
 using Linphone.Resources;
+using Linphone.Agents;
 
 namespace Linphone.Views
 {
@@ -41,6 +42,7 @@ namespace Linphone.Views
 
             TileManager tileManager = TileManager.Instance;
             tileManager.RemoveMissedCallsTile();
+            LinphoneManager.Instance.LinphoneCore.ResetMissedCallsCount();
 
             List<CallLogs> callsHistory = LinphoneManager.Instance.GetCallsHistory();
             history.ItemsSource = callsHistory;

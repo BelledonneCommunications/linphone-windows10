@@ -213,13 +213,13 @@ namespace Linphone
                 }
                 else
                 {
-                    // The keep-alive task has been scheduled and is still scheduled so there is nothing more to do 
+                    // The keep-alive task has been scheduled and is still scheduled so there is nothing more to do
                     return;
                 }
             }
 
             keepAliveTask = new VoipKeepAliveTask(keepAliveTaskName);
-            keepAliveTask.Interval = new TimeSpan(10000000 * Int32.Parse(DefaultValues.KeepAlive));
+            keepAliveTask.Interval = new TimeSpan(10000000 * 5);
             keepAliveTask.Description = "keep-alive task";
             ScheduledActionService.Add(keepAliveTask);
         }

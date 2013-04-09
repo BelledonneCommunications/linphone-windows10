@@ -236,7 +236,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Button 
-                    Grid.Column="1"
+                    Grid.Column="0"
                     x:Name="call"
                     Background="{StaticResource PhoneAccentBrush}"
                     Content="{Binding Path=LocalizedResources.Call, Source={StaticResource LocalizedStrings}}"

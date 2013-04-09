@@ -35,26 +35,12 @@ namespace Linphone.Agents
                 this.isIncomingCallAgent = true;
                 Debug.WriteLine("[IncomingCallAgent] Received VoIP Incoming Call task");
 
-                //ShellToast toast = new Microsoft.Phone.Shell.ShellToast();
-                //toast.Content = "PN received";
-                //toast.Title = "Linphone";
-                //toast.NavigationUri = new System.Uri("/Views/Dialer.xaml", System.UriKind.RelativeOrAbsolute);
-                //toast.Show();
-
-                // Initiate incoming call processing 
-                // If you want to pass in additional information such as pushNotification.Number, you can 
-                VoipPhoneCall call = Globals.Instance.CallController.OnIncomingCallReceived(null, "miaou", "miaou@sip.linphone.org", this.OnIncomingCallDialogDismissed);
-
-                if (call == null)
-                {
-                    // For some reasons, the incoming call processing was not started. 
-                    // There is nothing more to do. 
-                    base.NotifyComplete();
-                }
+                TileManager.Instance.UpdateTileWithMissedCalls(Globals.Instance.LinphoneCore.GetMissedCallsCount());
             }
             else
             {
                 VoipKeepAliveTask keepAliveTask = task as VoipKeepAliveTask;
+                Debug.WriteLine("[KeepAliveAgent] Keep Alive");
                 if (keepAliveTask != null)
                 {
                     this.isIncomingCallAgent = false;

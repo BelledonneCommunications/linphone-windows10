@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Linphone.Model
+namespace Linphone.Agents
 {
     /// <summary>
     /// Utility class used to handle everything that is Tile related

@@ -702,12 +702,14 @@ void Linphone::Core::LinphoneCore::SetCPUCount(int count)
 
 int Linphone::Core::LinphoneCore::GetMissedCallsCount() 
 {
-	return -1;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return linphone_core_get_missed_calls_count(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::ResetMissedCallsCount() 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_reset_missed_calls_count(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::RefreshRegisters() 

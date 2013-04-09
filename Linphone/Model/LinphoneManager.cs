@@ -18,6 +18,7 @@ using Windows.Phone.Media.Devices;
 using System.Reflection;
 using Microsoft.Phone.Net.NetworkInformation;
 using Windows.Storage;
+using Linphone.Agents;
 
 namespace Linphone.Model
 {
@@ -512,6 +513,10 @@ namespace Linphone.Model
                     if (CallListener != null)
                         CallListener.PauseStateChanged(false);
                 });
+            }
+            else if (state == LinphoneCallState.Released)
+            {
+                TileManager.Instance.UpdateTileWithMissedCalls(LinphoneCore.GetMissedCallsCount());
             }
         }
 
