@@ -91,10 +91,25 @@ namespace Linphone.Model
             }
         }
 
+        private RegistrationState _lastKnownState;
         /// <summary>
         /// Used to set the default registration state on the status bar when the view is changed.
         /// </summary>
-        public RegistrationState LastKnownState { get; set; }
+        public RegistrationState LastKnownState {
+            get
+            {
+                if (isLinphoneRunning && LinphoneCore.GetDefaultProxyConfig() != null) 
+                {
+                    _lastKnownState = LinphoneCore.GetDefaultProxyConfig().GetState();
+                }
+                return _lastKnownState;
+            }
+
+            set
+            {
+                _lastKnownState = value;
+            }
+        }
 
         /// <summary>
         /// Simple listener to notify pages' viewmodel when a call ends or starts
@@ -240,10 +255,6 @@ namespace Linphone.Model
 
                 server.LinphoneCore.CoreListener = this;
                 isLinphoneRunning = true;
-
-                if (LinphoneCore.GetDefaultProxyConfig() != null)
-                    LastKnownState = LinphoneCore.GetDefaultProxyConfig().GetState();
-
                 return;
             }
 

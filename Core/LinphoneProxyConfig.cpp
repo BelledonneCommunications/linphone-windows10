@@ -130,7 +130,8 @@ Platform::Boolean Linphone::Core::LinphoneProxyConfig::IsPublishEnabled()
 
 Linphone::Core::RegistrationState Linphone::Core::LinphoneProxyConfig::GetState()
 {
-	return Linphone::Core::RegistrationState::RegistrationNone;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return (Linphone::Core::RegistrationState)linphone_proxy_config_get_state(this->proxy_config);
 }
 
 void Linphone::Core::LinphoneProxyConfig::SetExpires(int delay)
@@ -158,6 +159,7 @@ int Linphone::Core::LinphoneProxyConfig::LookupCCCFromE164(Platform::String^ e16
 
 Linphone::Core::LinphoneProxyConfig::LinphoneProxyConfig()
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	this->proxy_config = linphone_proxy_config_new();
 	RefToPtrProxy<LinphoneProxyConfig^> *proxy = new RefToPtrProxy<LinphoneProxyConfig^>(this);
 	linphone_proxy_config_set_user_data(this->proxy_config, proxy);
@@ -165,6 +167,7 @@ Linphone::Core::LinphoneProxyConfig::LinphoneProxyConfig()
 
 Linphone::Core::LinphoneProxyConfig::LinphoneProxyConfig(::LinphoneProxyConfig* proxy_config)
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	this->proxy_config = proxy_config;
 	RefToPtrProxy<LinphoneProxyConfig^> *proxy = new RefToPtrProxy<LinphoneProxyConfig^>(this);
 	linphone_proxy_config_set_user_data(this->proxy_config, proxy);
@@ -172,6 +175,7 @@ Linphone::Core::LinphoneProxyConfig::LinphoneProxyConfig(::LinphoneProxyConfig* 
 
 Linphone::Core::LinphoneProxyConfig::~LinphoneProxyConfig()
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	RefToPtrProxy<LinphoneProxyConfig^> *proxy = reinterpret_cast< RefToPtrProxy<LinphoneProxyConfig^> *>(linphone_proxy_config_get_user_data(this->proxy_config));
 	delete proxy;
 }
