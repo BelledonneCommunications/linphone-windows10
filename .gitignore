@@ -6,6 +6,8 @@
 */ARM/
 */x86/
 CoreProxyStub/Linphone.Core*
+CoreProxyStub/dlldata.c
 ARM/
 Linphone.sdf
 Linphone.opensdf
+Agents/RegistrationHelper.cs

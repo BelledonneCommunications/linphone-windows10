@@ -535,7 +535,10 @@ namespace Linphone.Model
             }
             else if (state == LinphoneCallState.Released)
             {
-                TileManager.Instance.UpdateTileWithMissedCalls(LinphoneCore.GetMissedCallsCount());
+                BaseModel.UIDispatcher.BeginInvoke(() =>
+                {
+                    TileManager.Instance.UpdateTileWithMissedCalls(LinphoneCore.GetMissedCallsCount());
+                });
             }
         }
 
