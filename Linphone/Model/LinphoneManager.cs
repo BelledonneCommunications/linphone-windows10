@@ -237,8 +237,13 @@ namespace Linphone.Model
                 // Reconnect the listeners when coming back from background mode
                 Debug.WriteLine("[LinphoneManager] LinphoneCore alread created, skipping");
                 Logger.Msg("[LinphoneManager] LinphoneCore alread created, skipping");
+
                 server.LinphoneCore.CoreListener = this;
                 isLinphoneRunning = true;
+
+                if (LinphoneCore.GetDefaultProxyConfig() != null)
+                    LastKnownState = LinphoneCore.GetDefaultProxyConfig().GetState();
+
                 return;
             }
 
