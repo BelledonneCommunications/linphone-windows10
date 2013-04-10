@@ -83,6 +83,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BackgroundManager.cs" />
     <Compile Include="LinphoneCallInProgressAgent.cs" />
     <Compile Include="LinphoneForegroundLifeTimeAgent.cs" />
     <Compile Include="LinphoneScheduledAgent.cs" />

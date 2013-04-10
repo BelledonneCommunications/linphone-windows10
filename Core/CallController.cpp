@@ -12,7 +12,6 @@ VoipPhoneCall^ CallController::OnIncomingCallReceived(Linphone::Core::LinphoneCa
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock); 
 
 	VoipPhoneCall^ incomingCall = nullptr;
-	this->callerNumber = contactNumber;
 	this->call = call;
 
 	try 
@@ -71,8 +70,6 @@ void CallController::OnRejectCallRequested(VoipPhoneCall^ incomingCall, CallReje
 
 	if (this->onIncomingCallViewDismissed != nullptr)
 		this->onIncomingCallViewDismissed();
-
-	this->callerNumber = nullptr;
 } 
 
 void CallController::EndCall(VoipPhoneCall^ call)
@@ -103,11 +100,13 @@ VoipPhoneCall^ CallController::NewOutgoingCall(Platform::String^ number, Platfor
 
 IncomingCallViewDismissedCallback^ CallController::IncomingCallViewDismissed::get()
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return this->onIncomingCallViewDismissed;
 }
 
 void CallController::IncomingCallViewDismissed::set(IncomingCallViewDismissedCallback^ cb)
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	this->onIncomingCallViewDismissed = cb;
 }
 
@@ -117,10 +116,8 @@ CallController::CallController() :
 		defaultContactImageUri(nullptr), 
 		linphoneImageUri(nullptr),
 		ringtoneUri(nullptr),
-		callerNumber(nullptr),
 		callCoordinator(VoipCallCoordinator::GetDefault())
 {
-
 	// URIs required for interactions with the VoipCallCoordinator 
     String^ installFolder = String::Concat(Windows::ApplicationModel::Package::Current->InstalledLocation->Path, "\\"); 
     this->defaultContactImageUri = ref new Uri(installFolder, "Assets\\unknown.png"); 

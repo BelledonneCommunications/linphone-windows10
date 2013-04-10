@@ -33,9 +33,7 @@ namespace Linphone
         private:
             friend ref class Linphone::Core::Globals;
  
-            Platform::String^ voipServiceName; 
-
-			Platform::String^ callerNumber;
+            Platform::String^ voipServiceName;
 			
             Platform::String^ callInProgressPageUri; 
 			

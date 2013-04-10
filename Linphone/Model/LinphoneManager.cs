@@ -27,17 +27,20 @@ namespace Linphone.Model
     /// </summary>
     public sealed class LinphoneManager : LinphoneCoreListener
     {
+        private bool lastNetworkState;
         private LinphoneManager()
         {
             LastKnownState = Linphone.Core.RegistrationState.RegistrationNone;
-
-            DeviceNetworkInformation.NetworkAvailabilityChanged += new EventHandler<NetworkNotificationEventArgs>(OnNetworkStatusChanged);
         }
 
         private void OnNetworkStatusChanged(object sender, NetworkNotificationEventArgs e)
         {
-            Debug.WriteLine("[LinphoneManager] Network state changed:" + (DeviceNetworkInformation.IsNetworkAvailable ? "Available" : "Unavailable"));
-            LinphoneCore.SetNetworkReachable(DeviceNetworkInformation.IsNetworkAvailable);
+            if (lastNetworkState != DeviceNetworkInformation.IsNetworkAvailable)
+            {
+                lastNetworkState = DeviceNetworkInformation.IsNetworkAvailable;
+                Debug.WriteLine("[LinphoneManager] Network state changed:" + (lastNetworkState ? "Available" : "Unavailable"));
+                LinphoneCore.SetNetworkReachable(lastNetworkState);
+            }
         }
 
         private static LinphoneManager singleton;
@@ -144,7 +147,7 @@ namespace Linphone.Model
             string backgroundProcessReadyEventName = Globals.GetBackgroundProcessReadyEventName((uint)backgroundProcessID);
             using (EventWaitHandle backgroundProcessReadyEvent = new EventWaitHandle(initialState: false, mode: EventResetMode.ManualReset, name: backgroundProcessReadyEventName))
             {
-                TimeSpan timeout = Debugger.IsAttached ? LinphoneManager.indefiniteWait : LinphoneManager.fifteenSecs;
+                TimeSpan timeout = Debugger.IsAttached ? indefiniteWait : fifteenSecs;
                 if (!backgroundProcessReadyEvent.WaitOne(timeout))
                 {
                     // We timed out - something is wrong 
@@ -160,7 +163,15 @@ namespace Linphone.Model
             // and in that case, the following statement would fail - so, at this point, we don't explicitly guard against this condition. 
 
             // Create an instance of the server in the background process. 
-            server = (Server)WindowsRuntimeMarshal.GetActivationFactory(typeof(Server)).ActivateInstance();
+            if (BackgroundManager.Instance.OopServer != null)
+            {
+                server = BackgroundManager.Instance.OopServer;
+            }
+            else
+            {
+                server = (Server)WindowsRuntimeMarshal.GetActivationFactory(typeof(Server)).ActivateInstance();
+                BackgroundManager.Instance.OopServer = server;
+            }
 
             // Un-set an event that indicates that the UI process is disconnected from the background process. 
             // The background process waits for this event to get set before shutting down. 
@@ -224,6 +235,7 @@ namespace Linphone.Model
             if ((server.LinphoneCoreFactory != null) && (server.LinphoneCore != null))
             {
                 // Reconnect the listeners when coming back from background mode
+                Debug.WriteLine("[LinphoneManager] LinphoneCore alread created, skipping");
                 Logger.Msg("[LinphoneManager] LinphoneCore alread created, skipping");
                 server.LinphoneCore.CoreListener = this;
                 isLinphoneRunning = true;
@@ -247,7 +259,9 @@ namespace Linphone.Model
                 LinphoneCore.GetDefaultProxyConfig().SetContactParameters("app-id=" + host + ";pn-type=wp;pn-tok=" + token + ";pn-msg-str=IM_MSG;pn-call-str=IC_MSG;pn-call-snd=ring.caf;pn-msg-snd=msg.caf");
             }
 
-            LinphoneCore.SetNetworkReachable(DeviceNetworkInformation.IsNetworkAvailable);
+            lastNetworkState = DeviceNetworkInformation.IsNetworkAvailable;
+            LinphoneCore.SetNetworkReachable(lastNetworkState);
+            DeviceNetworkInformation.NetworkAvailabilityChanged += new EventHandler<NetworkNotificationEventArgs>(OnNetworkStatusChanged);
 
             isLinphoneRunning = true;
         }

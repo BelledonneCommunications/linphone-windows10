@@ -47,6 +47,14 @@ namespace Linphone
 					};
 				}
 
+				property CallController^ CallController
+				{
+					Linphone::Core::CallController^ get()
+					{
+						return Globals::Instance->CallController;
+					};
+				}
+
 				/// <summary>
 				/// Returns the install location of the app, used to get the uri of resources needed for the incoming call view
 				/// </summary>

@@ -48,7 +48,7 @@ namespace Linphone.Views
         protected override void OnNavigatedTo(NavigationEventArgs nee)
         {
             // Create LinphoneCore if not created yet, otherwise do nothing
-            LinphoneManager.Instance.LinphoneCore.CoreListener = LinphoneManager.Instance;
+            LinphoneManager.Instance.InitLinphoneCore();
 
             base.OnNavigatedTo(nee);
             this.ViewModel.MuteListener = this;
