@@ -24,7 +24,7 @@ Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCall::GetRemoteAddress(
 
 Linphone::Core::CallDirection Linphone::Core::LinphoneCall::GetDirection()
 {
-	return Linphone::Core::CallDirection::Incoming;
+	return (Linphone::Core::CallDirection)linphone_call_get_dir(this->call);
 }
 
 Linphone::Core::LinphoneCallLog^ Linphone::Core::LinphoneCall::GetCallLog()
@@ -122,6 +122,13 @@ void Linphone::Core::LinphoneCall::CallContext::set(Platform::Object^ cc)
 	this->callContext = cc;
 }
 
+Platform::Object^ Linphone::Core::LinphoneCall::GetCallStartTimeFromContext()
+{
+	if (this->callContext != nullptr) {
+		return ((Windows::Phone::Networking::Voip::VoipPhoneCall^)this->callContext)->StartTime;
+	}
+	return nullptr;
+}
 
 Platform::Object^  Linphone::Core::LinphoneCall::CallContext::get()
 {

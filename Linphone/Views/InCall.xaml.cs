@@ -1,4 +1,5 @@
-﻿using Linphone.Model;
+﻿using Linphone.Core;
+using Linphone.Model;
 using Microsoft.Phone.Controls;
 using System;
 using System.ComponentModel;
@@ -8,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using Windows.Phone.Networking.Voip;
 
 namespace Linphone.Views
 {
@@ -24,7 +26,6 @@ namespace Linphone.Views
         private const string pauseOff = "/Assets/AppBar/pause.png";
 
         private Timer timer;
-        private Stopwatch watch;
 
         /// <summary>
         /// Public constructor.
@@ -32,7 +33,6 @@ namespace Linphone.Views
         public InCall()
         {
             InitializeComponent();
-            watch = new Stopwatch();
 
             var call = LinphoneManager.Instance.LinphoneCore.GetCurrentCall();
             if (call != null && call.GetState() == Core.LinphoneCallState.StreamsRunning)
@@ -78,6 +78,11 @@ namespace Linphone.Views
         /// </summary>
         protected override void OnNavigatedFrom(NavigationEventArgs nee)
         {
+            if (timer != null)
+            {
+                timer.Dispose();
+            }
+
             base.OnNavigatedFrom(nee);
             this.ViewModel.MuteListener = null;
             this.ViewModel.PauseListener = null;
@@ -151,23 +156,21 @@ namespace Linphone.Views
             if (!isCallPaused)
             {
                 timer = new Timer(new TimerCallback(timerTick), null, 0, 1000);
-                watch.Start();
             }
-            else
+            else if (timer != null)
             {
-                if (timer != null)
-                {
-                    timer.Dispose();
-                }
-                watch.Stop();
+                timer.Dispose();
             }
         }
 
         private void timerTick(Object state)
         {
-            var ss = watch.ElapsedMilliseconds / 1000;
-            var mm = ss / 60;
-            ss = ss % 60;
+            LinphoneCall call = LinphoneManager.Instance.LinphoneCore.GetCurrentCall();
+            DateTimeOffset startTime = (DateTimeOffset)call.GetCallStartTimeFromContext();
+            DateTimeOffset now = DateTimeOffset.Now;
+            TimeSpan elapsed = now.Subtract(startTime);
+            var ss = elapsed.Seconds;
+            var mm = elapsed.Minutes;
             Status.Dispatcher.BeginInvoke(delegate()
             {
                 Status.Text = mm.ToString("00") + ":" + ss.ToString("00");

@@ -89,6 +89,8 @@ namespace Linphone
 			Platform::String^ GetRemoteUserAgent();
 			Platform::String^ GetRemoteContact();
 
+			Platform::Object^ GetCallStartTimeFromContext();
+
 			property Platform::Object^ CallContext
             {
                 Platform::Object^ get();

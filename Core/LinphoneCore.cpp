@@ -236,6 +236,7 @@ void Linphone::Core::LinphoneCore::TerminateCall(Linphone::Core::LinphoneCall^ c
 
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::GetCurrentCall() 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	::LinphoneCall *call = linphone_core_get_current_call(this->lc);
 	Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
 	Linphone::Core::LinphoneCall^ lCall = (proxy) ? proxy->Ref() : nullptr;
