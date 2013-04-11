@@ -128,6 +128,16 @@ Linphone::Core::LpConfig::LpConfig(::LpConfig *config) :
 
 }
 
+Linphone::Core::LpConfig::LpConfig(Platform::String^ configPath, Platform::String^ factoryConfigPath)
+{
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	const char *ccConfigPath = Linphone::Core::Utils::pstoccs(configPath);
+	const char *ccFactoryConfigPath = Linphone::Core::Utils::pstoccs(factoryConfigPath);
+	this->config = lp_config_new_with_factory(ccConfigPath, ccFactoryConfigPath);
+	delete(ccFactoryConfigPath);
+	delete(ccConfigPath);
+}
+
 Linphone::Core::LpConfig::~LpConfig()
 {
 

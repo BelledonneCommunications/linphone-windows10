@@ -259,7 +259,8 @@ namespace Linphone.Model
 
             Logger.Msg("[LinphoneManager] Creating LinphoneCore");
             InstallConfig();
-            server.LinphoneCoreFactory.CreateLinphoneCore(this, GetConfigPath(), "Assets/linphonerc-factory");
+            LpConfig config = server.LinphoneCoreFactory.CreateLpConfig(GetConfigPath(), "Assets/linphonerc-factory");
+            server.LinphoneCoreFactory.CreateLinphoneCore(this, config);
             ConfigureLogger();
             server.LinphoneCore.SetRootCA("Assets/rootca.pem");
             Logger.Msg("[LinphoneManager] LinphoneCore created");

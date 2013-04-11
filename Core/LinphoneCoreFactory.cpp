@@ -2,6 +2,7 @@
 #include "LinphoneCore.h"
 #include "LinphoneCoreListener.h"
 #include "LinphoneAddress.h"
+#include "LpConfig.h"
 #include "Server.h"
 
 using namespace Linphone::Core;
@@ -41,15 +42,20 @@ static void LinphoneNativeOutputTraceHandler(OrtpLogLevel lev, const char *fmt, 
 
 void LinphoneCoreFactory::CreateLinphoneCore(Linphone::Core::LinphoneCoreListener^ listener)
 {
-	CreateLinphoneCore(listener, nullptr, nullptr);
+	CreateLinphoneCore(listener, nullptr);
 }
 
-void LinphoneCoreFactory::CreateLinphoneCore(Linphone::Core::LinphoneCoreListener^ listener, Platform::String^ configPath, Platform::String^ factoryConfigPath)
+void LinphoneCoreFactory::CreateLinphoneCore(Linphone::Core::LinphoneCoreListener^ listener, Linphone::Core::LpConfig^ config)
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	Utils::LinphoneCoreSetLogHandler(LinphoneNativeOutputTraceHandler);
-	this->linphoneCore = ref new Linphone::Core::LinphoneCore(listener, configPath, factoryConfigPath);
+	this->linphoneCore = ref new Linphone::Core::LinphoneCore(listener, config);
 	this->linphoneCore->Init();
+}
+
+Linphone::Core::LpConfig^ LinphoneCoreFactory::CreateLpConfig(Platform::String^ configPath, Platform::String^ factoryConfigPath)
+{
+	return dynamic_cast<LpConfig^>(Utils::CreateLpConfig(configPath, factoryConfigPath));
 }
 
 Linphone::Core::LinphoneAuthInfo^ LinphoneCoreFactory::CreateAuthInfo(Platform::String^ username, Platform::String^ password, Platform::String^ realm)

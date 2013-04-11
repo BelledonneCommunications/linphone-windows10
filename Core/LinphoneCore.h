@@ -421,14 +421,13 @@ namespace Linphone
 			friend ref class Linphone::Core::LinphoneCoreFactory;
 
 			LinphoneCore(LinphoneCoreListener^ coreListener);
-			LinphoneCore(LinphoneCoreListener^ coreListener, Platform::String^ configPath, Platform::String^ factoryConfigPath);
+			LinphoneCore(LinphoneCoreListener^ coreListener, LpConfig^ config);
 			void Init();
 			~LinphoneCore();
 
 			::LinphoneCore *lc;
 			LinphoneCoreListener^ listener;
-			Platform::String^ ConfigPath;
-			Platform::String^ FactoryConfigPath;
+			LpConfig^ config;
 			Windows::System::Threading::ThreadPoolTimer ^IterateTimer;
 		};
 	}

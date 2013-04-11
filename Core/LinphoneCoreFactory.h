@@ -11,6 +11,7 @@ namespace Linphone
 		ref class LinphoneCore;
 		ref class LinphoneAuthInfo;
 		ref class LinphoneAddress;
+		ref class LpConfig;
 
 		public interface class OutputTraceListener
 		{
@@ -33,7 +34,9 @@ namespace Linphone
 			}
 
 			void CreateLinphoneCore(LinphoneCoreListener^ listener);
-			void CreateLinphoneCore(LinphoneCoreListener^ listener, Platform::String^ configPath, Platform::String^ factoryConfigPath);
+			void CreateLinphoneCore(LinphoneCoreListener^ listener, LpConfig^ config);
+
+			LpConfig^ CreateLpConfig(Platform::String^ configPath, Platform::String^ factoryConfigPath);
 
 			LinphoneAuthInfo^ CreateAuthInfo(Platform::String^ username, Platform::String^ password, Platform::String^ realm);
 

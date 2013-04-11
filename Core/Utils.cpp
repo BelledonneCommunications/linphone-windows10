@@ -58,6 +58,11 @@ Platform::Object^ Linphone::Core::Utils::CreateLpConfig(void *config)
 	return ref new Linphone::Core::LpConfig((::LpConfig *)config);
 }
 
+Platform::Object^ Linphone::Core::Utils::CreateLpConfig(Platform::String^ configPath, Platform::String^ factoryConfigPath)
+{
+	return ref new Linphone::Core::LpConfig(configPath, factoryConfigPath);
+}
+
 Platform::Object^ Linphone::Core::Utils::CreatePayloadType(void *pt)
 {
 	return ref new Linphone::Core::PayloadType((::PayloadType *)pt);

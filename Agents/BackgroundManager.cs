@@ -51,7 +51,8 @@ namespace Linphone.Agents
             if (OopServer == null)
                 OopServer = (Server)WindowsRuntimeMarshal.GetActivationFactory(typeof(Server)).ActivateInstance();
 
-            OopServer.LinphoneCoreFactory.CreateLinphoneCore(null, ApplicationData.Current.LocalFolder.Path + "\\linphonerc", "Assets/linphonerc-factory");
+            LpConfig config = OopServer.LinphoneCoreFactory.CreateLpConfig(ApplicationData.Current.LocalFolder.Path + "\\linphonerc", "Assets/linphonerc-factory");
+            OopServer.LinphoneCoreFactory.CreateLinphoneCore(null, config);
 
             //Globals.Instance.BackgroundModeLogger.Configure(true, OutputTraceDest.TCPRemote, "192.168.0.217:38954");
             //Globals.Instance.LinphoneCoreFactory.OutputTraceListener = Globals.Instance.BackgroundModeLogger;

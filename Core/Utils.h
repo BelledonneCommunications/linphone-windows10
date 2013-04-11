@@ -30,6 +30,8 @@ namespace Linphone
 
 			static Platform::Object^ CreateLpConfig(void *config);
 
+			static Platform::Object^ CreateLpConfig(Platform::String^ configPath, Platform::String^ factoryConfigPath);
+
 			static Platform::Object^ CreatePayloadType(void *pt);
 
 			static Platform::Object^ CreateLinphoneCall(void* call);

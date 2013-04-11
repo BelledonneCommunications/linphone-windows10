@@ -90,6 +90,7 @@ namespace Linphone
 			friend ref class Linphone::Core::LinphoneCore;
 
 			LpConfig(::LpConfig *config);
+			LpConfig(Platform::String^ configPath, Platform::String^ factoryConfigPath);
 			~LpConfig();
 
 			::LpConfig *config;

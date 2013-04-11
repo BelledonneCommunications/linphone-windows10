@@ -877,11 +877,10 @@ Linphone::Core::LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener) :
 
 }
 
-Linphone::Core::LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener, Platform::String^ configPath, Platform::String^ factoryConfigPath) :
+Linphone::Core::LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener, LpConfig^ config) :
 	lc(nullptr),
 	listener(coreListener),
-	ConfigPath(configPath),
-	FactoryConfigPath(factoryConfigPath)
+	config(config)
 {
 }
 
@@ -894,9 +893,7 @@ void Linphone::Core::LinphoneCore::Init()
 	vtable->call_state_changed = call_state_changed;
 	vtable->auth_info_requested = auth_info_requested;
 
-	const char *cConfigPath = Utils::pstoccs(ConfigPath);
-	const char *cFactoryConfigPath = Utils::pstoccs(FactoryConfigPath);
-	this->lc = linphone_core_new(vtable, cConfigPath, cFactoryConfigPath, NULL);
+	this->lc = linphone_core_new_with_config(vtable, config ? config->config : NULL, NULL);
 	
 	// Launch iterate timer
 	TimeSpan period;
