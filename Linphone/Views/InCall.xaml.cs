@@ -26,6 +26,7 @@ namespace Linphone.Views
         private const string pauseOff = "/Assets/AppBar/pause.png";
 
         private Timer timer;
+        private DateTimeOffset startTime;
 
         /// <summary>
         /// Public constructor.
@@ -106,6 +107,10 @@ namespace Linphone.Views
 
         private void hangUp_Click(object sender, RoutedEventArgs e)
         {
+            if (timer != null)
+            {
+                timer.Dispose();
+            }
             LinphoneManager.Instance.EndCurrentCall();
         }
 
@@ -165,16 +170,26 @@ namespace Linphone.Views
 
         private void timerTick(Object state)
         {
-            LinphoneCall call = LinphoneManager.Instance.LinphoneCore.GetCurrentCall();
-            DateTimeOffset startTime = (DateTimeOffset)call.GetCallStartTimeFromContext();
-            DateTimeOffset now = DateTimeOffset.Now;
-            TimeSpan elapsed = now.Subtract(startTime);
-            var ss = elapsed.Seconds;
-            var mm = elapsed.Minutes;
-            Status.Dispatcher.BeginInvoke(delegate()
+            try
             {
-                Status.Text = mm.ToString("00") + ":" + ss.ToString("00");
-            });
+                LinphoneCall call = LinphoneManager.Instance.LinphoneCore.GetCurrentCall();
+                if (call == null)
+                {
+                    timer.Dispose();
+                    return;
+                }
+                startTime = (DateTimeOffset)call.GetCallStartTimeFromContext();
+                DateTimeOffset now = DateTimeOffset.Now;
+                TimeSpan elapsed = now.Subtract(startTime);
+                var ss = elapsed.Seconds;
+                var mm = elapsed.Minutes;
+                Status.Dispatcher.BeginInvoke(delegate()
+                {
+                    Status.Text = mm.ToString("00") + ":" + ss.ToString("00");
+                });
+            } catch {
+                timer.Dispose();
+            }
         }
 
         private void dialpad_Click_1(object sender, RoutedEventArgs e)

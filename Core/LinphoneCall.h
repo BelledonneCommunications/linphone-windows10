@@ -89,8 +89,14 @@ namespace Linphone
 			Platform::String^ GetRemoteUserAgent();
 			Platform::String^ GetRemoteContact();
 
+			/// <summary>
+			/// Uses the CallContext object (native VoipPhoneCall) to get the DateTimeOffset at which the call started
+			/// </summary>
 			Platform::Object^ GetCallStartTimeFromContext();
 
+			/// <summary>
+			/// Gets the CallContext object (native VoipPhoneCall)
+			/// </summary>
 			property Platform::Object^ CallContext
             {
                 Platform::Object^ get();

@@ -250,7 +250,6 @@ namespace Linphone.Model
             if ((server.LinphoneCoreFactory != null) && (server.LinphoneCore != null))
             {
                 // Reconnect the listeners when coming back from background mode
-                Debug.WriteLine("[LinphoneManager] LinphoneCore alread created, skipping");
                 Logger.Msg("[LinphoneManager] LinphoneCore alread created, skipping");
 
                 server.LinphoneCore.CoreListener = this;
@@ -258,6 +257,7 @@ namespace Linphone.Model
                 return;
             }
 
+            Logger.Msg("[LinphoneManager] Creating LinphoneCore");
             InstallConfig();
             server.LinphoneCoreFactory.CreateLinphoneCore(this, GetConfigPath(), "Assets/linphonerc-factory");
             ConfigureLogger();
@@ -302,6 +302,26 @@ namespace Linphone.Model
 
         #region CallLogs
         private List<CallLogs> _history;
+
+        /// <summary>
+        /// Gets the latest called address or number
+        /// </summary>
+        /// <returns>null if there isn't any</returns>
+        public string GetLastCalledNumber()
+        {
+            foreach (LinphoneCallLog log in LinphoneManager.Instance.LinphoneCore.GetCallLogs())
+            {
+                string to = log.GetTo().GetDisplayName();
+                if (to.Length == 0)
+                    to = log.GetTo().AsStringUriOnly();
+
+                if (log.GetDirection() == CallDirection.Outgoing)
+                {
+                    return to;
+                }
+            }
+            return null;
+        }
 
         /// <summary>
         /// Get the calls' history.
@@ -551,6 +571,7 @@ namespace Linphone.Model
             }
             else if (state == LinphoneCallState.Released)
             {
+                Logger.Msg("[LinphoneManager] Call released");
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
                     TileManager.Instance.UpdateTileWithMissedCalls(LinphoneCore.GetMissedCallsCount());

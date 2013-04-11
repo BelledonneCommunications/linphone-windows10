@@ -54,6 +54,11 @@ namespace Linphone
             {
                 LinphoneManager.Instance.NewOutgoingCall(addressBox.Text);
             }
+            else
+            {
+                string lastDialedNumber = LinphoneManager.Instance.GetLastCalledNumber();
+                addressBox.Text = lastDialedNumber == null ? "" : lastDialedNumber;
+            }
         }
 
         private void Numpad_Click_1(object sender, RoutedEventArgs e)
