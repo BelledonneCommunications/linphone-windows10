@@ -264,6 +264,7 @@ namespace Linphone.Model
             ConfigureLogger();
             server.LinphoneCore.SetRootCA("Assets/rootca.pem");
             Logger.Msg("[LinphoneManager] LinphoneCore created");
+
             AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;
             CallController.MuteRequested += MuteRequested;
             CallController.UnmuteRequested += UnmuteRequested;
