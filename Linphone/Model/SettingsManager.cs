@@ -476,7 +476,7 @@ namespace Linphone.Model
             Dictionary<Tuple<String, int>, String> map = new Dictionary<Tuple<String, int>, String>
             {
                 { new Tuple<String, int>("amr", 8000), AMRNBSettingKeyName },
-                { new Tuple<String, int>("amr", 16000), AMRWBSettingKeyName },
+                { new Tuple<String, int>("amr-wb", 16000), AMRWBSettingKeyName },
                 { new Tuple<String, int>("speex", 16000), Speex16SettingKeyName },
                 { new Tuple<String, int>("speex", 8000), Speex8SettingKeyName },
                 { new Tuple<String, int>("pcmu", 8000), PCMUSettingKeyName },
