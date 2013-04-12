@@ -89,8 +89,8 @@ void Linphone::Core::BackgroundModeLogger::OutputTrace(OutputTraceLevel level, P
 		else if (this->dest == OutputTraceDest::File) {
 			if (this->d->stream == nullptr) {
 				StorageFolder^ localFolder = ApplicationData::Current->LocalFolder;
-				task<StorageFile^>(localFolder->CreateFileAsync(this->filename, CreationCollisionOption::ReplaceExisting)).then([this](StorageFile^ file) {
-					this->d->stream = new std::ofstream(file->Path->Data());
+				task<StorageFile^>(localFolder->CreateFileAsync(this->filename, CreationCollisionOption::OpenIfExists)).then([this](StorageFile^ file) {
+					this->d->stream = new std::ofstream(file->Path->Data(), std::ios_base::out | std::ios_base::ate | std::ios_base::app);
 				}).wait();
 			}
 			if (this->d->stream != nullptr) {
