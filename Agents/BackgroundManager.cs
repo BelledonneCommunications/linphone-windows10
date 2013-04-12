@@ -63,7 +63,7 @@ namespace Linphone.Agents
             // Initiate incoming call processing by creating the Linphone Core
             LpConfig config = OopServer.LinphoneCoreFactory.CreateLpConfig(ApplicationData.Current.LocalFolder.Path + "\\linphonerc", "Assets/linphonerc-factory");
             OopServer.LinphoneCoreFactory.CreateLinphoneCore(null, config);
-            server.LinphoneCore.SetRootCA("Assets/rootca.pem");
+            OopServer.LinphoneCore.SetRootCA("Assets/rootca.pem");
 
             //Globals.Instance.BackgroundModeLogger.Configure(true, OutputTraceDest.TCPRemote, "192.168.0.217:38954");
             //Globals.Instance.LinphoneCoreFactory.OutputTraceListener = Globals.Instance.BackgroundModeLogger;
