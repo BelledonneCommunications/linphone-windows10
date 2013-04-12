@@ -141,6 +141,9 @@
     <Compile Include="Views\CodecsSettings.xaml.cs">
       <DependentUpon>CodecsSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Console.xaml.cs">
+      <DependentUpon>Console.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Contact.xaml.cs">
       <DependentUpon>Contact.xaml</DependentUpon>
     </Compile>
@@ -165,6 +168,7 @@
     <Content Include="Assets\linphonerc" />
     <Content Include="Assets\linphonerc-factory" />
     <Content Include="Assets\rootca.pem" />
+    <Content Include="Views\logs.html" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
@@ -278,6 +282,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CodecsSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Console.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

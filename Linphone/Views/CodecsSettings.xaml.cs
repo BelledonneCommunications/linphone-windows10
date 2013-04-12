@@ -54,12 +54,10 @@ namespace Linphone.Views
         private void save_Click_1(object sender, EventArgs e)
         {
             _settings.AMRNB = ToBool(AMRNB.IsChecked);
-            _settings.AMRNB = ToBool(AMRNB.IsChecked);
             _settings.AMRWB = ToBool(AMRWB.IsChecked);
             _settings.Speex16 = ToBool(Speex16.IsChecked);
             _settings.Speex8 = ToBool(Speex8.IsChecked);
             _settings.PCMU = ToBool(PCMU.IsChecked);
-            _settings.PCMA = ToBool(PCMA.IsChecked);
             _settings.PCMA = ToBool(PCMA.IsChecked);
             _settings.G722 = ToBool(G722.IsChecked);
             _settings.ILBC = ToBool(ILBC.IsChecked);

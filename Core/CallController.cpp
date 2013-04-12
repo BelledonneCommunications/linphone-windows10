@@ -80,7 +80,7 @@ void CallController::EndCall(VoipPhoneCall^ call)
 	call->NotifyCallEnded();
 }
 
-VoipPhoneCall^ CallController::NewOutgoingCall(Platform::String^ number, Platform::String^ name)
+VoipPhoneCall^ CallController::NewOutgoingCall(Platform::String^ number)
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 
@@ -89,7 +89,7 @@ VoipPhoneCall^ CallController::NewOutgoingCall(Platform::String^ number, Platfor
 
 	this->callCoordinator->RequestNewOutgoingCall(
 		this->callInProgressPageUri + "?sip=" + number, 
-        name, 
+        number, 
         this->voipServiceName, 
         VoipCallMedia::Audio,
 		&outgoingCall);

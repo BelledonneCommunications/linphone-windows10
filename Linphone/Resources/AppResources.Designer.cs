@@ -175,6 +175,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Console.
+        /// </summary>
+        public static string ConsoleMenu {
+            get {
+                return ResourceManager.GetString("ConsoleMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact.
         /// </summary>
         public static string ContactMenu {
@@ -333,6 +342,15 @@ namespace Linphone.Resources {
         public static string PCMUCodec {
             get {
                 return ResourceManager.GetString("PCMUCodec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh.
+        /// </summary>
+        public static string Refresh {
+            get {
+                return ResourceManager.GetString("Refresh", resourceCulture);
             }
         }
         

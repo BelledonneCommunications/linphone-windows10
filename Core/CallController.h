@@ -34,7 +34,7 @@ namespace Linphone
 			/// <summary>
 			/// Starts an outgoing call using native VoipPhoneCall.
 			/// </summary>
-			Windows::Phone::Networking::Voip::VoipPhoneCall^ NewOutgoingCall(Platform::String^ number, Platform::String^ name);
+			Windows::Phone::Networking::Voip::VoipPhoneCall^ NewOutgoingCall(Platform::String^ number);
 
 			/// <summary>
 			/// Callback to be called when the PushNotification Agent has to be dismissed, i.e. after a call has been accepted, denied or stopped by the caller.

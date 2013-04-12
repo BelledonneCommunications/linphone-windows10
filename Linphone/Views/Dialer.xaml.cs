@@ -6,6 +6,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using Windows.Storage;
 
 namespace Linphone
 {
@@ -22,7 +23,6 @@ namespace Linphone
         public Dialer()
         {
             InitializeComponent();
-            BuildLocalizedApplicationBar();
             addressBox.FocusListener = this;
 
             ContactManager contactManager = ContactManager.Instance; //Force creation and init of ContactManager
@@ -39,6 +39,8 @@ namespace Linphone
 
             // Create LinphoneCore if not created yet, otherwise do nothing
             LinphoneManager.Instance.InitLinphoneCore();
+
+            BuildLocalizedApplicationBar();
 
             // Check for the navigation direction to avoid going to incall view when coming back from incall view
             if (NavigationContext.QueryString.ContainsKey("sip") && e.NavigationMode != NavigationMode.Back)
@@ -97,7 +99,12 @@ namespace Linphone
             NavigationService.Navigate(new Uri("/Views/About.xaml", UriKind.RelativeOrAbsolute));
         }
 
-        private void BuildLocalizedApplicationBar()
+        private void console_Click_1(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/Console.xaml", UriKind.RelativeOrAbsolute));
+        }
+
+        private async void BuildLocalizedApplicationBar()
         {
             ApplicationBar = new ApplicationBar();
 
@@ -119,6 +126,21 @@ namespace Linphone
             ApplicationBarMenuItem appBarAbout = new ApplicationBarMenuItem(AppResources.AboutMenu);
             appBarAbout.Click += about_Click_1;
             ApplicationBar.MenuItems.Add(appBarAbout);
+
+            ApplicationSettingsManager appSettings = new ApplicationSettingsManager();
+            appSettings.Load();
+            StorageFile logFile = null;
+            try
+            {
+                logFile = await ApplicationData.Current.LocalFolder.GetFileAsync(appSettings.LogOption);
+            }
+            catch { }
+            if (appSettings.LogDestination == Core.OutputTraceDest.File && logFile != null)
+            {
+                ApplicationBarMenuItem appBarConsole = new ApplicationBarMenuItem(AppResources.ConsoleMenu);
+                appBarConsole.Click += console_Click_1;
+                ApplicationBar.MenuItems.Add(appBarConsole);
+            }
         }
 
         private void Title_Tap(object sender, System.Windows.Input.GestureEventArgs e)

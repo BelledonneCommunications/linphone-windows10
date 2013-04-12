@@ -293,4 +293,10 @@ http://www.linphone.org/m/help
   <data name="Dialing" xml:space="preserve">
     <value>Dialing...</value>
   </data>
+  <data name="ConsoleMenu" xml:space="preserve">
+    <value>Console</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
 </root>
