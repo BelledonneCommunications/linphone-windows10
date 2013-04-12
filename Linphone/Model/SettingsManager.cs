@@ -184,13 +184,26 @@ namespace Linphone.Model
         /// <summary>
         /// Save the application settings.
         /// </summary>
-        public void Save()
+        public async void Save()
         {
             if (ValueChanged(LogLevelKeyName))
             {
                 Config.SetInt(ApplicationSection, LogLevelKeyName, Convert.ToInt32(GetNew(LogLevelKeyName)));
+                LinphoneManager.Instance.ConfigureLogger();
+                if ((Get(LogDestinationKeyName) == OutputTraceDest.File.ToString())
+                    && (GetNew(LogLevelKeyName) == ((int)OutputTraceLevel.None).ToString()))
+                {
+                    try
+                    {
+                        StorageFile logfile = await ApplicationData.Current.LocalFolder.GetFileAsync(Get(LogOptionKeyName));
+                        await logfile.DeleteAsync();
+                    }
+                    catch
+                    {
+                        Logger.Warn("Failed deleting log file {0}", Get(LogOptionKeyName));
+                    }
+                }
             }
-            LinphoneManager.Instance.ConfigureLogger();
         }
         #endregion
 
