@@ -74,6 +74,12 @@ Linphone::Core::LinphoneAddress^ LinphoneCoreFactory::CreateLinphoneAddress(Plat
 	return (Linphone::Core::LinphoneAddress^)Utils::CreateLinphoneAddressFromUri(Utils::pstoccs(uri));
 }
 
+void LinphoneCoreFactory::SetLogLevel(OutputTraceLevel logLevel)
+{
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	Linphone::Core::LinphoneCore::SetLogLevel(logLevel);
+}
+
 Linphone::Core::LinphoneCore^ LinphoneCoreFactory::LinphoneCore::get()
 {
 	return this->linphoneCore;

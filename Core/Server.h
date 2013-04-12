@@ -65,11 +65,6 @@ namespace Linphone
 						return Windows::ApplicationModel::Package::Current->InstalledLocation->Path;
 					};
 				}
-
-				void SetLogLevel(OutputTraceLevel logLevel)
-				{
-					Linphone::Core::LinphoneCore::SetLogLevel(logLevel);
-				}
             };
         }
     }

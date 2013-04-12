@@ -2,11 +2,13 @@
 using Linphone.Resources;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace Linphone.Model
 {
@@ -44,18 +46,40 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Static access to the debug enabled setting.
+        /// Install the default config file from the package to the Isolated Storage
         /// </summary>
-        public static bool isDebugEnabled
+        public static void InstallConfigFile()
         {
-            get
+            if (!File.Exists(GetConfigPath()))
             {
-                ApplicationSettingsManager asm = new ApplicationSettingsManager();
-                asm.Load();
-                return asm.DebugEnabled;
+                File.Copy("Assets/linphonerc", GetConfigPath());
             }
         }
 
+        /// <summary>
+        /// Get the path of the config file stored in the Isolated Storage
+        /// </summary>
+        /// <returns>The path of the config file</returns>
+        public static String GetConfigPath()
+        {
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            return localFolder.Path + "\\linphonerc";
+        }
+
+        /// <summary>
+        /// Get the path of the factory config file stored in the package
+        /// </summary>
+        /// <returns>The path of the factory config file</returns>
+        public static String GetFactoryConfigPath()
+        {
+            return "Assets/linphonerc-factory";
+        }
+
+        /// <summary>
+        /// Get the value of a settings parameter from its name
+        /// </summary>
+        /// <param name="Key">The name of the settings parameter for which we want the value</param>
+        /// <returns>The value of the settings parameter</returns>
         protected String Get(String Key)
         {
             if (dict.ContainsKey(Key))
@@ -68,6 +92,11 @@ namespace Linphone.Model
             }
         }
 
+        /// <summary>
+        /// Get the changed value of a settings parameter from its name
+        /// </summary>
+        /// <param name="Key">The name of the settings parameter for which we want the changed value</param>
+        /// <returns>The changed value of the settings parameter</returns>
         protected String GetNew(String Key)
         {
             if (changesDict.ContainsKey(Key))
@@ -81,6 +110,11 @@ namespace Linphone.Model
             return null;
         }
 
+        /// <summary>
+        /// Set a new value for a settings parameter given its name
+        /// </summary>
+        /// <param name="Key">The name of the settings parameter to change</param>
+        /// <param name="Value">The new value to be set for the settings parameter</param>
         protected void Set(String Key, String Value)
         {
             if (dict.ContainsKey(Key))
@@ -96,6 +130,11 @@ namespace Linphone.Model
             }
         }
 
+        /// <summary>
+        /// Tell whether a settings parameter has been changed given its name
+        /// </summary>
+        /// <param name="Key">The name of the settings parameter</param>
+        /// <returns>A boolean telling whether the settings parameter has been changed or not</returns>
         protected bool ValueChanged(String Key)
         {
             return changesDict.ContainsKey(Key);
@@ -108,10 +147,28 @@ namespace Linphone.Model
     public class ApplicationSettingsManager : SettingsManager, ISettingsManager
     {
         private const string ApplicationSection = "app";
+        private LpConfig Config;
 
         #region Constants settings names
-        private const string DebugSettingKeyName = "Debug";
+        private const string LogLevelKeyName = "LogLevel";
+        private const string LogDestinationKeyName = "LogDestination";
+        private const string LogOptionKeyName = "LogOption";
         #endregion
+
+        /// <summary>
+        /// Public constructor.
+        /// </summary>
+        public ApplicationSettingsManager()
+        {
+            if (LinphoneManager.Instance.LinphoneCore == null)
+            {
+                Config = LinphoneManager.Instance.LinphoneCoreFactory.CreateLpConfig(GetConfigPath(), GetFactoryConfigPath());
+            }
+            else
+            {
+                Config = LinphoneManager.Instance.LinphoneCore.GetConfig();
+            }
+        }
 
         #region Implementation of the ISettingsManager interface
         /// <summary>
@@ -119,7 +176,9 @@ namespace Linphone.Model
         /// </summary>
         public void Load()
         {
-            dict[DebugSettingKeyName] = LinphoneManager.Instance.LinphoneCore.GetConfig().GetBool(ApplicationSection, DebugSettingKeyName, false).ToString();
+            dict[LogLevelKeyName] = Config.GetInt(ApplicationSection, LogLevelKeyName, (int)OutputTraceLevel.None).ToString();
+            dict[LogDestinationKeyName] = Config.GetString(ApplicationSection, LogDestinationKeyName, OutputTraceDest.File.ToString());
+            dict[LogOptionKeyName] = Config.GetString(ApplicationSection, LogOptionKeyName, "Linphone.log");
         }
 
         /// <summary>
@@ -127,15 +186,10 @@ namespace Linphone.Model
         /// </summary>
         public void Save()
         {
-            LinphoneCore lc = LinphoneManager.Instance.LinphoneCore;
-            bool debugEnabled = Convert.ToBoolean(GetNew(DebugSettingKeyName));
-            OutputTraceLevel logLevel = OutputTraceLevel.None;
-            if (debugEnabled)
+            if (ValueChanged(LogLevelKeyName))
             {
-                logLevel = OutputTraceLevel.Message;
+                Config.SetInt(ApplicationSection, LogLevelKeyName, Convert.ToInt32(GetNew(LogLevelKeyName)));
             }
-            LinphoneManager.Instance.SetLogLevel(logLevel);
-            lc.GetConfig().SetBool(ApplicationSection, DebugSettingKeyName, debugEnabled);
             LinphoneManager.Instance.ConfigureLogger();
         }
         #endregion
@@ -148,11 +202,67 @@ namespace Linphone.Model
         {
             get
             {
-                return Convert.ToBoolean(Get(DebugSettingKeyName));
+                return Convert.ToInt32(Get(LogLevelKeyName)) != (int)OutputTraceLevel.None;
             }
             set
             {
-                Set(DebugSettingKeyName, value.ToString());
+                if (value)
+                {
+                    Set(LogLevelKeyName, ((int)OutputTraceLevel.Message).ToString());
+                }
+                else
+                {
+                    Set(LogLevelKeyName, ((int)OutputTraceLevel.None).ToString());
+                }
+            }
+        }
+
+        /// <summary>
+        /// Log level (OutputTraceLevel).
+        /// </summary>
+        public OutputTraceLevel LogLevel
+        {
+            get
+            {
+                return (OutputTraceLevel) Convert.ToInt32(Get(LogLevelKeyName));
+            }
+            set
+            {
+                Set(LogLevelKeyName, ((int)value).ToString());
+            }
+        }
+
+        /// <summary>
+        /// Log destination.
+        /// </summary>
+        public OutputTraceDest LogDestination
+        {
+            get
+            {
+                String dest = Get(LogDestinationKeyName);
+                if (dest == OutputTraceDest.Debugger.ToString()) return OutputTraceDest.Debugger;
+                else if (dest == OutputTraceDest.File.ToString()) return OutputTraceDest.File;
+                else if (dest == OutputTraceDest.TCPRemote.ToString()) return OutputTraceDest.TCPRemote;
+                return OutputTraceDest.None;
+            }
+            set
+            {
+                Set(LogDestinationKeyName, value.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Log option (filename if LogDestination is OutputTraceDest.File, host:port if LogDestination is OutputTraceDest.TCPRemote).
+        /// </summary>
+        public String LogOption
+        {
+            get
+            {
+                return Get(LogOptionKeyName);
+            }
+            set
+            {
+                Set(LogOptionKeyName, value);
             }
         }
         #endregion

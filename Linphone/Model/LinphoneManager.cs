@@ -228,20 +228,6 @@ namespace Linphone.Model
         }
         #endregion
 
-        private void InstallConfig()
-        {
-            if (!File.Exists(GetConfigPath()))
-            {
-                File.Copy("Assets/linphonerc", GetConfigPath());
-            }
-        }
-
-        private String GetConfigPath()
-        {
-            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-	        return localFolder.Path + "\\linphonerc";
-        }
-
         /// <summary>
         /// Creates a new LinphoneCore (if not created yet) using a LinphoneCoreFactory.
         /// </summary>
@@ -258,10 +244,10 @@ namespace Linphone.Model
             }
 
             Logger.Msg("[LinphoneManager] Creating LinphoneCore");
-            InstallConfig();
-            LpConfig config = server.LinphoneCoreFactory.CreateLpConfig(GetConfigPath(), "Assets/linphonerc-factory");
-            server.LinphoneCoreFactory.CreateLinphoneCore(this, config);
+            SettingsManager.InstallConfigFile();
+            LpConfig config = server.LinphoneCoreFactory.CreateLpConfig(SettingsManager.GetConfigPath(), SettingsManager.GetFactoryConfigPath());
             ConfigureLogger();
+            server.LinphoneCoreFactory.CreateLinphoneCore(this, config);
             server.LinphoneCore.SetRootCA("Assets/rootca.pem");
             Logger.Msg("[LinphoneManager] LinphoneCore created");
 
@@ -292,14 +278,12 @@ namespace Linphone.Model
             // To have the debug output in the debugger use the following commented configure and set your debugger to native mode
             //server.BackgroundModeLogger.Configure(SettingsManager.isDebugEnabled, OutputTraceDest.Debugger, "");
             // Else output the debug traces to a file
-            server.BackgroundModeLogger.Configure(SettingsManager.isDebugEnabled, OutputTraceDest.File, "Linphone.log");
+            ApplicationSettingsManager appSettings = new ApplicationSettingsManager();
+            appSettings.Load();
+            server.BackgroundModeLogger.Configure(appSettings.DebugEnabled, appSettings.LogDestination, appSettings.LogOption);
             server.LinphoneCoreFactory.OutputTraceListener = server.BackgroundModeLogger;
+            server.LinphoneCoreFactory.SetLogLevel(appSettings.LogLevel);
             Logger.Instance.TraceListener = server.BackgroundModeLogger;
-        }
-
-        public void SetLogLevel(OutputTraceLevel logLevel)
-        {
-            server.SetLogLevel(logLevel);
         }
 
         #region CallLogs

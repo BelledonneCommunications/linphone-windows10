@@ -81,11 +81,12 @@ Platform::String^ Linphone::Core::LpConfig::GetString(Platform::String^ section,
 	const char *ccSection = Linphone::Core::Utils::pstoccs(section);
 	const char *ccKey = Linphone::Core::Utils::pstoccs(key);
 	const char *ccDefaultValue = Linphone::Core::Utils::pstoccs(defaultValue);
-	const char *value = lp_config_get_string(this->config, ccSection, ccKey, ccDefaultValue);
+	const char *ccvalue = lp_config_get_string(this->config, ccSection, ccKey, ccDefaultValue);
+	Platform::String^ value = Linphone::Core::Utils::cctops(ccvalue);
 	delete(ccDefaultValue);
 	delete(ccKey);
 	delete(ccSection);
-	return Linphone::Core::Utils::cctops(value);
+	return value;
 }
 
 void Linphone::Core::LpConfig::SetString(Platform::String^ section, Platform::String^ key, Platform::String^ value)

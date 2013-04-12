@@ -48,6 +48,8 @@ namespace Linphone
 			/// <param name="uri">address, should be like "sip:joe@sip.linphone.org"</param>
 			LinphoneAddress^ CreateLinphoneAddress(Platform::String^ uri);
 
+			void SetLogLevel(OutputTraceLevel logLevel);
+
 		private:
 			friend ref class Linphone::Core::Globals;
 

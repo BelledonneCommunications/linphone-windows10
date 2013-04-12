@@ -125,9 +125,10 @@ namespace Linphone
 		/// </summary>
 		public enum class OutputTraceDest : int
 		{
-			Debugger = 0,
-			File = 1,
-			TCPRemote = 2
+			None = 0,
+			Debugger = 1,
+			File = 2,
+			TCPRemote = 3
 		};
 	}
 }
