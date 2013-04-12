@@ -812,7 +812,7 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 		
 	Linphone::Core::CallController^ callController = Linphone::Core::Globals::Instance->CallController;
 	if (state == Linphone::Core::LinphoneCallState::IncomingReceived) {
-		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = callController->OnIncomingCallReceived(lCall, lCall->GetRemoteContact(), lCall->GetRemoteAddress()->AsStringUriOnly(), nullptr);
+		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = callController->OnIncomingCallReceived(lCall, lCall->GetRemoteContact(), lCall->GetRemoteAddress()->AsStringUriOnly(), callController->IncomingCallViewDismissed);
 		lCall->CallContext = platformCall;
 	} 
 	else if (state == Linphone::Core::LinphoneCallState::OutgoingProgress) {
@@ -822,6 +822,11 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 	else if (state == Linphone::Core::LinphoneCallState::CallEnd || state == Linphone::Core::LinphoneCallState::Error) {
 		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = (Windows::Phone::Networking::Voip::VoipPhoneCall^) lCall->CallContext;
 		platformCall->NotifyCallEnded();
+
+		if (callController->IncomingCallViewDismissed != nullptr) {
+			// When we receive a call with PN, call the callback to kill the agent process in case the caller stops the call before user accepts/denies it
+			callController->IncomingCallViewDismissed();
+		}
 	}
 	else if (state == Linphone::Core::LinphoneCallState::Paused || state == Linphone::Core::LinphoneCallState::PausedByRemote) {
 		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = (Windows::Phone::Networking::Voip::VoipPhoneCall^) lCall->CallContext;

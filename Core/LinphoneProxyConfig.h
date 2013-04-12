@@ -30,7 +30,14 @@ namespace Linphone
 			/// </summary>
 			void Done();
 
+			/// <summary>
+			/// Sets the identity for this proxy config.
+			/// </summary>
 			void SetIdentity(Platform::String^ displayname, Platform::String^ username, Platform::String^ domain);
+
+			/// <summary>
+			/// Gets the identity associated with this proxy config.
+			/// </summary>
 			Platform::String^ GetIdentity();
 
 			/// <summary>
@@ -60,6 +67,10 @@ namespace Linphone
 			/// Register message is issued after call to Done.
 			/// </summary>
 			void EnableRegister(Platform::Boolean enable);
+
+			/// <summary>
+			/// Returns true if the register is enabled for this proxy config, else returns false.
+			/// </summary>
 			Platform::Boolean IsRegisterEnabled();
 
 			/// <summary>
@@ -79,8 +90,20 @@ namespace Linphone
 			/// Sets whether Linphone should replace "+" by "00" in dialed numbers passed to LinphoneCore::Invite.
 			/// </summary>
 			void SetDialEscapePlus(Platform::Boolean value);
+
+			/// <summary>
+			/// Gets the address.
+			/// </summary>
 			Platform::String^ GetAddr();
+
+			/// <summary>
+			/// Gets the domain of the address.
+			/// </summary>
 			Platform::String^ GetDomain();
+
+			/// <summary>
+			/// Returns true if this proxy config is currently registered, else returns false.
+			/// </summary>
 			Platform::Boolean IsRegistered();
 
 			/// <summary>
@@ -88,19 +111,35 @@ namespace Linphone
 			/// When a route is set, all outgoing calls will go the the route's destination if this proxy is the default one (see LinphoneCore::GetDefaultProxyConfig).
 			/// </summary>
 			void SetRoute(Platform::String^ routeUri);
+
+			/// <summary>
+			/// Returns the SIP route is any.
+			/// </summary>
 			Platform::String^ GetRoute();
 
 			/// <summary>
 			/// Indicates either or not PUBLISH must be issued for this LinphoneProxyConfig.
 			/// </summary>
 			void EnablePublish(Platform::Boolean enable);
+
+			/// <summary>
+			/// Returns true if PUBLISH must be issued, else returns false.
+			/// </summary>
 			Platform::Boolean IsPublishEnabled();
+
+			/// <summary>
+			/// Returns the current RegistrationState for this proxy config.
+			/// </summary>
 			RegistrationState GetState();
 
 			/// <summary>
 			/// Sets the registration expiration time in seconds.
 			/// </summary>
 			void SetExpires(int delay);
+
+			/// <summary>
+			/// Sets the contact params to be sent along with the REGISTERs.
+			/// </summary>
 			void SetContactParameters(Platform::String^ params);
 
 			/// <summary>

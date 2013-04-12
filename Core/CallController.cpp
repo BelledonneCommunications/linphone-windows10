@@ -19,7 +19,8 @@ VoipPhoneCall^ CallController::OnIncomingCallReceived(Linphone::Core::LinphoneCa
         TimeSpan ringingTimeout; 
         ringingTimeout.Duration = 90 * 10 * 1000 * 1000; // in 100ns units 
  
-		this->onIncomingCallViewDismissed = incomingCallViewDismissedCallback;
+		if (incomingCallViewDismissedCallback != nullptr)
+			this->onIncomingCallViewDismissed = incomingCallViewDismissedCallback;
 
         // Ask the Phone Service to start a new incoming call 
         this->callCoordinator->RequestNewIncomingCall(
@@ -51,12 +52,12 @@ void CallController::OnAcceptCallRequested(VoipPhoneCall^ incomingCall, CallAnsw
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 
 	incomingCall->NotifyCallActive();
-	
-	if (this->call != nullptr)
-		Globals::Instance->LinphoneCore->AcceptCall(this->call);
 
 	if (this->onIncomingCallViewDismissed != nullptr)
 		this->onIncomingCallViewDismissed();
+	
+	if (this->call != nullptr)
+		Globals::Instance->LinphoneCore->AcceptCall(this->call);
 } 
  
 void CallController::OnRejectCallRequested(VoipPhoneCall^ incomingCall, CallRejectEventArgs^ args) 
@@ -65,11 +66,11 @@ void CallController::OnRejectCallRequested(VoipPhoneCall^ incomingCall, CallReje
 
 	incomingCall->NotifyCallEnded();
 
-	if (this->call != nullptr)
-		Globals::Instance->LinphoneCore->TerminateCall(this->call);
-
 	if (this->onIncomingCallViewDismissed != nullptr)
 		this->onIncomingCallViewDismissed();
+
+	if (this->call != nullptr)
+		Globals::Instance->LinphoneCore->TerminateCall(this->call);
 } 
 
 void CallController::EndCall(VoipPhoneCall^ call)

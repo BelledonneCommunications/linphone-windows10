@@ -10,6 +10,9 @@ namespace Linphone
         ref class Globals;
 		ref class LinphoneCall;
  
+		/// <summary>
+		/// Callback to be called when the PushNotification Agent has to be dismissed, i.e. after a call has been accepted, denied or stopped by the caller.
+		/// </summary>
         public delegate void IncomingCallViewDismissedCallback(); 
 
 		/// <summary>
@@ -18,12 +21,24 @@ namespace Linphone
         public ref class CallController sealed
         {
         public:
+			/// <summary>
+			/// Starts the system incoming call view.
+			/// </summary>
             Windows::Phone::Networking::Voip::VoipPhoneCall^ OnIncomingCallReceived(LinphoneCall^ call, Platform::String^ contactName, Platform::String^ contactNumber, IncomingCallViewDismissedCallback^ incomingCallViewDismissedCallback); 
  
+			/// <summary>
+			/// Terminate the native VoipPhoneCall.
+			/// </summary>
 			void EndCall(Windows::Phone::Networking::Voip::VoipPhoneCall^ call);
 
+			/// <summary>
+			/// Starts an outgoing call using native VoipPhoneCall.
+			/// </summary>
 			Windows::Phone::Networking::Voip::VoipPhoneCall^ NewOutgoingCall(Platform::String^ number, Platform::String^ name);
 
+			/// <summary>
+			/// Callback to be called when the PushNotification Agent has to be dismissed, i.e. after a call has been accepted, denied or stopped by the caller.
+			/// </summary>
 			property IncomingCallViewDismissedCallback^ IncomingCallViewDismissed
             {
                 IncomingCallViewDismissedCallback^ get();

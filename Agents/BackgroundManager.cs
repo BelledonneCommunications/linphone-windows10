@@ -38,8 +38,22 @@ namespace Linphone.Agents
             }
         }
 
-        // A proxy to the server object in the background agent host process 
-        public Server OopServer;
+        private Server oopServer;
+        /// <summary>
+        /// A proxy to the server object in the background agent host process 
+        /// </summary>
+        public Server OopServer
+        {
+            get {
+               if (oopServer == null)
+                    oopServer = (Server)WindowsRuntimeMarshal.GetActivationFactory(typeof(Server)).ActivateInstance();
+               return oopServer;
+            }
+
+            set {
+                oopServer = value;
+            }
+        }
 
         /// <summary>
         /// Creates a new LinphoneCore (if not created yet) using a LinphoneCoreFactory.
@@ -47,10 +61,6 @@ namespace Linphone.Agents
         public void InitLinphoneCore()
         {
             // Initiate incoming call processing by creating the Linphone Core
-
-            if (OopServer == null)
-                OopServer = (Server)WindowsRuntimeMarshal.GetActivationFactory(typeof(Server)).ActivateInstance();
-
             LpConfig config = OopServer.LinphoneCoreFactory.CreateLpConfig(ApplicationData.Current.LocalFolder.Path + "\\linphonerc", "Assets/linphonerc-factory");
             OopServer.LinphoneCoreFactory.CreateLinphoneCore(null, config);
 

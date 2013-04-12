@@ -29,8 +29,8 @@ namespace Linphone.Agents
                 this.isIncomingCallAgent = true;
                 Debug.WriteLine("[IncomingCallAgent] Received VoIP Incoming Call task");
 
-                BackgroundManager.Instance.InitLinphoneCore();
                 BackgroundManager.Instance.OopServer.CallController.IncomingCallViewDismissed = OnIncomingCallDialogDismissed;
+                BackgroundManager.Instance.InitLinphoneCore();
             }
             else
             {
@@ -39,6 +39,8 @@ namespace Linphone.Agents
                 {
                     this.isIncomingCallAgent = false;
                     Debug.WriteLine("[KeepAliveAgent] Keep Alive");
+
+                    BackgroundManager.Instance.InitLinphoneCore();
                 }
                 else
                 {
@@ -47,7 +49,7 @@ namespace Linphone.Agents
             }
         }
 
-        // This method is called when the incoming call processing is complete 
+        // This method is called when the incoming call processing is complete to kill the background process if needed
         private void OnIncomingCallDialogDismissed()
         {
             Debug.WriteLine("[IncomingCallAgent] Incoming call processing is now complete.");

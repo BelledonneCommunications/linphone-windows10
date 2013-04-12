@@ -20,8 +20,20 @@ namespace Linphone
 			/// </summary>
 			/// <param name="value">0 to disable limitation</param>
 			void SetAudioBandwidth(int value);
+
+			/// <summary>
+			/// Returns the MediaEncryption of the call (None, SRTP or ZRTP).
+			/// </summary>
 			MediaEncryption GetMediaEncryption();
+
+			/// <summary>
+			/// Sets the MediaEncryption (None, SRTP or ZRTP).
+			/// </summary>
 			void SetMediaEncryption(MediaEncryption menc);
+
+			/// <summary>
+			/// Returns the PayloadType currently in use for the audio stream.
+			/// </summary>
 			PayloadType^ GetUsedAudioCodec();
 
 			/// <summary>
@@ -31,6 +43,11 @@ namespace Linphone
 			/// Video is automatically disabled.
 			/// </summary>
 			void EnableLowBandwidth(Platform::Boolean enable);
+
+			/// <summary>
+			/// Gets if the low bandwidth mode is enabled.
+			/// See EnableLowBandwidth(boolean enable).
+			/// </summary>
 			Platform::Boolean IsLowBandwidthEnabled();
 		};
 	}

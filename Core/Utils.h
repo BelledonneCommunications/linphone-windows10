@@ -10,8 +10,16 @@ namespace Linphone
 		class Utils
 		{
 		public:
+			/// <summary>
+			/// Converts a Platform::String into a C char*.
+			/// Required to send strings from C# to C.
+			/// </summary>
 			static const char* pstoccs(Platform::String^ ps);
 
+			/// <summary>
+			/// Converts a C char* to a Platform::String.
+			/// Required to send strings from C to C#.
+			/// </summary>
 			static Platform::String^ Linphone::Core::Utils::cctops(const char*);
 
 			/// <summary>
@@ -28,20 +36,44 @@ namespace Linphone
 			/// </summary>
 			static void LinphoneCoreSetLogLevel(int loglevel);
 
+			/// <summary>
+			/// Creates a C++/CX LpConfig object using pointer to C structure.
+			/// </summary>
 			static Platform::Object^ CreateLpConfig(void *config);
 
+			/// <summary>
+			/// Creates a C++/CX LpConfig object using the path to linphonerc files.
+			/// </summary>
 			static Platform::Object^ CreateLpConfig(Platform::String^ configPath, Platform::String^ factoryConfigPath);
-
+			
+			/// <summary>
+			/// Creates a C++/CX PayloadType object using pointer to C structure.
+			/// </summary>
 			static Platform::Object^ CreatePayloadType(void *pt);
-
+			
+			/// <summary>
+			/// Creates a C++/CX LinphoneCall object using pointer to C structure.
+			/// </summary>
 			static Platform::Object^ CreateLinphoneCall(void* call);
-
+			
+			/// <summary>
+			/// Creates a C++/CX LinphoneAddress object using pointer to C structure.
+			/// </summary>
 			static Platform::Object^ CreateLinphoneAddress(void* addr);
-
+			
+			/// <summary>
+			/// Creates a C++/CX LinphoneAddress object using an URI.
+			/// </summary>
 			static Platform::Object^ CreateLinphoneAddressFromUri(const char *uri);
-
+			
+			/// <summary>
+			/// Creates a C++/CX LinphoneAuthInfo object using pointer to C structure.
+			/// </summary>
 			static Platform::Object^ CreateLinphoneAuthInfo(void *auth_info);
-
+			
+			/// <summary>
+			/// Creates a C++/CX LinphoneCallLog object using pointer to C structure.
+			/// </summary>
 			static Platform::Object^ CreateLinphoneCallLog(void* calllog);
 
 		private:

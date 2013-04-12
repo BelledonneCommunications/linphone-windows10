@@ -20,10 +20,29 @@ namespace Linphone
 		public ref class LinphoneCall sealed
 		{
 		public:
+			/// <summary>
+			/// Gets the LinphoneCallState of the call (StreamRunning, IncomingReceived, OutgoingProgress, ...).
+			/// </summary>
 			LinphoneCallState GetState();
+
+			/// <summary>
+			/// Gets the remote LinphoneAddress.
+			/// </summary>
 			LinphoneAddress^ GetRemoteAddress();
+
+			/// <summary>
+			/// Returns the CallDirection (Outgoing or incoming).
+			/// </summary>
 			CallDirection GetDirection();
+
+			/// <summary>
+			/// Gets the LinphoneCallLog associated with this call.
+			/// </summary>
 			LinphoneCallLog^ GetCallLog();
+
+			/// <summary>
+			/// Gets the audio stats associated with this call.
+			/// </summary>
 			LinphoneCallStats^ GetAudioStats();
 
 			/// <summary>

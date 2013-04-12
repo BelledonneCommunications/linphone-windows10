@@ -16,9 +16,24 @@ namespace Linphone
 		public ref class LinphoneCallLog sealed
 		{
 		public:
+			/// <summary>
+			/// Gets the LinphoneAddress of the caller.
+			/// </summary>
 			LinphoneAddress^ GetFrom();
+
+			/// <summary>
+			/// Gets the LinphoneAddress of the callee.
+			/// </summary>
 			LinphoneAddress^ GetTo();
+
+			/// <summary>
+			/// Gets the CallDirection of the call (Incoming or Outgoing).
+			/// </summary>
 			CallDirection GetDirection();
+
+			/// <summary>
+			/// Gets the LinphoneCallStatus of the call (Success, Aborted, Missed or Declined).
+			/// </summary>
 			LinphoneCallStatus GetStatus();
 
 			/// <summary>

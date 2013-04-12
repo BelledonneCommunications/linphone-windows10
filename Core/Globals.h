@@ -23,32 +23,50 @@ namespace Linphone
 			/// </summary>
             void StartServer(const Platform::Array<Platform::String^>^ outOfProcServerClassNames);
 
+			/// <summary>
+			///Returns the id of the background process (HeadlessHost)
+			/// </summary>
             static unsigned int GetCurrentProcessId();
 
             static Platform::String^ GetUiDisconnectedEventName(unsigned int backgroundProcessId);
 
             static Platform::String^ GetBackgroundProcessReadyEventName(unsigned int backgroundProcessId);
 
+			/// <summary>
+			/// Gets the instance of the Globals class, used to directly access any C++/CX objects from C#
+			/// </summary>
             static property Globals^ Instance
             {
                 Globals^ get();
             }
 
+			/// <summary>
+			/// Gets the current instance of LinphoneCoreFactory
+			/// </summary>
 			property LinphoneCoreFactory^ LinphoneCoreFactory
             {
                 Linphone::Core::LinphoneCoreFactory^ get();
             }
 
+			/// <summary>
+			/// Gets the current instance of LinphoneCore from LinphoneCoreFactory
+			/// </summary>
 			property LinphoneCore^ LinphoneCore
             {
                 Linphone::Core::LinphoneCore^ get();
             }
 
+			/// <summary>
+			/// Gets the current instance of the logger
+			/// </summary>
 			property BackgroundModeLogger^ BackgroundModeLogger
 			{
 				Linphone::Core::BackgroundModeLogger^ get();
 			}
  
+			/// <summary>
+			/// Gets the current instance of the native call controller
+			/// </summary>
             property CallController^ CallController 
             { 
                 Linphone::Core::CallController^ get(); 

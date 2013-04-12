@@ -62,6 +62,10 @@ namespace Linphone
 			static void SetLogLevel(OutputTraceLevel logLevel);
 
 			void SetContext(Platform::Object^ object);
+
+			/// <summary>
+			/// Removes all the proxy configs from LinphoneCore.
+			/// </summary>
 			void ClearProxyConfigs();
 
 			/// <summary>
@@ -90,8 +94,14 @@ namespace Linphone
 			/// </summary>
 			LinphoneProxyConfig^ CreateEmptyProxyConfig();
 
+			/// <summary>
+			/// Gets the list of the current proxy configs.
+			/// </summary>
 			Windows::Foundation::Collections::IVector<Platform::Object^>^ GetProxyConfigList();
 
+			/// <summary>
+			/// Removes all the auth infos from LinphoneCore.
+			/// </summary>
 			void ClearAuthInfos();
 
 			/// <summary>
@@ -132,7 +142,15 @@ namespace Linphone
 			/// The LinphoneAddress can be constructed directly using LinphoneCoreFactory::CreateLinphoneAddress or InterpretURL.
 			/// </summary>
 			LinphoneCall^ InviteAddress(LinphoneAddress^ to);
+
+			/// <summary>
+			/// 
+			/// </summary>
 			LinphoneCall^ InviteAddressWithParams(LinphoneAddress^ destination, LinphoneCallParams^ params);
+
+			/// <summary>
+			/// Terminates the given call if running.
+			/// </summary>
 			void TerminateCall(LinphoneCall^ call);
 
 			/// <returns>
@@ -144,7 +162,15 @@ namespace Linphone
 			/// nullptr if no call engaged yet. 
 			/// </returns>
 			LinphoneAddress^ GetRemoteAddress();
+
+			/// <summary>
+			/// Returns true if at least a call is running, else returns false.
+			/// </summary>
 			Platform::Boolean IsInCall();
+
+			/// <summary>
+			/// Returns true if there is an incoming call invite pending, else returns false.
+			/// </summary>
 			Platform::Boolean IsIncomingInvitePending();
 
 			/// <summary>
@@ -170,7 +196,15 @@ namespace Linphone
 			/// Prevent LinphoneCore from performing an automatic answer.
 			/// </summary>
 			void DeferCallUpdate(LinphoneCall^ call);
+
+			/// <summary>
+			/// Updates the given call with the given params if the remote agrees.
+			/// </summary>
 			void UpdateCall(LinphoneCall^ call, LinphoneCallParams^ params);
+
+			/// <summary>
+			/// Returns a default set of LinphoneCallParams.
+			/// </summary>
 			LinphoneCallParams^ CreateDefaultCallParameters();
 			
 			/// <summary>
@@ -178,7 +212,15 @@ namespace Linphone
 			/// Returns a IList&lt;Object&gt; where each object is a LinphoneCallLog.
 			/// </summary>
 			Windows::Foundation::Collections::IVector<Platform::Object^>^ GetCallLogs();
+
+			/// <summary>
+			/// Removes all call logs from the LinphoneCore.
+			/// </summary>
 			void ClearCallLogs();
+
+			/// <summary>
+			/// Removes a specific log from the LinphoneCore.
+			/// </summary>
 			void RemoveCallLog(LinphoneCallLog^ log);
 
 			/// <summary>
@@ -187,6 +229,10 @@ namespace Linphone
 			/// This method disables the automatic registration mode. It means you must call this method after each network state changes.
 			/// </summary>
 			void SetNetworkReachable(Platform::Boolean isReachable);
+
+			/// <summary>
+			/// Returns true if the network has been set as reachable, else returns false.
+			/// </summary>
 			Platform::Boolean IsNetworkReachable();
 
 			/// <summary>
@@ -217,6 +263,10 @@ namespace Linphone
 			/// Mutes or unmutes the local microphone.
 			/// </summary>
 			void MuteMic(Platform::Boolean isMuted);
+
+			/// <summary>
+			/// Returns true if the microphone is muted, else returns false.
+			/// </summary>
 			Platform::Boolean IsMicMuted();
 
 			/// <summary>
@@ -236,7 +286,14 @@ namespace Linphone
 			/// </summary>
 			void StopDTMF();
 
+			/// <summary>
+			/// Tries to return the PayloadType matching the given mime, clockrate and channels.
+			/// </summary>
 			PayloadType^ FindPayloadType(Platform::String^ mime, int clockRate, int channels);
+
+			/// <summary>
+			/// Tries to return the PayloadType matching the given mime and clockrate.
+			/// </summary>
 			PayloadType^ FindPayloadType(Platform::String^ mime, int clockRate);
 
 			/// <summary>
@@ -281,19 +338,35 @@ namespace Linphone
 			/// </summary>
 			/// <param name="stun">STUN server address and port, such as stun.linphone.org or stun.linphone.org:3478</param>
 			void SetStunServer(Platform::String^ stun);
+
+			/// <summary>
+			/// Returs the address of the configured STUN server if any.
+			/// </summary>
 			Platform::String^ GetStunServer();
 
 			/// <summary>
 			/// Sets policy regarding workarounding NATs.
 			/// </summary>
 			void SetFirewallPolicy(FirewallPolicy policy);
+
+			/// <summary>
+			/// Gets the policy regarding workarounding NATs.
+			/// </summary>
 			FirewallPolicy GetFirewallPolicy();
 
 			/// <summary>
 			/// Sets the file or folder containing trusted root CAs
 			/// </summary>
 			void SetRootCA(Platform::String^ path);
+
+			/// <summary>
+			/// Sets the upload bandwidth.
+			/// </summary>
 			void SetUploadBandwidth(int bw);
+
+			/// <summary>
+			/// Sets the download bandwidth.
+			/// </summary>
 			void SetDownloadBandwidth(int bw);
 
 			/// <summary>
@@ -310,6 +383,10 @@ namespace Linphone
 			/// Enables signaling keep alive. Small UDP packet sent periodically to keep UDP NAT association.
 			/// </summary>
 			void EnableKeepAlive(Platform::Boolean enable);
+
+			/// <summary>
+			/// Returns true if the signaling keep alive is enabled, else returns false.
+			/// </summary>
 			Platform::Boolean IsKeepAliveEnabled();
 
 			void SetPlayFile(Platform::String^ path);
@@ -359,7 +436,15 @@ namespace Linphone
 
 			void SetUserAgent(Platform::String^ name, Platform::String^ version);
 			void SetCPUCount(int count);
+
+			/// <summary>
+			/// Gets the number of missed calls since last reset.
+			/// </summary>
 			int GetMissedCallsCount();
+
+			/// <summary>
+			/// Reset the count of missed calls.
+			/// </summary>
 			void ResetMissedCallsCount();
 
 			/// <summary>
