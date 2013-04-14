@@ -66,8 +66,12 @@ void Logger::appendMessage(quint64 time, Connection::LogLevel level, const QStri
     } else if (level == Connection::Error) {
         format.setForeground(Qt::red);
     }
-    table->cellAt(0, 0).firstCursorPosition().insertText('[' + QString("%1.%2").arg(time / 1000).arg(time % 1000) + "] ");
-    table->cellAt(0, 1).firstCursorPosition().insertText(message, format);
+    QString seconds = QString("%1").arg(time / 1000);
+    seconds = seconds.rightJustified(10, ' ');
+    QString milliseconds = QString("%1").arg(time % 1000);
+    milliseconds = milliseconds.rightJustified(3, '0');
+    table->cellAt(0, 0).firstCursorPosition().insertText('[' + seconds + "." + milliseconds + "] ");
+    table->cellAt(0, 1).firstCursorPosition().insertText(message.trimmed(), format);
     if (barpos == barmax) {
         bar->setValue(bar->maximum());
     } else {
