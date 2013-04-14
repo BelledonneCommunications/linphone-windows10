@@ -112,6 +112,7 @@ void Linphone::Core::BackgroundModeLogger::OutputTrace(OutputTraceLevel level, P
 				
 			}
 			if (this->d->dataWriter != nullptr) {
+				this->d->dataWriter->WriteUInt64(GetTickCount64());
 				this->d->dataWriter->WriteByte(static_cast<unsigned char>(level));
 				this->d->dataWriter->WriteUInt16(msg->Length());
 				this->d->dataWriter->WriteString(msg);
