@@ -2,6 +2,7 @@
 #define LOGGER_H
 
 #include <QMainWindow>
+#include <QTextTableFormat>
 
 #include "server.h"
 
@@ -20,12 +21,13 @@ public:
 public slots:
     void notifyConnection(Connection *connection);
     void notifyDisconnection();
-    void appendMessage(Connection::LogLevel level, const QString &message);
+    void appendMessage(quint64 time, Connection::LogLevel level, const QString &message);
     
 private:
     Ui::Logger *mUi;
 
     Server mServer;
+    QTextTableFormat mTableFormat;
 };
 
 #endif // LOGGER_H

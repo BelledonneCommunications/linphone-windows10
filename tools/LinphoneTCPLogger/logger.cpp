@@ -3,6 +3,7 @@
 #include "ui_logger.h"
 
 #include <QScrollBar>
+#include <QTextTable>
 
 Logger::Logger(QWidget *parent) :
     QMainWindow(parent),
@@ -20,13 +21,14 @@ Logger::Logger(QWidget *parent) :
     mUi->setupUi(this);
 
     mUi->textEdit->setReadOnly(true);
+    mTableFormat.setBorder(0);
 
     connect(&mServer, SIGNAL(newConnection(Connection*)),
             this, SLOT(notifyConnection(Connection*)));
     connect(&mServer, SIGNAL(disconnected()),
             this, SLOT(notifyDisconnection()));
-    connect(&mServer, SIGNAL(newMessage(Connection::LogLevel, QString)),
-            this, SLOT(appendMessage(Connection::LogLevel, QString)));
+    connect(&mServer, SIGNAL(newMessage(quint64, Connection::LogLevel, QString)),
+            this, SLOT(appendMessage(quint64, Connection::LogLevel, QString)));
 }
 
 Logger::~Logger()
@@ -44,23 +46,31 @@ void Logger::notifyDisconnection()
     mUi->statusBar->showMessage(QString("Disconnected"), 5000);
 }
 
-void Logger::appendMessage(Connection::LogLevel level, const QString &message)
+void Logger::appendMessage(quint64 time, Connection::LogLevel level, const QString &message)
 {
     if (message.isEmpty())
         return;
 
+    QScrollBar *bar = mUi->textEdit->verticalScrollBar();
+    int barpos = bar->value();
+    int barmax = bar->maximum();
     QTextCursor cursor(mUi->textEdit->textCursor());
     cursor.movePosition(QTextCursor::End);
-    QColor color = mUi->textEdit->textColor();
+    QTextTable *table = cursor.insertTable(1, 2, mTableFormat);
+    QTextCharFormat format;
+    format.setForeground(mUi->textEdit->textColor());
     if (level == Connection::Debug) {
-        mUi->textEdit->setTextColor(Qt::gray);
+        format.setForeground(Qt::gray);
     } else if (level == Connection::Warning) {
-        mUi->textEdit->setTextColor(Qt::darkYellow);
+        format.setForeground(Qt::darkYellow);
     } else if (level == Connection::Error) {
-        mUi->textEdit->setTextColor(Qt::red);
+        format.setForeground(Qt::red);
     }
-    mUi->textEdit->append(message);
-    mUi->textEdit->setTextColor(color);
-    QScrollBar *bar = mUi->textEdit->verticalScrollBar();
-    bar->setValue(bar->maximum());
+    table->cellAt(0, 0).firstCursorPosition().insertText('[' + QString("%1.%2").arg(time / 1000).arg(time % 1000) + "] ");
+    table->cellAt(0, 1).firstCursorPosition().insertText(message, format);
+    if (barpos == barmax) {
+        bar->setValue(bar->maximum());
+    } else {
+        bar->setValue(barpos);
+    }
 }

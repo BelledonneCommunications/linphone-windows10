@@ -3,9 +3,10 @@
 
 #include <QTcpSocket>
 
+static const int HeaderLogTimeSize = 8;
 static const int HeaderLogLevelSize = 1;
 static const int HeaderMessageLengthSize = 2;
-static const int HeaderSize = HeaderLogLevelSize + HeaderMessageLengthSize;
+static const int HeaderSize = HeaderLogTimeSize + HeaderLogLevelSize + HeaderMessageLengthSize;
 
 class Connection : public QTcpSocket
 {
@@ -25,7 +26,7 @@ public:
     explicit Connection(QObject *parent = 0);
     
 signals:
-    void newMessage(Connection::LogLevel level, const QString &message);
+    void newMessage(quint64 time, Connection::LogLevel level, const QString &message);
     
 private slots:
     void processReadyRead();
@@ -37,6 +38,7 @@ private:
 
     QByteArray mBuffer;
     ParseState mState;
+    quint64 mLogTime;
     LogLevel mLogLevel;
     unsigned int mMessageLength;
 };

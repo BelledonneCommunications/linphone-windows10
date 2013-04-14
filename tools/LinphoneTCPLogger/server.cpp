@@ -12,7 +12,7 @@ void Server::incomingConnection(qintptr socketDescriptor)
     Connection *connection = new Connection(this);
     connection->setSocketDescriptor(socketDescriptor);
     connect(connection, SIGNAL(disconnected()), this, SIGNAL(disconnected()));
-    connect(connection, SIGNAL(newMessage(Connection::LogLevel, QString)),
-            this, SIGNAL(newMessage(Connection::LogLevel, QString)));
+    connect(connection, SIGNAL(newMessage(quint64, Connection::LogLevel, QString)),
+            this, SIGNAL(newMessage(quint64, Connection::LogLevel, QString)));
     emit newConnection(connection);
 }

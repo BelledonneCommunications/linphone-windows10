@@ -14,7 +14,7 @@ public:
 signals:
     void newConnection(Connection *connection);
     void disconnected();
-    void newMessage(Connection::LogLevel level, const QString &message);
+    void newMessage(quint64, Connection::LogLevel level, const QString &message);
     
 protected:
     void incomingConnection(qintptr socketDescriptor);

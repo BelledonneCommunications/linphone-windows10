@@ -1,4 +1,5 @@
 #include "connection.h"
+#include <qendian.h>
 
 Connection::Connection(QObject *parent) :
     QTcpSocket(parent), mState(ReadingHeader)
@@ -41,9 +42,14 @@ void Connection::processData()
             return;
         }
 
-        mLogLevel = static_cast<LogLevel>(mBuffer.at(0));
-        mMessageLength = ((static_cast<unsigned int>(mBuffer[1]) & 0xFF) << 8)
-                | (static_cast<unsigned int>(mBuffer[2]) & 0xFF);
+        memcpy(&mLogTime, mBuffer.constData(), 8);
+#ifdef Q_LITTLE_ENDIAN
+        //Convert to LittleEndian
+        mLogTime = qbswap(mLogTime);
+#endif
+        mLogLevel = static_cast<LogLevel>(static_cast<unsigned int>(mBuffer[8]));
+        mMessageLength = ((static_cast<unsigned int>(mBuffer[9]) & 0xFF) << 8)
+                | (static_cast<unsigned int>(mBuffer[10]) & 0xFF);
         mBuffer.clear();
         mState = ReadingMessage;
     }
@@ -51,7 +57,7 @@ void Connection::processData()
     if (mState == ReadingMessage) {
         if (hasEnoughData()) {
             mBuffer = read(mMessageLength);
-            emit newMessage(mLogLevel, QString::fromUtf8(mBuffer));
+            emit newMessage(mLogTime, mLogLevel, QString::fromUtf8(mBuffer));
             mBuffer.clear();
             mMessageLength = 0;
             mState = ReadingHeader;
