@@ -231,7 +231,7 @@ namespace Linphone.Model
         /// <summary>
         /// Creates a new LinphoneCore (if not created yet) using a LinphoneCoreFactory.
         /// </summary>
-        public void InitLinphoneCore()
+        public async void InitLinphoneCore()
         {
             if ((server.LinphoneCoreFactory != null) && (server.LinphoneCore != null))
             {
@@ -244,7 +244,7 @@ namespace Linphone.Model
             }
 
             Logger.Msg("[LinphoneManager] Creating LinphoneCore");
-            SettingsManager.InstallConfigFile();
+            await SettingsManager.InstallConfigFile();
             LpConfig config = server.LinphoneCoreFactory.CreateLpConfig(SettingsManager.GetConfigPath(), SettingsManager.GetFactoryConfigPath());
             ConfigureLogger();
             server.LinphoneCoreFactory.CreateLinphoneCore(this, config);

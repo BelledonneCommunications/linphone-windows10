@@ -48,11 +48,24 @@ namespace Linphone.Model
         /// <summary>
         /// Install the default config file from the package to the Isolated Storage
         /// </summary>
-        public static void InstallConfigFile()
+        public static async Task InstallConfigFile()
         {
-            if (!File.Exists(GetConfigPath()))
+            StorageFile destFile = null;
+            try
             {
-                File.Copy("Assets/linphonerc", GetConfigPath());
+                destFile = await StorageFile.GetFileFromPathAsync(GetConfigPath());
+            }
+            catch (System.IO.FileNotFoundException)
+            {
+            }
+            if (destFile == null)
+            {
+                StorageFile sourceFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/linphonerc"));
+                destFile = await sourceFile.CopyAsync(ApplicationData.Current.LocalFolder);
+            }
+            if (destFile != null)
+            {
+                System.Diagnostics.Debug.WriteLine("Config file successfully installed");
             }
         }
 
