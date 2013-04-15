@@ -61,6 +61,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "polarssl", "submodules\belle-sip\build\windows\polarssl\polarssl\polarssl.vcxproj", "{E9F8C5D1-13A2-46B6-A9BC-878030D4BE09}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libmsamr", "submodules\msamr\build\windows\msamr\msamr\msamr.vcxproj", "{9924AC72-F96C-4E56-94D9-2B025DA43C6B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{027BAD0E-9179-48C1-9733-7AA7E2C2EC70} = {027BAD0E-9179-48C1-9733-7AA7E2C2EC70}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opencore_amrnb", "submodules\msamr\build\windows\msamr\opencore_amrnb\opencore_amrnb.vcxproj", "{88191E75-2993-48D7-AA76-652F274EF0FE}"
 EndProject
