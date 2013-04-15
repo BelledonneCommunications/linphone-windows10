@@ -7,9 +7,10 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    d:DesignHeight="50" d:DesignWidth="480">
+    d:DesignHeight="30" d:DesignWidth="480">
     
     <StackPanel x:Name="LayoutRoot" Background="Transparent" Orientation="Horizontal">
-        <Image x:Name="Status" Source="/Assets/led_disconnected.png" Stretch="UniformToFill" Margin="10,0,0,0"></Image>
+        <Image x:Name="StatusLed" Source="/Assets/led_disconnected.png" Height="20" Width="20" Stretch="Uniform" Margin="10,0,10,0"></Image>
+        <TextBlock x:Name="StatusText" FontSize="20" Text="{Binding Path=LocalizedResources.Disconnected, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Center"></TextBlock>
     </StackPanel>
 </UserControl>

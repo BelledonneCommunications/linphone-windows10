@@ -40,7 +40,7 @@ namespace Linphone.Agents
                     this.isIncomingCallAgent = false;
                     Debug.WriteLine("[KeepAliveAgent] Keep Alive");
 
-                    BackgroundManager.Instance.InitLinphoneCore();
+                    //BackgroundManager.Instance.InitLinphoneCore();
                 }
                 else
                 {

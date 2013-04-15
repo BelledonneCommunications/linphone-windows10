@@ -35,7 +35,6 @@ namespace Linphone.Views
         protected override void OnNavigatedTo(NavigationEventArgs nee)
         {
             base.OnNavigatedTo(nee);
-            StatusBar = status;
         }
 
         private void contactsList_SelectionChanged_1(object sender, SelectionChangedEventArgs e)

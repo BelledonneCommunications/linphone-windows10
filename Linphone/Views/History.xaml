@@ -23,8 +23,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
-        <controls:StatusBar x:Name="status" Grid.Row="0"></controls:StatusBar>
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="1" Margin="12,5,0,0">

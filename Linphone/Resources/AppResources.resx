@@ -299,4 +299,16 @@ http://www.linphone.org/m/help
   <data name="Refresh" xml:space="preserve">
     <value>Refresh</value>
   </data>
+  <data name="Disconnected" xml:space="preserve">
+    <value>Disconnected</value>
+  </data>
+  <data name="Registered" xml:space="preserve">
+    <value>Registered</value>
+  </data>
+  <data name="RegistrationFailed" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="RegistrationInProgress" xml:space="preserve">
+    <value>In Progress</value>
+  </data>
 </root>

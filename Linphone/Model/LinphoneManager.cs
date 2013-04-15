@@ -575,7 +575,7 @@ namespace Linphone.Model
                 Logger.Msg("[LinphoneManager] Registration state changed: " + state.ToString() + ", message=" + message + " for identity " + config.GetIdentity());
                 LastKnownState = state;
                 if (BasePage.StatusBar != null)
-                    BasePage.StatusBar.RefreshStatusIcon(state);
+                    BasePage.StatusBar.RefreshStatus(state);
             });
         }
 

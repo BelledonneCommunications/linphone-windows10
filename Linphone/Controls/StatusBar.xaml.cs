@@ -10,6 +10,7 @@ using Microsoft.Phone.Shell;
 using Linphone.Model;
 using Linphone.Core;
 using System.Windows.Media.Imaging;
+using Linphone.Resources;
 
 namespace Linphone.Controls
 {
@@ -24,13 +25,13 @@ namespace Linphone.Controls
         public StatusBar()
         {
             InitializeComponent();
-            RefreshStatusIcon(LinphoneManager.Instance.LastKnownState);
+            RefreshStatus(LinphoneManager.Instance.LastKnownState);
         }
 
         /// <summary>
         /// Refresh the status icon reading the default proxy config state.
         /// </summary>
-        public void RefreshStatusIcon()
+        public void RefreshStatus()
         {
             RegistrationState state;
             if (LinphoneManager.Instance.LinphoneCore.GetDefaultProxyConfig() == null)
@@ -38,24 +39,32 @@ namespace Linphone.Controls
             else
                 state = LinphoneManager.Instance.LinphoneCore.GetDefaultProxyConfig().GetState();
 
-            RefreshStatusIcon(state);
+            RefreshStatus(state);
         }
 
         /// <summary>
         /// Refresh the status icon given the registration state in param.
         /// </summary>
-        public void RefreshStatusIcon(RegistrationState state)
+        public void RefreshStatus(RegistrationState state)
         {
             Dispatcher.BeginInvoke(() =>
             {
-                if (state == RegistrationState.RegistrationOk)
-                    Status.Source = new BitmapImage(new Uri("/Assets/led_connected.png", UriKind.Relative));
-                else if (state == RegistrationState.RegistrationInProgress)
-                    Status.Source = new BitmapImage(new Uri("/Assets/led_inprogress.png", UriKind.Relative));
-                else if (state == RegistrationState.RegistrationFailed)
-                    Status.Source = new BitmapImage(new Uri("/Assets/led_error.png", UriKind.Relative));
-                else
-                    Status.Source = new BitmapImage(new Uri("/Assets/led_disconnected.png", UriKind.Relative));
+                if (state == RegistrationState.RegistrationOk) {
+                    StatusLed.Source = new BitmapImage(new Uri("/Assets/led_connected.png", UriKind.Relative));
+                    StatusText.Text = AppResources.Registered;
+                }
+                else if (state == RegistrationState.RegistrationInProgress) {
+                    StatusLed.Source = new BitmapImage(new Uri("/Assets/led_inprogress.png", UriKind.Relative));
+                    StatusText.Text = AppResources.RegistrationInProgress;
+                }
+                else if (state == RegistrationState.RegistrationFailed) {
+                    StatusLed.Source = new BitmapImage(new Uri("/Assets/led_error.png", UriKind.Relative));
+                    StatusText.Text = AppResources.RegistrationFailed;
+                }
+                else {
+                    StatusLed.Source = new BitmapImage(new Uri("/Assets/led_disconnected.png", UriKind.Relative));
+                    StatusText.Text = AppResources.Disconnected;
+                }
             });
         }
     }
