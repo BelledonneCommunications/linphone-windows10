@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Linphone.Resources;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -8,42 +9,6 @@ using System.Windows.Media.Imaging;
 
 namespace Linphone.Model
 {
-    /// <summary>
-    /// Object that represents a list of call logs.
-    /// </summary>
-    public class CallLogs
-    {
-        private String _title;
-        /// <summary>
-        /// Title for this list of call logs, will be displayed as header in the pivot control.
-        /// </summary>
-        public String Title
-        {
-            get
-            {
-                return _title;
-            }
-            set
-            {
-                _title = value;
-            }
-        }
-
-        /// <summary>
-        /// List of callLogs.
-        /// </summary>
-        public ObservableCollection<CallLog> Calls { get; set; }
-
-        /// <summary>
-        /// Public constructor.
-        /// </summary>
-        public CallLogs(String title, ObservableCollection<CallLog> calls)
-        {
-            _title = title;
-            Calls = calls;
-        }
-    }
-
     /// <summary>
     /// Object representing a call log.
     /// Keeps a reference to a C++/CX CallLog object and provides some useful methods.
@@ -154,6 +119,25 @@ namespace Linphone.Model
         }
 
         /// <summary>
+        /// Returns a string representing the status of the call (incoming, outgoing or missed).
+        /// </summary>
+        public String StatusText
+        {
+            get
+            {
+                if (_isIncoming)
+                {
+                    if (_isMissed)
+                        return AppResources.Missed;
+                    else
+                        return AppResources.Incoming;
+                }
+                else
+                    return AppResources.Outgoing;
+            }
+        }
+
+        /// <summary>
         /// Named displayed for the caller/callee.
         /// </summary>
         public String DisplayedName
@@ -167,16 +151,33 @@ namespace Linphone.Model
             }
         }
 
+        private DateTime _startDate;
+        /// <summary>
+        /// Details text about call
+        /// </summary>
+        public String DetailsText
+        {
+            get
+            {
+                return _startDate.ToShortDateString() + ", " + _startDate.ToShortTimeString();
+            }
+        }
+
         /// <summary>
         /// Public constructor.
         /// </summary>
-        public CallLog(Object nativeLog, String from, String to, bool isIncoming, bool isMissed)
+        public CallLog(Object nativeLog, String from, String to, bool isIncoming, bool isMissed, long startDate)
         {
             _nativeLog = nativeLog;
             _from = from;
             _to = to;
             _isIncoming = isIncoming;
             _isMissed = isMissed;
+
+            _startDate = new DateTime();
+            _startDate = _startDate.AddYears(1969); //Timestamp is calculated from 01/01/1970, and DateTime is initialized to 01/01/0001
+            _startDate = _startDate.AddSeconds(startDate);
+            _startDate = _startDate.Add(TimeZoneInfo.Local.GetUtcOffset(_startDate));
         }
     }
 }

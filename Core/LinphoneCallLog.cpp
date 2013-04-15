@@ -25,14 +25,9 @@ Linphone::Core::LinphoneCallStatus Linphone::Core::LinphoneCallLog::GetStatus()
 	return (Linphone::Core::LinphoneCallStatus)linphone_call_log_get_status(this->callLog);
 }
 
-Platform::String^ Linphone::Core::LinphoneCallLog::GetStartDate()
+int64 Linphone::Core::LinphoneCallLog::GetStartDate()
 {
-	return nullptr;
-}
-
-int64 Linphone::Core::LinphoneCallLog::GetTimestamp()
-{
-	return -1;
+	return linphone_call_log_get_start_date(this->callLog);
 }
 
 int Linphone::Core::LinphoneCallLog::GetCallDuration()

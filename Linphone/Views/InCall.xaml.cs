@@ -103,6 +103,9 @@ namespace Linphone.Views
             {
                 Number.Text = e.PhoneNumber;
             }
+
+            // Store the contact name as display name for call logs
+            LinphoneManager.Instance.LinphoneCore.GetCurrentCall().GetRemoteAddress().SetDisplayName(e.ContactFound.DisplayName);
         }
 
         private void hangUp_Click(object sender, RoutedEventArgs e)

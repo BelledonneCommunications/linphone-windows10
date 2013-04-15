@@ -287,7 +287,7 @@ namespace Linphone.Model
         }
 
         #region CallLogs
-        private List<CallLogs> _history;
+        private List<CallLog> _history;
 
         /// <summary>
         /// Gets the latest called address or number
@@ -313,12 +313,9 @@ namespace Linphone.Model
         /// Get the calls' history.
         /// </summary>
         /// <returns>A list of CallLogs, each one representing a type of calls (All, Missed, ...)</returns>
-        public List<CallLogs> GetCallsHistory()
+        public List<CallLog> GetCallsHistory()
         {
-            _history = new List<CallLogs>();
-
-            ObservableCollection<CallLog> calls = new ObservableCollection<CallLog>();
-            ObservableCollection<CallLog> missedCalls = new ObservableCollection<CallLog>();
+            _history = new List<CallLog>();
 
             if (LinphoneCore.GetCallLogs() != null)
             {
@@ -326,27 +323,18 @@ namespace Linphone.Model
                 {
                     string from = log.GetFrom().GetDisplayName();
                     if (from.Length == 0)
-                        from = log.GetFrom().AsStringUriOnly();
+                        from = log.GetFrom().AsStringUriOnly().Replace("sip:", "");
 
                     string to = log.GetTo().GetDisplayName();
                     if (to.Length == 0)
-                        to = log.GetTo().AsStringUriOnly();
+                        to = log.GetTo().AsStringUriOnly().Replace("sip:", "");
 
                     bool isMissed = log.GetStatus() == LinphoneCallStatus.Missed;
-
-                    CallLog callLog = new CallLog(log, from, to, log.GetDirection() == CallDirection.Incoming, isMissed);
-
-                    calls.Add(callLog);
-                    if (isMissed)
-                        missedCalls.Add(callLog);
+                    long startDate = log.GetStartDate();
+                    CallLog callLog = new CallLog(log, from, to, log.GetDirection() == CallDirection.Incoming, isMissed, startDate);
+                    _history.Add(callLog);
                 }
             }
-
-            CallLogs all = new CallLogs("All", calls);
-            _history.Add(all);
-
-            CallLogs missed = new CallLogs("Missed", missedCalls);
-            _history.Add(missed);
 
             return _history;
         }

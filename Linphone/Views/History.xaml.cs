@@ -10,6 +10,9 @@ using Microsoft.Phone.Shell;
 using Linphone.Model;
 using Linphone.Resources;
 using Linphone.Agents;
+using System.Windows.Data;
+using System.Globalization;
+using System.Windows.Media;
 
 namespace Linphone.Views
 {
@@ -43,24 +46,24 @@ namespace Linphone.Views
             tileManager.RemoveMissedCallsTile();
             LinphoneManager.Instance.LinphoneCore.ResetMissedCallsCount();
 
-            List<CallLogs> callsHistory = LinphoneManager.Instance.GetCallsHistory();
-            history.ItemsSource = callsHistory;
+            List<CallLog> callsHistory = LinphoneManager.Instance.GetCallsHistory();
+            Calls.ItemsSource = callsHistory;
         }
 
         private void deleteAll_Click_1(object sender, EventArgs e)
         {
             LinphoneManager.Instance.ClearCallLogs();
 
-            List<CallLogs> callsHistory = LinphoneManager.Instance.GetCallsHistory();
-            history.ItemsSource = callsHistory;
+            List<CallLog> callsHistory = LinphoneManager.Instance.GetCallsHistory();
+            Calls.ItemsSource = callsHistory;
         }
 
         private void deleteSelection_Click_1(object sender, EventArgs e)
         {
             LinphoneManager.Instance.RemoveCallLogs(_selection);
 
-            List<CallLogs> callsHistory = LinphoneManager.Instance.GetCallsHistory();
-            history.ItemsSource = callsHistory;
+            List<CallLog> callsHistory = LinphoneManager.Instance.GetCallsHistory();
+            Calls.ItemsSource = callsHistory;
 
             ClearApplicationBar();
             SetupAppBarForEmptySelection();
@@ -123,7 +126,7 @@ namespace Linphone.Views
 
         private void callLog_Click_1(object sender, RoutedEventArgs e)
         {
-            CallLog log = ((sender as Button).Tag as CallLog);
+            CallLog log = ((sender as StackPanel).Tag as CallLog);
 
             String address;
             if (log.IsIncoming)

@@ -37,14 +37,9 @@ namespace Linphone
 			LinphoneCallStatus GetStatus();
 
 			/// <summary>
-			/// Returns a human readable string with the start date/time of the call.
+			/// Returns the start date/time of the call in seconds elpsed since January first 1970.
 			/// </summary>
-			Platform::String^ GetStartDate();
-
-			/// <summary>
-			/// Returns a timestamp of the start date/time of the call in milliseconds elapsed since Januart 1st 1970.
-			/// </summary>
-			int64 GetTimestamp();
+			int64 GetStartDate();
 
 			/// <summary>
 			/// Returns the call duration in seconds.

@@ -112,11 +112,12 @@
     <Compile Include="Model\AlphaKeyGroup.cs" />
     <Compile Include="Model\AssociationUriMapper.cs" />
     <Compile Include="Model\CallControllerListener.cs" />
-    <Compile Include="Model\CallLogs.cs" />
+    <Compile Include="Model\CallLog.cs" />
     <Compile Include="Model\ContactManager.cs" />
     <Compile Include="Model\ContactPictureConverter.cs" />
     <Compile Include="Model\LinphoneManager.cs" />
     <Compile Include="Model\Logger.cs" />
+    <Compile Include="Model\MissedToBrushConverter.cs" />
     <Compile Include="Model\SettingsManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">

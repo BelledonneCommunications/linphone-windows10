@@ -9,12 +9,17 @@
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:linphone="clr-namespace:Linphone"
     xmlns:controls="clr-namespace:Linphone.Controls"
+    xmlns:model="clr-namespace:Linphone.Model"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
+    
+    <linphone:BasePage.Resources>
+        <model:MissedToBrushConverter x:Key="MissedToBrushConverter"/>
+    </linphone:BasePage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -31,30 +36,39 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="2" Margin="12,0,12,0">
-            <phone:Pivot x:Name="history" Grid.Row="1">
-                <phone:Pivot.HeaderTemplate>
+        <Grid x:Name="ContentPanel" Grid.Row="2" Margin="12,10,12,0">
+            <toolkit:LongListMultiSelector x:Name="Calls" SelectionChanged="calls_SelectionChanged_1">
+                <toolkit:LongListMultiSelector.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Title}"/>
+                        <StackPanel Margin="0,-16,0,24" 
+                            Tag="{Binding BindsDirectlyToSource=True}" 
+                            Tap="callLog_Click_1">
+                            <TextBlock Text="{Binding DisplayedName}"
+                                Margin="0,0,0,-4"
+                                HorizontalAlignment="Left" 
+                                FontSize="{StaticResource PhoneFontSizeExtraLarge}" 
+                                FontFamily="{StaticResource PhoneFontFamilySemiLight}"/>
+                            <TextBlock Text="{Binding StatusText}" 
+                                Margin="0,0,0,-4"
+                                HorizontalAlignment="Left"
+                                Foreground="{Binding IsMissed, Converter={StaticResource MissedToBrushConverter}}"
+                                FontSize="{StaticResource PhoneFontSizeNormal}" 
+                                FontFamily="{StaticResource PhoneFontFamilySemiBold}"/>
+                            <TextBlock Text="{Binding DetailsText}" 
+                                HorizontalAlignment="Left"
+                                Foreground="{StaticResource PhoneSubtleBrush}"
+                                FontSize="{StaticResource PhoneFontSizeNormal}"/>
+                        </StackPanel>
                     </DataTemplate>
-                </phone:Pivot.HeaderTemplate>
-                <phone:Pivot.ItemTemplate>
+                </toolkit:LongListMultiSelector.ItemTemplate>
+                <toolkit:LongListMultiSelector.ItemInfoTemplate>
                     <DataTemplate>
-                        <toolkit:LongListMultiSelector x:Name="calls" ItemsSource="{Binding Calls}" SelectionChanged="calls_SelectionChanged_1">
-                            <toolkit:LongListMultiSelector.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Border Width="30" Height="30">
-                                            <Image Source="{Binding StatusIcon}" Stretch="UniformToFill"/>
-                                        </Border>
-                                        <Button x:Name="callLog" Content="{Binding DisplayedName}" FontSize="20" FontStyle="Normal" BorderThickness="0" Tag="{Binding BindsDirectlyToSource=True}" Click="callLog_Click_1"></Button>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </toolkit:LongListMultiSelector.ItemTemplate>
-                        </toolkit:LongListMultiSelector>
+                        <Border Width="30" Margin="5,0,5,0">
+                            <Image Source="{Binding StatusIcon}" Stretch="Uniform"/>
+                        </Border>
                     </DataTemplate>
-                </phone:Pivot.ItemTemplate>
-            </phone:Pivot>
+                </toolkit:LongListMultiSelector.ItemInfoTemplate>
+            </toolkit:LongListMultiSelector>
         </Grid>
     </Grid>
 

@@ -310,11 +310,29 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Incoming.
+        /// </summary>
+        public static string Incoming {
+            get {
+                return ResourceManager.GetString("Incoming", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LockScreen settings.
         /// </summary>
         public static string LockScreenSettings {
             get {
                 return ResourceManager.GetString("LockScreenSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missed.
+        /// </summary>
+        public static string Missed {
+            get {
+                return ResourceManager.GetString("Missed", resourceCulture);
             }
         }
         
@@ -333,6 +351,15 @@ namespace Linphone.Resources {
         public static string NetworkMenu {
             get {
                 return ResourceManager.GetString("NetworkMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Outgoing.
+        /// </summary>
+        public static string Outgoing {
+            get {
+                return ResourceManager.GetString("Outgoing", resourceCulture);
             }
         }
         
