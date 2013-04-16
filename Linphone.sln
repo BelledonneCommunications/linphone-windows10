@@ -42,6 +42,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibLinphone", "submodules\l
 		{072FAD20-7007-4DA2-B2E7-16CE2B219F67} = {072FAD20-7007-4DA2-B2E7-16CE2B219F67}
 		{FFC7B532-0502-4D88-AC98-9E89071CBC97} = {FFC7B532-0502-4D88-AC98-9E89071CBC97}
 		{4C225A82-800B-427B-BA7B-61686A9B347F} = {4C225A82-800B-427B-BA7B-61686A9B347F}
+		{59500DD1-B192-4DDF-A402-8A8E3739E032} = {59500DD1-B192-4DDF-A402-8A8E3739E032}
 		{36B528F9-FB79-4078-A16B-0A7442581BB7} = {36B528F9-FB79-4078-A16B-0A7442581BB7}
 	EndProjectSection
 EndProject
@@ -73,6 +74,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vo-amrwbenc", "submodules\msamr\build\windows\msamr\vo-amrwbenc\vo-amrwbenc.vcxproj", "{018A4428-535C-4566-9AE0-E93AFF0D3ED2}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "polarssl", "submodules\polarssl\build\windows\polarssl\polarssl\polarssl.vcxproj", "{E9F8C5D1-13A2-46B6-A9BC-878030D4BE09}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tunnel", "submodules\tunnel\build\windows\tunnel\tunnel\tunnel.vcxproj", "{59500DD1-B192-4DDF-A402-8A8E3739E032}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -540,6 +543,26 @@ Global
 		{E9F8C5D1-13A2-46B6-A9BC-878030D4BE09}.Release|x64.ActiveCfg = Release|Win32
 		{E9F8C5D1-13A2-46B6-A9BC-878030D4BE09}.Release|x86.ActiveCfg = Release|Win32
 		{E9F8C5D1-13A2-46B6-A9BC-878030D4BE09}.Release|x86.Build.0 = Release|Win32
+		{59500DD1-B192-4DDF-A402-8A8E3739E032}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{59500DD1-B192-4DDF-A402-8A8E3739E032}.Debug|ARM.ActiveCfg = Debug|ARM
+		{59500DD1-B192-4DDF-A402-8A8E3739E032}.Debug|ARM.Build.0 = Debug|ARM
+		{59500DD1-B192-4DDF-A402-8A8E3739E032}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{59500DD1-B192-4DDF-A402-8A8E3739E032}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{59500DD1-B192-4DDF-A402-8A8E3739E032}.Debug|Win32.ActiveCfg = Debug|Win32
+		{59500DD1-B192-4DDF-A402-8A8E3739E032}.Debug|Win32.Build.0 = Debug|Win32
+		{59500DD1-B192-4DDF-A402-8A8E3739E032}.Debug|x64.ActiveCfg = Debug|Win32
+		{59500DD1-B192-4DDF-A402-8A8E3739E032}.Debug|x86.ActiveCfg = Debug|Win32
+		{59500DD1-B192-4DDF-A402-8A8E3739E032}.Debug|x86.Build.0 = Debug|Win32
+		{59500DD1-B192-4DDF-A402-8A8E3739E032}.Release|Any CPU.ActiveCfg = Release|Win32
+		{59500DD1-B192-4DDF-A402-8A8E3739E032}.Release|ARM.ActiveCfg = Release|ARM
+		{59500DD1-B192-4DDF-A402-8A8E3739E032}.Release|ARM.Build.0 = Release|ARM
+		{59500DD1-B192-4DDF-A402-8A8E3739E032}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{59500DD1-B192-4DDF-A402-8A8E3739E032}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{59500DD1-B192-4DDF-A402-8A8E3739E032}.Release|Win32.ActiveCfg = Release|Win32
+		{59500DD1-B192-4DDF-A402-8A8E3739E032}.Release|Win32.Build.0 = Release|Win32
+		{59500DD1-B192-4DDF-A402-8A8E3739E032}.Release|x64.ActiveCfg = Release|Win32
+		{59500DD1-B192-4DDF-A402-8A8E3739E032}.Release|x86.ActiveCfg = Release|Win32
+		{59500DD1-B192-4DDF-A402-8A8E3739E032}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
