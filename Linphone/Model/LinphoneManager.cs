@@ -498,7 +498,7 @@ namespace Linphone.Model
                 Logger.Msg("[LinphoneManager] Outgoing progress");
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    LookupForContact(sipAddress, call);
+                    LookupForContact(call);
 
                     if (CallListener != null)
                         CallListener.NewCallStarted(sipAddress);
@@ -506,10 +506,10 @@ namespace Linphone.Model
             }
             else if (state == LinphoneCallState.IncomingReceived)
             {
-                Logger.Msg("[LinphoneManager] Incoming received");
+                Logger.Msg("[LinphoneManager] Incoming received"); 
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    LookupForContact(sipAddress, call);
+                    LookupForContact(call);
                 });
             }
             else if (state == LinphoneCallState.Connected)
@@ -614,19 +614,19 @@ namespace Linphone.Model
             }
         }
 
-        private void LookupForContact(String sipAddress, LinphoneCall call)
+        private void LookupForContact(LinphoneCall call)
         {
+            string sipAddress = call.GetRemoteAddress().AsStringUriOnly();
             if (call.GetRemoteAddress().GetDisplayName().Length == 0)
             {
-                String address = sipAddress;
-                if (address.StartsWith("sip:"))
+                if (sipAddress.StartsWith("sip:"))
                 {
-                    address = address.Substring(4);
+                    sipAddress = sipAddress.Substring(4);
                 }
-                Logger.Msg("[LinphoneManager] Display name null, looking for remote address in contact: " + address);
+                Logger.Msg("[LinphoneManager] Display name null, looking for remote address in contact: " + sipAddress);
 
                 ContactManager.ContactFound += OnContactFound;
-                ContactManager.FindContact(address);
+                ContactManager.FindContact(sipAddress);
             }
             else
             {

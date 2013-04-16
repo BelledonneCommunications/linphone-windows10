@@ -812,7 +812,7 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 		
 	Linphone::Core::CallController^ callController = Linphone::Core::Globals::Instance->CallController;
 	if (state == Linphone::Core::LinphoneCallState::IncomingReceived) {
-		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = callController->OnIncomingCallReceived(lCall, lCall->GetRemoteContact(), lCall->GetRemoteAddress()->AsStringUriOnly(), callController->IncomingCallViewDismissed);
+		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = callController->OnIncomingCallReceived(lCall, lCall->GetRemoteAddress()->GetDisplayName(), lCall->GetRemoteAddress()->AsStringUriOnly(), callController->IncomingCallViewDismissed);
 		lCall->CallContext = platformCall;
 	} 
 	else if (state == Linphone::Core::LinphoneCallState::OutgoingProgress) {
@@ -836,7 +836,7 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = (Windows::Phone::Networking::Voip::VoipPhoneCall^) lCall->CallContext;
 		platformCall->NotifyCallActive();
 	}
-
+	
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr)
 	{
