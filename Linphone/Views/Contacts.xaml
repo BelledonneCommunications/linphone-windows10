@@ -268,7 +268,7 @@
                         LayoutMode="Grid"
                         ItemsSource="{Binding}"
                         IsGroupingEnabled="False" 
-                        GridCellSize="176, 176"
+                        GridCellSize="179, 179"
                         SelectionChanged="contactsList_SelectionChanged_1">
                         <phone:LongListSelector.ItemTemplate>
                             <DataTemplate>
