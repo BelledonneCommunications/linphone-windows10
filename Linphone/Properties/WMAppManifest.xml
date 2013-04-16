@@ -36,7 +36,7 @@
           </BackBackgroundImageURI>
           <BackTitle>
           </BackTitle>
-          <DeviceLockImageURI IsRelative="true" IsResource="false">Assets\AppBar\feature.phone.png</DeviceLockImageURI>
+          <DeviceLockImageURI IsRelative="true" IsResource="false">Assets\pnicon.png</DeviceLockImageURI>
           <HasLarge>False</HasLarge>
         </TemplateFlip>
       </PrimaryToken>

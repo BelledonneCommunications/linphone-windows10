@@ -1,17 +1,15 @@
-﻿using System;
+﻿using Linphone.Model;
+using Linphone.Resources;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Networking.Voip;
+using Microsoft.Phone.Notification;
+using Microsoft.Phone.Scheduler;
+using Microsoft.Phone.Shell;
+using System;
 using System.Diagnostics;
-using System.Resources;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Navigation;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
-using Linphone.Resources;
-using System.Windows.Media;
-using Linphone.Model;
-using Microsoft.Phone.Notification;
-using Microsoft.Phone.Scheduler;
-using Microsoft.Phone.Networking.Voip;
 
 namespace Linphone
 {

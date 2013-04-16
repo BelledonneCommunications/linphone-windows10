@@ -1,24 +1,16 @@
-﻿using Microsoft.Phone.Networking.Voip;
+﻿using Linphone.Agents;
 using Linphone.Core;
 using Linphone.Core.OutOfProcess;
+using Microsoft.Phone.Net.NetworkInformation;
+using Microsoft.Phone.Networking.Voip;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using Linphone.Resources;
-using Windows.Phone.Networking.Voip;
-using System.Windows.Media.Imaging;
 using Windows.Phone.Media.Devices;
-using System.Reflection;
-using Microsoft.Phone.Net.NetworkInformation;
-using Windows.Storage;
-using Linphone.Agents;
+using Windows.Phone.Networking.Voip;
 
 namespace Linphone.Model
 {
@@ -27,12 +19,8 @@ namespace Linphone.Model
     /// </summary>
     public sealed class LinphoneManager : LinphoneCoreListener
     {
+        #region Network state management
         private bool lastNetworkState;
-        private LinphoneManager()
-        {
-            LastKnownState = Linphone.Core.RegistrationState.RegistrationNone;
-        }
-
         private void OnNetworkStatusChanged(object sender, NetworkNotificationEventArgs e)
         {
             if (lastNetworkState != DeviceNetworkInformation.IsNetworkAvailable)
@@ -41,6 +29,13 @@ namespace Linphone.Model
                 Debug.WriteLine("[LinphoneManager] Network state changed:" + (lastNetworkState ? "Available" : "Unavailable"));
                 LinphoneCore.SetNetworkReachable(lastNetworkState);
             }
+        }
+        #endregion
+
+        #region Class properties
+        private LinphoneManager()
+        {
+            LastKnownState = Linphone.Core.RegistrationState.RegistrationNone;
         }
 
         private static LinphoneManager singleton;
@@ -115,6 +110,7 @@ namespace Linphone.Model
         /// Simple listener to notify pages' viewmodel when a call ends or starts
         /// </summary>
         public CallControllerListener CallListener { get; set; }
+        #endregion
 
         #region Background Process
         private bool BackgroundProcessConnected;
@@ -228,6 +224,7 @@ namespace Linphone.Model
         }
         #endregion
 
+        #region Linphone Core init
         /// <summary>
         /// Creates a new LinphoneCore (if not created yet) using a LinphoneCoreFactory.
         /// </summary>
@@ -285,6 +282,7 @@ namespace Linphone.Model
             server.LinphoneCoreFactory.SetLogLevel(appSettings.LogLevel);
             Logger.Instance.TraceListener = server.BackgroundModeLogger;
         }
+        #endregion
 
         #region CallLogs
         private List<CallLog> _history;
@@ -297,13 +295,9 @@ namespace Linphone.Model
         {
             foreach (LinphoneCallLog log in LinphoneManager.Instance.LinphoneCore.GetCallLogs())
             {
-                string to = log.GetTo().GetDisplayName();
-                if (to.Length == 0)
-                    to = log.GetTo().AsStringUriOnly();
-
                 if (log.GetDirection() == CallDirection.Outgoing)
                 {
-                    return to;
+                    return log.GetTo().AsStringUriOnly();
                 }
             }
             return null;
@@ -497,19 +491,30 @@ namespace Linphone.Model
         public void CallState(LinphoneCall call, LinphoneCallState state)
         {
             string sipAddress = call.GetRemoteAddress().AsStringUriOnly();
+
             Logger.Msg("[LinphoneManager] Call state changed: " + sipAddress + " => " + state.ToString());
             if (state == LinphoneCallState.OutgoingProgress)
             {
                 Logger.Msg("[LinphoneManager] Outgoing progress");
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
+                    LookupForContact(sipAddress, call);
+
                     if (CallListener != null)
                         CallListener.NewCallStarted(sipAddress);
                 });
             }
-            else if (state == LinphoneCallState.Connected)
+            else if (state == LinphoneCallState.IncomingReceived)
             {
                 Logger.Msg("[LinphoneManager] Incoming received");
+                BaseModel.UIDispatcher.BeginInvoke(() =>
+                {
+                    LookupForContact(sipAddress, call);
+                });
+            }
+            else if (state == LinphoneCallState.Connected)
+            {
+                Logger.Msg("[LinphoneManager] Connected");
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
                     if (CallListener != null)
@@ -597,6 +602,51 @@ namespace Linphone.Model
         public void CallStatsUpdated(LinphoneCall call, LinphoneCallStats stats)
         {
 
+        }
+        #endregion
+
+        #region Contact Lookup
+        private ContactManager ContactManager
+        {
+            get
+            {
+                return ContactManager.Instance;
+            }
+        }
+
+        private void LookupForContact(String sipAddress, LinphoneCall call)
+        {
+            if (call.GetRemoteAddress().GetDisplayName().Length == 0)
+            {
+                String address = sipAddress;
+                if (address.StartsWith("sip:"))
+                {
+                    address = address.Substring(4);
+                }
+                Logger.Msg("[LinphoneManager] Display name null, looking for remote address in contact: " + address);
+
+                ContactManager.ContactFound += OnContactFound;
+                ContactManager.FindContact(address);
+            }
+            else
+            {
+                Logger.Msg("[LinphoneManager] Display name found: " + call.GetRemoteAddress().GetDisplayName());
+            }
+        }
+
+        /// <summary>
+        /// Callback called when the search on a phone number for a contact has a match
+        /// </summary>
+        private void OnContactFound(object sender, ContactFoundEventArgs e)
+        {
+            Logger.Msg("[LinphoneManager] Contact found: " + e.ContactFound.DisplayName);
+            ContactManager.ContactFound -= OnContactFound;
+
+            // Store the contact name as display name for call logs
+            if (LinphoneManager.Instance.LinphoneCore.GetCurrentCall() != null)
+            {
+                LinphoneManager.Instance.LinphoneCore.GetCurrentCall().GetRemoteAddress().SetDisplayName(e.ContactFound.DisplayName);
+            }
         }
         #endregion
     }

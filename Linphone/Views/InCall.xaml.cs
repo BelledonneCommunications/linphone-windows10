@@ -1,15 +1,12 @@
 ﻿using Linphone.Core;
 using Linphone.Model;
-using Microsoft.Phone.Controls;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using Windows.Phone.Networking.Voip;
 
 namespace Linphone.Views
 {
@@ -103,9 +100,6 @@ namespace Linphone.Views
             {
                 Number.Text = e.PhoneNumber;
             }
-
-            // Store the contact name as display name for call logs
-            LinphoneManager.Instance.LinphoneCore.GetCurrentCall().GetRemoteAddress().SetDisplayName(e.ContactFound.DisplayName);
         }
 
         private void hangUp_Click(object sender, RoutedEventArgs e)

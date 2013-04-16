@@ -1,18 +1,15 @@
-﻿using System;
+﻿using Linphone.Agents;
+using Linphone.Core;
+using Linphone.Model;
+using Linphone.Resources;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
-using Linphone.Model;
-using Linphone.Resources;
-using Linphone.Agents;
-using System.Windows.Data;
-using System.Globalization;
-using System.Windows.Media;
 
 namespace Linphone.Views
 {
@@ -127,12 +124,13 @@ namespace Linphone.Views
         private void callLog_Click_1(object sender, RoutedEventArgs e)
         {
             CallLog log = ((sender as StackPanel).Tag as CallLog);
+            LinphoneCallLog nativeLog = (LinphoneCallLog)log.NativeLog;
 
             String address;
             if (log.IsIncoming)
-                address = log.From;
+                address = nativeLog.GetFrom().AsStringUriOnly();
             else
-                address = log.To;
+                address = nativeLog.GetTo().AsStringUriOnly();
 
             SetAddressGoToDialerAndCall(address);
         }

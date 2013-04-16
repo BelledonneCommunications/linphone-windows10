@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using Linphone.Controls;
+using Linphone.Model;
+using Microsoft.Phone;
+using Microsoft.Phone.UserData;
+using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
-using System.Windows.Media.Imaging;
-using Microsoft.Phone;
-using System.IO;
-using Microsoft.Phone.UserData;
-using Linphone.Model;
-using Linphone.Controls;
 
 namespace Linphone.Views
 {
