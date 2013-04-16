@@ -105,9 +105,6 @@
     <Compile Include="Controls\StatusBar.xaml.cs">
       <DependentUpon>StatusBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TwoStateButton.xaml.cs">
-      <DependentUpon>TwoStateButton.xaml</DependentUpon>
-    </Compile>
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Model\AlphaKeyGroup.cs" />
     <Compile Include="Model\AssociationUriMapper.cs" />
@@ -264,10 +261,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\StatusBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\TwoStateButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
