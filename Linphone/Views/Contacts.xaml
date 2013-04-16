@@ -36,8 +36,7 @@
             <Grid.Resources>
                 <model:ContactPictureConverter x:Key="ContactPictureConverter"/>
                 <model:LinphoneContactPictureConverter x:Key="LinphoneContactPictureConverter"/>
-                <model:TileSizeToWidthConverterFix x:Key="TileSizeToWidthConverterFix"/>
-                <model:TileSizeToHeightConverterFix x:Key="TileSizeToHeightConverterFix"/>
+                
                 <phone:JumpListItemBackgroundConverter x:Key="BackgroundConverter"/>
                 <phone:JumpListItemForegroundConverter x:Key="ForegroundConverter"/>
                 <Style x:Key="ContactsJumpListStyle" TargetType="phone:LongListSelector">
@@ -54,10 +53,10 @@
                         </Setter.Value>
                     </Setter>
                 </Style>
-                
+
                 <!--We have to override default hubtile style to replace two converters bugged by our own with the fix-->
-                <toolkit:TileSizeToHeightConverter x:Key="HeightConverter"/>
-                <toolkit:TileSizeToWidthConverter x:Key="WidthConverter"/>
+                <model:TileSizeToWidthConverterFix x:Key="TileSizeToWidthConverterFix"/>
+                <model:TileSizeToHeightConverterFix x:Key="TileSizeToHeightConverterFix"/>
                 <Style x:Key="HubTile" TargetType="toolkit:HubTile">
                     <Setter Property="Height" Value="173"/>
                     <Setter Property="Width" Value="173"/>
@@ -71,7 +70,7 @@
                                         <CubicEase x:Key="HubTileEaseOut" EasingMode="EaseOut"/>
                                     </Border.Resources>
                                     <Border.Height>
-                                        <Binding Converter="{StaticResource HeightConverter}" Path="Size" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                        <Binding Converter="{StaticResource TileSizeToHeightConverterFix}" Path="Size" RelativeSource="{RelativeSource TemplatedParent}"/>
                                     </Border.Height>
                                     <VisualStateManager.VisualStateGroups>
                                         <VisualStateGroup x:Name="ImageStates">
@@ -176,7 +175,7 @@
                                         </VisualStateGroup>
                                     </VisualStateManager.VisualStateGroups>
                                     <Border.Width>
-                                        <Binding Converter="{StaticResource WidthConverter}" Path="Size" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                        <Binding Converter="{StaticResource TileSizeToWidthConverterFix}" Path="Size" RelativeSource="{RelativeSource TemplatedParent}"/>
                                     </Border.Width>
                                     <StackPanel x:Name="Viewport" Height="{Binding Size, Converter={StaticResource TileSizeToHeightConverterFix}, RelativeSource={RelativeSource TemplatedParent}}" Width="{Binding Size, Converter={StaticResource TileSizeToWidthConverterFix}, RelativeSource={RelativeSource TemplatedParent}}">
                                         <StackPanel.Projection>
