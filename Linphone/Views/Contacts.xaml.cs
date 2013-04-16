@@ -33,9 +33,37 @@ namespace Linphone.Views
 
         private void contactsList_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
-            Microsoft.Phone.UserData.Contact selectedContact = ((sender as LongListSelector).SelectedItem as Microsoft.Phone.UserData.Contact);
+            LongListSelector list = (sender as LongListSelector);
+            Microsoft.Phone.UserData.Contact selectedContact;
+
+            if (list.SelectedItem.GetType() == typeof(Microsoft.Phone.UserData.Contact))
+                selectedContact = (list.SelectedItem as Microsoft.Phone.UserData.Contact);
+            else
+                selectedContact = (list.SelectedItem as LinphoneContact).Contact;
+
             ContactManager.Instance.TempContact = selectedContact;
             NavigationService.Navigate(new Uri("/Views/Contact.xaml", UriKind.RelativeOrAbsolute));
+        }
+
+        private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Pivot pivot = sender as Pivot;
+
+            if (pivot == null)
+            {
+                return;
+            }
+
+            switch (pivot.SelectedIndex)
+            {
+                case 0:
+                    HubTileService.FreezeGroup("RecentContactsGroup");
+                    break;
+
+                case 1:
+                    HubTileService.UnfreezeGroup("RecentContactsGroup");
+                    break;
+            }
         }
     }
 }

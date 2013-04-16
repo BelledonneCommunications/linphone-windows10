@@ -217,8 +217,8 @@
                 </Style>
             </Grid.Resources>
             <!--End of the hack-->
-            
-            <phone:Pivot>
+
+            <phone:Pivot SelectionChanged="Pivot_SelectionChanged">
                 <phone:PivotItem Header="{Binding Path=LocalizedResources.ContactsAll, Source={StaticResource LocalizedStrings}}">
                     <phone:LongListSelector
                         x:Name="contactsList"
@@ -268,7 +268,8 @@
                         LayoutMode="Grid"
                         ItemsSource="{Binding}"
                         IsGroupingEnabled="False" 
-                        GridCellSize="176, 176">
+                        GridCellSize="176, 176"
+                        SelectionChanged="contactsList_SelectionChanged_1">
                         <phone:LongListSelector.ItemTemplate>
                             <DataTemplate>
                                 <toolkit:HubTile

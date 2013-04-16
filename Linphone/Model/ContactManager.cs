@@ -135,26 +135,32 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Gets a list of contacts ordered alphabetically
+        /// Gets a list of contacts ordered alphabetically.
         /// </summary>
-        /// <returns>A list of AlphaKeyGroup, where each one contains the contacts starting by the letter represented by the group</returns>
+        /// <returns>A list of AlphaKeyGroup, where each one contains the contacts starting by the letter represented by the group.</returns>
         public List<AlphaKeyGroup<Contact>> GetContactsGroupedByLetters()
         {
             return _contacts;
         }
 
         /// <summary>
-        /// Gets a list of contacts recently used
+        /// Gets a list of contacts recently used to display in hubtiles.
         /// </summary>
-        /// <returns>A list of Contacts</returns>
+        /// <returns>A list of LinphoneContact.</returns>
         public List<LinphoneContact> GetRecentContacts()
         {
-            //TODO
-            return (from contact in _allContacts where (contact.DisplayName.StartsWith("Pauline")) select new LinphoneContact(contact)).ToList();
+            List<CallLog> history = LinphoneManager.Instance.GetCallsHistory();
+            //Get all contacts whe are in the history logs.
+            var result = (from contact in _allContacts where ((from log in history where (log.DisplayedName.Equals(contact.DisplayName)) select log).Count() > 0) select new LinphoneContact(contact)).ToList();
+            
+            if (result.Count > RECENT_CONTACTS_MAX)
+                result = result.GetRange(0, RECENT_CONTACTS_MAX);
+
+            return result;
         }
 
         /// <summary>
-        /// Searches if there is a contact for whom the phone number of the email address is stored
+        /// Searches if there is a contact for whom the phone number of the email address is stored.
         /// </summary>
         /// <param name="numberOrAddress"></param>
         public void FindContact(String numberOrAddress)
@@ -170,9 +176,9 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Searches if a there is a contact for whom the phone number is stored 
+        /// Searches if a there is a contact for whom the phone number is stored.
         /// </summary>
-        /// <param name="number">phone number to use to filter the contacts</param>
+        /// <param name="number">phone number to use to filter the contacts.</param>
         private void FindContactByNumber(String number)
         {
             Microsoft.Phone.UserData.Contacts contacts = new Microsoft.Phone.UserData.Contacts();
@@ -191,7 +197,7 @@ namespace Linphone.Model
                 foreach (ContactPhoneNumber phone in result.PhoneNumbers)
                 {
                     // We know this contact has this phone number stored.
-                    // That's why we strip the phone number from the 3 first characters (maybe international prefix): to facilitate the label search
+                    // That's why we strip the phone number from the 3 first characters (maybe international prefix): to facilitate the label search.
                     if (phone.PhoneNumber.EndsWith(tempNumberForContactLookup.Substring(3)))
                     {
                         label = phone.Kind.ToString();
@@ -202,9 +208,9 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Searches if a there is a contact for whom the email is stored 
+        /// Searches if a there is a contact for whom the email is stored.
         /// </summary>
-        /// <param name="email">email to use to filter the contacts</param>
+        /// <param name="email">email to use to filter the contacts.</param>
         private void FindContactByEmail(String email)
         {
             Microsoft.Phone.UserData.Contacts contacts = new Microsoft.Phone.UserData.Contacts();
