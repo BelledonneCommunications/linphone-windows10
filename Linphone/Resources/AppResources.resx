@@ -311,13 +311,22 @@ http://www.linphone.org/m/help
   <data name="RegistrationInProgress" xml:space="preserve">
     <value>In Progress</value>
   </data>
-  <data name="Incoming" xml:space="preserve">
+  <data name="HistoryIncoming" xml:space="preserve">
     <value>Incoming</value>
   </data>
-  <data name="Missed" xml:space="preserve">
+  <data name="HistoryMissed" xml:space="preserve">
     <value>Missed</value>
   </data>
-  <data name="Outgoing" xml:space="preserve">
+  <data name="HistoryOutgoing" xml:space="preserve">
     <value>Outgoing</value>
+  </data>
+  <data name="ContactsAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="ContactsRecents" xml:space="preserve">
+    <value>Recents</value>
+  </data>
+  <data name="HistoryAll" xml:space="preserve">
+    <value>All</value>
   </data>
 </root>

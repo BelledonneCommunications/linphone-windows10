@@ -193,11 +193,29 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string ContactsAll {
+            get {
+                return ResourceManager.GetString("ContactsAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contacts.
         /// </summary>
         public static string ContactsMenu {
             get {
                 return ResourceManager.GetString("ContactsMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recents.
+        /// </summary>
+        public static string ContactsRecents {
+            get {
+                return ResourceManager.GetString("ContactsRecents", resourceCulture);
             }
         }
         
@@ -283,11 +301,47 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string HistoryAll {
+            get {
+                return ResourceManager.GetString("HistoryAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incoming.
+        /// </summary>
+        public static string HistoryIncoming {
+            get {
+                return ResourceManager.GetString("HistoryIncoming", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to History.
         /// </summary>
         public static string HistoryMenu {
             get {
                 return ResourceManager.GetString("HistoryMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missed.
+        /// </summary>
+        public static string HistoryMissed {
+            get {
+                return ResourceManager.GetString("HistoryMissed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Outgoing.
+        /// </summary>
+        public static string HistoryOutgoing {
+            get {
+                return ResourceManager.GetString("HistoryOutgoing", resourceCulture);
             }
         }
         
@@ -310,29 +364,11 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Incoming.
-        /// </summary>
-        public static string Incoming {
-            get {
-                return ResourceManager.GetString("Incoming", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to LockScreen settings.
         /// </summary>
         public static string LockScreenSettings {
             get {
                 return ResourceManager.GetString("LockScreenSettings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Missed.
-        /// </summary>
-        public static string Missed {
-            get {
-                return ResourceManager.GetString("Missed", resourceCulture);
             }
         }
         
@@ -351,15 +387,6 @@ namespace Linphone.Resources {
         public static string NetworkMenu {
             get {
                 return ResourceManager.GetString("NetworkMenu", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Outgoing.
-        /// </summary>
-        public static string Outgoing {
-            get {
-                return ResourceManager.GetString("Outgoing", resourceCulture);
             }
         }
         

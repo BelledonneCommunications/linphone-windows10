@@ -115,6 +115,7 @@
     <Compile Include="Model\CallLog.cs" />
     <Compile Include="Model\ContactManager.cs" />
     <Compile Include="Model\ContactPictureConverter.cs" />
+    <Compile Include="Model\HubTileConverterFix.cs" />
     <Compile Include="Model\LinphoneManager.cs" />
     <Compile Include="Model\Logger.cs" />
     <Compile Include="Model\MissedToBrushConverter.cs" />

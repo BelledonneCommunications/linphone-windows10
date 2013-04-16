@@ -19,6 +19,7 @@ namespace Linphone.Views
             InitializeComponent();
 
             contactsList.ItemsSource = ContactManager.Instance.GetContactsGroupedByLetters();
+            recentContacts.ItemsSource = ContactManager.Instance.GetRecentContacts();
         }
 
         /// <summary>

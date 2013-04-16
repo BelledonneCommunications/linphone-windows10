@@ -37,10 +37,50 @@ namespace Linphone.Model
     }
 
     /// <summary>
+    /// Wrapper above system contact class allowing some changes for better display.
+    /// </summary>
+    public class LinphoneContact
+    {
+        private Contact _contact;
+
+        /// <summary>
+        /// Returns the system Contact object.
+        /// </summary>
+        public Contact Contact
+        {
+            get
+            {
+                return _contact;
+            }
+        }
+
+        /// <summary>
+        /// Returns the Contact's display name formatted for hub display.
+        /// </summary>
+        public string HubDisplayName
+        {
+            get
+            {
+                return _contact.DisplayName.Replace(" ", "\n");
+            }
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public LinphoneContact(Contact contact)
+        {
+            _contact = contact;
+        }
+    }
+
+    /// <summary>
     /// Utility class used to handle every contact related requests.
     /// </summary>
     public class ContactManager
     {
+        private const int RECENT_CONTACTS_MAX = 6;
+
         private static ContactManager singleton;
         /// <summary>
         /// Static instance for this class.
@@ -57,6 +97,7 @@ namespace Linphone.Model
         }
 
         private List<AlphaKeyGroup<Contact>> _contacts;
+        private List<Contact> _allContacts;
         private String tempNumberForContactLookup;
 
         /// <summary>
@@ -90,6 +131,7 @@ namespace Linphone.Model
         {
             _contacts = AlphaKeyGroup<Contact>.CreateGroups(e.Results, System.Threading.Thread.CurrentThread.CurrentUICulture,
                 (Contact c) => { return c.DisplayName; }, true);
+            _allContacts = e.Results.ToList();
         }
 
         /// <summary>
@@ -99,6 +141,16 @@ namespace Linphone.Model
         public List<AlphaKeyGroup<Contact>> GetContactsGroupedByLetters()
         {
             return _contacts;
+        }
+
+        /// <summary>
+        /// Gets a list of contacts recently used
+        /// </summary>
+        /// <returns>A list of Contacts</returns>
+        public List<LinphoneContact> GetRecentContacts()
+        {
+            //TODO
+            return (from contact in _allContacts where (contact.DisplayName.StartsWith("Pauline")) select new LinphoneContact(contact)).ToList();
         }
 
         /// <summary>

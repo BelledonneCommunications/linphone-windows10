@@ -123,12 +123,12 @@ namespace Linphone.Model
                 if (_isIncoming)
                 {
                     if (_isMissed)
-                        return AppResources.Missed;
+                        return AppResources.HistoryMissed;
                     else
-                        return AppResources.Incoming;
+                        return AppResources.HistoryIncoming;
                 }
                 else
-                    return AppResources.Outgoing;
+                    return AppResources.HistoryOutgoing;
             }
         }
 

@@ -45,6 +45,7 @@ namespace Linphone.Views
 
             List<CallLog> callsHistory = LinphoneManager.Instance.GetCallsHistory();
             Calls.ItemsSource = callsHistory;
+            MissedCalls.ItemsSource = (from log in callsHistory where (log.IsMissed) select log).ToList();
         }
 
         private void deleteAll_Click_1(object sender, EventArgs e)
@@ -53,6 +54,7 @@ namespace Linphone.Views
 
             List<CallLog> callsHistory = LinphoneManager.Instance.GetCallsHistory();
             Calls.ItemsSource = callsHistory;
+            MissedCalls.ItemsSource = (from log in callsHistory where (log.IsMissed) select log).ToList();
         }
 
         private void deleteSelection_Click_1(object sender, EventArgs e)
@@ -61,6 +63,7 @@ namespace Linphone.Views
 
             List<CallLog> callsHistory = LinphoneManager.Instance.GetCallsHistory();
             Calls.ItemsSource = callsHistory;
+            MissedCalls.ItemsSource = (from log in callsHistory where (log.IsMissed) select log).ToList();
 
             ClearApplicationBar();
             SetupAppBarForEmptySelection();
