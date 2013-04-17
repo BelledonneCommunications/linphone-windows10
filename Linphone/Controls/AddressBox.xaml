@@ -31,6 +31,7 @@
             IsReadOnly="True"
             BorderThickness="0"
             Foreground="White"
+            VerticalAlignment="Center"
             Background="Transparent"
             HintStyle="{StaticResource HintCustomStyle}"
             Hint="{Binding Path=LocalizedResources.AddressHint, Source={StaticResource LocalizedStrings}}"/>
@@ -43,6 +44,7 @@
             GotFocus="address_GotFocus"
             LostFocus="address_LostFocus"
             TextChanged="address_TextChanged_1"
+            VerticalAlignment="Center"
             AcceptsReturn="False" 
             BorderThickness="0"
             Opacity="0"/>
