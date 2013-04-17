@@ -154,6 +154,7 @@ namespace Linphone
 
 		private:
 			friend ref class Linphone::Core::LinphoneCore;
+			friend class Linphone::Core::Utils;
 
 			LinphoneProxyConfig();
 			LinphoneProxyConfig(::LinphoneProxyConfig* proxy_config);

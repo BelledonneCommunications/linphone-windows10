@@ -4,6 +4,8 @@
 #include "LinphoneCoreListener.h"
 #include "Utils.h"
 #include "coreapi\linphonecore.h"
+#include "coreapi\linphonecore_utils.h"
+#include "coreapi\linphone_tunnel.h"
 #include "coreapi\lpconfig.h"
 
 namespace Linphone
@@ -158,11 +160,6 @@ namespace Linphone
 			/// </returns>
 			LinphoneCall^ GetCurrentCall();
 
-			/// <returns>
-			/// nullptr if no call engaged yet. 
-			/// </returns>
-			LinphoneAddress^ GetRemoteAddress();
-
 			/// <summary>
 			/// Returns true if at least a call is running, else returns false.
 			/// </summary>
@@ -234,7 +231,8 @@ namespace Linphone
 			/// Returns true if the network has been set as reachable, else returns false.
 			/// </summary>
 			Platform::Boolean IsNetworkReachable();
-
+			
+			void SetMicrophoneGain(float gain);
 			/// <summary>
 			/// Allow to control play level before entering the sound card.
 			/// </summary>
@@ -398,11 +396,11 @@ namespace Linphone
 			void LeaveConference();
 			void AddToConference(LinphoneCall^ call);
 			void AddAllToConference();
-			void RemoveFromConference();
+			void RemoveFromConference(LinphoneCall^ call);
 			void TerminateConference();
 			int GetConferenceSize();
 			void TerminateAllCalls();
-			Windows::Foundation::Collections::IVector<LinphoneCall^>^ GetCalls();
+			Windows::Foundation::Collections::IVector<Platform::Object^>^ GetCalls();
 			int GetCallsNb();
 			LinphoneCall^ FindCallFromUri(Platform::String^ uri);
 			int GetMaxCalls();
@@ -474,7 +472,6 @@ namespace Linphone
 			/// Once this time is elapsed (ringing included), the call is automatically hung up.
 			/// </summary>
 			void SetInCallTimeout(int timeout);
-			void SetMicrophoneGain(float gain);
 
 			/// <summary>
 			/// Set username and display name to use if no LinphoneProxyConfig is configured.

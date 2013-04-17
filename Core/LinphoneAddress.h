@@ -73,6 +73,7 @@ namespace Linphone
 		private:
 			friend class Linphone::Core::Utils;
 			friend ref class Linphone::Core::LinphoneCoreFactory;
+			friend ref class Linphone::Core::LinphoneCore;
 			
 			LinphoneAddress(::LinphoneAddress *addr);
 			LinphoneAddress(const char *uri);

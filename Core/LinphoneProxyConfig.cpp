@@ -18,15 +18,18 @@ void Linphone::Core::LinphoneProxyConfig::Done()
 void Linphone::Core::LinphoneProxyConfig::SetIdentity(Platform::String^ displayname, Platform::String^ username, Platform::String^ domain)
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
 	const char* cc_username = Utils::pstoccs(username);
 	const char* cc_domain = Utils::pstoccs(domain);
 	const char* cc_displayname = Utils::pstoccs(displayname);
+
 	::LinphoneAddress *addr = linphone_address_new(NULL);
 	linphone_address_set_username(addr, cc_username);
 	linphone_address_set_domain(addr, cc_domain);
 	linphone_address_set_display_name(addr, cc_displayname);
 	linphone_proxy_config_set_identity(this->proxy_config, linphone_address_as_string(addr));
 	linphone_address_destroy(addr);
+
 	delete(cc_username);
 	delete(cc_domain);
 	delete(cc_displayname);
@@ -41,6 +44,7 @@ Platform::String^ Linphone::Core::LinphoneProxyConfig::GetIdentity()
 void Linphone::Core::LinphoneProxyConfig::SetProxy(Platform::String^ proxyUri)
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
 	const char* cc = Utils::pstoccs(proxyUri);
 	linphone_proxy_config_set_server_addr(this->proxy_config, cc);
 	delete(cc);
@@ -61,6 +65,7 @@ Platform::Boolean Linphone::Core::LinphoneProxyConfig::IsRegisterEnabled()
 Platform::String^ Linphone::Core::LinphoneProxyConfig::NormalizePhoneNumber(Platform::String^ phoneNumber)
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
 	const char* cc = Utils::pstoccs(phoneNumber);
 	char* result = (char*) malloc(phoneNumber->Length());
 	int result_size = 0;
@@ -68,12 +73,14 @@ Platform::String^ Linphone::Core::LinphoneProxyConfig::NormalizePhoneNumber(Plat
 	Platform::String^ val = Utils::cctops(result);
 	delete(cc);
 	delete(result);
+
 	return val;
 }
 
 void Linphone::Core::LinphoneProxyConfig::SetDialPrefix(Platform::String^ prefix)
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
 	const char* cc = Utils::pstoccs(prefix);
 	linphone_proxy_config_set_dial_prefix(this->proxy_config, cc);
 	delete(cc);
@@ -106,6 +113,7 @@ Platform::Boolean Linphone::Core::LinphoneProxyConfig::IsRegistered()
 void Linphone::Core::LinphoneProxyConfig::SetRoute(Platform::String^ routeUri)
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
 	const char* cc = Utils::pstoccs(routeUri);
 	linphone_proxy_config_set_route(this->proxy_config, cc);
 	delete(cc);
@@ -125,7 +133,8 @@ void Linphone::Core::LinphoneProxyConfig::EnablePublish(Platform::Boolean enable
 
 Platform::Boolean Linphone::Core::LinphoneProxyConfig::IsPublishEnabled()
 {
-	return false;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return linphone_proxy_config_publish_enabled(this->proxy_config);
 }
 
 Linphone::Core::RegistrationState Linphone::Core::LinphoneProxyConfig::GetState()
@@ -136,12 +145,14 @@ Linphone::Core::RegistrationState Linphone::Core::LinphoneProxyConfig::GetState(
 
 void Linphone::Core::LinphoneProxyConfig::SetExpires(int delay)
 {
-	
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_proxy_config_expires(this->proxy_config, delay);
 }
 
 void Linphone::Core::LinphoneProxyConfig::SetContactParameters(Platform::String^ params)
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
 	const char* cc = Utils::pstoccs(params);
 	linphone_proxy_config_set_contact_parameters(this->proxy_config, cc);
 	delete(cc);
@@ -149,17 +160,30 @@ void Linphone::Core::LinphoneProxyConfig::SetContactParameters(Platform::String^
 
 int Linphone::Core::LinphoneProxyConfig::LookupCCCFromIso(Platform::String^ iso)
 {
-	return -1;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
+	const char* isochar = Linphone::Core::Utils::pstoccs(iso);
+	int ccc = linphone_dial_plan_lookup_ccc_from_iso(isochar);
+	delete(isochar);
+
+	return ccc;
 }
 
 int Linphone::Core::LinphoneProxyConfig::LookupCCCFromE164(Platform::String^ e164)
 {
-	return -1;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
+	const char* e164char = Linphone::Core::Utils::pstoccs(e164);
+	int ccc = linphone_dial_plan_lookup_ccc_from_e164(e164char);
+	delete(e164char);
+
+	return ccc;
 }
 
 Linphone::Core::LinphoneProxyConfig::LinphoneProxyConfig()
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
 	this->proxy_config = linphone_proxy_config_new();
 	RefToPtrProxy<LinphoneProxyConfig^> *proxy = new RefToPtrProxy<LinphoneProxyConfig^>(this);
 	linphone_proxy_config_set_user_data(this->proxy_config, proxy);
@@ -168,6 +192,7 @@ Linphone::Core::LinphoneProxyConfig::LinphoneProxyConfig()
 Linphone::Core::LinphoneProxyConfig::LinphoneProxyConfig(::LinphoneProxyConfig* proxy_config)
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
 	this->proxy_config = proxy_config;
 	RefToPtrProxy<LinphoneProxyConfig^> *proxy = new RefToPtrProxy<LinphoneProxyConfig^>(this);
 	linphone_proxy_config_set_user_data(this->proxy_config, proxy);
@@ -176,6 +201,7 @@ Linphone::Core::LinphoneProxyConfig::LinphoneProxyConfig(::LinphoneProxyConfig* 
 Linphone::Core::LinphoneProxyConfig::~LinphoneProxyConfig()
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
 	RefToPtrProxy<LinphoneProxyConfig^> *proxy = reinterpret_cast< RefToPtrProxy<LinphoneProxyConfig^> *>(linphone_proxy_config_get_user_data(this->proxy_config));
 	delete proxy;
 }

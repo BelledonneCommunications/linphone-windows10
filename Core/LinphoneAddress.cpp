@@ -44,12 +44,12 @@ void Linphone::Core::LinphoneAddress::SetDomain(Platform::String^ domain)
 
 void Linphone::Core::LinphoneAddress::SetPort(int port)
 {
-
+	linphone_address_set_port_int(this->address, port);
 }
 
 void Linphone::Core::LinphoneAddress::Clean()
 {
-
+	linphone_address_clean(this->address);
 }
 
 Platform::String^ Linphone::Core::LinphoneAddress::AsString()

@@ -25,7 +25,6 @@ Linphone::Core::Transports::Transports() :
 	tcp(0),
 	tls(0)
 {
-
 }
 
 Linphone::Core::Transports::Transports(int udp_port, int tcp_port, int tls_port) :
@@ -40,7 +39,6 @@ Linphone::Core::Transports::Transports(Linphone::Core::Transports^ t) :
 	tcp(t->TCP),
 	tls(t->TLS)
 {
-
 }
 
 int Linphone::Core::Transports::UDP::get()
@@ -145,9 +143,26 @@ Linphone::Core::LinphoneProxyConfig^ Linphone::Core::LinphoneCore::CreateEmptyPr
 	return proxyConfig;
 }
 
+static void AddProxyConfigToVector(void *vProxyConfig, void *vector)
+{
+	::LinphoneProxyConfig *pc = (LinphoneProxyConfig *)vProxyConfig;
+	Linphone::Core::RefToPtrProxy<IVector<Object^>^> *list = reinterpret_cast< Linphone::Core::RefToPtrProxy<IVector<Object^>^> *>(vector);
+	IVector<Object^>^ proxyconfigs = (list) ? list->Ref() : nullptr;
+
+	Linphone::Core::LinphoneProxyConfig^ proxyConfig = (Linphone::Core::LinphoneProxyConfig^)Linphone::Core::Utils::CreateLinphoneProxyConfig(pc);
+	proxyconfigs->Append(proxyConfig);
+}
+
 IVector<Object^>^ Linphone::Core::LinphoneCore::GetProxyConfigList() 
 {
-	return nullptr;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
+	IVector<Object^>^ proxyconfigs = ref new Vector<Object^>();
+	const MSList *configList = linphone_core_get_proxy_config_list(this->lc);
+	RefToPtrProxy<IVector<Object^>^> *proxyConfigPtr = new RefToPtrProxy<IVector<Object^>^>(proxyconfigs);
+	ms_list_for_each2(configList, AddProxyConfigToVector, proxyConfigPtr);
+
+	return proxyconfigs;
 }
 
 void Linphone::Core::LinphoneCore::ClearAuthInfos() 
@@ -182,21 +197,30 @@ static void AddAuthInfoToVector(void *vAuthInfo, void *vector)
 IVector<Object^>^ Linphone::Core::LinphoneCore::GetAuthInfos()
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
 	IVector<Object^>^ authInfos = ref new Vector<Object^>();
 	const MSList *authlist = linphone_core_get_auth_info_list(this->lc);
 	RefToPtrProxy<IVector<Object^>^> *authInfosPtr = new RefToPtrProxy<IVector<Object^>^>(authInfos);
 	ms_list_for_each2(authlist, AddAuthInfoToVector, authInfosPtr);
+
 	return authInfos;
 }
 
 void Linphone::Core::LinphoneCore::Destroy() 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	IterateTimer->Cancel();
 }
 
 Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCore::InterpretURL(Platform::String^ destination) 
 {
-	return nullptr;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
+	const char* url = Linphone::Core::Utils::pstoccs(destination);
+	Linphone::Core::LinphoneAddress^ addr = (Linphone::Core::LinphoneAddress^) Linphone::Core::Utils::CreateLinphoneAddress(linphone_core_interpret_url(this->lc, url));
+	delete(url);
+
+	return addr;
 }
 
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::Invite(Platform::String^ destination) 
@@ -213,18 +237,23 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::Invite(Platform::Str
 		Linphone::Core::LinphoneCall^ lCall = (proxy) ? proxy->Ref() : nullptr;
 		if (lCall == nullptr)
 			lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
+
 		return lCall;
 	}
+
 	return nullptr;
 }
 
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddress(Linphone::Core::LinphoneAddress^ to) 
 {
-	return nullptr;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return (Linphone::Core::LinphoneCall^) Linphone::Core::Utils::CreateLinphoneCall(linphone_core_invite_address(this->lc, to->address));
 }
 
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddressWithParams(Linphone::Core::LinphoneAddress^ destination, LinphoneCallParams^ params) 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	//TODO
 	return nullptr;
 }
 
@@ -237,26 +266,26 @@ void Linphone::Core::LinphoneCore::TerminateCall(Linphone::Core::LinphoneCall^ c
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::GetCurrentCall() 
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
 	::LinphoneCall *call = linphone_core_get_current_call(this->lc);
 	if (call == nullptr)
 		return nullptr;
+
 	Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
 	Linphone::Core::LinphoneCall^ lCall = (proxy) ? proxy->Ref() : nullptr;
-	return lCall;
-}
 
-Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCore::GetRemoteAddress() 
-{
-	return nullptr;
+	return lCall;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsInCall() 
 {
-	return false;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return linphone_core_in_call(this->lc);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsIncomingInvitePending() 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return false;
 }
 
@@ -268,26 +297,32 @@ void Linphone::Core::LinphoneCore::AcceptCall(Linphone::Core::LinphoneCall^ call
 
 void Linphone::Core::LinphoneCore::AcceptCallWithParams(Linphone::Core::LinphoneCall^ call, Linphone::Core::LinphoneCallParams^ params) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	//TODO
 }
 
 void Linphone::Core::LinphoneCore::AcceptCallUpdate(Linphone::Core::LinphoneCall^ call, LinphoneCallParams^ params) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	//TODO
 }
 
 void Linphone::Core::LinphoneCore::DeferCallUpdate(Linphone::Core::LinphoneCall^ call) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_defer_call_update(this->lc, call->call);
 }
 
 void Linphone::Core::LinphoneCore::UpdateCall(Linphone::Core::LinphoneCall^ call, Linphone::Core::LinphoneCallParams^ params) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	//TODO
 }
 
 Linphone::Core::LinphoneCallParams^ Linphone::Core::LinphoneCore::CreateDefaultCallParameters() 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	//TODO
 	return nullptr;
 }
 
@@ -334,27 +369,38 @@ void Linphone::Core::LinphoneCore::SetNetworkReachable(Platform::Boolean isReach
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsNetworkReachable() 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return linphone_core_is_network_reachable(this->lc);
+}
+
+void Linphone::Core::LinphoneCore::SetMicrophoneGain(float gain) 
+{
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_set_mic_gain_db(this->lc, gain);
 }
 
 void Linphone::Core::LinphoneCore::SetPlaybackGain(float gain) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_set_playback_gain_db(this->lc, gain);
 }
 
 float Linphone::Core::LinphoneCore::GetPlaybackGain() 
 {
-	return -1;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return linphone_core_get_playback_gain_db(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::SetPlayLevel(int level) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_set_play_level(this->lc, level);
 }
 
 int Linphone::Core::LinphoneCore::GetPlayLevel() 
 {
-	return -1;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return linphone_core_get_play_level(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::MuteMic(Platform::Boolean isMuted) 
@@ -365,6 +411,7 @@ void Linphone::Core::LinphoneCore::MuteMic(Platform::Boolean isMuted)
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsMicMuted() 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return linphone_core_is_mic_muted(this->lc);
 }
 
@@ -393,6 +440,7 @@ Linphone::Core::PayloadType^ Linphone::Core::LinphoneCore::FindPayloadType(Platf
 	const char* type = Linphone::Core::Utils::pstoccs(mime);
 	::PayloadType* pt = linphone_core_find_payload_type(this->lc, type, clockRate, channels);
 	delete type;
+
 	return ref new Linphone::Core::PayloadType(pt);
 }
 
@@ -403,6 +451,7 @@ Linphone::Core::PayloadType^ Linphone::Core::LinphoneCore::FindPayloadType(Platf
 	const char* type = Linphone::Core::Utils::pstoccs(mime);
 	::PayloadType* pt = linphone_core_find_payload_type(this->lc, type, clockRate, LINPHONE_FIND_PAYLOAD_IGNORE_CHANNELS);
 	delete type;
+
 	return ref new Linphone::Core::PayloadType(pt);
 }
 
@@ -434,41 +483,49 @@ static void AddCodecToVector(void *vCodec, void *vector)
 IVector<Object^>^ Linphone::Core::LinphoneCore::GetAudioCodecs()
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
 	IVector<Object^>^ codecs = ref new Vector<Object^>();
 	const MSList *codecslist = linphone_core_get_audio_codecs(this->lc);
 	RefToPtrProxy<IVector<Object^>^> *codecsPtr = new RefToPtrProxy<IVector<Object^>^>(codecs);
 	ms_list_for_each2(codecslist, AddCodecToVector, codecsPtr);
+
 	return codecs;
 }
 
 void Linphone::Core::LinphoneCore::EnableEchoCancellation(Platform::Boolean enable) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_enable_echo_cancellation(this->lc, enable);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsEchoCancellationEnabled() 
 {
-	return false;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return linphone_core_echo_cancellation_enabled(this->lc);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsEchoLimiterEnabled() 
 {
-	return false;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return linphone_core_echo_limiter_enabled(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::StartEchoCalibration(Platform::Object^ data) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	//TODO
 }
 
 void Linphone::Core::LinphoneCore::EnableEchoLimiter(Platform::Boolean enable) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_enable_echo_limiter(this->lc, enable);
 }
 
 void Linphone::Core::LinphoneCore::SetSignalingTransportsPorts(Transports^ t) 
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
 	::LCSipTransports transports;
 	memset(&transports, 0, sizeof(LCSipTransports));
 	transports.udp_port = t->UDP;
@@ -480,6 +537,7 @@ void Linphone::Core::LinphoneCore::SetSignalingTransportsPorts(Transports^ t)
 Linphone::Core::Transports^ Linphone::Core::LinphoneCore::GetSignalingTransportsPorts()
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
 	::LCSipTransports transports;
 	linphone_core_get_sip_transports(this->lc, &transports);
 	return ref new Transports(transports.udp_port, transports.tcp_port, transports.tls_port);
@@ -487,37 +545,49 @@ Linphone::Core::Transports^ Linphone::Core::LinphoneCore::GetSignalingTransports
 
 void Linphone::Core::LinphoneCore::EnableIPv6(Platform::Boolean enable) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_enable_ipv6(this->lc, enable);
 }
 
 void Linphone::Core::LinphoneCore::SetPresenceInfo(int minuteAway, Platform::String^ alternativeContact, OnlineStatus status) 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 
+	const char* ac = Linphone::Core::Utils::pstoccs(alternativeContact);
+	linphone_core_set_presence_info(this->lc, minuteAway, ac, (LinphoneOnlineStatus) status);
+	delete(ac);
 }
 
 void Linphone::Core::LinphoneCore::SetStunServer(Platform::String^ stun) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	const char* stunserver = Linphone::Core::Utils::pstoccs(stun);
+	linphone_core_set_stun_server(this->lc, stunserver);
+	delete(stunserver);
 }
 
 Platform::String^ Linphone::Core::LinphoneCore::GetStunServer() 
 {
-	return nullptr;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return Linphone::Core::Utils::cctops(linphone_core_get_stun_server(this->lc));
 }
 
 void Linphone::Core::LinphoneCore::SetFirewallPolicy(FirewallPolicy policy) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_set_firewall_policy(this->lc, (LinphoneFirewallPolicy) policy);
 }
 
 Linphone::Core::FirewallPolicy Linphone::Core::LinphoneCore::GetFirewallPolicy() 
 {
-	return FirewallPolicy::NoFirewall;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return (FirewallPolicy) linphone_core_get_firewall_policy(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::SetRootCA(Platform::String^ path) 
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
 	const char *ccPath = Utils::pstoccs(path);
 	linphone_core_set_root_ca(this->lc, ccPath);
 	delete ccPath;
@@ -525,200 +595,300 @@ void Linphone::Core::LinphoneCore::SetRootCA(Platform::String^ path)
 
 void Linphone::Core::LinphoneCore::SetUploadBandwidth(int bw) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_set_upload_bandwidth(this->lc, bw);
 }
 
 void Linphone::Core::LinphoneCore::SetDownloadBandwidth(int bw) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_set_download_bandwidth(this->lc, bw);
 }
 
 void Linphone::Core::LinphoneCore::SetDownloadPTime(int ptime) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_set_download_ptime(this->lc, ptime);
 }
 
 void Linphone::Core::LinphoneCore::SetUploadPTime(int ptime) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_set_upload_ptime(this->lc, ptime);
 }
 
 void Linphone::Core::LinphoneCore::EnableKeepAlive(Platform::Boolean enable)
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_enable_keep_alive(this->lc, enable);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsKeepAliveEnabled() 
 {
-	return false;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return linphone_core_keep_alive_enabled(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::SetPlayFile(Platform::String^ path) 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 
+	const char* file = Linphone::Core::Utils::pstoccs(path);
+	linphone_core_set_play_file(this->lc, file);
+	delete(file);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::PauseCall(LinphoneCall^ call) 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return linphone_core_pause_call(this->lc, call->call);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::ResumeCall(LinphoneCall^ call) 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return linphone_core_resume_call(this->lc, call->call);;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::PauseAllCalls() 
 {
-	return false;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return linphone_core_pause_all_calls(this->lc);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsInConference() 
 {
-	return false;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return linphone_core_is_in_conference(this->lc);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::EnterConference() 
 {
-	return false;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return linphone_core_enter_conference(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::LeaveConference() 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_leave_conference(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::AddToConference(LinphoneCall^ call) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_add_to_conference(this->lc, call->call);
 }
 
 void Linphone::Core::LinphoneCore::AddAllToConference() 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_add_all_to_conference(this->lc);
 }
 
-void Linphone::Core::LinphoneCore::RemoveFromConference() 
+void Linphone::Core::LinphoneCore::RemoveFromConference(LinphoneCall^ call) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_remove_from_conference(this->lc, call->call);
 }
 
 void Linphone::Core::LinphoneCore::TerminateConference() 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_terminate_conference(this->lc);
 }
 
 int Linphone::Core::LinphoneCore::GetConferenceSize() 
 {
-	return -1;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return linphone_core_get_conference_size(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::TerminateAllCalls() 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_terminate_all_calls(this->lc);
 }
 
-IVector<Linphone::Core::LinphoneCall^>^ Linphone::Core::LinphoneCore::GetCalls() 
+static void AddCallToVector(void *vCall, void *vector)
+{
+	::LinphoneCall* c = (::LinphoneCall *)vCall;
+	Linphone::Core::RefToPtrProxy<IVector<Object^>^> *list = reinterpret_cast< Linphone::Core::RefToPtrProxy<IVector<Object^>^> *>(vector);
+	IVector<Object^>^ calls = (list) ? list->Ref() : nullptr;
+
+	Linphone::Core::LinphoneCall^ call = (Linphone::Core::LinphoneCall^) Linphone::Core::Utils::CreateLinphoneCall(c);
+	calls->Append(call);
+}
+
+IVector<Object^>^ Linphone::Core::LinphoneCore::GetCalls() 
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	
-	Vector<Linphone::Core::LinphoneCall^>^ calls = ref new Vector<Linphone::Core::LinphoneCall^>();
+	Vector<Object^>^ calls = ref new Vector<Object^>();
+	const MSList *callsList = linphone_core_get_calls(this->lc);
+	RefToPtrProxy<IVector<Object^>^> *callsPtr = new RefToPtrProxy<IVector<Object^>^>(calls);
+	ms_list_for_each2(callsList, AddCallToVector, callsPtr);
+
 	return calls;
 }
 
 int Linphone::Core::LinphoneCore::GetCallsNb() 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return linphone_core_get_calls_nb(this->lc);
 }
 
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::FindCallFromUri(Platform::String^ uri) 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return nullptr;
 }
 
 int Linphone::Core::LinphoneCore::GetMaxCalls() 
 {
-	return -1;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return linphone_core_get_max_calls(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::SetMaxCalls(int max) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_set_max_calls(this->lc, max);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsMyself(Platform::String^ uri) 
 {
-	return false;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	LinphoneProxyConfig^ lpc = GetDefaultProxyConfig();
+
+	if (lpc == nullptr)
+		return false;
+
+	return uri->Equals(lpc->GetIdentity());
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsSoundResourcesLocked() 
 {
-	return false;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return linphone_core_sound_resources_locked(this->lc);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsMediaEncryptionSupported(MediaEncryption menc) 
 {
-	return false;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return linphone_core_media_encryption_supported(this->lc, (LinphoneMediaEncryption) menc);
 }
 
 void Linphone::Core::LinphoneCore::SetMediaEncryption(MediaEncryption menc) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_set_media_encryption(this->lc, (LinphoneMediaEncryption) menc);
 }
 
 Linphone::Core::MediaEncryption Linphone::Core::LinphoneCore::GetMediaEncryption() 
 {
-	return MediaEncryption::None;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return (MediaEncryption) linphone_core_get_media_encryption(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::SetMediaEncryptionMandatory(Platform::Boolean yesno) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_set_media_encryption_mandatory(this->lc, yesno);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsMediaEncryptionMandatory() 
 {
-	return false;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return linphone_core_is_media_encryption_mandatory(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::EnableTunnel(Platform::Boolean enable) 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	LinphoneTunnel* tunnel = linphone_core_get_tunnel(this->lc);
+	if (tunnel == nullptr)
+		return;
 
+	linphone_tunnel_enable(tunnel, enable);
 }
 
 void Linphone::Core::LinphoneCore::TunnelAutoDetect() 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	LinphoneTunnel* tunnel = linphone_core_get_tunnel(this->lc);
+	if (tunnel == nullptr)
+		return;
 
+	linphone_tunnel_auto_detect(tunnel);
 }
 
 void Linphone::Core::LinphoneCore::TunnelCleanServers() 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	LinphoneTunnel* tunnel = linphone_core_get_tunnel(this->lc);
+	if (tunnel == nullptr)
+		return;
 
+	linphone_tunnel_clean_servers(tunnel);
 }
 
 void Linphone::Core::LinphoneCore::TunnelSetHttpProxy(Platform::String^ host, int port, Platform::String^ username, Platform::String^ password) 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	
+	LinphoneTunnel* tunnel = linphone_core_get_tunnel(this->lc);
+	if (tunnel == nullptr)
+		return;
 
+	const char* h = Linphone::Core::Utils::pstoccs(host);
+	const char* u = Linphone::Core::Utils::pstoccs(username);
+	const char* pwd = Linphone::Core::Utils::pstoccs(password);
+	linphone_tunnel_set_http_proxy(tunnel, h, port, u, pwd);
+	delete(h);
+	delete(u);
+	delete(pwd);
 }
 
 void Linphone::Core::LinphoneCore::TunnelAddServerAndMirror(Platform::String^ host, int port, int udpMirrorPort, int roundTripDelay) 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 
+	LinphoneTunnel* tunnel = linphone_core_get_tunnel(this->lc);
+	if (tunnel == nullptr)
+		return;
+
+	const char* h = Linphone::Core::Utils::pstoccs(host);
+	//LinphoneTunnelConfig* config = linphone_tunnel_config_new();
+	//linphone_tunnel_config_set_host(config, h);
+	//linphone_tunnel_config_set_port(config, port);
+	//linphone_tunnel_config_set_delay(config, roundTripDelay);
+	//linphone_tunnel_config_set_remote_udp_mirror_port(config, udpMirrorPort);
+	//linphone_tunnel_add_server(linphone_core_get_tunnel(this->lc), config);
+	delete(h);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsTunnelAvailable() 
 {
-	return false;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return linphone_core_tunnel_available();
 }
 
 void Linphone::Core::LinphoneCore::SetUserAgent(Platform::String^ name, Platform::String^ version) 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 
+	const char* ua = Linphone::Core::Utils::pstoccs(name);
+	const char* v = Linphone::Core::Utils::pstoccs(version);
+	linphone_core_set_user_agent(this->lc, ua, v);
+	delete(v);
+	delete(ua);
 }
 
 void Linphone::Core::LinphoneCore::SetCPUCount(int count) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	ms_set_cpu_count(count);
 }
 
 int Linphone::Core::LinphoneCore::GetMissedCallsCount() 
@@ -736,68 +906,86 @@ void Linphone::Core::LinphoneCore::ResetMissedCallsCount()
 void Linphone::Core::LinphoneCore::RefreshRegisters() 
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-
 	linphone_core_refresh_registers(this->lc);
 }
 
 Platform::String^ Linphone::Core::LinphoneCore::GetVersion() 
 {
-	return nullptr;
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return Linphone::Core::Utils::cctops(linphone_core_get_version());
 }
 
 void Linphone::Core::LinphoneCore::SetAudioPort(int port) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_set_audio_port(this->lc, port);
 }
 
 void Linphone::Core::LinphoneCore::SetAudioPortRange(int minP, int maxP) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_set_audio_port_range(this->lc, minP, maxP);
 }
 
 void Linphone::Core::LinphoneCore::SetIncomingTimeout(int timeout) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_set_inc_timeout(this->lc, timeout);
 }
 
 void Linphone::Core::LinphoneCore::SetInCallTimeout(int timeout) 
 {
-
-}
-
-void Linphone::Core::LinphoneCore::SetMicrophoneGain(float gain) 
-{
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_set_in_call_timeout(this->lc, timeout);
 }
 
 void Linphone::Core::LinphoneCore::SetPrimaryContact(Platform::String^ displayName, Platform::String^ userName) 
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	
+	const char* dn = Linphone::Core::Utils::pstoccs(displayName);
+	const char* un = Linphone::Core::Utils::pstoccs(userName);
 
+	::LinphoneAddress* addr = linphone_core_get_primary_contact_parsed(this->lc);
+	if (addr != nullptr) {
+		linphone_address_set_display_name(addr, dn);
+		linphone_address_set_username(addr, un);
+		char* contact = linphone_address_as_string(addr);
+		linphone_core_set_primary_contact(this->lc, contact);
+	}
+
+	delete(un);
+	delete(dn);
 }
 
 void Linphone::Core::LinphoneCore::SetUseSipInfoForDTMFs(Platform::Boolean use) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_set_use_info_for_dtmf(this->lc, use);
 }
 
 void Linphone::Core::LinphoneCore::SetUseRFC2833ForDTMFs(Platform::Boolean use) 
 {
-
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	linphone_core_set_use_rfc2833_for_dtmf(this->lc, use);
 }
 
 Linphone::Core::LpConfig^ Linphone::Core::LinphoneCore::GetConfig()
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	::LpConfig *config = linphone_core_get_config(this->lc);
 	return (Linphone::Core::LpConfig^)Linphone::Core::Utils::CreateLpConfig(config);
 }
 
 Linphone::Core::LinphoneCoreListener^ Linphone::Core::LinphoneCore::CoreListener::get()
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return this->listener;
 }
 
 void Linphone::Core::LinphoneCore::CoreListener::set(LinphoneCoreListener^ listener)
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	this->listener = listener;
 }
 
@@ -891,6 +1079,8 @@ Linphone::Core::LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener, L
 
 void Linphone::Core::LinphoneCore::Init()
 {
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+
 	LinphoneCoreVTable *vtable = (LinphoneCoreVTable*) malloc(sizeof(LinphoneCoreVTable));
 	memset (vtable, 0, sizeof(LinphoneCoreVTable));
 	vtable->global_state_changed = global_state_changed;

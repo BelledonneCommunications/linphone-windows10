@@ -2,6 +2,7 @@
 #include "LinphoneCall.h"
 #include "LinphoneAddress.h"
 #include "LinphoneAuthInfo.h"
+#include "LinphoneProxyConfig.h"
 #include "LinphoneCallLog.h"
 #include "LpConfig.h"
 #include "PayloadType.h"
@@ -86,6 +87,11 @@ Platform::Object^ Linphone::Core::Utils::CreateLinphoneAddressFromUri(const char
 Platform::Object^ Linphone::Core::Utils::CreateLinphoneAuthInfo(void *auth_info)
 {
 	return ref new Linphone::Core::LinphoneAuthInfo((::LinphoneAuthInfo *)auth_info);
+}
+
+Platform::Object^ Linphone::Core::Utils::CreateLinphoneProxyConfig(void *proxy_config)
+{
+	return ref new Linphone::Core::LinphoneProxyConfig((::LinphoneProxyConfig *)proxy_config);
 }
 
 Platform::Object^ Linphone::Core::Utils::CreateLinphoneCallLog(void* callLog)
