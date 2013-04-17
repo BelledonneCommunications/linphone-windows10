@@ -42,7 +42,6 @@ static void LinphoneNativeOutputTraceHandler(OrtpLogLevel lev, const char *fmt, 
 
 void LinphoneCoreFactory::CreateLinphoneCore(Linphone::Core::LinphoneCoreListener^ listener)
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	CreateLinphoneCore(listener, nullptr);
 }
 
@@ -57,27 +56,23 @@ void LinphoneCoreFactory::CreateLinphoneCore(Linphone::Core::LinphoneCoreListene
 
 Linphone::Core::LpConfig^ LinphoneCoreFactory::CreateLpConfig(Platform::String^ configPath, Platform::String^ factoryConfigPath)
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return dynamic_cast<LpConfig^>(Utils::CreateLpConfig(configPath, factoryConfigPath));
 }
 
 Linphone::Core::LinphoneAuthInfo^ LinphoneCoreFactory::CreateAuthInfo(Platform::String^ username, Platform::String^ password, Platform::String^ realm)
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	//TODO
 	return nullptr;
 }
 
 Linphone::Core::LinphoneAddress^ LinphoneCoreFactory::CreateLinphoneAddress(Platform::String^ username, Platform::String^ domain, Platform::String^ displayName)
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	//TODO
 	return nullptr;
 }
 
 Linphone::Core::LinphoneAddress^ LinphoneCoreFactory::CreateLinphoneAddress(Platform::String^ uri)
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return (Linphone::Core::LinphoneAddress^)Utils::CreateLinphoneAddressFromUri(Utils::pstoccs(uri));
 }
 
@@ -89,19 +84,16 @@ void LinphoneCoreFactory::SetLogLevel(OutputTraceLevel logLevel)
 
 Linphone::Core::LinphoneCore^ LinphoneCoreFactory::LinphoneCore::get()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return this->linphoneCore;
 }
 
 Linphone::Core::OutputTraceListener^ LinphoneCoreFactory::OutputTraceListener::get()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return this->outputTraceListener;
 }
 
 void LinphoneCoreFactory::OutputTraceListener::set(Linphone::Core::OutputTraceListener^ listener)
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	this->outputTraceListener = listener;
 }
 

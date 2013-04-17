@@ -1,6 +1,7 @@
 #pragma once
 
 #include "LinphoneCore.h"
+#include "ApiLock.h"
 
 namespace Linphone
 {
@@ -49,6 +50,15 @@ namespace Linphone
 			/// See EnableLowBandwidth(boolean enable).
 			/// </summary>
 			Platform::Boolean IsLowBandwidthEnabled();
+
+		private:
+			friend class Linphone::Core::Utils;
+			friend ref class Linphone::Core::LinphoneCore;
+
+			LinphoneCallParams(::LinphoneCallParams* params);
+			~LinphoneCallParams();
+
+			::LinphoneCallParams *params;
 		};
 	}
 }

@@ -4,6 +4,7 @@
 #include "LinphoneAuthInfo.h"
 #include "LinphoneProxyConfig.h"
 #include "LinphoneCallLog.h"
+#include "LinphoneCallParams.h"
 #include "LpConfig.h"
 #include "PayloadType.h"
 
@@ -71,12 +72,12 @@ Platform::Object^ Linphone::Core::Utils::CreatePayloadType(void *pt)
 
 Platform::Object^ Linphone::Core::Utils::CreateLinphoneCall(void* call)
 {
-	return ref new Linphone::Core::LinphoneCall((::LinphoneCall*)call);
+	return ref new Linphone::Core::LinphoneCall((::LinphoneCall *)call);
 }
 
 Platform::Object^ Linphone::Core::Utils::CreateLinphoneAddress(void* address)
 {
-	return ref new Linphone::Core::LinphoneAddress((::LinphoneAddress*)address);
+	return ref new Linphone::Core::LinphoneAddress((::LinphoneAddress *)address);
 }
 
 Platform::Object^ Linphone::Core::Utils::CreateLinphoneAddressFromUri(const char *uri)
@@ -96,5 +97,10 @@ Platform::Object^ Linphone::Core::Utils::CreateLinphoneProxyConfig(void *proxy_c
 
 Platform::Object^ Linphone::Core::Utils::CreateLinphoneCallLog(void* callLog)
 {
-	return ref new Linphone::Core::LinphoneCallLog((::LinphoneCallLog*)callLog);
+	return ref new Linphone::Core::LinphoneCallLog((::LinphoneCallLog *)callLog);
+}
+
+Platform::Object^ Linphone::Core::Utils::CreateLinphoneCallParams(void* callParams)
+{
+	return ref new Linphone::Core::LinphoneCallParams((::LinphoneCallParams *)callParams);
 }

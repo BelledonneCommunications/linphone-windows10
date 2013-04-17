@@ -12,13 +12,11 @@ using namespace Windows::Phone::Networking::Voip;
 
 Linphone::Core::LinphoneCallState Linphone::Core::LinphoneCall::GetState()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return (Linphone::Core::LinphoneCallState)linphone_call_get_state(this->call);
 }
 
 Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCall::GetRemoteAddress()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	const ::LinphoneAddress *addr = linphone_call_get_remote_address(this->call);
 	Linphone::Core::LinphoneAddress^ address = (Linphone::Core::LinphoneAddress^)Linphone::Core::Utils::CreateLinphoneAddress((void*)addr);
 	return address;
@@ -26,13 +24,11 @@ Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCall::GetRemoteAddress(
 
 Linphone::Core::CallDirection Linphone::Core::LinphoneCall::GetDirection()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return (Linphone::Core::CallDirection)linphone_call_get_dir(this->call);
 }
 
 Linphone::Core::LinphoneCallLog^ Linphone::Core::LinphoneCall::GetCallLog()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return (Linphone::Core::LinphoneCallLog^) Linphone::Core::Utils::CreateLinphoneCallLog(linphone_call_get_call_log(this->call));
 }
 
@@ -45,16 +41,15 @@ Linphone::Core::LinphoneCallStats^ Linphone::Core::LinphoneCall::GetAudioStats()
 
 Linphone::Core::LinphoneCallParams^ Linphone::Core::LinphoneCall::GetRemoteParams()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-	//TODO
-	return nullptr;
+	if (linphone_call_get_remote_params(this->call) == nullptr)
+		return nullptr;
+
+	return (Linphone::Core::LinphoneCallParams^) Linphone::Core::Utils::CreateLinphoneCallParams(linphone_call_params_copy(linphone_call_get_remote_params(this->call)));
 }
 
 Linphone::Core::LinphoneCallParams^ Linphone::Core::LinphoneCall::GetCurrentParamsCopy()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-	//TODO
-	return nullptr;
+	return (Linphone::Core::LinphoneCallParams^) Linphone::Core::Utils::CreateLinphoneCallParams(linphone_call_params_copy(linphone_call_get_current_params(this->call)));
 }
 
 void Linphone::Core::LinphoneCall::EnableEchoCancellation(Platform::Boolean enable)
@@ -65,7 +60,6 @@ void Linphone::Core::LinphoneCall::EnableEchoCancellation(Platform::Boolean enab
 
 Platform::Boolean Linphone::Core::LinphoneCall::IsEchoCancellationEnabled()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return linphone_call_echo_cancellation_enabled(this->call);
 }
 
@@ -77,37 +71,31 @@ void Linphone::Core::LinphoneCall::EnableEchoLimiter(Platform::Boolean enable)
 
 Platform::Boolean Linphone::Core::LinphoneCall::IsEchoLimiterEnabled()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return linphone_call_echo_limiter_enabled(this->call);
 }
 
 int Linphone::Core::LinphoneCall::GetDuration()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return linphone_call_get_duration(this->call);;
 }
 
 float Linphone::Core::LinphoneCall::GetCurrentQuality()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return linphone_call_get_current_quality(this->call);
 }
 
 float Linphone::Core::LinphoneCall::GetAverageQuality()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return linphone_call_get_average_quality(this->call);
 }
 
 Platform::String^ Linphone::Core::LinphoneCall::GetAuthenticationToken()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return Linphone::Core::Utils::cctops(linphone_call_get_authentication_token(this->call));
 }
 
 Platform::Boolean Linphone::Core::LinphoneCall::IsAuthenticationTokenVerified()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return linphone_call_get_authentication_token_verified(this->call);
 }
 
@@ -119,37 +107,31 @@ void Linphone::Core::LinphoneCall::SetAuthenticationTokenVerified(Platform::Bool
 
 Platform::Boolean Linphone::Core::LinphoneCall::IsInConference()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return linphone_call_is_in_conference(this->call);
 }
 
 float Linphone::Core::LinphoneCall::GetPlayVolume()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return linphone_call_get_play_volume(this->call);
 }
 
 Platform::String^ Linphone::Core::LinphoneCall::GetRemoteUserAgent()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return Linphone::Core::Utils::cctops(linphone_call_get_remote_user_agent(this->call));
 }
 
 Platform::String^ Linphone::Core::LinphoneCall::GetRemoteContact()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return Linphone::Core::Utils::cctops(linphone_call_get_remote_contact(this->call));
 }
 
 void Linphone::Core::LinphoneCall::CallContext::set(Platform::Object^ cc)
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	this->callContext = cc;
 }
 
 Platform::Object^ Linphone::Core::LinphoneCall::GetCallStartTimeFromContext()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	if (this->callContext != nullptr) {
 		return ((Windows::Phone::Networking::Voip::VoipPhoneCall^)this->callContext)->StartTime;
 	}
@@ -158,7 +140,6 @@ Platform::Object^ Linphone::Core::LinphoneCall::GetCallStartTimeFromContext()
 
 Platform::Object^  Linphone::Core::LinphoneCall::CallContext::get()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return this->callContext;
 }
 

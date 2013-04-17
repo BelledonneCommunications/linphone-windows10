@@ -253,8 +253,7 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddress(Linpho
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddressWithParams(Linphone::Core::LinphoneAddress^ destination, LinphoneCallParams^ params) 
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-	//TODO
-	return nullptr;
+	return (Linphone::Core::LinphoneCall^) Linphone::Core::Utils::CreateLinphoneCall(linphone_core_invite_address_with_params(this->lc, destination->address, params->params));
 }
 
 void Linphone::Core::LinphoneCore::TerminateCall(Linphone::Core::LinphoneCall^ call) 
@@ -286,7 +285,7 @@ Platform::Boolean Linphone::Core::LinphoneCore::IsInCall()
 Platform::Boolean Linphone::Core::LinphoneCore::IsIncomingInvitePending() 
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-	return false;
+	return linphone_core_inc_invite_pending(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::AcceptCall(Linphone::Core::LinphoneCall^ call) 
@@ -298,13 +297,13 @@ void Linphone::Core::LinphoneCore::AcceptCall(Linphone::Core::LinphoneCall^ call
 void Linphone::Core::LinphoneCore::AcceptCallWithParams(Linphone::Core::LinphoneCall^ call, Linphone::Core::LinphoneCallParams^ params) 
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-	//TODO
+	linphone_core_accept_call_with_params(this->lc, call->call, params->params);
 }
 
-void Linphone::Core::LinphoneCore::AcceptCallUpdate(Linphone::Core::LinphoneCall^ call, LinphoneCallParams^ params) 
+void Linphone::Core::LinphoneCore::AcceptCallUpdate(Linphone::Core::LinphoneCall^ call, Linphone::Core::LinphoneCallParams^ params) 
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-	//TODO
+	linphone_core_accept_call_update(this->lc, call->call, params->params);
 }
 
 void Linphone::Core::LinphoneCore::DeferCallUpdate(Linphone::Core::LinphoneCall^ call) 
@@ -316,14 +315,13 @@ void Linphone::Core::LinphoneCore::DeferCallUpdate(Linphone::Core::LinphoneCall^
 void Linphone::Core::LinphoneCore::UpdateCall(Linphone::Core::LinphoneCall^ call, Linphone::Core::LinphoneCallParams^ params) 
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-	//TODO
+	linphone_core_update_call(this->lc, call->call, params->params);
 }
 
 Linphone::Core::LinphoneCallParams^ Linphone::Core::LinphoneCore::CreateDefaultCallParameters() 
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-	//TODO
-	return nullptr;
+	return (Linphone::Core::LinphoneCallParams^) Linphone::Core::Utils::CreateLinphoneCallParams(linphone_core_create_default_call_parameters(this->lc));
 }
 
 void AddLogToVector(void* nLog, void* vector)
@@ -972,20 +970,17 @@ void Linphone::Core::LinphoneCore::SetUseRFC2833ForDTMFs(Platform::Boolean use)
 
 Linphone::Core::LpConfig^ Linphone::Core::LinphoneCore::GetConfig()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	::LpConfig *config = linphone_core_get_config(this->lc);
 	return (Linphone::Core::LpConfig^)Linphone::Core::Utils::CreateLpConfig(config);
 }
 
 Linphone::Core::LinphoneCoreListener^ Linphone::Core::LinphoneCore::CoreListener::get()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return this->listener;
 }
 
 void Linphone::Core::LinphoneCore::CoreListener::set(LinphoneCoreListener^ listener)
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	this->listener = listener;
 }
 
@@ -1079,8 +1074,6 @@ Linphone::Core::LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener, L
 
 void Linphone::Core::LinphoneCore::Init()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-
 	LinphoneCoreVTable *vtable = (LinphoneCoreVTable*) malloc(sizeof(LinphoneCoreVTable));
 	memset (vtable, 0, sizeof(LinphoneCoreVTable));
 	vtable->global_state_changed = global_state_changed;
