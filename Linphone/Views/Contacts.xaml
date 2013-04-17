@@ -35,7 +35,7 @@
         <Grid x:Name="ContentPanel" Grid.Row="2" Margin="12,0,12,0">
             <Grid.Resources>
                 <model:ContactPictureConverter x:Key="ContactPictureConverter"/>
-                <model:LinphoneContactPictureConverter x:Key="LinphoneContactPictureConverter"/>
+                <model:ContactNameConverter x:Key="ContactNameConverter"/>
                 
                 <phone:JumpListItemBackgroundConverter x:Key="BackgroundConverter"/>
                 <phone:JumpListItemForegroundConverter x:Key="ForegroundConverter"/>
@@ -273,8 +273,8 @@
                             <DataTemplate>
                                 <toolkit:HubTile
                                     Margin="3"
-                                    Source="{Binding Converter={StaticResource LinphoneContactPictureConverter}}"
-                                    Title="{Binding HubDisplayName}" 
+                                    Source="{Binding Converter={StaticResource ContactPictureConverter}}"
+                                    Title="{Binding Converter={StaticResource ContactNameConverter}}" 
                                     Style="{StaticResource HubTile}"
                                     GroupTag="RecentContactsGroup"/>
                             </DataTemplate>

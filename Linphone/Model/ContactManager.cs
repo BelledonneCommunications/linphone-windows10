@@ -37,44 +37,6 @@ namespace Linphone.Model
     }
 
     /// <summary>
-    /// Wrapper above system contact class allowing some changes for better display.
-    /// </summary>
-    public class LinphoneContact
-    {
-        private Contact _contact;
-
-        /// <summary>
-        /// Returns the system Contact object.
-        /// </summary>
-        public Contact Contact
-        {
-            get
-            {
-                return _contact;
-            }
-        }
-
-        /// <summary>
-        /// Returns the Contact's display name formatted for hub display.
-        /// </summary>
-        public string HubDisplayName
-        {
-            get
-            {
-                return _contact.DisplayName.Replace(" ", "\n");
-            }
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public LinphoneContact(Contact contact)
-        {
-            _contact = contact;
-        }
-    }
-
-    /// <summary>
     /// Utility class used to handle every contact related requests.
     /// </summary>
     public class ContactManager
@@ -147,16 +109,22 @@ namespace Linphone.Model
         /// Gets a list of contacts recently used to display in hubtiles.
         /// </summary>
         /// <returns>A list of LinphoneContact.</returns>
-        public List<LinphoneContact> GetRecentContacts()
+        public List<Contact> GetRecentContacts()
         {
             List<CallLog> history = LinphoneManager.Instance.GetCallsHistory();
             //Get all contacts whe are in the history logs.
-            var result = (from contact in _allContacts where ((from log in history where (log.DisplayedName.Equals(contact.DisplayName)) select log).Count() > 0) select new LinphoneContact(contact)).ToList();
-            
-            if (result.Count > RECENT_CONTACTS_MAX)
-                result = result.GetRange(0, RECENT_CONTACTS_MAX);
+            var recent = new List<Contact>();
+            foreach (var log in history)
+            {
+                if (recent.Count >= RECENT_CONTACTS_MAX)
+                    break;
 
-            return result;
+                Contact contact = (from c in _allContacts where (log.DisplayedName.Equals(c.DisplayName)) select c).FirstOrDefault();
+                if (contact != null && !recent.Contains(contact))
+                    recent.Add(contact);
+            }
+
+            return recent;
         }
 
         /// <summary>

@@ -34,13 +34,7 @@ namespace Linphone.Views
         private void contactsList_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
             LongListSelector list = (sender as LongListSelector);
-            Microsoft.Phone.UserData.Contact selectedContact;
-
-            if (list.SelectedItem.GetType() == typeof(Microsoft.Phone.UserData.Contact))
-                selectedContact = (list.SelectedItem as Microsoft.Phone.UserData.Contact);
-            else
-                selectedContact = (list.SelectedItem as LinphoneContact).Contact;
-
+            Microsoft.Phone.UserData.Contact selectedContact = (list.SelectedItem as Microsoft.Phone.UserData.Contact);
             ContactManager.Instance.TempContact = selectedContact;
             NavigationService.Navigate(new Uri("/Views/Contact.xaml", UriKind.RelativeOrAbsolute));
         }
