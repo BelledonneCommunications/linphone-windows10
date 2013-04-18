@@ -90,6 +90,11 @@ namespace Linphone
 			/// Creates a C++/CX LinphoneCallStats object using pointer to C structure.
 			/// </summary>
 			static Platform::Object^ CreateLinphoneCallStats(void* callStats, void* call);
+			
+			/// <summary>
+			/// Creates a C++/CX LinphoneChatMessage object using pointer to C structure.
+			/// </summary>
+			static Platform::Object^ CreateLinphoneChatMessage(void* message);
 
 		private:
 			static std::string wstos(std::wstring ws);

@@ -1060,6 +1060,21 @@ void auth_info_requested(LinphoneCore *lc, const char *realm, const char *userna
 	}
 }
 
+void message_received(LinphoneCore *lc, LinphoneChatRoom* chat_room, LinphoneChatMessage* message) 
+{
+	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
+	if (listener != nullptr)
+	{
+		Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneChatMessage^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneChatMessage^> *>(linphone_chat_message_get_user_data(message));
+		Linphone::Core::LinphoneChatMessage^ lMessage = (proxy) ? proxy->Ref() : nullptr;
+		if (lMessage == nullptr) {
+			lMessage = (Linphone::Core::LinphoneChatMessage^)Linphone::Core::Utils::CreateLinphoneChatMessage(message);
+		}
+
+		listener->MessageReceived(lMessage);
+	}
+}
+
 Linphone::Core::LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener) :
 	lc(nullptr),
 	listener(coreListener)
@@ -1082,6 +1097,7 @@ void Linphone::Core::LinphoneCore::Init()
 	vtable->registration_state_changed = registration_state_changed;
 	vtable->call_state_changed = call_state_changed;
 	vtable->auth_info_requested = auth_info_requested;
+	vtable->message_received = message_received;
 
 	this->lc = linphone_core_new_with_config(vtable, config ? config->config : NULL, NULL);
 	

@@ -127,6 +127,9 @@ namespace Linphone
                 // We need to create a new channel. 
                 httpChannel = new HttpNotificationChannel(App.pushChannelName);
                 httpChannel.Open();
+
+                // Bind this new channel for toast events.
+                httpChannel.BindToShellToast();
             }
             else
             {

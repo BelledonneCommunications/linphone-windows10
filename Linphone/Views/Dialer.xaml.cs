@@ -79,6 +79,11 @@ namespace Linphone
             addressBox.Text += "+";
         }
 
+        private void chat_Click_1(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/Chats.xaml", UriKind.RelativeOrAbsolute));
+        }
+
         private void history_Click_1(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/Views/History.xaml", UriKind.RelativeOrAbsolute));
@@ -107,6 +112,11 @@ namespace Linphone
         private async void BuildLocalizedApplicationBar()
         {
             ApplicationBar = new ApplicationBar();
+
+            ApplicationBarIconButton appBarChat = new ApplicationBarIconButton(new Uri("/Assets/AppBar/chat.png", UriKind.Relative));
+            appBarChat.Text = AppResources.ChatMenu;
+            ApplicationBar.Buttons.Add(appBarChat);
+            appBarChat.Click += chat_Click_1;
 
             ApplicationBarIconButton appBarHistory = new ApplicationBarIconButton(new Uri("/Assets/AppBar/time.png", UriKind.Relative));
             appBarHistory.Text = AppResources.HistoryMenu;

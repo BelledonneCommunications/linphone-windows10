@@ -9,6 +9,7 @@ namespace Linphone
 		ref class LinphoneCall;
 		ref class LinphoneProxyConfig;
 		ref class LinphoneCallStats;
+		ref class LinphoneChatMessage;
 
 		public interface class LinphoneCoreListener
 		{
@@ -28,6 +29,10 @@ namespace Linphone
 			void CallEncryptionChanged(LinphoneCall^ call, Platform::Boolean encrypted, Platform::String^ authenticationToken);
 
 			void CallStatsUpdated(LinphoneCall^ call, LinphoneCallStats^ stats);
+
+			void MessageReceived(LinphoneChatMessage^ message);
+
+			void MessageStateChanged(LinphoneChatMessage^ message, LinphoneChatMessageState state);
 		};
 	}
 }

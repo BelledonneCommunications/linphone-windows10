@@ -62,6 +62,7 @@
         <ActivatableClass ActivatableClassId="Linphone.Core.LinphoneCallLog" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.Core.LinphoneCallParams" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.Core.PayloadType" ThreadingModel="MTA" />
+        <ActivatableClass ActivatableClassId="Linphone.Core.LinphoneChatMessage" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.Core.LinphoneProxyConfig" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.Core.LpConfig" ThreadingModel="MTA" />
       </InProcessServer>
@@ -91,6 +92,7 @@
         <Interface Name="Linphone.Core.__ILinphoneCallLogPublicNonVirtuals" InterfaceId="{F3C079C9-0A9C-3B02-A1CC-C61991D09E18}" />
         <Interface Name="Linphone.Core.__ILinphoneCallParamsPublicNonVirtuals" InterfaceId="{26EFBF2D-6F46-35DE-9CFA-1A784C3C5A35}" />
         <Interface Name="Linphone.Core.__IPayloadTypePublicNonVirtuals" InterfaceId="{BF73ED50-6AF0-3E18-9C7B-F81A8E91287B}" />
+        <Interface Name="Linphone.Core.__ILinphoneChatMessagePublicNonVirtuals" InterfaceId="{45DF6643-1744-3F81-8256-AF0ECEF6F6BC}" />
         <Interface Name="Linphone.Core.__ILinphoneProxyConfigPublicNonVirtuals" InterfaceId="{FD2DF2D0-E760-354B-AD77-D0C81FBACE0B}" />
         <Interface Name="Linphone.Core.__ILpConfigPublicNonVirtuals" InterfaceId="{3D421643-A4D5-370B-BA94-D03ED034EE76}" />
       </ProxyStub>

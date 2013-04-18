@@ -166,6 +166,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chat.
+        /// </summary>
+        public static string ChatMenu {
+            get {
+                return ResourceManager.GetString("ChatMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Codecs.
         /// </summary>
         public static string CodecsMenu {
@@ -216,6 +225,15 @@ namespace Linphone.Resources {
         public static string ContactsRecents {
             get {
                 return ResourceManager.GetString("ContactsRecents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Conversations.
+        /// </summary>
+        public static string ConversationsMenu {
+            get {
+                return ResourceManager.GetString("ConversationsMenu", resourceCulture);
             }
         }
         

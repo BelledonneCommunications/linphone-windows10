@@ -3,6 +3,7 @@ using Linphone.Core;
 using Linphone.Core.OutOfProcess;
 using Microsoft.Phone.Net.NetworkInformation;
 using Microsoft.Phone.Networking.Voip;
+using Microsoft.Phone.Shell;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -600,6 +601,28 @@ namespace Linphone.Model
         /// Callback for LinphoneCoreListener
         /// </summary>
         public void CallStatsUpdated(LinphoneCall call, LinphoneCallStats stats)
+        {
+
+        }
+
+        /// <summary>
+        /// Callback for LinphoneCoreListener
+        /// </summary>
+        public void MessageReceived(LinphoneChatMessage message)
+        {
+            Logger.Msg("[LinphoneManager] Message received from " + message.GetFrom().AsStringUriOnly() + ": " + message.GetText());
+
+            //ShellToast toast = new ShellToast();
+            //toast.Content = message.GetText();
+            //toast.Title = message.GetFrom().GetDisplayName().Length > 0 ? message.GetFrom().GetDisplayName() : message.GetFrom().GetUserName();
+            //toast.NavigationUri = new Uri("/Views/Chat.xaml?sip=" + message.GetFrom().AsStringUriOnly(), UriKind.RelativeOrAbsolute);
+            //toast.Show();
+        }
+
+        /// <summary>
+        /// Callback for LinphoneCoreListener
+        /// </summary>
+		public void MessageStateChanged(LinphoneChatMessage message, LinphoneChatMessageState state)
         {
 
         }

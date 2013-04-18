@@ -112,6 +112,7 @@
     <Compile Include="Model\CallLog.cs" />
     <Compile Include="Model\ContactManager.cs" />
     <Compile Include="Model\ContactPictureConverter.cs" />
+    <Compile Include="Model\Conversation.cs" />
     <Compile Include="Model\HubTileConverterFix.cs" />
     <Compile Include="Model\LinphoneManager.cs" />
     <Compile Include="Model\Logger.cs" />
@@ -136,6 +137,12 @@
     </Compile>
     <Compile Include="Views\AdvancedSettings.xaml.cs">
       <DependentUpon>AdvancedSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Chat.xaml.cs">
+      <DependentUpon>Chat.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Chats.xaml.cs">
+      <DependentUpon>Chats.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CodecsSettings.xaml.cs">
       <DependentUpon>CodecsSettings.xaml</DependentUpon>
@@ -163,6 +170,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\AppBar\chat.png" />
     <Content Include="Assets\AppBar\clear.png" />
     <Content Include="Assets\AppBar\stats.png" />
     <Content Include="Assets\linphonerc" />
@@ -274,6 +282,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AdvancedSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Chat.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Chats.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

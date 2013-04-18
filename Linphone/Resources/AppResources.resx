@@ -344,4 +344,10 @@ http://www.linphone.org/m/help
   <data name="StatUploadBW" xml:space="preserve">
     <value>Upload</value>
   </data>
+  <data name="ChatMenu" xml:space="preserve">
+    <value>Chat</value>
+  </data>
+  <data name="ConversationsMenu" xml:space="preserve">
+    <value>Conversations</value>
+  </data>
 </root>

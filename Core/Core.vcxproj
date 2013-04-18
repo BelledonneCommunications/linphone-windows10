@@ -138,6 +138,7 @@ popd</Command>
     <ClInclude Include="LinphoneCallLog.h" />
     <ClInclude Include="LinphoneCallParams.h" />
     <ClInclude Include="LinphoneCallStats.h" />
+    <ClInclude Include="LinphoneChatMessage.h" />
     <ClInclude Include="LinphoneCoreFactory.h" />
     <ClInclude Include="LinphoneAuthInfo.h" />
     <ClInclude Include="LinphoneCore.h" />
@@ -160,6 +161,7 @@ popd</Command>
     <ClCompile Include="LinphoneCallLog.cpp" />
     <ClCompile Include="LinphoneCallParams.cpp" />
     <ClCompile Include="LinphoneCallStats.cpp" />
+    <ClCompile Include="LinphoneChatMessage.cpp" />
     <ClCompile Include="LinphoneCore.cpp" />
     <ClCompile Include="LinphoneCoreFactory.cpp" />
     <ClCompile Include="LinphoneProxyConfig.cpp" />

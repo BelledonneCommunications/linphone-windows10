@@ -6,6 +6,7 @@
 #include "LinphoneCallLog.h"
 #include "LinphoneCallParams.h"
 #include "LinphoneCallStats.h"
+#include "LinphoneChatMessage.h"
 #include "LpConfig.h"
 #include "PayloadType.h"
 
@@ -110,3 +111,8 @@ Platform::Object^ Linphone::Core::Utils::CreateLinphoneCallStats(void* callStats
 {
 	return ref new Linphone::Core::LinphoneCallStats((::LinphoneCallStats *)callStats, (::LinphoneCall *)call);
 }
+
+ Platform::Object^ Linphone::Core::Utils::CreateLinphoneChatMessage(void* message)
+ {
+	 return ref new Linphone::Core::LinphoneChatMessage((::LinphoneChatMessage *)message);
+ }
