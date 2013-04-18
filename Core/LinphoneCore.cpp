@@ -858,6 +858,7 @@ void Linphone::Core::LinphoneCore::TunnelAddServerAndMirror(Platform::String^ ho
 		return;
 
 	const char* h = Linphone::Core::Utils::pstoccs(host);
+	//TODO
 	//LinphoneTunnelConfig* config = linphone_tunnel_config_new();
 	//linphone_tunnel_config_set_host(config, h);
 	//linphone_tunnel_config_set_port(config, port);

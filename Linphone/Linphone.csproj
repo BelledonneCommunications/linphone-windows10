@@ -164,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\AppBar\clear.png" />
+    <Content Include="Assets\AppBar\stats.png" />
     <Content Include="Assets\linphonerc" />
     <Content Include="Assets\linphonerc-factory" />
     <Content Include="Assets\rootca.pem" />

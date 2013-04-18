@@ -1,7 +1,9 @@
 ﻿using Linphone.Core;
 using Linphone.Model;
+using Linphone.Resources;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -129,6 +131,13 @@ namespace Linphone.Views
                 LinphoneManager.Instance.CallController.NotifyUnmuted();
         }
 
+        private void stats_Click_1(object sender, RoutedEventArgs e)
+        {
+            bool areStatsVisible = (bool)stats.IsChecked;
+            emptyPanel.Visibility = areStatsVisible ? Visibility.Collapsed : Visibility.Visible;
+            statsPanel.Visibility = areStatsVisible ? Visibility.Visible : Visibility.Collapsed;
+        }
+
         /// <summary>
         /// Called when the mute status of the microphone changes.
         /// </summary>
@@ -183,6 +192,20 @@ namespace Linphone.Views
                 Status.Dispatcher.BeginInvoke(delegate()
                 {
                     Status.Text = mm.ToString("00") + ":" + ss.ToString("00");
+
+                    LinphoneCallStats stats = call.GetAudioStats();
+                    if (stats != null)
+                    {
+                        DownBw.Text = String.Format(AppResources.StatDownloadBW + ": {0} kbit/s", stats.GetDownloadBandwidth());
+                        UpBw.Text = String.Format(AppResources.StatUploadBW + ": {0} kbit/s", stats.GetUploadBandwidth());
+                    }
+
+                    LinphoneCallParams param = call.GetCurrentParamsCopy();
+                    PayloadType pt = param.GetUsedAudioCodec();
+                    if (pt != null) 
+                    {
+                        PType.Text = AppResources.StatAudioPayload + ": " + pt.GetMimeType() + "/" + pt.GetClockRate();
+                    }
                 });
             } catch {
                 timer.Dispose();
@@ -196,6 +219,7 @@ namespace Linphone.Views
             speaker.Visibility = isDialpadVisible ? Visibility.Collapsed : Visibility.Visible;
             microphone.Visibility = isDialpadVisible ? Visibility.Collapsed : Visibility.Visible;
             numpad.Visibility = isDialpadVisible ? Visibility.Visible : Visibility.Collapsed;
+            stats.Visibility = isDialpadVisible ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void Numpad_Click_1(object sender, RoutedEventArgs e)

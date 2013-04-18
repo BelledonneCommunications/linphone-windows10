@@ -26,7 +26,7 @@ namespace Linphone
 			/// Define a log handler.
 			/// <param name="logfunc">The function pointer of the log handler.</param>
 			/// </summary>
-			static void LinphoneCoreSetLogHandler(void *logfunc);
+			static void LinphoneCoreSetLogHandler(void* logfunc);
 
 			/// <summary>
 			/// Define the log level.
@@ -39,7 +39,7 @@ namespace Linphone
 			/// <summary>
 			/// Creates a C++/CX LpConfig object using pointer to C structure.
 			/// </summary>
-			static Platform::Object^ CreateLpConfig(void *config);
+			static Platform::Object^ CreateLpConfig(void* config);
 
 			/// <summary>
 			/// Creates a C++/CX LpConfig object using the path to linphonerc files.
@@ -49,7 +49,7 @@ namespace Linphone
 			/// <summary>
 			/// Creates a C++/CX PayloadType object using pointer to C structure.
 			/// </summary>
-			static Platform::Object^ CreatePayloadType(void *pt);
+			static Platform::Object^ CreatePayloadType(void* pt);
 			
 			/// <summary>
 			/// Creates a C++/CX LinphoneCall object using pointer to C structure.
@@ -64,17 +64,17 @@ namespace Linphone
 			/// <summary>
 			/// Creates a C++/CX LinphoneAddress object using an URI.
 			/// </summary>
-			static Platform::Object^ CreateLinphoneAddressFromUri(const char *uri);
+			static Platform::Object^ CreateLinphoneAddressFromUri(const char* uri);
 			
 			/// <summary>
 			/// Creates a C++/CX LinphoneAuthInfo object using pointer to C structure.
 			/// </summary>
-			static Platform::Object^ CreateLinphoneAuthInfo(void *auth_info);
+			static Platform::Object^ CreateLinphoneAuthInfo(void* auth_info);
 			
 			/// <summary>
 			/// Creates a C++/CX LinphoneProxyConfig object using pointer to C structure.
 			/// </summary>
-			static Platform::Object^ CreateLinphoneProxyConfig(void *proxy_config);
+			static Platform::Object^ CreateLinphoneProxyConfig(void* proxy_config);
 			
 			/// <summary>
 			/// Creates a C++/CX LinphoneCallLog object using pointer to C structure.
@@ -85,6 +85,11 @@ namespace Linphone
 			/// Creates a C++/CX LinphoneCallParams object using pointer to C structure.
 			/// </summary>
 			static Platform::Object^ CreateLinphoneCallParams(void* callParams);
+			
+			/// <summary>
+			/// Creates a C++/CX LinphoneCallStats object using pointer to C structure.
+			/// </summary>
+			static Platform::Object^ CreateLinphoneCallStats(void* callStats, void* call);
 
 		private:
 			static std::string wstos(std::wstring ws);

@@ -34,9 +34,7 @@ Linphone::Core::LinphoneCallLog^ Linphone::Core::LinphoneCall::GetCallLog()
 
 Linphone::Core::LinphoneCallStats^ Linphone::Core::LinphoneCall::GetAudioStats()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-	//TODO
-	return nullptr;
+	return (Linphone::Core::LinphoneCallStats^) Linphone::Core::Utils::CreateLinphoneCallStats((void*) linphone_call_get_audio_stats(this->call), this->call);
 }
 
 Linphone::Core::LinphoneCallParams^ Linphone::Core::LinphoneCall::GetRemoteParams()

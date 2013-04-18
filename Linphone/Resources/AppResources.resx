@@ -329,4 +329,19 @@ http://www.linphone.org/m/help
   <data name="HistoryAll" xml:space="preserve">
     <value>All</value>
   </data>
+  <data name="Stats" xml:space="preserve">
+    <value>stats</value>
+  </data>
+  <data name="StatAudioPayload" xml:space="preserve">
+    <value>Audio codec</value>
+  </data>
+  <data name="StatDownloadBW" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="StatsMenu" xml:space="preserve">
+    <value>Stats</value>
+  </data>
+  <data name="StatUploadBW" xml:space="preserve">
+    <value>Upload</value>
+  </data>
 </root>

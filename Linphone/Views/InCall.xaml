@@ -24,17 +24,27 @@
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
+        <StackPanel x:Name="emptyPanel" Grid.Row="0" Margin="12,17,0,28">
             <TextBlock Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock Style="{StaticResource PhoneTextNormalStyle}"/>
+        </StackPanel>
+
+        <StackPanel x:Name="statsPanel" Grid.Row="1" Margin="12,17,0,28" Visibility="Collapsed">
+            <TextBlock Text="{Binding Path=LocalizedResources.StatsMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="DownBw" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="UpBw" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PType" Style="{StaticResource PhoneTextNormalStyle}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1">
+        <Grid x:Name="ContentPanel" Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -64,6 +74,7 @@
             
             <Grid Grid.Row="3" Margin="0,25,0,0">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
@@ -148,9 +159,24 @@
                     </StackPanel>
                 </ToggleButton>
                 
+                <ToggleButton 
+                    x:Name="stats"
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    BorderThickness="0"
+                    Margin="-10"
+                    Click="stats_Click_1"
+                    Visibility="Visible"
+                    Background="{StaticResource PhoneChromeBrush}">
+                    <StackPanel Orientation="Vertical">
+                        <Image x:Name="statsImg" Source="/Assets/AppBar/stats.png" Stretch="None"/>
+                        <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Stats, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
+                    </StackPanel>
+                </ToggleButton>
+
                 <Grid
                     x:Name="numpad"
-                    Grid.Row="2"
+                    Grid.Row="3"
                     Grid.ColumnSpan="3"
                     Visibility="Collapsed">
                     <Grid.RowDefinitions>

@@ -5,6 +5,7 @@
 #include "LinphoneProxyConfig.h"
 #include "LinphoneCallLog.h"
 #include "LinphoneCallParams.h"
+#include "LinphoneCallStats.h"
 #include "LpConfig.h"
 #include "PayloadType.h"
 
@@ -43,7 +44,7 @@ Platform::String^ Linphone::Core::Utils::cctops(const char* cc)
 	return ref new Platform::String(w_char);
 }
 
-void Linphone::Core::Utils::LinphoneCoreSetLogHandler(void *logfunc)
+void Linphone::Core::Utils::LinphoneCoreSetLogHandler(void* logfunc)
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	linphone_core_set_log_handler(static_cast<OrtpLogFunc>(logfunc));
@@ -55,7 +56,7 @@ void Linphone::Core::Utils::LinphoneCoreSetLogLevel(int loglevel)
 	linphone_core_set_log_level(static_cast<OrtpLogLevel>(loglevel));
 }
 
-Platform::Object^ Linphone::Core::Utils::CreateLpConfig(void *config)
+Platform::Object^ Linphone::Core::Utils::CreateLpConfig(void* config)
 {
 	return ref new Linphone::Core::LpConfig((::LpConfig *)config);
 }
@@ -65,7 +66,7 @@ Platform::Object^ Linphone::Core::Utils::CreateLpConfig(Platform::String^ config
 	return ref new Linphone::Core::LpConfig(configPath, factoryConfigPath);
 }
 
-Platform::Object^ Linphone::Core::Utils::CreatePayloadType(void *pt)
+Platform::Object^ Linphone::Core::Utils::CreatePayloadType(void* pt)
 {
 	return ref new Linphone::Core::PayloadType((::PayloadType *)pt);
 }
@@ -80,17 +81,17 @@ Platform::Object^ Linphone::Core::Utils::CreateLinphoneAddress(void* address)
 	return ref new Linphone::Core::LinphoneAddress((::LinphoneAddress *)address);
 }
 
-Platform::Object^ Linphone::Core::Utils::CreateLinphoneAddressFromUri(const char *uri)
+Platform::Object^ Linphone::Core::Utils::CreateLinphoneAddressFromUri(const char* uri)
 {
 	return ref new Linphone::Core::LinphoneAddress(uri);
 }
 
-Platform::Object^ Linphone::Core::Utils::CreateLinphoneAuthInfo(void *auth_info)
+Platform::Object^ Linphone::Core::Utils::CreateLinphoneAuthInfo(void* auth_info)
 {
 	return ref new Linphone::Core::LinphoneAuthInfo((::LinphoneAuthInfo *)auth_info);
 }
 
-Platform::Object^ Linphone::Core::Utils::CreateLinphoneProxyConfig(void *proxy_config)
+Platform::Object^ Linphone::Core::Utils::CreateLinphoneProxyConfig(void* proxy_config)
 {
 	return ref new Linphone::Core::LinphoneProxyConfig((::LinphoneProxyConfig *)proxy_config);
 }
@@ -103,4 +104,9 @@ Platform::Object^ Linphone::Core::Utils::CreateLinphoneCallLog(void* callLog)
 Platform::Object^ Linphone::Core::Utils::CreateLinphoneCallParams(void* callParams)
 {
 	return ref new Linphone::Core::LinphoneCallParams((::LinphoneCallParams *)callParams);
+}
+
+Platform::Object^ Linphone::Core::Utils::CreateLinphoneCallStats(void* callStats, void* call)
+{
+	return ref new Linphone::Core::LinphoneCallStats((::LinphoneCallStats *)callStats, (::LinphoneCall *)call);
 }

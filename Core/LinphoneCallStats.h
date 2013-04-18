@@ -1,5 +1,7 @@
 #pragma once
 
+#include "LinphoneCore.h"
+
 namespace Linphone
 {
 	namespace Core
@@ -53,6 +55,19 @@ namespace Linphone
 			/// Gets the jitter buffer size in milliseconds.
 			/// </summary>
 			float GetJitterBufferSize();
+
+			float GetLocalLossRate();
+			float GetLocalLateRate();
+
+		private:
+			friend class Linphone::Core::Utils;
+			friend ref class Linphone::Core::LinphoneCore;
+
+			LinphoneCallStats(::LinphoneCallStats* stats, ::LinphoneCall *call);
+			~LinphoneCallStats();
+
+			::LinphoneCallStats *stats;
+			::LinphoneCall *call;
 		};
 	}
 }

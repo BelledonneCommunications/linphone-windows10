@@ -125,6 +125,7 @@ namespace Linphone
 		private:
 			friend class Linphone::Core::Utils;
 			friend ref class Linphone::Core::LinphoneCore;
+			friend ref class Linphone::Core::LinphoneCallStats;
 
 			LinphoneCall(::LinphoneCall *call);
 			~LinphoneCall();

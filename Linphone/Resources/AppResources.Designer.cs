@@ -571,6 +571,51 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Audio codec.
+        /// </summary>
+        public static string StatAudioPayload {
+            get {
+                return ResourceManager.GetString("StatAudioPayload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download.
+        /// </summary>
+        public static string StatDownloadBW {
+            get {
+                return ResourceManager.GetString("StatDownloadBW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to stats.
+        /// </summary>
+        public static string Stats {
+            get {
+                return ResourceManager.GetString("Stats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stats.
+        /// </summary>
+        public static string StatsMenu {
+            get {
+                return ResourceManager.GetString("StatsMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload.
+        /// </summary>
+        public static string StatUploadBW {
+            get {
+                return ResourceManager.GetString("StatUploadBW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Transport.
         /// </summary>
         public static string TransportSetting {
