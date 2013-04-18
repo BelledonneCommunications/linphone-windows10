@@ -618,14 +618,6 @@ namespace Linphone.Model
             //toast.NavigationUri = new Uri("/Views/Chat.xaml?sip=" + message.GetFrom().AsStringUriOnly(), UriKind.RelativeOrAbsolute);
             //toast.Show();
         }
-
-        /// <summary>
-        /// Callback for LinphoneCoreListener
-        /// </summary>
-		public void MessageStateChanged(LinphoneChatMessage message, LinphoneChatMessageState state)
-        {
-
-        }
         #endregion
 
         #region Contact Lookup

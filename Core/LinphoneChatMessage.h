@@ -10,6 +10,15 @@ namespace Linphone
 		ref class LinphoneCore;
 
 		/// <summary>
+		/// Listener to be called when the state of the message changes.
+		/// </summary>
+		public interface class LinphoneChatMessageListener
+		{
+		public:
+			void MessageStateChanged(LinphoneChatMessage^ message, LinphoneChatMessageState state);
+		};
+
+		/// <summary>
 		/// Represents a chat message shared between two users.
 		/// </summary>
 		public ref class LinphoneChatMessage sealed

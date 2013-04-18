@@ -1,7 +1,5 @@
 #include "LinphoneChatMessage.h"
 #include "LinphoneAddress.h"
-#include "Server.h"
-#include "Globals.h"
 
 Platform::String^ Linphone::Core::LinphoneChatMessage::GetText()
 {

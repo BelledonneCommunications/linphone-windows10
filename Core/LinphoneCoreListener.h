@@ -31,8 +31,6 @@ namespace Linphone
 			void CallStatsUpdated(LinphoneCall^ call, LinphoneCallStats^ stats);
 
 			void MessageReceived(LinphoneChatMessage^ message);
-
-			void MessageStateChanged(LinphoneChatMessage^ message, LinphoneChatMessageState state);
 		};
 	}
 }
