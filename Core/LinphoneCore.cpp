@@ -714,7 +714,8 @@ static void AddCallToVector(void *vCall, void *vector)
 	Linphone::Core::RefToPtrProxy<IVector<Object^>^> *list = reinterpret_cast< Linphone::Core::RefToPtrProxy<IVector<Object^>^> *>(vector);
 	IVector<Object^>^ calls = (list) ? list->Ref() : nullptr;
 
-	Linphone::Core::LinphoneCall^ call = (Linphone::Core::LinphoneCall^) Linphone::Core::Utils::CreateLinphoneCall(c);
+	Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(c));
+	Linphone::Core::LinphoneCall^ call = (proxy) ? proxy->Ref() : nullptr;
 	calls->Append(call);
 }
 
