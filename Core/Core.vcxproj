@@ -147,6 +147,7 @@ popd</Command>
     <ClInclude Include="Enums.h" />
     <ClInclude Include="PayloadType.h" />
     <ClInclude Include="Server.h" />
+    <ClInclude Include="Tunnel.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +166,7 @@ popd</Command>
     <ClCompile Include="LinphoneProxyConfig.cpp" />
     <ClCompile Include="LpConfig.cpp" />
     <ClCompile Include="PayloadType.cpp" />
+    <ClCompile Include="Tunnel.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>

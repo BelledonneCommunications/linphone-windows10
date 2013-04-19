@@ -22,6 +22,7 @@ namespace Linphone
 		ref class LinphoneCallStats;
 		ref class PayloadType;
 		ref class LpConfig;
+		ref class Tunnel;
 
 		/// <summary>
 		/// Signaling transports ports
@@ -420,17 +421,8 @@ namespace Linphone
 			void SetMediaEncryptionMandatory(Platform::Boolean yesno);
 			Platform::Boolean IsMediaEncryptionMandatory();
 
-			void EnableTunnel(Platform::Boolean enable);
-			void TunnelAutoDetect();
-			void TunnelCleanServers();
-			void TunnelSetHttpProxy(Platform::String^ host, int port, Platform::String^ username, Platform::String^ password);
-
-			/// <param name="host">Tunnel server IP address</param>
-			/// <param name="port">Tunnel server TLS port, recommended value is 443</param>
-			/// <param name="udpMirrorPort">Remote port on the tunnel server side used to test UDP reachability</param>
-			/// <param name="roundTripDelay">UDP packet round trip delay in ms considered as acceptable. Recommended value is 1000 ms.</param>
-			void TunnelAddServerAndMirror(Platform::String^ host, int port, int udpMirrorPort, int roundTripDelay);
 			Platform::Boolean IsTunnelAvailable();
+			Tunnel^ GetTunnel();
 
 			void SetUserAgent(Platform::String^ name, Platform::String^ version);
 			void SetCPUCount(int count);

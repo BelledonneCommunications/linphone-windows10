@@ -64,6 +64,8 @@
         <ActivatableClass ActivatableClassId="Linphone.Core.PayloadType" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.Core.LinphoneProxyConfig" ThreadingModel="MTA" />
         <ActivatableClass ActivatableClassId="Linphone.Core.LpConfig" ThreadingModel="MTA" />
+        <ActivatableClass ActivatableClassId="Linphone.Core.TunnelConfig" ThreadingModel="MTA" />
+        <ActivatableClass ActivatableClassId="Linphone.Core.Tunnel" ThreadingModel="MTA" />
       </InProcessServer>
       <OutOfProcessServer ServerName="Linphone.Core">
         <Path>Linphone.Core.DLL</Path>
@@ -93,6 +95,9 @@
         <Interface Name="Linphone.Core.__IPayloadTypePublicNonVirtuals" InterfaceId="{BF73ED50-6AF0-3E18-9C7B-F81A8E91287B}" />
         <Interface Name="Linphone.Core.__ILinphoneProxyConfigPublicNonVirtuals" InterfaceId="{FD2DF2D0-E760-354B-AD77-D0C81FBACE0B}" />
         <Interface Name="Linphone.Core.__ILpConfigPublicNonVirtuals" InterfaceId="{3D421643-A4D5-370B-BA94-D03ED034EE76}" />
+        <Interface Name="Linphone.Core.__ITunnelConfigPublicNonVirtuals" InterfaceId="{68700A9B-6D1E-3167-B4AA-626894473735}" />
+        <Interface Name="Linphone.Core.__ITunnelConfigFactory" InterfaceId="{EE452863-F4DB-3CAF-B716-854C8EF40E25}" />
+        <Interface Name="Linphone.Core.__ITunnelPublicNonVirtuals" InterfaceId="{A04D28B9-616C-3870-B1AA-31747C3704F8}" />
       </ProxyStub>
     </ActivatableClasses>
     <ScreenResolutions>

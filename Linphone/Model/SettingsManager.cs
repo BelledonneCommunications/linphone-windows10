@@ -30,6 +30,7 @@ namespace Linphone.Model
     {
         protected Dictionary<String, String> dict;
         protected Dictionary<String, String> changesDict;
+        protected const string ApplicationSection = "app";
 
         /// <summary>
         /// Public constructor.
@@ -154,7 +155,6 @@ namespace Linphone.Model
     /// </summary>
     public class ApplicationSettingsManager : SettingsManager, ISettingsManager
     {
-        private const string ApplicationSection = "app";
         private LpConfig Config;
 
         #region Constants settings names
@@ -760,6 +760,10 @@ namespace Linphone.Model
     /// </summary>
     public class NetworkSettingsManager : SettingsManager, ISettingsManager
     {
+        private LpConfig Config;
+        private Dictionary<string, string> TunnelModeToString;
+        private Dictionary<string, string> StringToTunnelMode;
+
         #region Constants settings names
         private const string SIPTransportSettingKeyName = "SIPTransport";
         private const string SIPPortKeyName = "SIPPort";
@@ -767,6 +771,35 @@ namespace Linphone.Model
         private const string TunnelPortKeyName = "TunnelPort";
         private const string TunnelModeKeyName = "TunnelMode";
         #endregion
+
+        /// <summary>
+        /// Public constructor.
+        /// </summary>
+        public NetworkSettingsManager()
+        {
+            if (LinphoneManager.Instance.LinphoneCore == null)
+            {
+                Config = LinphoneManager.Instance.LinphoneCoreFactory.CreateLpConfig(GetConfigPath(), GetFactoryConfigPath());
+            }
+            else
+            {
+                Config = LinphoneManager.Instance.LinphoneCore.GetConfig();
+            }
+            TunnelModeToString = new Dictionary<string, string>()
+            {
+                { AppResources.TunnelMode3GOnly, "3gonly" },
+                { AppResources.TunnelModeAlways, "always" },
+                { AppResources.TunnelModeAuto, "auto" },
+                { AppResources.TunnelModeDisabled, "disabled" }
+            };
+            StringToTunnelMode = new Dictionary<string, string>()
+            {
+                { "3gonly", AppResources.TunnelMode3GOnly },
+                { "always", AppResources.TunnelModeAlways },
+                { "auto", AppResources.TunnelModeAuto },
+                { "disabled", AppResources.TunnelModeDisabled }
+            };
+        }
 
         #region Implementation of the ISettingsManager interface
         /// <summary>
@@ -794,6 +827,27 @@ namespace Linphone.Model
             }
             dict[SIPTransportSettingKeyName] = tname;
             dict[SIPPortKeyName] = port.ToString();
+
+            // Load tunnel configuration
+            dict[TunnelModeKeyName] = AppResources.TunnelModeDisabled;
+            dict[TunnelServerKeyName] = "";
+            dict[TunnelPortKeyName] = "";
+            if (LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable())
+            {
+                String mode = Config.GetString(ApplicationSection, TunnelModeKeyName, TunnelModeToString[AppResources.TunnelModeDisabled]);
+                dict[TunnelModeKeyName] = StringToTunnelMode[mode];
+                Tunnel tunnel = LinphoneManager.Instance.LinphoneCore.GetTunnel();
+                if (tunnel != null)
+                {
+                    IList<Object> servers = tunnel.GetServers();
+                    if (servers.Count > 0)
+                    {
+                        TunnelConfig conf = servers[0] as TunnelConfig;
+                        dict[TunnelServerKeyName] = conf.Host;
+                        dict[TunnelPortKeyName] = conf.Port.ToString();
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -818,6 +872,24 @@ namespace Linphone.Model
                     transports.TLS = port;
                 }
                 LinphoneManager.Instance.LinphoneCore.SetSignalingTransportsPorts(transports);
+            }
+
+            // Save tunnel configuration
+            if (LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable())
+            {
+                if (ValueChanged(TunnelServerKeyName) || ValueChanged(TunnelPortKeyName))
+                {
+                    Tunnel tunnel = LinphoneManager.Instance.LinphoneCore.GetTunnel();
+                    if (tunnel != null)
+                    {
+                        tunnel.CleanServers();
+                        tunnel.AddServer(GetNew(TunnelServerKeyName), Convert.ToInt32(GetNew(TunnelPortKeyName)));
+                    }
+                }
+                if (ValueChanged(TunnelModeKeyName))
+                {
+                    Config.SetString(ApplicationSection, TunnelModeKeyName, TunnelModeToString[GetNew(TunnelModeKeyName)]);
+                }
             }
         }
         #endregion
@@ -845,11 +917,11 @@ namespace Linphone.Model
         {
             get
             {
-                return "";  // TODO
+                return Get(TunnelServerKeyName);
             }
             set
             {
-                // TODO
+                Set(TunnelServerKeyName, value);
             }
         }
 
@@ -860,11 +932,11 @@ namespace Linphone.Model
         {
             get
             {
-                return "";  // TODO
+                return Get(TunnelPortKeyName);
             }
             set
             {
-                // TODO
+                Set(TunnelPortKeyName, value);
             }
         }
 
@@ -875,11 +947,11 @@ namespace Linphone.Model
         {
             get
             {
-                return AppResources.TunnelModeDisabled;  // TODO
+                return Get(TunnelModeKeyName);
             }
             set
             {
-                // TODO
+                Set(TunnelModeKeyName, value);
             }
         }
         #endregion

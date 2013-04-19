@@ -9,6 +9,7 @@
 #include "LpConfig.h"
 #include "PayloadType.h"
 #include "CallController.h"
+#include "Tunnel.h"
 #include "Server.h"
 #include "Enums.h"
 #include "ApiLock.h"
@@ -802,76 +803,19 @@ Platform::Boolean Linphone::Core::LinphoneCore::IsMediaEncryptionMandatory()
 	return linphone_core_is_media_encryption_mandatory(this->lc);
 }
 
-void Linphone::Core::LinphoneCore::EnableTunnel(Platform::Boolean enable) 
-{
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-	LinphoneTunnel* tunnel = linphone_core_get_tunnel(this->lc);
-	if (tunnel == nullptr)
-		return;
-
-	linphone_tunnel_enable(tunnel, enable);
-}
-
-void Linphone::Core::LinphoneCore::TunnelAutoDetect() 
-{
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-	LinphoneTunnel* tunnel = linphone_core_get_tunnel(this->lc);
-	if (tunnel == nullptr)
-		return;
-
-	linphone_tunnel_auto_detect(tunnel);
-}
-
-void Linphone::Core::LinphoneCore::TunnelCleanServers() 
-{
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-	LinphoneTunnel* tunnel = linphone_core_get_tunnel(this->lc);
-	if (tunnel == nullptr)
-		return;
-
-	linphone_tunnel_clean_servers(tunnel);
-}
-
-void Linphone::Core::LinphoneCore::TunnelSetHttpProxy(Platform::String^ host, int port, Platform::String^ username, Platform::String^ password) 
-{
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-	
-	LinphoneTunnel* tunnel = linphone_core_get_tunnel(this->lc);
-	if (tunnel == nullptr)
-		return;
-
-	const char* h = Linphone::Core::Utils::pstoccs(host);
-	const char* u = Linphone::Core::Utils::pstoccs(username);
-	const char* pwd = Linphone::Core::Utils::pstoccs(password);
-	linphone_tunnel_set_http_proxy(tunnel, h, port, u, pwd);
-	delete(h);
-	delete(u);
-	delete(pwd);
-}
-
-void Linphone::Core::LinphoneCore::TunnelAddServerAndMirror(Platform::String^ host, int port, int udpMirrorPort, int roundTripDelay) 
-{
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-
-	LinphoneTunnel* tunnel = linphone_core_get_tunnel(this->lc);
-	if (tunnel == nullptr)
-		return;
-
-	const char* h = Linphone::Core::Utils::pstoccs(host);
-	//TODO
-	//LinphoneTunnelConfig* config = linphone_tunnel_config_new();
-	//linphone_tunnel_config_set_host(config, h);
-	//linphone_tunnel_config_set_port(config, port);
-	//linphone_tunnel_config_set_delay(config, roundTripDelay);
-	//linphone_tunnel_config_set_remote_udp_mirror_port(config, udpMirrorPort);
-	//linphone_tunnel_add_server(linphone_core_get_tunnel(this->lc), config);
-	delete(h);
-}
-
 Platform::Boolean Linphone::Core::LinphoneCore::IsTunnelAvailable() 
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
 	return linphone_core_tunnel_available();
+}
+
+Linphone::Core::Tunnel^ Linphone::Core::LinphoneCore::GetTunnel()
+{
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	LinphoneTunnel *lt = linphone_core_get_tunnel(this->lc);
+	if (lt == nullptr)
+		return nullptr;
+	return ref new Linphone::Core::Tunnel(lt);
 }
 
 void Linphone::Core::LinphoneCore::SetUserAgent(Platform::String^ name, Platform::String^ version) 
