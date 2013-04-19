@@ -27,6 +27,10 @@ namespace Linphone.Model
             {
                 lastNetworkState = DeviceNetworkInformation.IsNetworkAvailable;
                 Debug.WriteLine("[LinphoneManager] Network state changed:" + (lastNetworkState ? "Available" : "Unavailable"));
+                if (lastNetworkState)
+                {
+                    NetworkSettingsManager.ConfigureTunnel();
+                }
                 LinphoneCore.SetNetworkReachable(lastNetworkState);
             }
         }

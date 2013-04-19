@@ -1,5 +1,6 @@
 ﻿using Linphone.Core;
 using Linphone.Resources;
+using Microsoft.Phone.Net.NetworkInformation;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -772,6 +773,49 @@ namespace Linphone.Model
         private const string TunnelModeKeyName = "TunnelMode";
         #endregion
 
+        public static void ConfigureTunnel(String mode)
+        {
+            if (LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable()) {
+                Tunnel tunnel = LinphoneManager.Instance.LinphoneCore.GetTunnel();
+                if (tunnel != null)
+                {
+                    if (mode == AppResources.TunnelModeDisabled)
+                    {
+                        tunnel.Enable(false);
+                    }
+                    else if (mode == AppResources.TunnelModeAlways)
+                    {
+                        tunnel.Enable(true);
+                    }
+                    else if (mode == AppResources.TunnelModeAuto)
+                    {
+                        tunnel.AutoDetect();
+                    }
+                    else if (mode == AppResources.TunnelMode3GOnly)
+                    {
+                        if (DeviceNetworkInformation.IsWiFiEnabled)
+                        {
+                            tunnel.Enable(false);
+                        }
+                        else if (DeviceNetworkInformation.IsCellularDataEnabled)
+                        {
+                            tunnel.Enable(true);
+                        }
+                        else
+                        {
+                            tunnel.Enable(false);
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void ConfigureTunnel()
+        {
+            NetworkSettingsManager settings = new NetworkSettingsManager();
+            ConfigureTunnel(settings.TunnelMode);
+        }
+
         /// <summary>
         /// Public constructor.
         /// </summary>
@@ -888,7 +932,9 @@ namespace Linphone.Model
                 }
                 if (ValueChanged(TunnelModeKeyName))
                 {
-                    Config.SetString(ApplicationSection, TunnelModeKeyName, TunnelModeToString[GetNew(TunnelModeKeyName)]);
+                    String mode = GetNew(TunnelModeKeyName);
+                    Config.SetString(ApplicationSection, TunnelModeKeyName, TunnelModeToString[mode]);
+                    ConfigureTunnel(mode);
                 }
             }
         }
