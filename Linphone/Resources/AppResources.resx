@@ -350,4 +350,7 @@ http://www.linphone.org/m/help
   <data name="ConversationsMenu" xml:space="preserve">
     <value>Conversations</value>
   </data>
+  <data name="SendMessage" xml:space="preserve">
+    <value>send</value>
+  </data>
 </root>

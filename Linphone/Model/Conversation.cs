@@ -25,6 +25,11 @@ namespace Linphone.Model
         public string DisplayedName { get; set; }
 
         /// <summary>
+        /// SIP address of the remote contact.
+        /// </summary>
+        public string SipAddress { get; set; }
+
+        /// <summary>
         /// Latest message (can be troncated) received or sent.
         /// </summary>
         public string LatestMessage { get; set; }
@@ -42,8 +47,9 @@ namespace Linphone.Model
         /// <summary>
         /// Public constructor.
         /// </summary>
-        public Conversation(string displayName, List<ChatMessage> messages)
+        public Conversation(string sipAddress, string displayName, List<ChatMessage> messages)
         {
+            SipAddress = sipAddress;
             DisplayedName = displayName;
             Messages = messages;
         }

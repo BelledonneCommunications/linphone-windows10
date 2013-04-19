@@ -9,6 +9,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Linphone.Model;
 using Linphone.Core;
+using Linphone.Resources;
 
 namespace Linphone.Views
 {
@@ -33,6 +34,7 @@ namespace Linphone.Views
         public Chat()
         {
             InitializeComponent();
+            BuildLocalizedApplicationBar();
         }
 
         /// <summary>
@@ -50,8 +52,30 @@ namespace Linphone.Views
             if (NavigationContext.QueryString.ContainsKey("sip") && e.NavigationMode != NavigationMode.Back)
             {
                 sipAddress = NavigationContext.QueryString["sip"];
+
+                ContactName.Text = sipAddress;
+                ContactManager cm = ContactManager.Instance;
+                cm.ContactFound += cm_ContactFound;
+                cm.FindContact(sipAddress);
+
                 chatRoom = LinphoneManager.Instance.LinphoneCore.CreateChatRoom(sipAddress);
+
             }
+        }
+
+        /// <summary>
+        /// Callback called when the search on a phone number for a contact has a match
+        /// </summary>
+        private void cm_ContactFound(object sender, ContactFoundEventArgs e)
+        {
+            ContactName.Text = e.ContactFound.DisplayName;
+            ContactManager.Instance.TempContact = e.ContactFound;
+            ContactName.Tap += ContactName_Tap;
+        }
+
+        private void ContactName_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/Contact.xaml", UriKind.RelativeOrAbsolute));
         }
 
         private void SendMessage(string message)
@@ -66,6 +90,22 @@ namespace Linphone.Views
         public void MessageStateChanged(LinphoneChatMessage message, LinphoneChatMessageState state)
         {
             Logger.Msg("[Chat] Message " + message.GetText() + ", state changed: " + state.ToString());
+        }
+
+        private void send_Click_1(object sender, EventArgs e)
+        {
+            SendMessage(Message.Text);
+            Message.Text = "";
+        }
+
+        private void BuildLocalizedApplicationBar()
+        {
+            ApplicationBar = new ApplicationBar();
+
+            ApplicationBarIconButton appBarSend = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.message.send.png", UriKind.Relative));
+            appBarSend.Text = AppResources.SendMessage;
+            ApplicationBar.Buttons.Add(appBarSend);
+            appBarSend.Click += send_Click_1;
         }
     }
 }

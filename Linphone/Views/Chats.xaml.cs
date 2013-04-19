@@ -33,14 +33,13 @@ namespace Linphone.Views
         /// Method called when the page is displayed.
         /// Fetches the conversations from the LinphoneManager and displays them.
         /// </summary>
-        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
             //TODO
             List<Conversation> conversations = new List<Conversation>();
-            conversations.Add(new Conversation("Barbara Shultz", null));
+            conversations.Add(new Conversation("sip:pauline@sip.example.org", "Pauline LEPOUTRE", null));
             Conversations.ItemsSource = conversations;
         }
 
@@ -97,7 +96,8 @@ namespace Linphone.Views
 
         private void conversation_Click_1(object sender, RoutedEventArgs e)
         {
-            
+            Conversation chat = ((sender as StackPanel).Tag as Conversation);
+            NavigationService.Navigate(new Uri("/Views/Chat.xaml?sip=" + chat.SipAddress, UriKind.RelativeOrAbsolute));
         }
     }
 }
