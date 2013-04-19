@@ -139,6 +139,7 @@ popd</Command>
     <ClInclude Include="LinphoneCallParams.h" />
     <ClInclude Include="LinphoneCallStats.h" />
     <ClInclude Include="LinphoneChatMessage.h" />
+    <ClInclude Include="LinphoneChatMessageListener.h" />
     <ClInclude Include="LinphoneChatRoom.h" />
     <ClInclude Include="LinphoneCoreFactory.h" />
     <ClInclude Include="LinphoneAuthInfo.h" />

@@ -2,6 +2,7 @@
 
 #include "LinphoneCore.h"
 #include "LinphoneChatMessage.h"
+#include "LinphoneChatMessageListener.h"
 #include "Enums.h"
 
 namespace Linphone

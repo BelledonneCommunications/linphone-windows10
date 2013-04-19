@@ -6,6 +6,7 @@
 #include "LinphoneCallParams.h"
 #include "LinphoneProxyConfig.h"
 #include "LinphoneCoreListener.h"
+#include "LinphoneChatRoom.h"
 #include "LpConfig.h"
 #include "PayloadType.h"
 #include "CallController.h"
@@ -974,6 +975,15 @@ Linphone::Core::LpConfig^ Linphone::Core::LinphoneCore::GetConfig()
 {
 	::LpConfig *config = linphone_core_get_config(this->lc);
 	return (Linphone::Core::LpConfig^)Linphone::Core::Utils::CreateLpConfig(config);
+}
+
+Linphone::Core::LinphoneChatRoom^ Linphone::Core::LinphoneCore::CreateChatRoom(Platform::String^ to)
+{
+	const char* address = Linphone::Core::Utils::pstoccs(to);
+	Linphone::Core::LinphoneChatRoom^ chatRoom = (Linphone::Core::LinphoneChatRoom^) Linphone::Core::Utils::CreateLinphoneChatRoom(linphone_core_create_chat_room(this->lc, address));
+	delete(address);
+
+	return chatRoom;
 }
 
 Linphone::Core::LinphoneCoreListener^ Linphone::Core::LinphoneCore::CoreListener::get()

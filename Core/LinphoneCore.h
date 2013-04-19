@@ -20,6 +20,7 @@ namespace Linphone
 		ref class LinphoneCallParams;
 		ref class LinphoneCallLog;
 		ref class LinphoneCallStats;
+		ref class LinphoneChatRoom;
 		ref class PayloadType;
 		ref class LpConfig;
 
@@ -492,6 +493,11 @@ namespace Linphone
 			/// Returns the LpConfig object to read/write to the config file: useful if you wish to extend the config file with your own sections.
 			/// </summary>
 			LpConfig^ GetConfig();
+
+			/// <summary>
+			/// Creates a ChatRoom to send text messages to given addrees.
+			/// </summary>
+			Linphone::Core::LinphoneChatRoom^ CreateChatRoom(Platform::String^ to);
 
 			property LinphoneCoreListener^ CoreListener
             {

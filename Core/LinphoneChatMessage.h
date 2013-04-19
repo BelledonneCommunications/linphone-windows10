@@ -1,6 +1,7 @@
 #pragma once
 
 #include "LinphoneCore.h"
+#include "LinphoneChatRoom.h"
 #include "Enums.h"
 
 namespace Linphone
@@ -8,15 +9,7 @@ namespace Linphone
 	namespace Core
 	{
 		ref class LinphoneCore;
-
-		/// <summary>
-		/// Listener to be called when the state of the message changes.
-		/// </summary>
-		public interface class LinphoneChatMessageListener
-		{
-		public:
-			void MessageStateChanged(LinphoneChatMessage^ message, LinphoneChatMessageState state);
-		};
+		ref class LinphoneChatRoom;
 
 		/// <summary>
 		/// Represents a chat message shared between two users.
@@ -62,6 +55,7 @@ namespace Linphone
 		private:
 			friend class Linphone::Core::Utils;
 			friend ref class Linphone::Core::LinphoneCore;
+			friend ref class Linphone::Core::LinphoneChatRoom;
 
 			LinphoneChatMessage(::LinphoneChatMessage *cm);
 			~LinphoneChatMessage();
