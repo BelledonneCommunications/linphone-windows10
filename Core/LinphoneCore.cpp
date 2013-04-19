@@ -102,11 +102,6 @@ void Linphone::Core::LinphoneCore::SetLogLevel(OutputTraceLevel logLevel)
 	Utils::LinphoneCoreSetLogLevel(coreLogLevel);
 }
 
-void Linphone::Core::LinphoneCore::SetContext(Platform::Object^ object)
-{
-
-}
-
 void Linphone::Core::LinphoneCore::ClearProxyConfigs()
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);

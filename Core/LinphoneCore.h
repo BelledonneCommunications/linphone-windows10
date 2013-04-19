@@ -64,8 +64,6 @@ namespace Linphone
 		public:
 			static void SetLogLevel(OutputTraceLevel logLevel);
 
-			void SetContext(Platform::Object^ object);
-
 			/// <summary>
 			/// Removes all the proxy configs from LinphoneCore.
 			/// </summary>
