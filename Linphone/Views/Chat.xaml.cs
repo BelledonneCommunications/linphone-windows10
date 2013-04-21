@@ -10,13 +10,26 @@ using Microsoft.Phone.Shell;
 using Linphone.Model;
 using Linphone.Core;
 using Linphone.Resources;
+using System.Diagnostics;
+using Linphone.Controls;
 
 namespace Linphone.Views
 {
     /// <summary>
+    /// Listener to let this view to be notified by LinphoneManager when a new message arrives.
+    /// </summary>
+    public interface MessageReceivedListener
+    {
+        /// <summary>
+        /// Callback called when a message is received.
+        /// </summary>
+        void MessageReceived(LinphoneChatMessage message);
+    }
+
+    /// <summary>
     /// Displays chat messages between two users.
     /// </summary>
-    public partial class Chat : BasePage, LinphoneChatMessageListener
+    public partial class Chat : BasePage, LinphoneChatMessageListener, MessageReceivedListener
     {
         /// <summary>
         /// SIP address linked to the current displayed chat.
@@ -44,6 +57,7 @@ namespace Linphone.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            LinphoneManager.Instance.MessageListener = this;
 
             // Create LinphoneCore if not created yet, otherwise do nothing
             LinphoneManager.Instance.InitLinphoneCore();
@@ -61,6 +75,15 @@ namespace Linphone.Views
                 chatRoom = LinphoneManager.Instance.LinphoneCore.CreateChatRoom(sipAddress);
 
             }
+        }
+
+        /// <summary>
+        /// Method called when this page isn't displayed anymore.
+        /// </summary>
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            base.OnNavigatingFrom(e);
+            LinphoneManager.Instance.MessageListener = null;
         }
 
         /// <summary>
@@ -82,6 +105,10 @@ namespace Linphone.Views
         {
             LinphoneChatMessage chatMessage = chatRoom.CreateLinphoneChatMessage(message);
             chatRoom.SendMessage(chatMessage, this);
+
+            OutgoingChatBubble bubble = new OutgoingChatBubble(message, "Now");
+            MessagesList.Children.Add(bubble);
+            scrollToBottom();
         }
 
         /// <summary>
@@ -94,8 +121,8 @@ namespace Linphone.Views
 
         private void send_Click_1(object sender, EventArgs e)
         {
-            SendMessage(Message.Text);
-            Message.Text = "";
+            SendMessage(MessageBox.Text);
+            MessageBox.Reset();
         }
 
         private void BuildLocalizedApplicationBar()
@@ -106,6 +133,25 @@ namespace Linphone.Views
             appBarSend.Text = AppResources.SendMessage;
             ApplicationBar.Buttons.Add(appBarSend);
             appBarSend.Click += send_Click_1;
+        }
+
+        /// <summary>
+        /// Callback called by LinphoneManager when a message is received.
+        /// </summary>
+        public void MessageReceived(LinphoneChatMessage message)
+        {
+            MessagesList.Dispatcher.BeginInvoke(() =>
+            {
+                IncomingChatBubble bubble = new IncomingChatBubble(message.GetText(), "Now");
+                MessagesList.Children.Add(bubble);
+                scrollToBottom();
+            });
+        }
+
+        private void scrollToBottom()
+        {
+            MessagesScroll.UpdateLayout();
+            MessagesScroll.ScrollToVerticalOffset(MessagesList.ActualHeight);
         }
     }
 }

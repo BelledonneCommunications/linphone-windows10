@@ -99,11 +99,20 @@
     <Compile Include="Controls\AddressBox.xaml.cs">
       <DependentUpon>AddressBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\IncomingChatBubble.xaml.cs">
+      <DependentUpon>IncomingChatBubble.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ContactAction.xaml.cs">
       <DependentUpon>ContactAction.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\OutgoingChatBubble.xaml.cs">
+      <DependentUpon>OutgoingChatBubble.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\StatusBar.xaml.cs">
       <DependentUpon>StatusBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TextBoxChatBubble.xaml.cs">
+      <DependentUpon>TextBoxChatBubble.xaml</DependentUpon>
     </Compile>
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Model\AlphaKeyGroup.cs" />
@@ -266,11 +275,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\IncomingChatBubble.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ContactAction.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\OutgoingChatBubble.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\StatusBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TextBoxChatBubble.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

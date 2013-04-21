@@ -1,6 +1,7 @@
 ﻿using Linphone.Agents;
 using Linphone.Core;
 using Linphone.Core.OutOfProcess;
+using Linphone.Views;
 using Microsoft.Phone.Net.NetworkInformation;
 using Microsoft.Phone.Networking.Voip;
 using Microsoft.Phone.Shell;
@@ -606,17 +607,21 @@ namespace Linphone.Model
         }
 
         /// <summary>
+        /// Listener to let a view to be notified by LinphoneManager when a new message arrives.
+        /// </summary>
+        public MessageReceivedListener MessageListener { get; set; }
+
+        /// <summary>
         /// Callback for LinphoneCoreListener
         /// </summary>
         public void MessageReceived(LinphoneChatMessage message)
         {
             Logger.Msg("[LinphoneManager] Message received from " + message.GetFrom().AsStringUriOnly() + ": " + message.GetText());
 
-            //ShellToast toast = new ShellToast();
-            //toast.Content = message.GetText();
-            //toast.Title = message.GetFrom().GetDisplayName().Length > 0 ? message.GetFrom().GetDisplayName() : message.GetFrom().GetUserName();
-            //toast.NavigationUri = new Uri("/Views/Chat.xaml?sip=" + message.GetFrom().AsStringUriOnly(), UriKind.RelativeOrAbsolute);
-            //toast.Show();
+            if (MessageListener != null)
+            {
+                MessageListener.MessageReceived(message);
+            }
         }
         #endregion
 
