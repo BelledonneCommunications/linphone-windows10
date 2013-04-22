@@ -469,12 +469,22 @@ namespace Linphone
 			void SetPrimaryContact(Platform::String^ displayName, Platform::String^ userName);
 
 			/// <summary>
+			/// Tells whether SIP INFO is used for DTMFs.
+			/// </summary>
+			Platform::Boolean GetUseSipInfoForDTMFs();
+
+			/// <summary>
+			/// Tells whether RFC2833 is used for DTMFs.
+			/// </summary>
+			Platform::Boolean GetUseRFC2833ForDTMFs();
+
+			/// <summary>
 			/// Enables/Disables the use of SIP INFO for DTMFs.
 			/// </summary>
 			void SetUseSipInfoForDTMFs(Platform::Boolean use);
 
 			/// <summary>
-			/// Enables/Disables the use of inband DTMFs.
+			/// Enables/Disables the use of RFC2833 DTMFs.
 			/// </summary>
 			void SetUseRFC2833ForDTMFs(Platform::Boolean use);
 

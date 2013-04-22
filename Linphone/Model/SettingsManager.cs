@@ -723,18 +723,21 @@ namespace Linphone.Model
     public class CallSettingsManager : SettingsManager, ISettingsManager
     {
         #region Constants settings names
-        private const string SendDTFMsRFC2833KeyName = "SendDTFMsRFC2833";
+        private const string SendDTMFsRFC2833KeyName = "SendDTMFsRFC2833";
+        private const string SendDTMFsSIPInfoKeyName = "SendDTMFsSIPInfo";
         #endregion
 
         #region Implementation of the ISettingsManager interface
         public void Load()
         {
-            // TODO
+            dict[SendDTMFsRFC2833KeyName] = LinphoneManager.Instance.LinphoneCore.GetUseRFC2833ForDTMFs().ToString();
+            dict[SendDTMFsSIPInfoKeyName] = LinphoneManager.Instance.LinphoneCore.GetUseSipInfoForDTMFs().ToString();
         }
 
         public void Save()
         {
-            // TODO
+            LinphoneManager.Instance.LinphoneCore.SetUseRFC2833ForDTMFs(Convert.ToBoolean(GetNew(SendDTMFsRFC2833KeyName)));
+            LinphoneManager.Instance.LinphoneCore.SetUseSipInfoForDTMFs(Convert.ToBoolean(GetNew(SendDTMFsSIPInfoKeyName)));
         }
         #endregion
 
@@ -746,11 +749,26 @@ namespace Linphone.Model
         {
             get
             {
-                return false;   // TODO
+                return Convert.ToBoolean(Get(SendDTMFsRFC2833KeyName));
             }
             set
             {
-                // TODO
+                Set(SendDTMFsRFC2833KeyName, value.ToString());
+            }
+        }
+
+        /// <summary>
+        /// DTMFs using SIP INFO setting (Bool).
+        /// </summary>
+        public bool? SendDTFMsSIPInfo
+        {
+            get
+            {
+                return Convert.ToBoolean(Get(SendDTMFsSIPInfoKeyName));
+            }
+            set
+            {
+                Set(SendDTMFsSIPInfoKeyName, value.ToString());
             }
         }
         #endregion

@@ -74,6 +74,10 @@
                         x:Name="rfc2833" 
                         Header="{Binding Path=LocalizedResources.RFC2833Setting, Source={StaticResource LocalizedStrings}}">
                     </toolkit:ToggleSwitch>
+                    <toolkit:ToggleSwitch  
+                        x:Name="sipInfo" 
+                        Header="{Binding Path=LocalizedResources.SIPInfoSetting, Source={StaticResource LocalizedStrings}}">
+                    </toolkit:ToggleSwitch>
                 </StackPanel>
             </phone:PivotItem>
         </phone:Pivot>

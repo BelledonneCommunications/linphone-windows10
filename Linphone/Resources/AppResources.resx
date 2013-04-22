@@ -344,4 +344,7 @@ http://www.linphone.org/m/help
   <data name="StatUploadBW" xml:space="preserve">
     <value>Upload</value>
   </data>
+  <data name="SIPInfoSetting" xml:space="preserve">
+    <value>Send DTMFs as SIP INFO</value>
+  </data>
 </root>

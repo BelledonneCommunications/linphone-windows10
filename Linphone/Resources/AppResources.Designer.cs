@@ -508,6 +508,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Send DTMFs as SIP INFO.
+        /// </summary>
+        public static string SIPInfoSetting {
+            get {
+                return ResourceManager.GetString("SIPInfoSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Outbound proxy.
         /// </summary>
         public static string SIPOutboundProxy {

@@ -26,6 +26,7 @@ namespace Linphone.Views
             _callSettings.Load();
             _networkSettings.Load();
             rfc2833.IsChecked = _callSettings.SendDTFMsRFC2833;
+            sipInfo.IsChecked = _callSettings.SendDTFMsSIPInfo;
 
             List<string> tunnelModes = new List<string>
             {
@@ -57,6 +58,8 @@ namespace Linphone.Views
         private void save_Click_1(object sender, EventArgs e)
         {
             _callSettings.SendDTFMsRFC2833 = rfc2833.IsChecked;
+            _callSettings.SendDTFMsSIPInfo = sipInfo.IsChecked;
+            _callSettings.Save();
             _networkSettings.TunnelMode = tunnelMode.SelectedItem.ToString();
             _networkSettings.TunnelServer = tunnelServer.Text;
             _networkSettings.TunnelPort = tunnelPort.Text;

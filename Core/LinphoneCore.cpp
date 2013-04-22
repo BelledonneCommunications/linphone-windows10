@@ -897,6 +897,18 @@ void Linphone::Core::LinphoneCore::SetPrimaryContact(Platform::String^ displayNa
 	delete(dn);
 }
 
+Platform::Boolean Linphone::Core::LinphoneCore::GetUseSipInfoForDTMFs() 
+{
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return linphone_core_get_use_info_for_dtmf(this->lc);
+}
+
+Platform::Boolean Linphone::Core::LinphoneCore::GetUseRFC2833ForDTMFs() 
+{
+	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	return linphone_core_get_use_rfc2833_for_dtmf(this->lc);
+}
+
 void Linphone::Core::LinphoneCore::SetUseSipInfoForDTMFs(Platform::Boolean use) 
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);

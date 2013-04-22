@@ -121,19 +121,4 @@
     <value>3600</value>
     <comment>Seconds for keep-alive task</comment>
   </data>
-  <data name="RFC2833" xml:space="preserve">
-    <value>false</value>
-  </data>
-  <data name="Transport" xml:space="preserve">
-    <value>UDP</value>
-  </data>
-  <data name="TunnelMode" xml:space="preserve">
-    <value>Disabled</value>
-  </data>
-  <data name="TunnelPort" xml:space="preserve">
-    <value>443</value>
-  </data>
-  <data name="TunnelServer" xml:space="preserve">
-    <value>tunnel.linphone.org</value>
-  </data>
 </root>
