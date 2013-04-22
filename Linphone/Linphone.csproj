@@ -168,6 +168,7 @@
     <Content Include="Assets\linphonerc" />
     <Content Include="Assets\linphonerc-factory" />
     <Content Include="Assets\rootca.pem" />
+    <Content Include="Assets\Sounds\toy-mono.wav" />
     <Content Include="Views\logs.html" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />

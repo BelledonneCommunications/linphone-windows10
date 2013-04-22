@@ -8,3 +8,6 @@ default_proxy=0
 [rtp]
 audio_rtp_port=7076
 video_rtp_port=9078
+
+[sound]
+hold_music=Assets/Sounds/toy-mono.wav
