@@ -1,7 +1,7 @@
 #pragma once
 
 #include "LinphoneCoreFactory.h"
-
+#include <mutex>
 
 namespace Linphone
 {

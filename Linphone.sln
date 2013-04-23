@@ -3,6 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Core", "Core\Core.vcxproj", "{C8D75245-FFCF-4932-A228-C9CC8BB60B03}"
 	ProjectSection(ProjectDependencies) = postProject
 		{08DD0D38-D9B5-4626-B60D-B4D76B571142} = {08DD0D38-D9B5-4626-B60D-B4D76B571142}
+		{4C225A82-800B-427B-BA7B-61686A9B347F} = {4C225A82-800B-427B-BA7B-61686A9B347F}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CoreProxyStub", "CoreProxyStub\CoreProxyStub.vcxproj", "{BBABEEA1-494C-4618-96E3-399873A5558B}"

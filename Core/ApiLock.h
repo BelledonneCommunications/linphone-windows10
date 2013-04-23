@@ -1,10 +1,11 @@
 #pragma once
-#include <mutex>
 
 namespace Linphone
 {
     namespace Core
     {
+		class ApiLockPrivate;
+
 		/// <summary>
 		/// A class that implements a mutex mechanism to protect objects accessible from the API surface exposed by this DLL
 		/// </summary>
@@ -17,7 +18,7 @@ namespace Linphone
 			void Unlock();
 
 		private:
-			std::recursive_mutex mut;
+			ApiLockPrivate *d;
 		};
 
 		// The global API lock

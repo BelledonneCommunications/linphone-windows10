@@ -74,7 +74,7 @@
       <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</CompileAsWinRT>
       <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">true</CompileAsWinRT>
       <GenerateXMLDocumentationFiles Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</GenerateXMLDocumentationFiles>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">$(ProjectDir)../submodules\oRTP\include;$(ProjectDir)../submodules/mediastreamer2/include;$(ProjectDir)../submodules/linphone;$(ProjectDir)../submodules/linphone/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">$(ProjectDir)../submodules\oRTP\include;$(ProjectDir)../submodules/mediastreamer2/include;$(ProjectDir)../submodules/linphone;$(ProjectDir)../submodules/linphone/include;$(ProjectDir)../submodules/belle-sip/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">SyncCThrow</ExceptionHandling>
     </ClCompile>
     <Link>
@@ -178,6 +178,9 @@ popd</Command>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\submodules\belle-sip\build\windows\belle-sip\belle-sip.vcxproj">
+      <Project>{4c225a82-800b-427b-ba7b-61686a9b347f}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\submodules\linphone\build\vsx\LibLinphone\LibLinphone.vcxproj">
       <Project>{08dd0d38-d9b5-4626-b60d-b4d76b571142}</Project>
     </ProjectReference>
