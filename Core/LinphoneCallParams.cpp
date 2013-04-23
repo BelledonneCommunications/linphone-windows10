@@ -5,35 +5,47 @@
 
 void Linphone::Core::LinphoneCallParams::SetAudioBandwidth(int value)
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	gApiLock.Lock();
 	linphone_call_params_set_audio_bandwidth_limit(this->params, value);
+	gApiLock.Unlock();
 }
 
 Linphone::Core::MediaEncryption Linphone::Core::LinphoneCallParams::GetMediaEncryption()
 {
-	return (Linphone::Core::MediaEncryption) linphone_call_params_get_media_encryption(this->params);
+	gApiLock.Lock();
+	Linphone::Core::MediaEncryption enc = (Linphone::Core::MediaEncryption) linphone_call_params_get_media_encryption(this->params);
+	gApiLock.Unlock();
+	return enc;
 }
 
 void Linphone::Core::LinphoneCallParams::SetMediaEncryption(Linphone::Core::MediaEncryption menc)
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	gApiLock.Lock();
 	linphone_call_params_set_media_encryption(this->params, (LinphoneMediaEncryption) menc);
+	gApiLock.Unlock();
 }
 
 Linphone::Core::PayloadType^ Linphone::Core::LinphoneCallParams::GetUsedAudioCodec()
 {
-	return (Linphone::Core::PayloadType^) Linphone::Core::Utils::CreatePayloadType((void*) linphone_call_params_get_used_audio_codec(this->params));
+	gApiLock.Lock();
+	Linphone::Core::PayloadType^ payloadType = (Linphone::Core::PayloadType^) Linphone::Core::Utils::CreatePayloadType((void*) linphone_call_params_get_used_audio_codec(this->params));
+	gApiLock.Unlock();
+	return payloadType;
 }
 
 void Linphone::Core::LinphoneCallParams::EnableLowBandwidth(Platform::Boolean enable)
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	gApiLock.Lock();
 	linphone_call_params_enable_low_bandwidth(this->params, enable);
+	gApiLock.Unlock();
 }
 
 Platform::Boolean Linphone::Core::LinphoneCallParams::IsLowBandwidthEnabled()
 {
-	return linphone_call_params_low_bandwidth_enabled(this->params);
+	gApiLock.Lock();
+	Platform::Boolean enabled = linphone_call_params_low_bandwidth_enabled(this->params);
+	gApiLock.Unlock();
+	return enabled;
 }
 
 Linphone::Core::LinphoneCallParams::LinphoneCallParams(::LinphoneCallParams *call_params) :

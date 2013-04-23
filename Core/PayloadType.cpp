@@ -4,14 +4,18 @@
 
 Platform::String^ Linphone::Core::PayloadType::GetMimeType()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-	return Utils::cctops(this->payload->mime_type);
+	gApiLock.Lock();
+	Platform::String^ mimeType = Utils::cctops(this->payload->mime_type);
+	gApiLock.Unlock();
+	return mimeType;
 }
 
 int Linphone::Core::PayloadType::GetClockRate()
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-	return this->payload->clock_rate;
+	gApiLock.Lock();
+	int rate = this->payload->clock_rate;
+	gApiLock.Unlock();
+	return rate;
 }
 
 Linphone::Core::PayloadType::PayloadType(::PayloadType *payload) :

@@ -47,16 +47,19 @@ void LinphoneCoreFactory::CreateLinphoneCore(Linphone::Core::LinphoneCoreListene
 
 void LinphoneCoreFactory::CreateLinphoneCore(Linphone::Core::LinphoneCoreListener^ listener, Linphone::Core::LpConfig^ config)
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-
+	gApiLock.Lock();
 	Utils::LinphoneCoreSetLogHandler(LinphoneNativeOutputTraceHandler);
 	this->linphoneCore = ref new Linphone::Core::LinphoneCore(listener, config);
 	this->linphoneCore->Init();
+	gApiLock.Unlock();
 }
 
 Linphone::Core::LpConfig^ LinphoneCoreFactory::CreateLpConfig(Platform::String^ configPath, Platform::String^ factoryConfigPath)
 {
-	return dynamic_cast<LpConfig^>(Utils::CreateLpConfig(configPath, factoryConfigPath));
+	gApiLock.Lock();
+	Linphone::Core::LpConfig^ lpConfig = dynamic_cast<Linphone::Core::LpConfig^>(Utils::CreateLpConfig(configPath, factoryConfigPath));
+	gApiLock.Unlock();
+	return lpConfig;
 }
 
 Linphone::Core::LinphoneAuthInfo^ LinphoneCoreFactory::CreateAuthInfo(Platform::String^ username, Platform::String^ password, Platform::String^ realm)
@@ -73,13 +76,17 @@ Linphone::Core::LinphoneAddress^ LinphoneCoreFactory::CreateLinphoneAddress(Plat
 
 Linphone::Core::LinphoneAddress^ LinphoneCoreFactory::CreateLinphoneAddress(Platform::String^ uri)
 {
-	return (Linphone::Core::LinphoneAddress^)Utils::CreateLinphoneAddressFromUri(Utils::pstoccs(uri));
+	gApiLock.Lock();
+	Linphone::Core::LinphoneAddress^ address = dynamic_cast<Linphone::Core::LinphoneAddress^>(Utils::CreateLinphoneAddressFromUri(Utils::pstoccs(uri)));
+	gApiLock.Unlock();
+	return address;
 }
 
 void LinphoneCoreFactory::SetLogLevel(OutputTraceLevel logLevel)
 {
-	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	gApiLock.Lock();
 	Linphone::Core::LinphoneCore::SetLogLevel(logLevel);
+	gApiLock.Unlock();
 }
 
 Linphone::Core::LinphoneCore^ LinphoneCoreFactory::LinphoneCore::get()

@@ -25,7 +25,7 @@ Globals^ Globals::singleton = nullptr;
 void Globals::StartServer(const Platform::Array<Platform::String^>^ outOfProcServerClassNames)
 {
     // Make sure only one API call is in progress at a time
-    std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+	gApiLock.Lock();
 
     std::unique_ptr<PFNGETACTIVATIONFACTORY[]> activationFactoryCallbacks;
     std::unique_ptr<HSTRING[]> hOutOfProcServerClassNames;
@@ -38,6 +38,7 @@ void Globals::StartServer(const Platform::Array<Platform::String^>^ outOfProcSer
 
     if (this->started)
     {
+		gApiLock.Unlock();
         return; // Nothing more to be done
     }
 
@@ -82,6 +83,7 @@ void Globals::StartServer(const Platform::Array<Platform::String^>^ outOfProcSer
     }
 
     this->started = true;
+	gApiLock.Unlock();
 }
 
 unsigned int Globals::GetCurrentProcessId()
@@ -114,13 +116,15 @@ Globals^ Globals::Instance::get()
     if (Globals::singleton == nullptr)
     {
         // Make sure only one API call is in progress at a time
-        std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+		gApiLock.Lock();
 
         if (Globals::singleton == nullptr)
         {
             Globals::singleton = ref new Globals();
         }
         // else: some other thread has created an instance of the call controller
+
+		gApiLock.Unlock();
     }
 
     return Globals::singleton;
@@ -131,12 +135,14 @@ LinphoneCoreFactory^ Globals::LinphoneCoreFactory::get()
 	if (this->linphoneCoreFactory == nullptr)
     {
         // Make sure only one API call is in progress at a time
-        std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+		gApiLock.Lock();
 
         if (this->linphoneCoreFactory == nullptr)
         {
             this->linphoneCoreFactory = ref new Linphone::Core::LinphoneCoreFactory();
         }
+
+		gApiLock.Unlock();
     }
 
 	return this->linphoneCoreFactory;
@@ -151,14 +157,16 @@ Linphone::Core::CallController^ Globals::CallController::get()
 {
 	if (this->callController == nullptr) 
     { 
-        // Make sure only one API call is in progress at a time 
-        std::lock_guard<std::recursive_mutex> lock(g_apiLock); 
+        // Make sure only one API call is in progress at a time
+		gApiLock.Lock();
  
         if (this->callController == nullptr) 
         { 
 			this->callController = ref new Linphone::Core::CallController(); 
         } 
         // else: some other thread has created an instance of the call controller 
+
+		gApiLock.Unlock();
     } 
  
     return this->callController; 
@@ -169,12 +177,14 @@ Linphone::Core::BackgroundModeLogger^ Globals::BackgroundModeLogger::get()
 	if (this->backgroundModeLogger == nullptr)
 	{
 		// Make sure only one API call is in progress at a time
-		std::lock_guard<std::recursive_mutex> lock(g_apiLock);
+		gApiLock.Lock();
 
 		if (this->backgroundModeLogger == nullptr)
 		{
 			this->backgroundModeLogger = ref new Linphone::Core::BackgroundModeLogger();
 		}
+
+		gApiLock.Unlock();
 	}
 
 	return this->backgroundModeLogger;

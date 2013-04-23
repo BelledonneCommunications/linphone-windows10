@@ -4,7 +4,25 @@ namespace Linphone
 {
     namespace Core
     {
-        // A mutex used to protect objects accessible from the API surface exposed by this DLL
-        std::recursive_mutex g_apiLock;
+        // The global API lock
+		ApiLock gApiLock;
+
+		ApiLock::ApiLock()
+		{
+		}
+
+		ApiLock::~ApiLock()
+		{
+		}
+
+		void ApiLock::Lock()
+		{
+			mut.lock();
+		}
+
+		void ApiLock::Unlock()
+		{
+			mut.unlock();
+		}
     }
 }
