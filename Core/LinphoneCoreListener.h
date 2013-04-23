@@ -23,7 +23,7 @@ namespace Linphone
 
 			void DTMFReceived(LinphoneCall^ call, int dtmf);
 
-			void EcCalibrationStatus(EcCalibratorStatus status, int delay_ms, Platform::Object^ data); 
+			void EcCalibrationStatus(EcCalibratorStatus status, int delay_ms); 
 
 			void CallEncryptionChanged(LinphoneCall^ call, Platform::Boolean encrypted, Platform::String^ authenticationToken);
 

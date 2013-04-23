@@ -47,7 +47,7 @@ namespace Linphone.Views
 
         private void codecs_Click_1(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Views/CodecsSettings.xaml", UriKind.RelativeOrAbsolute));
+            NavigationService.Navigate(new Uri("/Views/AudioSettings.xaml", UriKind.RelativeOrAbsolute));
         }
 
         private void advanced_Click_1(object sender, RoutedEventArgs e)

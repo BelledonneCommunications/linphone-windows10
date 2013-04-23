@@ -139,6 +139,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Audio settings.
+        /// </summary>
+        public static string AudioSettingsMenu {
+            get {
+                return ResourceManager.GetString("AudioSettingsMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Call.
         /// </summary>
         public static string Call {
@@ -274,6 +283,60 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Echo detected: {0} ms.
+        /// </summary>
+        public static string ECCalibrationDone {
+            get {
+                return ResourceManager.GetString("ECCalibrationDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No echo detected.
+        /// </summary>
+        public static string ECCalibrationDoneNoEcho {
+            get {
+                return ResourceManager.GetString("ECCalibrationDoneNoEcho", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calibration failed.
+        /// </summary>
+        public static string ECCalibrationFailed {
+            get {
+                return ResourceManager.GetString("ECCalibrationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calibration in progress.
+        /// </summary>
+        public static string ECCalibrationInProgress {
+            get {
+                return ResourceManager.GetString("ECCalibrationInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click button to calibrate.
+        /// </summary>
+        public static string ECCalibrationNotRun {
+            get {
+                return ResourceManager.GetString("ECCalibrationNotRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Echo canceller calibration.
+        /// </summary>
+        public static string EchoCancellerCalibration {
+            get {
+                return ResourceManager.GetString("EchoCancellerCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to G722.
         /// </summary>
         public static string G722Codec {
@@ -387,6 +450,15 @@ namespace Linphone.Resources {
         public static string NetworkMenu {
             get {
                 return ResourceManager.GetString("NetworkMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Options.
+        /// </summary>
+        public static string OptionsMenu {
+            get {
+                return ResourceManager.GetString("OptionsMenu", resourceCulture);
             }
         }
         

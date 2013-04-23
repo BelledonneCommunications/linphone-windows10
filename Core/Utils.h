@@ -91,10 +91,16 @@ namespace Linphone
 			/// </summary>
 			static Platform::Object^ CreateLinphoneCallStats(void* callStats, void* call);
 
+			static void EchoCalibrationCallback(void *lc, int status, int delay_ms, void *data);
+
 		private:
 			static std::string wstos(std::wstring ws);
 
 			static std::string pstos(Platform::String^ ps);
+		};
+
+		struct EchoCalibrationData {
+			Windows::Phone::Media::Devices::AudioRoutingEndpoint endpoint;
 		};
 
 		template <class T>

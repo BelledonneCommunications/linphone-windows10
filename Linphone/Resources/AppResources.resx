@@ -176,8 +176,8 @@ http://www.linphone.org/m/help
   <data name="AMRWBCodec" xml:space="preserve">
     <value>AMR-WB</value>
   </data>
-  <data name="CodecsMenu" xml:space="preserve">
-    <value>Codecs</value>
+  <data name="AudioSettingsMenu" xml:space="preserve">
+    <value>Audio settings</value>
   </data>
   <data name="G722Codec" xml:space="preserve">
     <value>G722</value>
@@ -346,5 +346,29 @@ http://www.linphone.org/m/help
   </data>
   <data name="SIPInfoSetting" xml:space="preserve">
     <value>Send DTMFs as SIP INFO</value>
+  </data>
+  <data name="EchoCancellerCalibration" xml:space="preserve">
+    <value>Echo canceller calibration</value>
+  </data>
+  <data name="CodecsMenu" xml:space="preserve">
+    <value>Codecs</value>
+  </data>
+  <data name="OptionsMenu" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="ECCalibrationDone" xml:space="preserve">
+    <value>Echo detected: {0} ms</value>
+  </data>
+  <data name="ECCalibrationDoneNoEcho" xml:space="preserve">
+    <value>No echo detected</value>
+  </data>
+  <data name="ECCalibrationFailed" xml:space="preserve">
+    <value>Calibration failed</value>
+  </data>
+  <data name="ECCalibrationInProgress" xml:space="preserve">
+    <value>Calibration in progress</value>
+  </data>
+  <data name="ECCalibrationNotRun" xml:space="preserve">
+    <value>Click button to calibrate</value>
   </data>
 </root>

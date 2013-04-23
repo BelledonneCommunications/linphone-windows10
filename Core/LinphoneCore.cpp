@@ -19,6 +19,7 @@ using namespace Platform;
 using namespace Platform::Collections;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
+using namespace Windows::Phone::Media::Devices;
 using namespace Windows::System::Threading;
 
 Linphone::Core::Transports::Transports() :
@@ -504,10 +505,33 @@ Platform::Boolean Linphone::Core::LinphoneCore::IsEchoLimiterEnabled()
 	return linphone_core_echo_limiter_enabled(this->lc);
 }
 
-void Linphone::Core::LinphoneCore::StartEchoCalibration(Platform::Object^ data) 
+static void EchoCalibrationCallback(LinphoneCore *lc, LinphoneEcCalibratorStatus status, int delay_ms, void *data)
+{
+	Linphone::Core::Utils::EchoCalibrationCallback(lc, status, delay_ms, data);
+}
+
+static void EchoCalibrationAudioInit(void *data)
+{
+	Linphone::Core::EchoCalibrationData *ecData = static_cast<Linphone::Core::EchoCalibrationData *>(data);
+	if (ecData != nullptr) {
+		ecData->endpoint = AudioRoutingManager::GetDefault()->GetAudioEndpoint();
+	}
+	AudioRoutingManager::GetDefault()->SetAudioEndpoint(AudioRoutingEndpoint::Speakerphone);
+}
+
+static void EchoCalibrationAudioUninit(void *data)
+{
+	Linphone::Core::EchoCalibrationData *ecData = static_cast<Linphone::Core::EchoCalibrationData *>(data);
+	if (ecData != nullptr) {
+		AudioRoutingManager::GetDefault()->SetAudioEndpoint(ecData->endpoint);
+	}
+}
+
+void Linphone::Core::LinphoneCore::StartEchoCalibration() 
 {
 	std::lock_guard<std::recursive_mutex> lock(g_apiLock);
-	//TODO
+	Linphone::Core::EchoCalibrationData *data = new Linphone::Core::EchoCalibrationData();
+	linphone_core_start_echo_calibration(this->lc, EchoCalibrationCallback, EchoCalibrationAudioInit, EchoCalibrationAudioUninit, data);
 }
 
 void Linphone::Core::LinphoneCore::EnableEchoLimiter(Platform::Boolean enable) 
@@ -1035,6 +1059,8 @@ void Linphone::Core::LinphoneCore::Init()
 	vtable->auth_info_requested = auth_info_requested;
 
 	this->lc = linphone_core_new_with_config(vtable, config ? config->config : NULL, NULL);
+	RefToPtrProxy<LinphoneCore^> *proxy = new RefToPtrProxy<LinphoneCore^>(this);
+	linphone_core_set_user_data(this->lc, proxy);
 	
 	// Launch iterate timer
 	TimeSpan period;

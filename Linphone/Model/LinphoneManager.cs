@@ -114,6 +114,11 @@ namespace Linphone.Model
         /// Simple listener to notify pages' viewmodel when a call ends or starts
         /// </summary>
         public CallControllerListener CallListener { get; set; }
+
+        /// <summary>
+        /// Simple listener to notify the echo canceller calibration status
+        /// </summary>
+        public EchoCalibratorListener ECListener { get; set; }
         #endregion
 
         #region Background Process
@@ -587,9 +592,17 @@ namespace Linphone.Model
         /// <summary>
         /// Callback for LinphoneCoreListener
         /// </summary>
-        public void EcCalibrationStatus(EcCalibratorStatus status, int delay_ms, object data)
+        public void EcCalibrationStatus(EcCalibratorStatus status, int delayMs)
         {
-
+            Logger.Msg("[LinphoneManager] Echo canceller calibration status: " + status.ToString());
+            if (status == EcCalibratorStatus.Done)
+            {
+                Logger.Msg("[LinphoneManager] Echo canceller delay: {0} ms", delayMs);
+            }
+            if (ECListener != null)
+            {
+                ECListener.ECStatusNotified(status, delayMs);
+            }
         }
 
         /// <summary>

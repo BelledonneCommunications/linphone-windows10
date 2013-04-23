@@ -55,10 +55,10 @@
             
                 <Button
                     Grid.Row="2"
-                    x:Name="Codecs"
+                    x:Name="Audio"
                     Click="codecs_Click_1"
                     Margin="0,30,0,0"
-                    Content="{Binding Path=LocalizedResources.CodecsMenu, Source={StaticResource LocalizedStrings}}" />
+                    Content="{Binding Path=LocalizedResources.AudioSettingsMenu, Source={StaticResource LocalizedStrings}}" />
 
                 <Button
                     Grid.Row="3"

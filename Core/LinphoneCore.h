@@ -316,7 +316,7 @@ namespace Linphone
 			/// Starts an echo calibration of the sound devices, in order to find adequate settings for the echo canceller automatically.
 			/// Status is notified to LinphoneCoreListener::EcCalibrationStatus.
 			/// </summary>
-			void StartEchoCalibration(Platform::Object^ data);
+			void StartEchoCalibration();
 			void EnableEchoLimiter(Platform::Boolean enable);
 
 			void SetSignalingTransportsPorts(Transports^ transports);
@@ -501,6 +501,7 @@ namespace Linphone
 
 		private:
 			friend ref class Linphone::Core::LinphoneCoreFactory;
+			friend class Linphone::Core::Utils;
 
 			LinphoneCore(LinphoneCoreListener^ coreListener);
 			LinphoneCore(LinphoneCoreListener^ coreListener, LpConfig^ config);

@@ -112,6 +112,7 @@
     <Compile Include="Model\CallLog.cs" />
     <Compile Include="Model\ContactManager.cs" />
     <Compile Include="Model\ContactPictureConverter.cs" />
+    <Compile Include="Model\EchoCalibratorListener.cs" />
     <Compile Include="Model\HubTileConverterFix.cs" />
     <Compile Include="Model\LinphoneManager.cs" />
     <Compile Include="Model\Logger.cs" />
@@ -137,8 +138,8 @@
     <Compile Include="Views\AdvancedSettings.xaml.cs">
       <DependentUpon>AdvancedSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CodecsSettings.xaml.cs">
-      <DependentUpon>CodecsSettings.xaml</DependentUpon>
+    <Compile Include="Views\AudioSettings.xaml.cs">
+      <DependentUpon>AudioSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Console.xaml.cs">
       <DependentUpon>Console.xaml</DependentUpon>
@@ -278,7 +279,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CodecsSettings.xaml">
+    <Page Include="Views\AudioSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

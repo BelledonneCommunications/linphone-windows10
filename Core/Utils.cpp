@@ -110,3 +110,15 @@ Platform::Object^ Linphone::Core::Utils::CreateLinphoneCallStats(void* callStats
 {
 	return ref new Linphone::Core::LinphoneCallStats((::LinphoneCallStats *)callStats, (::LinphoneCall *)call);
 }
+
+void Linphone::Core::Utils::EchoCalibrationCallback(void *lc, int status, int delay_ms, void *data)
+{
+	EchoCalibrationData *ecData = static_cast<EchoCalibrationData *>(data);
+	if (ecData != nullptr) {
+		delete ecData;
+	}
+	Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCore^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCore^> *>(linphone_core_get_user_data(static_cast<::LinphoneCore *>(lc)));
+	Linphone::Core::LinphoneCore^ lCore = (proxy) ? proxy->Ref() : nullptr;
+	Linphone::Core::EcCalibratorStatus ecStatus = (Linphone::Core::EcCalibratorStatus) status;
+	lCore->listener->EcCalibrationStatus(ecStatus, delay_ms);
+}
