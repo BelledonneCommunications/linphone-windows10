@@ -1078,6 +1078,7 @@ void Linphone::Core::LinphoneCore::CoreListener::set(LinphoneCoreListener^ liste
 
 void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCallState cstate, const char *msg) 
 {	
+	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::LinphoneCallState state = (Linphone::Core::LinphoneCallState) cstate;
 	Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
 	Linphone::Core::LinphoneCall^ lCall = (proxy) ? proxy->Ref() : nullptr;
@@ -1117,10 +1118,12 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 	{
 		listener->CallState(lCall, state);
 	}
+	Linphone::Core::gApiLock.LeaveListener();
 }
 
 void registration_state_changed(::LinphoneCore *lc, ::LinphoneProxyConfig *cfg, ::LinphoneRegistrationState cstate, const char *msg)
 {
+	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr)
 	{
@@ -1129,25 +1132,30 @@ void registration_state_changed(::LinphoneCore *lc, ::LinphoneProxyConfig *cfg, 
 		Linphone::Core::LinphoneProxyConfig^ config = (proxy) ? proxy->Ref() : nullptr;
 		listener->RegistrationState(config, state, Linphone::Core::Utils::cctops(msg));
 	}
+	Linphone::Core::gApiLock.LeaveListener();
 }
 
 void global_state_changed(::LinphoneCore *lc, ::LinphoneGlobalState gstate, const char *msg)
 {
+	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr)
 	{
 		Linphone::Core::GlobalState state = (Linphone::Core::GlobalState) gstate;
 		listener->GlobalState(state, Linphone::Core::Utils::cctops(msg));
 	}
+	Linphone::Core::gApiLock.LeaveListener();
 }
 
 void auth_info_requested(LinphoneCore *lc, const char *realm, const char *username) 
 {
+	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr)
 	{
 		listener->AuthInfoRequested(Linphone::Core::Utils::cctops(realm), Linphone::Core::Utils::cctops(username));
 	}
+	Linphone::Core::gApiLock.LeaveListener();
 }
 
 Linphone::Core::LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener) :
@@ -1184,9 +1192,10 @@ void Linphone::Core::LinphoneCore::Init()
 		ref new TimerElapsedHandler([this](ThreadPoolTimer^ source)
 		{
 			if (source == IterateTimer) {
-				gApiLock.Lock();
-				linphone_core_iterate(this->lc);
-				gApiLock.Unlock();
+				if (gApiLock.TryLock()) {
+					linphone_core_iterate(this->lc);
+					gApiLock.Unlock();
+				}
 			}
 		}), period);
 }

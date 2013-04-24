@@ -499,54 +499,72 @@ namespace Linphone.Model
         /// </summary>
         public void CallState(LinphoneCall call, LinphoneCallState state)
         {
-            BaseModel.UIDispatcher.BeginInvoke(() =>
+            string sipAddress = call.GetRemoteAddress().AsStringUriOnly();
+
+            Logger.Msg("[LinphoneManager] Call state changed: " + sipAddress + " => " + state.ToString());
+            if (state == LinphoneCallState.OutgoingProgress)
             {
-                string sipAddress = call.GetRemoteAddress().AsStringUriOnly();
-
-                Logger.Msg("[LinphoneManager] Call state changed: " + sipAddress + " => " + state.ToString());
-                if (state == LinphoneCallState.OutgoingProgress)
+                Logger.Msg("[LinphoneManager] Outgoing progress");
+                BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    Logger.Msg("[LinphoneManager] Outgoing progress");
                     LookupForContact(call);
 
                     if (CallListener != null)
                         CallListener.NewCallStarted(sipAddress);
-                }
-                else if (state == LinphoneCallState.IncomingReceived)
+                });
+            }
+            else if (state == LinphoneCallState.IncomingReceived)
+            {
+                Logger.Msg("[LinphoneManager] Incoming received"); 
+                BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    Logger.Msg("[LinphoneManager] Incoming received"); 
                     LookupForContact(call);
-                }
-                else if (state == LinphoneCallState.Connected)
+                });
+            }
+            else if (state == LinphoneCallState.Connected)
+            {
+                Logger.Msg("[LinphoneManager] Connected");
+                BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    Logger.Msg("[LinphoneManager] Connected");
                     if (CallListener != null)
                         CallListener.NewCallStarted(sipAddress);
-                }
-                else if (state == LinphoneCallState.CallEnd || state == LinphoneCallState.Error)
+                });
+            }
+            else if (state == LinphoneCallState.CallEnd || state == LinphoneCallState.Error)
+            {
+                Logger.Msg("[LinphoneManager] Call ended");
+                BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    Logger.Msg("[LinphoneManager] Call ended");
                     if (CallListener != null)
                         CallListener.CallEnded();
-                }
-                else if (state == LinphoneCallState.Paused || state == LinphoneCallState.PausedByRemote)
+                });
+            }
+            else if (state == LinphoneCallState.Paused || state == LinphoneCallState.PausedByRemote)
+            {
+                Logger.Msg("[LinphoneManager] Call paused");
+                BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    Logger.Msg("[LinphoneManager] Call paused");
                     if (CallListener != null)
                         CallListener.PauseStateChanged(true);
-                }
-                else if (state == LinphoneCallState.StreamsRunning)
+                });
+            }
+            else if (state == LinphoneCallState.StreamsRunning)
+            {
+                Logger.Msg("[LinphoneManager] Call running");
+                BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    Logger.Msg("[LinphoneManager] Call running");
                     if (CallListener != null)
                         CallListener.PauseStateChanged(false);
-                }
-                else if (state == LinphoneCallState.Released)
+                });
+            }
+            else if (state == LinphoneCallState.Released)
+            {
+                Logger.Msg("[LinphoneManager] Call released");
+                BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    Logger.Msg("[LinphoneManager] Call released");
                     TileManager.Instance.UpdateTileWithMissedCalls(LinphoneCore.GetMissedCallsCount());
-                }
-            });
+                });
+            }
         }
 
         /// <summary>

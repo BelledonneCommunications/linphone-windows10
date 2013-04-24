@@ -16,6 +16,9 @@ namespace Linphone
 			~ApiLock();
 			void Lock();
 			void Unlock();
+			bool TryLock();
+			void EnterListener();
+			void LeaveListener();
 
 		private:
 			ApiLockPrivate *d;
