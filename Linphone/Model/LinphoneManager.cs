@@ -242,7 +242,7 @@ namespace Linphone.Model
             if ((server.LinphoneCoreFactory != null) && (server.LinphoneCore != null))
             {
                 // Reconnect the listeners when coming back from background mode
-                Logger.Msg("[LinphoneManager] LinphoneCore alread created, skipping");
+                Logger.Msg("[LinphoneManager] LinphoneCore already created, skipping");
 
                 server.LinphoneCore.CoreListener = this;
                 isLinphoneRunning = true;
