@@ -122,6 +122,7 @@
     <Compile Include="Model\ContactManager.cs" />
     <Compile Include="Model\ContactPictureConverter.cs" />
     <Compile Include="Model\Conversation.cs" />
+    <Compile Include="Model\DatabaseManager.cs" />
     <Compile Include="Model\HubTileConverterFix.cs" />
     <Compile Include="Model\LinphoneManager.cs" />
     <Compile Include="Model\Logger.cs" />

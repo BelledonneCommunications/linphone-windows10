@@ -35,12 +35,17 @@ namespace Linphone.Views
         /// </summary>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            base.OnNavigatedTo(e);
+            // Define the query to gather all of the messages.
+            var messagesInDB = from ChatMessage message in DatabaseManager.Instance.Messages select message;
+            // Execute the query and place the results into a collection.
+            List<ChatMessage> messages = new List<ChatMessage>(messagesInDB);
 
             //TODO
             List<Conversation> conversations = new List<Conversation>();
             conversations.Add(new Conversation("sip:pauline@sip.example.org", "Pauline LEPOUTRE", null));
             Conversations.ItemsSource = conversations;
+
+            base.OnNavigatedTo(e);
         }
 
         private void BuildLocalizedApplicationBar()

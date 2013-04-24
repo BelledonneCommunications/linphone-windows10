@@ -30,7 +30,7 @@ void Linphone::Core::LinphoneChatMessage::SetExternalBodyUrl(Platform::String^ u
 
 int64 Linphone::Core::LinphoneChatMessage::GetTime()
 {
-	return linphone_chat_message_get_time(this->message) * 1000; // We need time in milliseconds.
+	return linphone_chat_message_get_time(this->message);
 }
 
 Linphone::Core::LinphoneChatMessageState  Linphone::Core::LinphoneChatMessage::GetState()

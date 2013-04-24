@@ -74,7 +74,30 @@ namespace Linphone.Views
 
                 chatRoom = LinphoneManager.Instance.LinphoneCore.CreateChatRoom(sipAddress);
 
+                // Define the query to gather all of the messages linked to the current contact.
+                var messagesInDB = from message in DatabaseManager.Instance.Messages where (message.LocalContact.Equals(sipAddress) || message.RemoteContact.Equals(sipAddress)) select message;
+                // Execute the query and place the results into a collection.
+                List<ChatMessage> messages = messagesInDB.ToList();
+                DisplayPastMessages(messages);
             }
+        }
+
+        private void DisplayPastMessages(List<ChatMessage> messages)
+        {
+            foreach (var message in messages)
+            {
+                if (message.IsIncoming)
+                {
+                    IncomingChatBubble bubble = new IncomingChatBubble(message.Message, "Past");
+                    MessagesList.Children.Add(bubble);
+                }
+                else
+                {
+                    OutgoingChatBubble bubble = new OutgoingChatBubble(message.Message, "Past");
+                    MessagesList.Children.Add(bubble);
+                }
+            }
+            scrollToBottom();
         }
 
         /// <summary>
@@ -82,6 +105,7 @@ namespace Linphone.Views
         /// </summary>
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
+            DatabaseManager.Instance.SubmitChanges();
             base.OnNavigatingFrom(e);
             LinphoneManager.Instance.MessageListener = null;
         }
@@ -105,6 +129,9 @@ namespace Linphone.Views
         {
             LinphoneChatMessage chatMessage = chatRoom.CreateLinphoneChatMessage(message);
             chatRoom.SendMessage(chatMessage, this);
+
+            ChatMessage msg = new ChatMessage { Message = message, MarkedAsRead=true, IsIncoming=false, RemoteContact=sipAddress, LocalContact="", Timestamp=0 };
+            DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
 
             OutgoingChatBubble bubble = new OutgoingChatBubble(message, "Now");
             MessagesList.Children.Add(bubble);
@@ -144,6 +171,10 @@ namespace Linphone.Views
             {
                 IncomingChatBubble bubble = new IncomingChatBubble(message.GetText(), "Now");
                 MessagesList.Children.Add(bubble);
+
+                ChatMessage msg = new ChatMessage { Message = message.GetText(), MarkedAsRead = true, IsIncoming = true, LocalContact = sipAddress, RemoteContact = "", Timestamp = 0 };
+                DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
+
                 scrollToBottom();
             });
         }

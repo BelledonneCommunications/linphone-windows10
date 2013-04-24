@@ -7,14 +7,6 @@ using System.Threading.Tasks;
 namespace Linphone.Model
 {
     /// <summary>
-    /// Represents a message received or sent.
-    /// </summary>
-    public class ChatMessage
-    {
-
-    }
-
-    /// <summary>
     /// Represents a chat conversation between the user and someone else.
     /// </summary>
     public class Conversation

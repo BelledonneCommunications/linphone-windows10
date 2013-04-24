@@ -80,6 +80,11 @@ namespace Linphone
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
 
+            // Create the message database if it does not exist.
+            if (!DatabaseManager.Instance.DatabaseExists())
+            {
+                DatabaseManager.Instance.CreateDatabase();
+            }
         }
 
         // Code to execute when the application is launching (eg, from Start)
