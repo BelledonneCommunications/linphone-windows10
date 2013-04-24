@@ -438,10 +438,11 @@ namespace Linphone.Model
         /// </summary>
         public void ResumeCurrentCall()
         {
-            if (LinphoneCore.GetCallsNb() > 0)
-            {
-                LinphoneCall call = LinphoneCore.GetCurrentCall();
-                LinphoneCore.ResumeCall(call);
+            foreach (LinphoneCall call in LinphoneCore.GetCalls()) {
+                if (call.GetState() == LinphoneCallState.Paused)
+                {
+                    LinphoneCore.ResumeCall(call);
+                }
             }
         }
 
