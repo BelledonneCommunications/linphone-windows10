@@ -38,7 +38,7 @@ namespace Linphone
 
 			LpConfig^ CreateLpConfig(Platform::String^ configPath, Platform::String^ factoryConfigPath);
 
-			LinphoneAuthInfo^ CreateAuthInfo(Platform::String^ username, Platform::String^ password, Platform::String^ realm);
+			LinphoneAuthInfo^ CreateAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm);
 
 			LinphoneAddress^ CreateLinphoneAddress(Platform::String^ username, Platform::String^ domain, Platform::String^ displayName);
 

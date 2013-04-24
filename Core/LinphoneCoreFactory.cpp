@@ -1,3 +1,4 @@
+#include "LinphoneAuthInfo.h"
 #include "LinphoneCoreFactory.h"
 #include "LinphoneCore.h"
 #include "LinphoneCoreListener.h"
@@ -62,16 +63,23 @@ Linphone::Core::LpConfig^ LinphoneCoreFactory::CreateLpConfig(Platform::String^ 
 	return lpConfig;
 }
 
-Linphone::Core::LinphoneAuthInfo^ LinphoneCoreFactory::CreateAuthInfo(Platform::String^ username, Platform::String^ password, Platform::String^ realm)
+Linphone::Core::LinphoneAuthInfo^ LinphoneCoreFactory::CreateAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm)
 {
-	//TODO
-	return nullptr;
+	gApiLock.Lock();
+	Linphone::Core::LinphoneAuthInfo^ authInfo = dynamic_cast<Linphone::Core::LinphoneAuthInfo^>(Utils::CreateLinphoneAuthInfo(username, userid, password, ha1, realm));
+	gApiLock.Unlock();
+	return authInfo;
 }
 
 Linphone::Core::LinphoneAddress^ LinphoneCoreFactory::CreateLinphoneAddress(Platform::String^ username, Platform::String^ domain, Platform::String^ displayName)
 {
-	//TODO
-	return nullptr;
+	gApiLock.Lock();
+	Linphone::Core::LinphoneAddress^ address = CreateLinphoneAddress("sip:user@domain.com");
+	address->SetUserName(username);
+	address->SetDomain(domain);
+	address->SetDisplayName(displayName);
+	gApiLock.Unlock();
+	return address;
 }
 
 Linphone::Core::LinphoneAddress^ LinphoneCoreFactory::CreateLinphoneAddress(Platform::String^ uri)

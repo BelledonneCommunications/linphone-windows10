@@ -836,9 +836,16 @@ int Linphone::Core::LinphoneCore::GetCallsNb()
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::FindCallFromUri(Platform::String^ uri) 
 {
 	gApiLock.Lock();
-	// TODO
+	const char *curi = Utils::pstoccs(uri);
+	::LinphoneCall *call = const_cast<::LinphoneCall *>(linphone_core_find_call_from_uri(this->lc, curi));
+	Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
+	Linphone::Core::LinphoneCall^ lCall = (proxy) ? proxy->Ref() : nullptr;
+	if (lCall == nullptr) {
+		lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
+	}
+	delete curi;
 	gApiLock.Unlock();
-	return nullptr;
+	return lCall;
 }
 
 int Linphone::Core::LinphoneCore::GetMaxCalls() 

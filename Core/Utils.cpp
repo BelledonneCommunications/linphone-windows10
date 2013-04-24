@@ -93,6 +93,11 @@ Platform::Object^ Linphone::Core::Utils::CreateLinphoneAuthInfo(void* auth_info)
 	return ref new Linphone::Core::LinphoneAuthInfo((::LinphoneAuthInfo *)auth_info);
 }
 
+Platform::Object^ Linphone::Core::Utils::CreateLinphoneAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm)
+{
+	return ref new Linphone::Core::LinphoneAuthInfo(username, userid, password, ha1, realm);
+}
+
 Platform::Object^ Linphone::Core::Utils::CreateLinphoneProxyConfig(void* proxy_config)
 {
 	return ref new Linphone::Core::LinphoneProxyConfig((::LinphoneProxyConfig *)proxy_config);

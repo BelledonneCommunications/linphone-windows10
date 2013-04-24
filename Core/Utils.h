@@ -70,6 +70,11 @@ namespace Linphone
 			/// Creates a C++/CX LinphoneAuthInfo object using pointer to C structure.
 			/// </summary>
 			static Platform::Object^ CreateLinphoneAuthInfo(void* auth_info);
+
+			/// <summary>
+			/// Creates a C++/CX LinphoneAuthInfo object.
+			/// </summary>
+			static Platform::Object^ CreateLinphoneAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm);
 			
 			/// <summary>
 			/// Creates a C++/CX LinphoneProxyConfig object using pointer to C structure.
