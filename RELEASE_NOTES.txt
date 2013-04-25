@@ -16,6 +16,17 @@ If not, right click on Linphone project and choose the menu "Set as StartUp proj
 
 See README.txt file for an explanation about how the project is working.
 
+04-25-2013:
+* Incoming calls are working in background mode but need push notifications to be notified
+* Audio codecs available: ARM-NB, ARM-WB, Speex/16000, Speex/8000, PCMU/8000, PCMA/8000, G722, iLBC, SILK/16000, GSM
+* UDP, TCP and TLS are supported for SIP transport
+* Tunnel support
+* Call pause/resume working correctly
+* DTMF sending method configuration
+* Persistent call history
+* WebRTC echo canceller can be enabled
+* C++/Cx API wrapper completely filled and documented for audio communications
+
 03-29-2013:
 * Outgoing calls are working
 * Incoming calls are working when the app is in foreground
