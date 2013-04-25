@@ -20,24 +20,64 @@ namespace Linphone
 		public ref class LinphoneAuthInfo sealed
 		{
 		public:
+			/// <summary>
+			/// Gets the authentication username.
+			/// </summary>
+			/// <returns>The authentication username</returns>
 			Platform::String^ GetUsername();
 
+			/// <summary>
+			/// Sets the authentication username.
+			/// </summary>
+			/// <param name="username">The authentication username</param>
 			void SetUsername(Platform::String^ username);
 
+			/// <summary>
+			/// Gets the authentication userid.
+			/// </summary>
+			/// <returns>The authentication userid</returns>
 			Platform::String^ GetUserId();
 
+			/// <summary>
+			/// Sets the authentication userid.
+			/// </summary>
+			/// <param name="userid">The authentication userid</param>
 			void SetUserId(Platform::String^ userid);
 
+			/// <summary>
+			/// Gets the authentication password.
+			/// </summary>
+			/// <returns>The authentication password</returns>
 			Platform::String^ GetPassword();
 
+			/// <summary>
+			/// Sets the authentication password.
+			/// </summary>
+			/// <param name="password">The authentication password</param>
 			void SetPassword(Platform::String^ password);
 
+			/// <summary>
+			/// Gets the authentication realm.
+			/// </summary>
+			/// <returns>The authentication realm</returns>
 			Platform::String^ GetRealm();
 
+			/// <summary>
+			/// Sets the authentication realm.
+			/// </summary>
+			/// <param name="realm">The authentication realm</param>
 			void SetRealm(Platform::String^ realm);
 
+			/// <summary>
+			/// Gets the authentication ha1.
+			/// </summary>
+			/// <returns>The authentication ha1</returns>
 			Platform::String^ GetHa1();
 
+			/// <summary>
+			/// Sets the authentication ha1.
+			/// </summary>
+			/// <param name="ha1">The authentication ha1</param>
 			void SetHa1(Platform::String^ ha1);
 
 		private:

@@ -24,16 +24,24 @@ namespace Linphone
 			/// <summary>
 			/// Starts the system incoming call view.
 			/// </summary>
+			/// <param name="call">The incoming LinphoneCall to notify</param>
+			/// <param name="contactName">The display name of the caller</param>
+			/// <param name="contactNumber">The number or SIP URI of the caller</param>
+			/// <param name="incomingCallViewDismissedCallback">The callback to be called if the notified incoming call is dismissed by the user</param>
+			/// <returns>The system VoipPhoneCall that has been notified</returns>
             Windows::Phone::Networking::Voip::VoipPhoneCall^ OnIncomingCallReceived(LinphoneCall^ call, Platform::String^ contactName, Platform::String^ contactNumber, IncomingCallViewDismissedCallback^ incomingCallViewDismissedCallback); 
  
 			/// <summary>
 			/// Terminate the native VoipPhoneCall.
 			/// </summary>
+			/// <param name="call">The VoipPhoneCall to be terminated</param>
 			void EndCall(Windows::Phone::Networking::Voip::VoipPhoneCall^ call);
 
 			/// <summary>
 			/// Starts an outgoing call using native VoipPhoneCall.
 			/// </summary>
+			/// <param name="number">The number of SIP URI to call</param>
+			/// <returns>The system VoipPhoneCall that has been initiated</returns>
 			Windows::Phone::Networking::Voip::VoipPhoneCall^ NewOutgoingCall(Platform::String^ number);
 
 			/// <summary>

@@ -29,45 +29,74 @@ namespace Linphone
 		{
 		public:
 			/// <summary>
-			/// Human display name
+			/// Gets the human display name of the address.
+			/// For example for the "Alice &lt;sip:alice@example.net&gt;" URI, it will return "Alice".
 			/// </summary>
-			/// <returns>
-			/// an empty string if not set
-			/// </returns>
+			/// <returns>The human display name or an empty string if not set</returns>
 			Platform::String^ GetDisplayName();
 
-			/// <returns>
-			/// an empty string if not set
-			/// </returns>
+			/// <summary>
+			/// Gets the username part of the address.
+			/// For example for the "Alice &lt;sip:alice@example.net&gt;" URI, it will return "alice".
+			/// </summary>
+			/// <returns>The username part of the address or an empty string if not set</returns>
 			Platform::String^ GetUserName();
 
-			/// <returns>
-			/// an empty string if not set
-			/// </returns>
+			/// <summary>
+			/// Gets the domain part of the address.
+			/// For example for the "Alice &lt;sip:alice@example.net&gt;" URI, it will return "example.net".
+			/// </summary>
+			/// <returns>The domain part of the address or an empty string if not set</returns>
 			Platform::String^ GetDomain();
 
+			/// <summary>
+			/// Gets the port part of the address.
+			/// </summary>
+			/// <returns>The port part of the address or 0 if not set</returns>
 			int GetPort();
 
+			/// <summary>
+			/// Sets the human display name of the address.
+			/// </summary>
+			/// <param name="name">The human display name to set to the address</param>
 			void SetDisplayName(Platform::String^ name);
+
+			/// <summary>
+			/// Sets the username part of the address.
+			/// </summary>
+			/// <param name="username">The username to set to the address</param>
 			void SetUserName(Platform::String^ username);
+
+			/// <summary>
+			/// Sets the domain part of the address.
+			/// </summary>
+			/// <param name="domain">The domain to set to the address</param>
 			void SetDomain(Platform::String^ domain);
+
+			/// <summary>
+			/// Sets the port part of the address.
+			/// </summary>
+			/// <param name="port">The port to set to the address</param>
 			void SetPort(int port);
 
 			void Clean();
 
-			/// <returns>
-			/// the address as a string
-			/// </returns>
+			/// <summary>
+			/// Gets the string representation of the address.
+			/// </summary>
+			/// <returns>The address as a string</returns>
 			Platform::String^ AsString();
 
-			/// <returns>
-			/// the address without display name as a string
-			/// </returns>
+			/// <summary>
+			/// Gets the string representation of the URI part of the address (without the display name).
+			/// </summary>
+			/// <returns>The address without display name as a string</returns>
 			Platform::String^ AsStringUriOnly();
 
 			/// <summary>
 			/// Same as AsString.
 			/// </summary>
+			/// <seealso cref="AsString()" />
 			Platform::String^ ToString();
 
 		private:

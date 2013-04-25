@@ -1127,8 +1127,7 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 	}
 	
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
-	if (listener != nullptr)
-	{
+	if (listener != nullptr) {
 		listener->CallState(lCall, state);
 	}
 	Linphone::Core::gApiLock.LeaveListener();
@@ -1138,8 +1137,7 @@ void registration_state_changed(::LinphoneCore *lc, ::LinphoneProxyConfig *cfg, 
 {
 	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
-	if (listener != nullptr)
-	{
+	if (listener != nullptr) {
 		Linphone::Core::RegistrationState state = (Linphone::Core::RegistrationState) cstate;
 		Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneProxyConfig^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneProxyConfig^> *>(linphone_proxy_config_get_user_data(cfg));
 		Linphone::Core::LinphoneProxyConfig^ config = (proxy) ? proxy->Ref() : nullptr;
@@ -1152,8 +1150,7 @@ void global_state_changed(::LinphoneCore *lc, ::LinphoneGlobalState gstate, cons
 {
 	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
-	if (listener != nullptr)
-	{
+	if (listener != nullptr) {
 		Linphone::Core::GlobalState state = (Linphone::Core::GlobalState) gstate;
 		listener->GlobalState(state, Linphone::Core::Utils::cctops(msg));
 	}
@@ -1164,9 +1161,63 @@ void auth_info_requested(LinphoneCore *lc, const char *realm, const char *userna
 {
 	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
-	if (listener != nullptr)
-	{
+	if (listener != nullptr) {
 		listener->AuthInfoRequested(Linphone::Core::Utils::cctops(realm), Linphone::Core::Utils::cctops(username));
+	}
+	Linphone::Core::gApiLock.LeaveListener();
+}
+
+void dtmf_received(LinphoneCore *lc, LinphoneCall *call, int dtmf)
+{
+	Linphone::Core::gApiLock.EnterListener();
+	Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
+	Linphone::Core::LinphoneCall^ lCall = (proxy) ? proxy->Ref() : nullptr;
+	if (lCall == nullptr) {
+		lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
+	}
+	if (lCall != nullptr) {
+		Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
+		if (listener != nullptr) {
+			char cdtmf = (char)dtmf;
+			char16 wdtmf;
+			mbtowc(&wdtmf, &cdtmf, 1);
+			listener->DTMFReceived(lCall, wdtmf);
+		}
+	}
+	Linphone::Core::gApiLock.LeaveListener();
+}
+
+void call_encryption_changed(LinphoneCore *lc, LinphoneCall *call, bool_t on, const char *authentication_token)
+{
+	Linphone::Core::gApiLock.EnterListener();
+	Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
+	Linphone::Core::LinphoneCall^ lCall = (proxy) ? proxy->Ref() : nullptr;
+	if (lCall == nullptr) {
+		lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
+	}
+	if (lCall != nullptr) {
+		Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
+		if (listener != nullptr) {
+			listener->CallEncryptionChanged(lCall, (on == TRUE), Linphone::Core::Utils::cctops(authentication_token));
+		}
+	}
+	Linphone::Core::gApiLock.LeaveListener();
+}
+
+void call_stats_updated(LinphoneCore *lc, LinphoneCall *call, const LinphoneCallStats *stats)
+{
+	Linphone::Core::gApiLock.EnterListener();
+	Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
+	Linphone::Core::LinphoneCall^ lCall = (proxy) ? proxy->Ref() : nullptr;
+	if (lCall == nullptr) {
+		lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
+	}
+	Linphone::Core::LinphoneCallStats^ lStats = (Linphone::Core::LinphoneCallStats^)Linphone::Core::Utils::CreateLinphoneCallStats((void *)stats);
+	if ((lCall != nullptr) && (lStats != nullptr)) {
+		Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
+		if (listener != nullptr) {
+			listener->CallStatsUpdated(lCall, lStats);
+		}
 	}
 	Linphone::Core::gApiLock.LeaveListener();
 }
@@ -1193,6 +1244,9 @@ void Linphone::Core::LinphoneCore::Init()
 	vtable->registration_state_changed = registration_state_changed;
 	vtable->call_state_changed = call_state_changed;
 	vtable->auth_info_requested = auth_info_requested;
+	vtable->dtmf_received = dtmf_received;
+	vtable->call_encryption_changed = call_encryption_changed;
+	vtable->call_stats_updated = call_stats_updated;
 
 	this->lc = linphone_core_new_with_config(vtable, config ? config->config : NULL, NULL);
 	RefToPtrProxy<LinphoneCore^> *proxy = new RefToPtrProxy<LinphoneCore^>(this);

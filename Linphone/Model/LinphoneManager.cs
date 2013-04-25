@@ -585,7 +585,7 @@ namespace Linphone.Model
         /// <summary>
         /// Callback for LinphoneCoreListener
         /// </summary>
-        public void DTMFReceived(LinphoneCall call, int dtmf)
+        public void DTMFReceived(LinphoneCall call, Char dtmf)
         {
 
         }

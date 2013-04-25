@@ -84,19 +84,14 @@ Linphone::Core::LinphoneCallStats::LinphoneCallStats(::LinphoneCall *call, Linph
 	} else {
 		stats = linphone_call_get_video_stats(this->call);
 	}
-	this->mediaType = (Linphone::Core::MediaType) stats->type;
-	this->iceState = (Linphone::Core::IceState) stats->ice_state;
-	this->downloadBandwidth = stats->download_bandwidth;
-	this->uploadBandwidth = stats->upload_bandwidth;
-	this->senderLossRate = UpdateSenderLossRate(stats);
-	this->receiverLossRate = UpdateReceiverLossRate(stats);
-	this->senderInterarrivalJitter = UpdateSenderInterarrivalJitter(stats);
-	this->receiverInterarrivalJitter = UpdateReceiverInterarrivalJitter(stats);
-	this->roundTripDelay = stats->round_trip_delay;
-	this->cumulativeLatePackets = UpdateLatePacketsCumulativeNumber(stats);
-	this->jitterBufferSize = stats->jitter_stats.jitter_buffer_size_ms;
-	this->localLossRate = stats->local_loss_rate;
-	this->localLateRate = stats->local_late_rate;
+	FillStats(stats);
+	gApiLock.Unlock();
+}
+
+Linphone::Core::LinphoneCallStats::LinphoneCallStats(::LinphoneCallStats *callStats)
+{
+	gApiLock.Lock();
+	FillStats(callStats);
 	gApiLock.Unlock();
 }
 
@@ -239,4 +234,21 @@ int64 Linphone::Core::LinphoneCallStats::UpdateLatePacketsCumulativeNumber(const
 #endif
 
 	return rtp_stats.outoftime;
+}
+
+void Linphone::Core::LinphoneCallStats::FillStats(const ::LinphoneCallStats *stats)
+{
+	this->mediaType = (Linphone::Core::MediaType) stats->type;
+	this->iceState = (Linphone::Core::IceState) stats->ice_state;
+	this->downloadBandwidth = stats->download_bandwidth;
+	this->uploadBandwidth = stats->upload_bandwidth;
+	this->senderLossRate = UpdateSenderLossRate(stats);
+	this->receiverLossRate = UpdateReceiverLossRate(stats);
+	this->senderInterarrivalJitter = UpdateSenderInterarrivalJitter(stats);
+	this->receiverInterarrivalJitter = UpdateReceiverInterarrivalJitter(stats);
+	this->roundTripDelay = stats->round_trip_delay;
+	this->cumulativeLatePackets = UpdateLatePacketsCumulativeNumber(stats);
+	this->jitterBufferSize = stats->jitter_stats.jitter_buffer_size_ms;
+	this->localLossRate = stats->local_loss_rate;
+	this->localLateRate = stats->local_late_rate;
 }

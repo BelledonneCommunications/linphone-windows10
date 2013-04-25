@@ -118,6 +118,11 @@ Platform::Object^ Linphone::Core::Utils::CreateLinphoneCallStats(void* call, int
 	return ref new Linphone::Core::LinphoneCallStats((::LinphoneCall *)call, (Linphone::Core::MediaType)mediaType);
 }
 
+Platform::Object^ Linphone::Core::Utils::CreateLinphoneCallStats(void *callStats)
+{
+	return ref new Linphone::Core::LinphoneCallStats((::LinphoneCallStats *)callStats);
+}
+
 void Linphone::Core::Utils::EchoCalibrationCallback(void *lc, int status, int delay_ms, void *data)
 {
 	gApiLock.Lock();

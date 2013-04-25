@@ -21,24 +21,51 @@ namespace Linphone
 		public ref class TunnelConfig sealed
 		{
 		public:
+			/// <summary>
+			/// Constructs a TunnelConfig.
+			/// </summary>
+			/// <param name="host">The tunnel server host</param>
+			/// <param name="port">The tunnel server port</param>
+			/// <param name="udpMirrorPort">The tunnel server UDP mirror port</param>
+			/// <param name="roundTripDelay">The round trip delay</param>
 			TunnelConfig(Platform::String^ host, int port, int udpMirrorPort, int roundTripDelay);
+
+			/// <summary>
+			/// Gets a string representation of the TunnelConfig.
+			/// </summary>
+			/// <returns>The string representation of the tunnel config</returns>
 			Platform::String^ ToString();
 
+			/// <summary>
+			/// The tunnel server host.
+			/// </summary>
 			property Platform::String^ Host
             {
                 Platform::String^ get();
 				void set(Platform::String^ value);
             }
+
+			/// <summary>
+			/// The tunnel server port.
+			/// </summary>
 			property int Port
 			{
 				int get();
 				void set(int value);
 			}
+
+			/// <summary>
+			/// The tunnel server UDP mirror port.
+			/// </summary>
 			property int UdpMirrorPort
 			{
 				int get();
 				void set(int value);
 			}
+
+			/// <summary>
+			/// The round trip delay.
+			/// </summary>
 			property int RoundTripDelay
 			{
 				int get();
@@ -62,11 +89,13 @@ namespace Linphone
 			/// <summary>
 			/// Tells whether the tunnel is enabled or not.
 			/// </summary>
+			/// <returns>A boolean value telling whether the tunnel is enabled</returns>
 			bool IsEnabled();
 
 			/// <summary>
 			/// Enable/disable the tunnel.
 			/// </summary>
+			/// <param name="enable">A boolean telling if the tunnel is to be enabled or not</param>
 			void Enable(Platform::Boolean enable);
 
 			/// <summary>
@@ -77,6 +106,7 @@ namespace Linphone
 			/// <summary>
 			/// Returns an IList&lt;Object&gt; where each object is a TunnelConfig.
 			/// </summary>
+			/// <returns>A list of TunnelConfig</returns>
 			Windows::Foundation::Collections::IVector<Platform::Object^>^ GetServers();
 
 			/// <summary>
@@ -86,11 +116,11 @@ namespace Linphone
 
 			/// <summary>
 			/// Set an optional http proxy to go through when connecting to tunnel server.
+			/// </summary>
 			/// <param name="host">Http proxy host</param>
 			/// <param name="port">Http proxy port</param>
 			/// <param name="username">Optional http proxy username if the proxy request authentication. Currently only basic authentication is supported. Use null if not needed.</param>
 			/// <param name="password">Optional http proxy password. Use null if not needed.</param>
-			/// </summary>
 			void SetHttpProxy(Platform::String^ host, int port, Platform::String^ username, Platform::String^ password);
 
 			/// <summary>

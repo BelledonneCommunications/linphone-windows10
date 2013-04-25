@@ -4,6 +4,9 @@ namespace Linphone
 {
 	namespace Core
 	{
+		/// <summary>
+		/// Presence statuses.
+		/// </summary>
 		public enum class OnlineStatus : int
 		{
 			Offline = 0,
@@ -19,6 +22,9 @@ namespace Linphone
 			Pending = 10
 		};
 
+		/// <summary>
+		/// Direction of a call, either Outgoing or Incoming.
+		/// </summary>
 		public enum class CallDirection : int
 		{
 			Outgoing, 
@@ -48,6 +54,9 @@ namespace Linphone
 			RegistrationFailed = 4
 		};
 
+		/// <summary>
+		/// Types of media encryption.
+		/// </summary>
 		public enum class MediaEncryption : int
 		{
 			None = 0,
@@ -55,6 +64,9 @@ namespace Linphone
 			ZRTP = 2
 		};
 
+		/// <summary>
+		/// Policy to use to work around the issues caused by NAT (Network Address Translation).
+		/// </summary>
 		public enum class FirewallPolicy : int
 		{
 			NoFirewall = 0,
@@ -63,6 +75,9 @@ namespace Linphone
 			UseIce = 3
 		};
 
+		/// <summary>
+		/// Statuses of the echo canceller calibration process.
+		/// </summary>
 		public enum class EcCalibratorStatus : int
 		{
 			InProgress = 0,

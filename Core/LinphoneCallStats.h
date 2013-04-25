@@ -109,6 +109,7 @@ namespace Linphone
 			friend ref class Linphone::Core::LinphoneCore;
 
 			LinphoneCallStats(::LinphoneCall *call, Linphone::Core::MediaType mediaType);
+			LinphoneCallStats(::LinphoneCallStats *callStats);
 			~LinphoneCallStats();
 
 			float Linphone::Core::LinphoneCallStats::UpdateSenderLossRate(const ::LinphoneCallStats *stats);
@@ -116,6 +117,7 @@ namespace Linphone
 			float Linphone::Core::LinphoneCallStats::UpdateSenderInterarrivalJitter(const ::LinphoneCallStats *stats);
 			float Linphone::Core::LinphoneCallStats::UpdateReceiverInterarrivalJitter(const ::LinphoneCallStats *stats);
 			int64 Linphone::Core::LinphoneCallStats::UpdateLatePacketsCumulativeNumber(const ::LinphoneCallStats *stats);
+			void Linphone::Core::LinphoneCallStats::FillStats(const ::LinphoneCallStats *stats);
 
 			::LinphoneCall *call;
 			MediaType mediaType;
