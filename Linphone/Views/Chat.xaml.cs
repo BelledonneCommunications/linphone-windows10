@@ -148,8 +148,11 @@ namespace Linphone.Views
 
         private void send_Click_1(object sender, EventArgs e)
         {
-            SendMessage(MessageBox.Text);
-            MessageBox.Reset();
+            if (MessageBox.Text != null && MessageBox.Text.Length > 0)
+            {
+                SendMessage(MessageBox.Text);
+                MessageBox.Reset();
+            }
         }
 
         private void BuildLocalizedApplicationBar()
