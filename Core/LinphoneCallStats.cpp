@@ -1,3 +1,4 @@
+#include "ApiLock.h"
 #include "LinphoneCallStats.h"
 #include "LinphoneCall.h"
 #include "Server.h"
@@ -5,25 +6,103 @@
 
 Linphone::Core::MediaType Linphone::Core::LinphoneCallStats::GetMediaType()
 {
-	return (Linphone::Core::MediaType) this->stats->type;
+	return this->mediaType;
 }
 
 Linphone::Core::IceState Linphone::Core::LinphoneCallStats::GetIceState()
 {
-	return (Linphone::Core::IceState) this->stats->ice_state;
+	return this->iceState;
 }
 
 float Linphone::Core::LinphoneCallStats::GetDownloadBandwidth()
 {
-	return this->stats->download_bandwidth;
+	return this->downloadBandwidth;
 }
 
 float Linphone::Core::LinphoneCallStats::GetUploadBandwidth()
 {
-	return this->stats->upload_bandwidth;
+	return this->uploadBandwidth;
 }
 
 float Linphone::Core::LinphoneCallStats::GetSenderLossRate()
+{
+	return this->senderLossRate;
+}
+
+float Linphone::Core::LinphoneCallStats::GetReceiverLossRate()
+{
+	return this->receiverLossRate;
+}
+
+float Linphone::Core::LinphoneCallStats::GetSenderInterarrivalJitter()
+{
+	return this->senderInterarrivalJitter;
+}
+
+float Linphone::Core::LinphoneCallStats::GetReceiverInterarrivalJitter()
+{
+	return this->receiverInterarrivalJitter;
+}
+
+float Linphone::Core::LinphoneCallStats::GetRoundTripDelay()
+{
+	return this->roundTripDelay;
+}
+
+int64 Linphone::Core::LinphoneCallStats::GetLatePacketsCumulativeNumber()
+{
+	return this->cumulativeLatePackets;
+}
+
+float Linphone::Core::LinphoneCallStats::GetJitterBufferSize()
+{
+	return this->jitterBufferSize;
+}
+
+float Linphone::Core::LinphoneCallStats::GetLocalLossRate()
+{
+	return this->localLossRate;
+}
+
+float Linphone::Core::LinphoneCallStats::GetLocalLateRate()
+{
+	return this->localLateRate;
+}
+
+Linphone::Core::LinphoneCallStats::LinphoneCallStats(::LinphoneCall *call, Linphone::Core::MediaType mediaType) :
+	call(call)
+{
+	gApiLock.Lock();
+	const ::LinphoneCallStats *stats = nullptr;
+	if (mediaType == MediaType::Audio) {
+		stats = linphone_call_get_audio_stats(this->call);
+	} else {
+		stats = linphone_call_get_video_stats(this->call);
+	}
+	this->mediaType = (Linphone::Core::MediaType) stats->type;
+	this->iceState = (Linphone::Core::IceState) stats->ice_state;
+	this->downloadBandwidth = stats->download_bandwidth;
+	this->uploadBandwidth = stats->upload_bandwidth;
+	this->senderLossRate = UpdateSenderLossRate(stats);
+	this->receiverLossRate = UpdateReceiverLossRate(stats);
+	this->senderInterarrivalJitter = UpdateSenderInterarrivalJitter(stats);
+	this->receiverInterarrivalJitter = UpdateReceiverInterarrivalJitter(stats);
+	this->roundTripDelay = stats->round_trip_delay;
+	this->cumulativeLatePackets = UpdateLatePacketsCumulativeNumber(stats);
+	this->jitterBufferSize = stats->jitter_stats.jitter_buffer_size_ms;
+	this->localLossRate = stats->local_loss_rate;
+	this->localLateRate = stats->local_late_rate;
+	gApiLock.Unlock();
+}
+
+Linphone::Core::LinphoneCallStats::~LinphoneCallStats()
+{
+	
+}
+
+
+
+float Linphone::Core::LinphoneCallStats::UpdateSenderLossRate(const ::LinphoneCallStats *stats)
 {
 	const report_block_t *srb = NULL;
 
@@ -42,10 +121,10 @@ float Linphone::Core::LinphoneCallStats::GetSenderLossRate()
 	if (!srb)
 		return 0.0;
 
-	return (100.0 * report_block_get_fraction_lost(srb) / 256.0);
+	return (100.0f * report_block_get_fraction_lost(srb) / 256.0f);
 }
 
-float Linphone::Core::LinphoneCallStats::GetReceiverLossRate()
+float Linphone::Core::LinphoneCallStats::UpdateReceiverLossRate(const ::LinphoneCallStats *stats)
 {
 	const report_block_t* rrb = NULL;
 
@@ -64,10 +143,10 @@ float Linphone::Core::LinphoneCallStats::GetReceiverLossRate()
 	if (!rrb)
 		return 0.0;
 
-	return (100.0 * report_block_get_fraction_lost(rrb) / 256.0);
+	return (100.0f * report_block_get_fraction_lost(rrb) / 256.0f);
 }
 
-float Linphone::Core::LinphoneCallStats::GetSenderInterarrivalJitter()
+float Linphone::Core::LinphoneCallStats::UpdateSenderInterarrivalJitter(const ::LinphoneCallStats *stats)
 {
 	const ::LinphoneCallParams* params;
 	const ::PayloadType* pt;
@@ -103,7 +182,7 @@ float Linphone::Core::LinphoneCallStats::GetSenderInterarrivalJitter()
 	return ((float)report_block_get_interarrival_jitter(srb) / (float)pt->clock_rate);
 }
 
-float Linphone::Core::LinphoneCallStats::GetReceiverInterarrivalJitter()
+float Linphone::Core::LinphoneCallStats::UpdateReceiverInterarrivalJitter(const ::LinphoneCallStats *stats)
 {
 	const ::LinphoneCallParams* params;
 	const ::PayloadType* pt;
@@ -139,12 +218,7 @@ float Linphone::Core::LinphoneCallStats::GetReceiverInterarrivalJitter()
 	return ((float)report_block_get_interarrival_jitter(rrb) / (float)pt->clock_rate);
 }
 
-float Linphone::Core::LinphoneCallStats::GetRoundTripDelay()
-{
-	return this->stats->round_trip_delay;
-}
-
-int64 Linphone::Core::LinphoneCallStats::GetLatePacketsCumulativeNumber()
+int64 Linphone::Core::LinphoneCallStats::UpdateLatePacketsCumulativeNumber(const ::LinphoneCallStats *stats)
 {
 	rtp_stats_t rtp_stats;
 
@@ -161,31 +235,3 @@ int64 Linphone::Core::LinphoneCallStats::GetLatePacketsCumulativeNumber()
 
 	return rtp_stats.outoftime;
 }
-
-float Linphone::Core::LinphoneCallStats::GetJitterBufferSize()
-{
-	return this->stats->jitter_stats.jitter_buffer_size_ms;
-}
-
-float Linphone::Core::LinphoneCallStats::GetLocalLossRate()
-{
-	return this->stats->local_loss_rate;
-}
-
-float Linphone::Core::LinphoneCallStats::GetLocalLateRate()
-{
-	return this->stats->local_late_rate;
-}
-
-Linphone::Core::LinphoneCallStats::LinphoneCallStats(::LinphoneCallStats *call_stats, ::LinphoneCall *call) :
-	stats(call_stats),
-	call(call)
-{
-
-}
-
-Linphone::Core::LinphoneCallStats::~LinphoneCallStats()
-{
-	
-}
-

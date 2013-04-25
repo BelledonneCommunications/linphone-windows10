@@ -46,7 +46,7 @@ Linphone::Core::LinphoneCallLog^ Linphone::Core::LinphoneCall::GetCallLog()
 Linphone::Core::LinphoneCallStats^ Linphone::Core::LinphoneCall::GetAudioStats()
 {
 	gApiLock.Lock();
-	Linphone::Core::LinphoneCallStats^ stats = (Linphone::Core::LinphoneCallStats^) Linphone::Core::Utils::CreateLinphoneCallStats((void*) linphone_call_get_audio_stats(this->call), this->call);
+	Linphone::Core::LinphoneCallStats^ stats = (Linphone::Core::LinphoneCallStats^) Linphone::Core::Utils::CreateLinphoneCallStats(this->call, (int)Linphone::Core::MediaType::Audio);
 	gApiLock.Unlock();
 	return stats;
 }

@@ -94,7 +94,7 @@ namespace Linphone
 			/// <summary>
 			/// Creates a C++/CX LinphoneCallStats object using pointer to C structure.
 			/// </summary>
-			static Platform::Object^ CreateLinphoneCallStats(void* callStats, void* call);
+			static Platform::Object^ CreateLinphoneCallStats(void* call, int mediaType);
 
 			static void EchoCalibrationCallback(void *lc, int status, int delay_ms, void *data);
 

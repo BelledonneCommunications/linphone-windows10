@@ -113,9 +113,9 @@ Platform::Object^ Linphone::Core::Utils::CreateLinphoneCallParams(void* callPara
 	return ref new Linphone::Core::LinphoneCallParams((::LinphoneCallParams *)callParams);
 }
 
-Platform::Object^ Linphone::Core::Utils::CreateLinphoneCallStats(void* callStats, void* call)
+Platform::Object^ Linphone::Core::Utils::CreateLinphoneCallStats(void* call, int mediaType)
 {
-	return ref new Linphone::Core::LinphoneCallStats((::LinphoneCallStats *)callStats, (::LinphoneCall *)call);
+	return ref new Linphone::Core::LinphoneCallStats((::LinphoneCall *)call, (Linphone::Core::MediaType)mediaType);
 }
 
 void Linphone::Core::Utils::EchoCalibrationCallback(void *lc, int status, int delay_ms, void *data)
