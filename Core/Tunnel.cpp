@@ -78,7 +78,7 @@ Linphone::Core::Tunnel::~Tunnel()
 Platform::Boolean Linphone::Core::Tunnel::IsEnabled()
 {
 	gApiLock.Lock();
-	Platform::Boolean enabled = linphone_tunnel_enabled(this->lt);
+	Platform::Boolean enabled = (linphone_tunnel_enabled(this->lt) == TRUE);
 	gApiLock.Unlock();
 	return enabled;
 }

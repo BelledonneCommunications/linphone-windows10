@@ -283,7 +283,7 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::GetCurrentCall()
 Platform::Boolean Linphone::Core::LinphoneCore::IsInCall() 
 {
 	gApiLock.Lock();
-	Platform::Boolean inCall = linphone_core_in_call(this->lc);
+	Platform::Boolean inCall = (linphone_core_in_call(this->lc) == TRUE);
 	gApiLock.Unlock();
 	return inCall;
 }
@@ -291,7 +291,7 @@ Platform::Boolean Linphone::Core::LinphoneCore::IsInCall()
 Platform::Boolean Linphone::Core::LinphoneCore::IsIncomingInvitePending() 
 {
 	gApiLock.Lock();
-	Platform::Boolean invitePending = linphone_core_inc_invite_pending(this->lc);
+	Platform::Boolean invitePending = (linphone_core_inc_invite_pending(this->lc) == TRUE);
 	gApiLock.Unlock();
 	return invitePending;
 }
@@ -384,7 +384,7 @@ void Linphone::Core::LinphoneCore::SetNetworkReachable(Platform::Boolean isReach
 Platform::Boolean Linphone::Core::LinphoneCore::IsNetworkReachable() 
 {
 	gApiLock.Lock();
-	Platform::Boolean networkReachable = linphone_core_is_network_reachable(this->lc);
+	Platform::Boolean networkReachable = (linphone_core_is_network_reachable(this->lc) == TRUE);
 	gApiLock.Unlock();
 	return networkReachable;
 }
@@ -436,7 +436,7 @@ void Linphone::Core::LinphoneCore::MuteMic(Platform::Boolean isMuted)
 Platform::Boolean Linphone::Core::LinphoneCore::IsMicMuted() 
 {
 	gApiLock.Lock();
-	Platform::Boolean muted = linphone_core_is_mic_muted(this->lc);
+	Platform::Boolean muted = (linphone_core_is_mic_muted(this->lc) == TRUE);
 	gApiLock.Unlock();
 	return muted;
 }
@@ -444,14 +444,20 @@ Platform::Boolean Linphone::Core::LinphoneCore::IsMicMuted()
 void Linphone::Core::LinphoneCore::SendDTMF(char16 number) 
 {
 	gApiLock.Lock();
-	linphone_core_send_dtmf(this->lc, number);
+	char conv[4];
+	if (wctomb(conv, number) == 1) {
+		linphone_core_send_dtmf(this->lc, conv[0]);
+	}
 	gApiLock.Unlock();
 }
 
 void Linphone::Core::LinphoneCore::PlayDTMF(char16 number, int duration) 
 {
 	gApiLock.Lock();
-	linphone_core_play_dtmf(this->lc, number, duration);
+	char conv[4];
+	if (wctomb(conv, number) == 1) {
+		linphone_core_play_dtmf(this->lc, conv[0], duration);
+	}
 	gApiLock.Unlock();
 }
 
@@ -488,7 +494,7 @@ bool Linphone::Core::LinphoneCore::PayloadTypeEnabled(PayloadType^ pt)
 {
 	gApiLock.Lock();
 	::PayloadType *payload = pt->payload;
-	bool enabled = linphone_core_payload_type_enabled(this->lc, payload);
+	bool enabled = (linphone_core_payload_type_enabled(this->lc, payload) == TRUE);
 	gApiLock.Unlock();
 	return enabled;
 }
@@ -532,7 +538,7 @@ void Linphone::Core::LinphoneCore::EnableEchoCancellation(Platform::Boolean enab
 Platform::Boolean Linphone::Core::LinphoneCore::IsEchoCancellationEnabled() 
 {
 	gApiLock.Lock();
-	Platform::Boolean enabled = linphone_core_echo_cancellation_enabled(this->lc);
+	Platform::Boolean enabled = (linphone_core_echo_cancellation_enabled(this->lc) == TRUE);
 	gApiLock.Unlock();
 	return enabled;
 }
@@ -540,7 +546,7 @@ Platform::Boolean Linphone::Core::LinphoneCore::IsEchoCancellationEnabled()
 Platform::Boolean Linphone::Core::LinphoneCore::IsEchoLimiterEnabled() 
 {
 	gApiLock.Lock();
-	Platform::Boolean enabled = linphone_core_echo_limiter_enabled(this->lc);
+	Platform::Boolean enabled = (linphone_core_echo_limiter_enabled(this->lc) == TRUE);
 	gApiLock.Unlock();
 	return enabled;
 }
@@ -699,7 +705,7 @@ void Linphone::Core::LinphoneCore::EnableKeepAlive(Platform::Boolean enable)
 Platform::Boolean Linphone::Core::LinphoneCore::IsKeepAliveEnabled() 
 {
 	gApiLock.Lock();
-	Platform::Boolean enabled = linphone_core_keep_alive_enabled(this->lc);
+	Platform::Boolean enabled = (linphone_core_keep_alive_enabled(this->lc) == TRUE);
 	gApiLock.Unlock();
 	return enabled;
 }
@@ -716,7 +722,7 @@ void Linphone::Core::LinphoneCore::SetPlayFile(Platform::String^ path)
 Platform::Boolean Linphone::Core::LinphoneCore::PauseCall(LinphoneCall^ call) 
 {
 	gApiLock.Lock();
-	Platform::Boolean ok = linphone_core_pause_call(this->lc, call->call);
+	Platform::Boolean ok = (linphone_core_pause_call(this->lc, call->call) == 0);
 	gApiLock.Unlock();
 	return ok;
 }
@@ -724,7 +730,7 @@ Platform::Boolean Linphone::Core::LinphoneCore::PauseCall(LinphoneCall^ call)
 Platform::Boolean Linphone::Core::LinphoneCore::ResumeCall(LinphoneCall^ call) 
 {
 	gApiLock.Lock();
-	Platform::Boolean ok = linphone_core_resume_call(this->lc, call->call);
+	Platform::Boolean ok = (linphone_core_resume_call(this->lc, call->call) == 0);
 	gApiLock.Unlock();
 	return ok;
 }
@@ -732,7 +738,7 @@ Platform::Boolean Linphone::Core::LinphoneCore::ResumeCall(LinphoneCall^ call)
 Platform::Boolean Linphone::Core::LinphoneCore::PauseAllCalls() 
 {
 	gApiLock.Lock();
-	Platform::Boolean ok = linphone_core_pause_all_calls(this->lc);
+	Platform::Boolean ok = (linphone_core_pause_all_calls(this->lc) == 0);
 	gApiLock.Unlock();
 	return ok;
 }
@@ -740,7 +746,7 @@ Platform::Boolean Linphone::Core::LinphoneCore::PauseAllCalls()
 Platform::Boolean Linphone::Core::LinphoneCore::IsInConference() 
 {
 	gApiLock.Lock();
-	Platform::Boolean inConference = linphone_core_is_in_conference(this->lc);
+	Platform::Boolean inConference = (linphone_core_is_in_conference(this->lc) == TRUE);
 	gApiLock.Unlock();
 	return inConference;
 }
@@ -748,7 +754,7 @@ Platform::Boolean Linphone::Core::LinphoneCore::IsInConference()
 Platform::Boolean Linphone::Core::LinphoneCore::EnterConference() 
 {
 	gApiLock.Lock();
-	Platform::Boolean ok = linphone_core_enter_conference(this->lc);
+	Platform::Boolean ok = (linphone_core_enter_conference(this->lc) == 0);
 	gApiLock.Unlock();
 	return ok;
 }
@@ -878,7 +884,7 @@ Platform::Boolean Linphone::Core::LinphoneCore::IsMyself(Platform::String^ uri)
 Platform::Boolean Linphone::Core::LinphoneCore::IsSoundResourcesLocked() 
 {
 	gApiLock.Lock();
-	Platform::Boolean locked = linphone_core_sound_resources_locked(this->lc);
+	Platform::Boolean locked = (linphone_core_sound_resources_locked(this->lc) == TRUE);
 	gApiLock.Unlock();
 	return locked;
 }
@@ -886,7 +892,7 @@ Platform::Boolean Linphone::Core::LinphoneCore::IsSoundResourcesLocked()
 Platform::Boolean Linphone::Core::LinphoneCore::IsMediaEncryptionSupported(MediaEncryption menc) 
 {
 	gApiLock.Lock();
-	Platform::Boolean supported = linphone_core_media_encryption_supported(this->lc, (LinphoneMediaEncryption) menc);
+	Platform::Boolean supported = (linphone_core_media_encryption_supported(this->lc, (LinphoneMediaEncryption) menc) == TRUE);
 	gApiLock.Unlock();
 	return supported;
 }
@@ -916,7 +922,7 @@ void Linphone::Core::LinphoneCore::SetMediaEncryptionMandatory(Platform::Boolean
 Platform::Boolean Linphone::Core::LinphoneCore::IsMediaEncryptionMandatory() 
 {
 	gApiLock.Lock();
-	Platform::Boolean mandatory = linphone_core_is_media_encryption_mandatory(this->lc);
+	Platform::Boolean mandatory = (linphone_core_is_media_encryption_mandatory(this->lc) == TRUE);
 	gApiLock.Unlock();
 	return mandatory;
 }
@@ -924,7 +930,7 @@ Platform::Boolean Linphone::Core::LinphoneCore::IsMediaEncryptionMandatory()
 Platform::Boolean Linphone::Core::LinphoneCore::IsTunnelAvailable() 
 {
 	gApiLock.Lock();
-	Platform::Boolean available = linphone_core_tunnel_available();
+	Platform::Boolean available = (linphone_core_tunnel_available() == TRUE);
 	gApiLock.Unlock();
 	return available;
 }
@@ -1037,7 +1043,7 @@ void Linphone::Core::LinphoneCore::SetPrimaryContact(Platform::String^ displayNa
 Platform::Boolean Linphone::Core::LinphoneCore::GetUseSipInfoForDTMFs() 
 {
 	gApiLock.Lock();
-	Platform::Boolean use = linphone_core_get_use_info_for_dtmf(this->lc);
+	Platform::Boolean use = (linphone_core_get_use_info_for_dtmf(this->lc) == TRUE);
 	gApiLock.Unlock();
 	return use;
 }
@@ -1045,7 +1051,7 @@ Platform::Boolean Linphone::Core::LinphoneCore::GetUseSipInfoForDTMFs()
 Platform::Boolean Linphone::Core::LinphoneCore::GetUseRFC2833ForDTMFs() 
 {
 	gApiLock.Lock();
-	Platform::Boolean use = linphone_core_get_use_rfc2833_for_dtmf(this->lc);
+	Platform::Boolean use = (linphone_core_get_use_rfc2833_for_dtmf(this->lc) == TRUE);
 	gApiLock.Unlock();
 	return use;
 }

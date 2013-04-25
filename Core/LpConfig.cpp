@@ -4,7 +4,7 @@
 
 bool Linphone::Core::LpConfig::GetBool(Platform::String^ section, Platform::String^ key, bool defaultValue)
 {
-	return GetInt(section, key, defaultValue);
+	return (GetInt(section, key, defaultValue) == TRUE);
 }
 
 void Linphone::Core::LpConfig::SetBool(Platform::String^ section, Platform::String^ key, bool value)
@@ -35,7 +35,7 @@ void Linphone::Core::LpConfig::SetInt(Platform::String^ section, Platform::Strin
 	gApiLock.Unlock();
 }
 
-int Linphone::Core::LpConfig::GetInt64(Platform::String^ section, Platform::String^ key, int64 defaultValue)
+int64 Linphone::Core::LpConfig::GetInt64(Platform::String^ section, Platform::String^ key, int64 defaultValue)
 {
 	gApiLock.Lock();
 	const char *ccSection = Linphone::Core::Utils::pstoccs(section);

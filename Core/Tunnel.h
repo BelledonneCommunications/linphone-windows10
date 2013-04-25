@@ -2,7 +2,12 @@
 
 #include "Enums.h"
 #include "Utils.h"
+
+// Do not treat doxygen documentation as XML
+#pragma warning(push)
+#pragma warning(disable : 4635)
 #include "coreapi\linphone_tunnel.h"
+#pragma warning(pop)
 
 namespace Linphone
 {

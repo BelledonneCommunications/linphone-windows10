@@ -1,5 +1,11 @@
 #include "ApiLock.h"
+
+// Do not treat doxygen documentation as XML
+#pragma warning(push)
+#pragma warning(disable : 4635)
 #include "belle-sip/object.h"
+#pragma warning(pop)
+
 #include <mutex>
 
 namespace Linphone

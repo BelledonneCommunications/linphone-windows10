@@ -43,7 +43,7 @@ void Linphone::Core::LinphoneCallParams::EnableLowBandwidth(Platform::Boolean en
 Platform::Boolean Linphone::Core::LinphoneCallParams::IsLowBandwidthEnabled()
 {
 	gApiLock.Lock();
-	Platform::Boolean enabled = linphone_call_params_low_bandwidth_enabled(this->params);
+	Platform::Boolean enabled = (linphone_call_params_low_bandwidth_enabled(this->params) == TRUE);
 	gApiLock.Unlock();
 	return enabled;
 }

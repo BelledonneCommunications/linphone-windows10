@@ -48,7 +48,7 @@ namespace Linphone
 			/// <summary>
 			/// Gets a 64 bit integer configuration item.
 			/// </summary>
-			int GetInt64(Platform::String^ section, Platform::String^ key, int64 defaultValue);
+			int64 GetInt64(Platform::String^ section, Platform::String^ key, int64 defaultValue);
 
 			/// <summary>
 			/// Sets a 64 bit integer configuration item.

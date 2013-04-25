@@ -80,7 +80,7 @@ void Linphone::Core::LinphoneCall::EnableEchoCancellation(Platform::Boolean enab
 Platform::Boolean Linphone::Core::LinphoneCall::IsEchoCancellationEnabled()
 {
 	gApiLock.Lock();
-	Platform::Boolean enabled = linphone_call_echo_cancellation_enabled(this->call);
+	Platform::Boolean enabled = (linphone_call_echo_cancellation_enabled(this->call) == TRUE);
 	gApiLock.Unlock();
 	return enabled;
 }
@@ -95,7 +95,7 @@ void Linphone::Core::LinphoneCall::EnableEchoLimiter(Platform::Boolean enable)
 Platform::Boolean Linphone::Core::LinphoneCall::IsEchoLimiterEnabled()
 {
 	gApiLock.Lock();
-	Platform::Boolean enabled = linphone_call_echo_limiter_enabled(this->call);
+	Platform::Boolean enabled = (linphone_call_echo_limiter_enabled(this->call) == TRUE);
 	gApiLock.Unlock();
 	return enabled;
 }
@@ -135,7 +135,7 @@ Platform::String^ Linphone::Core::LinphoneCall::GetAuthenticationToken()
 Platform::Boolean Linphone::Core::LinphoneCall::IsAuthenticationTokenVerified()
 {
 	gApiLock.Lock();
-	Platform::Boolean verified = linphone_call_get_authentication_token_verified(this->call);
+	Platform::Boolean verified = (linphone_call_get_authentication_token_verified(this->call) == TRUE);
 	gApiLock.Unlock();
 	return verified;
 }
@@ -150,7 +150,7 @@ void Linphone::Core::LinphoneCall::SetAuthenticationTokenVerified(Platform::Bool
 Platform::Boolean Linphone::Core::LinphoneCall::IsInConference()
 {
 	gApiLock.Lock();
-	Platform::Boolean inConference = linphone_call_is_in_conference(this->call);
+	Platform::Boolean inConference = (linphone_call_is_in_conference(this->call) == TRUE);
 	gApiLock.Unlock();
 	return inConference;
 }

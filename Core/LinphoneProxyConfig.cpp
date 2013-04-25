@@ -66,7 +66,7 @@ void Linphone::Core::LinphoneProxyConfig::EnableRegister(Platform::Boolean enabl
 Platform::Boolean Linphone::Core::LinphoneProxyConfig::IsRegisterEnabled()
 {
 	gApiLock.Lock();
-	Platform::Boolean enabled = linphone_proxy_config_register_enabled(this->proxy_config);
+	Platform::Boolean enabled = (linphone_proxy_config_register_enabled(this->proxy_config) == TRUE);
 	gApiLock.Unlock();
 	return enabled;
 }
@@ -120,7 +120,7 @@ Platform::String^ Linphone::Core::LinphoneProxyConfig::GetDomain()
 Platform::Boolean Linphone::Core::LinphoneProxyConfig::IsRegistered()
 {
 	gApiLock.Lock();
-	Platform::Boolean registered = linphone_proxy_config_is_registered(this->proxy_config);
+	Platform::Boolean registered = (linphone_proxy_config_is_registered(this->proxy_config) == TRUE);
 	gApiLock.Unlock();
 	return registered;
 }
@@ -152,7 +152,7 @@ void Linphone::Core::LinphoneProxyConfig::EnablePublish(Platform::Boolean enable
 Platform::Boolean Linphone::Core::LinphoneProxyConfig::IsPublishEnabled()
 {
 	gApiLock.Lock();
-	Platform::Boolean enabled = linphone_proxy_config_publish_enabled(this->proxy_config);
+	Platform::Boolean enabled = (linphone_proxy_config_publish_enabled(this->proxy_config) == TRUE);
 	gApiLock.Unlock();
 	return enabled;
 }

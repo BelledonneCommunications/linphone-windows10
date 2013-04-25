@@ -2,7 +2,12 @@
 #include "LinphoneCallStats.h"
 #include "LinphoneCall.h"
 #include "Server.h"
+
+// Do not treat doxygen documentation as XML
+#pragma warning(push)
+#pragma warning(disable : 4635)
 #include "coreapi\private.h"
+#pragma warning(pop)
 
 Linphone::Core::MediaType Linphone::Core::LinphoneCallStats::GetMediaType()
 {
