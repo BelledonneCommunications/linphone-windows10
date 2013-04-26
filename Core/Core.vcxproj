@@ -56,6 +56,8 @@
     <CustomBuildAfterTargets>PostBuildEvent</CustomBuildAfterTargets>
     <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
     <IntDir>$(PlatformTarget)\$(Configuration)\</IntDir>
+    <ExtensionsToDeleteOnClean>*.winmd;$(ExtensionsToDeleteOnClean)</ExtensionsToDeleteOnClean>
+    <IgnoreImportLibrary>false</IgnoreImportLibrary>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile>
@@ -64,17 +66,16 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <ClCompile>
-      <PreprocessorDefinitions>_WINRT_DLL;WIN32_LEAN_AND_MEAN;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINRT_DLL;WIN32_LEAN_AND_MEAN;NDEBUG;IN_LINPHONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
-      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</CompileAsWinRT>
-      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">true</CompileAsWinRT>
-      <GenerateXMLDocumentationFiles Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</GenerateXMLDocumentationFiles>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">$(ProjectDir)../submodules\oRTP\include;$(ProjectDir)../submodules/mediastreamer2/include;$(ProjectDir)../submodules/linphone;$(ProjectDir)../submodules/linphone/include;$(ProjectDir)../submodules/belle-sip/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAsWinRT>true</CompileAsWinRT>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
+      <AdditionalIncludeDirectories>$(ProjectDir)../submodules\oRTP\include;$(ProjectDir)../submodules/mediastreamer2/include;$(ProjectDir)../submodules/linphone;$(ProjectDir)../submodules/linphone/include;$(ProjectDir)../submodules/belle-sip/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">SyncCThrow</ExceptionHandling>
     </ClCompile>
     <Link>
@@ -82,12 +83,11 @@
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <AdditionalDependencies>windowsphonecore.lib;runtimeobject.lib;PhoneAudioSes.lib;liblinphone_dll.lib;belle-sip_dll.lib;mediastreamer2_dll.lib;ws2_32.lib;ortp_dll.lib;gsm_dll.lib;speex_dll.lib;speexdsp_dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>ole32.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <GenerateWindowsMetadata Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</GenerateWindowsMetadata>
-      <GenerateWindowsMetadata Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">true</GenerateWindowsMetadata>
-      <AdditionalLibraryDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">$(SolutionDir)$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateWindowsMetadata>true</GenerateWindowsMetadata>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <CustomBuildStep>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">pushd "$(OutDir)"
+      <Command>pushd "$(OutDir)"
 
 WinMdIdl.exe "$(OutDir)$(RootNamespace).winmd"
 
@@ -100,23 +100,7 @@ MIdl.exe /env $(MidlEnv) /winrt /ns_prefix /metadata_dir "$(FrameworkSdkDir)Wind
 popd</Command>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">$(OutDir)$(RootNamespace).idl;$(OutDir)$(RootNamespace).OutOfProcess.idl;$(SolutionDir)$(ProjectName)ProxyStub\dlldata.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace)_i.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace)_p.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).h;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).OutOfProcess.h;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).OutOfProcess_i.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).OutOfProcess_p.c;$(SolutionDir)Agents\RegistrationHelper.cs;%(Outputs)</Outputs>
-    </CustomBuildStep>
-    <CustomBuildStep>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">pushd "$(OutDir)"
-
-WinMdIdl.exe "$(OutDir)$(RootNamespace).winmd"
-
-MIdl.exe /env $(MidlEnv) /winrt /ns_prefix /metadata_dir "$(FrameworkSdkDir)Windows Metadata" /out "$(SolutionDir)$(ProjectName)ProxyStub" "$(OutDir)$(RootNamespace).idl"
-
-MIdl.exe /env $(MidlEnv) /winrt /ns_prefix /metadata_dir "$(FrameworkSdkDir)Windows Metadata" /out "$(SolutionDir)$(ProjectName)ProxyStub" "$(OutDir)$(RootNamespace).OutOfProcess.idl"
-
-"$(ProjectDir)OopServerRegistrationHelper.exe" /winmd:"$(OutDir)$(RootNamespace).winmd" /dll_name:$(TargetName) /namespace:$(RootNamespace).OutOfProcess /app_manifest:"$(SolutionDir)Linphone\Properties\WMAppManifest.xml" /helper_dir:"$(SolutionDir)Agents"
-
-popd</Command>
-    </CustomBuildStep>
-    <CustomBuildStep>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">$(OutDir)$(RootNamespace).idl;$(OutDir)$(RootNamespace).OutOfProcess.idl;$(SolutionDir)$(ProjectName)ProxyStub\dlldata.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace)_i.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace)_p.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).h;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).OutOfProcess.h;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).OutOfProcess_i.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).OutOfProcess_p.c;$(SolutionDir)Agents\RegistrationHelper.cs;%(Outputs)</Outputs>
+      <Outputs>$(OutDir)$(RootNamespace).idl;$(OutDir)$(RootNamespace).OutOfProcess.idl;$(SolutionDir)$(ProjectName)ProxyStub\dlldata.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace)_i.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace)_p.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).h;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).OutOfProcess.h;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).OutOfProcess_i.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).OutOfProcess_p.c;$(SolutionDir)Agents\RegistrationHelper.cs;%(Outputs)</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -171,10 +155,8 @@ popd</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="OopServerRegistrationHelper.exe">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">false</DeploymentContent>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">true</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">false</DeploymentContent>
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <DeploymentContent>false</DeploymentContent>
     </None>
   </ItemGroup>
   <ItemGroup>
