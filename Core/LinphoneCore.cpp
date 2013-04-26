@@ -244,10 +244,10 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::Invite(Platform::Str
 	return lCall;
 }
 
-Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddress(Linphone::Core::LinphoneAddress^ to) 
+Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddress(Linphone::Core::LinphoneAddress^ destination) 
 {
 	gApiLock.Lock();
-	Linphone::Core::LinphoneCall^ lCall = (Linphone::Core::LinphoneCall^) Linphone::Core::Utils::CreateLinphoneCall(linphone_core_invite_address(this->lc, to->address));
+	Linphone::Core::LinphoneCall^ lCall = (Linphone::Core::LinphoneCall^) Linphone::Core::Utils::CreateLinphoneCall(linphone_core_invite_address(this->lc, destination->address));
 	gApiLock.Unlock();
 	return lCall;
 }
