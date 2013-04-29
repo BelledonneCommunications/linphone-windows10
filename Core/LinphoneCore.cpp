@@ -134,7 +134,7 @@ Linphone::Core::LinphoneProxyConfig^ Linphone::Core::LinphoneCore::GetDefaultPro
 		defaultProxy = ref new Linphone::Core::LinphoneProxyConfig(proxy);
 	}
 	gApiLock.Unlock();
-	return nullptr;
+	return defaultProxy;
 }
 
 Linphone::Core::LinphoneProxyConfig^ Linphone::Core::LinphoneCore::CreateEmptyProxyConfig()
