@@ -383,10 +383,20 @@ namespace Linphone.Model
         /// </summary>
         public void EndCurrentCall()
         {
-            if (LinphoneCore.GetCallsNb() > 0)
+            LinphoneCall call = LinphoneCore.GetCurrentCall();
+            if (call != null)
             {
-                LinphoneCall call = LinphoneCore.GetCurrentCall();
                 LinphoneCore.TerminateCall(call);
+            }
+            else
+            {
+                foreach (LinphoneCall lCall in LinphoneCore.GetCalls())
+                {
+                    if (lCall.GetState() == LinphoneCallState.Paused)
+                    {
+                        LinphoneCore.TerminateCall(lCall);
+                    }
+                }
             }
         }
 
