@@ -20,6 +20,7 @@ using namespace Platform::Collections;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
 using namespace Windows::Phone::Media::Devices;
+using namespace Windows::Phone::Networking::Voip;
 using namespace Windows::System::Threading;
 
 Linphone::Core::Transports::Transports() :
@@ -561,6 +562,14 @@ static void EchoCalibrationAudioInit(void *data)
 	Linphone::Core::EchoCalibrationData *ecData = static_cast<Linphone::Core::EchoCalibrationData *>(data);
 	if (ecData != nullptr) {
 		ecData->endpoint = AudioRoutingManager::GetDefault()->GetAudioEndpoint();
+		// Need to create a dummy VoipPhoneCall to be able to capture audio!
+		VoipCallCoordinator::GetDefault()->RequestNewOutgoingCall(
+			"ECCalibrator",
+			"ECCalibrator",
+			"ECCalibrator",
+			VoipCallMedia::Audio,
+			&ecData->call);
+		ecData->call->NotifyCallActive();
 	}
 	AudioRoutingManager::GetDefault()->SetAudioEndpoint(AudioRoutingEndpoint::Speakerphone);
 }
@@ -569,6 +578,8 @@ static void EchoCalibrationAudioUninit(void *data)
 {
 	Linphone::Core::EchoCalibrationData *ecData = static_cast<Linphone::Core::EchoCalibrationData *>(data);
 	if (ecData != nullptr) {
+		ecData->call->NotifyCallEnded();
+		ecData->call = nullptr;
 		AudioRoutingManager::GetDefault()->SetAudioEndpoint(ecData->endpoint);
 	}
 }

@@ -158,6 +158,7 @@ namespace Linphone
 
 		struct EchoCalibrationData {
 			Windows::Phone::Media::Devices::AudioRoutingEndpoint endpoint;
+			Windows::Phone::Networking::Voip::VoipPhoneCall^ call;
 		};
 
 		template <class T>
