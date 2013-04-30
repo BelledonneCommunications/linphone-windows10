@@ -43,7 +43,7 @@ namespace Linphone
 			void SetExternalBodyUrl(Platform::String^ url);
 			
 			/// <summary>
-			/// Gets the time at which the message was sent (in milliseconds since 01/01/1970).
+			/// Gets the time at which the message was sent (in seconds since 01/01/1970).
 			/// </summary>
 			int64 GetTime();
 

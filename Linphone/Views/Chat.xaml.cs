@@ -86,14 +86,15 @@ namespace Linphone.Views
         {
             foreach (var message in messages)
             {
+                DateTime date = new DateTime(message.Timestamp * TimeSpan.TicksPerSecond);
                 if (message.IsIncoming)
                 {
-                    IncomingChatBubble bubble = new IncomingChatBubble(message.Message, "Past");
+                    IncomingChatBubble bubble = new IncomingChatBubble(message.Message, FormatDate(date));
                     MessagesList.Children.Add(bubble);
                 }
                 else
                 {
-                    OutgoingChatBubble bubble = new OutgoingChatBubble(message.Message, "Past");
+                    OutgoingChatBubble bubble = new OutgoingChatBubble(message.Message, FormatDate(date));
                     MessagesList.Children.Add(bubble);
                 }
             }
@@ -127,13 +128,18 @@ namespace Linphone.Views
 
         private void SendMessage(string message)
         {
-            LinphoneChatMessage chatMessage = chatRoom.CreateLinphoneChatMessage(message);
-            chatRoom.SendMessage(chatMessage, this);
+            if (chatRoom != null)
+            {
+                LinphoneChatMessage chatMessage = chatRoom.CreateLinphoneChatMessage(message);
+                long time = chatMessage.GetTime();
+                chatRoom.SendMessage(chatMessage, this);
+            }
 
-            ChatMessage msg = new ChatMessage { Message = message, MarkedAsRead=true, IsIncoming=false, RemoteContact=sipAddress, LocalContact="", Timestamp=0 };
+            DateTime now = DateTime.Now;
+            ChatMessage msg = new ChatMessage { Message = message, MarkedAsRead = true, IsIncoming = false, RemoteContact = sipAddress, LocalContact = "", Timestamp = (now.Ticks / TimeSpan.TicksPerSecond) };
             DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
 
-            OutgoingChatBubble bubble = new OutgoingChatBubble(message, "Now");
+            OutgoingChatBubble bubble = new OutgoingChatBubble(message, FormatDate(now));
             MessagesList.Children.Add(bubble);
             scrollToBottom();
         }
@@ -144,6 +150,7 @@ namespace Linphone.Views
         public void MessageStateChanged(LinphoneChatMessage message, LinphoneChatMessageState state)
         {
             Logger.Msg("[Chat] Message " + message.GetText() + ", state changed: " + state.ToString());
+            //TODO: Update status of sent message on display and database.
         }
 
         private void send_Click_1(object sender, EventArgs e)
@@ -172,10 +179,15 @@ namespace Linphone.Views
         {
             MessagesList.Dispatcher.BeginInvoke(() =>
             {
-                IncomingChatBubble bubble = new IncomingChatBubble(message.GetText(), "Now");
+                //FIXME: message.GetTime() returns a bad value.
+                DateTime date = new DateTime();
+                date = date.AddYears(1969); //Timestamp is calculated from 01/01/1970, and DateTime is initialized to 01/01/0001.
+                date = date.AddSeconds(message.GetTime());
+                date = date.Add(TimeZoneInfo.Local.GetUtcOffset(date));
+                IncomingChatBubble bubble = new IncomingChatBubble(message.GetText(), FormatDate(date));
                 MessagesList.Children.Add(bubble);
 
-                ChatMessage msg = new ChatMessage { Message = message.GetText(), MarkedAsRead = true, IsIncoming = true, LocalContact = sipAddress, RemoteContact = "", Timestamp = 0 };
+                ChatMessage msg = new ChatMessage { Message = message.GetText(), MarkedAsRead = true, IsIncoming = true, LocalContact = sipAddress, RemoteContact = "", Timestamp = (date.Ticks / TimeSpan.TicksPerSecond) };
                 DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
 
                 scrollToBottom();
@@ -186,6 +198,17 @@ namespace Linphone.Views
         {
             MessagesScroll.UpdateLayout();
             MessagesScroll.ScrollToVerticalOffset(MessagesList.ActualHeight);
+        }
+
+        private string FormatDate(DateTime date)
+        {
+            DateTime now = DateTime.Now;
+            if (now.Year == date.Year && now.Month == date.Month && now.Day == date.Day)
+                return String.Format("{0:HH:mm}", date);
+            else if (now.Year == date.Year)
+                return String.Format("{0:ddd d MMM, HH:mm}", date);
+            else
+                return String.Format("{0:ddd d MMM yyyy, HH:mm}", date);
         }
     }
 }
