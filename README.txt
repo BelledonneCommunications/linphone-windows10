@@ -19,3 +19,22 @@ See http://stackoverflow.com/questions/12980915/exception-when-trying-to-read-nu
 The logs are stored in a file in the application isolated storage. To retrieve it, you need to install this tool on your computer : http://wptools.codeplex.com/
 
 If the application crashes during a call, you may loose the sound in linphone for a while. A device reboot fix this issue.
+
+
+
+In order to compile Linphone, you need:
+* A computer with Windows 8 (Pro if you want to use the emulator)
+* Visual Studio 11 (2012)
+* The Windows Phone 8 SDK
+* wget, awk and unzip from the GnuWin32 project and put them in your path (http://gnuwin32.sourceforge.net/) for some mediastreamer2 codecs
+* The Java Runtime Environment (JRE)
+
+To import the solution, open the Linphone.sln file at the root of the project.
+
+To compile and run it, plug a windows phone 8 device or choose an emulator 
+and run the build/install (using F5 or the green triangle). The app will start
+automatically once built.
+
+/!\ Please check the Linphone project in the solution is set as startup project.
+(The startup project is in bold in the project list)
+If not, right click on Linphone project and choose the menu "Set as StartUp project".

@@ -1,20 +1,4 @@
-In order to compile Linphone, you need:
-* A computer with Windows 8 (Pro if you want to use the emulator)
-* Visual Studio 11 (2012)
-* The Windows Phone 8 SDK
-* wget, awk and unzip from the GnuWin32 project and put them in your path (http://gnuwin32.sourceforge.net/) for some mediastreamer2 codecs
-
-To import the solution, open the Linphone.sln file at the root of the project.
-
-To compile and run it, plug a windows phone 8 device or choose an emulator 
-and run the build/install (using F5 or the green triangle). The app will start
-automatically once built.
-
-/!\ Please check the Linphone project in the solution is set as startup project.
-(The startup project is in bold in the project list)
-If not, right click on Linphone project and choose the menu "Set as StartUp project".
-
-See README.txt file for an explanation about how the project is working.
+See README.txt file for an explanation about how the project is working and how to compile it.
 
 04-25-2013:
 * Incoming calls are working in background mode but need push notifications to be notified
