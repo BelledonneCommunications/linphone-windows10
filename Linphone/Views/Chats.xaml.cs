@@ -38,11 +38,17 @@ namespace Linphone.Views
             // Define the query to gather all of the messages.
             var messagesInDB = from ChatMessage message in DatabaseManager.Instance.Messages select message;
             // Execute the query and place the results into a collection.
-            List<ChatMessage> messages = new List<ChatMessage>(messagesInDB);
+            List<ChatMessage> allMessages = new List<ChatMessage>(messagesInDB);
+            // Get distinct conversations by addresses.
+            var filtered = allMessages.GroupBy(p => (p.IsIncoming ? p.RemoteContact : p.LocalContact)).Select(g => g.First()).ToList();
 
-            //TODO
             List<Conversation> conversations = new List<Conversation>();
-            conversations.Add(new Conversation("sip:pauline@sip.example.org", "Pauline LEPOUTRE", null));
+            foreach (var conversation in filtered)
+            {
+                string address = conversation.LocalContact.Length > 0 ? conversation.LocalContact : conversation.RemoteContact;
+                //TODO: Get contact name or display name
+                conversations.Add(new Conversation(address, "Paulinette", allMessages.Where(m => m.RemoteContact.Equals(address) || m.LocalContact.Equals(address)).ToList()));
+            }
             Conversations.ItemsSource = conversations;
 
             base.OnNavigatedTo(e);

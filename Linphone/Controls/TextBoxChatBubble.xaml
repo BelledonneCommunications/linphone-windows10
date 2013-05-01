@@ -21,6 +21,7 @@
             Grid.Row="0"
             x:Name="Message"
             TextChanged="Message_TextChanged"
+            InputScope="Chat"
             BorderThickness="0"
             Background="White"
             TextAlignment="Left"/>

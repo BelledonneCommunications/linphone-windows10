@@ -51,12 +51,10 @@
                 </toolkit:LongListMultiSelector.ItemTemplate>
                 <toolkit:LongListMultiSelector.ItemInfoTemplate>
                     <DataTemplate>
-                        <Border Width="30" Margin="5,0,5,0">
-                            <TextBlock Text="{Binding LatestMessageDate}" 
-                                Margin="0,0,0,-4"
-                                Foreground="{StaticResource PhoneSubtleBrush}"
-                                FontSize="{StaticResource PhoneFontSizeSmall}"/>
-                        </Border>
+                        <TextBlock Text="{Binding LatestMessageDate}" 
+                            Margin="5,0,5,-4"
+                            Foreground="{StaticResource PhoneSubtleBrush}"
+                            FontSize="{StaticResource PhoneFontSizeSmall}"/>
                     </DataTemplate>
                 </toolkit:LongListMultiSelector.ItemInfoTemplate>
             </toolkit:LongListMultiSelector>
