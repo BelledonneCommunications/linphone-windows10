@@ -70,12 +70,23 @@ namespace Linphone.Views
 
         private void deleteSelection_Click_1(object sender, EventArgs e)
         {
+            //TODO
             ClearApplicationBar();
             SetupAppBarForEmptySelection();
         }
 
+        private void newChat_Click_1(object sender, EventArgs e)
+        {
+            //TODO
+        }
+
         private void SetupAppBarForEmptySelection()
         {
+            ApplicationBarIconButton appBarNewChatSelection = new ApplicationBarIconButton(new Uri("/Assets/AppBar/add.png", UriKind.Relative));
+            appBarNewChatSelection.Text = AppResources.NewChatMenu;
+            ApplicationBar.Buttons.Add(appBarNewChatSelection);
+            appBarNewChatSelection.Click += newChat_Click_1;
+
             _usingSelectionAppBar = false;
         }
 

@@ -50,6 +50,8 @@ namespace Linphone.Views
             BuildLocalizedApplicationBar();
         }
 
+        private List<OutgoingChatBubble> _SentMessages;
+
         /// <summary>
         /// Method called when the page is displayed.
         /// Check if the uri contains a sip address, if yes, it displays the matching chat history.
@@ -58,6 +60,7 @@ namespace Linphone.Views
         {
             base.OnNavigatedTo(e);
             LinphoneManager.Instance.MessageListener = this;
+            _SentMessages = new List<OutgoingChatBubble>();
 
             // Create LinphoneCore if not created yet, otherwise do nothing
             LinphoneManager.Instance.InitLinphoneCore();
@@ -95,6 +98,7 @@ namespace Linphone.Views
                 else
                 {
                     OutgoingChatBubble bubble = new OutgoingChatBubble(message.Message, FormatDate(date));
+                    bubble.UpdateStatus((LinphoneChatMessageState)message.Status);
                     MessagesList.Children.Add(bubble);
                 }
             }
@@ -136,11 +140,12 @@ namespace Linphone.Views
             }
 
             DateTime now = DateTime.Now;
-            ChatMessage msg = new ChatMessage { Message = message, MarkedAsRead = true, IsIncoming = false, RemoteContact = sipAddress, LocalContact = "", Timestamp = (now.Ticks / TimeSpan.TicksPerSecond) };
+            ChatMessage msg = new ChatMessage { Message = message, MarkedAsRead = true, IsIncoming = false, RemoteContact = sipAddress, LocalContact = "", Timestamp = (now.Ticks / TimeSpan.TicksPerSecond), Status = (int)LinphoneChatMessageState.InProgress };
             DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
 
             OutgoingChatBubble bubble = new OutgoingChatBubble(message, FormatDate(now));
             MessagesList.Children.Add(bubble);
+            _SentMessages.Add(bubble);
             scrollToBottom();
         }
 
@@ -149,8 +154,18 @@ namespace Linphone.Views
         /// </summary>
         public void MessageStateChanged(LinphoneChatMessage message, LinphoneChatMessageState state)
         {
-            Logger.Msg("[Chat] Message " + message.GetText() + ", state changed: " + state.ToString());
-            //TODO: Update status of sent message on display and database.
+            string messageText = message.GetText();
+            Logger.Msg("[Chat] Message " + messageText + ", state changed: " + state.ToString());
+            Dispatcher.BeginInvoke(() =>
+            {
+                //TODO: Update status of sent message on database.
+                OutgoingChatBubble bubble = _SentMessages.Where(b => b.Message.Text.Equals(messageText)).Last();
+                if (bubble != null)
+                {
+                    bubble.UpdateStatus(state);
+                    _SentMessages.Remove(bubble);
+                }
+            });
         }
 
         private void send_Click_1(object sender, EventArgs e)

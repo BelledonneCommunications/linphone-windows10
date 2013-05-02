@@ -31,7 +31,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Rectangle Fill="{StaticResource PhoneChromeBrush}" Grid.RowSpan="2"/>
+        <Rectangle x:Name="Background"  Fill="{StaticResource PhoneChromeBrush}" Grid.RowSpan="2"/>
 
         <TextBlock 
             Grid.Row="0" 
@@ -39,11 +39,20 @@
             Style="{StaticResource MessageStyle}"
             TextAlignment="Left"/>
 
-        <TextBlock 
+        <StackPanel 
             Grid.Row="1" 
-            x:Name="Timestamp" 
-            Style="{StaticResource TimestampStyle}"
-            TextAlignment="Right"/>
+            Orientation="Horizontal"
+            HorizontalAlignment="Right">
+            <TextBlock 
+                x:Name="Timestamp" 
+                Style="{StaticResource TimestampStyle}"
+                TextAlignment="Right"/>
+            <Image
+                x:Name="Status" 
+                Source="/Assets/AppBar/next.png"
+                Height="30"
+                Stretch="Uniform"/>
+        </StackPanel>
 
         <Path 
             Grid.Row="2"

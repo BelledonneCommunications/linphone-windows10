@@ -409,6 +409,24 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To:.
+        /// </summary>
+        public static string NewChatDest {
+            get {
+                return ResourceManager.GetString("NewChatDest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        public static string NewChatMenu {
+            get {
+                return ResourceManager.GetString("NewChatMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PCMA.
         /// </summary>
         public static string PCMACodec {
