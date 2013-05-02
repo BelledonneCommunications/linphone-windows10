@@ -140,13 +140,13 @@ namespace Linphone.Views
             }
 
             DateTime now = DateTime.Now;
-            ChatMessage msg = new ChatMessage { Message = message, MarkedAsRead = true, IsIncoming = false, RemoteContact = sipAddress, LocalContact = "", Timestamp = (now.Ticks / TimeSpan.TicksPerSecond), Status = (int)LinphoneChatMessageState.InProgress };
-            DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
-
             OutgoingChatBubble bubble = new OutgoingChatBubble(message, FormatDate(now));
             MessagesList.Children.Add(bubble);
             _SentMessages.Add(bubble);
             scrollToBottom();
+
+            ChatMessage msg = new ChatMessage { Message = message, MarkedAsRead = true, IsIncoming = false, RemoteContact = sipAddress, LocalContact = "", Timestamp = (now.Ticks / TimeSpan.TicksPerSecond), Status = (int)LinphoneChatMessageState.InProgress };
+            DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
         }
 
         /// <summary>
@@ -156,14 +156,26 @@ namespace Linphone.Views
         {
             string messageText = message.GetText();
             Logger.Msg("[Chat] Message " + messageText + ", state changed: " + state.ToString());
+            if (state == LinphoneChatMessageState.InProgress)
+            {
+                return; //We don't need to save the inprogress event in db.
+            }
+
             Dispatcher.BeginInvoke(() =>
             {
-                //TODO: Update status of sent message on database.
                 OutgoingChatBubble bubble = _SentMessages.Where(b => b.Message.Text.Equals(messageText)).Last();
                 if (bubble != null)
                 {
                     bubble.UpdateStatus(state);
                     _SentMessages.Remove(bubble);
+                    DatabaseManager.Instance.SubmitChanges();// Submit changes to be able to search for the message inside the db.
+
+                    ChatMessage msgToUpdate = DatabaseManager.Instance.Messages.Where(m => m.IsIncoming == false && m.Message.Equals(messageText) && m.Status == (int)LinphoneChatMessageState.InProgress).ToList().LastOrDefault();
+                    if (msgToUpdate != null)
+                    {
+                        msgToUpdate.Status = (int)state;
+                        DatabaseManager.Instance.SubmitChanges();// Submit changes to save the changes while the object is locally referenced.
+                    }
                 }
             });
         }
