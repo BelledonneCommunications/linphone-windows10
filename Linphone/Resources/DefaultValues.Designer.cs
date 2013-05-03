@@ -68,5 +68,14 @@ namespace Linphone.Resources {
                 return ResourceManager.GetString("KeepAlive", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LinphoneWP8.
+        /// </summary>
+        internal static string UserAgent {
+            get {
+                return ResourceManager.GetString("UserAgent", resourceCulture);
+            }
+        }
     }
 }

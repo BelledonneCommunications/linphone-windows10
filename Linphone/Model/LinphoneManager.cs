@@ -1,6 +1,7 @@
 ﻿using Linphone.Agents;
 using Linphone.Core;
 using Linphone.Core.OutOfProcess;
+using Linphone.Resources;
 using Microsoft.Phone.Net.NetworkInformation;
 using Microsoft.Phone.Networking.Voip;
 using System;
@@ -9,6 +10,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
+using System.Xml.Linq;
 using Windows.Phone.Media.Devices;
 using Windows.Phone.Networking.Voip;
 
@@ -246,6 +248,8 @@ namespace Linphone.Model
 
                 server.LinphoneCore.CoreListener = this;
                 isLinphoneRunning = true;
+                // Set user-agent because it is not set if coming back from background mode
+                server.LinphoneCore.SetUserAgent(DefaultValues.UserAgent, XDocument.Load("WMAppManifest.xml").Root.Element("App").Attribute("Version").Value);
                 return;
             }
 
@@ -254,6 +258,7 @@ namespace Linphone.Model
             LpConfig config = server.LinphoneCoreFactory.CreateLpConfig(SettingsManager.GetConfigPath(), SettingsManager.GetFactoryConfigPath());
             ConfigureLogger();
             server.LinphoneCoreFactory.CreateLinphoneCore(this, config);
+            server.LinphoneCore.SetUserAgent(DefaultValues.UserAgent, XDocument.Load("WMAppManifest.xml").Root.Element("App").Attribute("Version").Value);
             server.LinphoneCore.SetRootCA("Assets/rootca.pem");
             Logger.Msg("[LinphoneManager] LinphoneCore created");
 
