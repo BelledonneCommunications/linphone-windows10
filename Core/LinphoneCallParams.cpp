@@ -28,7 +28,11 @@ void Linphone::Core::LinphoneCallParams::SetMediaEncryption(Linphone::Core::Medi
 Linphone::Core::PayloadType^ Linphone::Core::LinphoneCallParams::GetUsedAudioCodec()
 {
 	gApiLock.Lock();
-	Linphone::Core::PayloadType^ payloadType = (Linphone::Core::PayloadType^) Linphone::Core::Utils::CreatePayloadType((void*) linphone_call_params_get_used_audio_codec(this->params));
+	Linphone::Core::PayloadType^ payloadType = nullptr;
+	const ::PayloadType *pt = linphone_call_params_get_used_audio_codec(this->params);
+	if (pt != nullptr) {
+		payloadType = (Linphone::Core::PayloadType^) Linphone::Core::Utils::CreatePayloadType((void*)pt);
+	}
 	gApiLock.Unlock();
 	return payloadType;
 }
