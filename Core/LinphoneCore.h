@@ -91,6 +91,96 @@ namespace Linphone
 			int tcp;
 			int tls;
 		};
+
+		/// <summary>
+		/// Class describing policy regarding video streams establishments.
+		/// </summary>
+		public ref class VideoPolicy sealed
+		{
+		public:
+			/// <summary>
+			/// Creates a default VideoPolicy object (automatically initiate and accept video).
+			/// </summary>
+			VideoPolicy();
+
+			/// <summary>
+			/// Creates a VideoPolicy object specifying the behaviour for video calls.
+			/// </summary>
+			/// <param name="automaticallyInitiate">Whether video shall be automatically proposed for outgoing calls</param>
+			/// <param name="automaticallyAccept">Whether video shall be automatically accepted for incoming calls</param>
+			VideoPolicy(bool automaticallyInitiate, bool automaticallyAccept);
+
+			/// <summary>
+			/// Whether video shall be automatically proposed for outgoing calls.
+			/// </summary>
+			property bool AutomaticallyInitiate
+			{
+				bool get();
+				void set(bool value);
+			}
+
+			/// <summary>
+			/// Whether video shall be automatically accepted for incoming calls.
+			/// </summary>
+			property bool AutomaticallyAccept
+			{
+				bool get();
+				void set(bool value);
+			}
+
+		private:
+			bool automaticallyInitiate;
+			bool automaticallyAccept;
+		};
+
+		/// <summary>
+		/// Class describing a video size.
+		/// </summary>
+		public ref class VideoSize sealed
+		{
+		public:
+			/// <summary>
+			/// Creates an unnamed video size.
+			/// </summary>
+			VideoSize(int width, int height);
+
+			/// <summary>
+			/// Creates a named video size.
+			/// </summary>
+			VideoSize(int width, int height, Platform::String^ name);
+
+			/// <summary>
+			/// The video size width (eg. 640).
+			/// </summary>
+			property int Width
+			{
+				int get();
+				void set(int value);
+			}
+
+			/// <summary>
+			/// The video size height (eg. 480).
+			/// </summary>
+			property int Height
+			{
+				int get();
+				void set(int value);
+			}
+
+			/// <summary>
+			/// The video size name (eg. vga).
+			/// </summary>
+			property Platform::String^ Name
+			{
+				Platform::String^ get();
+				void set(Platform::String^ value);
+			}
+
+		private:
+			int width;
+			int height;
+			Platform::String^ name;
+		};
 		
 		/// <summary>
 		/// Main object created by LinphoneCoreFactory::CreateLinphoneCore.
@@ -826,6 +916,93 @@ namespace Linphone
 			/// </summary>
 			/// <returns>The LpConfig used by the LinphoneCore</returns>
 			LpConfig^ GetConfig();
+
+			/// <summary>
+			/// Tells whether video support has been compiled.
+			/// </summary>
+			/// <returns> true, if video is supported, false if it is not supported</returns>
+			Platform::Boolean IsVideoSupported();
+
+			/// <summary>
+			/// Gets the current video policy.
+			/// </summary>
+			/// <returns>The current video policy</returns>
+			VideoPolicy^ GetVideoPolicy();
+
+			/// <summary>
+			/// Sets the policy for video.
+			/// </summary>
+			/// <param name="policy">The policy to use for video</param>
+			void SetVideoPolicy(VideoPolicy^ policy);
+
+			/// <summary>
+			/// Gets the list of video sizes that are supported.
+			/// </summary>
+			/// <returns>A list of VideoSize objects as Platform::Object</returns>
+			Windows::Foundation::Collections::IVector<Platform::Object^>^ GetSupportedVideoSizes();
+
+			/// <summary>
+			/// Gets the preferred video size.
+			/// </summary>
+			/// <returns>The preferred video size</returns>
+			VideoSize^ GetPreferredVideoSize();
+
+			/// <summary>
+			/// Sets the preferred video size.
+			/// This applies only to the stream that is captured and sent to the remote party,
+			/// since we accept all standard video size on the receive path.
+			/// </summary>
+			/// <param name="size">The VideoSize to set as preferred (one of the VideoSize from GetSupportedVideoSizes())</param>
+			void SetPreferredVideoSize(VideoSize^ size);
+
+			/// <summary>
+			/// Sets the preferred video size.
+			/// This applies only to the stream that is captured and sent to the remote party,
+			/// since we accept all standard video size on the receive path.
+			/// </summary>
+			/// <param name="width">The width of the preferred video size</param>
+			/// <param name="height">The height of the preferred video size</param>
+			void SetPreferredVideoSize(int width, int height);
+
+			/// <summary>
+			/// Gets the list of video devices.
+			/// </summary>
+			/// <returns>A list of device names as Platform::String^</returns>
+			Windows::Foundation::Collections::IVector<Platform::Object^>^ GetVideoDevices();
+
+			/// <summary>
+			/// Gets the name of the currently active video device.
+			/// </summary>
+			/// <returns>The name of the currently active video device</returns>
+			Platform::String^ GetVideoDevice();
+
+			/// <summary>
+			/// Sets the active video device.
+			/// </summary>
+			/// <param name="device">The name of the device to set as active</param>
+			void SetVideoDevice(Platform::String^ device);
+
+			/// <summary>
+			/// Gets the currently supported video codecs, as PayloadType elements.
+			/// </summary>
+			/// <returns>A list of PayloadType objects as Platform::Object</returns>
+			Windows::Foundation::Collections::IVector<Platform::Object^>^ GetVideoCodecs();
+
+			/// <summary>
+			/// Tells whether video is enabled or not.
+			/// </summary>
+			/// <returns>true if video is enabled, false otherwise</returns>
+			Platform::Boolean IsVideoEnabled();
+
+			/// <summary>
+			/// Enables video.
+			/// This method does not have any effect during calls. It just indicates LinphoneCore to
+			/// initiate future calls with video or not. The two boolean parameters indicate in which
+			/// direction video is enabled. Setting both to false disables video entirely.
+			/// </summary>
+			/// <param name="enableCapture">Indicates whether video capture is enabled</param>
+			/// <param name="enableDisplay">Indicates whether video display should be shown</param>
+			void EnableVideo(Platform::Boolean enableCapture, Platform::Boolean enableDisplay);
 
 			/// <summary>
 			/// The LinphoneCoreListener that handles the events coming from the core.

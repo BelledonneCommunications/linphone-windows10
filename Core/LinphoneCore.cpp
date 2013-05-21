@@ -86,6 +86,81 @@ Platform::String^ Linphone::Core::Transports::ToString()
 }
 
 
+
+Linphone::Core::VideoPolicy::VideoPolicy() :
+	automaticallyInitiate(true), automaticallyAccept(true)
+{
+}
+
+Linphone::Core::VideoPolicy::VideoPolicy(bool automaticallyInitiate, bool automaticallyAccept) :
+	automaticallyInitiate(automaticallyInitiate), automaticallyAccept(automaticallyAccept)
+{
+}
+
+bool Linphone::Core::VideoPolicy::AutomaticallyInitiate::get()
+{
+	return automaticallyInitiate;
+}
+
+void Linphone::Core::VideoPolicy::AutomaticallyInitiate::set(bool value)
+{
+	automaticallyInitiate = value;
+}
+
+bool Linphone::Core::VideoPolicy::AutomaticallyAccept::get()
+{
+	return automaticallyAccept;
+}
+
+void Linphone::Core::VideoPolicy::AutomaticallyAccept::set(bool value)
+{
+	automaticallyAccept = value;
+}
+
+
+
+Linphone::Core::VideoSize::VideoSize(int width, int height) :
+	width(width), height(height), name("")
+{
+}
+
+Linphone::Core::VideoSize::VideoSize(int width, int height, Platform::String^ name) :
+	width(width), height(height), name(name)
+{
+}
+
+int Linphone::Core::VideoSize::Width::get()
+{
+	return width;
+}
+
+void Linphone::Core::VideoSize::Width::set(int value)
+{
+	width = value;
+}
+
+int Linphone::Core::VideoSize::Height::get()
+{
+	return height;
+}
+
+void Linphone::Core::VideoSize::Height::set(int value)
+{
+	height = value;
+}
+
+Platform::String^ Linphone::Core::VideoSize::Name::get()
+{
+	return name;
+}
+
+void Linphone::Core::VideoSize::Name::set(Platform::String^ value)
+{
+	name = value;
+}
+
+
+
 void Linphone::Core::LinphoneCore::SetLogLevel(OutputTraceLevel logLevel)
 {
 	int coreLogLevel = 0;
@@ -1089,6 +1164,152 @@ Linphone::Core::LpConfig^ Linphone::Core::LinphoneCore::GetConfig()
 	gApiLock.Unlock();
 	return lpConfig;
 }
+
+Platform::Boolean Linphone::Core::LinphoneCore::IsVideoSupported()
+{
+	gApiLock.Lock();
+	Platform::Boolean supported = (linphone_core_video_supported(this->lc) == TRUE);
+	gApiLock.Unlock();
+	return supported;
+}
+
+Linphone::Core::VideoPolicy^ Linphone::Core::LinphoneCore::GetVideoPolicy()
+{
+	gApiLock.Lock();
+	const ::LinphoneVideoPolicy *lvp = linphone_core_get_video_policy(this->lc);
+	Linphone::Core::VideoPolicy^ policy = ref new Linphone::Core::VideoPolicy((lvp->automatically_initiate == TRUE), (lvp->automatically_accept == TRUE));
+	gApiLock.Unlock();
+	return policy;
+}
+
+void Linphone::Core::LinphoneCore::SetVideoPolicy(Linphone::Core::VideoPolicy^ policy)
+{
+	gApiLock.Lock();
+	::LinphoneVideoPolicy lvp;
+	lvp.automatically_initiate = policy->AutomaticallyInitiate;
+	lvp.automatically_accept = policy->AutomaticallyAccept;
+	linphone_core_set_video_policy(this->lc, &lvp);
+	gApiLock.Unlock();
+}
+
+Windows::Foundation::Collections::IVector<Platform::Object^>^ Linphone::Core::LinphoneCore::GetSupportedVideoSizes()
+{
+	gApiLock.Lock();
+	Vector<Object^>^ sizes = ref new Vector<Object^>();
+	const MSVideoSizeDef *sizesList = linphone_core_get_supported_video_sizes(this->lc);
+	while (sizesList->name != NULL) {
+		Platform::String^ sizeName = Utils::cctops(sizesList->name);
+		Linphone::Core::VideoSize^ size = ref new Linphone::Core::VideoSize(sizesList->vsize.width, sizesList->vsize.height, sizeName);
+		sizes->Append(size);
+		sizesList++;
+	}
+	gApiLock.Unlock();
+	return sizes;
+}
+
+Linphone::Core::VideoSize^ Linphone::Core::LinphoneCore::GetPreferredVideoSize()
+{
+	Linphone::Core::VideoSize^ size = nullptr;
+	gApiLock.Lock();
+	const MSVideoSizeDef *sizesList = linphone_core_get_supported_video_sizes(this->lc);
+	MSVideoSize vsize = linphone_core_get_preferred_video_size(this->lc);
+	while (sizesList->name != NULL) {
+		if ((sizesList->vsize.width == vsize.width) && (sizesList->vsize.height == vsize.height)) {
+			Platform::String^ sizeName = Utils::cctops(sizesList->name);
+			size = ref new Linphone::Core::VideoSize(vsize.width, vsize.height, sizeName);
+			break;
+		}
+		sizesList++;
+	}
+	if (size == nullptr) {
+		size = ref new Linphone::Core::VideoSize(vsize.width, vsize.height);
+	}
+	gApiLock.Unlock();
+	return size;
+}
+
+void Linphone::Core::LinphoneCore::SetPreferredVideoSize(Linphone::Core::VideoSize^ size)
+{
+	const char *ccname = Utils::pstoccs(size->Name);
+	gApiLock.Lock();
+	linphone_core_set_preferred_video_size_by_name(this->lc, ccname);
+	gApiLock.Unlock();
+	delete ccname;
+}
+
+void Linphone::Core::LinphoneCore::SetPreferredVideoSize(int width, int height)
+{
+	MSVideoSize vsize;
+	vsize.width = width;
+	vsize.height = height;
+	gApiLock.Lock();
+	linphone_core_set_preferred_video_size(this->lc, vsize);
+	gApiLock.Unlock();
+}
+
+Windows::Foundation::Collections::IVector<Platform::Object^>^ Linphone::Core::LinphoneCore::GetVideoDevices()
+{
+	gApiLock.Lock();
+	Vector<Object^>^ devices = ref new Vector<Object^>();
+	const char **lvds = linphone_core_get_video_devices(this->lc);
+	while (*lvds != NULL) {
+		Platform::String^ device = Utils::cctops(*lvds);
+		devices->Append(device);
+		lvds++;
+	}
+	gApiLock.Unlock();
+	return devices;
+}
+
+Platform::String^ Linphone::Core::LinphoneCore::GetVideoDevice()
+{
+	Platform::String^ device = nullptr;
+	gApiLock.Lock();
+	const char *ccname = linphone_core_get_video_device(this->lc);
+	if (ccname != NULL) {
+		device = Utils::cctops(ccname);
+	}
+	gApiLock.Unlock();
+	return device;
+}
+
+void Linphone::Core::LinphoneCore::SetVideoDevice(Platform::String^ device)
+{
+	const char *ccname = Utils::pstoccs(device);
+	gApiLock.Lock();
+	linphone_core_set_video_device(this->lc, ccname);
+	gApiLock.Unlock();
+	delete ccname;
+}
+
+IVector<Object^>^ Linphone::Core::LinphoneCore::GetVideoCodecs()
+{
+	gApiLock.Lock();
+	IVector<Object^>^ codecs = ref new Vector<Object^>();
+	const MSList *codecslist = linphone_core_get_video_codecs(this->lc);
+	RefToPtrProxy<IVector<Object^>^> *codecsPtr = new RefToPtrProxy<IVector<Object^>^>(codecs);
+	ms_list_for_each2(codecslist, AddCodecToVector, codecsPtr);
+	gApiLock.Unlock();
+	return codecs;
+}
+
+Platform::Boolean Linphone::Core::LinphoneCore::IsVideoEnabled()
+{
+	gApiLock.Lock();
+	Platform::Boolean enabled = (linphone_core_video_enabled(this->lc) == TRUE);
+	gApiLock.Unlock();
+	return enabled;
+}
+
+void Linphone::Core::LinphoneCore::EnableVideo(Platform::Boolean enableCapture, Platform::Boolean enableDisplay)
+{
+	gApiLock.Lock();
+	linphone_core_enable_video(this->lc, enableCapture, enableDisplay);
+	gApiLock.Unlock();
+}
+
+
+
 
 Linphone::Core::LinphoneCoreListener^ Linphone::Core::LinphoneCore::CoreListener::get()
 {
