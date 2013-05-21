@@ -52,3 +52,6 @@
 [submodule "submodules/msamr"]
 	path = submodules/msamr
 	url = git://git.linphone.org/msamr.git
+[submodule "submodules/mswp8vid"]
+	path = submodules/mswp8vid
+	url = gitosis@git.linphone.org:mswp8vid.git
