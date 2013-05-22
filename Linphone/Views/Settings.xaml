@@ -50,36 +50,37 @@
                     Grid.Row="1"
                     x:Name="Account"
                     Click="account_Click_1"
-                    Margin="0,30,0,0"
+                    Margin="0,0,0,20"
                     Content="{Binding Path=LocalizedResources.AccountMenu, Source={StaticResource LocalizedStrings}}" />
             
                 <Button
                     Grid.Row="2"
                     x:Name="Audio"
-                    Click="codecs_Click_1"
-                    Margin="0,30,0,0"
+                    Click="audio_Click_1"
+                    Margin="0,0,0,20"
                     Content="{Binding Path=LocalizedResources.AudioSettingsMenu, Source={StaticResource LocalizedStrings}}" />
 
                 <Button
                     Grid.Row="3"
-                    x:Name="Advanced"
-                    Click="advanced_Click_1"
-                    Margin="0,30,0,0"
-                    Content="{Binding Path=LocalizedResources.AdvancedSettingsMenu, Source={StaticResource LocalizedStrings}}" />
+                    x:Name="Video"
+                    Click="video_Click_1"
+                    Margin="0,0,0,20"
+                    Content="{Binding Path=LocalizedResources.VideoSettingsMenu, Source={StaticResource LocalizedStrings}}" />
 
                 <Button
                     Grid.Row="4"
+                    x:Name="Advanced"
+                    Click="advanced_Click_1"
+                    Margin="0,0,0,20"
+                    Content="{Binding Path=LocalizedResources.AdvancedSettingsMenu, Source={StaticResource LocalizedStrings}}" />
+
+                <Button
+                    Grid.Row="5"
                     Click="LockScreenSettings_Click_1"
                     x:Name="LockScreenSettings"
-                    Margin="0,30,0,0"
+                    Margin="0,0,0,20"
                     Content="{Binding Path=LocalizedResources.LockScreenSettings, Source={StaticResource LocalizedStrings}}" />
 
-                <!--<Button
-                    Grid.Row="5"
-                    Click="Simulate_Click_1"
-                    x:Name="Simulate"
-                    Margin="0,30,0,0"
-                    Content="Simulate incoming call" />-->
             </Grid>
         </ScrollViewer>
     </Grid>

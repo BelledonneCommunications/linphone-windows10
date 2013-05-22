@@ -371,4 +371,19 @@ http://www.linphone.org/m/help
   <data name="ECCalibrationNotRun" xml:space="preserve">
     <value>Click button to calibrate</value>
   </data>
+  <data name="H264Codec" xml:space="preserve">
+    <value>H.264</value>
+  </data>
+  <data name="VideoSettingsMenu" xml:space="preserve">
+    <value>Video settings</value>
+  </data>
+  <data name="VideoEnabledSetting" xml:space="preserve">
+    <value>Video enabled</value>
+  </data>
+  <data name="AutomaticallyAcceptVideoSetting" xml:space="preserve">
+    <value>Automatically accept</value>
+  </data>
+  <data name="AutomaticallyInitiateVideoSetting" xml:space="preserve">
+    <value>Automatically initiate</value>
+  </data>
 </root>

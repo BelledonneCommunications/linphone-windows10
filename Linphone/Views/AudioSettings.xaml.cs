@@ -8,16 +8,16 @@ using System.Windows.Navigation;
 namespace Linphone.Views
 {
     /// <summary>
-    /// Page displaying each available codec along as a switch to let the user enabling/disabling them.
+    /// Page displaying the audio settings and the audio codecs to let the user enable/disable them.
     /// </summary>
-    public partial class CodecsSettings : BasePage, EchoCalibratorListener
+    public partial class AudioSettings : BasePage, EchoCalibratorListener
     {
         private CodecsSettingsManager _settings = new CodecsSettingsManager();
 
         /// <summary>
         /// Public constructor.
         /// </summary>
-        public CodecsSettings()
+        public AudioSettings()
         {
             InitializeComponent();
             BuildLocalizedApplicationBar();

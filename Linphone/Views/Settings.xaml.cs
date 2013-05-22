@@ -45,9 +45,14 @@ namespace Linphone.Views
             NavigationService.Navigate(new Uri("/Views/AccountSettings.xaml", UriKind.RelativeOrAbsolute));
         }
 
-        private void codecs_Click_1(object sender, RoutedEventArgs e)
+        private void audio_Click_1(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Views/AudioSettings.xaml", UriKind.RelativeOrAbsolute));
+        }
+
+        private void video_Click_1(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/VideoSettings.xaml", UriKind.RelativeOrAbsolute));
         }
 
         private void advanced_Click_1(object sender, RoutedEventArgs e)

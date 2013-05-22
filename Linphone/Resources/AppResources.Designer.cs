@@ -148,6 +148,24 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Automatically accept.
+        /// </summary>
+        public static string AutomaticallyAcceptVideoSetting {
+            get {
+                return ResourceManager.GetString("AutomaticallyAcceptVideoSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically initiate.
+        /// </summary>
+        public static string AutomaticallyInitiateVideoSetting {
+            get {
+                return ResourceManager.GetString("AutomaticallyInitiateVideoSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Call.
         /// </summary>
         public static string Call {
@@ -351,6 +369,15 @@ namespace Linphone.Resources {
         public static string GSMCodec {
             get {
                 return ResourceManager.GetString("GSMCodec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to H.264.
+        /// </summary>
+        public static string H264Codec {
+            get {
+                return ResourceManager.GetString("H264Codec", resourceCulture);
             }
         }
         
@@ -801,6 +828,24 @@ namespace Linphone.Resources {
         public static string TunnelServer {
             get {
                 return ResourceManager.GetString("TunnelServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Video enabled.
+        /// </summary>
+        public static string VideoEnabledSetting {
+            get {
+                return ResourceManager.GetString("VideoEnabledSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Video settings.
+        /// </summary>
+        public static string VideoSettingsMenu {
+            get {
+                return ResourceManager.GetString("VideoSettingsMenu", resourceCulture);
             }
         }
     }

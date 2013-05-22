@@ -491,6 +491,7 @@ namespace Linphone.Model
         private const string ILBCSettingKeyName = "CodecILBC";
         private const string SILK16SettingKeyName = "CodecSILK16";
         private const string GSMSettingKeyName = "CodecGSM";
+        private const string H264SettingKeyName = "CodecH264";
         #endregion
 
         private String GetKeyNameForCodec(String mimeType, int clockRate)
@@ -507,6 +508,7 @@ namespace Linphone.Model
                 { new Tuple<String, int>("ilbc", 8000), ILBCSettingKeyName },
                 { new Tuple<String, int>("silk", 16000), SILK16SettingKeyName },
                 { new Tuple<String, int>("gsm", 8000), GSMSettingKeyName },
+                { new Tuple<String, int>("h264", 90000), H264SettingKeyName },
             };
 
             Tuple<String, int> key = new Tuple<String, int>(mimeType.ToLower(), clockRate);
@@ -566,7 +568,7 @@ namespace Linphone.Model
 
         #region Accessors
         /// <summary>
-        /// Is this codec enabled or disabled ? (Boolean)
+        /// Is AMR narrow band audio codec enabled or disabled ? (Boolean)
         /// </summary>
         public bool AMRNB
         {
@@ -581,7 +583,7 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Is this codec enabled or disabled ? (Boolean)
+        /// Is AMR wideband audio codec enabled or disabled ? (Boolean)
         /// </summary>
         public bool AMRWB
         {
@@ -596,7 +598,7 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Is this codec enabled or disabled ? (Boolean)
+        /// Is speex 16000Hz audio codec enabled or disabled ? (Boolean)
         /// </summary>
         public bool Speex16
         {
@@ -611,7 +613,7 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Is this codec enabled or disabled ? (Boolean)
+        /// Is speex 8000Hz audio codec enabled or disabled ? (Boolean)
         /// </summary>
         public bool Speex8
         {
@@ -626,7 +628,7 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Is this codec enabled or disabled ? (Boolean)
+        /// Is PCMU (G.711 ulaw) audio codec enabled or disabled ? (Boolean)
         /// </summary>
         public bool PCMU
         {
@@ -641,7 +643,7 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Is this codec enabled or disabled ? (Boolean)
+        /// Is PCMA (G.711 alaw) audio codec enabled or disabled ? (Boolean)
         /// </summary>
         public bool PCMA
         {
@@ -656,7 +658,7 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Is this codec enabled or disabled ? (Boolean)
+        /// Is G.722 audio codec enabled or disabled ? (Boolean)
         /// </summary>
         public bool G722
         {
@@ -671,7 +673,7 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Is this codec enabled or disabled ? (Boolean)
+        /// Is iLBC audio codec enabled or disabled ? (Boolean)
         /// </summary>
         public bool ILBC
         {
@@ -686,7 +688,7 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Is this codec enabled or disabled ? (Boolean)
+        /// Is Silk 16000Hz audio codec enabled or disabled ? (Boolean)
         /// </summary>
         public bool SILK16
         {
@@ -701,7 +703,7 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Is this codec enabled or disabled ? (Boolean)
+        /// Is GSM audio codec enabled or disabled ? (Boolean)
         /// </summary>
         public bool GSM
         {
@@ -712,6 +714,21 @@ namespace Linphone.Model
             set
             {
                 Set(GSMSettingKeyName, value.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Is H.264 video codec enabled or disabled ? (Boolean)
+        /// </summary>
+        public bool H264
+        {
+            get
+            {
+                return Convert.ToBoolean(Get(H264SettingKeyName));
+            }
+            set
+            {
+                Set(H264SettingKeyName, value.ToString());
             }
         }
         #endregion
@@ -725,6 +742,9 @@ namespace Linphone.Model
         #region Constants settings names
         private const string SendDTMFsRFC2833KeyName = "SendDTMFsRFC2833";
         private const string SendDTMFsSIPInfoKeyName = "SendDTMFsSIPInfo";
+        private const string VideoEnabledKeyName = "VideoEnabled";
+        private const string AutomaticallyInitiateVideoKeyName = "AutomaticallyInitiateVideo";
+        private const string AutomaticallyAcceptVideoKeyName = "AutomaticallyAcceptVideo";
         #endregion
 
         #region Implementation of the ISettingsManager interface
@@ -732,18 +752,27 @@ namespace Linphone.Model
         {
             dict[SendDTMFsRFC2833KeyName] = LinphoneManager.Instance.LinphoneCore.GetUseRFC2833ForDTMFs().ToString();
             dict[SendDTMFsSIPInfoKeyName] = LinphoneManager.Instance.LinphoneCore.GetUseSipInfoForDTMFs().ToString();
+            dict[VideoEnabledKeyName] = LinphoneManager.Instance.LinphoneCore.IsVideoEnabled().ToString();
+            VideoPolicy policy = LinphoneManager.Instance.LinphoneCore.GetVideoPolicy();
+            dict[AutomaticallyInitiateVideoKeyName] = policy.AutomaticallyInitiate.ToString();
+            dict[AutomaticallyAcceptVideoKeyName] = policy.AutomaticallyAccept.ToString();
         }
 
         public void Save()
         {
             LinphoneManager.Instance.LinphoneCore.SetUseRFC2833ForDTMFs(Convert.ToBoolean(GetNew(SendDTMFsRFC2833KeyName)));
             LinphoneManager.Instance.LinphoneCore.SetUseSipInfoForDTMFs(Convert.ToBoolean(GetNew(SendDTMFsSIPInfoKeyName)));
+            LinphoneManager.Instance.LinphoneCore.EnableVideo(Convert.ToBoolean(GetNew(VideoEnabledKeyName)), Convert.ToBoolean(GetNew(VideoEnabledKeyName)));
+            VideoPolicy policy = LinphoneManager.Instance.LinphoneCore.GetVideoPolicy();
+            policy.AutomaticallyInitiate = Convert.ToBoolean(GetNew(AutomaticallyInitiateVideoKeyName));
+            policy.AutomaticallyAccept = Convert.ToBoolean(GetNew(AutomaticallyAcceptVideoKeyName));
+            LinphoneManager.Instance.LinphoneCore.SetVideoPolicy(policy);
         }
         #endregion
 
         #region Accessors
         /// <summary>
-        /// DTMFs using RFC2833 setting (Bool).
+        /// DTMFs using RFC2833 setting (bool).
         /// </summary>
         public bool? SendDTFMsRFC2833
         {
@@ -758,7 +787,7 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// DTMFs using SIP INFO setting (Bool).
+        /// DTMFs using SIP INFO setting (bool).
         /// </summary>
         public bool? SendDTFMsSIPInfo
         {
@@ -769,6 +798,51 @@ namespace Linphone.Model
             set
             {
                 Set(SendDTMFsSIPInfoKeyName, value.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Video enabled setting (bool).
+        /// </summary>
+        public bool? VideoEnabled
+        {
+            get
+            {
+                return Convert.ToBoolean(Get(VideoEnabledKeyName));
+            }
+            set
+            {
+                Set(VideoEnabledKeyName, value.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Automatically initiate video on outgoing call setting (bool).
+        /// </summary>
+        public bool? AutomaticallyInitiateVideo
+        {
+            get
+            {
+                return Convert.ToBoolean(Get(AutomaticallyInitiateVideoKeyName));
+            }
+            set
+            {
+                Set(AutomaticallyInitiateVideoKeyName, value.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Automatically accept video on incoming call setting (bool).
+        /// </summary>
+        public bool? AutomaticallyAcceptVideo
+        {
+            get
+            {
+                return Convert.ToBoolean(Get(AutomaticallyAcceptVideoKeyName));
+            }
+            set
+            {
+                Set(AutomaticallyAcceptVideoKeyName, value.ToString());
             }
         }
         #endregion
