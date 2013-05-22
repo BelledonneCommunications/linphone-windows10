@@ -167,6 +167,29 @@ namespace Linphone
 			Platform::Object^ GetCallStartTimeFromContext();
 
 			/// <summary>
+			/// Tells whether video captured from the camera is sent to the remote party.
+			/// </summary>
+			/// <returns>true if video capture from the camera is sent to the remote party, false otherwise</returns>
+			Platform::Boolean IsCameraEnabled();
+
+			/// <summary>
+			/// Enable or disable sending video captured from the camera to the remote party.
+			/// </summary>
+			/// <param name="enable">A boolean value telling whether to enable or disable sending video captured from the camera</param>
+			void EnableCamera(Platform::Boolean enable);
+
+			/// <summary>
+			/// Gets the video statistics associated with this call.
+			/// </summary>
+			/// <returns>The video statistics associated with the call</returns>
+			LinphoneCallStats^ GetVideoStats();
+
+			/// <summary>
+			/// Requests remote side to send us a Video Fast Update.
+			/// </summary>
+			void SendVFURequest();
+
+			/// <summary>
 			/// Gets the CallContext object (native VoipPhoneCall)
 			/// </summary>
 			property Platform::Object^ CallContext

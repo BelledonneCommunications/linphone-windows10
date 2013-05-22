@@ -57,6 +57,12 @@ namespace Linphone
 			/// </summary>
 			Platform::String^ GetCallId();
 
+			/// <summary>
+			/// Tells whether video was enabled at the end of the call.
+			/// </summary>
+			/// <returns>true if video was enabled at the end of the call, false otherwise</returns>
+			Platform::Boolean WasVideoEnabled();
+
 		private:
 			friend class Linphone::Core::Utils;
 			friend ref class Linphone::Core::LinphoneCore;

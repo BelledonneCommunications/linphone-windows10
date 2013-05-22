@@ -40,6 +40,11 @@ Platform::String^ Linphone::Core::LinphoneCallLog::GetCallId()
 	return Linphone::Core::Utils::cctops(linphone_call_log_get_call_id(this->callLog));
 }
 
+Platform::Boolean Linphone::Core::LinphoneCallLog::WasVideoEnabled()
+{
+	return (linphone_call_log_video_enabled(this->callLog) == TRUE);
+}
+
 Linphone::Core::LinphoneCallLog::LinphoneCallLog(::LinphoneCallLog *cl) :
 	callLog(cl)
 {

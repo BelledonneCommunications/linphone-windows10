@@ -192,6 +192,36 @@ Platform::Object^ Linphone::Core::LinphoneCall::GetCallStartTimeFromContext()
 	return nullptr;
 }
 
+Platform::Boolean Linphone::Core::LinphoneCall::IsCameraEnabled()
+{
+	gApiLock.Lock();
+	Platform::Boolean enabled = (linphone_call_camera_enabled(this->call) == TRUE);
+	gApiLock.Unlock();
+	return enabled;
+}
+
+void Linphone::Core::LinphoneCall::EnableCamera(Platform::Boolean enable)
+{
+	gApiLock.Lock();
+	linphone_call_enable_camera(this->call, enable);
+	gApiLock.Unlock();
+}
+
+Linphone::Core::LinphoneCallStats^ Linphone::Core::LinphoneCall::GetVideoStats()
+{
+	gApiLock.Lock();
+	Linphone::Core::LinphoneCallStats^ stats = (Linphone::Core::LinphoneCallStats^) Linphone::Core::Utils::CreateLinphoneCallStats(this->call, (int)Linphone::Core::MediaType::Video);
+	gApiLock.Unlock();
+	return stats;
+}
+
+void Linphone::Core::LinphoneCall::SendVFURequest()
+{
+	gApiLock.Lock();
+	linphone_call_send_vfu_request(this->call);
+	gApiLock.Unlock();
+}
+
 Platform::Object^  Linphone::Core::LinphoneCall::CallContext::get()
 {
 	return this->callContext;

@@ -52,6 +52,33 @@ Platform::Boolean Linphone::Core::LinphoneCallParams::IsLowBandwidthEnabled()
 	return enabled;
 }
 
+Platform::Boolean Linphone::Core::LinphoneCallParams::IsVideoEnabled()
+{
+	gApiLock.Lock();
+	Platform::Boolean enabled = (linphone_call_params_video_enabled(this->params) == TRUE);
+	gApiLock.Unlock();
+	return enabled;
+}
+
+void Linphone::Core::LinphoneCallParams::EnableVideo(Platform::Boolean enable)
+{
+	gApiLock.Lock();
+	linphone_call_params_enable_video(this->params, enable);
+	gApiLock.Unlock();
+}
+
+Linphone::Core::PayloadType^ Linphone::Core::LinphoneCallParams::GetUsedVideoCodec()
+{
+	gApiLock.Lock();
+	Linphone::Core::PayloadType^ payloadType = nullptr;
+	const ::PayloadType *pt = linphone_call_params_get_used_video_codec(this->params);
+	if (pt != nullptr) {
+		payloadType = (Linphone::Core::PayloadType^) Linphone::Core::Utils::CreatePayloadType((void*)pt);
+	}
+	gApiLock.Unlock();
+	return payloadType;
+}
+
 Linphone::Core::LinphoneCallParams::LinphoneCallParams(::LinphoneCallParams *call_params) :
 	params(call_params)
 {

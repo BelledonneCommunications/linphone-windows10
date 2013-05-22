@@ -56,6 +56,24 @@ namespace Linphone
 			/// <returns>A boolean value telling whether the low bandwidth mode is enabled or not</returns>
 			Platform::Boolean IsLowBandwidthEnabled();
 
+			/// <summary>
+			/// Tells whether video is enabled.
+			/// </summary>
+			/// <returns>A boolean value telling whether video is enabled or not</returns>
+			Platform::Boolean IsVideoEnabled();
+
+			/// <summary>
+			/// Enable or disable video.
+			/// </summary>
+			/// <param name="enable">A boolean value telling whether video should be enabled or disabled</param>
+			void EnableVideo(Platform::Boolean enable);
+
+			/// <summary>
+			/// Returns the PayloadType currently in use for the video stream.
+			/// </summary>
+			/// <returns>The payload type currently in use for the video stream</returns>
+			PayloadType^ GetUsedVideoCodec();
+
 		private:
 			friend class Linphone::Core::Utils;
 			friend ref class Linphone::Core::LinphoneCore;
