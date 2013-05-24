@@ -543,6 +543,7 @@ namespace Linphone.Model
         public void Load()
         {
             LoadCodecs(LinphoneManager.Instance.LinphoneCore.GetAudioCodecs());
+            LoadCodecs(LinphoneManager.Instance.LinphoneCore.GetVideoCodecs());
         }
 
         private void SaveCodecs(IList<Object> ptlist)
@@ -563,6 +564,7 @@ namespace Linphone.Model
         public void Save()
         {
             SaveCodecs(LinphoneManager.Instance.LinphoneCore.GetAudioCodecs());
+            SaveCodecs(LinphoneManager.Instance.LinphoneCore.GetVideoCodecs());
         }
         #endregion
 
