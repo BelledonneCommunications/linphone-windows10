@@ -1,4 +1,6 @@
 #include "CallController.h"
+#include "LinphoneCall.h"
+#include "LinphoneCallParams.h"
 #include "LinphoneCore.h"
 #include "Server.h"
 
@@ -14,11 +16,19 @@ VoipPhoneCall^ CallController::OnIncomingCallReceived(Linphone::Core::LinphoneCa
 	VoipPhoneCall^ incomingCall = nullptr;
 	this->call = call;
 
+	VoipCallMedia media = VoipCallMedia::Audio;
+	if (Globals::Instance->LinphoneCore->IsVideoSupported()	&& Globals::Instance->LinphoneCore->IsVideoEnabled()) {
+		LinphoneCallParams^ params = call->GetRemoteParams();
+		if ((params != nullptr) && params->IsVideoEnabled()) {
+			media = VoipCallMedia::Audio | VoipCallMedia::Video;
+		}
+	}
+
+    TimeSpan ringingTimeout;
+    ringingTimeout.Duration = 90 * 10 * 1000 * 1000; // in 100ns units
+
 	try
     {
-        TimeSpan ringingTimeout;
-        ringingTimeout.Duration = 90 * 10 * 1000 * 1000; // in 100ns units
-
 		if (incomingCallViewDismissedCallback != nullptr)
 			this->onIncomingCallViewDismissed = incomingCallViewDismissedCallback;
 
@@ -32,7 +42,7 @@ VoipPhoneCall^ CallController::OnIncomingCallReceived(Linphone::Core::LinphoneCa
             this->linphoneImageUri,
             "",
 			this->ringtoneUri,
-            VoipCallMedia::Audio,
+            media,
             ringingTimeout,
             &incomingCall);
     }
@@ -93,11 +103,19 @@ VoipPhoneCall^ CallController::NewOutgoingCall(Platform::String^ number)
 	VoipPhoneCall^ outgoingCall = nullptr;
 	this->call = call;
 
+	VoipCallMedia media = VoipCallMedia::Audio;
+	if (Globals::Instance->LinphoneCore->IsVideoSupported() && Globals::Instance->LinphoneCore->IsVideoEnabled()) {
+		VideoPolicy^ policy = Globals::Instance->LinphoneCore->GetVideoPolicy();
+		if ((policy != nullptr) && policy->AutomaticallyInitiate) {
+			media = VoipCallMedia::Audio | VoipCallMedia::Video;
+		}
+	}
+
 	this->callCoordinator->RequestNewOutgoingCall(
 		this->callInProgressPageUri + "?sip=" + number,
         number,
         this->voipServiceName,
-        VoipCallMedia::Audio,
+        media,
 		&outgoingCall);
 
 	outgoingCall->NotifyCallActive();
