@@ -148,6 +148,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Audio stats.
+        /// </summary>
+        public static string AudioStatsMenu {
+            get {
+                return ResourceManager.GetString("AudioStatsMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Automatically accept.
         /// </summary>
         public static string AutomaticallyAcceptVideoSetting {
@@ -679,15 +688,6 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Audio codec.
-        /// </summary>
-        public static string StatAudioPayload {
-            get {
-                return ResourceManager.GetString("StatAudioPayload", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Download.
         /// </summary>
         public static string StatDownloadBW {
@@ -697,20 +697,20 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Codec.
+        /// </summary>
+        public static string StatPayload {
+            get {
+                return ResourceManager.GetString("StatPayload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to stats.
         /// </summary>
         public static string Stats {
             get {
                 return ResourceManager.GetString("Stats", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Stats.
-        /// </summary>
-        public static string StatsMenu {
-            get {
-                return ResourceManager.GetString("StatsMenu", resourceCulture);
             }
         }
         
@@ -846,6 +846,15 @@ namespace Linphone.Resources {
         public static string VideoSettingsMenu {
             get {
                 return ResourceManager.GetString("VideoSettingsMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Video stats.
+        /// </summary>
+        public static string VideoStatsMenu {
+            get {
+                return ResourceManager.GetString("VideoStatsMenu", resourceCulture);
             }
         }
     }

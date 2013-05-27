@@ -191,20 +191,42 @@ namespace Linphone.Views
                 var mm = elapsed.Minutes;
                 Status.Dispatcher.BeginInvoke(delegate()
                 {
+                    LinphoneCallParams param = call.GetCurrentParamsCopy();
                     Status.Text = mm.ToString("00") + ":" + ss.ToString("00");
 
-                    LinphoneCallStats stats = call.GetAudioStats();
-                    if (stats != null)
+                    LinphoneCallStats audioStats = call.GetAudioStats();
+                    if (audioStats != null)
                     {
-                        DownBw.Text = String.Format(AppResources.StatDownloadBW + ": {0} kbit/s", stats.GetDownloadBandwidth());
-                        UpBw.Text = String.Format(AppResources.StatUploadBW + ": {0} kbit/s", stats.GetUploadBandwidth());
+                        AudioDownBw.Text = String.Format(AppResources.StatDownloadBW + ": {0:0.00} kb/s", audioStats.GetDownloadBandwidth());
+                        AudioUpBw.Text = String.Format(AppResources.StatUploadBW + ": {0:0.00} kb/s", audioStats.GetUploadBandwidth());
                     }
 
-                    LinphoneCallParams param = call.GetCurrentParamsCopy();
-                    PayloadType pt = param.GetUsedAudioCodec();
-                    if (pt != null) 
+                    PayloadType audiopt = param.GetUsedAudioCodec();
+                    if (audiopt != null) 
                     {
-                        PType.Text = AppResources.StatAudioPayload + ": " + pt.GetMimeType() + "/" + pt.GetClockRate();
+                        AudioPType.Text = AppResources.StatPayload + ": " + audiopt.GetMimeType() + "/" + audiopt.GetClockRate();
+                    }
+
+                    if (call.IsCameraEnabled())
+                    {
+                        LinphoneCallStats videoStats = call.GetVideoStats();
+                        if (videoStats != null)
+                        {
+                            VideoDownBw.Text = String.Format(AppResources.StatDownloadBW + ": {0:0.00} kb/s", videoStats.GetDownloadBandwidth());
+                            VideoUpBw.Text = String.Format(AppResources.StatUploadBW + ": {0:0.00} kb/s", videoStats.GetUploadBandwidth());
+                        }
+
+                        PayloadType videopt = param.GetUsedVideoCodec();
+                        if (videopt != null)
+                        {
+                            VideoPType.Text = AppResources.StatPayload + ": " + videopt.GetMimeType() + "/" + videopt.GetClockRate();
+                        }
+
+                        VideoStats.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        VideoStats.Visibility = Visibility.Collapsed;
                     }
                 });
             } catch {

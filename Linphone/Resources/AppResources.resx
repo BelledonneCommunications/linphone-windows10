@@ -332,14 +332,14 @@ http://www.linphone.org/m/help
   <data name="Stats" xml:space="preserve">
     <value>stats</value>
   </data>
-  <data name="StatAudioPayload" xml:space="preserve">
-    <value>Audio codec</value>
+  <data name="StatPayload" xml:space="preserve">
+    <value>Codec</value>
   </data>
   <data name="StatDownloadBW" xml:space="preserve">
     <value>Download</value>
   </data>
-  <data name="StatsMenu" xml:space="preserve">
-    <value>Stats</value>
+  <data name="AudioStatsMenu" xml:space="preserve">
+    <value>Audio stats</value>
   </data>
   <data name="StatUploadBW" xml:space="preserve">
     <value>Upload</value>
@@ -385,5 +385,8 @@ http://www.linphone.org/m/help
   </data>
   <data name="AutomaticallyInitiateVideoSetting" xml:space="preserve">
     <value>Automatically initiate</value>
+  </data>
+  <data name="VideoStatsMenu" xml:space="preserve">
+    <value>Video stats</value>
   </data>
 </root>
