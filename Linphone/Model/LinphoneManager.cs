@@ -11,6 +11,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Xml.Linq;
+using Windows.Phone.Media.Capture;
 using Windows.Phone.Media.Devices;
 using Windows.Phone.Networking.Voip;
 
@@ -272,6 +273,31 @@ namespace Linphone.Model
                 host = ((App)App.Current).PushChannelUri.Host;
                 token = ((App)App.Current).PushChannelUri.AbsolutePath;
                 LinphoneCore.GetDefaultProxyConfig().SetContactParameters("app-id=" + host + ";pn-type=wp;pn-tok=" + token + ";pn-msg-str=IM_MSG;pn-call-str=IC_MSG;pn-call-snd=ring.caf;pn-msg-snd=msg.caf");
+            }
+
+            if (LinphoneCore.IsVideoSupported())
+            {
+                String frontCamera = null;
+                String backCamera = null;
+                foreach (String device in LinphoneCore.GetVideoDevices())
+                {
+                    if (device.EndsWith(CameraSensorLocation.Front.ToString()))
+                    {
+                        frontCamera = device;
+                    }
+                    else if (device.EndsWith(CameraSensorLocation.Back.ToString()))
+                    {
+                        backCamera = device;
+                    }
+                }
+                if (frontCamera != null)
+                {
+                    LinphoneCore.SetVideoDevice(frontCamera);
+                }
+                else if (backCamera != null)
+                {
+                    LinphoneCore.SetVideoDevice(backCamera);
+                }
             }
 
             lastNetworkState = DeviceNetworkInformation.IsNetworkAvailable;
