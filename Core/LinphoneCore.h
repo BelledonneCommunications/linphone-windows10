@@ -18,6 +18,7 @@ namespace Linphone
 	namespace Core
 	{
 		ref class LinphoneCoreFactory;
+		ref class LinphoneCore;
 		ref class LinphoneProxyConfig;
 		ref class LinphoneAuthInfo;
 		ref class LinphoneAddress;
@@ -35,25 +36,6 @@ namespace Linphone
 		public ref class Transports sealed
 		{
 		public:
-			/// <summary>
-			/// Creates a default Transports object (using the UDP 5060 port).
-			/// </summary>
-			Transports();
-
-			/// <summary>
-			/// Creates a Transports object specifying the ports to use.
-			/// </summary>
-			/// <param name="udp_port">The UDP port to use (0 to disable)</param>
-			/// <param name="tcp_port">The TCP port to use (0 to disable)</param>
-			/// <param name="tls_port">The TLS port to use (0 to disable)</param>
-			Transports(int udp_port, int tcp_port, int tls_port);
-
-			/// <summary>
-			/// Duplicates a Transports object.
-			/// </summary>
-			/// <param name="t">The Transports object to duplicate</param>
-			Transports(Transports^ t);
-
 			/// <summary>
 			/// Gets a string representation of the Transports object.
 			/// </summary>
@@ -87,6 +69,14 @@ namespace Linphone
 				void set(int value);
             }
 		private:
+			friend class Linphone::Core::Utils;
+			friend ref class Linphone::Core::LinphoneCoreFactory;
+			friend ref class Linphone::Core::LinphoneCore;
+
+			Transports();
+			Transports(int udp_port, int tcp_port, int tls_port);
+			Transports(Transports^ t);
+
 			int udp;
 			int tcp;
 			int tls;
@@ -98,18 +88,6 @@ namespace Linphone
 		public ref class VideoPolicy sealed
 		{
 		public:
-			/// <summary>
-			/// Creates a default VideoPolicy object (automatically initiate and accept video).
-			/// </summary>
-			VideoPolicy();
-
-			/// <summary>
-			/// Creates a VideoPolicy object specifying the behaviour for video calls.
-			/// </summary>
-			/// <param name="automaticallyInitiate">Whether video shall be automatically proposed for outgoing calls</param>
-			/// <param name="automaticallyAccept">Whether video shall be automatically accepted for incoming calls</param>
-			VideoPolicy(bool automaticallyInitiate, bool automaticallyAccept);
-
 			/// <summary>
 			/// Whether video shall be automatically proposed for outgoing calls.
 			/// </summary>
@@ -129,6 +107,13 @@ namespace Linphone
 			}
 
 		private:
+			friend class Linphone::Core::Utils;
+			friend ref class Linphone::Core::LinphoneCoreFactory;
+			friend ref class Linphone::Core::LinphoneCore;
+
+			VideoPolicy();
+			VideoPolicy(bool automaticallyInitiate, bool automaticallyAccept);
+
 			bool automaticallyInitiate;
 			bool automaticallyAccept;
 		};
@@ -139,16 +124,6 @@ namespace Linphone
 		public ref class VideoSize sealed
 		{
 		public:
-			/// <summary>
-			/// Creates an unnamed video size.
-			/// </summary>
-			VideoSize(int width, int height);
-
-			/// <summary>
-			/// Creates a named video size.
-			/// </summary>
-			VideoSize(int width, int height, Platform::String^ name);
-
 			/// <summary>
 			/// The video size width (eg. 640).
 			/// </summary>
@@ -177,6 +152,13 @@ namespace Linphone
 			}
 
 		private:
+			friend class Linphone::Core::Utils;
+			friend ref class Linphone::Core::LinphoneCoreFactory;
+			friend ref class Linphone::Core::LinphoneCore;
+
+			VideoSize(int width, int height);
+			VideoSize(int width, int height, Platform::String^ name);
+
 			int width;
 			int height;
 			Platform::String^ name;

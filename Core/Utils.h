@@ -142,6 +142,59 @@ namespace Linphone
 			static Platform::Object^ CreateLinphoneCallStats(void* callstats);
 
 			/// <summary>
+			/// Creates a C++/CX default Transports object (using the UDP 5060 port).
+			/// </summary>
+			/// <returns>The created Linphone::Core::Transports as a Platform::Object</returns>
+			static Platform::Object^ CreateTransports();
+
+			/// <summary>
+			/// Creates a C++/CX Transports object specifying the ports to use.
+			/// </summary>
+			/// <param name="udp_port">The UDP port to use (0 to disable)</param>
+			/// <param name="tcp_port">The TCP port to use (0 to disable)</param>
+			/// <param name="tls_port">The TLS port to use (0 to disable)</param>
+			/// <returns>The created Linphone::Core::Transports as a Platform::Object</returns>
+			static Platform::Object^ CreateTransports(int udp_port, int tcp_port, int tls_port);
+
+			/// <summary>
+			/// Duplicates a C++/CX Transports object.
+			/// </summary>
+			/// <param name="t">The Transports object to duplicate as Platform::Object</param>
+			/// <returns>The duplicated Linphone::Core::Transports as Platform::Object</returns>
+			static Platform::Object^ CreateTransports(Platform::Object^ t);
+
+			/// <summary>
+			/// Creates a C++/CX default VideoPolicy object (automatically initiate and accept video).
+			/// </summary>
+			/// <returns>The created Linphone::Core::VideoPolicy as a Platform::Object</returns>
+			static Platform::Object^ CreateVideoPolicy();
+
+			/// <summary>
+			/// Creates a C++/CX VideoPolicy object specifying the behaviour for video calls.
+			/// </summary>
+			/// <param name="automaticallyInitiate">Whether video shall be automatically proposed for outgoing calls</param>
+			/// <param name="automaticallyAccept">Whether video shall be automatically accepted for incoming calls</param>
+			/// <returns>The created Linphone::Core::VideoPolicy as a Platform::Object</returns>
+			static Platform::Object^ CreateVideoPolicy(Platform::Boolean automaticallyInitiate, Platform::Boolean automaticallyAccept);
+
+			/// <summary>
+			/// Creates a C++/CX unnamed VideoSize object.
+			/// </summary>
+			/// <param name="width">The video width</param>
+			/// <param name="height">The video height</param>
+			/// <returns>The created Linphone::Core::VideoSize as a Platform::Object</returns>
+			static Platform::Object^ CreateVideoSize(int width, int height);
+
+			/// <summary>
+			/// Creates a C++/CX named VideoSize object.
+			/// </summary>
+			/// <param name="width">The video width</param>
+			/// <param name="height">The video height</param>
+			/// <param name="name">The video size name</param>
+			/// <returns>The created Linphone::Core::VideoSize as a Platform::Object</returns>
+			static Platform::Object^ CreateVideoSize(int width, int height, Platform::String^ name);
+
+			/// <summary>
 			/// A callback called when the echo canceller calibration finishes.
 			/// </summary>
 			/// <param name="lc">The linphone core pointer</param>

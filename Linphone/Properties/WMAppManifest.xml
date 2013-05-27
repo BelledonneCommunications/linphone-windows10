@@ -82,11 +82,8 @@
         <Interface Name="Linphone.Core.__IBackgroundModeLoggerPublicNonVirtuals" InterfaceId="{5A14F5CD-E159-36A3-A7EB-AC29F8CF301C}" />
         <Interface Name="Linphone.Core.__ICallControllerPublicNonVirtuals" InterfaceId="{C50D71F8-F4D8-3871-ADDA-739A4E312CED}" />
         <Interface Name="Linphone.Core.__ITransportsPublicNonVirtuals" InterfaceId="{9CF934BB-9476-3105-B0DF-49E2F4B2A580}" />
-        <Interface Name="Linphone.Core.__ITransportsFactory" InterfaceId="{3376B207-4618-313D-B564-D5500B8EFB64}" />
         <Interface Name="Linphone.Core.__IVideoPolicyPublicNonVirtuals" InterfaceId="{920ACF67-0C7A-3E4E-B50F-A3FF66C79F69}" />
-        <Interface Name="Linphone.Core.__IVideoPolicyFactory" InterfaceId="{3211D693-BC13-3C33-9168-29A3FFD26484}" />
         <Interface Name="Linphone.Core.__IVideoSizePublicNonVirtuals" InterfaceId="{2F218B89-D6C7-30F0-A705-C69644DB79E9}" />
-        <Interface Name="Linphone.Core.__IVideoSizeFactory" InterfaceId="{B18072D3-DD79-30D9-A6A5-526AB6595B25}" />
         <Interface Name="Linphone.Core.__ILinphoneCorePublicNonVirtuals" InterfaceId="{5D15EB8C-4443-3BC3-BC3D-A319DDE8A2BE}" />
         <Interface Name="Linphone.Core.__ILinphoneCoreStatics" InterfaceId="{27C5C871-79CD-3BEB-ACED-BF201D8ACC7B}" />
         <Interface Name="Linphone.Core.__IGlobalsPublicNonVirtuals" InterfaceId="{01600449-19D0-3E52-80E3-382A2C93CBB1}" />

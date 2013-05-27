@@ -90,6 +90,62 @@ Linphone::Core::LinphoneAddress^ LinphoneCoreFactory::CreateLinphoneAddress(Plat
 	return address;
 }
 
+Linphone::Core::Transports^ LinphoneCoreFactory::CreateTransports()
+{
+	gApiLock.Lock();
+	Linphone::Core::Transports^ transports = dynamic_cast<Linphone::Core::Transports^>(Utils::CreateTransports());
+	gApiLock.Unlock();
+	return transports;
+}
+
+Linphone::Core::Transports^ LinphoneCoreFactory::CreateTransports(int udp_port, int tcp_port, int tls_port)
+{
+	gApiLock.Lock();
+	Linphone::Core::Transports^ transports = dynamic_cast<Linphone::Core::Transports^>(Utils::CreateTransports(udp_port, tcp_port, tls_port));
+	gApiLock.Unlock();
+	return transports;
+}
+
+Linphone::Core::Transports^ LinphoneCoreFactory::CreateTransports(Linphone::Core::Transports^ t)
+{
+	gApiLock.Lock();
+	Linphone::Core::Transports^ transports = dynamic_cast<Linphone::Core::Transports^>(Utils::CreateTransports(t));
+	gApiLock.Unlock();
+	return transports;
+}
+
+Linphone::Core::VideoPolicy^ LinphoneCoreFactory::CreateVideoPolicy()
+{
+	gApiLock.Lock();
+	Linphone::Core::VideoPolicy^ policy = dynamic_cast<Linphone::Core::VideoPolicy^>(Utils::CreateVideoPolicy());
+	gApiLock.Unlock();
+	return policy;
+}
+
+Linphone::Core::VideoPolicy^ LinphoneCoreFactory::CreateVideoPolicy(Platform::Boolean automaticallyInitiate, Platform::Boolean automaticallyAccept)
+{
+	gApiLock.Lock();
+	Linphone::Core::VideoPolicy^ policy = dynamic_cast<Linphone::Core::VideoPolicy^>(Utils::CreateVideoPolicy(automaticallyInitiate, automaticallyAccept));
+	gApiLock.Unlock();
+	return policy;
+}
+
+Linphone::Core::VideoSize^ LinphoneCoreFactory::CreateVideoSize(int width, int height)
+{
+	gApiLock.Lock();
+	Linphone::Core::VideoSize^ size = dynamic_cast<Linphone::Core::VideoSize^>(Utils::CreateVideoSize(width, height));
+	gApiLock.Unlock();
+	return size;
+}
+
+Linphone::Core::VideoSize^ LinphoneCoreFactory::CreateVideoSize(int width, int height, Platform::String^ name)
+{
+	gApiLock.Lock();
+	Linphone::Core::VideoSize^ size = dynamic_cast<Linphone::Core::VideoSize^>(Utils::CreateVideoSize(width, height, name));
+	gApiLock.Unlock();
+	return size;
+}
+
 void LinphoneCoreFactory::SetLogLevel(OutputTraceLevel logLevel)
 {
 	gApiLock.Lock();

@@ -762,13 +762,25 @@ namespace Linphone.Model
 
         public void Save()
         {
-            LinphoneManager.Instance.LinphoneCore.SetUseRFC2833ForDTMFs(Convert.ToBoolean(GetNew(SendDTMFsRFC2833KeyName)));
-            LinphoneManager.Instance.LinphoneCore.SetUseSipInfoForDTMFs(Convert.ToBoolean(GetNew(SendDTMFsSIPInfoKeyName)));
-            LinphoneManager.Instance.LinphoneCore.EnableVideo(Convert.ToBoolean(GetNew(VideoEnabledKeyName)), Convert.ToBoolean(GetNew(VideoEnabledKeyName)));
-            VideoPolicy policy = LinphoneManager.Instance.LinphoneCore.GetVideoPolicy();
-            policy.AutomaticallyInitiate = Convert.ToBoolean(GetNew(AutomaticallyInitiateVideoKeyName));
-            policy.AutomaticallyAccept = Convert.ToBoolean(GetNew(AutomaticallyAcceptVideoKeyName));
-            LinphoneManager.Instance.LinphoneCore.SetVideoPolicy(policy);
+            if (ValueChanged(SendDTMFsRFC2833KeyName))
+            {
+                LinphoneManager.Instance.LinphoneCore.SetUseRFC2833ForDTMFs(Convert.ToBoolean(GetNew(SendDTMFsRFC2833KeyName)));
+            }
+            if (ValueChanged(SendDTMFsSIPInfoKeyName))
+            {
+                LinphoneManager.Instance.LinphoneCore.SetUseSipInfoForDTMFs(Convert.ToBoolean(GetNew(SendDTMFsSIPInfoKeyName)));
+            }
+            if (ValueChanged(VideoEnabledKeyName))
+            {
+                LinphoneManager.Instance.LinphoneCore.EnableVideo(Convert.ToBoolean(GetNew(VideoEnabledKeyName)), Convert.ToBoolean(GetNew(VideoEnabledKeyName)));
+            }
+            if (ValueChanged(AutomaticallyInitiateVideoKeyName) || ValueChanged(AutomaticallyAcceptVideoKeyName))
+            {
+                VideoPolicy policy = LinphoneManager.Instance.LinphoneCoreFactory.CreateVideoPolicy(
+                    Convert.ToBoolean(GetNew(AutomaticallyInitiateVideoKeyName)),
+                    Convert.ToBoolean(GetNew(AutomaticallyAcceptVideoKeyName)));
+                LinphoneManager.Instance.LinphoneCore.SetVideoPolicy(policy);
+            }
         }
         #endregion
 
@@ -995,7 +1007,7 @@ namespace Linphone.Model
         {
             if (ValueChanged(SIPTransportSettingKeyName))
             {
-                Transports transports = LinphoneManager.Instance.LinphoneCore.GetSignalingTransportsPorts();
+                Transports transports = LinphoneManager.Instance.LinphoneCoreFactory.CreateTransports();
                 int port = Convert.ToInt32(GetNew(SIPPortKeyName));
                 if (GetNew(SIPTransportSettingKeyName) == AppResources.TransportUDP)
                 {

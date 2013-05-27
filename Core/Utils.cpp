@@ -123,6 +123,41 @@ Platform::Object^ Linphone::Core::Utils::CreateLinphoneCallStats(void *callStats
 	return ref new Linphone::Core::LinphoneCallStats((::LinphoneCallStats *)callStats);
 }
 
+Platform::Object^ Linphone::Core::Utils::CreateTransports()
+{
+	return ref new Linphone::Core::Transports();
+}
+
+Platform::Object^ Linphone::Core::Utils::CreateTransports(int udp_port, int tcp_port, int tls_port)
+{
+	return ref new Linphone::Core::Transports(udp_port, tcp_port, tls_port);
+}
+
+Platform::Object^ Linphone::Core::Utils::CreateTransports(Platform::Object^ t)
+{
+	return ref new Linphone::Core::Transports(dynamic_cast<Linphone::Core::Transports^>(t));
+}
+
+Platform::Object^ Linphone::Core::Utils::CreateVideoPolicy()
+{
+	return ref new Linphone::Core::VideoPolicy();
+}
+
+Platform::Object^ Linphone::Core::Utils::CreateVideoPolicy(Platform::Boolean automaticallyInitiate, Platform::Boolean automaticallyAccept)
+{
+	return ref new Linphone::Core::VideoPolicy(automaticallyInitiate, automaticallyAccept);
+}
+
+Platform::Object^ Linphone::Core::Utils::CreateVideoSize(int width, int height)
+{
+	return ref new Linphone::Core::VideoSize(width, height);
+}
+
+Platform::Object^ Linphone::Core::Utils::CreateVideoSize(int width, int height, Platform::String^ name)
+{
+	return ref new Linphone::Core::VideoSize(width, height, name);
+}
+
 void Linphone::Core::Utils::EchoCalibrationCallback(void *lc, int status, int delay_ms, void *data)
 {
 	gApiLock.Lock();

@@ -12,6 +12,9 @@ namespace Linphone
 		ref class LinphoneAuthInfo;
 		ref class LinphoneAddress;
 		ref class LpConfig;
+		ref class Transports;
+		ref class VideoPolicy;
+		ref class VideoSize;
 
 		/// <summary>
 		/// Definition of the OutputTraceListener interface. The classes that are to be used to ouput trace logs must implement this interface.
@@ -101,6 +104,59 @@ namespace Linphone
 			/// <param name="uri">address, should be like "sip:joe@sip.linphone.org"</param>
 			/// <returns>The LinphoneAddress that has been created</returns>
 			LinphoneAddress^ CreateLinphoneAddress(Platform::String^ uri);
+
+			/// <summary>
+			/// Creates a default Transports object (using the UDP 5060 port).
+			/// </summary>
+			/// <returns>The Transports that has been created</returns>
+			Transports^ CreateTransports();
+
+			/// <summary>
+			/// Creates a Transports object specifying the ports to use.
+			/// </summary>
+			/// <param name="udp_port">The UDP port to use (0 to disable)</param>
+			/// <param name="tcp_port">The TCP port to use (0 to disable)</param>
+			/// <param name="tls_port">The TLS port to use (0 to disable)</param>
+			/// <returns>The Transports that has been created</returns>
+			Transports^ CreateTransports(int udp_port, int tcp_port, int tls_port);
+
+			/// <summary>
+			/// Duplicates a Transports object.
+			/// </summary>
+			/// <param name="t">The Transports object to duplicate</param>
+			/// <returns>The duplicated Transports</returns>
+			Transports^ CreateTransports(Transports^ t);
+
+			/// <summary>
+			/// Creates a default VideoPolicy object (automatically initiate and accept video).
+			/// </summary>
+			/// <returns>The VideoPolicy that has been created</returns>
+			VideoPolicy^ CreateVideoPolicy();
+
+			/// <summary>
+			/// Creates a VideoPolicy object specifying the behaviour for video calls.
+			/// </summary>
+			/// <param name="automaticallyInitiate">Whether video shall be automatically proposed for outgoing calls</param>
+			/// <param name="automaticallyAccept">Whether video shall be automatically accepted for incoming calls</param>
+			/// <returns>The VideoPolicy that has been created</returns>
+			VideoPolicy^ CreateVideoPolicy(Platform::Boolean automaticallyInitiate, Platform::Boolean automaticallyAccept);
+
+			/// <summary>
+			/// Creates an unnamed VideoSize object.
+			/// </summary>
+			/// <param name="width">The video width</param>
+			/// <param name="height">The video height</param>
+			/// <returns>The VideoSize that has been created</returns>
+			VideoSize^ CreateVideoSize(int width, int height);
+
+			/// <summary>
+			/// Creates a named VideoSize object.
+			/// </summary>
+			/// <param name="width">The video width</param>
+			/// <param name="height">The video height</param>
+			/// <param name="name">The video size name</param>
+			/// <returns>The VideoSize that has been created</returns>
+			VideoSize^ CreateVideoSize(int width, int height, Platform::String^ name);
 
 			/// <summary>
 			/// Sets the global log level of the application.
