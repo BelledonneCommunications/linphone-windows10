@@ -20,6 +20,9 @@ nortp_timeout=30
 [sound]
 dtmf_player_amp=0.1
 
+[video]
+displaytype=MSWP8Dis
+
 [misc]
 history_max_size=30
 max_calls=1
