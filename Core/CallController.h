@@ -53,6 +53,15 @@ namespace Linphone
 				void set(IncomingCallViewDismissedCallback^ cb);
             }
 
+			/// <summary>
+			/// Property to tell that we will use our custom incoming call view instead of the one provided by the OS.
+			/// </summary>
+			property Platform::Boolean CustomIncomingCallView
+			{
+				Platform::Boolean get();
+				void set(Platform::Boolean value);
+			}
+
         private:
             friend ref class Linphone::Core::Globals;
  
@@ -73,6 +82,8 @@ namespace Linphone
 			Linphone::Core::LinphoneCall^ call;
 
 			IncomingCallViewDismissedCallback^ onIncomingCallViewDismissed;
+
+			Platform::Boolean customIncomingCallView;
 
             void OnAcceptCallRequested(Windows::Phone::Networking::Voip::VoipPhoneCall^ sender, Windows::Phone::Networking::Voip::CallAnswerEventArgs^ args); 
  

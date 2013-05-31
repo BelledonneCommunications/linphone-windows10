@@ -24,36 +24,43 @@ VoipPhoneCall^ CallController::OnIncomingCallReceived(Linphone::Core::LinphoneCa
 		}
 	}
 
-    TimeSpan ringingTimeout;
-    ringingTimeout.Duration = 90 * 10 * 1000 * 1000; // in 100ns units
-
-	try
-    {
-		if (incomingCallViewDismissedCallback != nullptr)
-			this->onIncomingCallViewDismissed = incomingCallViewDismissedCallback;
-
-        // Ask the Phone Service to start a new incoming call
-        this->callCoordinator->RequestNewIncomingCall(
+	if (this->customIncomingCallView) {
+		this->callCoordinator->RequestNewOutgoingCall(
 			this->callInProgressPageUri + "?sip=" + contactNumber,
-            contactName,
-            contactNumber,
-            this->defaultContactImageUri,
-            this->voipServiceName,
-            this->linphoneImageUri,
-            "",
-			this->ringtoneUri,
-            media,
-            ringingTimeout,
-            &incomingCall);
-    }
-    catch(...)
-    {
-		gApiLock.Unlock();
-        return nullptr;
-    }
+			contactNumber,
+			this->voipServiceName,
+			media,
+			&incomingCall);
+	} else {
+		TimeSpan ringingTimeout;
+		ringingTimeout.Duration = 90 * 10 * 1000 * 1000; // in 100ns units
 
-    incomingCall->AnswerRequested += this->acceptCallRequestedHandler;
-    incomingCall->RejectRequested += this->rejectCallRequestedHandler;
+		try {
+			if (incomingCallViewDismissedCallback != nullptr)
+				this->onIncomingCallViewDismissed = incomingCallViewDismissedCallback;
+
+			// Ask the Phone Service to start a new incoming call
+			this->callCoordinator->RequestNewIncomingCall(
+				this->callInProgressPageUri + "?sip=" + contactNumber,
+				contactName,
+				contactNumber,
+				this->defaultContactImageUri,
+				this->voipServiceName,
+				this->linphoneImageUri,
+				"",
+				this->ringtoneUri,
+				media,
+				ringingTimeout,
+				&incomingCall);
+		}
+		catch(...) {
+			gApiLock.Unlock();
+			return nullptr;
+	    }
+
+		incomingCall->AnswerRequested += this->acceptCallRequestedHandler;
+		incomingCall->RejectRequested += this->rejectCallRequestedHandler;
+	}
 
 	gApiLock.Unlock();
     return incomingCall;
@@ -136,6 +143,21 @@ void CallController::IncomingCallViewDismissed::set(IncomingCallViewDismissedCal
 {
 	gApiLock.Lock();
 	this->onIncomingCallViewDismissed = cb;
+	gApiLock.Unlock();
+}
+
+Platform::Boolean CallController::CustomIncomingCallView::get()
+{
+	gApiLock.Lock();
+	Platform::Boolean value = this->customIncomingCallView;
+	gApiLock.Unlock();
+	return value;
+}
+
+void CallController::CustomIncomingCallView::set(Platform::Boolean value)
+{
+	gApiLock.Lock();
+	this->customIncomingCallView = value;
 	gApiLock.Unlock();
 }
 
