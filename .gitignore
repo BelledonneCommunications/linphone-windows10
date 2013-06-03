@@ -6,6 +6,7 @@
 */ARM/
 */x86/
 CoreProxyStub/Linphone.Core*
+CoreProxyStub/Mediastreamer2.WP8Video*
 CoreProxyStub/dlldata.c
 ARM/
 Linphone.sdf

@@ -141,10 +141,13 @@
     <ClCompile Include="Linphone.Core.OutOfProcess_p.c" />
     <ClCompile Include="Linphone.Core_i.c" />
     <ClCompile Include="Linphone.Core_p.c" />
+    <ClCompile Include="Mediastreamer2.WP8Video_i.c" />
+    <ClCompile Include="Mediastreamer2.WP8Video_p.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Linphone.Core.h" />
     <ClInclude Include="Linphone.Core.OutOfProcess.h" />
+    <ClInclude Include="Mediastreamer2.WP8Video.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CoreProxyStub.def" />

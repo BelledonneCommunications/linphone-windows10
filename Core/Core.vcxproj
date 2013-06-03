@@ -87,17 +87,22 @@
       <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <CustomBuildStep>
-      <Command>pushd "$(OutDir)"
+      <Command>
+        pushd "$(OutDir)"
 
-WinMdIdl.exe "$(OutDir)$(RootNamespace).winmd"
+        WinMdIdl.exe "$(OutDir)$(RootNamespace).winmd"
 
-MIdl.exe /env $(MidlEnv) /winrt /ns_prefix /metadata_dir "$(FrameworkSdkDir)Windows Metadata" /out "$(SolutionDir)$(ProjectName)ProxyStub" "$(OutDir)$(RootNamespace).idl"
+        WinMdIdl.exe "$(OutDir)Mediastreamer2.WP8Video.winmd"
 
-MIdl.exe /env $(MidlEnv) /winrt /ns_prefix /metadata_dir "$(FrameworkSdkDir)Windows Metadata" /out "$(SolutionDir)$(ProjectName)ProxyStub" "$(OutDir)$(RootNamespace).OutOfProcess.idl"
+        MIdl.exe /env $(MidlEnv) /winrt /ns_prefix /metadata_dir "$(FrameworkSdkDir)Windows Metadata" /out "$(SolutionDir)$(ProjectName)ProxyStub" "$(OutDir)$(RootNamespace).idl"
 
-"$(ProjectDir)OopServerRegistrationHelper.exe" /winmd:"$(OutDir)$(RootNamespace).winmd" /dll_name:$(TargetName) /namespace:$(RootNamespace).OutOfProcess /app_manifest:"$(SolutionDir)Linphone\Properties\WMAppManifest.xml" /helper_dir:"$(SolutionDir)Agents"
+        MIdl.exe /env $(MidlEnv) /winrt /ns_prefix /metadata_dir "$(FrameworkSdkDir)Windows Metadata" /out "$(SolutionDir)$(ProjectName)ProxyStub" "$(OutDir)Mediastreamer2.WP8Video.idl"
 
-popd</Command>
+        MIdl.exe /env $(MidlEnv) /winrt /ns_prefix /metadata_dir "$(FrameworkSdkDir)Windows Metadata" /out "$(SolutionDir)$(ProjectName)ProxyStub" "$(OutDir)$(RootNamespace).OutOfProcess.idl"
+
+        "$(ProjectDir)OopServerRegistrationHelper.exe" /winmd:"$(OutDir)$(RootNamespace).winmd" /dll_name:$(TargetName) /namespace:$(RootNamespace).OutOfProcess /app_manifest:"$(SolutionDir)Linphone\Properties\WMAppManifest.xml" /helper_dir:"$(SolutionDir)Agents"
+
+        popd</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs>$(OutDir)$(RootNamespace).idl;$(OutDir)$(RootNamespace).OutOfProcess.idl;$(SolutionDir)$(ProjectName)ProxyStub\dlldata.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace)_i.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace)_p.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).h;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).OutOfProcess.h;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).OutOfProcess_i.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).OutOfProcess_p.c;$(SolutionDir)Agents\RegistrationHelper.cs;%(Outputs)</Outputs>
@@ -165,6 +170,9 @@ popd</Command>
     </ProjectReference>
     <ProjectReference Include="..\submodules\linphone\build\vsx\LibLinphone\LibLinphone.vcxproj">
       <Project>{08dd0d38-d9b5-4626-b60d-b4d76b571142}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\submodules\mswp8vid\mswp8vid\mswp8vid\mswp8vid.vcxproj">
+      <Project>{0565952a-ea62-46a2-8261-f5b4b490da42}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

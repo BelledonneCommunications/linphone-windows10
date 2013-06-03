@@ -83,6 +83,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AgentHost.cs" />
     <Compile Include="BackgroundManager.cs" />
     <Compile Include="LinphoneCallInProgressAgent.cs" />
     <Compile Include="LinphoneForegroundLifeTimeAgent.cs" />
@@ -90,11 +91,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistrationHelper.cs" />
     <Compile Include="TileManager.cs" />
+    <Compile Include="$(ProjectDir)..\submodules\mswp8vid\VideoRenderer.cs" />
+    <Compile Include="$(ProjectDir)..\submodules\mswp8vid\VideoStreamSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.vcxproj">
       <Project>{C8D75245-FFCF-4932-A228-C9CC8BB60B03}</Project>
       <Name>BackEnd</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\submodules\mswp8vid\mswp8vid\mswp8vid\mswp8vid.vcxproj">
+      <Project>{0565952A-EA62-46A2-8261-F5B4B490DA42}</Project>
+      <Name>libmswp8vid</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />

@@ -17,8 +17,7 @@ namespace Linphone.Agents
         protected override void OnFirstCallStarting()
         {
             Debug.WriteLine("[LinphoneCallInProgressAgent] The first call has started.");
-
-            Globals.Instance.StartServer(RegistrationHelper.OutOfProcServerClassNames);
+            AgentHost.OnAgentStarted();
         }
 
         /// <summary>
@@ -27,7 +26,6 @@ namespace Linphone.Agents
         protected override void OnCancel()
         {
             Debug.WriteLine("[LinphoneCallInProgressAgent] The last call has ended. Calling NotifyComplete");
-
             base.NotifyComplete();
         }
     }

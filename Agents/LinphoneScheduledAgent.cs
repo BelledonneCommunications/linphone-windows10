@@ -20,9 +20,7 @@ namespace Linphone.Agents
         protected override void OnInvoke(ScheduledTask task)
         {
             Debug.WriteLine("[LinphoneScheduledAgent] ScheduledAgentImpl has been invoked with argument of type {0}.", task.GetType());
-
-            Globals.Instance.StartServer(RegistrationHelper.OutOfProcServerClassNames);
-
+            AgentHost.OnAgentStarted();
             VoipHttpIncomingCallTask incomingCallTask = task as VoipHttpIncomingCallTask;
             if (incomingCallTask != null)
             {

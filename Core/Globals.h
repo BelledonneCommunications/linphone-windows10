@@ -70,7 +70,16 @@ namespace Linphone
             property CallController^ CallController 
             { 
                 Linphone::Core::CallController^ get(); 
-            } 
+            }
+
+			/// <summary>
+			/// Access the video renderer instance
+			/// </summary>
+			property Mediastreamer2::WP8Video::IVideoRenderer^ VideoRenderer
+			{
+				Mediastreamer2::WP8Video::IVideoRenderer^ get();
+				void set(Mediastreamer2::WP8Video::IVideoRenderer^ value);
+			}
 
         private:
             Globals();
@@ -98,6 +107,8 @@ namespace Linphone
 			Linphone::Core::BackgroundModeLogger^ backgroundModeLogger;
 
             Linphone::Core::CallController^ callController; 
+
+			Mediastreamer2::WP8Video::IVideoRenderer^ videoRenderer;
         };
     }
 }

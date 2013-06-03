@@ -190,6 +190,18 @@ Linphone::Core::BackgroundModeLogger^ Globals::BackgroundModeLogger::get()
 	return this->backgroundModeLogger;
 }
 
+Mediastreamer2::WP8Video::IVideoRenderer^ Globals::VideoRenderer::get()
+{
+	return this->videoRenderer;
+}
+
+void Globals::VideoRenderer::set(Mediastreamer2::WP8Video::IVideoRenderer^ value)
+{
+	gApiLock.Lock();
+	this->videoRenderer = value;
+	gApiLock.Unlock();
+}
+
 Globals::Globals() :
     started(false),
     serverRegistrationCookie(NULL),

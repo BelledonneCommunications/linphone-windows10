@@ -1483,7 +1483,10 @@ void Linphone::Core::LinphoneCore::Init()
 	this->lc = linphone_core_new_with_config(vtable, config ? config->config : NULL, NULL);
 	RefToPtrProxy<LinphoneCore^> *proxy = new RefToPtrProxy<LinphoneCore^>(this);
 	linphone_core_set_user_data(this->lc, proxy);
-	
+
+	RefToPtrProxy<Mediastreamer2::WP8Video::IVideoRenderer^> *renderer = new RefToPtrProxy<Mediastreamer2::WP8Video::IVideoRenderer^>(Globals::Instance->VideoRenderer);
+	linphone_core_set_native_video_window_id(this->lc, (unsigned long)renderer);
+
 	// Launch iterate timer
 	TimeSpan period;
 	period.Duration = 20 * 10000;
