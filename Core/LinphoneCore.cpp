@@ -1308,6 +1308,14 @@ void Linphone::Core::LinphoneCore::EnableVideo(Platform::Boolean enableCapture, 
 	gApiLock.Unlock();
 }
 
+int Linphone::Core::LinphoneCore::GetNativeVideoWindowId()
+{
+	gApiLock.Lock();
+	int id = linphone_core_get_native_video_window_id(this->lc);
+	gApiLock.Unlock();
+	return id;
+}
+
 
 
 

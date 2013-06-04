@@ -987,6 +987,12 @@ namespace Linphone
 			void EnableVideo(Platform::Boolean enableCapture, Platform::Boolean enableDisplay);
 
 			/// <summary>
+			/// Gets the native video window id.
+			/// </summary>
+			/// <returns>The native video window id</returns>
+			int GetNativeVideoWindowId();
+
+			/// <summary>
 			/// The LinphoneCoreListener that handles the events coming from the core.
 			/// </summary>
 			property LinphoneCoreListener^ CoreListener

@@ -31,6 +31,7 @@ namespace Linphone.Views
         /// Public constructor.
         /// </summary>
         public InCall()
+            : base(new InCallModel())
         {
             InitializeComponent();
 
@@ -228,6 +229,12 @@ namespace Linphone.Views
                     {
                         VideoStats.Visibility = Visibility.Collapsed;
                     }
+
+                    // Show video if it was not shown yet
+                    if (call.IsCameraEnabled() && (((InCallModel)ViewModel).RemoteVideoVisibility == Visibility.Collapsed))
+                    {
+                        ((InCallModel)ViewModel).ShowRemoteVideo();
+                    }
                 });
             } catch {
                 timer.Dispose();
@@ -249,6 +256,16 @@ namespace Linphone.Views
             Button button = sender as Button;
             String tag = button.Tag as String;
             LinphoneManager.Instance.LinphoneCore.SendDTMF(Convert.ToChar(tag));
+        }
+
+        private void remoteVideo_MediaOpened_1(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Logger.Msg("RemoteVideo Opened: " + ((MediaElement)sender).Source.AbsoluteUri);
+        }
+
+        private void remoteVideo_MediaFailed_1(object sender, System.Windows.ExceptionRoutedEventArgs e)
+        {
+            Logger.Err("RemoteVideo Failed: " + e.ErrorException.Message);
         }
 
         /// <summary>

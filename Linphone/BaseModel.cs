@@ -1,5 +1,6 @@
 ﻿using Linphone.Model;
 using System;
+using System.ComponentModel;
 using System.Windows.Navigation;
 using System.Windows.Threading;
 
@@ -30,7 +31,7 @@ namespace Linphone
     /// <summary>
     /// Model view for each page implementing the call controller listener to adjust displayed page depending on call events.
     /// </summary>
-    public class BaseModel : CallControllerListener
+    public class BaseModel : INotifyPropertyChanged, CallControllerListener
     {
         /// <summary>
         /// Specific listener for any view which want to be notified when the mute state changes.
@@ -122,6 +123,20 @@ namespace Linphone
         public virtual void OnNavigatedFrom(NavigationEventArgs nea)
         {
             LinphoneManager.Instance.CallListener = null;
-        } 
+        }
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string name)
+        {
+            if (this.PropertyChanged != null)
+            {
+                this.PropertyChanged(this, new PropertyChangedEventArgs(name));
+            }
+        }
+
+        #endregion
     }
 }

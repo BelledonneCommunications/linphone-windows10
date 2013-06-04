@@ -159,6 +159,9 @@
     <Compile Include="Views\InCall.xaml.cs">
       <DependentUpon>InCall.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\InCallModel.cs">
+      <DependentUpon>InCall.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
@@ -252,6 +255,10 @@
     <ProjectReference Include="..\Core\Core.vcxproj">
       <Project>{C8D75245-FFCF-4932-A228-C9CC8BB60B03}</Project>
       <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\submodules\mswp8vid\mswp8vid\mswp8vid\mswp8vid.vcxproj">
+      <Project>{0565952A-EA62-46A2-8261-F5B4B490DA42}</Project>
+      <Name>libmswp8vid</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
