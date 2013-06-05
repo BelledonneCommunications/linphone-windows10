@@ -62,6 +62,19 @@ namespace Linphone.Views
             RemoteVideoVisibility = Visibility.Collapsed;
         }
 
+        private void ShowLocalVideo()
+        {
+            String device = LinphoneManager.Instance.LinphoneCore.GetVideoDevice();
+            LocalVideoUri = Mediastreamer2.WP8Video.VideoRenderer.CameraUri(device);
+            LocalVideoVisibility = Visibility.Visible;
+        }
+
+        private void HideLocalVideo()
+        {
+            LocalVideoUri = null;
+            LocalVideoVisibility = Visibility.Collapsed;
+        }
+
         #endregion
 
         #region Button properties
@@ -201,10 +214,12 @@ namespace Linphone.Views
                     if (this.isVideoActive)
                     {
                         ShowRemoteVideo();
+                        ShowLocalVideo();
                     }
                     else
                     {
                         HideRemoteVideo();
+                        HideLocalVideo();
                     }
                 }
             }
@@ -248,6 +263,44 @@ namespace Linphone.Views
             }
         }
 
+        /// <summary>
+        /// Uri of the local video stream.
+        /// </summary>
+        public Uri LocalVideoUri
+        {
+            get
+            {
+                return this.localVideoUri;
+            }
+            set
+            {
+                if (this.localVideoUri != value)
+                {
+                    this.localVideoUri = value;
+                    this.OnPropertyChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Visibility of the local video.
+        /// </summary>
+        public Visibility LocalVideoVisibility
+        {
+            get
+            {
+                return this.localVideoVisibility;
+            }
+            set
+            {
+                if (this.localVideoVisibility != value)
+                {
+                    this.localVideoVisibility = value;
+                    this.OnPropertyChanged();
+                }
+            }
+        }
+
         #endregion
 
         #region Private variables
@@ -261,6 +314,8 @@ namespace Linphone.Views
         private Boolean isVideoActive = false;
         private Uri remoteVideoUri = null;
         private Visibility remoteVideoVisibility = Visibility.Collapsed;
+        private Uri localVideoUri = null;
+        private Visibility localVideoVisibility = Visibility.Collapsed;
 
         #endregion
     }

@@ -276,6 +276,16 @@ namespace Linphone.Views
             Logger.Err("RemoteVideo Failed: " + e.ErrorException.Message);
         }
 
+        private void localVideo_MediaOpened_1(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Logger.Msg("LocalVideo Opened: " + ((MediaElement)sender).Source.AbsoluteUri);
+        }
+
+        private void localVideo_MediaFailed_1(object sender, System.Windows.ExceptionRoutedEventArgs e)
+        {
+            Logger.Err("LocalVideo Failed: " + e.ErrorException.Message);
+        }
+
         /// <summary>
         /// Do not allow user to leave the incall page while call is active
         /// </summary>
