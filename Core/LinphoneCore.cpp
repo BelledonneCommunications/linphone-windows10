@@ -309,8 +309,7 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::Invite(Platform::Str
 	const char *cc = Linphone::Core::Utils::pstoccs(destination);
 	::LinphoneCall *call = linphone_core_invite(this->lc, cc);
 	delete(cc);
-	if(call != NULL)
-	{
+	if (call != NULL) {
 		Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
 		lCall = (proxy) ? proxy->Ref() : nullptr;
 		if (lCall == nullptr)
@@ -323,7 +322,14 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::Invite(Platform::Str
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddress(Linphone::Core::LinphoneAddress^ destination) 
 {
 	gApiLock.Lock();
-	Linphone::Core::LinphoneCall^ lCall = (Linphone::Core::LinphoneCall^) Linphone::Core::Utils::CreateLinphoneCall(linphone_core_invite_address(this->lc, destination->address));
+	Linphone::Core::LinphoneCall^ lCall = nullptr;
+	::LinphoneCall *call = linphone_core_invite_address(this->lc, destination->address);
+	if (call != NULL) {
+		Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
+		lCall = (proxy) ? proxy->Ref() : nullptr;
+		if (lCall == nullptr)
+			lCall = (Linphone::Core::LinphoneCall^) Linphone::Core::Utils::CreateLinphoneCall(call);
+	}
 	gApiLock.Unlock();
 	return lCall;
 }
@@ -331,7 +337,14 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddress(Linpho
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddressWithParams(Linphone::Core::LinphoneAddress^ destination, LinphoneCallParams^ params) 
 {
 	gApiLock.Lock();
-	Linphone::Core::LinphoneCall^ lCall = (Linphone::Core::LinphoneCall^) Linphone::Core::Utils::CreateLinphoneCall(linphone_core_invite_address_with_params(this->lc, destination->address, params->params));
+	Linphone::Core::LinphoneCall^ lCall = nullptr;
+	::LinphoneCall *call = linphone_core_invite_address_with_params(this->lc, destination->address, params->params);
+	if (call != NULL) {
+		Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
+		lCall = (proxy) ? proxy->Ref() : nullptr;
+		if (lCall == nullptr)
+			lCall = (Linphone::Core::LinphoneCall^) Linphone::Core::Utils::CreateLinphoneCall(call);
+	}
 	gApiLock.Unlock();
 	return lCall;
 }
