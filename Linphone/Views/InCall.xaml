@@ -21,7 +21,10 @@
     </phone:PhoneApplicationPage.Resources>
     
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid
+        x:Name="LayoutRoot"
+        Background="Transparent"
+        Tap="LayoutRoot_Tap">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -88,7 +91,11 @@
                 Margin="12,0,12,0"
                 FontSize="25"/>
             
-            <Grid Grid.Row="3" Margin="0,25,0,0" Opacity="{Binding ButtonsOpacity}">
+            <Grid
+                x:Name="buttons"
+                Grid.Row="3"
+                Margin="0,25,0,0"
+                Opacity="{Binding ButtonsOpacity}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
@@ -100,6 +107,63 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
+                <Grid.Resources>
+                    <Storyboard x:Name="ButtonsFadeOutAnimation">
+                        <DoubleAnimation
+                            Storyboard.TargetName="buttons"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="0.0"
+                            Completed="ButtonsFadeOutAnimation_Completed"/>
+                        <DoubleAnimation
+                            Storyboard.TargetName="statsPanel"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="0.0"/>
+                        <DoubleAnimation
+                            Storyboard.TargetName="Status"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="0.0"/>
+                        <DoubleAnimation
+                            Storyboard.TargetName="Contact"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="0.0"/>
+                        <DoubleAnimation
+                            Storyboard.TargetName="Number"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="0.0"/>
+                    </Storyboard>
+                    <Storyboard x:Name="ButtonsFadeInAnimation">
+                        <DoubleAnimation
+                            Storyboard.TargetName="buttons"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="0.7"/>
+                        <DoubleAnimation
+                            Storyboard.TargetName="statsPanel"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="1.0"/>
+                        <DoubleAnimation
+                            Storyboard.TargetName="Status"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="1.0"/>
+                        <DoubleAnimation
+                            Storyboard.TargetName="Contact"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="1.0"/>
+                        <DoubleAnimation
+                            Storyboard.TargetName="Number"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="1.0"/>
+                    </Storyboard>
+                </Grid.Resources>
 
                 <Button 
                     x:Name="hangUp"

@@ -54,14 +54,12 @@ namespace Linphone.Views
             Int32 id = LinphoneManager.Instance.LinphoneCore.GetNativeVideoWindowId();
             RemoteVideoUri = Mediastreamer2.WP8Video.VideoRenderer.StreamUri(id);
             RemoteVideoVisibility = Visibility.Visible;
-            ButtonsOpacity = InCallModel.ButtonsOpacityInVideoMode;
         }
 
         private void HideRemoteVideo()
         {
             RemoteVideoUri = null;
             RemoteVideoVisibility = Visibility.Collapsed;
-            ButtonsOpacity = InCallModel.ButtonsOpacityInAudioMode;
         }
 
         #endregion
@@ -82,25 +80,6 @@ namespace Linphone.Views
                 if (this.isDialpadToggled != value)
                 {
                     this.isDialpadToggled = value;
-                    this.OnPropertyChanged();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Opacity of the action buttons (Double).
-        /// </summary>
-        public Double ButtonsOpacity
-        {
-            get
-            {
-                return this.buttonsOpacity;
-            }
-            set
-            {
-                if (this.buttonsOpacity != value)
-                {
-                    this.buttonsOpacity = value;
                     this.OnPropertyChanged();
                 }
             }
@@ -274,7 +253,6 @@ namespace Linphone.Views
         #region Private variables
 
         private Boolean isDialpadToggled = false;
-        private Double buttonsOpacity = InCallModel.ButtonsOpacityInAudioMode;
         private Visibility numpadVisibility = Visibility.Collapsed;
         private Visibility pauseButtonVisibility = Visibility.Visible;
         private Visibility microphoneButtonVisibility = Visibility.Visible;
@@ -283,9 +261,6 @@ namespace Linphone.Views
         private Boolean isVideoActive = false;
         private Uri remoteVideoUri = null;
         private Visibility remoteVideoVisibility = Visibility.Collapsed;
-
-        private static Double ButtonsOpacityInVideoMode = 0.7;
-        private static Double ButtonsOpacityInAudioMode = 1.0;
 
         #endregion
     }

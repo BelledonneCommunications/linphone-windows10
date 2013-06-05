@@ -24,7 +24,8 @@ namespace Linphone.Views
         private const string pauseOn = "/Assets/AppBar/play.png";
         private const string pauseOff = "/Assets/AppBar/pause.png";
 
-        private Timer timer;
+        private Timer oneSecondTimer;
+        private Timer fadeTimer;
         private DateTimeOffset startTime;
 
         /// <summary>
@@ -79,9 +80,14 @@ namespace Linphone.Views
         /// </summary>
         protected override void OnNavigatedFrom(NavigationEventArgs nee)
         {
-            if (timer != null)
+            if (oneSecondTimer != null)
             {
-                timer.Dispose();
+                oneSecondTimer.Dispose();
+            }
+            if (fadeTimer != null)
+            {
+                fadeTimer.Dispose();
+                fadeTimer = null;
             }
 
             base.OnNavigatedFrom(nee);
@@ -107,9 +113,9 @@ namespace Linphone.Views
 
         private void hangUp_Click(object sender, RoutedEventArgs e)
         {
-            if (timer != null)
+            if (oneSecondTimer != null)
             {
-                timer.Dispose();
+                oneSecondTimer.Dispose();
             }
             LinphoneManager.Instance.EndCurrentCall();
         }
@@ -167,11 +173,11 @@ namespace Linphone.Views
 
             if (!isCallPaused)
             {
-                timer = new Timer(new TimerCallback(timerTick), null, 0, 1000);
+                oneSecondTimer = new Timer(new TimerCallback(timerTick), null, 0, 1000);
             }
-            else if (timer != null)
+            else if (oneSecondTimer != null)
             {
-                timer.Dispose();
+                oneSecondTimer.Dispose();
             }
         }
 
@@ -182,7 +188,7 @@ namespace Linphone.Views
                 LinphoneCall call = LinphoneManager.Instance.LinphoneCore.GetCurrentCall();
                 if (call == null)
                 {
-                    timer.Dispose();
+                    oneSecondTimer.Dispose();
                     return;
                 }
                 startTime = (DateTimeOffset)call.GetCallStartTimeFromContext();
@@ -234,6 +240,8 @@ namespace Linphone.Views
                     {
                         // Show video if it was not shown yet
                         ((InCallModel)ViewModel).IsVideoActive = true;
+                        ButtonsFadeInAnimation.Begin();
+                        StartFadeTimer();
                     }
                     else if (!call.IsCameraEnabled() && ((InCallModel)ViewModel).IsVideoActive)
                     {
@@ -242,7 +250,7 @@ namespace Linphone.Views
                     }
                 });
             } catch {
-                timer.Dispose();
+                oneSecondTimer.Dispose();
             }
         }
 
@@ -274,6 +282,43 @@ namespace Linphone.Views
         protected override void OnBackKeyPress(CancelEventArgs e)
         {
             e.Cancel = true;
+        }
+
+        private void ButtonsFadeOutAnimation_Completed(object sender, EventArgs e)
+        {
+            buttons.Visibility = Visibility.Collapsed;
+            statsPanel.Visibility = Visibility.Collapsed;
+            Status.Visibility = Visibility.Collapsed;
+            Contact.Visibility = Visibility.Collapsed;
+            Number.Visibility = Visibility.Collapsed;
+        }
+
+        private void HideButtons(Object state)
+        {
+            Status.Dispatcher.BeginInvoke(delegate()
+            {
+                ButtonsFadeOutAnimation.Begin();
+            });
+        }
+
+        private void StartFadeTimer()
+        {
+            if (fadeTimer != null)
+            {
+                fadeTimer.Dispose();
+            }
+            fadeTimer = new Timer(new TimerCallback(HideButtons), null, 4000, Timeout.Infinite);
+        }
+
+        private void LayoutRoot_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            buttons.Visibility = Visibility.Visible;
+            statsPanel.Visibility = ((bool)stats.IsChecked) ? Visibility.Visible : Visibility.Collapsed;
+            Status.Visibility = Visibility.Visible;
+            Contact.Visibility = Visibility.Visible;
+            Number.Visibility = Visibility.Visible;
+            ButtonsFadeInAnimation.Begin();
+            StartFadeTimer();
         }
     }
 }
