@@ -10,8 +10,14 @@ using System.Windows.Controls;
 
 namespace Linphone.Views
 {
+    /// <summary>
+    /// Model for the InCall page that handles the display of the various elements of the page.
+    /// </summary>
     public class InCallModel : BaseModel
     {
+        /// <summary>
+        /// Public constructor.
+        /// </summary>
         public InCallModel()
             : base()
         {
@@ -19,9 +25,11 @@ namespace Linphone.Views
 
         #region Actions
 
+        /// <summary>
+        /// Show or hide the display of the dialpad.
+        /// </summary>
         public void ToggleDialpad()
         {
-            Logger.Err("ToggleDialpad " + IsDialpadToggled);
             IsDialpadToggled = !IsDialpadToggled;
             if (IsDialpadToggled)
             {
@@ -41,17 +49,28 @@ namespace Linphone.Views
             }
         }
 
-        public void ShowRemoteVideo()
+        private void ShowRemoteVideo()
         {
             Int32 id = LinphoneManager.Instance.LinphoneCore.GetNativeVideoWindowId();
             RemoteVideoUri = Mediastreamer2.WP8Video.VideoRenderer.StreamUri(id);
             RemoteVideoVisibility = Visibility.Visible;
+            ButtonsOpacity = InCallModel.ButtonsOpacityInVideoMode;
+        }
+
+        private void HideRemoteVideo()
+        {
+            RemoteVideoUri = null;
+            RemoteVideoVisibility = Visibility.Collapsed;
+            ButtonsOpacity = InCallModel.ButtonsOpacityInAudioMode;
         }
 
         #endregion
 
         #region Button properties
 
+        /// <summary>
+        /// Is the dialpad displayed (Boolean).
+        /// </summary>
         public Boolean IsDialpadToggled
         {
             get
@@ -68,6 +87,28 @@ namespace Linphone.Views
             }
         }
 
+        /// <summary>
+        /// Opacity of the action buttons (Double).
+        /// </summary>
+        public Double ButtonsOpacity
+        {
+            get
+            {
+                return this.buttonsOpacity;
+            }
+            set
+            {
+                if (this.buttonsOpacity != value)
+                {
+                    this.buttonsOpacity = value;
+                    this.OnPropertyChanged("ButtonsOpacity");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Visibility of the numeric pad.
+        /// </summary>
         public Visibility NumpadVisibility
         {
             get
@@ -84,6 +125,9 @@ namespace Linphone.Views
             }
         }
 
+        /// <summary>
+        /// Visibility of the pause button.
+        /// </summary>
         public Visibility PauseButtonVisibility
         {
             get
@@ -100,6 +144,9 @@ namespace Linphone.Views
             }
         }
 
+        /// <summary>
+        /// Visibility of the microphone button.
+        /// </summary>
         public Visibility MicrophoneButtonVisibility
         {
             get
@@ -116,6 +163,9 @@ namespace Linphone.Views
             }
         }
 
+        /// <summary>
+        /// Visibility of the speaker button.
+        /// </summary>
         public Visibility SpeakerButtonVisibility
         {
             get
@@ -132,6 +182,9 @@ namespace Linphone.Views
             }
         }
 
+        /// <summary>
+        /// Visibility of the statistics button.
+        /// </summary>
         public Visibility StatsButtonVisibility
         {
             get
@@ -152,6 +205,35 @@ namespace Linphone.Views
 
         #region Video properties
 
+        /// <summary>
+        /// Is the video active (Boolean).
+        /// </summary>
+        public Boolean IsVideoActive
+        {
+            get
+            {
+                return this.isVideoActive;
+            }
+            set
+            {
+                if (this.isVideoActive != value)
+                {
+                    this.isVideoActive = value;
+                    if (this.isVideoActive)
+                    {
+                        ShowRemoteVideo();
+                    }
+                    else
+                    {
+                        HideRemoteVideo();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Uri of the remote video stream.
+        /// </summary>
         public Uri RemoteVideoUri
         {
             get
@@ -168,6 +250,9 @@ namespace Linphone.Views
             }
         }
 
+        /// <summary>
+        /// Visibility of the remote video.
+        /// </summary>
         public Visibility RemoteVideoVisibility
         {
             get
@@ -189,13 +274,18 @@ namespace Linphone.Views
         #region Private variables
 
         private Boolean isDialpadToggled = false;
+        private Double buttonsOpacity = InCallModel.ButtonsOpacityInAudioMode;
         private Visibility numpadVisibility = Visibility.Collapsed;
         private Visibility pauseButtonVisibility = Visibility.Visible;
         private Visibility microphoneButtonVisibility = Visibility.Visible;
         private Visibility speakerButtonVisibility = Visibility.Visible;
         private Visibility statsButtonVisibility = Visibility.Visible;
+        private Boolean isVideoActive = false;
         private Uri remoteVideoUri = null;
         private Visibility remoteVideoVisibility = Visibility.Collapsed;
+
+        private static Double ButtonsOpacityInVideoMode = 0.7;
+        private static Double ButtonsOpacityInAudioMode = 1.0;
 
         #endregion
     }

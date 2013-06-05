@@ -230,10 +230,15 @@ namespace Linphone.Views
                         VideoStats.Visibility = Visibility.Collapsed;
                     }
 
-                    // Show video if it was not shown yet
-                    if (call.IsCameraEnabled() && (((InCallModel)ViewModel).RemoteVideoVisibility == Visibility.Collapsed))
+                    if (call.IsCameraEnabled() && !((InCallModel)ViewModel).IsVideoActive)
                     {
-                        ((InCallModel)ViewModel).ShowRemoteVideo();
+                        // Show video if it was not shown yet
+                        ((InCallModel)ViewModel).IsVideoActive = true;
+                    }
+                    else if (!call.IsCameraEnabled() && ((InCallModel)ViewModel).IsVideoActive)
+                    {
+                        // Stop video if it is no longer active
+                        ((InCallModel)ViewModel).IsVideoActive = false;
                     }
                 });
             } catch {
