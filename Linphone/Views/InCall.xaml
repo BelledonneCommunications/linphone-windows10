@@ -124,7 +124,8 @@
                     BorderThickness="0"
                     Margin="-10"
                     Click="dialpad_Click_1"
-                    Background="{StaticResource PhoneChromeBrush}">
+                    Background="{StaticResource PhoneChromeBrush}"
+                    IsChecked="{Binding IsDialpadToggled}">
                     <StackPanel Orientation="Vertical">
                         <Image Source="/Assets/AppBar/dialpad.png" Stretch="None"/>
                     </StackPanel>
@@ -137,7 +138,7 @@
                     BorderThickness="0"
                     Margin="-10"
                     Click="speaker_Click_1"
-                    Visibility="Visible"
+                    Visibility="{Binding SpeakerButtonVisibility}"
                     Background="{StaticResource PhoneChromeBrush}">
                     <StackPanel Orientation="Vertical">
                         <Image x:Name="speakerImg" Source="/Assets/AppBar/speaker.png" Stretch="None"/>
@@ -152,7 +153,7 @@
                     BorderThickness="0"
                     Margin="-10"
                     Click="microphone_Click_1"
-                    Visibility="Visible"
+                    Visibility="{Binding MicrophoneButtonVisibility}"
                     Background="{StaticResource PhoneChromeBrush}">
                     <StackPanel Orientation="Vertical">
                         <Image x:Name="microImg" Source="/Assets/AppBar/mic.png" Stretch="None"/>
@@ -167,7 +168,7 @@
                     BorderThickness="0"
                     Margin="-10"
                     Click="pause_Click_1"
-                    Visibility="Visible"
+                    Visibility="{Binding PauseButtonVisibility}"
                     Background="{StaticResource PhoneChromeBrush}">
                     <StackPanel Orientation="Vertical">
                         <Image x:Name="pauseImg" Source="/Assets/AppBar/pause.png" Stretch="None"/>
@@ -182,7 +183,7 @@
                     BorderThickness="0"
                     Margin="-10"
                     Click="stats_Click_1"
-                    Visibility="Visible"
+                    Visibility="{Binding StatsButtonVisibility}"
                     Background="{StaticResource PhoneChromeBrush}">
                     <StackPanel Orientation="Vertical">
                         <Image x:Name="statsImg" Source="/Assets/AppBar/stats.png" Stretch="None"/>
@@ -194,7 +195,7 @@
                     x:Name="numpad"
                     Grid.Row="3"
                     Grid.ColumnSpan="3"
-                    Visibility="Collapsed">
+                    Visibility="{Binding NumpadVisibility}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>

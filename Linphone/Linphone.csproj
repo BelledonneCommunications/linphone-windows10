@@ -94,8 +94,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BaseModel.cs" />
-    <Compile Include="BasePage.cs" />
     <Compile Include="Controls\AddressBox.xaml.cs">
       <DependentUpon>AddressBox.xaml</DependentUpon>
     </Compile>
@@ -108,6 +106,7 @@
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Model\AlphaKeyGroup.cs" />
     <Compile Include="Model\AssociationUriMapper.cs" />
+    <Compile Include="Model\BaseModel.cs" />
     <Compile Include="Model\CallControllerListener.cs" />
     <Compile Include="Model\CallLog.cs" />
     <Compile Include="Model\ContactManager.cs" />
@@ -118,6 +117,7 @@
     <Compile Include="Model\Logger.cs" />
     <Compile Include="Model\MissedToBrushConverter.cs" />
     <Compile Include="Model\SettingsManager.cs" />
+    <Compile Include="Model\InCallModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -129,6 +129,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultValues.resx</DependentUpon>
     </Compile>
+    <Compile Include="Views\BasePage.cs" />
     <Compile Include="Views\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
@@ -157,9 +158,6 @@
       <DependentUpon>History.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\InCall.xaml.cs">
-      <DependentUpon>InCall.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\InCallModel.cs">
       <DependentUpon>InCall.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings.xaml.cs">

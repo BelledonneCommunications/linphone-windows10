@@ -243,12 +243,7 @@ namespace Linphone.Views
 
         private void dialpad_Click_1(object sender, RoutedEventArgs e)
         {
-            bool isDialpadVisible = (bool)dialpad.IsChecked;
-            pause.Visibility = isDialpadVisible ? Visibility.Collapsed : Visibility.Visible;
-            speaker.Visibility = isDialpadVisible ? Visibility.Collapsed : Visibility.Visible;
-            microphone.Visibility = isDialpadVisible ? Visibility.Collapsed : Visibility.Visible;
-            numpad.Visibility = isDialpadVisible ? Visibility.Visible : Visibility.Collapsed;
-            stats.Visibility = isDialpadVisible ? Visibility.Collapsed : Visibility.Visible;
+            ((InCallModel)ViewModel).ToggleDialpad();
         }
 
         private void Numpad_Click_1(object sender, RoutedEventArgs e)
