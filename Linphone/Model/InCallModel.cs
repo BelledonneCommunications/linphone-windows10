@@ -82,7 +82,7 @@ namespace Linphone.Views
                 if (this.isDialpadToggled != value)
                 {
                     this.isDialpadToggled = value;
-                    this.OnPropertyChanged("IsDialpadToggled");
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -101,7 +101,7 @@ namespace Linphone.Views
                 if (this.buttonsOpacity != value)
                 {
                     this.buttonsOpacity = value;
-                    this.OnPropertyChanged("ButtonsOpacity");
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -120,7 +120,7 @@ namespace Linphone.Views
                 if (this.numpadVisibility != value)
                 {
                     this.numpadVisibility = value;
-                    this.OnPropertyChanged("NumpadVisibility");
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -139,7 +139,7 @@ namespace Linphone.Views
                 if (this.pauseButtonVisibility != value)
                 {
                     this.pauseButtonVisibility = value;
-                    this.OnPropertyChanged("PauseButtonVisibility");
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -158,7 +158,7 @@ namespace Linphone.Views
                 if (this.microphoneButtonVisibility != value)
                 {
                     this.microphoneButtonVisibility = value;
-                    this.OnPropertyChanged("MicrophoneButtonVisibility");
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -177,7 +177,7 @@ namespace Linphone.Views
                 if (this.speakerButtonVisibility != value)
                 {
                     this.speakerButtonVisibility = value;
-                    this.OnPropertyChanged("SpeakerButtonVisibility");
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -196,7 +196,7 @@ namespace Linphone.Views
                 if (this.statsButtonVisibility != value)
                 {
                     this.statsButtonVisibility = value;
-                    this.OnPropertyChanged("StatsButtonVisibility");
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -245,7 +245,7 @@ namespace Linphone.Views
                 if (this.remoteVideoUri != value)
                 {
                     this.remoteVideoUri = value;
-                    this.OnPropertyChanged("RemoteVideoUri");
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -264,7 +264,7 @@ namespace Linphone.Views
                 if (this.remoteVideoVisibility != value)
                 {
                     this.remoteVideoVisibility = value;
-                    this.OnPropertyChanged("RemoteVideoVisibility");
+                    this.OnPropertyChanged();
                 }
             }
         }

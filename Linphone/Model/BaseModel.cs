@@ -1,6 +1,7 @@
 ﻿using Linphone.Model;
 using System;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Navigation;
 using System.Windows.Threading;
 
@@ -129,7 +130,11 @@ namespace Linphone
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged(string name)
+        /// <summary>
+        /// Method called by the Set accessor of the properties to notify the change with an event.
+        /// </summary>
+        /// <param name="name">The property name to be notified. The CallerMemberName attribute allows to automatically pass the property name.</param>
+        protected void OnPropertyChanged([CallerMemberName] String name = "")
         {
             if (this.PropertyChanged != null)
             {
