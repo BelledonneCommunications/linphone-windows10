@@ -451,7 +451,7 @@
                 MediaFailed="remoteVideo_MediaFailed_1"
                 Source="{Binding RemoteVideoUri}"
                 RenderTransformOrigin="0.5,0.5"
-                Stretch="UniformToFill"/>
+                Stretch="Uniform"/>
         </Grid>
         
         <Grid Grid.RowSpan="3" Canvas.ZIndex="-1">
@@ -476,7 +476,11 @@
                 MediaFailed="localVideo_MediaFailed_1"
                 Source="{Binding LocalVideoUri}"
                 RenderTransformOrigin="0.5,0.5"
-                Stretch="UniformToFill"/>
+                Stretch="Uniform">
+                <MediaElement.RenderTransform>
+                    <CompositeTransform Rotation="{Binding LocalVideoRotation}"/>
+                </MediaElement.RenderTransform>
+            </MediaElement>
         </Grid>
 
     </Grid>

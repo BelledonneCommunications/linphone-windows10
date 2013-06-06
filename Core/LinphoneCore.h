@@ -993,6 +993,12 @@ namespace Linphone
 			int GetNativeVideoWindowId();
 
 			/// <summary>
+			/// Gets the camera sensor rotation in degrees.
+			/// </summary>
+			/// <returns>The number of degrees the camera sensor is rotated related to the screen  (0 to 360) or -1 if it could not be retrieved</returns>
+			int GetCameraSensorRotation();
+
+			/// <summary>
 			/// The LinphoneCoreListener that handles the events coming from the core.
 			/// </summary>
 			property LinphoneCoreListener^ CoreListener

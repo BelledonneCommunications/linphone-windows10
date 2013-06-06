@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -64,9 +65,43 @@ namespace Linphone.Views
 
         private void ShowLocalVideo()
         {
-            String device = LinphoneManager.Instance.LinphoneCore.GetVideoDevice();
-            LocalVideoUri = Mediastreamer2.WP8Video.VideoRenderer.CameraUri(device);
-            LocalVideoVisibility = Visibility.Visible;
+            int rotation = LinphoneManager.Instance.LinphoneCore.GetCameraSensorRotation();
+            if (rotation < 0)
+            {
+                localVideoTimer = new Timer(new TimerCallback(LocalVideoTimerCallback), null, 200, 15);
+            }
+            else
+            {
+                LocalVideoTimerCallback(null);
+            }
+        }
+
+        private void LocalVideoTimerCallback(Object state)
+        {
+            int rotation = LinphoneManager.Instance.LinphoneCore.GetCameraSensorRotation();
+            if (rotation >= 0)
+            {
+                if (localVideoTimer != null)
+                {
+                    localVideoTimer.Dispose();
+                    localVideoTimer = null;
+                }
+                ((InCall)Page).Status.Dispatcher.BeginInvoke(delegate()
+                {
+                    String device = LinphoneManager.Instance.LinphoneCore.GetVideoDevice();
+                    Boolean mirrored = Mediastreamer2.WP8Video.VideoRenderer.IsCameraMirrored(device);
+                    LocalVideoUri = Mediastreamer2.WP8Video.VideoRenderer.CameraUri(device);
+                    LocalVideoVisibility = Visibility.Visible;
+                    if (mirrored)
+                    {
+                        LocalVideoRotation = 360 - rotation;
+                    }
+                    else
+                    {
+                        LocalVideoRotation = rotation;
+                    }
+                });
+            }
         }
 
         private void HideLocalVideo()
@@ -301,6 +336,25 @@ namespace Linphone.Views
             }
         }
 
+        /// <summary>
+        /// Rotation of the local video.
+        /// </summary>
+        public Double LocalVideoRotation
+        {
+            get
+            {
+                return this.localVideoRotation;
+            }
+            set
+            {
+                if (this.localVideoRotation != value)
+                {
+                    this.localVideoRotation = value;
+                    this.OnPropertyChanged();
+                }
+            }
+        }
+
         #endregion
 
         #region Private variables
@@ -314,8 +368,10 @@ namespace Linphone.Views
         private Boolean isVideoActive = false;
         private Uri remoteVideoUri = null;
         private Visibility remoteVideoVisibility = Visibility.Collapsed;
+        private Timer localVideoTimer;
         private Uri localVideoUri = null;
         private Visibility localVideoVisibility = Visibility.Collapsed;
+        private Double localVideoRotation = 0;
 
         #endregion
     }

@@ -1329,6 +1329,14 @@ int Linphone::Core::LinphoneCore::GetNativeVideoWindowId()
 	return id;
 }
 
+int Linphone::Core::LinphoneCore::GetCameraSensorRotation()
+{
+	gApiLock.Lock();
+	int rotation = linphone_core_get_camera_sensor_rotation(this->lc);
+	gApiLock.Unlock();
+	return rotation;
+}
+
 
 
 
