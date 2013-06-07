@@ -18,8 +18,9 @@ VoipPhoneCall^ CallController::OnIncomingCallReceived(Linphone::Core::LinphoneCa
 
 	VoipCallMedia media = VoipCallMedia::Audio;
 	if (Globals::Instance->LinphoneCore->IsVideoSupported()	&& Globals::Instance->LinphoneCore->IsVideoEnabled()) {
-		LinphoneCallParams^ params = call->GetRemoteParams();
-		if ((params != nullptr) && params->IsVideoEnabled()) {
+		LinphoneCallParams^ remoteParams = call->GetRemoteParams();
+		LinphoneCallParams^ localParams = call->GetCurrentParamsCopy();
+		if ((remoteParams != nullptr) && remoteParams->IsVideoEnabled() && (localParams != nullptr) && localParams->IsVideoEnabled()) {
 			media = VoipCallMedia::Audio | VoipCallMedia::Video;
 		}
 	}
