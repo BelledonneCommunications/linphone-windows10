@@ -1399,6 +1399,11 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 	}
 	else if (state == Linphone::Core::LinphoneCallState::StreamsRunning) {
 		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = (Windows::Phone::Networking::Voip::VoipPhoneCall^) lCall->CallContext;
+		if (lCall->IsCameraEnabled()) {
+			platformCall->CallMedia = VoipCallMedia::Audio | VoipCallMedia::Video;
+		} else {
+			platformCall->CallMedia = VoipCallMedia::Audio;
+		}
 		platformCall->NotifyCallActive();
 	}
 	

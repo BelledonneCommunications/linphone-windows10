@@ -9,6 +9,8 @@ using namespace Platform;
 using namespace Windows::Foundation;
 using namespace Windows::Phone::Networking::Voip;
 
+//#define ACCEPT_WITH_VIDEO_OR_WITH_AUDIO_ONLY
+
 VoipPhoneCall^ CallController::OnIncomingCallReceived(Linphone::Core::LinphoneCall^ call, Platform::String^ contactName, Platform::String^ contactNumber, IncomingCallViewDismissedCallback^ incomingCallViewDismissedCallback)
 {
 	gApiLock.Lock();
@@ -17,13 +19,19 @@ VoipPhoneCall^ CallController::OnIncomingCallReceived(Linphone::Core::LinphoneCa
 	this->call = call;
 
 	VoipCallMedia media = VoipCallMedia::Audio;
+#ifdef ACCEPT_WITH_VIDEO_OR_WITH_AUDIO_ONLY
 	if (Globals::Instance->LinphoneCore->IsVideoSupported()	&& Globals::Instance->LinphoneCore->IsVideoEnabled()) {
+		bool automatically_accept = false;
 		LinphoneCallParams^ remoteParams = call->GetRemoteParams();
-		LinphoneCallParams^ localParams = call->GetCurrentParamsCopy();
-		if ((remoteParams != nullptr) && remoteParams->IsVideoEnabled() && (localParams != nullptr) && localParams->IsVideoEnabled()) {
+		VideoPolicy^ policy = Globals::Instance->LinphoneCore->GetVideoPolicy();
+		if (policy != nullptr) {
+			automatically_accept = policy->AutomaticallyAccept;
+		}
+		if ((remoteParams != nullptr) && remoteParams->IsVideoEnabled() && automatically_accept) {
 			media = VoipCallMedia::Audio | VoipCallMedia::Video;
 		}
 	}
+#endif
 
 	if (this->customIncomingCallView) {
 		this->callCoordinator->RequestNewOutgoingCall(
@@ -76,8 +84,19 @@ void CallController::OnAcceptCallRequested(VoipPhoneCall^ incomingCall, CallAnsw
 	if (this->onIncomingCallViewDismissed != nullptr)
 		this->onIncomingCallViewDismissed();
 
-	if (this->call != nullptr)
+	if (this->call != nullptr) {
+#ifdef ACCEPT_WITH_VIDEO_OR_WITH_AUDIO_ONLY
+		LinphoneCallParams^ params = call->GetCurrentParamsCopy();
+		if ((args->AcceptedMedia & VoipCallMedia::Video) == VoipCallMedia::Video) {
+			params->EnableVideo(true);
+		} else {
+			params->EnableVideo(false);
+		}
+		Globals::Instance->LinphoneCore->AcceptCallWithParams(this->call, params);
+#else
 		Globals::Instance->LinphoneCore->AcceptCall(this->call);
+#endif
+	}
 
 	gApiLock.Unlock();
 } 
