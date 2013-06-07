@@ -519,6 +519,32 @@ namespace Linphone.Model
         }
         #endregion
 
+        /// <summary>
+        /// Enables disables video.
+        /// </summary>
+        /// <param name="enable">Wether to enable or disable video</param>
+        /// <returns>true if the operation has been successful, false otherwise</returns>
+        public bool EnableVideo(bool enable)
+        {
+            if (LinphoneCore.IsInCall())
+            {
+                LinphoneCall call = LinphoneCore.GetCurrentCall();
+                if (enable != call.IsCameraEnabled())
+                {
+                    call.EnableCamera(enable);
+                    LinphoneCallParams parameters = call.GetCurrentParamsCopy();
+                    parameters.EnableVideo(enable);
+                    if (enable)
+                    {
+                        // TODO: Handle bandwidth limitation
+                    }
+                    LinphoneCore.UpdateCall(call, parameters);
+                    return true;
+                }
+            }
+            return false;
+        }
+
         #region LinphoneCoreListener Callbacks
         /// <summary>
         /// Callback for LinphoneCoreListener

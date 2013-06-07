@@ -23,6 +23,8 @@ namespace Linphone.Views
         private const string micOff = "/Assets/AppBar/mic.png";
         private const string pauseOn = "/Assets/AppBar/play.png";
         private const string pauseOff = "/Assets/AppBar/pause.png";
+        private const string videoOn = "/Assets/AppBar/feature.video.png";
+        private const string videoOff = "/Assets/AppBar/feature.video.png";
 
         private Timer oneSecondTimer;
         private Timer fadeTimer;
@@ -145,6 +147,16 @@ namespace Linphone.Views
             statsPanel.Visibility = areStatsVisible ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        private void video_Checked_1(object sender, RoutedEventArgs e)
+        {
+            bool isVideoToggled = (bool)video.IsChecked;
+            videoImg.Source = new BitmapImage(new Uri(isVideoToggled ? videoOn : videoOff, UriKind.RelativeOrAbsolute));
+            if (!LinphoneManager.Instance.EnableVideo(isVideoToggled))
+            {
+                if (isVideoToggled) video.IsChecked = false;
+            }
+        }
+
         /// <summary>
         /// Called when the mute status of the microphone changes.
         /// </summary>
@@ -240,6 +252,7 @@ namespace Linphone.Views
                     {
                         // Show video if it was not shown yet
                         ((InCallModel)ViewModel).IsVideoActive = true;
+                        video.IsChecked = true;
                         ButtonsFadeInAnimation.Begin();
                         StartFadeTimer();
                     }
@@ -247,6 +260,7 @@ namespace Linphone.Views
                     {
                         // Stop video if it is no longer active
                         ((InCallModel)ViewModel).IsVideoActive = false;
+                        video.IsChecked = false;
                     }
                 });
             } catch {

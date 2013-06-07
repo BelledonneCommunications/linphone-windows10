@@ -39,6 +39,7 @@
             <TextBlock Style="{StaticResource PhoneTextNormalStyle}"/>
         </StackPanel>
 
+        <!-- Statistics panel -->
         <StackPanel x:Name="statsPanel" Grid.Row="1" Margin="12,17,0,28" Visibility="Collapsed">
             <Grid Grid.Row="1" Margin="0,0,0,0">
                 <Grid.RowDefinitions>
@@ -70,7 +71,8 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            
+
+            <!-- Status text -->
             <TextBlock
                 Grid.Row="0"
                 x:Name="Status"
@@ -78,19 +80,22 @@
                 Text="{Binding Path=LocalizedResources.Dialing, Source={StaticResource LocalizedStrings}}"
                 Margin="12,0,12,0"
                 FontSize="20" />
-            
+
+            <!-- Contact text -->
             <TextBlock
                 Grid.Row="1"
                 x:Name="Contact"
                 Margin="12,0,12,0"
                 FontSize="60"/>
 
+            <!-- Number text -->
             <TextBlock
                 Grid.Row="2"
                 x:Name="Number"
                 Margin="12,0,12,0"
                 FontSize="25"/>
-            
+
+            <!-- Buttons -->
             <Grid
                 x:Name="buttons"
                 Grid.Row="3"
@@ -255,6 +260,22 @@
                     </StackPanel>
                 </ToggleButton>
 
+                <ToggleButton 
+                    x:Name="video"
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    BorderThickness="0"
+                    Margin="-10"
+                    Checked="video_Checked_1"
+                    Visibility="{Binding VideoButtonVisibility}"
+                    Background="{StaticResource PhoneChromeBrush}">
+                    <StackPanel Orientation="Vertical">
+                        <Image x:Name="videoImg" Source="/Assets/AppBar/feature.video.png" Stretch="None"/>
+                        <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Video, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
+                    </StackPanel>
+                </ToggleButton>
+
+                <!-- Numeric pad buttons -->
                 <Grid
                     x:Name="numpad"
                     Grid.Row="3"
@@ -443,6 +464,7 @@
             </Grid>
         </Grid>
 
+        <!-- Remote video media element -->
         <Grid Grid.RowSpan="3" Canvas.ZIndex="-2">
             <MediaElement
                 x:Name="remoteVideo"
@@ -453,7 +475,8 @@
                 RenderTransformOrigin="0.5,0.5"
                 Stretch="Uniform"/>
         </Grid>
-        
+
+        <!-- Local video media element -->
         <Grid Grid.RowSpan="3" Canvas.ZIndex="-1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />

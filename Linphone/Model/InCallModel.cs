@@ -22,6 +22,11 @@ namespace Linphone.Views
         public InCallModel()
             : base()
         {
+            if (LinphoneManager.Instance.LinphoneCore.IsVideoSupported()
+                && LinphoneManager.Instance.LinphoneCore.IsVideoEnabled())
+            {
+                this.videoButtonVisibility = Visibility.Visible;
+            }
         }
 
         #region Actions
@@ -229,6 +234,30 @@ namespace Linphone.Views
             }
         }
 
+        /// <summary>
+        /// Visibility of the video button.
+        /// </summary>
+        public Visibility VideoButtonVisibility
+        {
+            get
+            {
+                return this.videoButtonVisibility;
+            }
+            set
+            {
+                if (!LinphoneManager.Instance.LinphoneCore.IsVideoSupported()
+                    || !LinphoneManager.Instance.LinphoneCore.IsVideoEnabled())
+                {
+                    value = Visibility.Collapsed;
+                }
+                if (this.videoButtonVisibility != value)
+                {
+                    this.videoButtonVisibility = value;
+                    this.OnPropertyChanged();
+                }
+            }
+        }
+
         #endregion
 
         #region Video properties
@@ -388,6 +417,7 @@ namespace Linphone.Views
         private Visibility microphoneButtonVisibility = Visibility.Visible;
         private Visibility speakerButtonVisibility = Visibility.Visible;
         private Visibility statsButtonVisibility = Visibility.Visible;
+        private Visibility videoButtonVisibility = Visibility.Collapsed;
         private Boolean isVideoActive = false;
         private Uri remoteVideoUri = null;
         private Visibility remoteVideoVisibility = Visibility.Collapsed;
