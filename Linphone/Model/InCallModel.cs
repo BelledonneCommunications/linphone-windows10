@@ -250,7 +250,10 @@ namespace Linphone.Views
                     if (this.isVideoActive)
                     {
                         ShowRemoteVideo();
-                        ShowLocalVideo();
+                        if (LinphoneManager.Instance.LinphoneCore.IsSelfViewEnabled())
+                        {
+                            ShowLocalVideo();
+                        }
                     }
                     else
                     {

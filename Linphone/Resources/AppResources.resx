@@ -389,4 +389,7 @@ http://www.linphone.org/m/help
   <data name="VideoStatsMenu" xml:space="preserve">
     <value>Video stats</value>
   </data>
+  <data name="SelfViewEnabledSetting" xml:space="preserve">
+    <value>Self view enabled</value>
+  </data>
 </root>

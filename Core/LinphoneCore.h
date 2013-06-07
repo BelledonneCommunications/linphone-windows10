@@ -999,6 +999,19 @@ namespace Linphone
 			int GetCameraSensorRotation();
 
 			/// <summary>
+			/// Tells whether self view is enabled or not.
+			/// </summary>
+			/// <returns>true if self view is enabled, false otherwise</returns>
+			Platform::Boolean IsSelfViewEnabled();
+
+			/// <summary>
+			/// Enables or disables self view during calls.
+			/// Self-view refers to having local webcam image inserted in corner of the video window during calls.
+			/// </summary>
+			/// <param name="enable">true to enable self view, false to disable it</param>
+			void EnableSelfView(Platform::Boolean enable);
+
+			/// <summary>
 			/// The LinphoneCoreListener that handles the events coming from the core.
 			/// </summary>
 			property LinphoneCoreListener^ CoreListener

@@ -747,6 +747,7 @@ namespace Linphone.Model
         private const string VideoEnabledKeyName = "VideoEnabled";
         private const string AutomaticallyInitiateVideoKeyName = "AutomaticallyInitiateVideo";
         private const string AutomaticallyAcceptVideoKeyName = "AutomaticallyAcceptVideo";
+        private const string SelfViewEnabledKeyName = "SelfViewEnabled";
         #endregion
 
         #region Implementation of the ISettingsManager interface
@@ -758,6 +759,7 @@ namespace Linphone.Model
             VideoPolicy policy = LinphoneManager.Instance.LinphoneCore.GetVideoPolicy();
             dict[AutomaticallyInitiateVideoKeyName] = policy.AutomaticallyInitiate.ToString();
             dict[AutomaticallyAcceptVideoKeyName] = policy.AutomaticallyAccept.ToString();
+            dict[SelfViewEnabledKeyName] = LinphoneManager.Instance.LinphoneCore.IsSelfViewEnabled().ToString();
         }
 
         public void Save()
@@ -780,6 +782,10 @@ namespace Linphone.Model
                     Convert.ToBoolean(GetNew(AutomaticallyInitiateVideoKeyName)),
                     Convert.ToBoolean(GetNew(AutomaticallyAcceptVideoKeyName)));
                 LinphoneManager.Instance.LinphoneCore.SetVideoPolicy(policy);
+            }
+            if (ValueChanged(SelfViewEnabledKeyName))
+            {
+                LinphoneManager.Instance.LinphoneCore.EnableSelfView(Convert.ToBoolean(GetNew(SelfViewEnabledKeyName)));
             }
         }
         #endregion
@@ -857,6 +863,21 @@ namespace Linphone.Model
             set
             {
                 Set(AutomaticallyAcceptVideoKeyName, value.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Display self view during calls (bool).
+        /// </summary>
+        public bool? SelfViewEnabled
+        {
+            get
+            {
+                return Convert.ToBoolean(Get(SelfViewEnabledKeyName));
+            }
+            set
+            {
+                Set(SelfViewEnabledKeyName, value.ToString());
             }
         }
         #endregion

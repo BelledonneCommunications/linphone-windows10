@@ -25,6 +25,7 @@
                         <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
                     </Grid.RowDefinitions>
 
                     <toolkit:ToggleSwitch
@@ -43,6 +44,12 @@
                         Grid.Row="2"
                         x:Name="AutomaticallyAcceptVideo"
                         Header="{Binding Path=LocalizedResources.AutomaticallyAcceptVideoSetting, Source={StaticResource LocalizedStrings}}">
+                    </toolkit:ToggleSwitch>
+
+                    <toolkit:ToggleSwitch
+                        Grid.Row="3"
+                        x:Name="SelfViewEnabled"
+                        Header="{Binding Path=LocalizedResources.SelfViewEnabledSetting, Source={StaticResource LocalizedStrings}}">
                     </toolkit:ToggleSwitch>
                 </Grid>
             </phone:PivotItem>

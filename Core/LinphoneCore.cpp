@@ -1337,6 +1337,21 @@ int Linphone::Core::LinphoneCore::GetCameraSensorRotation()
 	return rotation;
 }
 
+Platform::Boolean Linphone::Core::LinphoneCore::IsSelfViewEnabled()
+{
+	gApiLock.Lock();
+	Platform::Boolean enabled = (linphone_core_self_view_enabled(this->lc) == TRUE);
+	gApiLock.Unlock();
+	return enabled;
+}
+
+void Linphone::Core::LinphoneCore::EnableSelfView(Platform::Boolean enable)
+{
+	gApiLock.Lock();
+	linphone_core_enable_self_view(this->lc, enable);
+	gApiLock.Unlock();
+}
+
 
 
 

@@ -27,6 +27,7 @@ namespace Linphone.Views
             VideoEnabled.IsChecked = _callSettings.VideoEnabled;
             AutomaticallyInitiateVideo.IsChecked = _callSettings.AutomaticallyInitiateVideo;
             AutomaticallyAcceptVideo.IsChecked = _callSettings.AutomaticallyAcceptVideo;
+            SelfViewEnabled.IsChecked = _callSettings.SelfViewEnabled;
 
             _codecsSettings.Load();
             H264.IsChecked = _codecsSettings.H264;
@@ -51,6 +52,7 @@ namespace Linphone.Views
             _callSettings.VideoEnabled = ToBool(VideoEnabled.IsChecked);
             _callSettings.AutomaticallyInitiateVideo = ToBool(AutomaticallyInitiateVideo.IsChecked);
             _callSettings.AutomaticallyAcceptVideo = ToBool(AutomaticallyAcceptVideo.IsChecked);
+            _callSettings.SelfViewEnabled = ToBool(SelfViewEnabled.IsChecked);
             _callSettings.Save();
 
             NavigationService.GoBack();

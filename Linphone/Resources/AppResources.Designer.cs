@@ -589,6 +589,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Self view enabled.
+        /// </summary>
+        public static string SelfViewEnabledSetting {
+            get {
+                return ResourceManager.GetString("SelfViewEnabledSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string SettingsMenu {
