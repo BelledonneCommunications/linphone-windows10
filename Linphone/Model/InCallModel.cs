@@ -92,13 +92,14 @@ namespace Linphone.Views
                     Boolean mirrored = Mediastreamer2.WP8Video.VideoRenderer.IsCameraMirrored(device);
                     LocalVideoUri = Mediastreamer2.WP8Video.VideoRenderer.CameraUri(device);
                     LocalVideoVisibility = Visibility.Visible;
+                    LocalVideoRotation = rotation;
                     if (mirrored)
                     {
-                        LocalVideoRotation = 360 - rotation;
+                        LocalVideoScaleX = -1.0;
                     }
                     else
                     {
-                        LocalVideoRotation = rotation;
+                        LocalVideoScaleX = 1.0;
                     }
                 });
             }
@@ -355,6 +356,25 @@ namespace Linphone.Views
             }
         }
 
+        /// <summary>
+        /// Scale of the X axis of the local video.
+        /// </summary>
+        public Double LocalVideoScaleX
+        {
+            get
+            {
+                return this.localVideoScaleX;
+            }
+            set
+            {
+                if (this.localVideoScaleX != value)
+                {
+                    this.localVideoScaleX = value;
+                    this.OnPropertyChanged();
+                }
+            }
+        }
+
         #endregion
 
         #region Private variables
@@ -372,6 +392,7 @@ namespace Linphone.Views
         private Uri localVideoUri = null;
         private Visibility localVideoVisibility = Visibility.Collapsed;
         private Double localVideoRotation = 0;
+        private Double localVideoScaleX = 1.0;
 
         #endregion
     }

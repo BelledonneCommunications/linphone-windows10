@@ -478,7 +478,7 @@
                 RenderTransformOrigin="0.5,0.5"
                 Stretch="Uniform">
                 <MediaElement.RenderTransform>
-                    <CompositeTransform Rotation="{Binding LocalVideoRotation}"/>
+                    <CompositeTransform Rotation="{Binding LocalVideoRotation}" ScaleX="{Binding LocalVideoScaleX}"/>
                 </MediaElement.RenderTransform>
             </MediaElement>
         </Grid>
