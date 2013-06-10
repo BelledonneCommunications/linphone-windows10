@@ -277,27 +277,7 @@ namespace Linphone.Model
 
             if (LinphoneCore.IsVideoSupported())
             {
-                String frontCamera = null;
-                String backCamera = null;
-                foreach (String device in LinphoneCore.GetVideoDevices())
-                {
-                    if (device.EndsWith(CameraSensorLocation.Front.ToString()))
-                    {
-                        frontCamera = device;
-                    }
-                    else if (device.EndsWith(CameraSensorLocation.Back.ToString()))
-                    {
-                        backCamera = device;
-                    }
-                }
-                if (frontCamera != null)
-                {
-                    LinphoneCore.SetVideoDevice(frontCamera);
-                }
-                else if (backCamera != null)
-                {
-                    LinphoneCore.SetVideoDevice(backCamera);
-                }
+                DetectCameras();
             }
 
             lastNetworkState = DeviceNetworkInformation.IsNetworkAvailable;
@@ -519,6 +499,8 @@ namespace Linphone.Model
         }
         #endregion
 
+        #region Video handling
+
         /// <summary>
         /// Enables disables video.
         /// </summary>
@@ -543,6 +525,77 @@ namespace Linphone.Model
             }
             return false;
         }
+
+        private int nbCameras = 0;
+        private String frontCamera = null;
+        private String backCamera = null;
+
+        private void DetectCameras()
+        {
+            int nbCameras = 0;
+            foreach (String device in LinphoneCore.GetVideoDevices())
+            {
+                if (device.EndsWith(CameraSensorLocation.Front.ToString()))
+                {
+                    frontCamera = device;
+                    nbCameras++;
+                }
+                else if (device.EndsWith(CameraSensorLocation.Back.ToString()))
+                {
+                    backCamera = device;
+                    nbCameras++;
+                }
+            }
+            String currentDevice = LinphoneCore.GetVideoDevice();
+            if ((currentDevice != frontCamera) && (currentDevice != backCamera))
+            {
+                if (frontCamera != null)
+                {
+                    LinphoneCore.SetVideoDevice(frontCamera);
+                }
+                else if (backCamera != null)
+                {
+                    LinphoneCore.SetVideoDevice(backCamera);
+                }
+            }
+            this.nbCameras = nbCameras;
+        }
+
+        /// <summary>
+        /// Gets the number of cameras available on the device (int).
+        /// </summary>
+        public int NumberOfCameras
+        {
+            get
+            {
+                return nbCameras;
+            }
+        }
+
+        /// <summary>
+        /// Toggles the camera used for video capture.
+        /// </summary>
+        public void ToggleCameras()
+        {
+            if (NumberOfCameras >= 2)
+            {
+                String currentDevice = LinphoneCore.GetVideoDevice();
+                if (currentDevice == frontCamera)
+                {
+                    LinphoneCore.SetVideoDevice(backCamera);
+                }
+                else if (currentDevice == backCamera)
+                {
+                    LinphoneCore.SetVideoDevice(frontCamera);
+                }
+                if (LinphoneCore.IsInCall())
+                {
+                    LinphoneCall call = LinphoneCore.GetCurrentCall();
+                    //LinphoneCore.UpdateCall(call, null);
+                }
+            }
+        }
+        #endregion
 
         #region LinphoneCoreListener Callbacks
         /// <summary>

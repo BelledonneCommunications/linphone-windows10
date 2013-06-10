@@ -416,7 +416,11 @@ void Linphone::Core::LinphoneCore::DeferCallUpdate(Linphone::Core::LinphoneCall^
 void Linphone::Core::LinphoneCore::UpdateCall(Linphone::Core::LinphoneCall^ call, Linphone::Core::LinphoneCallParams^ params) 
 {
 	gApiLock.Lock();
-	linphone_core_update_call(this->lc, call->call, params->params);
+	if (params != nullptr) {
+		linphone_core_update_call(this->lc, call->call, params->params);
+	} else {
+		linphone_core_update_call(this->lc, call->call, nullptr);
+	}
 	gApiLock.Unlock();
 }
 

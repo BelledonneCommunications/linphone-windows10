@@ -157,6 +157,11 @@ namespace Linphone.Views
             videoImg.Source = new BitmapImage(new Uri(isVideoToggled ? videoOn : videoOff, UriKind.RelativeOrAbsolute));
         }
 
+        private void camera_Click_1(object sender, RoutedEventArgs e)
+        {
+            LinphoneManager.Instance.ToggleCameras();
+        }
+
         /// <summary>
         /// Called when the mute status of the microphone changes.
         /// </summary>
