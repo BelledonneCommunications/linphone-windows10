@@ -141,12 +141,39 @@
                             Duration="0:0:0.5"
                             To="0.0"/>
                     </Storyboard>
-                    <Storyboard x:Name="ButtonsFadeInAnimation">
+                    <Storyboard x:Name="ButtonsFadeInVideoAnimation">
                         <DoubleAnimation
                             Storyboard.TargetName="buttons"
                             Storyboard.TargetProperty="(Opacity)"
                             Duration="0:0:0.5"
                             To="0.7"/>
+                        <DoubleAnimation
+                            Storyboard.TargetName="statsPanel"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="1.0"/>
+                        <DoubleAnimation
+                            Storyboard.TargetName="Status"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="1.0"/>
+                        <DoubleAnimation
+                            Storyboard.TargetName="Contact"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="1.0"/>
+                        <DoubleAnimation
+                            Storyboard.TargetName="Number"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="1.0"/>
+                    </Storyboard>
+                    <Storyboard x:Name="ButtonsFadeInAudioAnimation">
+                        <DoubleAnimation
+                            Storyboard.TargetName="buttons"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="1.0"/>
                         <DoubleAnimation
                             Storyboard.TargetName="statsPanel"
                             Storyboard.TargetProperty="(Opacity)"
@@ -266,7 +293,7 @@
                     Grid.Column="1"
                     BorderThickness="0"
                     Margin="-10"
-                    Checked="video_Checked_1"
+                    Click="video_Click_1"
                     Visibility="{Binding VideoButtonVisibility}"
                     Background="{StaticResource PhoneChromeBrush}">
                     <StackPanel Orientation="Vertical">

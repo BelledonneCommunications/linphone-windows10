@@ -147,14 +147,14 @@ namespace Linphone.Views
             statsPanel.Visibility = areStatsVisible ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private void video_Checked_1(object sender, RoutedEventArgs e)
+        private void video_Click_1(object sender, RoutedEventArgs e)
         {
             bool isVideoToggled = (bool)video.IsChecked;
-            videoImg.Source = new BitmapImage(new Uri(isVideoToggled ? videoOn : videoOff, UriKind.RelativeOrAbsolute));
             if (!LinphoneManager.Instance.EnableVideo(isVideoToggled))
             {
                 if (isVideoToggled) video.IsChecked = false;
             }
+            videoImg.Source = new BitmapImage(new Uri(isVideoToggled ? videoOn : videoOff, UriKind.RelativeOrAbsolute));
         }
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace Linphone.Views
                         // Show video if it was not shown yet
                         ((InCallModel)ViewModel).IsVideoActive = true;
                         video.IsChecked = true;
-                        ButtonsFadeInAnimation.Begin();
+                        ButtonsFadeInVideoAnimation.Begin();
                         StartFadeTimer();
                     }
                     else if (!call.IsCameraEnabled() && ((InCallModel)ViewModel).IsVideoActive)
@@ -261,6 +261,8 @@ namespace Linphone.Views
                         // Stop video if it is no longer active
                         ((InCallModel)ViewModel).IsVideoActive = false;
                         video.IsChecked = false;
+                        ButtonsFadeInAudioAnimation.Begin();
+                        StopFadeTimer();
                     }
                 });
             } catch {
@@ -334,6 +336,15 @@ namespace Linphone.Views
             fadeTimer = new Timer(new TimerCallback(HideButtons), null, 4000, Timeout.Infinite);
         }
 
+        private void StopFadeTimer()
+        {
+            if (fadeTimer != null)
+            {
+                fadeTimer.Dispose();
+                fadeTimer = null;
+            }
+        }
+
         private void LayoutRoot_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             buttons.Visibility = Visibility.Visible;
@@ -341,8 +352,15 @@ namespace Linphone.Views
             Status.Visibility = Visibility.Visible;
             Contact.Visibility = Visibility.Visible;
             Number.Visibility = Visibility.Visible;
-            ButtonsFadeInAnimation.Begin();
-            StartFadeTimer();
+            if (((InCallModel)ViewModel).IsVideoActive)
+            {
+                ButtonsFadeInVideoAnimation.Begin();
+                StartFadeTimer();
+            }
+            else
+            {
+                ButtonsFadeInAudioAnimation.Begin();
+            }
         }
     }
 }
