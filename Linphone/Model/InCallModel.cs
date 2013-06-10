@@ -52,6 +52,12 @@ namespace Linphone.Views
             }
         }
 
+        public void ToggleCameras()
+        {
+            LinphoneManager.Instance.ToggleCameras();
+            ShowLocalVideo();
+        }
+
         private void ShowRemoteVideo()
         {
             Int32 id = LinphoneManager.Instance.LinphoneCore.GetNativeVideoWindowId();

@@ -159,7 +159,7 @@ namespace Linphone.Views
 
         private void camera_Click_1(object sender, RoutedEventArgs e)
         {
-            LinphoneManager.Instance.ToggleCameras();
+            ((InCallModel)ViewModel).ToggleCameras();
         }
 
         /// <summary>

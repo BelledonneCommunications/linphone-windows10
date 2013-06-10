@@ -591,7 +591,7 @@ namespace Linphone.Model
                 if (LinphoneCore.IsInCall())
                 {
                     LinphoneCall call = LinphoneCore.GetCurrentCall();
-                    //LinphoneCore.UpdateCall(call, null);
+                    LinphoneCore.UpdateCall(call, null);
                 }
             }
         }
