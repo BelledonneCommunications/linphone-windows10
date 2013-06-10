@@ -531,7 +531,6 @@ namespace Linphone.Model
                 LinphoneCall call = LinphoneCore.GetCurrentCall();
                 if (enable != call.IsCameraEnabled())
                 {
-                    call.EnableCamera(enable);
                     LinphoneCallParams parameters = call.GetCurrentParamsCopy();
                     parameters.EnableVideo(enable);
                     if (enable)
