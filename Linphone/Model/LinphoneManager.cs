@@ -656,7 +656,7 @@ namespace Linphone.Model
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
                     if (CallListener != null)
-                        CallListener.CallEnded();
+                        CallListener.CallEnded(call);
                 });
             }
             else if (state == LinphoneCallState.Paused || state == LinphoneCallState.PausedByRemote)
@@ -665,7 +665,7 @@ namespace Linphone.Model
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
                     if (CallListener != null)
-                        CallListener.PauseStateChanged(true);
+                        CallListener.PauseStateChanged(call, true);
                 });
             }
             else if (state == LinphoneCallState.StreamsRunning)
@@ -674,7 +674,7 @@ namespace Linphone.Model
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
                     if (CallListener != null)
-                        CallListener.PauseStateChanged(false);
+                        CallListener.PauseStateChanged(call, false);
                 });
             }
             else if (state == LinphoneCallState.Released)

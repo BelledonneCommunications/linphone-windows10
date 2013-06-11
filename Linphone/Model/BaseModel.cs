@@ -1,4 +1,5 @@
-﻿using Linphone.Model;
+﻿using Linphone.Core;
+using Linphone.Model;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -26,7 +27,7 @@ namespace Linphone
         /// <summary>
         /// Called when the call changes its state to paused or resumed.
         /// </summary>
-        void PauseStateChanged(bool isMicMuted);
+        void PauseStateChanged(LinphoneCall call, bool isCallPaused);
     }
 
     /// <summary>
@@ -76,7 +77,7 @@ namespace Linphone
         /// Called when a call is finished.
         /// Goes back to the last page if possible, else displays Dialer.xaml.
         /// </summary>
-        public void CallEnded()
+        public void CallEnded(LinphoneCall call)
         {
             Logger.Msg("[CallListener] Call ended, can go back ? " + this.Page.NavigationService.CanGoBack);
 
@@ -103,10 +104,10 @@ namespace Linphone
         /// <summary>
         /// Called when the call changes its state to paused or resumed.
         /// </summary>
-        public void PauseStateChanged(bool isCallPaused)
+        public void PauseStateChanged(LinphoneCall call, bool isCallPaused)
         {
             if (this.PauseListener != null)
-                this.PauseListener.PauseStateChanged(isCallPaused);
+                this.PauseListener.PauseStateChanged(call, isCallPaused);
         }
 
         /// <summary>

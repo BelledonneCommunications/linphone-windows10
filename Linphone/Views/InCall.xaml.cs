@@ -41,7 +41,7 @@ namespace Linphone.Views
             var call = LinphoneManager.Instance.LinphoneCore.GetCurrentCall();
             if (call != null && call.GetState() == Core.LinphoneCallState.StreamsRunning)
             {
-                PauseStateChanged(false);
+                PauseStateChanged(call, false);
             }
         }
 
@@ -183,7 +183,7 @@ namespace Linphone.Views
         /// <summary>
         /// Called when the call changes its state to paused or resumed.
         /// </summary>
-        public void PauseStateChanged(bool isCallPaused)
+        public void PauseStateChanged(LinphoneCall call, bool isCallPaused)
         {
             pause.IsChecked = isCallPaused;
             pauseImg.Source = new BitmapImage(new Uri(isCallPaused ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
@@ -191,6 +191,23 @@ namespace Linphone.Views
             if (!isCallPaused)
             {
                 oneSecondTimer = new Timer(new TimerCallback(timerTick), null, 0, 1000);
+
+                if (call.IsCameraEnabled() && !((InCallModel)ViewModel).IsVideoActive)
+                {
+                    // Show video if it was not shown yet
+                    ((InCallModel)ViewModel).IsVideoActive = true;
+                    video.IsChecked = true;
+                    ButtonsFadeInVideoAnimation.Begin();
+                    StartFadeTimer();
+                }
+                else if (!call.IsCameraEnabled() && ((InCallModel)ViewModel).IsVideoActive)
+                {
+                    // Stop video if it is no longer active
+                    ((InCallModel)ViewModel).IsVideoActive = false;
+                    video.IsChecked = false;
+                    ButtonsFadeInAudioAnimation.Begin();
+                    StopFadeTimer();
+                }
             }
             else if (oneSecondTimer != null)
             {
@@ -251,23 +268,6 @@ namespace Linphone.Views
                     else
                     {
                         VideoStats.Visibility = Visibility.Collapsed;
-                    }
-
-                    if (call.IsCameraEnabled() && !((InCallModel)ViewModel).IsVideoActive)
-                    {
-                        // Show video if it was not shown yet
-                        ((InCallModel)ViewModel).IsVideoActive = true;
-                        video.IsChecked = true;
-                        ButtonsFadeInVideoAnimation.Begin();
-                        StartFadeTimer();
-                    }
-                    else if (!call.IsCameraEnabled() && ((InCallModel)ViewModel).IsVideoActive)
-                    {
-                        // Stop video if it is no longer active
-                        ((InCallModel)ViewModel).IsVideoActive = false;
-                        video.IsChecked = false;
-                        ButtonsFadeInAudioAnimation.Begin();
-                        StopFadeTimer();
                     }
                 });
             } catch {
