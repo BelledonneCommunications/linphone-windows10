@@ -10,7 +10,7 @@ namespace Linphone.Controls
     public interface AddressBoxFocused
     {
         /// <summary>
-        /// Called wheh the addressbox get focused.
+        /// Called when the addressbox get focused.
         /// </summary>
         void Focused();
 

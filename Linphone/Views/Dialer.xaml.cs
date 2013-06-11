@@ -149,7 +149,7 @@ namespace Linphone
         }
 
         /// <summary>
-        /// Called wheh the addressbox get focused.
+        /// Called when the addressbox get focused.
         /// </summary>
         public void Focused()
         {
