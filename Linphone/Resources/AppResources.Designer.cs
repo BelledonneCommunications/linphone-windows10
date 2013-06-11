@@ -850,6 +850,24 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Video activation.
+        /// </summary>
+        public static string VideoActivationPopupCaption {
+            get {
+                return ResourceManager.GetString("VideoActivationPopupCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have been proposed video, would you like to accept it?.
+        /// </summary>
+        public static string VideoActivationPopupContent {
+            get {
+                return ResourceManager.GetString("VideoActivationPopupContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Video enabled.
         /// </summary>
         public static string VideoEnabledSetting {

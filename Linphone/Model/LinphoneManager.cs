@@ -685,6 +685,23 @@ namespace Linphone.Model
                     TileManager.Instance.UpdateTileWithMissedCalls(LinphoneCore.GetMissedCallsCount());
                 });
             }
+            else if (state == LinphoneCallState.UpdatedByRemote)
+            {
+                Boolean videoAdded = false;
+                VideoPolicy policy = LinphoneManager.Instance.LinphoneCore.GetVideoPolicy();
+                LinphoneCallParams remoteParams = call.GetRemoteParams();
+                LinphoneCallParams localParams = call.GetCurrentParamsCopy();
+                if (!policy.AutomaticallyAccept && remoteParams.IsVideoEnabled() && !localParams.IsVideoEnabled() && !LinphoneManager.Instance.LinphoneCore.IsInConference())
+                {
+                    LinphoneManager.Instance.LinphoneCore.DeferCallUpdate(call);
+                    videoAdded = true;
+                }
+                BaseModel.UIDispatcher.BeginInvoke(() =>
+                {
+                    if (CallListener != null)
+                        CallListener.CallUpdatedByRemote(call, videoAdded);
+                });
+            }
         }
 
         /// <summary>

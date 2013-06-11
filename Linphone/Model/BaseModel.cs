@@ -30,6 +30,16 @@ namespace Linphone
         void PauseStateChanged(LinphoneCall call, bool isCallPaused);
     }
 
+    public interface CallUpdatedByRemoteListener
+    {
+        /// <summary>
+        /// Called when the call is updated by the remote party.
+        /// </summary>
+        /// <param name="call">The call that has been updated</param>
+        /// <param name="isVideoAdded">A boolean telling whether the remote party added video</param>
+        void CallUpdatedByRemote(LinphoneCall call, bool isVideoAdded);
+    }
+
     /// <summary>
     /// Model view for each page implementing the call controller listener to adjust displayed page depending on call events.
     /// </summary>
@@ -44,6 +54,11 @@ namespace Linphone
         /// Specific listener for any view which want to be notified when the pause state changes.
         /// </summary>
         public PauseChangedListener PauseListener { get; set; }
+
+        /// <summary>
+        /// Specific listener for any view which want to be notifiedd when the call is updated by the remote party.
+        /// </summary>
+        public CallUpdatedByRemoteListener CallUpdatedByRemoteListener { get; set; }
 
         /// <summary>
         /// Public constructor.
@@ -108,6 +123,17 @@ namespace Linphone
         {
             if (this.PauseListener != null)
                 this.PauseListener.PauseStateChanged(call, isCallPaused);
+        }
+
+        /// <summary>
+        /// Called when the call is updated by the remote party.
+        /// </summary>
+        /// <param name="call">The call that has been updated</param>
+        /// <param name="isVideoAdded">A boolean telling whether the remote party added video</param>
+        public void CallUpdatedByRemote(LinphoneCall call, bool isVideoAdded)
+        {
+            if (this.CallUpdatedByRemoteListener != null)
+                this.CallUpdatedByRemoteListener.CallUpdatedByRemote(call, isVideoAdded);
         }
 
         /// <summary>

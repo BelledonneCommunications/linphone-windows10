@@ -1,7 +1,9 @@
 ﻿using Linphone.Core;
 using Linphone.Model;
 using Linphone.Resources;
+using Microsoft.Xna.Framework.GamerServices;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading;
@@ -15,7 +17,7 @@ namespace Linphone.Views
     /// <summary>
     /// InCall page, displayed for both incoming and outgoing calls.
     /// </summary>
-    public partial class InCall : BasePage, MuteChangedListener, PauseChangedListener
+    public partial class InCall : BasePage, MuteChangedListener, PauseChangedListener, CallUpdatedByRemoteListener
     {
         private const string speakerOn = "/Assets/AppBar/speaker.png";
         private const string speakerOff = "/Assets/AppBar/speaker.png";
@@ -57,6 +59,7 @@ namespace Linphone.Views
             base.OnNavigatedTo(nee);
             this.ViewModel.MuteListener = this;
             this.ViewModel.PauseListener = this;
+            this.ViewModel.CallUpdatedByRemoteListener = this;
 
             if (NavigationContext.QueryString.ContainsKey("sip"))
             {
@@ -212,6 +215,34 @@ namespace Linphone.Views
             else if (oneSecondTimer != null)
             {
                 oneSecondTimer.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Called when the call is updated by the remote party.
+        /// </summary>
+        /// <param name="call">The call that has been updated</param>
+        /// <param name="isVideoAdded">A boolean telling whether the remote party added video</param>
+        public void CallUpdatedByRemote(LinphoneCall call, bool isVideoAdded)
+        {
+            if (isVideoAdded)
+            {
+                Guide.BeginShowMessageBox(AppResources.VideoActivationPopupCaption,
+                    AppResources.VideoActivationPopupContent,
+                    new List<String> { "Accept", "Dismiss" },
+                    0,
+                    MessageBoxIcon.Alert,
+                    asyncResult =>
+                    {
+                        int? res = Guide.EndShowMessageBox(asyncResult);
+                        LinphoneCallParams parameters = call.GetCurrentParamsCopy();
+                        if (res == 0)
+                        {
+                            parameters.EnableVideo(true);
+                        }
+                        LinphoneManager.Instance.LinphoneCore.AcceptCallUpdate(call, parameters);
+                    },
+                    null);
             }
         }
 

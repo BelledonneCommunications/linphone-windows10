@@ -395,4 +395,10 @@ http://www.linphone.org/m/help
   <data name="Video" xml:space="preserve">
     <value>video</value>
   </data>
+  <data name="VideoActivationPopupCaption" xml:space="preserve">
+    <value>Video activation</value>
+  </data>
+  <data name="VideoActivationPopupContent" xml:space="preserve">
+    <value>You have been proposed video, would you like to accept it?</value>
+  </data>
 </root>
