@@ -1247,11 +1247,15 @@ Linphone::Core::VideoSize^ Linphone::Core::LinphoneCore::GetPreferredVideoSize()
 
 void Linphone::Core::LinphoneCore::SetPreferredVideoSize(Linphone::Core::VideoSize^ size)
 {
-	const char *ccname = Utils::pstoccs(size->Name);
-	gApiLock.Lock();
-	linphone_core_set_preferred_video_size_by_name(this->lc, ccname);
-	gApiLock.Unlock();
-	delete ccname;
+	if (size->Name != nullptr) {
+		const char *ccname = Utils::pstoccs(size->Name);
+		gApiLock.Lock();
+		linphone_core_set_preferred_video_size_by_name(this->lc, ccname);
+		gApiLock.Unlock();
+		delete ccname;
+	} else {
+		SetPreferredVideoSize(size->Width, size->Height);
+	}
 }
 
 void Linphone::Core::LinphoneCore::SetPreferredVideoSize(int width, int height)
