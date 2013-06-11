@@ -108,7 +108,7 @@ namespace Linphone
 			PausedByRemote = 14,
 			UpdatedByRemote = 15,
 			IncomingEarlyMedia = 16,
-			Udating = 17,
+			Updating = 17,
 			Released = 18
 		};
 
