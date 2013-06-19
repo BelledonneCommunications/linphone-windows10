@@ -659,13 +659,16 @@ namespace Linphone.Model
         /// </summary>
         private void OnContactFound(object sender, ContactFoundEventArgs e)
         {
-            Logger.Msg("[LinphoneManager] Contact found: " + e.ContactFound.DisplayName);
-            ContactManager.ContactFound -= OnContactFound;
-
-            // Store the contact name as display name for call logs
-            if (LinphoneManager.Instance.LinphoneCore.GetCurrentCall() != null)
+            if (e.ContactFound != null)
             {
-                LinphoneManager.Instance.LinphoneCore.GetCurrentCall().GetRemoteAddress().SetDisplayName(e.ContactFound.DisplayName);
+                Logger.Msg("[LinphoneManager] Contact found: " + e.ContactFound.DisplayName);
+                ContactManager.ContactFound -= OnContactFound;
+
+                // Store the contact name as display name for call logs
+                if (LinphoneManager.Instance.LinphoneCore.GetCurrentCall() != null)
+                {
+                    LinphoneManager.Instance.LinphoneCore.GetCurrentCall().GetRemoteAddress().SetDisplayName(e.ContactFound.DisplayName);
+                }
             }
         }
         #endregion
