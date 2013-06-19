@@ -9,6 +9,8 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Linphone.Resources;
 using Linphone.Model;
+using Linphone.Core;
+using System.Collections.ObjectModel;
 
 namespace Linphone.Views
 {
@@ -19,6 +21,8 @@ namespace Linphone.Views
     {
         private bool _usingSelectionAppBar = false;
         private IEnumerable<Conversation> _selection;
+        private List<ChatMessage> _allMessages;
+        private ObservableCollection<Conversation> _conversations;
 
         /// <summary>
         /// Public constructor.
@@ -38,20 +42,49 @@ namespace Linphone.Views
             // Define the query to gather all of the messages.
             var messagesInDB = from ChatMessage message in DatabaseManager.Instance.Messages select message;
             // Execute the query and place the results into a collection.
-            List<ChatMessage> allMessages = new List<ChatMessage>(messagesInDB);
+            _allMessages = new List<ChatMessage>(messagesInDB);
             // Get distinct conversations by addresses.
-            var filtered = allMessages.GroupBy(p => (p.IsIncoming ? p.RemoteContact : p.LocalContact)).Select(g => g.First()).ToList();
+            var filtered = _allMessages.GroupBy(p => p.Contact).Select(g => g.First()).ToList();
 
-            List<Conversation> conversations = new List<Conversation>();
+            _conversations = new ObservableCollection<Conversation>();
+            ContactManager cm = ContactManager.Instance;
+            cm.ContactFound += cm_ContactFound;
             foreach (var conversation in filtered)
             {
                 string address = conversation.LocalContact.Length > 0 ? conversation.LocalContact : conversation.RemoteContact;
-                //TODO: Get contact name or display name
-                conversations.Add(new Conversation(address, "Paulinette", allMessages.Where(m => m.RemoteContact.Equals(address) || m.LocalContact.Equals(address)).ToList()));
+                cm.FindContact(address);
             }
-            Conversations.ItemsSource = conversations;
+            Conversations.ItemsSource = _conversations;
 
             base.OnNavigatedTo(e);
+        }
+        
+        /// <summary>
+        /// Method called when the page is hidden.
+        /// </summary>
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            ContactManager cm = ContactManager.Instance;
+            cm.ContactFound -= cm_ContactFound;
+            Conversations.ItemsSource = null;
+
+            base.OnNavigatedFrom(e);
+        }
+
+        /// <summary>
+        /// Callback called when the search on a phone number or an email for a contact has a match
+        /// </summary>
+        private void cm_ContactFound(object sender, ContactFoundEventArgs e)
+        {
+            string address = e.PhoneNumber;
+            string displayName = address;
+
+            if (e.ContactFound != null)
+            {
+                displayName = e.ContactFound.DisplayName;
+            }
+            _conversations.Add(new Conversation(address, displayName, _allMessages.Where(m => m.RemoteContact.Equals(address) || m.LocalContact.Equals(address)).ToList()));
+
         }
 
         private void BuildLocalizedApplicationBar()

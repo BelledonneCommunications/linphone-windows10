@@ -116,13 +116,16 @@ namespace Linphone.Views
         }
 
         /// <summary>
-        /// Callback called when the search on a phone number for a contact has a match
+        /// Callback called when the search on a phone number or an email for a contact has a match
         /// </summary>
         private void cm_ContactFound(object sender, ContactFoundEventArgs e)
         {
-            ContactName.Text = e.ContactFound.DisplayName;
-            ContactManager.Instance.TempContact = e.ContactFound;
-            ContactName.Tap += ContactName_Tap;
+            if (e.ContactFound != null)
+            {
+                ContactName.Text = e.ContactFound.DisplayName;
+                ContactManager.Instance.TempContact = e.ContactFound;
+                ContactName.Tap += ContactName_Tap;
+            }
         }
 
         private void ContactName_Tap(object sender, System.Windows.Input.GestureEventArgs e)

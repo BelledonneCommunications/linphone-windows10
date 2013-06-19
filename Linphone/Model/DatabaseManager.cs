@@ -195,6 +195,16 @@ namespace Linphone.Model
         [Column(IsVersion = true)]
         private Binary _version;
 
+        public string Contact
+        {
+            get
+            {
+                if (IsIncoming)
+                    return LocalContact;
+                return RemoteContact;
+            }
+        }
+
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
