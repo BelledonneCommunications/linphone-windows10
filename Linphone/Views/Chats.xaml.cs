@@ -39,22 +39,10 @@ namespace Linphone.Views
         /// </summary>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            // Define the query to gather all of the messages.
-            var messagesInDB = from ChatMessage message in DatabaseManager.Instance.Messages select message;
-            // Execute the query and place the results into a collection.
-            _allMessages = new List<ChatMessage>(messagesInDB);
-            // Get distinct conversations by addresses.
-            var filtered = _allMessages.GroupBy(p => p.Contact).Select(g => g.First()).ToList();
-
-            _conversations = new ObservableCollection<Conversation>();
             ContactManager cm = ContactManager.Instance;
             cm.ContactFound += cm_ContactFound;
-            foreach (var conversation in filtered)
-            {
-                string address = conversation.LocalContact.Length > 0 ? conversation.LocalContact : conversation.RemoteContact;
-                cm.FindContact(address);
-            }
-            Conversations.ItemsSource = _conversations;
+
+            GetMessagesAndDisplayConversationsList();
 
             base.OnNavigatedTo(e);
         }
@@ -84,7 +72,6 @@ namespace Linphone.Views
                 displayName = e.ContactFound.DisplayName;
             }
             _conversations.Add(new Conversation(address, displayName, _allMessages.Where(m => m.RemoteContact.Equals(address) || m.LocalContact.Equals(address)).ToList()));
-
         }
 
         private void BuildLocalizedApplicationBar()
@@ -101,9 +88,34 @@ namespace Linphone.Views
             }
         }
 
+        private void GetMessagesAndDisplayConversationsList()
+        {
+            // Define the query to gather all of the messages.
+            var messagesInDB = from ChatMessage message in DatabaseManager.Instance.Messages select message;
+            // Execute the query and place the results into a collection.
+            _allMessages = new List<ChatMessage>(messagesInDB);
+            // Get distinct conversations by addresses.
+            var filtered = _allMessages.OrderByDescending(m => m.Timestamp).GroupBy(m => m.Contact).Select(g => g.First()).ToList();
+
+            _conversations = new ObservableCollection<Conversation>();
+            foreach (var conversation in filtered)
+            {
+                string address = conversation.LocalContact.Length > 0 ? conversation.LocalContact : conversation.RemoteContact;
+                ContactManager.Instance.FindContact(address);
+            }
+            Conversations.ItemsSource = _conversations;
+        }
+
         private void deleteSelection_Click_1(object sender, EventArgs e)
         {
-            //TODO
+            foreach (var c in _selection)
+            {
+                DatabaseManager.Instance.Messages.DeleteAllOnSubmit(c.Messages);
+            }
+            DatabaseManager.Instance.SubmitChanges();
+
+            GetMessagesAndDisplayConversationsList();            
+
             ClearApplicationBar();
             SetupAppBarForEmptySelection();
         }
