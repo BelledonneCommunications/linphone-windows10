@@ -27,6 +27,12 @@
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
             <!--<TextBlock Text="{Binding Path=LocalizedResources.ChatMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextNormalStyle}"/>-->
             <TextBlock x:Name="ContactName" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <Border x:Name="NewChat" BorderThickness="0,0,0,2" BorderBrush="{StaticResource PhoneAccentBrush}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="To:" VerticalAlignment="Center" Margin="0,0,10,0"></TextBlock>
+                    <TextBox x:Name="NewChatSipAddress" Background="Transparent" Foreground="White" BorderThickness="0" Width="400"></TextBox>
+                </StackPanel>
+            </Border>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
@@ -36,7 +42,7 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <ScrollViewer x:Name="MessagesScroll"  Grid.Row="0">
+            <ScrollViewer x:Name="MessagesScroll" Grid.Row="0">
                 <StackPanel 
                     x:Name="MessagesList" 
                     Orientation="Vertical"

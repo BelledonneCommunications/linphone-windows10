@@ -65,14 +65,14 @@ namespace Linphone.Views
             // Create LinphoneCore if not created yet, otherwise do nothing
             LinphoneManager.Instance.InitLinphoneCore();
 
-            // Check for the navigation direction to avoid going to incall view when coming back from incall view
+            ContactManager cm = ContactManager.Instance;
+            cm.ContactFound += cm_ContactFound;
+
             if (NavigationContext.QueryString.ContainsKey("sip") && e.NavigationMode != NavigationMode.Back)
             {
                 sipAddress = NavigationContext.QueryString["sip"];
 
                 ContactName.Text = sipAddress;
-                ContactManager cm = ContactManager.Instance;
-                cm.ContactFound += cm_ContactFound;
                 cm.FindContact(sipAddress);
 
                 chatRoom = LinphoneManager.Instance.LinphoneCore.CreateChatRoom(sipAddress);
@@ -82,6 +82,13 @@ namespace Linphone.Views
                 // Execute the query and place the results into a collection.
                 List<ChatMessage> messages = messagesInDB.ToList();
                 DisplayPastMessages(messages);
+
+                NewChat.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                ContactName.Visibility = Visibility.Collapsed;
+                NewChatSipAddress.Focus();
             }
         }
 
@@ -125,6 +132,9 @@ namespace Linphone.Views
                 ContactName.Text = e.ContactFound.DisplayName;
                 ContactManager.Instance.TempContact = e.ContactFound;
                 ContactName.Tap += ContactName_Tap;
+
+                ContactName.Visibility = Visibility.Visible;
+                NewChat.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -185,8 +195,15 @@ namespace Linphone.Views
 
         private void send_Click_1(object sender, EventArgs e)
         {
-            if (MessageBox.Text != null && MessageBox.Text.Length > 0)
+            if (MessageBox.Text != null && MessageBox.Text.Length > 0 && (NewChatSipAddress.Text != null || NewChatSipAddress.Visibility == Visibility.Collapsed))
             {
+                if (chatRoom == null)
+                {
+                    sipAddress = NewChatSipAddress.Text;
+                    ContactManager.Instance.FindContact(sipAddress);
+                    chatRoom = LinphoneManager.Instance.LinphoneCore.CreateChatRoom(sipAddress);
+                }
+
                 SendMessage(MessageBox.Text);
                 MessageBox.Reset();
             }

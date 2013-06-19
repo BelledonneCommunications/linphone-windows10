@@ -1,16 +1,14 @@
-﻿using System;
+﻿using Linphone.Model;
+using Linphone.Resources;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
-using Linphone.Resources;
-using Linphone.Model;
-using Linphone.Core;
-using System.Collections.ObjectModel;
 
 namespace Linphone.Views
 {
@@ -122,7 +120,7 @@ namespace Linphone.Views
 
         private void newChat_Click_1(object sender, EventArgs e)
         {
-            //TODO
+            NavigationService.Navigate(new Uri("/Views/Chat.xaml", UriKind.RelativeOrAbsolute));
         }
 
         private void SetupAppBarForEmptySelection()
