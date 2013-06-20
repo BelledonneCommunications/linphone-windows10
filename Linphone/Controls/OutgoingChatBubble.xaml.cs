@@ -10,6 +10,7 @@ using Microsoft.Phone.Shell;
 using Linphone.Core;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
+using Linphone.Model;
 
 namespace Linphone.Controls
 {
@@ -18,13 +19,16 @@ namespace Linphone.Controls
     /// </summary>
     public partial class OutgoingChatBubble : UserControl
     {
+        private ChatMessage _message;
+
         /// <summary>
         /// Public constructor.
         /// </summary>
-        public OutgoingChatBubble(string message, string timestamp)
+        public OutgoingChatBubble(ChatMessage message, string timestamp)
         {
             InitializeComponent();
-            Message.Text = message;
+            _message = message;
+            Message.Text = message.Message;
             Timestamp.Text = timestamp;
 
             System.Windows.Media.Color accent = (System.Windows.Media.Color)Resources["PhoneAccentColor"];
@@ -52,12 +56,25 @@ namespace Linphone.Controls
 
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-
+            if (MessageDeleted != null)
+            {
+                MessageDeleted(this, _message);
+            }
         }
 
         private void Copy_Click(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(Message.Text);
         }
+
+        /// <summary>
+        /// Delegate for delete event.
+        /// </summary>
+        public delegate void MessageDeletedEventHandler(object sender, ChatMessage message);
+
+        /// <summary>
+        /// Handler for delete event.
+        /// </summary>
+        public event MessageDeletedEventHandler MessageDeleted;
     }
 }

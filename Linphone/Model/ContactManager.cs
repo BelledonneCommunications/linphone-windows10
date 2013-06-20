@@ -60,7 +60,6 @@ namespace Linphone.Model
 
         private List<AlphaKeyGroup<Contact>> _contacts;
         private List<Contact> _allContacts;
-        private String tempNumberForContactLookup;
 
         /// <summary>
         /// Represents the selected contact clicked on by the user.
@@ -150,7 +149,6 @@ namespace Linphone.Model
         private void FindContactByNumber(String number)
         {
             Microsoft.Phone.UserData.Contacts contacts = new Microsoft.Phone.UserData.Contacts();
-            tempNumberForContactLookup = number;
             contacts.SearchCompleted += contact_PhoneSearchCompleted;
 
             contacts.SearchAsync(number, FilterKind.PhoneNumber, "Search by phone number");
@@ -187,10 +185,9 @@ namespace Linphone.Model
         private void FindContactByEmail(String email)
         {
             Microsoft.Phone.UserData.Contacts contacts = new Microsoft.Phone.UserData.Contacts();
-            tempNumberForContactLookup = email;
             contacts.SearchCompleted += contact_EmailSearchCompleted;
 
-            contacts.SearchAsync(tempNumberForContactLookup, FilterKind.EmailAddress, "Search by email address");
+            contacts.SearchAsync(email, FilterKind.EmailAddress, "Search by email address");
         }
 
         private void contact_EmailSearchCompleted(object sender, Microsoft.Phone.UserData.ContactsSearchEventArgs e)

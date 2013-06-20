@@ -128,12 +128,14 @@ namespace Linphone.Views
                 DateTime date = new DateTime(message.Timestamp * TimeSpan.TicksPerSecond);
                 if (message.IsIncoming)
                 {
-                    IncomingChatBubble bubble = new IncomingChatBubble(message.Message, FormatDate(date));
+                    IncomingChatBubble bubble = new IncomingChatBubble(message, FormatDate(date));
+                    bubble.MessageDeleted += bubble_MessageDeleted;
                     MessagesList.Children.Add(bubble);
                 }
                 else
                 {
-                    OutgoingChatBubble bubble = new OutgoingChatBubble(message.Message, FormatDate(date));
+                    OutgoingChatBubble bubble = new OutgoingChatBubble(message, FormatDate(date));
+                    bubble.MessageDeleted += bubble_MessageDeleted;
                     bubble.UpdateStatus((LinphoneChatMessageState)message.Status);
                     MessagesList.Children.Add(bubble);
                 }
@@ -182,14 +184,15 @@ namespace Linphone.Views
             }
 
             DateTime now = DateTime.Now;
-            OutgoingChatBubble bubble = new OutgoingChatBubble(message, FormatDate(now));
-            MessagesList.Children.Add(bubble);
-            _SentMessages.Add(bubble);
-            scrollToBottom();
-
             ChatMessage msg = new ChatMessage { Message = message, MarkedAsRead = true, IsIncoming = false, RemoteContact = sipAddress, LocalContact = "", Timestamp = (now.Ticks / TimeSpan.TicksPerSecond), Status = (int)LinphoneChatMessageState.InProgress };
             DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
             DatabaseManager.Instance.SubmitChanges();
+
+            OutgoingChatBubble bubble = new OutgoingChatBubble(msg, FormatDate(now));
+            bubble.MessageDeleted += bubble_MessageDeleted;
+            MessagesList.Children.Add(bubble);
+            _SentMessages.Add(bubble);
+            scrollToBottom();
         }
 
         /// <summary>
@@ -211,7 +214,6 @@ namespace Linphone.Views
                 {
                     bubble.UpdateStatus(state);
                     _SentMessages.Remove(bubble);
-                    DatabaseManager.Instance.SubmitChanges();// Submit changes to be able to search for the message inside the db.
 
                     ChatMessage msgToUpdate = DatabaseManager.Instance.Messages.Where(m => m.IsIncoming == false && m.Message.Equals(messageText) && m.Status == (int)LinphoneChatMessageState.InProgress).ToList().LastOrDefault();
                     if (msgToUpdate != null)
@@ -280,15 +282,16 @@ namespace Linphone.Views
             MessagesList.Dispatcher.BeginInvoke(() =>
             {
                 DateTime date = new DateTime();
-                date = date.AddYears(1969); //Timestamp is calculated from 01/01/1970, and DateTime is initialized to 01/01/0001.
-                date = date.AddSeconds(message.GetTime());
-                date = date.Add(TimeZoneInfo.Local.GetUtcOffset(date));
-                IncomingChatBubble bubble = new IncomingChatBubble(message.GetText(), FormatDate(date));
-                MessagesList.Children.Add(bubble);
-
                 ChatMessage msg = new ChatMessage { Message = message.GetText(), MarkedAsRead = true, IsIncoming = true, LocalContact = sipAddress, RemoteContact = "", Timestamp = (date.Ticks / TimeSpan.TicksPerSecond) };
                 DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
                 DatabaseManager.Instance.SubmitChanges();
+
+                date = date.AddYears(1969); //Timestamp is calculated from 01/01/1970, and DateTime is initialized to 01/01/0001.
+                date = date.AddSeconds(message.GetTime());
+                date = date.Add(TimeZoneInfo.Local.GetUtcOffset(date));
+                IncomingChatBubble bubble = new IncomingChatBubble(msg, FormatDate(date));
+                bubble.MessageDeleted += bubble_MessageDeleted;
+                MessagesList.Children.Add(bubble);
 
                 scrollToBottom();
             });
@@ -323,6 +326,12 @@ namespace Linphone.Views
         private void ChooseContact_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Views/Contacts.xaml", UriKind.RelativeOrAbsolute));
+        }
+
+        void bubble_MessageDeleted(object sender, ChatMessage message)
+        {
+            MessagesList.Children.Remove(sender as UserControl);
+            DatabaseManager.Instance.Messages.DeleteOnSubmit(message);
         }
     }
 }
