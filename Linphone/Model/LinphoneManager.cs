@@ -770,11 +770,23 @@ namespace Linphone.Model
         /// </summary>
         public void MessageReceived(LinphoneChatMessage message)
         {
-            Logger.Msg("[LinphoneManager] Message received from " + message.GetFrom().AsStringUriOnly() + ": " + message.GetText());
+            string sipAddress = message.GetFrom().AsStringUriOnly().Replace("sip:", "");
+            Logger.Msg("[LinphoneManager] Message received from " + sipAddress + ": " + message.GetText());
 
-            if (MessageListener != null)
+            if (MessageListener != null && MessageListener.GetSipAddressAssociatedWithDisplayConversation().Equals(sipAddress))
             {
                 MessageListener.MessageReceived(message);
+            }
+            else
+            {
+                DateTime date = new DateTime();
+                date = date.AddYears(1969); //Timestamp is calculated from 01/01/1970, and DateTime is initialized to 01/01/0001.
+                date = date.AddSeconds(message.GetTime());
+                date = date.Add(TimeZoneInfo.Local.GetUtcOffset(date));
+
+                ChatMessage msg = new ChatMessage { Message = message.GetText(), MarkedAsRead = false, IsIncoming = true, LocalContact = sipAddress, RemoteContact = "", Timestamp = (date.Ticks / TimeSpan.TicksPerSecond) };
+                DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
+                DatabaseManager.Instance.SubmitChanges();
             }
         }
         #endregion

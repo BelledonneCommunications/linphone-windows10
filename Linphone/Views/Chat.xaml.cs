@@ -25,6 +25,11 @@ namespace Linphone.Views
         /// Callback called when a message is received.
         /// </summary>
         void MessageReceived(LinphoneChatMessage message);
+
+        /// <summary>
+        /// Returns the sip address of the current displayed conversation if possible
+        /// </summary>
+        string GetSipAddressAssociatedWithDisplayConversation();
     }
 
     /// <summary>
@@ -74,6 +79,10 @@ namespace Linphone.Views
             if (NavigationContext.QueryString.ContainsKey("sip") && e.NavigationMode != NavigationMode.Back)
             {
                 sipAddress = NavigationContext.QueryString["sip"];
+                if (sipAddress.StartsWith("sip:"))
+                {
+                    sipAddress = sipAddress.Replace("sip:", "");
+                }
 
                 ContactName.Text = sipAddress;
                 cm.FindContact(sipAddress);
@@ -162,6 +171,7 @@ namespace Linphone.Views
 
             ChatMessage msg = new ChatMessage { Message = message, MarkedAsRead = true, IsIncoming = false, RemoteContact = sipAddress, LocalContact = "", Timestamp = (now.Ticks / TimeSpan.TicksPerSecond), Status = (int)LinphoneChatMessageState.InProgress };
             DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
+            DatabaseManager.Instance.SubmitChanges();
         }
 
         /// <summary>
@@ -234,7 +244,6 @@ namespace Linphone.Views
         {
             MessagesList.Dispatcher.BeginInvoke(() =>
             {
-                //FIXME: message.GetTime() returns a bad value.
                 DateTime date = new DateTime();
                 date = date.AddYears(1969); //Timestamp is calculated from 01/01/1970, and DateTime is initialized to 01/01/0001.
                 date = date.AddSeconds(message.GetTime());
@@ -244,9 +253,15 @@ namespace Linphone.Views
 
                 ChatMessage msg = new ChatMessage { Message = message.GetText(), MarkedAsRead = true, IsIncoming = true, LocalContact = sipAddress, RemoteContact = "", Timestamp = (date.Ticks / TimeSpan.TicksPerSecond) };
                 DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
+                DatabaseManager.Instance.SubmitChanges();
 
                 scrollToBottom();
             });
+        }
+
+        public string GetSipAddressAssociatedWithDisplayConversation()
+        {
+            return sipAddress;
         }
 
         private void scrollToBottom()
