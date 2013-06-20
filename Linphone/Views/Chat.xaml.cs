@@ -229,15 +229,32 @@ namespace Linphone.Views
             {
                 if (chatRoom == null) //This code will be executed only in case of new conversation
                 {
-                    //TODO: Load previous messages if the conversation already exists
-                    //FIXME: Add proxy config domain if not entered by user
                     sipAddress = NewChatSipAddress.Text;
+
+                    if (!sipAddress.Contains("@"))
+                    {
+                        if (LinphoneManager.Instance.LinphoneCore.GetProxyConfigList().Count > 0)
+                        {
+                            LinphoneProxyConfig config = LinphoneManager.Instance.LinphoneCore.GetProxyConfigList()[0] as LinphoneProxyConfig;
+                            sipAddress += "@" + config.GetDomain();
+                        }
+                    }
+
                     ContactManager.Instance.FindContact(sipAddress);
                     ContactName.Text = sipAddress;
                     ContactName.Visibility = Visibility.Visible;
                     NewChat.Visibility = Visibility.Collapsed;
 
                     chatRoom = LinphoneManager.Instance.LinphoneCore.CreateChatRoom(sipAddress);
+
+                    if (DatabaseManager.Instance.Messages.Count(m => m.LocalContact.Equals(sipAddress) || m.RemoteContact.Equals(sipAddress)) > 0)
+                    {
+                        // Define the query to gather all of the messages linked to the current contact.
+                        var messagesInDB = from message in DatabaseManager.Instance.Messages where (message.LocalContact.Contains(sipAddress) || message.RemoteContact.Contains(sipAddress)) select message;
+                        // Execute the query and place the results into a collection.
+                        List<ChatMessage> messages = messagesInDB.ToList();
+                        DisplayPastMessages(messages);
+                    }
                 }
 
                 SendMessage(MessageBox.Text);

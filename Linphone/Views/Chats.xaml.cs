@@ -21,7 +21,7 @@ namespace Linphone.Views
         private bool _usingSelectionAppBar = false;
         private IEnumerable<Conversation> _selection;
         private List<ChatMessage> _allMessages;
-        private ObservableCollection<Conversation> _conversations;
+        private ObservableCollection<Conversation> _conversations, _sortedConversations;
 
         /// <summary>
         /// Public constructor.
@@ -71,6 +71,13 @@ namespace Linphone.Views
                 displayName = e.ContactFound.DisplayName;
             }
             _conversations.Add(new Conversation(address, displayName, _allMessages.Where(m => m.RemoteContact.Equals(address) || m.LocalContact.Equals(address)).ToList()));
+
+            _sortedConversations = new ObservableCollection<Conversation>();
+            foreach (var i in _conversations.OrderByDescending(g => g.Messages.Last().Timestamp).ToList())
+            {
+                _sortedConversations.Add(i);
+            }
+            Conversations.ItemsSource = _sortedConversations;
         }
 
         private void BuildLocalizedApplicationBar()
@@ -94,7 +101,7 @@ namespace Linphone.Views
             // Execute the query and place the results into a collection.
             _allMessages = new List<ChatMessage>(messagesInDB);
             // Get distinct conversations by addresses.
-            var filtered = _allMessages.OrderByDescending(m => m.Timestamp).GroupBy(m => m.Contact).Select(g => g.First()).ToList();
+            var filtered = _allMessages.GroupBy(m => m.Contact).Select(g => g.First()).OrderByDescending(m => m.Timestamp).ToList();
 
             _conversations = new ObservableCollection<Conversation>();
             foreach (var conversation in filtered)
@@ -102,7 +109,7 @@ namespace Linphone.Views
                 string address = conversation.LocalContact.Length > 0 ? conversation.LocalContact : conversation.RemoteContact;
                 ContactManager.Instance.FindContact(address);
             }
-            Conversations.ItemsSource = _conversations;
+            Conversations.ItemsSource = _sortedConversations;
         }
 
         private void deleteSelection_Click_1(object sender, EventArgs e)
