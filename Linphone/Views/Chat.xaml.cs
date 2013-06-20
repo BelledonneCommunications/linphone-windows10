@@ -199,10 +199,16 @@ namespace Linphone.Views
         {
             if (MessageBox.Text != null && MessageBox.Text.Length > 0 && (NewChatSipAddress.Text != null || NewChatSipAddress.Visibility == Visibility.Collapsed))
             {
-                if (chatRoom == null)
+                if (chatRoom == null) //This code will be executed only in case of new conversation
                 {
+                    //TODO: Load previous messages if the conversation already exists
+                    //FIXME: Add proxy config domain if not entered by user
                     sipAddress = NewChatSipAddress.Text;
                     ContactManager.Instance.FindContact(sipAddress);
+                    ContactName.Text = sipAddress;
+                    ContactName.Visibility = Visibility.Visible;
+                    NewChat.Visibility = Visibility.Collapsed;
+
                     chatRoom = LinphoneManager.Instance.LinphoneCore.CreateChatRoom(sipAddress);
                 }
 
