@@ -12,6 +12,7 @@ using Linphone.Core;
 using Linphone.Resources;
 using System.Diagnostics;
 using Linphone.Controls;
+using Microsoft.Phone.Tasks;
 
 namespace Linphone.Views
 {
@@ -68,6 +69,8 @@ namespace Linphone.Views
             ContactManager cm = ContactManager.Instance;
             cm.ContactFound += cm_ContactFound;
 
+            NewChat.Visibility = Visibility.Collapsed;
+            ContactName.Visibility = Visibility.Visible; 
             if (NavigationContext.QueryString.ContainsKey("sip") && e.NavigationMode != NavigationMode.Back)
             {
                 sipAddress = NavigationContext.QueryString["sip"];
@@ -82,12 +85,11 @@ namespace Linphone.Views
                 // Execute the query and place the results into a collection.
                 List<ChatMessage> messages = messagesInDB.ToList();
                 DisplayPastMessages(messages);
-
-                NewChat.Visibility = Visibility.Collapsed;
             }
-            else
+            else if (e.NavigationMode != NavigationMode.Back)
             {
-                ContactName.Visibility = Visibility.Collapsed;
+                ContactName.Visibility = Visibility.Collapsed; 
+                NewChat.Visibility = Visibility.Visible;
                 NewChatSipAddress.Focus();
             }
         }
@@ -256,6 +258,11 @@ namespace Linphone.Views
                 return String.Format("{0:ddd d MMM, HH:mm}", date);
             else
                 return String.Format("{0:ddd d MMM yyyy, HH:mm}", date);
+        }
+
+        private void ChooseContact_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/Contacts.xaml", UriKind.RelativeOrAbsolute));
         }
     }
 }

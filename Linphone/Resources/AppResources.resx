@@ -359,4 +359,7 @@ http://www.linphone.org/m/help
   <data name="NewChatDest" xml:space="preserve">
     <value>To:</value>
   </data>
+  <data name="To" xml:space="preserve">
+    <value>To:</value>
+  </data>
 </root>
