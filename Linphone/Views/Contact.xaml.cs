@@ -56,9 +56,11 @@ namespace Linphone.Views
             {
                 ContactAction entry = new ContactAction();
                 entry.Action = "/Assets/AppBar/feature.phone.png";
+                entry.Action2 = "/Assets/AppBar/chat.png";
                 entry.Label = phone.Kind.ToString();
                 entry.NumberOrAddress = phone.PhoneNumber;
                 entry.Click += action_Click_1;
+                entry.Click2 += action_Click_2;
                 actions.Children.Add(entry);
             }
 
@@ -66,9 +68,11 @@ namespace Linphone.Views
             {
                 ContactAction entry = new ContactAction();
                 entry.Action = "/Assets/AppBar/feature.phone.png";
+                entry.Action2 = "/Assets/AppBar/chat.png";
                 entry.Label = email.Kind.ToString();
                 entry.NumberOrAddress = email.EmailAddress;
                 entry.Click += action_Click_1;
+                entry.Click2 += action_Click_2;
                 actions.Children.Add(entry);
             }
         }
@@ -82,6 +86,12 @@ namespace Linphone.Views
         {
             String numberOrAddress = (sender as Button).Tag.ToString();
             SetAddressGoToDialerAndCall(numberOrAddress);
+        }
+
+        private void action_Click_2(object sender, EventArgs e)
+        {
+            String numberOrAddress = (sender as Button).Tag.ToString();
+            NavigationService.Navigate(new Uri("/Views/Chat.xaml?sip=" + numberOrAddress, UriKind.RelativeOrAbsolute));
         }
     }
 }

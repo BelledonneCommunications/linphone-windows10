@@ -105,14 +105,17 @@ namespace Linphone.Views
         /// </summary>
         private void cm_ContactFound(object sender, ContactFoundEventArgs e)
         {
-            Contact.Text = e.ContactFound.DisplayName;
-            if (e.PhoneLabel != null)
+            if (e.ContactFound != null)
             {
-                Number.Text = e.PhoneLabel + " : " + e.PhoneNumber;
-            }
-            else
-            {
-                Number.Text = e.PhoneNumber;
+                Contact.Text = e.ContactFound.DisplayName;
+                if (e.PhoneLabel != null)
+                {
+                    Number.Text = e.PhoneLabel + " : " + e.PhoneNumber;
+                }
+                else
+                {
+                    Number.Text = e.PhoneNumber;
+                }
             }
         }
 

@@ -133,13 +133,13 @@ namespace Linphone
 			/// <param name="mediaType">The media type for which we want the statistics</param>
 			/// <returns>The created Linphone::Core::LinphoneCallStats as a Platform::Object</returns>
 			static Platform::Object^ CreateLinphoneCallStats(void* call, int mediaType);
-
+			
 			/// <summary>
 			/// Creates a C++/CX LinphoneCallStats object using pointer to C structure.
 			/// </summary>
 			/// <param name="callstats">The ::LinphoneCallStats* to create the Linphone::Core::LinphoneCallStats from</param>
 			/// <returns>The created Linphone::Core::LinphoneCallStats as a Platform::Object</returns>
-			static Platform::Object^ CreateLinphoneCallStats(void* callstats);
+			static Platform::Object^ CreateLinphoneCallStats(void* callStats);
 
 			/// <summary>
 			/// Creates a C++/CX default Transports object (using the UDP 5060 port).
@@ -202,6 +202,16 @@ namespace Linphone
 			/// <param name="delay_ms">The echo delay if the status is "done", 0 otherwise</param>
 			/// <param name="data">Some user data given when starting the echo canceller calibration process</param>
 			static void EchoCalibrationCallback(void *lc, int status, int delay_ms, void *data);
+			
+			/// <summary>
+			/// Creates a C++/CX LinphoneChatMessage object using pointer to C structure.
+			/// </summary>
+			static Platform::Object^ CreateLinphoneChatMessage(void* message);
+			
+			/// <summary>
+			/// Creates a C++/CX LinphoneChatRoom object using pointer to C structure.
+			/// </summary>
+			static Platform::Object^ CreateLinphoneChatRoom(void* room);
 
 		private:
 			static std::string wstos(std::wstring ws);

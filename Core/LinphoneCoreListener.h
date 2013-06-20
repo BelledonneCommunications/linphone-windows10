@@ -9,6 +9,7 @@ namespace Linphone
 		ref class LinphoneCall;
 		ref class LinphoneProxyConfig;
 		ref class LinphoneCallStats;
+		ref class LinphoneChatMessage;
 
 		/// <summary>
 		/// Definition of the LinphoneCoreListener interface.
@@ -73,6 +74,8 @@ namespace Linphone
 			/// <param name="call">The call for which the statistics have been updated</param>
 			/// <param name="stats">The updated statistics for the call</param>
 			void CallStatsUpdated(LinphoneCall^ call, LinphoneCallStats^ stats);
+
+			void MessageReceived(LinphoneChatMessage^ message);
 		};
 	}
 }

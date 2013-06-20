@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="Linphone.Controls.OutgoingChatBubble"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    d:DesignHeight="150" d:DesignWidth="420">
+
+    <UserControl.Resources>
+        <Style TargetType="TextBlock" x:Key="MessageStyle">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMedium}"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="TimestampStyle">
+            <Setter Property="Foreground" Value="LightGray"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeSmall}"/>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid Margin="60,10,5,15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Rectangle x:Name="Background"  Fill="{StaticResource PhoneChromeBrush}" Grid.RowSpan="2"/>
+
+        <TextBlock 
+            Grid.Row="0" 
+            x:Name="Message" 
+            Style="{StaticResource MessageStyle}"
+            TextAlignment="Left"/>
+
+        <StackPanel 
+            Grid.Row="1" 
+            Orientation="Horizontal"
+            HorizontalAlignment="Right">
+            <TextBlock 
+                x:Name="Timestamp" 
+                Style="{StaticResource TimestampStyle}"
+                TextAlignment="Right"/>
+            <Image
+                x:Name="Status" 
+                Source="/Assets/AppBar/next.png"
+                Height="30"
+                Stretch="Uniform"/>
+        </StackPanel>
+
+        <Path 
+            Grid.Row="2"
+            Data="m 0,0 l 16,0 l 0,16 l -16,-16"
+            Fill="{StaticResource PhoneChromeBrush}"
+            Margin="0,-1,10,0"
+            HorizontalAlignment="Right"/>
+    </Grid>
+</UserControl>

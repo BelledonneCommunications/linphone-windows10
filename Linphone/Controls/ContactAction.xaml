@@ -11,38 +11,53 @@
     
     <Grid x:Name="LayoutRoot">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        
-        <StackPanel 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock 
             Grid.Column="0"
-            Orientation="Vertical">
-            <TextBlock 
-                x:Name="label" 
-                FontSize="30" 
-                VerticalAlignment="Center" 
-                HorizontalAlignment="Left"/>
-                
-            <TextBlock 
-                x:Name="phone" 
-                FontSize="25" 
-                VerticalAlignment="Center" 
-                HorizontalAlignment="Left" 
-                Foreground="{StaticResource PhoneAccentBrush}"/>
-        </StackPanel>
+            Grid.Row="0"
+            Grid.ColumnSpan="3"
+            x:Name="phone" 
+            FontSize="30" 
+            VerticalAlignment="Center" 
+            HorizontalAlignment="Left" 
+            Foreground="{StaticResource PhoneAccentBrush}"/>
+        
+        <TextBlock 
+            Grid.Column="2"
+            Grid.Row="1"
+            x:Name="label" 
+            FontSize="20" 
+            VerticalAlignment="Center" 
+            HorizontalAlignment="Center"/>
 
         <Button 
             x:Name="button"
-            Grid.Column="1"
+            Grid.Column="0"
+            Grid.Row="1"
             BorderThickness="0"
-            HorizontalAlignment="Right"
-            HorizontalContentAlignment="Right"
             VerticalAlignment="Center">
             <Image 
                 x:Name="action" 
-                Stretch="None" 
-                Margin="5,0,5,0" />    
+                Stretch="None" />
+        </Button>
+
+        <Button 
+            x:Name="button2"
+            Grid.Column="1"
+            Grid.Row="1"
+            BorderThickness="0"
+            VerticalAlignment="Center">
+            <Image 
+                x:Name="action2" 
+                Stretch="None"/>
         </Button>
     </Grid>
 </UserControl>

@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="Linphone.Controls.TextBoxChatBubble"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    d:DesignHeight="150" d:DesignWidth="420">
+
+    <Grid Margin="60,10,5,15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Rectangle Fill="White"/>
+
+        <TextBox
+            Grid.Row="0"
+            x:Name="Message"
+            TextChanged="Message_TextChanged"
+            InputScope="Chat"
+            BorderThickness="0"
+            Background="White"
+            TextAlignment="Left"/>
+
+        <Path 
+            Grid.Row="1"
+            Data="m 0,0 l 16,0 l 0,16 l -16,-16"
+            Fill="White"
+            Margin="0,-1,10,0"
+            HorizontalAlignment="Right"/>
+    </Grid>
+</UserControl>

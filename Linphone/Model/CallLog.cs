@@ -154,7 +154,13 @@ namespace Linphone.Model
         {
             get
             {
-                return _startDate.ToShortDateString() + ", " + _startDate.ToShortTimeString();
+                DateTime now = DateTime.Now;
+                if (now.Year == _startDate.Year && now.Month == _startDate.Month && now.Day == _startDate.Day)
+                    return String.Format("{0:HH:mm}", _startDate);
+                else if (now.Year == _startDate.Year)
+                    return String.Format("{0:ddd d MMM, HH:mm}", _startDate);
+                else
+                    return String.Format("{0:ddd d MMM yyyy, HH:mm}", _startDate);
             }
         }
 

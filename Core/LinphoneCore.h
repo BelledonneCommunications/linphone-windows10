@@ -26,6 +26,7 @@ namespace Linphone
 		ref class LinphoneCallParams;
 		ref class LinphoneCallLog;
 		ref class LinphoneCallStats;
+		ref class LinphoneChatRoom;
 		ref class PayloadType;
 		ref class LpConfig;
 		ref class Tunnel;
@@ -899,7 +900,6 @@ namespace Linphone
 			/// <returns>The LpConfig used by the LinphoneCore</returns>
 			LpConfig^ GetConfig();
 
-			/// <summary>
 			/// Tells whether video support has been compiled.
 			/// </summary>
 			/// <returns> true, if video is supported, false if it is not supported</returns>
@@ -1011,6 +1011,11 @@ namespace Linphone
 			/// <param name="enable">true to enable self view, false to disable it</param>
 			void EnableSelfView(Platform::Boolean enable);
 
+			/// </summary>
+			/// Creates a ChatRoom to send text messages to given addrees.
+			/// </summary>
+			Linphone::Core::LinphoneChatRoom^ CreateChatRoom(Platform::String^ to);
+			
 			/// <summary>
 			/// The LinphoneCoreListener that handles the events coming from the core.
 			/// </summary>

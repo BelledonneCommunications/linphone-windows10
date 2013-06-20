@@ -401,4 +401,22 @@ http://www.linphone.org/m/help
   <data name="VideoActivationPopupContent" xml:space="preserve">
     <value>You have been proposed video, would you like to accept it?</value>
   </data>
+  <data name="ChatMenu" xml:space="preserve">
+    <value>Chat</value>
+  </data>
+  <data name="ConversationsMenu" xml:space="preserve">
+    <value>Conversations</value>
+  </data>
+  <data name="SendMessage" xml:space="preserve">
+    <value>send</value>
+  </data>
+  <data name="NewChatMenu" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="NewChatDest" xml:space="preserve">
+    <value>To:</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>To:</value>
+  </data>
 </root>

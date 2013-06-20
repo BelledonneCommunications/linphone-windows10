@@ -64,7 +64,7 @@ namespace Linphone
             if (Debugger.IsAttached)
             {
                 // Display the current frame rate counters.
-                Application.Current.Host.Settings.EnableFrameRateCounter = true;
+                //Application.Current.Host.Settings.EnableFrameRateCounter = true;
 
                 // Show the areas of the app that are being redrawn in each frame.
                 //Application.Current.Host.Settings.EnableRedrawRegions = true;
@@ -80,6 +80,11 @@ namespace Linphone
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
 
+            // Create the message database if it does not exist.
+            if (!DatabaseManager.Instance.DatabaseExists())
+            {
+                DatabaseManager.Instance.CreateDatabase();
+            }
         }
 
         // Code to execute when the application is launching (eg, from Start)
@@ -127,6 +132,9 @@ namespace Linphone
                 // We need to create a new channel. 
                 httpChannel = new HttpNotificationChannel(App.pushChannelName);
                 httpChannel.Open();
+
+                // Bind this new channel for toast events.
+                httpChannel.BindToShellToast();
             }
             else
             {

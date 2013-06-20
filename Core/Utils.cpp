@@ -6,6 +6,8 @@
 #include "LinphoneCallLog.h"
 #include "LinphoneCallParams.h"
 #include "LinphoneCallStats.h"
+#include "LinphoneChatMessage.h"
+#include "LinphoneChatRoom.h"
 #include "LpConfig.h"
 #include "PayloadType.h"
 
@@ -171,3 +173,13 @@ void Linphone::Core::Utils::EchoCalibrationCallback(void *lc, int status, int de
 	lCore->listener->EcCalibrationStatus(ecStatus, delay_ms);
 	gApiLock.Unlock();
 }
+
+ Platform::Object^ Linphone::Core::Utils::CreateLinphoneChatMessage(void* message)
+ {
+	 return ref new Linphone::Core::LinphoneChatMessage((::LinphoneChatMessage *)message);
+ }
+
+ Platform::Object^ Linphone::Core::Utils::CreateLinphoneChatRoom(void* room)
+ {
+	 return ref new Linphone::Core::LinphoneChatRoom((::LinphoneChatRoom *)room);
+ }

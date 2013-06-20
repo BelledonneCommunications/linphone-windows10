@@ -2,8 +2,10 @@
 using Linphone.Core;
 using Linphone.Core.OutOfProcess;
 using Linphone.Resources;
+using Linphone.Views;
 using Microsoft.Phone.Net.NetworkInformation;
 using Microsoft.Phone.Networking.Voip;
+using Microsoft.Phone.Shell;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -757,6 +759,24 @@ namespace Linphone.Model
         {
 
         }
+
+        /// <summary>
+        /// Listener to let a view to be notified by LinphoneManager when a new message arrives.
+        /// </summary>
+        public MessageReceivedListener MessageListener { get; set; }
+
+        /// <summary>
+        /// Callback for LinphoneCoreListener
+        /// </summary>
+        public void MessageReceived(LinphoneChatMessage message)
+        {
+            Logger.Msg("[LinphoneManager] Message received from " + message.GetFrom().AsStringUriOnly() + ": " + message.GetText());
+
+            if (MessageListener != null)
+            {
+                MessageListener.MessageReceived(message);
+            }
+        }
         #endregion
 
         #region Contact Lookup
@@ -793,13 +813,16 @@ namespace Linphone.Model
         /// </summary>
         private void OnContactFound(object sender, ContactFoundEventArgs e)
         {
-            Logger.Msg("[LinphoneManager] Contact found: " + e.ContactFound.DisplayName);
-            ContactManager.ContactFound -= OnContactFound;
-
-            // Store the contact name as display name for call logs
-            if (LinphoneManager.Instance.LinphoneCore.GetCurrentCall() != null)
+            if (e.ContactFound != null)
             {
-                LinphoneManager.Instance.LinphoneCore.GetCurrentCall().GetRemoteAddress().SetDisplayName(e.ContactFound.DisplayName);
+                Logger.Msg("[LinphoneManager] Contact found: " + e.ContactFound.DisplayName);
+                ContactManager.ContactFound -= OnContactFound;
+
+                // Store the contact name as display name for call logs
+                if (LinphoneManager.Instance.LinphoneCore.GetCurrentCall() != null)
+                {
+                    LinphoneManager.Instance.LinphoneCore.GetCurrentCall().GetRemoteAddress().SetDisplayName(e.ContactFound.DisplayName);
+                }
             }
         }
         #endregion

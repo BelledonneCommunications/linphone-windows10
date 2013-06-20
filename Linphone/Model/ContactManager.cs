@@ -153,11 +153,12 @@ namespace Linphone.Model
             tempNumberForContactLookup = number;
             contacts.SearchCompleted += contact_PhoneSearchCompleted;
 
-            contacts.SearchAsync(tempNumberForContactLookup, FilterKind.PhoneNumber, "Search by phone number");
+            contacts.SearchAsync(number, FilterKind.PhoneNumber, "Search by phone number");
         }
 
         private void contact_PhoneSearchCompleted(object sender, Microsoft.Phone.UserData.ContactsSearchEventArgs e)
         {
+            string number = e.Filter;
             Contact result = e.Results.FirstOrDefault();
             if (result != null)
             {
@@ -166,12 +167,16 @@ namespace Linphone.Model
                 {
                     // We know this contact has this phone number stored.
                     // That's why we strip the phone number from the 3 first characters (maybe international prefix): to facilitate the label search.
-                    if (phone.PhoneNumber.EndsWith(tempNumberForContactLookup.Substring(3)))
+                    if (phone.PhoneNumber.EndsWith(number.Substring(3)))
                     {
                         label = phone.Kind.ToString();
                     }
                 }
-                ContactFound(this, new ContactFoundEventArgs(result, tempNumberForContactLookup, label));
+                ContactFound(this, new ContactFoundEventArgs(result, number, label));
+            }
+            else
+            {
+                ContactFound(this, new ContactFoundEventArgs(null, number, null));
             }
         }
 
@@ -190,18 +195,23 @@ namespace Linphone.Model
 
         private void contact_EmailSearchCompleted(object sender, Microsoft.Phone.UserData.ContactsSearchEventArgs e)
         {
+            string address = e.Filter;
             Contact result = e.Results.FirstOrDefault();
             if (result != null)
             {
                 String label = null;
                 foreach (ContactEmailAddress email in result.EmailAddresses)
                 {
-                    if (email.EmailAddress.Equals(tempNumberForContactLookup))
+                    if (email.EmailAddress.Equals(address))
                     {
                         label = email.Kind.ToString();
                     }
                 }
-                ContactFound(this, new ContactFoundEventArgs(result, tempNumberForContactLookup, label));
+                ContactFound(this, new ContactFoundEventArgs(result, address, label));
+            }
+            else
+            {
+                ContactFound(this, new ContactFoundEventArgs(null, address, null));
             }
         }
     }

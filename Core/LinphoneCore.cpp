@@ -6,6 +6,7 @@
 #include "LinphoneCallParams.h"
 #include "LinphoneProxyConfig.h"
 #include "LinphoneCoreListener.h"
+#include "LinphoneChatRoom.h"
 #include "LpConfig.h"
 #include "PayloadType.h"
 #include "CallController.h"
@@ -1360,8 +1361,14 @@ void Linphone::Core::LinphoneCore::EnableSelfView(Platform::Boolean enable)
 	gApiLock.Unlock();
 }
 
+Linphone::Core::LinphoneChatRoom^ Linphone::Core::LinphoneCore::CreateChatRoom(Platform::String^ to)
+{
+	const char* address = Linphone::Core::Utils::pstoccs(to);
+	Linphone::Core::LinphoneChatRoom^ chatRoom = (Linphone::Core::LinphoneChatRoom^) Linphone::Core::Utils::CreateLinphoneChatRoom(linphone_core_create_chat_room(this->lc, address));
+	delete(address);
 
-
+	return chatRoom;
+}
 
 Linphone::Core::LinphoneCoreListener^ Linphone::Core::LinphoneCore::CoreListener::get()
 {
@@ -1511,6 +1518,21 @@ void call_stats_updated(LinphoneCore *lc, LinphoneCall *call, const LinphoneCall
 	Linphone::Core::gApiLock.LeaveListener();
 }
 
+void message_received(LinphoneCore *lc, LinphoneChatRoom* chat_room, LinphoneChatMessage* message) 
+{
+	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
+	if (listener != nullptr)
+	{
+		Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneChatMessage^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneChatMessage^> *>(linphone_chat_message_get_user_data(message));
+		Linphone::Core::LinphoneChatMessage^ lMessage = (proxy) ? proxy->Ref() : nullptr;
+		if (lMessage == nullptr) {
+			lMessage = (Linphone::Core::LinphoneChatMessage^)Linphone::Core::Utils::CreateLinphoneChatMessage(message);
+		}
+
+		listener->MessageReceived(lMessage);
+	}
+}
+
 Linphone::Core::LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener) :
 	lc(nullptr),
 	listener(coreListener)
@@ -1536,6 +1558,7 @@ void Linphone::Core::LinphoneCore::Init()
 	vtable->dtmf_received = dtmf_received;
 	vtable->call_encryption_changed = call_encryption_changed;
 	vtable->call_stats_updated = call_stats_updated;
+	vtable->message_received = message_received;
 
 	this->lc = linphone_core_new_with_config(vtable, config ? config->config : NULL, NULL);
 	RefToPtrProxy<LinphoneCore^> *proxy = new RefToPtrProxy<LinphoneCore^>(this);

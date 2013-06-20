@@ -1,0 +1,101 @@
+﻿<linphone:BasePage
+    x:Class="Linphone.Views.Chat"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:controls="clr-namespace:Linphone.Controls"
+    xmlns:linphone="clr-namespace:Linphone"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel Grid.Row="0" Margin="12,17,0,28">
+            <!--<TextBlock Text="{Binding Path=LocalizedResources.ChatMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextNormalStyle}"/>-->
+            <TextBlock x:Name="ContactName" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <Border x:Name="NewChat" BorderThickness="0,0,0,3" BorderBrush="{StaticResource PhoneAccentBrush}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock Grid.Column="0" Text="{Binding Path=LocalizedResources.To, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Center"></TextBlock>
+                    <TextBox Grid.Column="1" x:Name="NewChatSipAddress" VerticalAlignment="Center" VerticalContentAlignment="Center" InputScope="EmailSmtpAddress">
+                        <TextBox.Resources>
+                            <Style x:Key="TextBoxTransparent" TargetType="TextBox">
+                                <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilyNormal}"/>
+                                <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="CaretBrush" Value="White"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource PhoneTextBoxBrush}"/>
+                                <Setter Property="SelectionBackground" Value="{StaticResource PhoneAccentBrush}"/>
+                                <Setter Property="SelectionForeground" Value="{StaticResource PhoneTextBoxSelectionForegroundBrush}"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Padding" Value="2"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="TextBox">
+                                            <Grid Background="Transparent">
+                                                <Border x:Name="MainBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Margin="{StaticResource PhoneTouchTargetOverhang}"/>
+                                                <Border x:Name="ReadonlyBorder" BorderBrush="{StaticResource PhoneDisabledBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="Transparent" Margin="{StaticResource PhoneTouchTargetOverhang}" Visibility="Collapsed"/>
+                                                <Border BorderBrush="Transparent" BorderThickness="{TemplateBinding BorderThickness}" Background="Transparent" Margin="{StaticResource PhoneTouchTargetOverhang}">
+                                                    <ContentControl x:Name="ContentElement" BorderThickness="0" HorizontalContentAlignment="Stretch" Margin="{StaticResource PhoneTextBoxInnerMargin}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="Stretch"/>
+                                                </Border>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </TextBox.Resources>
+                        <TextBox.Style>
+                            <StaticResource ResourceKey="TextBoxTransparent"/>
+                        </TextBox.Style>
+                    </TextBox>
+                    <Button Grid.Column="2" x:Name="ChooseContact" BorderThickness="0" Click="ChooseContact_Click">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Image Source="/Assets/AppBar/people.contacts.png"/>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+            </Border>
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <ScrollViewer x:Name="MessagesScroll" Grid.Row="0">
+                <StackPanel 
+                    x:Name="MessagesList" 
+                    Orientation="Vertical"
+                    VerticalAlignment="Bottom">
+                </StackPanel>
+            </ScrollViewer>
+
+            <controls:TextBoxChatBubble x:Name="MessageBox" Grid.Row="1"/>
+        </Grid>
+    </Grid>
+
+</linphone:BasePage>

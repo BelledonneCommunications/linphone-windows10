@@ -145,5 +145,16 @@ namespace Linphone
 			File = 2,
 			TCPRemote = 3
 		};
+
+		/// <summary>
+		/// Linphone chat message states
+		/// </summary>
+		public enum class LinphoneChatMessageState : int
+		{
+			Idle = 0,
+			InProgress = 1,
+			Delivered = 2,
+			NotDelivered = 3
+		};
 	}
 }

@@ -27,6 +27,23 @@ namespace Linphone.Controls
             }
         }
 
+        private String _action2;
+        /// <summary>
+        /// URI of an Image that represents the action.
+        /// </summary>
+        public String Action2
+        {
+            get
+            {
+                return _action2;
+            }
+            set
+            {
+                _action2 = value;
+                action2.Source = new BitmapImage(new Uri(value, UriKind.RelativeOrAbsolute)); ;
+            }
+        }
+
         private String _label;
         /// <summary>
         /// Label of the phone number or the email displayed.
@@ -70,6 +87,19 @@ namespace Linphone.Controls
             { 
                 button.Click += value;
                 button.Tag = NumberOrAddress;
+            }
+            get { return null; }
+        }
+
+        /// <summary>
+        /// Event triggered when action image is clicked.
+        /// </summary>
+        public RoutedEventHandler Click2
+        {
+            set
+            {
+                button2.Click += value;
+                button2.Tag = NumberOrAddress;
             }
             get { return null; }
         }
