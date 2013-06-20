@@ -13,6 +13,7 @@ using Linphone.Resources;
 using System.Diagnostics;
 using Linphone.Controls;
 using Microsoft.Phone.Tasks;
+using System.ComponentModel;
 
 namespace Linphone.Views
 {
@@ -100,6 +101,23 @@ namespace Linphone.Views
                 ContactName.Visibility = Visibility.Collapsed; 
                 NewChat.Visibility = Visibility.Visible;
                 NewChatSipAddress.Focus();
+            }
+
+            if (!NavigationService.CanGoBack) 
+            {
+            }
+        }
+
+        /// <summary>
+        /// Add ChatList in the history in case view was directly started (PN)
+        /// </summary>
+        protected override void OnBackKeyPress(CancelEventArgs e)
+        {
+            if (!NavigationService.CanGoBack)
+            {
+                e.Cancel = true;
+                NavigationService.Navigate(new Uri("/Views/Chats.xaml", UriKind.RelativeOrAbsolute));
+                NavigationService.RemoveBackEntry(); //To prevent a new click on back button to start again chat view (simulate a back click)
             }
         }
 
@@ -259,6 +277,10 @@ namespace Linphone.Views
             });
         }
 
+        /// <summary>
+        /// Gets the sip address associated to the MessageReceivedListener
+        /// </summary>
+        /// <returns></returns>
         public string GetSipAddressAssociatedWithDisplayConversation()
         {
             return sipAddress;

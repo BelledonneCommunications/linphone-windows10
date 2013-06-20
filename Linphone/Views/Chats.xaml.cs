@@ -5,6 +5,7 @@ using Microsoft.Phone.Shell;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -163,6 +164,19 @@ namespace Linphone.Views
         {
             Conversation chat = ((sender as StackPanel).Tag as Conversation);
             NavigationService.Navigate(new Uri("/Views/Chat.xaml?sip=" + chat.SipAddress, UriKind.RelativeOrAbsolute));
+        }
+
+        /// <summary>
+        /// Add Dialer in the history if not already there
+        /// </summary>
+        protected override void OnBackKeyPress(CancelEventArgs e)
+        {
+            if (!NavigationService.CanGoBack)
+            {
+                e.Cancel = true;
+                NavigationService.Navigate(new Uri("/Views/Dialer.xaml", UriKind.RelativeOrAbsolute));
+                NavigationService.RemoveBackEntry(); //To prevent a new click on back button to start again chat view (simulate a back click)
+            }
         }
     }
 }
