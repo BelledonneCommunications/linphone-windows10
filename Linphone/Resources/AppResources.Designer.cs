@@ -265,6 +265,24 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy.
+        /// </summary>
+        public static string ContextMenuCopy {
+            get {
+                return ResourceManager.GetString("ContextMenuCopy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string ContextMenuDelete {
+            get {
+                return ResourceManager.GetString("ContextMenuDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Conversations.
         /// </summary>
         public static string ConversationsMenu {

@@ -49,5 +49,15 @@ namespace Linphone.Controls
                 Status.Source = new BitmapImage(new Uri(notdelivered, UriKind.RelativeOrAbsolute));
             }
         }
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Copy_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(Message.Text);
+        }
     }
 }

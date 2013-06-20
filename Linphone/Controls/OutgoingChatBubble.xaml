@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -60,5 +61,12 @@
             Fill="{StaticResource PhoneChromeBrush}"
             Margin="0,-1,10,0"
             HorizontalAlignment="Right"/>
+        
+        <toolkit:ContextMenuService.ContextMenu>
+            <toolkit:ContextMenu>
+                <toolkit:MenuItem x:Name="Delete" Header="{Binding Path=LocalizedResources.ContextMenuDelete, Source={StaticResource LocalizedStrings}}" Click="Delete_Click"/>
+                <toolkit:MenuItem x:Name="Copy" Header="{Binding Path=LocalizedResources.ContextMenuCopy, Source={StaticResource LocalizedStrings}}" Click="Copy_Click"/>
+            </toolkit:ContextMenu>
+        </toolkit:ContextMenuService.ContextMenu>
     </Grid>
 </UserControl>

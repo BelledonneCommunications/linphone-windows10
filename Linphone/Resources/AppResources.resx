@@ -419,4 +419,10 @@ http://www.linphone.org/m/help
   <data name="To" xml:space="preserve">
     <value>To:</value>
   </data>
+  <data name="ContextMenuDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ContextMenuCopy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
 </root>

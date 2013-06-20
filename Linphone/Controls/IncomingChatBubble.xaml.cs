@@ -24,5 +24,15 @@ namespace Linphone.Controls
             Message.Text = message;
             Timestamp.Text = timestamp;
         }
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Copy_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(Message.Text);
+        }
     }
 }
