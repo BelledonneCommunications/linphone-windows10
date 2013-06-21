@@ -113,11 +113,6 @@ namespace Linphone
         {
             ApplicationBar = new ApplicationBar();
 
-            ApplicationBarIconButton appBarChat = new ApplicationBarIconButton(new Uri("/Assets/AppBar/chat.png", UriKind.Relative));
-            appBarChat.Text = AppResources.ChatMenu;
-            ApplicationBar.Buttons.Add(appBarChat);
-            appBarChat.Click += chat_Click_1;
-
             ApplicationBarIconButton appBarHistory = new ApplicationBarIconButton(new Uri("/Assets/AppBar/time.png", UriKind.Relative));
             appBarHistory.Text = AppResources.HistoryMenu;
             ApplicationBar.Buttons.Add(appBarHistory);
@@ -127,6 +122,11 @@ namespace Linphone
             appBarContacts.Text = AppResources.ContactsMenu;
             ApplicationBar.Buttons.Add(appBarContacts);
             appBarContacts.Click += contacts_Click_1;
+
+            ApplicationBarIconButton appBarChat = new ApplicationBarIconButton(new Uri("/Assets/AppBar/chat.png", UriKind.Relative));
+            appBarChat.Text = AppResources.ChatMenu;
+            ApplicationBar.Buttons.Add(appBarChat);
+            appBarChat.Click += chat_Click_1;
 
             ApplicationBarIconButton appBarSettings = new ApplicationBarIconButton(new Uri("/Assets/AppBar/feature.settings.png", UriKind.Relative));
             appBarSettings.Text = AppResources.SettingsMenu;

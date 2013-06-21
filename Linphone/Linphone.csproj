@@ -193,6 +193,11 @@
     <Content Include="Assets\linphonerc-factory" />
     <Content Include="Assets\rootca.pem" />
     <Content Include="Assets\Sounds\toy-mono.wav" />
+    <Content Include="README_FIRST.txt" />
+    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
     <Content Include="Views\logs.html" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
@@ -259,10 +264,6 @@
     <Content Include="Assets\Sounds\Ringtone.wma" />
     <Content Include="$(SolutionDir)$(PlatformName)\$(ConfigurationName)\CoreProxyStub\Linphone.CoreProxyStub.dll" />
     <Content Include="Assets\unknown.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Agents\Agents.csproj">
@@ -364,11 +365,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Phone.Controls.Toolkit">
-      <HintPath>..\packages\WPtoolkit.4.2012.10.30\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resources\AppResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
@@ -378,6 +374,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>DefaultValues.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WPtoolkit.4.2013.06.11\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />

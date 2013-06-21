@@ -59,40 +59,6 @@ namespace Linphone.Controls
                 address.Text = address.Text.Substring(0, address.Text.Length - 1);
         }
 
-        // This is needed for the textbox hack, see comment in .xaml file
-        private void address_TextChanged_1(object sender, TextChangedEventArgs e)
-        {
-            int defaultFontSize = 35;
-            bool hasLongerText = address.Text.Length > behindAddress.Text.Length;
-            behindAddress.Text = address.Text;
-
-            if (behindAddress.Text.Length > 0)
-            {
-                int margin = 50; // Keep a margin
-                var trailingEdge = behindAddress.GetRectFromCharacterIndex(behindAddress.Text.Length - 1, true);
-                if (hasLongerText)
-                {
-                    while (behindAddress.ActualWidth < trailingEdge.Right + margin && behindAddress.FontSize > 1)
-                    {
-                        behindAddress.FontSize--;
-                        trailingEdge = behindAddress.GetRectFromCharacterIndex(behindAddress.Text.Length - 1, true);
-                    }
-                }
-                else
-                {
-                    while (trailingEdge.Right + margin <= behindAddress.ActualWidth && behindAddress.FontSize < defaultFontSize)
-                    {
-                        behindAddress.FontSize++;
-                        trailingEdge = behindAddress.GetRectFromCharacterIndex(behindAddress.Text.Length - 1, true);
-                    }
-                }
-            }
-            else
-            {
-                behindAddress.FontSize = defaultFontSize;
-            }
-        }
-
         private void address_GotFocus(object sender, RoutedEventArgs e)
         {
             if (FocusListener != null)
