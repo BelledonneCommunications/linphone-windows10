@@ -32,7 +32,7 @@ namespace Linphone
         /// <summary> 
         /// An event that is raised when the push channel URI changes 
         /// </summary> 
-        public event EventHandler<Uri> PushChannelUriChanged; 
+        public event EventHandler<Uri> PushChannelUriChanged;
 
         /// <summary>
         /// Constructor for the Application object.
@@ -58,7 +58,7 @@ namespace Linphone
             InitHttpNotificationTask();
 
             // Initalize the task to perform periodic maintenance 
-            InitKeepAliveTask(); 
+            InitKeepAliveTask();
 
             // Show graphics profiling information while debugging.
             if (Debugger.IsAttached)
@@ -291,8 +291,6 @@ namespace Linphone
                 // Disconnect the listeners to prevent crash of the background process
                 LinphoneManager.Instance.LinphoneCore.CoreListener = null;
                 LinphoneManager.Instance.isLinphoneRunning = false;
-                Debug.WriteLine("[App] Removed listener, killing UI to force clean state at next start");
-                Application.Current.Terminate();
             }
         }
 

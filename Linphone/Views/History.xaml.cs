@@ -35,9 +35,12 @@ namespace Linphone.Views
         /// Fetches the logs from the LinphoneManager and displays them.
         /// </summary>
         /// <param name="e"></param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+
+            // Create LinphoneCore if not created yet, otherwise do nothing
+            await LinphoneManager.Instance.InitLinphoneCore();
 
             TileManager tileManager = TileManager.Instance;
             tileManager.RemoveMissedCallsTile();

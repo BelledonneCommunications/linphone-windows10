@@ -425,4 +425,7 @@ http://www.linphone.org/m/help
   <data name="ContextMenuCopy" xml:space="preserve">
     <value>Copy</value>
   </data>
+  <data name="SendPicture" xml:space="preserve">
+    <value>send picture</value>
+  </data>
 </root>

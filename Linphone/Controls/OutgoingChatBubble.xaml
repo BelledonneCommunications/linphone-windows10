@@ -40,6 +40,11 @@
             Style="{StaticResource MessageStyle}"
             TextAlignment="Left"/>
 
+        <Image
+            Grid.Row="0" 
+            Stretch="UniformToFill"
+            x:Name="Image" />
+
         <StackPanel 
             Grid.Row="1" 
             Orientation="Horizontal"

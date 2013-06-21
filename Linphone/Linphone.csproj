@@ -193,7 +193,6 @@
     <Content Include="Assets\linphonerc-factory" />
     <Content Include="Assets\rootca.pem" />
     <Content Include="Assets\Sounds\toy-mono.wav" />
-    <Content Include="README_FIRST.txt" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />

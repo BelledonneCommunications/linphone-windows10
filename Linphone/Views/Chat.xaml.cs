@@ -14,6 +14,7 @@ using System.Diagnostics;
 using Linphone.Controls;
 using Microsoft.Phone.Tasks;
 using System.ComponentModel;
+using System.Windows.Media.Imaging;
 
 namespace Linphone.Views
 {
@@ -63,21 +64,21 @@ namespace Linphone.Views
         /// Method called when the page is displayed.
         /// Check if the uri contains a sip address, if yes, it displays the matching chat history.
         /// </summary>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             LinphoneManager.Instance.MessageListener = this;
             _SentMessages = new List<OutgoingChatBubble>();
 
             // Create LinphoneCore if not created yet, otherwise do nothing
-            LinphoneManager.Instance.InitLinphoneCore();
+            await LinphoneManager.Instance.InitLinphoneCore();
 
             ContactManager cm = ContactManager.Instance;
             cm.ContactFound += cm_ContactFound;
 
             NewChat.Visibility = Visibility.Collapsed;
             ContactName.Visibility = Visibility.Visible; 
-            if (NavigationContext.QueryString.ContainsKey("sip") && e.NavigationMode != NavigationMode.Back)
+            if (NavigationContext.QueryString.ContainsKey("sip"))
             {
                 sipAddress = NavigationContext.QueryString["sip"];
                 if (sipAddress.StartsWith("sip:"))
@@ -148,6 +149,7 @@ namespace Linphone.Views
         /// </summary>
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
+            chatRoom = null;
             DatabaseManager.Instance.SubmitChanges();
             base.OnNavigatingFrom(e);
             LinphoneManager.Instance.MessageListener = null;
@@ -264,6 +266,31 @@ namespace Linphone.Views
             }
         }
 
+        private void send_image_Click_1(object sender, EventArgs e)
+        {
+            PhotoChooserTask task = new PhotoChooserTask();
+            task.Completed += task_Completed;
+            task.ShowCamera = true;
+            task.Show();
+        }
+
+        void task_Completed(object sender, PhotoResult e)
+        {
+            if (e.TaskResult == TaskResult.OK)
+            {
+                BitmapImage image = new BitmapImage();
+                image.SetSource(e.ChosenPhoto);
+
+                //TODO: Actually send the message
+
+                DateTime now = DateTime.Now;
+                OutgoingChatBubble bubble = new OutgoingChatBubble(image, FormatDate(now));
+                bubble.MessageDeleted += bubble_MessageDeleted;
+                MessagesList.Children.Add(bubble);
+                scrollToBottom();
+            }
+        }
+
         private void BuildLocalizedApplicationBar()
         {
             ApplicationBar = new ApplicationBar();
@@ -272,6 +299,11 @@ namespace Linphone.Views
             appBarSend.Text = AppResources.SendMessage;
             ApplicationBar.Buttons.Add(appBarSend);
             appBarSend.Click += send_Click_1;
+
+            ApplicationBarIconButton appBarSendImage = new ApplicationBarIconButton(new Uri("/Assets/AppBar/feature.camera.png", UriKind.Relative));
+            appBarSendImage.Text = AppResources.SendPicture;
+            ApplicationBar.Buttons.Add(appBarSendImage);
+            appBarSendImage.Click += send_image_Click_1;
         }
 
         /// <summary>

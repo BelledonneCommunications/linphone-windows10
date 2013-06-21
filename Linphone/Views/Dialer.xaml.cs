@@ -3,6 +3,7 @@ using Linphone.Model;
 using Linphone.Resources;
 using Microsoft.Phone.Shell;
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
@@ -32,13 +33,13 @@ namespace Linphone
         /// Method called when the page is displayed.
         /// Check if the uri contains a sip address, if yes, it starts a call to this address.
         /// </summary>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             StatusBar = status;
 
             // Create LinphoneCore if not created yet, otherwise do nothing
-            LinphoneManager.Instance.InitLinphoneCore();
+            Task t = LinphoneManager.Instance.InitLinphoneCore();
 
             BuildLocalizedApplicationBar();
 
@@ -48,6 +49,8 @@ namespace Linphone
                 String sipAddressToCall = NavigationContext.QueryString["sip"];
                 addressBox.Text = sipAddressToCall;
             }
+
+            await t;
         }
 
         private void call_Click_1(object sender, EventArgs e)

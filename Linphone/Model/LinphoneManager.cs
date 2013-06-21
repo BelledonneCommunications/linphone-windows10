@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using Windows.Phone.Media.Capture;
 using Windows.Phone.Media.Devices;
@@ -133,7 +134,7 @@ namespace Linphone.Model
         private EventWaitHandle uiDisconnectedEvent;
 
         // A proxy to the server object in the background agent host process 
-        private Server server;
+        private Server server = null;
 
         // A timespan representing fifteen seconds 
         private static readonly TimeSpan fifteenSecs = new TimeSpan(0, 0, 15);
@@ -188,15 +189,9 @@ namespace Linphone.Model
             // and in that case, the following statement would fail - so, at this point, we don't explicitly guard against this condition. 
 
             // Create an instance of the server in the background process. 
-            if (BackgroundManager.Instance.OopServer != null)
-            {
-                server = BackgroundManager.Instance.OopServer;
-            }
-            else
-            {
-                server = (Server)WindowsRuntimeMarshal.GetActivationFactory(typeof(Server)).ActivateInstance();
-                BackgroundManager.Instance.OopServer = server;
-            }
+            BackgroundManager.Instance.OopServer = null;
+            server = (Server)WindowsRuntimeMarshal.GetActivationFactory(typeof(Server)).ActivateInstance();
+            BackgroundManager.Instance.OopServer = server;
 
             // Un-set an event that indicates that the UI process is disconnected from the background process. 
             // The background process waits for this event to get set before shutting down. 
@@ -242,12 +237,12 @@ namespace Linphone.Model
         /// <summary>
         /// Creates a new LinphoneCore (if not created yet) using a LinphoneCoreFactory.
         /// </summary>
-        public async void InitLinphoneCore()
+        public async Task InitLinphoneCore()
         {
             if ((server.LinphoneCoreFactory != null) && (server.LinphoneCore != null))
             {
                 // Reconnect the listeners when coming back from background mode
-                Logger.Msg("[LinphoneManager] LinphoneCore already created, skipping");
+                Debug.WriteLine("[LinphoneManager] LinphoneCore already created, skipping");
 
                 server.LinphoneCore.CoreListener = this;
                 isLinphoneRunning = true;
@@ -256,14 +251,14 @@ namespace Linphone.Model
                 return;
             }
 
-            Logger.Msg("[LinphoneManager] Creating LinphoneCore");
+            Debug.WriteLine("[LinphoneManager] Creating LinphoneCore");
             await SettingsManager.InstallConfigFile();
             LpConfig config = server.LinphoneCoreFactory.CreateLpConfig(SettingsManager.GetConfigPath(), SettingsManager.GetFactoryConfigPath());
             ConfigureLogger();
             server.LinphoneCoreFactory.CreateLinphoneCore(this, config);
             server.LinphoneCore.SetUserAgent(DefaultValues.UserAgent, XDocument.Load("WMAppManifest.xml").Root.Element("App").Attribute("Version").Value);
             server.LinphoneCore.SetRootCA("Assets/rootca.pem");
-            Logger.Msg("[LinphoneManager] LinphoneCore created");
+            Debug.WriteLine("[LinphoneManager] LinphoneCore created");
 
             AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;
             CallController.MuteRequested += MuteRequested;

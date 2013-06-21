@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -51,10 +52,10 @@ namespace Linphone.Views
         /// Method called when the page is displayed.
         /// Searches for a matching contact using the current call address or number and display information if found.
         /// </summary>
-        protected override void OnNavigatedTo(NavigationEventArgs nee)
+        protected override async void OnNavigatedTo(NavigationEventArgs nee)
         {
             // Create LinphoneCore if not created yet, otherwise do nothing
-            LinphoneManager.Instance.InitLinphoneCore();
+            Task t = LinphoneManager.Instance.InitLinphoneCore();
 
             base.OnNavigatedTo(nee);
             this.ViewModel.MuteListener = this;
@@ -78,6 +79,8 @@ namespace Linphone.Views
                     cm.FindContact(calledNumber);
                 }
             }
+
+            await t;
         }
 
         /// <summary>

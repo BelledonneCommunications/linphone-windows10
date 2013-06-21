@@ -39,7 +39,7 @@ namespace Linphone.Agents
                 Debug.WriteLine("[LinphoneForegroundLifeTimeAgent] Background process {0} is ready", currentProcessId);
             }
 
-            Debug.WriteLine("[LinphoneForegroundLifeTimeAgent] NotifyComplete"); 
+            Debug.WriteLine("[LinphoneForegroundLifeTimeAgent] NotifyComplete");
             base.NotifyComplete();
         }
     }

@@ -88,6 +88,13 @@ namespace Linphone.Views
 
         private void LocalVideoTimerCallback(Object state)
         {
+            if (LinphoneManager.Instance.LinphoneCore == null)
+            {
+                localVideoTimer.Dispose();
+                localVideoTimer = null;
+                return;
+            }
+
             int rotation = LinphoneManager.Instance.LinphoneCore.GetCameraSensorRotation();
             if (rotation >= 0)
             {
