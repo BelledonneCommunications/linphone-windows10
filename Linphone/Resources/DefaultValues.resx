@@ -121,6 +121,9 @@
     <value>3600</value>
     <comment>Seconds for keep-alive task</comment>
   </data>
+  <data name="PictureUploadScriptURL" xml:space="preserve">
+    <value>https://linphone.org:444/upload.php</value>
+  </data>
   <data name="UserAgent" xml:space="preserve">
     <value>LinphoneWP8</value>
     <comment>User-agent to be sent in SIP messages</comment>

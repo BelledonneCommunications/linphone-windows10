@@ -379,6 +379,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\WPtoolkit.4.2013.06.11\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.7-beta\lib\sl4-windowsphone71\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.7-beta\lib\sl4-windowsphone71\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.7-beta\lib\sl4-windowsphone71\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
@@ -392,4 +401,5 @@
   </Target>
   -->
   <ProjectExtensions />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.7\tools\Microsoft.Bcl.Build.targets" />
 </Project>

@@ -32,7 +32,10 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Rectangle x:Name="Background"  Fill="{StaticResource PhoneChromeBrush}" Grid.RowSpan="2"/>
+        <Rectangle 
+            x:Name="Background"  
+            Fill="{StaticResource PhoneChromeBrush}" 
+            Grid.RowSpan="2"/>
 
         <TextBlock 
             Grid.Row="0" 
@@ -40,6 +43,13 @@
             Style="{StaticResource MessageStyle}"
             TextAlignment="Left"/>
 
+        <Button
+            Grid.Row="0"
+            x:Name="ShowImage"
+            Visibility="Collapsed"
+            Click="ShowImage_Click"
+            Content="{Binding Path=LocalizedResources.ShowImage, Source={StaticResource LocalizedStrings}}"/>
+            
         <Image
             Grid.Row="0" 
             Stretch="UniformToFill"

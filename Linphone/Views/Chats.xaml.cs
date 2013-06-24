@@ -53,7 +53,6 @@ namespace Linphone.Views
         {
             ContactManager cm = ContactManager.Instance;
             cm.ContactFound -= cm_ContactFound;
-            Conversations.ItemsSource = null;
 
             base.OnNavigatedFrom(e);
         }
@@ -104,6 +103,7 @@ namespace Linphone.Views
             var filtered = _allMessages.GroupBy(m => m.Contact).Select(g => g.First()).OrderByDescending(m => m.Timestamp).ToList();
 
             _conversations = new ObservableCollection<Conversation>();
+            _sortedConversations = new ObservableCollection<Conversation>();
             foreach (var conversation in filtered)
             {
                 string address = conversation.LocalContact.Length > 0 ? conversation.LocalContact : conversation.RemoteContact;

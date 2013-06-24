@@ -426,6 +426,9 @@ http://www.linphone.org/m/help
     <value>Copy</value>
   </data>
   <data name="SendPicture" xml:space="preserve">
-    <value>send picture</value>
+    <value>attach picture</value>
+  </data>
+  <data name="ShowImage" xml:space="preserve">
+    <value>Show</value>
   </data>
 </root>

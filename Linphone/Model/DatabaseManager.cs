@@ -134,6 +134,25 @@ namespace Linphone.Model
             }
         }
 
+        private string _imageURL;
+        [Column]
+        public string ImageURL
+        {
+            get
+            {
+                return _imageURL;
+            }
+            set
+            {
+                if (_imageURL != value)
+                {
+                    NotifyPropertyChanging("ImageURL");
+                    _imageURL = value;
+                    NotifyPropertyChanged("ImageURL");
+                }
+            }
+        }
+
         private long _timestamp;
         [Column]
         public long Timestamp

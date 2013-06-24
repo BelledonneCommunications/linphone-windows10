@@ -661,7 +661,7 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to send picture.
+        ///   Looks up a localized string similar to attach picture.
         /// </summary>
         public static string SendPicture {
             get {
@@ -675,6 +675,15 @@ namespace Linphone.Resources {
         public static string SettingsMenu {
             get {
                 return ResourceManager.GetString("SettingsMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show.
+        /// </summary>
+        public static string ShowImage {
+            get {
+                return ResourceManager.GetString("ShowImage", resourceCulture);
             }
         }
         

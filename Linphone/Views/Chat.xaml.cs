@@ -15,6 +15,11 @@ using Linphone.Controls;
 using Microsoft.Phone.Tasks;
 using System.ComponentModel;
 using System.Windows.Media.Imaging;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.IO.IsolatedStorage;
+using System.Net.Http.Headers;
 
 namespace Linphone.Views
 {
@@ -39,6 +44,9 @@ namespace Linphone.Views
     /// </summary>
     public partial class Chat : BasePage, LinphoneChatMessageListener, MessageReceivedListener
     {
+        private const int LOCAL_IMAGES_QUALITY = 100;
+        private const int SENT_IMAGES_QUALITY = 50;
+
         /// <summary>
         /// SIP address linked to the current displayed chat.
         /// </summary>
@@ -103,10 +111,6 @@ namespace Linphone.Views
                 NewChat.Visibility = Visibility.Visible;
                 NewChatSipAddress.Focus();
             }
-
-            if (!NavigationService.CanGoBack) 
-            {
-            }
         }
 
         /// <summary>
@@ -135,13 +139,52 @@ namespace Linphone.Views
                 }
                 else
                 {
-                    OutgoingChatBubble bubble = new OutgoingChatBubble(message, FormatDate(date));
+                    OutgoingChatBubble bubble;
+                    if (message.ImageURL != null && message.ImageURL.Length > 0)
+                    {
+                        bubble = new OutgoingChatBubble(message, null, FormatDate(date));
+                    }
+                    else
+                    {
+                        bubble = new OutgoingChatBubble(message, FormatDate(date));
+                    }
                     bubble.MessageDeleted += bubble_MessageDeleted;
                     bubble.UpdateStatus((LinphoneChatMessageState)message.Status);
                     MessagesList.Children.Add(bubble);
                 }
             }
             scrollToBottom();
+        }
+
+        /// <summary>
+        /// Returns a BitmapImage of a file stored in isolated storage
+        /// </summary>
+        /// <param name="fileName">Name of the file to open</param>
+        /// <returns>a BitmapImage or null</returns>
+        public static BitmapImage ReadImageFromIsolatedStorage(string fileName)
+        {
+            byte[] data;
+            try
+            {
+                using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    using (IsolatedStorageFileStream file = store.OpenFile(fileName, FileMode.Open, FileAccess.Read))
+                    {
+                        data = new byte[file.Length];
+                        file.Read(data, 0, data.Length);
+                        file.Close();
+                    }
+                }
+
+                MemoryStream ms = new MemoryStream(data);
+                BitmapImage image = new BitmapImage();
+                image.SetSource(ms);
+                ms.Close();
+                return image;
+            }
+            catch { }
+
+            return null;
         }
 
         /// <summary>
@@ -186,11 +229,100 @@ namespace Linphone.Views
             }
 
             DateTime now = DateTime.Now;
-            ChatMessage msg = new ChatMessage { Message = message, MarkedAsRead = true, IsIncoming = false, RemoteContact = sipAddress, LocalContact = "", Timestamp = (now.Ticks / TimeSpan.TicksPerSecond), Status = (int)LinphoneChatMessageState.InProgress };
+            ChatMessage msg = new ChatMessage { Message = message, ImageURL = "", MarkedAsRead = true, IsIncoming = false, RemoteContact = sipAddress, LocalContact = "", Timestamp = (now.Ticks / TimeSpan.TicksPerSecond), Status = (int)LinphoneChatMessageState.InProgress };
             DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
             DatabaseManager.Instance.SubmitChanges();
 
             OutgoingChatBubble bubble = new OutgoingChatBubble(msg, FormatDate(now));
+            bubble.MessageDeleted += bubble_MessageDeleted;
+            MessagesList.Children.Add(bubble);
+            _SentMessages.Add(bubble);
+            scrollToBottom();
+        }
+
+        private void SaveImageInLocalFolder(BitmapImage image, string fileName)
+        {
+            try
+            {
+                using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    if (store.FileExists(fileName))
+                    {
+                        store.DeleteFile(fileName);
+                    }
+
+                    using (IsolatedStorageFileStream file = store.CreateFile(fileName))
+                    {
+                        WriteableBitmap bitmap = new WriteableBitmap(image);
+                        Extensions.SaveJpeg(bitmap, file, bitmap.PixelWidth, bitmap.PixelHeight, 0, LOCAL_IMAGES_QUALITY);
+                        file.Close();
+                        bitmap = null;
+                    }
+                }
+            }
+            catch { }
+        }
+
+        private async Task<string> UploadImageMessage(BitmapImage image, string filePath)
+        {
+            string fileName = filePath.Substring(filePath.LastIndexOf("\\") + 1);
+
+            //Copy image in local folder
+            SaveImageInLocalFolder(image, fileName);
+
+            //Upload the image
+            string boundary = "----------" + DateTime.Now.Ticks.ToString();
+
+            string response;
+            using (var client = new HttpClient())
+            {
+                using (var content = new MultipartFormDataContent(boundary))
+                {
+                    MemoryStream ms = new MemoryStream();
+                    WriteableBitmap bitmap = new WriteableBitmap(image);
+                    Extensions.SaveJpeg(bitmap, ms, image.PixelWidth, image.PixelHeight, 0, SENT_IMAGES_QUALITY);
+                    ms.Flush();
+                    ms.Position = 0;
+                    StreamContent streamContent = new StreamContent(ms);
+                    streamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                    {
+                        Name = "\"userfile\"",
+                        FileName = "\"" + fileName + "\""
+                    };
+                    streamContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                    content.Add(streamContent);
+
+                    using (var message = await client.PostAsync(DefaultValues.PictureUploadScriptURL, content))
+                    {
+                        message.EnsureSuccessStatusCode();
+                        response = await message.Content.ReadAsStringAsync();
+                    }
+                }
+            }
+            return response;
+        }
+
+        private void SendImageMessage(string localFileName, string url, BitmapImage image)
+        {
+            if (url == null || url.Length == 0)
+            {
+                return;
+            }
+
+            if (chatRoom != null)
+            {
+                LinphoneChatMessage chatMessage = chatRoom.CreateLinphoneChatMessage("");
+                chatMessage.SetExternalBodyUrl(url);
+                long time = chatMessage.GetTime();
+                chatRoom.SendMessage(chatMessage, this);
+            }
+
+            DateTime now = DateTime.Now;
+            ChatMessage msg = new ChatMessage { ImageURL = localFileName, Message = "", MarkedAsRead = true, IsIncoming = false, RemoteContact = sipAddress, LocalContact = "", Timestamp = (now.Ticks / TimeSpan.TicksPerSecond), Status = (int)LinphoneChatMessageState.InProgress };
+            DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
+            DatabaseManager.Instance.SubmitChanges();
+
+            OutgoingChatBubble bubble = new OutgoingChatBubble(msg, image, FormatDate(now));
             bubble.MessageDeleted += bubble_MessageDeleted;
             MessagesList.Children.Add(bubble);
             _SentMessages.Add(bubble);
@@ -203,6 +335,7 @@ namespace Linphone.Views
         public void MessageStateChanged(LinphoneChatMessage message, LinphoneChatMessageState state)
         {
             string messageText = message.GetText();
+            string externalBodyUrl = message.GetExternalBodyUrl();
             Logger.Msg("[Chat] Message " + messageText + ", state changed: " + state.ToString());
             if (state == LinphoneChatMessageState.InProgress)
             {
@@ -211,13 +344,13 @@ namespace Linphone.Views
 
             Dispatcher.BeginInvoke(() =>
             {
-                OutgoingChatBubble bubble = _SentMessages.Where(b => b.Message.Text.Equals(messageText)).Last();
+                OutgoingChatBubble bubble = _SentMessages.Where(b => b.ChatMessage.Message.Equals(messageText)).Last();
                 if (bubble != null)
                 {
                     bubble.UpdateStatus(state);
                     _SentMessages.Remove(bubble);
 
-                    ChatMessage msgToUpdate = DatabaseManager.Instance.Messages.Where(m => m.IsIncoming == false && m.Message.Equals(messageText) && m.Status == (int)LinphoneChatMessageState.InProgress).ToList().LastOrDefault();
+                    ChatMessage msgToUpdate = bubble.ChatMessage;
                     if (msgToUpdate != null)
                     {
                         msgToUpdate.Status = (int)state;
@@ -227,9 +360,9 @@ namespace Linphone.Views
             });
         }
 
-        private void send_Click_1(object sender, EventArgs e)
+        private async void send_Click_1(object sender, EventArgs e)
         {
-            if (MessageBox.Text != null && MessageBox.Text.Length > 0 && (NewChatSipAddress.Text != null || NewChatSipAddress.Visibility == Visibility.Collapsed))
+            if (NewChatSipAddress.Text != null || NewChatSipAddress.Visibility == Visibility.Collapsed)
             {
                 if (chatRoom == null) //This code will be executed only in case of new conversation
                 {
@@ -261,12 +394,28 @@ namespace Linphone.Views
                     }
                 }
 
-                SendMessage(MessageBox.Text);
+                if (MessageBox.Text != null && MessageBox.Text.Length > 0)
+                {
+                    SendMessage(MessageBox.Text);
+                }
+                else if (MessageBox.Picture != null)
+                {
+                    try
+                    {
+                        string url = await UploadImageMessage(MessageBox.Picture, MessageBox.PicturePath);
+                        string fileName = MessageBox.PicturePath.Substring(MessageBox.PicturePath.LastIndexOf("\\") + 1);
+                        SendImageMessage(fileName, url, MessageBox.Picture);
+                    }
+                    catch (Exception e1)
+                    {
+                        Debug.WriteLine(e1.ToString());
+                    }
+                }
                 MessageBox.Reset();
             }
         }
 
-        private void send_image_Click_1(object sender, EventArgs e)
+        private void attach_image_Click_1(object sender, EventArgs e)
         {
             PhotoChooserTask task = new PhotoChooserTask();
             task.Completed += task_Completed;
@@ -274,20 +423,13 @@ namespace Linphone.Views
             task.Show();
         }
 
-        void task_Completed(object sender, PhotoResult e)
+        private void task_Completed(object sender, PhotoResult e)
         {
             if (e.TaskResult == TaskResult.OK)
             {
                 BitmapImage image = new BitmapImage();
                 image.SetSource(e.ChosenPhoto);
-
-                //TODO: Actually send the message
-
-                DateTime now = DateTime.Now;
-                OutgoingChatBubble bubble = new OutgoingChatBubble(image, FormatDate(now));
-                bubble.MessageDeleted += bubble_MessageDeleted;
-                MessagesList.Children.Add(bubble);
-                scrollToBottom();
+                MessageBox.SetImage(image, e.OriginalFileName);
             }
         }
 
@@ -303,7 +445,7 @@ namespace Linphone.Views
             ApplicationBarIconButton appBarSendImage = new ApplicationBarIconButton(new Uri("/Assets/AppBar/feature.camera.png", UriKind.Relative));
             appBarSendImage.Text = AppResources.SendPicture;
             ApplicationBar.Buttons.Add(appBarSendImage);
-            appBarSendImage.Click += send_image_Click_1;
+            appBarSendImage.Click += attach_image_Click_1;
         }
 
         /// <summary>

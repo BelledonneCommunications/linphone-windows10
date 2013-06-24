@@ -11,6 +11,7 @@ using Linphone.Core;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using Linphone.Model;
+using Linphone.Views;
 
 namespace Linphone.Controls
 {
@@ -22,14 +23,30 @@ namespace Linphone.Controls
         private ChatMessage _message;
 
         /// <summary>
+        /// Chat message associated with this bubble
+        /// </summary>
+        public ChatMessage ChatMessage
+        {
+            get
+            {
+                return _message;
+            }
+            set
+            {
+                _message = value;
+            }
+        }
+
+        /// <summary>
         /// Public constructor.
         /// </summary>
         public OutgoingChatBubble(ChatMessage message, string timestamp)
         {
             InitializeComponent();
-            _message = message;
+            ChatMessage = message;
             Message.Visibility = Visibility.Visible;
             Image.Visibility = Visibility.Collapsed;
+            ShowImage.Visibility = Visibility.Collapsed;
             Message.Text = message.Message;
             Timestamp.Text = timestamp;
 
@@ -41,12 +58,22 @@ namespace Linphone.Controls
         /// <summary>
         /// Public constructor.
         /// </summary>
-        public OutgoingChatBubble(BitmapImage image, string timestamp)
+        public OutgoingChatBubble(ChatMessage message, BitmapImage image, string timestamp)
         {
             InitializeComponent();
-            Image.Source = image;
+            ChatMessage = message;
             Message.Visibility = Visibility.Collapsed;
-            Image.Visibility = Visibility.Visible;
+            if (image == null)
+            {
+                ShowImage.Visibility = Visibility.Visible;
+                Image.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                ShowImage.Visibility = Visibility.Collapsed;
+                Image.Visibility = Visibility.Visible;
+            }
+            Image.Source = image;
             Timestamp.Text = timestamp;
 
             System.Windows.Media.Color accent = (System.Windows.Media.Color)Resources["PhoneAccentColor"];
@@ -76,7 +103,7 @@ namespace Linphone.Controls
         {
             if (MessageDeleted != null)
             {
-                MessageDeleted(this, _message);
+                MessageDeleted(this, ChatMessage);
             }
         }
 
@@ -94,5 +121,14 @@ namespace Linphone.Controls
         /// Handler for delete event.
         /// </summary>
         public event MessageDeletedEventHandler MessageDeleted;
+
+        private void ShowImage_Click(object sender, RoutedEventArgs e)
+        {
+            BitmapImage image = Chat.ReadImageFromIsolatedStorage(ChatMessage.ImageURL);
+            Image.Source = image;
+
+            ShowImage.Visibility = Visibility.Collapsed;
+            Image.Visibility = Visibility.Visible;
+        }
     }
 }
