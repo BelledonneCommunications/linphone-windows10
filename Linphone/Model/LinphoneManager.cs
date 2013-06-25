@@ -779,7 +779,10 @@ namespace Linphone.Model
                 date = date.AddSeconds(message.GetTime());
                 date = date.Add(TimeZoneInfo.Local.GetUtcOffset(date));
 
-                ChatMessage msg = new ChatMessage { Message = message.GetText(), MarkedAsRead = false, IsIncoming = true, LocalContact = sipAddress, RemoteContact = "", Timestamp = (date.Ticks / TimeSpan.TicksPerSecond) };
+                //TODO: Temp hack to remove
+                string url = message.GetExternalBodyUrl();
+                url = url.Replace("\"", "");
+                ChatMessage msg = new ChatMessage { Message = message.GetText(), ImageURL = url, MarkedAsRead = false, IsIncoming = true, LocalContact = sipAddress, RemoteContact = "", Timestamp = (date.Ticks / TimeSpan.TicksPerSecond) };
                 DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
                 DatabaseManager.Instance.SubmitChanges();
             }

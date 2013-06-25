@@ -346,6 +346,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download.
+        /// </summary>
+        public static string DownloadImage {
+            get {
+                return ResourceManager.GetString("DownloadImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Echo detected: {0} ms.
         /// </summary>
         public static string ECCalibrationDone {
@@ -661,7 +670,7 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to attach picture.
+        ///   Looks up a localized string similar to send picture.
         /// </summary>
         public static string SendPicture {
             get {
@@ -927,6 +936,15 @@ namespace Linphone.Resources {
         public static string TunnelServer {
             get {
                 return ResourceManager.GetString("TunnelServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uploading....
+        /// </summary>
+        public static string Uploading {
+            get {
+                return ResourceManager.GetString("Uploading", resourceCulture);
             }
         }
         

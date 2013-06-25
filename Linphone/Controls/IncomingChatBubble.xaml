@@ -47,6 +47,27 @@
             Style="{StaticResource MessageStyle}"
             TextAlignment="Left"/>
 
+        <Button
+            Grid.Row="1"
+            x:Name="ShowImage"
+            Visibility="Collapsed"
+            Click="ShowImage_Click"
+            Content="{Binding Path=LocalizedResources.ShowImage, Source={StaticResource LocalizedStrings}}"/>
+        
+        <Button
+            Grid.Row="1"
+            x:Name="DownloadImage"
+            Visibility="Collapsed"
+            Click="DownloadImage_Click"
+            Content="{Binding Path=LocalizedResources.DownloadImage, Source={StaticResource LocalizedStrings}}"/>
+
+        <Image
+            Grid.Row="1" 
+            Margin="5"
+            Stretch="UniformToFill"
+            Visibility="Collapsed"
+            x:Name="Image" />
+
         <TextBlock 
             Grid.Row="2" 
             x:Name="Timestamp" 

@@ -37,12 +37,23 @@ namespace Linphone.Controls
             }
         }
 
+        private SolidColorBrush _darkAccentBrush
+        {
+            get
+            {
+                System.Windows.Media.Color accent = (System.Windows.Media.Color)Resources["PhoneAccentColor"];
+                System.Windows.Media.Color darkAccent = System.Windows.Media.Color.FromArgb(accent.A, (byte)(accent.R / 2), (byte)(accent.G / 2), (byte)(accent.B / 2));
+                return new SolidColorBrush(darkAccent);
+            }
+        }
+
         /// <summary>
         /// Public constructor.
         /// </summary>
         public OutgoingChatBubble(ChatMessage message, string timestamp)
         {
             InitializeComponent();
+
             ChatMessage = message;
             Message.Visibility = Visibility.Visible;
             Image.Visibility = Visibility.Collapsed;
@@ -50,9 +61,8 @@ namespace Linphone.Controls
             Message.Text = message.Message;
             Timestamp.Text = timestamp;
 
-            System.Windows.Media.Color accent = (System.Windows.Media.Color)Resources["PhoneAccentColor"];
-            System.Windows.Media.Color darkAccent = System.Windows.Media.Color.FromArgb(accent.A, (byte)(accent.R / 2), (byte)(accent.G / 2), (byte)(accent.B / 2));
-            Background.Fill = new SolidColorBrush(darkAccent);
+            Background.Fill = _darkAccentBrush;
+            Path.Fill = _darkAccentBrush;
         }
 
         /// <summary>
@@ -76,9 +86,8 @@ namespace Linphone.Controls
             Image.Source = image;
             Timestamp.Text = timestamp;
 
-            System.Windows.Media.Color accent = (System.Windows.Media.Color)Resources["PhoneAccentColor"];
-            System.Windows.Media.Color darkAccent = System.Windows.Media.Color.FromArgb(accent.A, (byte)(accent.R / 2), (byte)(accent.G / 2), (byte)(accent.B / 2));
-            Background.Fill = new SolidColorBrush(darkAccent);
+            Background.Fill = _darkAccentBrush;
+            Path.Fill = _darkAccentBrush;
         }
 
         /// <summary>

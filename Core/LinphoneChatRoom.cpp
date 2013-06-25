@@ -1,5 +1,6 @@
 #include "LinphoneChatRoom.h"
 #include "LinphoneAddress.h"
+#include "ApiLock.h"
 
 Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneChatRoom::GetPeerAddress()
 {
@@ -8,6 +9,7 @@ Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneChatRoom::GetPeerAddres
 	
 static void chat_room_callback(::LinphoneChatMessage* msg, ::LinphoneChatMessageState state, void* ud)
 {
+	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneChatMessageListener^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneChatMessageListener^> *>(ud);
 	Linphone::Core::LinphoneChatMessageListener^ listener = (proxy) ? proxy->Ref() : nullptr;
 
@@ -20,19 +22,24 @@ static void chat_room_callback(::LinphoneChatMessage* msg, ::LinphoneChatMessage
 
 		listener->MessageStateChanged(lChatMessage, (Linphone::Core::LinphoneChatMessageState) state);
 	}
+	Linphone::Core::gApiLock.LeaveListener();
 }
 
 void Linphone::Core::LinphoneChatRoom::SendMessage(Linphone::Core::LinphoneChatMessage^ message, Linphone::Core::LinphoneChatMessageListener^ listener)
 {
+	gApiLock.Lock();
 	RefToPtrProxy<LinphoneChatMessageListener^> *listenerPtr = new RefToPtrProxy<LinphoneChatMessageListener^>(listener);
 	linphone_chat_room_send_message2(this->room, message->message, chat_room_callback, listenerPtr);
+	gApiLock.Unlock();
 }
 
 Linphone::Core::LinphoneChatMessage^ Linphone::Core::LinphoneChatRoom::CreateLinphoneChatMessage(Platform::String^ message)
 {
+	gApiLock.Lock();
 	const char* msg = Linphone::Core::Utils::pstoccs(message);
 	Linphone::Core::LinphoneChatMessage^ chatMessage = (Linphone::Core::LinphoneChatMessage^) Linphone::Core::Utils::CreateLinphoneChatMessage(linphone_chat_room_create_message(this->room, msg));
 	delete(msg);
+	gApiLock.Unlock();
 	return chatMessage;
 }
 

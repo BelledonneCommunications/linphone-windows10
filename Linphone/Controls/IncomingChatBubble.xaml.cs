@@ -8,6 +8,8 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Linphone.Model;
+using Linphone.Views;
+using System.Windows.Media.Imaging;
 
 namespace Linphone.Controls
 {
@@ -19,14 +21,42 @@ namespace Linphone.Controls
         private ChatMessage _message;
 
         /// <summary>
+        /// Chat message associated with this bubble
+        /// </summary>
+        public ChatMessage ChatMessage
+        {
+            get
+            {
+                return _message;
+            }
+            set
+            {
+                _message = value;
+            }
+        }
+
+        /// <summary>
         /// Public constructor.
         /// </summary>
         public IncomingChatBubble(ChatMessage message, string timestamp)
         {
             InitializeComponent();
-            _message = message;
+            ChatMessage = message;
             Message.Text = message.Message;
             Timestamp.Text = timestamp;
+
+            if (ChatMessage.ImageURL != null && ChatMessage.ImageURL.Length > 0)
+            {
+                Message.Visibility = Visibility.Collapsed;
+                if (ChatMessage.ImageURL.StartsWith("http"))
+                {
+                    DownloadImage.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    ShowImage.Visibility = Visibility.Visible;
+                }
+            }
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)
@@ -51,5 +81,23 @@ namespace Linphone.Controls
         /// Handler for delete event.
         /// </summary>
         public event MessageDeletedEventHandler MessageDeleted;
+
+        private void DownloadImage_Click(object sender, RoutedEventArgs e)
+        {
+            BitmapImage image = Chat.DownloadImageAndStoreItInIsolatedStorage(ChatMessage.ImageURL, ChatMessage);
+            Image.Source = image;
+
+            DownloadImage.Visibility = Visibility.Collapsed;
+            Image.Visibility = Visibility.Visible;
+        }
+
+        private void ShowImage_Click(object sender, RoutedEventArgs e)
+        {
+            BitmapImage image = Chat.ReadImageFromIsolatedStorage(ChatMessage.ImageURL);
+            Image.Source = image;
+
+            ShowImage.Visibility = Visibility.Collapsed;
+            Image.Visibility = Visibility.Visible;
+        }
     }
 }

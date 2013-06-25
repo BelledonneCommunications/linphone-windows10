@@ -93,6 +93,23 @@
                     VerticalAlignment="Bottom">
                 </StackPanel>
             </ScrollViewer>
+            
+            <Border 
+                x:Name="ProgressPopup"
+                Grid.Row="1"
+                Padding="5"
+                Visibility="Collapsed"
+                BorderThickness="10">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                    <ProgressBar
+                        IsIndeterminate="True"
+                        Width="300"/>
+                    <TextBlock
+                        Width="300"
+                        TextAlignment="Center"
+                        Text="{Binding LocalizedResources.Uploading, Source={StaticResource LocalizedStrings}}" />
+                </StackPanel>
+            </Border>
 
             <controls:TextBoxChatBubble x:Name="MessageBox" Grid.Row="1"/>
         </Grid>

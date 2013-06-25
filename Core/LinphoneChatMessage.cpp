@@ -1,5 +1,6 @@
 #include "LinphoneChatMessage.h"
 #include "LinphoneAddress.h"
+#include "ApiLock.h"
 
 Platform::String^ Linphone::Core::LinphoneChatMessage::GetText()
 {
@@ -23,9 +24,11 @@ Platform::String^ Linphone::Core::LinphoneChatMessage::GetExternalBodyUrl()
 
 void Linphone::Core::LinphoneChatMessage::SetExternalBodyUrl(Platform::String^ url)
 {
+	gApiLock.Lock();
 	const char* body = Linphone::Core::Utils::pstoccs(url);
 	linphone_chat_message_set_external_body_url(this->message, body);
 	delete(body);
+	gApiLock.Unlock();
 }
 
 int64 Linphone::Core::LinphoneChatMessage::GetTime()

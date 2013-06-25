@@ -240,7 +240,31 @@ namespace Linphone.Views
             scrollToBottom();
         }
 
-        private void SaveImageInLocalFolder(BitmapImage image, string fileName)
+        /// <summary>
+        /// Download an image received using the given url and store it locally
+        /// </summary>
+        /// <param name="url">Url to download the image</param>
+        /// <param name="message">ChatMessage linked to the image</param>
+        /// <returns>The Bitmap Image for display</returns>
+        public static BitmapImage DownloadImageAndStoreItInIsolatedStorage(string url, ChatMessage message)
+        {
+            //Download image
+            BitmapImage image = new BitmapImage(new Uri(url));
+            image.ImageOpened += (sender, e) => 
+            {
+                //Store it in isolated storage
+                string fileName = url.Substring(url.LastIndexOf("/") + 1);
+                SaveImageInLocalFolder(image, fileName);
+
+                //Update image url in database to point on local image
+                message.ImageURL = fileName;
+                DatabaseManager.Instance.SubmitChanges();
+            };
+
+            return image;
+        }
+
+        private static void SaveImageInLocalFolder(BitmapImage image, string fileName)
         {
             try
             {
@@ -255,6 +279,7 @@ namespace Linphone.Views
                     {
                         WriteableBitmap bitmap = new WriteableBitmap(image);
                         Extensions.SaveJpeg(bitmap, file, bitmap.PixelWidth, bitmap.PixelHeight, 0, LOCAL_IMAGES_QUALITY);
+                        file.Flush();
                         file.Close();
                         bitmap = null;
                     }
@@ -402,13 +427,22 @@ namespace Linphone.Views
                 {
                     try
                     {
+                        ProgressPopup.Visibility = Visibility.Visible;
+                        MessageBox.Visibility = Visibility.Collapsed;
+
                         string url = await UploadImageMessage(MessageBox.Picture, MessageBox.PicturePath);
+
+                        ProgressPopup.Visibility = Visibility.Collapsed;
+                        MessageBox.Visibility = Visibility.Visible;
+
                         string fileName = MessageBox.PicturePath.Substring(MessageBox.PicturePath.LastIndexOf("\\") + 1);
                         SendImageMessage(fileName, url, MessageBox.Picture);
                     }
-                    catch (Exception e1)
+                    catch { }
+                    finally
                     {
-                        Debug.WriteLine(e1.ToString());
+                        ProgressPopup.Visibility = Visibility.Collapsed;
+                        MessageBox.Visibility = Visibility.Visible;
                     }
                 }
                 MessageBox.Reset();
@@ -456,13 +490,18 @@ namespace Linphone.Views
             MessagesList.Dispatcher.BeginInvoke(() =>
             {
                 DateTime date = new DateTime();
-                ChatMessage msg = new ChatMessage { Message = message.GetText(), MarkedAsRead = true, IsIncoming = true, LocalContact = sipAddress, RemoteContact = "", Timestamp = (date.Ticks / TimeSpan.TicksPerSecond) };
-                DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
-                DatabaseManager.Instance.SubmitChanges();
 
                 date = date.AddYears(1969); //Timestamp is calculated from 01/01/1970, and DateTime is initialized to 01/01/0001.
                 date = date.AddSeconds(message.GetTime());
                 date = date.Add(TimeZoneInfo.Local.GetUtcOffset(date));
+
+                //TODO: Temp hack to remove
+                string url = message.GetExternalBodyUrl();
+                url = url.Replace("\"", "");
+                ChatMessage msg = new ChatMessage { Message = message.GetText(), ImageURL = url, MarkedAsRead = true, IsIncoming = true, LocalContact = sipAddress, RemoteContact = "", Timestamp = (date.Ticks / TimeSpan.TicksPerSecond) };
+                DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
+                DatabaseManager.Instance.SubmitChanges();
+
                 IncomingChatBubble bubble = new IncomingChatBubble(msg, FormatDate(date));
                 bubble.MessageDeleted += bubble_MessageDeleted;
                 MessagesList.Children.Add(bubble);
