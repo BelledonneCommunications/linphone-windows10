@@ -202,6 +202,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to cancel upload.
+        /// </summary>
+        public static string CancelUpload {
+            get {
+                return ResourceManager.GetString("CancelUpload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chat.
         /// </summary>
         public static string ChatMenu {

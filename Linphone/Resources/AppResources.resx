@@ -443,4 +443,7 @@ http://www.linphone.org/m/help
   <data name="Show" xml:space="preserve">
     <value>Show</value>
   </data>
+  <data name="CancelUpload" xml:space="preserve">
+    <value>cancel upload</value>
+  </data>
 </root>

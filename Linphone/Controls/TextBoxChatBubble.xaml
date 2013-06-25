@@ -26,13 +26,6 @@
             Background="White"
             TextAlignment="Left"/>
 
-        <Image
-            Grid.Row="0"
-            Margin="5"
-            Stretch="UniformToFill"
-            Visibility="Collapsed"
-            x:Name="Image" />
-
         <Path 
             Grid.Row="1"
             Data="m 0,0 l 16,0 l 0,16 l -16,-16"

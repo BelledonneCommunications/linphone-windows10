@@ -22,16 +22,6 @@ namespace Linphone.Controls
         public string Text { get; set; }
 
         /// <summary>
-        /// Public accessor to this control image.
-        /// </summary>
-        public BitmapImage Picture { get; set; }
-
-        /// <summary>
-        /// Public accessor to this control image name.
-        /// </summary>
-        public string PicturePath { get; set; }
-
-        /// <summary>
         /// Public constructor.
         /// </summary>
         public TextBoxChatBubble()
@@ -45,29 +35,12 @@ namespace Linphone.Controls
         public void Reset()
         {
             Message.Text = "";
-            PicturePath = "";
-            Picture = null;
-            Image.Visibility = Visibility.Collapsed;
             Message.Visibility = Visibility.Visible;
         }
 
         private void Message_TextChanged(object sender, TextChangedEventArgs e)
         {
             Text = Message.Text;
-        }
-
-        /// <summary>
-        /// Displays the image the user is about to send
-        /// </summary>
-        /// <param name="bitmap">The bitmap to send</param>
-        /// <param name="filename">The filename of the picture to send</param>
-        public void SetImage(BitmapImage bitmap, string filename)
-        {
-            Picture = bitmap;
-            PicturePath = filename;
-            Image.Visibility = Visibility.Visible;
-            Message.Visibility = Visibility.Collapsed;
-            Image.Source = bitmap;
         }
     }
 }

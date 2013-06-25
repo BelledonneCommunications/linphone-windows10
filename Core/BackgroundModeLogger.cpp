@@ -35,8 +35,6 @@ namespace Linphone
 	}
 }
 
-
-
 Linphone::Core::BackgroundModeLogger::BackgroundModeLogger() :
 	enabled(false), dest(OutputTraceDest::File), filename(nullptr), d(new BackgroundModeLoggerPrivate())
 {
@@ -49,7 +47,7 @@ Linphone::Core::BackgroundModeLogger::~BackgroundModeLogger()
 
 void Linphone::Core::BackgroundModeLogger::Configure(bool enable, OutputTraceDest dest, Platform::String^ option)
 {
-	std::lock_guard<std::recursive_mutex> lock(this->lock);
+	gApiLock.Lock();
 	if ((this->dest == OutputTraceDest::File) && (this->d->stream != nullptr)) {
 		this->d->stream->close();
 		delete this->d->stream;
@@ -77,12 +75,13 @@ void Linphone::Core::BackgroundModeLogger::Configure(bool enable, OutputTraceDes
 		}
 		delete cOption;
 	}
+	gApiLock.Unlock();
 }
 
 void Linphone::Core::BackgroundModeLogger::OutputTrace(OutputTraceLevel level, Platform::String^ msg)
 {
 	if (this->enabled) {
-		std::lock_guard<std::recursive_mutex> lock(this->lock);
+		gApiLock.Lock();
 		if (this->dest == OutputTraceDest::Debugger) {
 			OutputDebugString(msg->Data());
 		}
@@ -122,5 +121,6 @@ void Linphone::Core::BackgroundModeLogger::OutputTrace(OutputTraceLevel level, P
 				}).wait();
 			}
 		}
+		gApiLock.Unlock();
 	}
 }
