@@ -48,6 +48,8 @@ namespace Linphone.Controls
             if (ChatMessage.ImageURL != null && ChatMessage.ImageURL.Length > 0)
             {
                 Message.Visibility = Visibility.Collapsed;
+                Copy.Visibility = Visibility.Collapsed;
+
                 if (ChatMessage.ImageURL.StartsWith("http"))
                 {
                     DownloadImage.Visibility = Visibility.Visible;

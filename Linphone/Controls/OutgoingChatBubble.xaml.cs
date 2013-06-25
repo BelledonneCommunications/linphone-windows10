@@ -73,6 +73,8 @@ namespace Linphone.Controls
             InitializeComponent();
             ChatMessage = message;
             Message.Visibility = Visibility.Collapsed;
+            Copy.Visibility = Visibility.Collapsed;
+
             if (image == null)
             {
                 ShowImage.Visibility = Visibility.Visible;
