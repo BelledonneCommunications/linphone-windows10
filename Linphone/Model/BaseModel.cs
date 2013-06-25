@@ -30,6 +30,9 @@ namespace Linphone
         void PauseStateChanged(LinphoneCall call, bool isCallPaused);
     }
 
+    /// <summary>
+    /// Listener called when a call is updated by the correspondent.
+    /// </summary>
     public interface CallUpdatedByRemoteListener
     {
         /// <summary>
@@ -72,6 +75,11 @@ namespace Linphone
         /// Page currently displayed.
         /// </summary>
         public BasePage Page { get; set; }
+
+        /// <summary>
+        /// Page currently displayed.
+        /// </summary>
+        public static BasePage CurrentPage { get; set; }
 
         /// <summary>
         /// Dispatcher used to run tasks on the UI thread.
@@ -142,6 +150,7 @@ namespace Linphone
         public virtual void OnNavigatedTo(NavigationEventArgs nea)
         {
             LinphoneManager.Instance.CallListener = this;
+            CurrentPage = this.Page;
             UIDispatcher = this.Page.Dispatcher;
         }
 

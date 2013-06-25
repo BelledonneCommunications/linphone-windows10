@@ -437,4 +437,10 @@ http://www.linphone.org/m/help
   <data name="Uploading" xml:space="preserve">
     <value>Uploading...</value>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>Show</value>
+  </data>
 </root>

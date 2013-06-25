@@ -103,6 +103,9 @@
     <Compile Include="Controls\ContactAction.xaml.cs">
       <DependentUpon>ContactAction.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\MessageReceivedNotification.xaml.cs">
+      <DependentUpon>MessageReceivedNotification.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\OutgoingChatBubble.xaml.cs">
       <DependentUpon>OutgoingChatBubble.xaml</DependentUpon>
     </Compile>
@@ -291,6 +294,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ContactAction.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MessageReceivedNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

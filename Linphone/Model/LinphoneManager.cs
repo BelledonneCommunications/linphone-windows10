@@ -1,11 +1,11 @@
 ﻿using Linphone.Agents;
+using Linphone.Controls;
 using Linphone.Core;
 using Linphone.Core.OutOfProcess;
 using Linphone.Resources;
 using Linphone.Views;
 using Microsoft.Phone.Net.NetworkInformation;
 using Microsoft.Phone.Networking.Voip;
-using Microsoft.Phone.Shell;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,6 +13,8 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Xml.Linq;
 using Windows.Phone.Media.Capture;
 using Windows.Phone.Media.Devices;
@@ -761,6 +763,11 @@ namespace Linphone.Model
         public MessageReceivedListener MessageListener { get; set; }
 
         /// <summary>
+        /// Custom message box to display incoming messages when not in chat view
+        /// </summary>
+        public MessageReceivedNotification MessageReceivedNotification { get; set; }
+
+        /// <summary>
         /// Callback for LinphoneCoreListener
         /// </summary>
         public void MessageReceived(LinphoneChatMessage message)
@@ -768,7 +775,7 @@ namespace Linphone.Model
             string sipAddress = message.GetFrom().AsStringUriOnly().Replace("sip:", "");
             Logger.Msg("[LinphoneManager] Message received from " + sipAddress + ": " + message.GetText());
 
-            if (MessageListener != null && MessageListener.GetSipAddressAssociatedWithDisplayConversation().Equals(sipAddress))
+            if (MessageListener != null && MessageListener.GetSipAddressAssociatedWithDisplayConversation() != null && MessageListener.GetSipAddressAssociatedWithDisplayConversation().Equals(sipAddress))
             {
                 MessageListener.MessageReceived(message);
             }
@@ -785,6 +792,28 @@ namespace Linphone.Model
                 ChatMessage msg = new ChatMessage { Message = message.GetText(), ImageURL = url, MarkedAsRead = false, IsIncoming = true, LocalContact = sipAddress, RemoteContact = "", Timestamp = (date.Ticks / TimeSpan.TicksPerSecond) };
                 DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
                 DatabaseManager.Instance.SubmitChanges();
+
+                //Displays the message as a popup
+                BaseModel.UIDispatcher.BeginInvoke(() =>
+                {
+                    if (MessageReceivedNotification != null)
+                    {
+                        MessageReceivedNotification.Hide();
+                    }
+
+                    Popup messageNotif = new Popup();
+                    messageNotif.Width = Application.Current.Host.Content.ActualWidth;
+                    messageNotif.Height = Application.Current.Host.Content.ActualHeight;
+                    messageNotif.VerticalOffset = 25;
+
+                    MessageReceivedNotification = new MessageReceivedNotification(messageNotif, msg);
+                    MessageReceivedNotification.ShowClicked += (sender, chatMessage) =>
+                    {
+                        BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/Chat.xaml?sip=" + chatMessage.Contact, UriKind.RelativeOrAbsolute));
+                    };
+                    messageNotif.Child = MessageReceivedNotification;
+                    messageNotif.IsOpen = true;
+                });
             }
         }
         #endregion
