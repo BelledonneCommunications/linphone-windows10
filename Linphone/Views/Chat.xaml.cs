@@ -46,6 +46,7 @@ namespace Linphone.Views
     {
         private const int LOCAL_IMAGES_QUALITY = 100;
         private const int SENT_IMAGES_QUALITY = 50;
+        private const int THUMBNAIL_WIDTH = 420;
 
         private HttpClient _httpPostClient { get; set; }
 
@@ -156,6 +157,34 @@ namespace Linphone.Views
                 }
             }
             scrollToBottom();
+        }
+
+        /// <summary>
+        /// Get a thumbnail of a picture (used for chat images)
+        /// </summary>
+        /// <param name="image">The image to size down</param>
+        /// <returns>The thumbnail picture</returns>
+        public static BitmapImage GetThumbnailBitmapFromImage(BitmapImage image)
+        {
+            if (image == null)
+                return null;
+
+            if (image.PixelWidth <= THUMBNAIL_WIDTH)
+                return image;
+
+            MemoryStream ms = new MemoryStream();
+            WriteableBitmap bitmap = new WriteableBitmap(image);
+
+            int w, h;
+            w = THUMBNAIL_WIDTH;
+            h = (image.PixelHeight * w) / image.PixelWidth;
+
+            bitmap.SaveJpeg(ms, w, h, 0, LOCAL_IMAGES_QUALITY);
+
+            BitmapImage thumbnail = new BitmapImage();
+            thumbnail.SetSource(ms);
+
+            return thumbnail;
         }
 
         /// <summary>

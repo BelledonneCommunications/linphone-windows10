@@ -95,9 +95,7 @@ namespace Linphone.Controls
 
         private void ShowImage_Click(object sender, RoutedEventArgs e)
         {
-            BitmapImage image = Chat.ReadImageFromIsolatedStorage(ChatMessage.ImageURL);
-            Image.Source = image;
-
+            Image.Source = Chat.GetThumbnailBitmapFromImage(Chat.ReadImageFromIsolatedStorage(ChatMessage.ImageURL));
             ShowImage.Visibility = Visibility.Collapsed;
             Image.Visibility = Visibility.Visible;
         }
