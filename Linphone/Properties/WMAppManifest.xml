@@ -42,8 +42,7 @@
           </LargeContent2>
           <LargeContent3>
           </LargeContent3>
-          <DeviceLockImageURI IsRelative="true" IsResource="false">
-          </DeviceLockImageURI>
+          <DeviceLockImageURI IsRelative="true" IsResource="false">Assets\lockscreen_logo.png</DeviceLockImageURI>
         </TemplateIconic>
       </PrimaryToken>
     </Tokens>
