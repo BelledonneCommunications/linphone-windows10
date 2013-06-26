@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Xml.Linq;
+using Windows.Phone.Devices.Notification;
 using Windows.Phone.Media.Capture;
 using Windows.Phone.Media.Devices;
 using Windows.Phone.Networking.Voip;
@@ -775,6 +776,10 @@ namespace Linphone.Model
         {
             string sipAddress = message.GetFrom().AsStringUriOnly().Replace("sip:", "");
             Logger.Msg("[LinphoneManager] Message received from " + sipAddress + ": " + message.GetText());
+
+            //Vibrate
+            VibrationDevice vibrator = VibrationDevice.GetDefault();
+            vibrator.Vibrate(TimeSpan.FromSeconds(1));
 
             if (MessageListener != null && MessageListener.GetSipAddressAssociatedWithDisplayConversation() != null && MessageListener.GetSipAddressAssociatedWithDisplayConversation().Equals(sipAddress))
             {
