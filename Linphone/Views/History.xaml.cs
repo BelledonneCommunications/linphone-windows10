@@ -42,9 +42,8 @@ namespace Linphone.Views
             // Create LinphoneCore if not created yet, otherwise do nothing
             await LinphoneManager.Instance.InitLinphoneCore();
 
-            TileManager tileManager = TileManager.Instance;
-            tileManager.RemoveMissedCallsTile();
             LinphoneManager.Instance.LinphoneCore.ResetMissedCallsCount();
+            LinphoneManager.Instance.UpdateLiveTile();
 
             List<CallLog> callsHistory = LinphoneManager.Instance.GetCallsHistory();
             Calls.ItemsSource = callsHistory;

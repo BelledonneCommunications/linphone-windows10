@@ -681,7 +681,8 @@ namespace Linphone.Model
                 Logger.Msg("[LinphoneManager] Call released");
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    TileManager.Instance.UpdateTileWithMissedCalls(LinphoneCore.GetMissedCallsCount());
+                    //Update tile
+                    UpdateLiveTile();
                 });
             }
             else if (state == LinphoneCallState.UpdatedByRemote)
@@ -793,6 +794,9 @@ namespace Linphone.Model
                 DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
                 DatabaseManager.Instance.SubmitChanges();
 
+                //Update tile
+                UpdateLiveTile();
+
                 //Displays the message as a popup
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
@@ -817,6 +821,16 @@ namespace Linphone.Model
             }
         }
         #endregion
+
+        /// <summary>
+        /// Updates the app tile to display the number of missed calls and unread chats.
+        /// </summary>
+        public void UpdateLiveTile()
+        {
+            int missedCalls = LinphoneCore.GetMissedCallsCount();
+            int unreadChats = (from message in DatabaseManager.Instance.Messages where message.MarkedAsRead == false select message).ToList().Count;
+            TileManager.Instance.UpdateTileWithMissedCallsAndUnreadMessages(missedCalls + unreadChats);
+        }
 
         #region Contact Lookup
         private ContactManager ContactManager

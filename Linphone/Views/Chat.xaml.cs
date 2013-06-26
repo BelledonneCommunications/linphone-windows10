@@ -134,6 +134,8 @@ namespace Linphone.Views
         {
             foreach (var message in messages)
             {
+                message.MarkedAsRead = true;
+
                 DateTime date = new DateTime(message.Timestamp * TimeSpan.TicksPerSecond);
                 if (message.IsIncoming)
                 {
@@ -158,6 +160,9 @@ namespace Linphone.Views
                 }
             }
             scrollToBottom();
+
+            DatabaseManager.Instance.SubmitChanges();
+            LinphoneManager.Instance.UpdateLiveTile();
         }
 
         /// <summary>

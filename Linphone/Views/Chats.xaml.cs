@@ -124,6 +124,7 @@ namespace Linphone.Views
 
             ClearApplicationBar();
             SetupAppBarForEmptySelection();
+            LinphoneManager.Instance.UpdateLiveTile();
         }
 
         private void newChat_Click_1(object sender, EventArgs e)

@@ -36,23 +36,26 @@ namespace Linphone.Agents
         }
 
         /// <summary>
-        /// Displays the number of missed call on the live tile and on the lock screen
+        /// Displays the number of missed call and unread messages on the live tile and on the lock screen
         /// </summary>
-        /// <param name="missedCalls">Number of missed calls</param>
-        public void UpdateTileWithMissedCalls(int missedCalls)
+        /// <param name="missedCalls">Number of missed calls + number of unread messages</param>
+        public void UpdateTileWithMissedCallsAndUnreadMessages(int count)
         {
             ShellTile tile = ShellTile.ActiveTiles.FirstOrDefault();
-            var data = new StandardTileData();
-            data.Count = missedCalls;
-            tile.Update(data);
+            if (tile != null)
+            {
+                var data = new IconicTileData();
+                data.Count = count;
+                tile.Update(data);
+            }
         }
 
         /// <summary>
         /// Delete the missed call display from the live tile and the lock screen
         /// </summary>
-        public void RemoveMissedCallsTile()
+        public void RemoveCountOnTile()
         {
-            UpdateTileWithMissedCalls(0);
+            UpdateTileWithMissedCallsAndUnreadMessages(0);
         }
     }
 }

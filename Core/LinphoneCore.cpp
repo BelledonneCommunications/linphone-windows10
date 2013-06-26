@@ -1522,6 +1522,7 @@ void call_stats_updated(LinphoneCore *lc, LinphoneCall *call, const LinphoneCall
 
 void message_received(LinphoneCore *lc, LinphoneChatRoom* chat_room, LinphoneChatMessage* message) 
 {
+	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr)
 	{
@@ -1533,6 +1534,7 @@ void message_received(LinphoneCore *lc, LinphoneChatRoom* chat_room, LinphoneCha
 
 		listener->MessageReceived(lMessage);
 	}
+	Linphone::Core::gApiLock.LeaveListener();
 }
 
 Linphone::Core::LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener) :
