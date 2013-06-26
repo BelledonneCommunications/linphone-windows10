@@ -301,6 +301,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save in library.
+        /// </summary>
+        public static string ContextMenuSave {
+            get {
+                return ResourceManager.GetString("ContextMenuSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Conversations.
         /// </summary>
         public static string ConversationsMenu {
@@ -522,6 +531,15 @@ namespace Linphone.Resources {
         public static string ILBCCodec {
             get {
                 return ResourceManager.GetString("ILBCCodec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image received.
+        /// </summary>
+        public static string ImageMessageReceived {
+            get {
+                return ResourceManager.GetString("ImageMessageReceived", resourceCulture);
             }
         }
         

@@ -20,6 +20,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.IO.IsolatedStorage;
 using System.Net.Http.Headers;
+using Microsoft.Xna.Framework.Media;
 
 namespace Linphone.Views
 {
@@ -157,6 +158,31 @@ namespace Linphone.Views
                 }
             }
             scrollToBottom();
+        }
+
+        /// <summary>
+        /// Saves an image sent or received in the media library of the device.
+        /// </summary>
+        /// <param name="fileName">File's name in the isolated storage</param>
+        public static void SavePictureInMediaLibrary(string fileName)
+        {
+            MediaLibrary library = new MediaLibrary();
+            byte[] data;
+            try
+            {
+                using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    using (IsolatedStorageFileStream file = store.OpenFile(fileName, FileMode.Open, FileAccess.Read))
+                    {
+                        data = new byte[file.Length];
+                        file.Read(data, 0, data.Length);
+                        file.Close();
+                    }
+                }
+
+                library.SavePicture(fileName, data);
+            }
+            catch { }
         }
 
         /// <summary>

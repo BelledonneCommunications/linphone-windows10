@@ -9,6 +9,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Linphone.Model;
 using System.Windows.Controls.Primitives;
+using Linphone.Resources;
 
 namespace Linphone.Controls
 {
@@ -41,8 +42,20 @@ namespace Linphone.Controls
             _popup = popup;
             _message = message;
 
-            Message.Text = message.Message;
+            if (message.Message != null && message.Message.Length > 0)
+                Message.Text = message.Message;
+            else
+                Message.Text = AppResources.ImageMessageReceived;
             Sender.Text = message.Contact;
+
+            ContactManager.Instance.ContactFound += (sender, e) =>
+            {
+                if (e.ContactFound != null)
+                {
+                    Sender.Text = e.ContactFound.DisplayName;
+                }
+            };
+            ContactManager.Instance.FindContact(message.Contact);
 
             BaseModel.CurrentPage.ApplicationBar.IsVisible = false;
         }

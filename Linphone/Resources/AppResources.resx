@@ -446,4 +446,10 @@ http://www.linphone.org/m/help
   <data name="CancelUpload" xml:space="preserve">
     <value>cancel upload</value>
   </data>
+  <data name="ImageMessageReceived" xml:space="preserve">
+    <value>Image received</value>
+  </data>
+  <data name="ContextMenuSave" xml:space="preserve">
+    <value>Save in library</value>
+  </data>
 </root>

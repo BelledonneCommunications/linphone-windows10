@@ -10,6 +10,7 @@ using Microsoft.Phone.Shell;
 using Linphone.Model;
 using Linphone.Views;
 using System.Windows.Media.Imaging;
+using Microsoft.Xna.Framework.Media;
 
 namespace Linphone.Controls
 {
@@ -74,6 +75,11 @@ namespace Linphone.Controls
             Clipboard.SetText(Message.Text);
         }
 
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            Chat.SavePictureInMediaLibrary(ChatMessage.ImageURL);
+        }
+
         /// <summary>
         /// Delegate for delete event.
         /// </summary>
@@ -86,11 +92,20 @@ namespace Linphone.Controls
 
         private void DownloadImage_Click(object sender, RoutedEventArgs e)
         {
-            BitmapImage image = Chat.DownloadImageAndStoreItInIsolatedStorage(ChatMessage.ImageURL, ChatMessage);
-            Image.Source = image;
-
             DownloadImage.Visibility = Visibility.Collapsed;
-            Image.Visibility = Visibility.Visible;
+            ProgressBar.Visibility = Visibility.Visible;
+            BitmapImage image = Chat.GetThumbnailBitmapFromImage(Chat.DownloadImageAndStoreItInIsolatedStorage(ChatMessage.ImageURL, ChatMessage));
+            if (image != null)
+            {
+                Image.Visibility = Visibility.Visible;
+                Image.Source = image;
+            }
+            else
+            {
+                DownloadImage.Visibility = Visibility.Visible;
+            }
+            ProgressBar.Visibility = Visibility.Collapsed;
+
         }
 
         private void ShowImage_Click(object sender, RoutedEventArgs e)
@@ -98,6 +113,7 @@ namespace Linphone.Controls
             Image.Source = Chat.GetThumbnailBitmapFromImage(Chat.ReadImageFromIsolatedStorage(ChatMessage.ImageURL));
             ShowImage.Visibility = Visibility.Collapsed;
             Image.Visibility = Visibility.Visible;
+            Save.Visibility = Visibility.Visible;
         }
     }
 }

@@ -123,6 +123,11 @@ namespace Linphone.Controls
             Clipboard.SetText(Message.Text);
         }
 
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            Chat.SavePictureInMediaLibrary(ChatMessage.ImageURL);
+        }
+
         /// <summary>
         /// Delegate for delete event.
         /// </summary>
@@ -138,6 +143,7 @@ namespace Linphone.Controls
             Image.Source = Chat.GetThumbnailBitmapFromImage(Chat.ReadImageFromIsolatedStorage(ChatMessage.ImageURL));
             ShowImage.Visibility = Visibility.Collapsed;
             Image.Visibility = Visibility.Visible;
+            Save.Visibility = Visibility.Visible;
         }
     }
 }
