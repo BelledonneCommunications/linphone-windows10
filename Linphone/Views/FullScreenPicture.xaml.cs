@@ -9,6 +9,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Linphone.Model;
 using System.Windows.Media.Imaging;
+using Linphone.Resources;
 
 namespace Linphone.Views
 {
@@ -17,12 +18,15 @@ namespace Linphone.Views
     /// </summary>
     public partial class FullScreenPicture : PhoneApplicationPage
     {
+        private String _fileName;
+
         /// <summary>
         /// Public constructor
         /// </summary>
         public FullScreenPicture()
         {
             InitializeComponent();
+            BuildLocalizedApplicationBar();
         }
 
         /// <summary>
@@ -35,8 +39,8 @@ namespace Linphone.Views
 
             if (NavigationContext.QueryString.ContainsKey("uri"))
             {
-                string uri = NavigationContext.QueryString["uri"];
-                BitmapImage image = Utils.ReadImageFromIsolatedStorage(uri);
+                _fileName = NavigationContext.QueryString["uri"];
+                BitmapImage image = Utils.ReadImageFromIsolatedStorage(_fileName);
                 if (image != null)
                 {
                     Image.Source = image;
@@ -46,6 +50,19 @@ namespace Linphone.Views
                     //TODO ?
                 }
             }
+        }
+
+        private void BuildLocalizedApplicationBar()
+        {
+            ApplicationBar = new ApplicationBar();
+
+            ApplicationBarIconButton appBarSave = new ApplicationBarIconButton(new Uri("/Assets/AppBar/save.png", UriKind.Relative));
+            appBarSave.Text = AppResources.ContextMenuSave;
+            ApplicationBar.Buttons.Add(appBarSave);
+            appBarSave.Click += (sender, e) =>
+            {
+                Utils.SavePictureInMediaLibrary(_fileName);
+            };
         }
     }
 }
