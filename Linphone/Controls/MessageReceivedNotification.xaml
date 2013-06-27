@@ -18,7 +18,7 @@
         <Border BorderBrush="White" BorderThickness="5" Margin="0,10,0,0" VerticalAlignment="Top" Grid.Row="0">
             <StackPanel Background="{StaticResource PhoneAccentBrush}">
                 <TextBlock x:Name="Sender" Text="Sylvain Berfini" Margin="22,20,22,0" Style="{StaticResource PhoneTextTitle2Style}"/>
-                <TextBlock x:Name="Message" Text="Hello world!" Margin="22,20,22,0" Style="{StaticResource PhoneTextTitle3Style}"/>
+                <TextBlock x:Name="Message" Text="Hello world!" Margin="22,20,22,0" Style="{StaticResource PhoneTextTitle3Style}" Width="426" TextTrimming="WordEllipsis"/>
                 <StackPanel  Margin="12,20,12,0" Orientation="Horizontal">
                     <Button x:Name="Close" Click="Close_Click" Content="{Binding Path=LocalizedResources.Close, Source={StaticResource LocalizedStrings}}" Width="180" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
                     <Button x:Name="Show" Click="Show_Click" Margin="86,0,0,0" Content="{Binding Path=LocalizedResources.Show, Source={StaticResource LocalizedStrings}}" Width="180" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
