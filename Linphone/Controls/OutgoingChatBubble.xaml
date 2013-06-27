@@ -54,6 +54,7 @@
             Grid.Row="0" 
             Margin="5"
             Stretch="UniformToFill"
+            Tap="Image_Tap"
             x:Name="Image" />
 
         <StackPanel 

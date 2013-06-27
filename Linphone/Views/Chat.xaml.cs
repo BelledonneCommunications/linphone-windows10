@@ -45,9 +45,7 @@ namespace Linphone.Views
     /// </summary>
     public partial class Chat : BasePage, LinphoneChatMessageListener, MessageReceivedListener
     {
-        private const int LOCAL_IMAGES_QUALITY = 100;
         private const int SENT_IMAGES_QUALITY = 50;
-        private const int THUMBNAIL_WIDTH = 420;
 
         private HttpClient _httpPostClient { get; set; }
 
@@ -103,11 +101,14 @@ namespace Linphone.Views
 
                 chatRoom = LinphoneManager.Instance.LinphoneCore.CreateChatRoom(sipAddress);
 
-                // Define the query to gather all of the messages linked to the current contact.
-                var messagesInDB = from message in DatabaseManager.Instance.Messages where (message.LocalContact.Contains(sipAddress) || message.RemoteContact.Contains(sipAddress)) select message;
-                // Execute the query and place the results into a collection.
-                List<ChatMessage> messages = messagesInDB.ToList();
-                DisplayPastMessages(messages);
+                if (e.NavigationMode != NavigationMode.Back)
+                {
+                    // Define the query to gather all of the messages linked to the current contact.
+                    var messagesInDB = from message in DatabaseManager.Instance.Messages where (message.LocalContact.Contains(sipAddress) || message.RemoteContact.Contains(sipAddress)) select message;
+                    // Execute the query and place the results into a collection.
+                    List<ChatMessage> messages = messagesInDB.ToList();
+                    DisplayPastMessages(messages);
+                }
             }
             else if (e.NavigationMode != NavigationMode.Back)
             {
@@ -166,90 +167,6 @@ namespace Linphone.Views
         }
 
         /// <summary>
-        /// Saves an image sent or received in the media library of the device.
-        /// </summary>
-        /// <param name="fileName">File's name in the isolated storage</param>
-        public static void SavePictureInMediaLibrary(string fileName)
-        {
-            MediaLibrary library = new MediaLibrary();
-            byte[] data;
-            try
-            {
-                using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
-                {
-                    using (IsolatedStorageFileStream file = store.OpenFile(fileName, FileMode.Open, FileAccess.Read))
-                    {
-                        data = new byte[file.Length];
-                        file.Read(data, 0, data.Length);
-                        file.Close();
-                    }
-                }
-
-                library.SavePicture(fileName, data);
-            }
-            catch { }
-        }
-
-        /// <summary>
-        /// Get a thumbnail of a picture (used for chat images)
-        /// </summary>
-        /// <param name="image">The image to size down</param>
-        /// <returns>The thumbnail picture</returns>
-        public static BitmapImage GetThumbnailBitmapFromImage(BitmapImage image)
-        {
-            if (image == null)
-                return null;
-
-            if (image.PixelWidth <= THUMBNAIL_WIDTH)
-                return image;
-
-            MemoryStream ms = new MemoryStream();
-            WriteableBitmap bitmap = new WriteableBitmap(image);
-
-            int w, h;
-            w = THUMBNAIL_WIDTH;
-            h = (image.PixelHeight * w) / image.PixelWidth;
-
-            bitmap.SaveJpeg(ms, w, h, 0, LOCAL_IMAGES_QUALITY);
-
-            BitmapImage thumbnail = new BitmapImage();
-            thumbnail.SetSource(ms);
-
-            return thumbnail;
-        }
-
-        /// <summary>
-        /// Returns a BitmapImage of a file stored in isolated storage
-        /// </summary>
-        /// <param name="fileName">Name of the file to open</param>
-        /// <returns>a BitmapImage or null</returns>
-        public static BitmapImage ReadImageFromIsolatedStorage(string fileName)
-        {
-            byte[] data;
-            try
-            {
-                using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
-                {
-                    using (IsolatedStorageFileStream file = store.OpenFile(fileName, FileMode.Open, FileAccess.Read))
-                    {
-                        data = new byte[file.Length];
-                        file.Read(data, 0, data.Length);
-                        file.Close();
-                    }
-                }
-
-                MemoryStream ms = new MemoryStream(data);
-                BitmapImage image = new BitmapImage();
-                image.SetSource(ms);
-                ms.Close();
-                return image;
-            }
-            catch { }
-
-            return null;
-        }
-
-        /// <summary>
         /// Method called when this page isn't displayed anymore.
         /// </summary>
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
@@ -302,60 +219,12 @@ namespace Linphone.Views
             scrollToBottom();
         }
 
-        /// <summary>
-        /// Download an image received using the given url and store it locally
-        /// </summary>
-        /// <param name="url">Url to download the image</param>
-        /// <param name="message">ChatMessage linked to the image</param>
-        /// <returns>The Bitmap Image for display</returns>
-        public static BitmapImage DownloadImageAndStoreItInIsolatedStorage(string url, ChatMessage message)
-        {
-            //Download image
-            BitmapImage image = new BitmapImage(new Uri(url));
-            image.ImageOpened += (sender, e) => 
-            {
-                //Store it in isolated storage
-                string fileName = url.Substring(url.LastIndexOf("/") + 1);
-                SaveImageInLocalFolder(image, fileName);
-
-                //Update image url in database to point on local image
-                message.ImageURL = fileName;
-                DatabaseManager.Instance.SubmitChanges();
-            };
-
-            return image;
-        }
-
-        private static void SaveImageInLocalFolder(BitmapImage image, string fileName)
-        {
-            try
-            {
-                using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
-                {
-                    if (store.FileExists(fileName))
-                    {
-                        store.DeleteFile(fileName);
-                    }
-
-                    using (IsolatedStorageFileStream file = store.CreateFile(fileName))
-                    {
-                        WriteableBitmap bitmap = new WriteableBitmap(image);
-                        Extensions.SaveJpeg(bitmap, file, bitmap.PixelWidth, bitmap.PixelHeight, 0, LOCAL_IMAGES_QUALITY);
-                        file.Flush();
-                        file.Close();
-                        bitmap = null;
-                    }
-                }
-            }
-            catch { }
-        }
-
         private async Task<string> UploadImageMessage(BitmapImage image, string filePath)
         {
             string fileName = filePath.Substring(filePath.LastIndexOf("\\") + 1);
 
             //Copy image in local folder
-            SaveImageInLocalFolder(image, fileName);
+            Utils.SaveImageInLocalFolder(image, fileName);
 
             //Upload the image
             string boundary = "----------" + DateTime.Now.Ticks.ToString();

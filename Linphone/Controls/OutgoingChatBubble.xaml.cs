@@ -84,6 +84,7 @@ namespace Linphone.Controls
             {
                 ShowImage.Visibility = Visibility.Collapsed;
                 Image.Visibility = Visibility.Visible;
+                Save.Visibility = Visibility.Visible;
             }
             Image.Source = image;
             Timestamp.Text = timestamp;
@@ -125,7 +126,7 @@ namespace Linphone.Controls
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            Chat.SavePictureInMediaLibrary(ChatMessage.ImageURL);
+            Utils.SavePictureInMediaLibrary(ChatMessage.ImageURL);
         }
 
         /// <summary>
@@ -140,10 +141,15 @@ namespace Linphone.Controls
 
         private void ShowImage_Click(object sender, RoutedEventArgs e)
         {
-            Image.Source = Chat.GetThumbnailBitmapFromImage(Chat.ReadImageFromIsolatedStorage(ChatMessage.ImageURL));
+            Image.Source = Utils.GetThumbnailBitmapFromImage(Utils.ReadImageFromIsolatedStorage(ChatMessage.ImageURL));
             ShowImage.Visibility = Visibility.Collapsed;
             Image.Visibility = Visibility.Visible;
             Save.Visibility = Visibility.Visible;
+        }
+
+        private void Image_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/FullScreenPicture.xaml?uri=" + ChatMessage.ImageURL, UriKind.RelativeOrAbsolute));
         }
     }
 }
