@@ -54,6 +54,9 @@ namespace Linphone.Views
             }
         }
 
+        /// <summary>
+        /// Changes the camera used to capture video
+        /// </summary>
         public void ToggleCameras()
         {
             LinphoneManager.Instance.ToggleCameras();

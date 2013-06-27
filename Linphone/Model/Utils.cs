@@ -22,7 +22,8 @@ namespace Linphone.Model
         /// Saves an image sent or received in the media library of the device.
         /// </summary>
         /// <param name="fileName">File's name in the isolated storage</param>
-        public static void SavePictureInMediaLibrary(string fileName)
+        /// <returns>true if the operation succeeds</returns>
+        public static bool SavePictureInMediaLibrary(string fileName)
         {
             MediaLibrary library = new MediaLibrary();
             byte[] data;
@@ -39,8 +40,10 @@ namespace Linphone.Model
                 }
 
                 library.SavePicture(fileName, data);
+                return true;
             }
             catch { }
+            return false;
         }
 
         /// <summary>
@@ -126,7 +129,13 @@ namespace Linphone.Model
             return image;
         }
 
-        public static void SaveImageInLocalFolder(BitmapImage image, string fileName)
+        /// <summary>
+        /// Saves a BitmapImage as a JPEG file in the local storage
+        /// </summary>
+        /// <param name="image">The bitmap image to save</param>
+        /// <param name="fileName">The file's name to use</param>
+        /// <returns>true if the operation succeeds</returns>
+        public static bool SaveImageInLocalFolder(BitmapImage image, string fileName)
         {
             try
             {
@@ -144,10 +153,12 @@ namespace Linphone.Model
                         file.Flush();
                         file.Close();
                         bitmap = null;
+                        return true;
                     }
                 }
             }
             catch { }
+            return false;
         }
     }
 }

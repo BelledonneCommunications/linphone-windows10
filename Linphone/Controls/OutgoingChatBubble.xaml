@@ -33,7 +33,7 @@
         </Grid.RowDefinitions>
 
         <Rectangle 
-            x:Name="Background"  
+            x:Name="Background"
             Fill="{StaticResource PhoneChromeBrush}" 
             Grid.RowSpan="2"/>
 

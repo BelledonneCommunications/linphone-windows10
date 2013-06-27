@@ -10,8 +10,14 @@ using Windows.Storage;
 
 namespace Linphone.Views
 {
+    /// <summary>
+    /// Displays the logs collected by LinphoneCore.
+    /// </summary>
     public partial class Console : BasePage
     {
+        /// <summary>
+        /// Public constructor
+        /// </summary>
         public Console()
         {
             InitializeComponent();

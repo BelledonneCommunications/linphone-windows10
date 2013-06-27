@@ -486,6 +486,10 @@ namespace Linphone.Model
             Logger.Msg("[LinphoneManager] AudioEndpointChanged:" + sender.GetAudioEndpoint().ToString());
         }
 
+        /// <summary>
+        /// Enables the speaker in the current call
+        /// </summary>
+        /// <param name="enable">true to enable, false to disable</param>
         public void EnableSpeaker(bool enable)
         {
             if (enable)

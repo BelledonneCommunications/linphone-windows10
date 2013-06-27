@@ -751,6 +751,9 @@ namespace Linphone.Model
         #endregion
 
         #region Implementation of the ISettingsManager interface
+        /// <summary>
+        /// Loads the call settings.
+        /// </summary>
         public void Load()
         {
             dict[SendDTMFsRFC2833KeyName] = LinphoneManager.Instance.LinphoneCore.GetUseRFC2833ForDTMFs().ToString();
@@ -762,6 +765,9 @@ namespace Linphone.Model
             dict[SelfViewEnabledKeyName] = LinphoneManager.Instance.LinphoneCore.IsSelfViewEnabled().ToString();
         }
 
+        /// <summary>
+        /// Saves the call settings.
+        /// </summary>
         public void Save()
         {
             if (ValueChanged(SendDTMFsRFC2833KeyName))
@@ -900,6 +906,10 @@ namespace Linphone.Model
         private const string TunnelModeKeyName = "TunnelMode";
         #endregion
 
+        /// <summary>
+        /// Configures the Tunnel using the given mode
+        /// </summary>
+        /// <param name="mode">mode to apply</param>
         public static void ConfigureTunnel(String mode)
         {
             if (LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable()) {
@@ -937,6 +947,9 @@ namespace Linphone.Model
             }
         }
 
+        /// <summary>
+        /// Configures the Tunnel using the current setting value
+        /// </summary>
         public static void ConfigureTunnel()
         {
             NetworkSettingsManager settings = new NetworkSettingsManager();

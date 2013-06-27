@@ -33,13 +33,23 @@ namespace Linphone.Model
             : base(connectionString)
         { }
 
+        /// <summary>
+        /// Database table which contains the received and sent messages
+        /// </summary>
         public Table<ChatMessage> Messages;
     }
 
+    /// <summary>
+    /// Object used to store/retrieve chat messages in/from the database
+    /// </summary>
     [Table]
     public class ChatMessage : INotifyPropertyChanged, INotifyPropertyChanging
     {
         private int messageID;
+
+        /// <summary>
+        /// Identifies each message with a unique value
+        /// </summary>
         [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
         public int MessageID
         {
@@ -59,6 +69,10 @@ namespace Linphone.Model
         }
 
         private string _localContact;
+
+        /// <summary>
+        /// SIP address of the sender if the chat message is incoming, else empty 
+        /// </summary>
         [Column(CanBeNull=false)]
         public string LocalContact
         {
@@ -78,6 +92,10 @@ namespace Linphone.Model
         }
 
         private string _remoteContact;
+
+        /// <summary>
+        /// SIP address at wich the message was sent, else empty (if incoming)
+        /// </summary>
         [Column(CanBeNull = false)]
         public string RemoteContact
         {
@@ -97,6 +115,10 @@ namespace Linphone.Model
         }
 
         private bool _isIncoming;
+
+        /// <summary>
+        /// True if the message has been received, false if it has been sent 
+        /// </summary>
         [Column]
         public bool IsIncoming
         {
@@ -116,6 +138,10 @@ namespace Linphone.Model
         }
 
         private string _message;
+
+        /// <summary>
+        /// The text contained in the message, can be empty
+        /// </summary>
         [Column]
         public string Message
         {
@@ -135,6 +161,10 @@ namespace Linphone.Model
         }
 
         private string _imageURL;
+
+        /// <summary>
+        /// URL of the image to download (incoming only) or filename of the image in the isolated storage
+        /// </summary>
         [Column]
         public string ImageURL
         {
@@ -154,6 +184,10 @@ namespace Linphone.Model
         }
 
         private long _timestamp;
+
+        /// <summary>
+        /// Timestamp at which the message has been received/sent, in seconds since January 1st, 1970
+        /// </summary>
         [Column]
         public long Timestamp
         {
@@ -173,6 +207,10 @@ namespace Linphone.Model
         }
 
         private bool _markedAsRead;
+
+        /// <summary>
+        /// True is the message has been read, otherwise false
+        /// </summary>
         [Column]
         public bool MarkedAsRead
         {
@@ -192,6 +230,10 @@ namespace Linphone.Model
         }
 
         private int _status;
+
+        /// <summary>
+        /// Stores the LinphoneChatMessageState (Idle, InProgress, Delivered, NotDelivered)
+        /// </summary>
         [Column]
         public int Status
         {
@@ -210,10 +252,15 @@ namespace Linphone.Model
             }
         }
 
-        // Version column aids update performance.
+        /// <summary>
+        /// Version column aids update performance.
+        /// </summary>
         [Column(IsVersion = true)]
         private Binary _version;
 
+        /// <summary>
+        /// Returns the local contact if the message is incoming, else returns the remote contact
+        /// </summary>
         public string Contact
         {
             get

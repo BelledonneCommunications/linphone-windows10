@@ -227,9 +227,8 @@ namespace Linphone.Views
             Utils.SaveImageInLocalFolder(image, fileName);
 
             //Upload the image
-            string boundary = "----------" + DateTime.Now.Ticks.ToString();
-
             string response;
+            string boundary = "----------" + DateTime.Now.Ticks.ToString();
             using (var client = new HttpClient())
             {
                 _httpPostClient = client;
@@ -500,7 +499,10 @@ namespace Linphone.Views
             NavigationService.Navigate(new Uri("/Views/Contacts.xaml", UriKind.RelativeOrAbsolute));
         }
 
-        void bubble_MessageDeleted(object sender, ChatMessage message)
+        /// <summary>
+        /// Callback called when a user selects the delete context menu
+        /// </summary>
+        public void bubble_MessageDeleted(object sender, ChatMessage message)
         {
             MessagesList.Children.Remove(sender as UserControl);
             DatabaseManager.Instance.Messages.DeleteOnSubmit(message);
