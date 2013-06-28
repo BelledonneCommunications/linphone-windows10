@@ -14,6 +14,7 @@ using namespace Platform;
 
 static void nativeOutputTraceHandler(OutputTraceLevel lev, const char *fmt, va_list args)
 {
+	gApiLock.Lock();
 	if (Globals::Instance->LinphoneCoreFactory->OutputTraceListener) {
 		wchar_t wstr[MAX_TRACE_SIZE];
 		std::string str;
@@ -24,6 +25,7 @@ static void nativeOutputTraceHandler(OutputTraceLevel lev, const char *fmt, va_l
 		String^ msg = ref new String(wstr);
 		Globals::Instance->LinphoneCoreFactory->OutputTraceListener->OutputTrace(lev, msg);
 	}
+	gApiLock.Unlock();
 }
 
 static void LinphoneNativeOutputTraceHandler(OrtpLogLevel lev, const char *fmt, va_list args)
