@@ -104,7 +104,7 @@ namespace Linphone.Views
                 if (e.NavigationMode != NavigationMode.Back)
                 {
                     // Define the query to gather all of the messages linked to the current contact.
-                    var messagesInDB = from message in DatabaseManager.Instance.Messages where (message.LocalContact.Contains(sipAddress) || message.RemoteContact.Contains(sipAddress)) select message;
+                    var messagesInDB = from message in DatabaseManager.Instance.Messages where (message.LocalContact.Equals(sipAddress) || message.RemoteContact.Equals(sipAddress)) select message;
                     // Execute the query and place the results into a collection.
                     List<ChatMessage> messages = messagesInDB.ToList();
                     DisplayPastMessages(messages);
@@ -350,7 +350,7 @@ namespace Linphone.Views
                     if (DatabaseManager.Instance.Messages.Count(m => m.LocalContact.Equals(sipAddress) || m.RemoteContact.Equals(sipAddress)) > 0)
                     {
                         // Define the query to gather all of the messages linked to the current contact.
-                        var messagesInDB = from message in DatabaseManager.Instance.Messages where (message.LocalContact.Contains(sipAddress) || message.RemoteContact.Contains(sipAddress)) select message;
+                        var messagesInDB = from message in DatabaseManager.Instance.Messages where (message.LocalContact.Equals(sipAddress) || message.RemoteContact.Equals(sipAddress)) select message;
                         // Execute the query and place the results into a collection.
                         List<ChatMessage> messages = messagesInDB.ToList();
                         DisplayPastMessages(messages);
