@@ -162,6 +162,7 @@ namespace Linphone.Model
         private const string LogLevelKeyName = "LogLevel";
         private const string LogDestinationKeyName = "LogDestination";
         private const string LogOptionKeyName = "LogOption";
+        private const string HideVideoSettingsKeyName = "HideVideoSettings";
         #endregion
 
         /// <summary>
@@ -188,6 +189,7 @@ namespace Linphone.Model
             dict[LogLevelKeyName] = Config.GetInt(ApplicationSection, LogLevelKeyName, (int)OutputTraceLevel.None).ToString();
             dict[LogDestinationKeyName] = Config.GetString(ApplicationSection, LogDestinationKeyName, OutputTraceDest.File.ToString());
             dict[LogOptionKeyName] = Config.GetString(ApplicationSection, LogOptionKeyName, "Linphone.log");
+            dict[HideVideoSettingsKeyName] = Config.GetBool(ApplicationSection, HideVideoSettingsKeyName, false).ToString();
         }
 
         /// <summary>
@@ -270,6 +272,17 @@ namespace Linphone.Model
             set
             {
                 Set(LogDestinationKeyName, value.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Hide video settings (bool).
+        /// </summary>
+        public Boolean HideVideoSettings
+        {
+            get
+            {
+                return Convert.ToBoolean(Get(HideVideoSettingsKeyName));
             }
         }
 

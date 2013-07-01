@@ -21,8 +21,13 @@ nortp_timeout=30
 dtmf_player_amp=0.1
 
 [video]
+capture=0
+display=0
 displaytype=MSWP8Dis
 
 [misc]
 history_max_size=30
 max_calls=1
+
+[app]
+HideVideoSettings=1
