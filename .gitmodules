@@ -55,3 +55,6 @@
 [submodule "submodules/mswp8vid"]
 	path = submodules/mswp8vid
 	url = gitosis@git.linphone.org:mswp8vid.git
+[submodule "submodules/libxml2"]
+	path = submodules/libxml2
+	url = git://git.gnome.org/libxml2
