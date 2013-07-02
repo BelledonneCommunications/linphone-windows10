@@ -900,6 +900,7 @@ namespace Linphone
 			/// <returns>The LpConfig used by the LinphoneCore</returns>
 			LpConfig^ GetConfig();
 
+			/// <summary>
 			/// Tells whether video support has been compiled.
 			/// </summary>
 			/// <returns> true, if video is supported, false if it is not supported</returns>
@@ -1011,7 +1012,7 @@ namespace Linphone
 			/// <param name="enable">true to enable self view, false to disable it</param>
 			void EnableSelfView(Platform::Boolean enable);
 
-			/// </summary>
+			/// <summary>
 			/// Creates a ChatRoom to send text messages to given addrees.
 			/// </summary>
 			Linphone::Core::LinphoneChatRoom^ CreateChatRoom(Platform::String^ to);
