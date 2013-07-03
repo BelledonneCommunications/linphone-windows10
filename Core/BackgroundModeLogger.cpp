@@ -48,6 +48,7 @@ Linphone::Core::BackgroundModeLogger::~BackgroundModeLogger()
 void Linphone::Core::BackgroundModeLogger::Configure(bool enable, OutputTraceDest dest, Platform::String^ option)
 {
 	gApiLock.Lock();
+	std::lock_guard<std::recursive_mutex> lock(this->lock);
 	if ((this->dest == OutputTraceDest::File) && (this->d->stream != nullptr)) {
 		this->d->stream->close();
 		delete this->d->stream;
@@ -81,7 +82,7 @@ void Linphone::Core::BackgroundModeLogger::Configure(bool enable, OutputTraceDes
 void Linphone::Core::BackgroundModeLogger::OutputTrace(OutputTraceLevel level, Platform::String^ msg)
 {
 	if (this->enabled) {
-		gApiLock.Lock();
+		std::lock_guard<std::recursive_mutex> lock(this->lock);
 		if (this->dest == OutputTraceDest::Debugger) {
 			OutputDebugString(msg->Data());
 		}
@@ -121,6 +122,5 @@ void Linphone::Core::BackgroundModeLogger::OutputTrace(OutputTraceLevel level, P
 				}).wait();
 			}
 		}
-		gApiLock.Unlock();
 	}
 }
