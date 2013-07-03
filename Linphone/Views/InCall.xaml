@@ -13,12 +13,6 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
-
-    <phone:PhoneApplicationPage.Resources>
-        <Style TargetType="Button" x:Key="AccentButton">
-            
-        </Style>
-    </phone:PhoneApplicationPage.Resources>
     
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid
@@ -209,9 +203,6 @@
                     Content="{Binding Path=LocalizedResources.HangUp, Source={StaticResource LocalizedStrings}}"
                     Click="hangUp_Click"
                     ClickMode="Release">
-                    <Button.Style>
-                        <StaticResource ResourceKey="AccentColorButton"/>
-                    </Button.Style>
                 </Button>
 
                 <ToggleButton 

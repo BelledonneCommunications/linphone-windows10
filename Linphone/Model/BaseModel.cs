@@ -104,15 +104,9 @@ namespace Linphone
         {
             Logger.Msg("[CallListener] Call ended, can go back ? " + this.Page.NavigationService.CanGoBack);
 
-            if (this.Page.NavigationService.CanGoBack)
-                this.Page.NavigationService.GoBack();
-            else
-            {
-                //If incall view directly accessed from home page, backstack is empty
-                //If so, instead of keeping the incall view, launch the Dialer and remove the incall view from the backstack
-                this.Page.NavigationService.Navigate(new Uri("/Views/Dialer.xaml", UriKind.RelativeOrAbsolute));
-                this.Page.NavigationService.RemoveBackEntry();
-            }
+            //Launch the Dialer and remove the incall view from the backstack
+            this.Page.NavigationService.Navigate(new Uri("/Views/Dialer.xaml", UriKind.RelativeOrAbsolute));
+            this.Page.NavigationService.RemoveBackEntry();
         }
 
         /// <summary>

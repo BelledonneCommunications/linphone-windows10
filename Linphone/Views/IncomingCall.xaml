@@ -1,0 +1,109 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="Linphone.Views.IncomingCall"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1"  Margin="0,25,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Status text -->
+            <TextBlock
+                Grid.Row="0"
+                x:Name="Status"
+                Style="{StaticResource PhoneTextAccentStyle}"
+                Text="{Binding Path=LocalizedResources.IncomingCall, Source={StaticResource LocalizedStrings}}"
+                Margin="12,0,12,0"
+                FontSize="40" />
+
+            <!-- Contact text -->
+            <TextBlock
+                Grid.Row="1"
+                x:Name="Contact"
+                Margin="12,0,12,0"
+                FontSize="80"
+                TextWrapping="Wrap"/>
+
+            <!-- Number text -->
+            <TextBlock
+                Grid.Row="2"
+                x:Name="Number"
+                Margin="12,0,12,0"
+                FontSize="30"
+                TextWrapping="NoWrap"/>
+
+            <!-- Buttons -->
+            <Grid Grid.Row="4" Margin="0,50,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition MinHeight="80" Height="Auto"/>
+                    <RowDefinition MinHeight="80" Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Button 
+                    x:Name="Answer"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    BorderThickness="0"
+                    Margin="-10"
+                    Background="{StaticResource PhoneAccentBrush}"
+                    Content="{Binding Path=LocalizedResources.Answer, Source={StaticResource LocalizedStrings}}"
+                    Click="Answer_Click"
+                    ClickMode="Release">
+                </Button>
+                
+                <Button 
+                    x:Name="Decline"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    BorderThickness="0"
+                    Margin="-10"
+                    Background="{StaticResource PhoneChromeBrush}"
+                    Content="{Binding Path=LocalizedResources.Decline, Source={StaticResource LocalizedStrings}}"
+                    Click="Decline_Click"
+                    ClickMode="Release">
+                </Button>
+                
+                <Button 
+                    x:Name="AnswerVidoe"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    BorderThickness="0"
+                    Margin="-10"
+                    Background="{StaticResource PhoneAccentBrush}"
+                    Content="{Binding Path=LocalizedResources.AnswerVideo, Source={StaticResource LocalizedStrings}}"
+                    Click="Answer_Click"
+                    ClickMode="Release">
+                </Button>
+            </Grid>
+        </Grid>
+    </Grid>
+
+</phone:PhoneApplicationPage>

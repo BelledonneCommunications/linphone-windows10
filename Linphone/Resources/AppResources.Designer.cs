@@ -130,6 +130,24 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to answer.
+        /// </summary>
+        public static string Answer {
+            get {
+                return ResourceManager.GetString("Answer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to answer with video.
+        /// </summary>
+        public static string AnswerVideo {
+            get {
+                return ResourceManager.GetString("AnswerVideo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Linphone.
         /// </summary>
         public static string ApplicationTitle {
@@ -324,6 +342,15 @@ namespace Linphone.Resources {
         public static string DebugSetting {
             get {
                 return ResourceManager.GetString("DebugSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to decline.
+        /// </summary>
+        public static string Decline {
+            get {
+                return ResourceManager.GetString("Decline", resourceCulture);
             }
         }
         
@@ -540,6 +567,15 @@ namespace Linphone.Resources {
         public static string ImageMessageReceived {
             get {
                 return ResourceManager.GetString("ImageMessageReceived", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to INCOMING CALL.
+        /// </summary>
+        public static string IncomingCall {
+            get {
+                return ResourceManager.GetString("IncomingCall", resourceCulture);
             }
         }
         

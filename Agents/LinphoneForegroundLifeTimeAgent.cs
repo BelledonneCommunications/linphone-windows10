@@ -22,6 +22,7 @@ namespace Linphone.Agents
             AgentHost.OnAgentStarted();
             //Force the callController to be initialized now to avoid creating it at the last moment (workaroud outgoing call crash after app started)
             Globals.Instance.CallController.IncomingCallViewDismissed = null;
+            Globals.Instance.CallController.CustomIncomingCallView = true;
         }
 
         /// <summary>

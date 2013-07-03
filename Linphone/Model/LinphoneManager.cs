@@ -642,6 +642,11 @@ namespace Linphone.Model
                 Logger.Msg("[LinphoneManager] Incoming received"); 
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
+                    BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/IncomingCall.xaml?sip=" + call.GetRemoteAddress().AsStringUriOnly(), UriKind.RelativeOrAbsolute));
+
+                    //Remove the current page from the back stack to avoid duplicating him after
+                    BaseModel.CurrentPage.NavigationService.RemoveBackEntry();
+
                     LookupForContact(call);
                 });
             }
@@ -714,6 +719,9 @@ namespace Linphone.Model
         /// </summary>
         public void RegistrationState(LinphoneProxyConfig config, RegistrationState state, string message)
         {
+            if (config == null)
+                return;
+
             BaseModel.UIDispatcher.BeginInvoke(() =>
             {
                 Logger.Msg("[LinphoneManager] Registration state changed: " + state.ToString() + ", message=" + message + " for identity " + config.GetIdentity());

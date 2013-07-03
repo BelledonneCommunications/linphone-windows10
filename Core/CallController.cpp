@@ -40,6 +40,7 @@ VoipPhoneCall^ CallController::OnIncomingCallReceived(Linphone::Core::LinphoneCa
 			this->voipServiceName,
 			media,
 			&incomingCall);
+		incomingCall->NotifyCallActive();
 	} else {
 		TimeSpan ringingTimeout;
 		ringingTimeout.Duration = 90 * 10 * 1000 * 1000; // in 100ns units

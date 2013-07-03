@@ -452,4 +452,16 @@ http://www.linphone.org/m/help
   <data name="ContextMenuSave" xml:space="preserve">
     <value>Save in library</value>
   </data>
+  <data name="Answer" xml:space="preserve">
+    <value>answer</value>
+  </data>
+  <data name="AnswerVideo" xml:space="preserve">
+    <value>answer with video</value>
+  </data>
+  <data name="Decline" xml:space="preserve">
+    <value>decline</value>
+  </data>
+  <data name="IncomingCall" xml:space="preserve">
+    <value>INCOMING CALL</value>
+  </data>
 </root>
