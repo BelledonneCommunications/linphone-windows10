@@ -10,17 +10,57 @@
 #include "LinphoneChatRoom.h"
 #include "LpConfig.h"
 #include "PayloadType.h"
+#include <Stringapiset.h>
 
-std::string Linphone::Core::Utils::wstos(std::wstring ws)
+std::wstring Linphone::Core::Utils::UTF8ToUTF16(const char *utf8)
 {
-	std::string s;
-	s.assign(ws.begin(), ws.end());
-	return s;
+	if ((utf8 == nullptr) || (*utf8 == '\0'))
+		return std::wstring();
+
+	int utf8len = static_cast<int>(strlen(utf8));
+
+	// Get the size to alloc for utf-16 string
+	int utf16len = MultiByteToWideChar(CP_UTF8, 0, utf8, utf8len, nullptr, 0);
+	if (utf16len == 0) {
+		DWORD error = GetLastError();
+		ms_error("Invalid UTF-8 character, can't convert to UTF-16: %d", error);
+		return std::wstring();
+	}
+
+	// Do the conversion
+	std::wstring utf16;
+	utf16.resize(utf16len);
+	if (MultiByteToWideChar(CP_UTF8, 0, utf8, utf8len, &utf16[0], utf16.length()) == 0) {
+		DWORD error = GetLastError();
+		ms_error("Error during string conversion from UTF-8 to UTF-16: %d", error);
+		return std::wstring();
+	}
+	return utf16;
 }
 
-std::string Linphone::Core::Utils::pstos(Platform::String^ ps)
+std::string Linphone::Core::Utils::UTF16ToUTF8(const wchar_t *utf16)
 {
-	return wstos(std::wstring(ps->Data()));
+	if ((utf16 == nullptr) || (*utf16 == L'\0'))
+		return std::string();
+
+	// Get the size to alloc for utf-8 string
+	int utf16len = static_cast<int>(wcslen(utf16));
+	int utf8len = WideCharToMultiByte(CP_UTF8, 0, utf16, utf16len, NULL, 0, NULL, NULL);
+	if (utf8len == 0) {
+		DWORD error = GetLastError();
+		ms_error("Invalid UTF-16 character, can't convert to UTF-8: %d", error);
+		return std::string();
+	}
+
+	// Do the conversion
+	std::string utf8;
+	utf8.resize(utf8len);
+	if (WideCharToMultiByte(CP_UTF8, 0, utf16, utf16len, &utf8[0], utf8.length(), NULL, NULL) == 0) {
+		DWORD error = GetLastError();
+		ms_error("Error during string conversion from UTF-16 to UTF-8: %d", error);
+		return std::string();
+	}
+	return utf8;
 }
 
 const char* Linphone::Core::Utils::pstoccs(Platform::String^ ps)
@@ -28,7 +68,7 @@ const char* Linphone::Core::Utils::pstoccs(Platform::String^ ps)
 	if (ps == nullptr || ps->Length() == 0)
 		return NULL;
 
-	std::string s = pstos(ps);
+	std::string s = Linphone::Core::Utils::UTF16ToUTF8(ps->Data());
 	char* cc = (char*) malloc(s.length()+1);
 	memcpy(cc, s.c_str(), s.length());
 	cc[s.length()] = '\0';
@@ -40,8 +80,7 @@ Platform::String^ Linphone::Core::Utils::cctops(const char* cc)
 	if (cc == NULL)
 		return nullptr;
 
-	std::string s_str = std::string(cc);
-	std::wstring wid_str = std::wstring(s_str.begin(), s_str.end());
+	std::wstring wid_str = Linphone::Core::Utils::UTF8ToUTF16(cc);
 	const wchar_t* w_char = wid_str.c_str();
 	return ref new Platform::String(w_char);
 }

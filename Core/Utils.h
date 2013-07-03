@@ -214,9 +214,9 @@ namespace Linphone
 			static Platform::Object^ CreateLinphoneChatRoom(void* room);
 
 		private:
-			static std::string wstos(std::wstring ws);
+			static std::wstring UTF8ToUTF16(const char *utf8);
 
-			static std::string pstos(Platform::String^ ps);
+			static std::string UTF16ToUTF8(const wchar_t *utf16);
 		};
 
 		struct EchoCalibrationData {
