@@ -25,6 +25,11 @@ namespace Linphone.Views
         public IncomingCall()
         {
             InitializeComponent();
+
+            if (!LinphoneManager.Instance.LinphoneCore.IsVideoSupported() || !LinphoneManager.Instance.LinphoneCore.IsVideoEnabled())
+            {
+                AnswerVideo.Visibility = Visibility.Collapsed;
+            }
         }
 
         /// <summary>
@@ -41,6 +46,12 @@ namespace Linphone.Views
         /// </summary>
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
+            if (!e.IsNavigationInitiator)
+            {
+                //if we leave the application, we consider it as a call rejection
+                LinphoneManager.Instance.EndCurrentCall();
+            }
+
             base.OnNavigatedFrom(e);
             NavigationService.RemoveBackEntry(); //To prevent a new click on back button to start again the incoming call view (simulate a back click)
         }

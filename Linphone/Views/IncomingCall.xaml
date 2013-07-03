@@ -91,7 +91,7 @@
                 </Button>
                 
                 <Button 
-                    x:Name="AnswerVidoe"
+                    x:Name="AnswerVideo"
                     Grid.Row="1"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
