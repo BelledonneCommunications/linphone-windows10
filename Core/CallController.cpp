@@ -33,15 +33,7 @@ VoipPhoneCall^ CallController::OnIncomingCallReceived(Linphone::Core::LinphoneCa
 	}
 #endif
 
-	if (this->customIncomingCallView) {
-		this->callCoordinator->RequestNewOutgoingCall(
-			this->callInProgressPageUri + "?sip=" + contactNumber,
-			contactNumber,
-			this->voipServiceName,
-			media,
-			&incomingCall);
-		incomingCall->NotifyCallActive();
-	} else {
+	if (!this->customIncomingCallView) {
 		TimeSpan ringingTimeout;
 		ringingTimeout.Duration = 90 * 10 * 1000 * 1000; // in 100ns units
 
@@ -70,6 +62,9 @@ VoipPhoneCall^ CallController::OnIncomingCallReceived(Linphone::Core::LinphoneCa
 
 		incomingCall->AnswerRequested += this->acceptCallRequestedHandler;
 		incomingCall->RejectRequested += this->rejectCallRequestedHandler;
+	} else {
+		// When using the custom incoming call view, the VoipPhoneCall will be created when getting in the
+		// StreamsRunning state by calling NewIncomingCallForCustomIncomingCallView()
 	}
 
 	gApiLock.Unlock();
@@ -150,6 +145,21 @@ VoipPhoneCall^ CallController::NewOutgoingCall(Platform::String^ number)
 
 	gApiLock.Unlock();
 	return outgoingCall;
+}
+
+VoipPhoneCall^ CallController::NewIncomingCallForCustomIncomingCallView(Platform::String^ contactNumber)
+{
+	VoipPhoneCall^ incomingCall = nullptr;
+	VoipCallMedia media = VoipCallMedia::Audio;
+
+	this->callCoordinator->RequestNewOutgoingCall(
+			this->callInProgressPageUri + "?sip=" + contactNumber,
+			contactNumber,
+			this->voipServiceName,
+			media,
+			&incomingCall);
+
+	return incomingCall;
 }
 
 IncomingCallViewDismissedCallback^ CallController::IncomingCallViewDismissed::get()

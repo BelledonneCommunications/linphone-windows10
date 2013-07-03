@@ -1403,7 +1403,8 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 	}
 	else if (state == Linphone::Core::LinphoneCallState::CallEnd || state == Linphone::Core::LinphoneCallState::Error) {
 		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = (Windows::Phone::Networking::Voip::VoipPhoneCall^) lCall->CallContext;
-		platformCall->NotifyCallEnded();
+		if (platformCall != nullptr)
+			platformCall->NotifyCallEnded();
 
 		if (callController->IncomingCallViewDismissed != nullptr) {
 			// When we receive a call with PN, call the callback to kill the agent process in case the caller stops the call before user accepts/denies it
@@ -1412,10 +1413,16 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 	}
 	else if (state == Linphone::Core::LinphoneCallState::Paused || state == Linphone::Core::LinphoneCallState::PausedByRemote) {
 		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = (Windows::Phone::Networking::Voip::VoipPhoneCall^) lCall->CallContext;
-		platformCall->NotifyCallHeld();
+		if (platformCall != nullptr)
+			platformCall->NotifyCallHeld();
 	}
 	else if (state == Linphone::Core::LinphoneCallState::StreamsRunning) {
 		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = (Windows::Phone::Networking::Voip::VoipPhoneCall^) lCall->CallContext;
+		if (platformCall == nullptr) {
+			// If CallContext is null here, it is because we have an incoming call using the custom incoming call view so create the VoipPhoneCall now
+			platformCall = callController->NewIncomingCallForCustomIncomingCallView(lCall->GetRemoteAddress()->GetDisplayName());
+			lCall->CallContext = platformCall;
+		}
 		if (lCall->IsCameraEnabled()) {
 			platformCall->CallMedia = VoipCallMedia::Audio | VoipCallMedia::Video;
 		} else {

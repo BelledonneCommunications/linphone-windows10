@@ -45,6 +45,13 @@ namespace Linphone
 			Windows::Phone::Networking::Voip::VoipPhoneCall^ NewOutgoingCall(Platform::String^ number);
 
 			/// <summary>
+			/// Starts an incoming call for custom incoming call view.
+			/// </summary>
+			/// <param name="contactNumber">The number or SIP URI of the caller</param>
+			/// <returns>The system VoipPhoneCall that has been created</returns>
+			Windows::Phone::Networking::Voip::VoipPhoneCall^ NewIncomingCallForCustomIncomingCallView(Platform::String^ contactNumber);
+
+			/// <summary>
 			/// Callback to be called when the PushNotification Agent has to be dismissed, i.e. after a call has been accepted, denied or stopped by the caller.
 			/// </summary>
 			property IncomingCallViewDismissedCallback^ IncomingCallViewDismissed
