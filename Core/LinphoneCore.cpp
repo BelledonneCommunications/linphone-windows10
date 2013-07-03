@@ -1575,6 +1575,7 @@ void Linphone::Core::LinphoneCore::Init()
 	RefToPtrProxy<LinphoneCore^> *proxy = new RefToPtrProxy<LinphoneCore^>(this);
 	linphone_core_set_user_data(this->lc, proxy);
 
+	linphone_core_set_ring(this->lc, nullptr);
 	RefToPtrProxy<Mediastreamer2::WP8Video::IVideoRenderer^> *renderer = new RefToPtrProxy<Mediastreamer2::WP8Video::IVideoRenderer^>(Globals::Instance->VideoRenderer);
 	linphone_core_set_native_video_window_id(this->lc, (unsigned long)renderer);
 
