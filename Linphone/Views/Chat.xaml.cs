@@ -86,6 +86,8 @@ namespace Linphone.Views
             ContactManager cm = ContactManager.Instance;
             cm.ContactFound += cm_ContactFound;
 
+            MessageBox.TextChanged += MessageBox_TextChanged;
+
             NewChat.Visibility = Visibility.Collapsed;
             ContactName.Visibility = Visibility.Visible; 
             if (NavigationContext.QueryString.ContainsKey("sip"))
@@ -95,6 +97,7 @@ namespace Linphone.Views
                 {
                     sipAddress = sipAddress.Replace("sip:", "");
                 }
+                EnableAppBarSendMessageButton(false);
 
                 ContactName.Text = sipAddress;
                 cm.FindContact(sipAddress);
@@ -110,12 +113,24 @@ namespace Linphone.Views
                     DisplayPastMessages(messages);
                 }
             }
-            else if (e.NavigationMode != NavigationMode.Back)
+            else if (e.NavigationMode != NavigationMode.Back || sipAddress == null || sipAddress.Length == 0)
             {
+                DisableAppBarSendButtons();
                 ContactName.Visibility = Visibility.Collapsed; 
                 NewChat.Visibility = Visibility.Visible;
                 NewChatSipAddress.Focus();
             }
+        }
+
+        private void MessageBox_TextChanged(object sender, string text)
+        {
+            EnableAppBarSendMessageButton(text != null && text.Length > 0 && ((sipAddress != null && sipAddress.Length > 0) || (NewChatSipAddress.Text != null && NewChatSipAddress.Text.Length > 0)));
+        }
+
+        private void NewChatSipAddress_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            EnableAppBarSendMessageButton(MessageBox.Text != null && MessageBox.Text.Length > 0 && NewChatSipAddress.Text != null && NewChatSipAddress.Text.Length > 0);
+            EnableAppBarSendImageMessageButton(NewChatSipAddress.Text != null && NewChatSipAddress.Text.Length > 0);
         }
 
         /// <summary>
@@ -401,6 +416,7 @@ namespace Linphone.Views
             }
         }
 
+        #region AppBar Management
         private void BuildLocalizedApplicationBar()
         {
             ApplicationBar = new ApplicationBar();
@@ -415,6 +431,35 @@ namespace Linphone.Views
             }
         }
 
+        private void DisableAppBarSendButtons()
+        {
+            if (ApplicationBar.Buttons.Count == 2)
+            {
+                foreach (ApplicationBarIconButton button in ApplicationBar.Buttons)
+                {
+                    button.IsEnabled = false;
+                }
+            }
+        }
+
+        private void EnableAppBarSendMessageButton(bool enable)
+        {
+            ApplicationBarIconButton button = (ApplicationBarIconButton)ApplicationBar.Buttons[0];
+            if (button.Text.Equals(AppResources.SendMessage))
+            {
+                button.IsEnabled = enable;
+            }
+        }
+
+        private void EnableAppBarSendImageMessageButton(bool enable)
+        {
+            ApplicationBarIconButton button = (ApplicationBarIconButton)ApplicationBar.Buttons[1];
+            if (button.Text.Equals(AppResources.SendPicture))
+            {
+                button.IsEnabled = enable;
+            }
+        }
+
         private void AddSendButtonsToAppBar()
         {
             CleanAppBar();
@@ -423,11 +468,13 @@ namespace Linphone.Views
             appBarSend.Text = AppResources.SendMessage;
             ApplicationBar.Buttons.Add(appBarSend);
             appBarSend.Click += send_Click_1;
+            appBarSend.IsEnabled = MessageBox.Text != null && MessageBox.Text.Length > 0;
 
             ApplicationBarIconButton appBarSendImage = new ApplicationBarIconButton(new Uri("/Assets/AppBar/feature.camera.png", UriKind.Relative));
             appBarSendImage.Text = AppResources.SendPicture;
             ApplicationBar.Buttons.Add(appBarSendImage);
             appBarSendImage.Click += attach_image_Click_1;
+            appBarSendImage.IsEnabled = true;
         }
 
         private void AddCancelUploadButtonInAppBar()
@@ -438,7 +485,9 @@ namespace Linphone.Views
             appBarCancel.Text = AppResources.CancelUpload;
             ApplicationBar.Buttons.Add(appBarCancel);
             appBarCancel.Click += cancel_Click_1;
+            appBarCancel.IsEnabled = true;
         }
+        #endregion
 
         /// <summary>
         /// Callback called by LinphoneManager when a message is received.

@@ -41,6 +41,20 @@ namespace Linphone.Controls
         private void Message_TextChanged(object sender, TextChangedEventArgs e)
         {
             Text = Message.Text;
+            if (TextChanged != null)
+            {
+                TextChanged(this, Message.Text);
+            }
         }
+
+        /// <summary>
+        /// Delegate for text changed event.
+        /// </summary>
+        public delegate void TextChangedEventHandler(object sender, string text);
+
+        /// <summary>
+        /// Handler for text changed event.
+        /// </summary>
+        public event TextChangedEventHandler TextChanged;
     }
 }
