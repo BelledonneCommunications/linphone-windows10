@@ -12,7 +12,7 @@ namespace Linphone.Model
     public class DatabaseManager : DataContext
     {
         // Specify the connection string as a static.
-        public static string DBConnectionString = "Data Source=isostore:/ToDo.sdf";
+        public static string DBConnectionString = "Data Source=isostore:/ChatMessages.sdf";
 
         private static DatabaseManager singleton;
         /// <summary>
