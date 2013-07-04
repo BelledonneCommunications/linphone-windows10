@@ -6,6 +6,7 @@ using Microsoft.Phone.Notification;
 using Microsoft.Phone.Scheduler;
 using Microsoft.Phone.Shell;
 using System;
+using System.Linq;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Markup;
@@ -84,6 +85,19 @@ namespace Linphone
             if (!DatabaseManager.Instance.DatabaseExists())
             {
                 DatabaseManager.Instance.CreateDatabase();
+            }
+            else
+            {
+                //Check if database exists but failed to create table => crash at start
+                try
+                {
+                    var test = from message in DatabaseManager.Instance.Messages select message;
+                }
+                catch
+                {
+                    DatabaseManager.Instance.DeleteDatabase();
+                    DatabaseManager.Instance.CreateDatabase();
+                }
             }
         }
 
