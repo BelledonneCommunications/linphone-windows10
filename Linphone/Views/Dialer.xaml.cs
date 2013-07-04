@@ -158,7 +158,8 @@ namespace Linphone
 
         private void Title_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            LinphoneManager.Instance.LinphoneCore.RefreshRegisters();
+            if (LinphoneManager.Instance.isLinphoneRunning)
+                LinphoneManager.Instance.LinphoneCore.RefreshRegisters();
         }
 
         /// <summary>
