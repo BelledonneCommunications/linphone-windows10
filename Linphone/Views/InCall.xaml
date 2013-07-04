@@ -203,6 +203,9 @@
                     Content="{Binding Path=LocalizedResources.HangUp, Source={StaticResource LocalizedStrings}}"
                     Click="hangUp_Click"
                     ClickMode="Release">
+                    <Button.Style>
+                        <StaticResource ResourceKey="AccentColorButton"/>
+                    </Button.Style>
                 </Button>
 
                 <ToggleButton 

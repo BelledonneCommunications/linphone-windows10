@@ -44,7 +44,7 @@
                 Grid.Row="1"
                 x:Name="Contact"
                 Margin="12,0,12,0"
-                FontSize="80"
+                FontSize="60"
                 TextWrapping="Wrap"/>
 
             <!-- Number text -->
@@ -76,6 +76,9 @@
                     Content="{Binding Path=LocalizedResources.Answer, Source={StaticResource LocalizedStrings}}"
                     Click="Answer_Click"
                     ClickMode="Release">
+                    <Button.Style>
+                        <StaticResource ResourceKey="AccentColorButton"/>
+                    </Button.Style>
                 </Button>
                 
                 <Button 
@@ -101,6 +104,9 @@
                     Content="{Binding Path=LocalizedResources.AnswerVideo, Source={StaticResource LocalizedStrings}}"
                     Click="Answer_Click"
                     ClickMode="Release">
+                    <Button.Style>
+                        <StaticResource ResourceKey="AccentColorButton"/>
+                    </Button.Style>
                 </Button>
             </Grid>
         </Grid>
