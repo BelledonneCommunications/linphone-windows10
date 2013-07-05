@@ -289,23 +289,11 @@ namespace Linphone
             // Handle reset requests for clearing the backstack
             RootFrame.Navigated += CheckForResetNavigation;
 
-            RootFrame.Navigating += RootFrame_Navigating;
-
             // Ensure we don't initialize again
             phoneApplicationInitialized = true;
 
             // Allow the app to run under the lockscreen (and prevent it from crashing when in foreground after screen lock/unlock)
             PhoneApplicationService.Current.ApplicationIdleDetectionMode = IdleDetectionMode.Disabled;
-        }
-
-        private void RootFrame_Navigating(object sender, NavigatingCancelEventArgs e)
-        {
-            if (!e.IsNavigationInitiator && LinphoneManager.Instance.isLinphoneRunning)
-            {
-                // Disconnect the listeners to prevent crash of the background process
-                LinphoneManager.Instance.LinphoneCore.CoreListener = null;
-                LinphoneManager.Instance.isLinphoneRunning = false;
-            }
         }
 
         // Do not add any additional code to this method
