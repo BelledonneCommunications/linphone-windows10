@@ -642,7 +642,7 @@ namespace Linphone.Model
                 Logger.Msg("[LinphoneManager] Incoming received"); 
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    if (Globals.Instance.CallController.CustomIncomingCallView)
+                    if (false) //TODO: Find a proper way to let the user choose between the two.
                     {
                         BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/IncomingCall.xaml?sip=" + call.GetRemoteAddress().AsStringUriOnly(), UriKind.RelativeOrAbsolute));
                         //Remove the current page from the back stack to avoid duplicating him after
