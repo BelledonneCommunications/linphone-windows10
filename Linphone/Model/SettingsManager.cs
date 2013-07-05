@@ -3,6 +3,8 @@ using Linphone.Resources;
 using Microsoft.Phone.Net.NetworkInformation;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
 
@@ -369,7 +371,21 @@ namespace Linphone.Model
                 LinphoneProxyConfig cfg = lc.GetDefaultProxyConfig();
                 if (cfg != null)
                 {
-                    // TODO: Force unregister
+                    cfg.Edit();
+                    cfg.EnableRegister(false);
+                    cfg.Done();
+
+                    //Wait for unregister to complete
+                    int timeout = 2000;
+                    Stopwatch stopwatch = Stopwatch.StartNew();
+                    while (true)
+                    {
+                        if (stopwatch.ElapsedMilliseconds >= timeout || cfg.GetState() == RegistrationState.RegistrationCleared || cfg.GetState() == RegistrationState.RegistrationNone)
+                        {
+                            break;
+                        }
+                        Thread.Sleep(1);
+                    }
                 }
 
                 String username = GetNew(UsernameKeyName);
