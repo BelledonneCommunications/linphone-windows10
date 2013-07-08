@@ -45,7 +45,8 @@
                         Text="{Binding Path=LocalizedResources.SIPUsername, Source={StaticResource LocalizedStrings}}">
                     </TextBlock>
                     <TextBox
-                        x:Name="Username">
+                        x:Name="Username"
+                        KeyDown="Username_KeyDown">
                         <TextBox.InputScope>
                             <InputScope>
                                 <InputScopeName NameValue="EmailUserName" />
@@ -60,8 +61,14 @@
                         Text="{Binding Path=LocalizedResources.SIPPassword, Source={StaticResource LocalizedStrings}}">
                     </TextBlock>
                     <PasswordBox
-                        x:Name="Password">
+                        x:Name="Password"
+                        KeyDown="Password_KeyDown">
                     </PasswordBox>
+                    <Button
+                        x:Name="EditPassword"
+                        Click="EditPassword_Click"
+                        Visibility="Collapsed"
+                        Content="{Binding Path=LocalizedResources.EditPassword, Source={StaticResource LocalizedStrings}}"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Vertical" Grid.Row="2" Margin="0,10,0,0">
@@ -70,7 +77,8 @@
                         Text="{Binding Path=LocalizedResources.SIPDomain, Source={StaticResource LocalizedStrings}}">
                     </TextBlock>
                     <TextBox
-                        x:Name="Domain">
+                        x:Name="Domain"
+                        KeyDown="Domain_KeyDown">
                         <TextBox.InputScope>
                             <InputScope>
                                 <InputScopeName NameValue="Url" />
@@ -85,7 +93,8 @@
                         Text="{Binding Path=LocalizedResources.SIPProxy, Source={StaticResource LocalizedStrings}}">
                     </TextBlock>
                     <TextBox
-                        x:Name="Proxy">
+                        x:Name="Proxy"
+                        KeyDown="Proxy_KeyDown">
                         <TextBox.InputScope>
                             <InputScope>
                                 <InputScopeName NameValue="Url" />

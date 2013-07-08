@@ -61,6 +61,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to false.
+        /// </summary>
+        internal static string CustomIncomingCallView {
+            get {
+                return ResourceManager.GetString("CustomIncomingCallView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 3600.
         /// </summary>
         internal static string KeepAlive {

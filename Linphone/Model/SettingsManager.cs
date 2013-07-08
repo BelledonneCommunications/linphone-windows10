@@ -131,7 +131,7 @@ namespace Linphone.Model
         {
             if (dict.ContainsKey(Key))
             {
-                if (dict[Key] != Value)
+                if (dict[Key] != Value || Value.Length == 0)
                 {
                     changesDict[Key] = Value;
                 }

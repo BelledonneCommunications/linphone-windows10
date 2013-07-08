@@ -464,4 +464,7 @@ http://www.linphone.org/m/help
   <data name="IncomingCall" xml:space="preserve">
     <value>INCOMING CALL</value>
   </data>
+  <data name="EditPassword" xml:space="preserve">
+    <value>edit password</value>
+  </data>
 </root>
