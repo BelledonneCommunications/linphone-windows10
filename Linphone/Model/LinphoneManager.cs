@@ -788,20 +788,6 @@ namespace Linphone.Model
         /// </summary>
         public void MessageReceived(LinphoneChatMessage message)
         {
-            DateTime date = new DateTime();
-            date = date.AddYears(1969); //Timestamp is calculated from 01/01/1970, and DateTime is initialized to 01/01/0001.
-            date = date.AddSeconds(message.GetTime());
-            date = date.Add(TimeZoneInfo.Local.GetUtcOffset(date));
-            long timestamp = (date.Ticks / TimeSpan.TicksPerSecond);
-
-            //Check if duplicate
-            var duplicate = from m in DatabaseManager.Instance.Messages where (m.Timestamp == timestamp && m.Message.Equals(message.GetText()) && m.ImageURL.Equals(message.GetExternalBodyUrl())) select m;
-            if (duplicate.Count() > 0)
-            {
-                Debug.WriteLine("[LinphoneManager] Duplicate message detected : " + message.GetText());
-                return;
-            }
-
             string sipAddress = message.GetFrom().AsStringUriOnly().Replace("sip:", "");
             Logger.Msg("[LinphoneManager] Message received from " + sipAddress + ": " + message.GetText());
 
@@ -815,9 +801,16 @@ namespace Linphone.Model
             }
             else
             {
+                DateTime date = new DateTime();
+                date = date.AddYears(1969); //Timestamp is calculated from 01/01/1970, and DateTime is initialized to 01/01/0001.
+                date = date.AddSeconds(message.GetTime());
+                date = date.Add(TimeZoneInfo.Local.GetUtcOffset(date));
+                long timestamp = (date.Ticks / TimeSpan.TicksPerSecond);
+
                 //TODO: Temp hack to remove
                 string url = message.GetExternalBodyUrl();
                 url = url.Replace("\"", "");
+
                 ChatMessage msg = new ChatMessage { Message = message.GetText(), ImageURL = url, MarkedAsRead = false, IsIncoming = true, LocalContact = sipAddress, RemoteContact = "", Timestamp = timestamp };
                 DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
                 DatabaseManager.Instance.SubmitChanges();
