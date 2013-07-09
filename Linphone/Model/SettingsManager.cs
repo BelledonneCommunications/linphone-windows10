@@ -316,6 +316,7 @@ namespace Linphone.Model
         private const string DomainKeyName = "Domain";
         private const string ProxyKeyName = "Proxy";
         private const string OutboundProxyKeyName = "OutboundProxy";
+        private const string DisplayNameKeyName = "DisplayName";
         #endregion
 
         #region Implementation of the ISettingsManager interface
@@ -328,6 +329,7 @@ namespace Linphone.Model
             dict[DomainKeyName] = "";
             dict[ProxyKeyName] = "";
             dict[PasswordKeyName] = "";
+            dict[DisplayNameKeyName] = "";
             dict[OutboundProxyKeyName] = false.ToString();
             LinphoneProxyConfig cfg = LinphoneManager.Instance.LinphoneCore.GetDefaultProxyConfig();
             if (cfg != null)
@@ -353,6 +355,7 @@ namespace Linphone.Model
                     {
                         dict[PasswordKeyName] = ((LinphoneAuthInfo)authInfos[0]).GetPassword();
                     }
+                    dict[DisplayNameKeyName] = address.GetDisplayName();
                 }
             }
         }
@@ -391,6 +394,7 @@ namespace Linphone.Model
                 String username = GetNew(UsernameKeyName);
                 String password = GetNew(PasswordKeyName);
                 String domain = GetNew(DomainKeyName);
+                String displayname = GetNew(DisplayNameKeyName);
                 bool outboundProxy = Convert.ToBoolean(GetNew(OutboundProxyKeyName));
                 lc.ClearAuthInfos();
                 lc.ClearProxyConfigs();
@@ -407,7 +411,14 @@ namespace Linphone.Model
                     }
 
                     cfg = lc.CreateEmptyProxyConfig();
-                    cfg.SetIdentity(username, username, domain);
+                    if (displayname != null && displayname.Length > 0)
+                    {
+                        cfg.SetIdentity(displayname, username, domain);
+                    }
+                    else
+                    {
+                        cfg.SetIdentity(username, username, domain);
+                    }
                     cfg.SetProxy(proxy);
                     cfg.EnableRegister(true);
                     // Can't set string to null: http://stackoverflow.com/questions/12980915/exception-when-trying-to-read-null-string-in-c-sharp-winrt-component-from-winjs
@@ -499,6 +510,21 @@ namespace Linphone.Model
             set
             {
                 Set(OutboundProxyKeyName, value.ToString());
+            }
+        }
+
+        /// <summary>
+        /// SIP account display name setting (String).
+        /// </summary>
+        public string DisplayName
+        {
+            get
+            {
+                return Get(DisplayNameKeyName);
+            }
+            set
+            {
+                Set(DisplayNameKeyName, value);
             }
         }
         #endregion
@@ -1088,7 +1114,7 @@ namespace Linphone.Model
             }
 
             // Save tunnel configuration
-            if (LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable())
+            if (LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable() && false) // Disable tunnel for now
             {
                 if (ValueChanged(TunnelServerKeyName) || ValueChanged(TunnelPortKeyName))
                 {

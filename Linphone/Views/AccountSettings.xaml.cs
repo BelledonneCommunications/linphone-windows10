@@ -31,6 +31,7 @@ namespace Linphone.Views
             Domain.Text = _settings.Domain;
             Proxy.Text = _settings.Proxy;
             OutboundProxy.IsChecked = _settings.OutboundProxy;
+            DisplayName.Text = _settings.DisplayName;
 
             if (Username.Text.Length > 0)
             {
@@ -53,6 +54,7 @@ namespace Linphone.Views
             _settings.Domain = Domain.Text;
             _settings.Proxy = Proxy.Text;
             _settings.OutboundProxy = OutboundProxy.IsChecked;
+            _settings.DisplayName = DisplayName.Text;
             _settings.Save();
 
             NavigationService.GoBack();
@@ -94,7 +96,7 @@ namespace Linphone.Views
         private void Proxy_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-                OutboundProxy.Focus();
+                DisplayName.Focus();
         }
 
         private void EditPassword_Click(object sender, System.Windows.RoutedEventArgs e)

@@ -37,6 +37,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 
                 <StackPanel Orientation="Vertical" Grid.Row="0">
@@ -108,6 +109,21 @@
                         x:Name="OutboundProxy" 
                         Header="{Binding Path=LocalizedResources.SIPOutboundProxy, Source={StaticResource LocalizedStrings}}">
                     </toolkit:ToggleSwitch>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Grid.Row="5" Margin="0,10,0,0">
+                    <TextBlock
+                        Margin="10,0,0,0"
+                        Text="{Binding Path=LocalizedResources.DisplayName, Source={StaticResource LocalizedStrings}}">
+                    </TextBlock>
+                    <TextBox
+                        x:Name="DisplayName">
+                        <TextBox.InputScope>
+                            <InputScope>
+                                <InputScopeName NameValue="PersonalSurname" />
+                            </InputScope>
+                        </TextBox.InputScope>
+                    </TextBox>
                 </StackPanel>
             </Grid>
         </ScrollViewer>

@@ -467,4 +467,7 @@ http://www.linphone.org/m/help
   <data name="EditPassword" xml:space="preserve">
     <value>edit password</value>
   </data>
+  <data name="DisplayName" xml:space="preserve">
+    <value>Display name</value>
+  </data>
 </root>
