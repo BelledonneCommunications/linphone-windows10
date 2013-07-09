@@ -2,6 +2,7 @@
 using Linphone.Resources;
 using Microsoft.Phone.Shell;
 using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.Windows.Navigation;
 
@@ -48,6 +49,8 @@ namespace Linphone.Views
             };
             Transport.ItemsSource = transports;
             Transport.SelectedItem = _networkSettings.Transport;
+
+            TunnelPanel.Visibility = LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable() && false ? Visibility.Visible : Visibility.Collapsed; //Hidden properties for now
         }
 
         private void cancel_Click_1(object sender, EventArgs e)
