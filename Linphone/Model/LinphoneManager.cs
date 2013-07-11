@@ -792,8 +792,13 @@ namespace Linphone.Model
             Logger.Msg("[LinphoneManager] Message received from " + sipAddress + ": " + message.GetText());
 
             //Vibrate
-            VibrationDevice vibrator = VibrationDevice.GetDefault();
-            vibrator.Vibrate(TimeSpan.FromSeconds(1));
+            ChatSettingsManager settings = new ChatSettingsManager();
+            settings.Load();
+            if ((bool)settings.VibrateOnIncomingMessage)
+            {
+                VibrationDevice vibrator = VibrationDevice.GetDefault();
+                vibrator.Vibrate(TimeSpan.FromSeconds(1));
+            }
 
             if (MessageListener != null && MessageListener.GetSipAddressAssociatedWithDisplayConversation() != null && MessageListener.GetSipAddressAssociatedWithDisplayConversation().Equals(sipAddress))
             {
@@ -801,26 +806,23 @@ namespace Linphone.Model
             }
             else
             {
-                DateTime date = new DateTime();
-                date = date.AddYears(1969); //Timestamp is calculated from 01/01/1970, and DateTime is initialized to 01/01/0001.
-                date = date.AddSeconds(message.GetTime());
-                date = date.Add(TimeZoneInfo.Local.GetUtcOffset(date));
-                long timestamp = (date.Ticks / TimeSpan.TicksPerSecond);
-
-                //TODO: Temp hack to remove
-                string url = message.GetExternalBodyUrl();
-                url = url.Replace("\"", "");
-
-                ChatMessage msg = new ChatMessage { Message = message.GetText(), ImageURL = url, MarkedAsRead = false, IsIncoming = true, LocalContact = sipAddress, RemoteContact = "", Timestamp = timestamp };
-                DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
-                DatabaseManager.Instance.SubmitChanges();
-
-                //Update tile
-                UpdateLiveTile();
-
-                //Displays the message as a popup
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
+                    DateTime date = new DateTime();
+                    date = date.AddYears(1969); //Timestamp is calculated from 01/01/1970, and DateTime is initialized to 01/01/0001.
+                    date = date.AddSeconds(message.GetTime());
+                    date = date.Add(TimeZoneInfo.Local.GetUtcOffset(date));
+                    long timestamp = (date.Ticks / TimeSpan.TicksPerSecond);
+
+                    //TODO: Temp hack to remove
+                    string url = message.GetExternalBodyUrl();
+                    url = url.Replace("\"", "");
+
+                    ChatMessage msg = new ChatMessage { Message = message.GetText(), ImageURL = url, MarkedAsRead = false, IsIncoming = true, LocalContact = sipAddress, RemoteContact = "", Timestamp = timestamp };
+                    DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
+                    DatabaseManager.Instance.SubmitChanges(System.Data.Linq.ConflictMode.ContinueOnConflict);
+
+                    //Displays the message as a popup
                     if (MessageReceivedNotification != null)
                     {
                         MessageReceivedNotification.Hide();
@@ -838,6 +840,9 @@ namespace Linphone.Model
                     };
                     messageNotif.Child = MessageReceivedNotification;
                     messageNotif.IsOpen = true;
+
+                    //Update tile
+                    UpdateLiveTile();
                 });
             }
         }

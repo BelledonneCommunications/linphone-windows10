@@ -1048,6 +1048,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vibrate on incoming message.
+        /// </summary>
+        public static string VibratorSetting {
+            get {
+                return ResourceManager.GetString("VibratorSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to video.
         /// </summary>
         public static string Video {

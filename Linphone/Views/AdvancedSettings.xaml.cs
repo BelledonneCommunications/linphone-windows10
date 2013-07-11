@@ -15,6 +15,7 @@ namespace Linphone.Views
     {
         private CallSettingsManager _callSettings = new CallSettingsManager();
         private NetworkSettingsManager _networkSettings = new NetworkSettingsManager();
+        private ChatSettingsManager _chatSettings = new ChatSettingsManager();
 
         /// <summary>
         /// Public constructor.
@@ -26,8 +27,10 @@ namespace Linphone.Views
 
             _callSettings.Load();
             _networkSettings.Load();
+            _chatSettings.Load();
             rfc2833.IsChecked = _callSettings.SendDTFMsRFC2833;
             sipInfo.IsChecked = _callSettings.SendDTFMsSIPInfo;
+            vibrator.IsChecked = _chatSettings.VibrateOnIncomingMessage;
 
             List<string> tunnelModes = new List<string>
             {
@@ -63,11 +66,15 @@ namespace Linphone.Views
             _callSettings.SendDTFMsRFC2833 = rfc2833.IsChecked;
             _callSettings.SendDTFMsSIPInfo = sipInfo.IsChecked;
             _callSettings.Save();
+
             _networkSettings.TunnelMode = tunnelMode.SelectedItem.ToString();
             _networkSettings.TunnelServer = tunnelServer.Text;
             _networkSettings.TunnelPort = tunnelPort.Text;
             _networkSettings.Transport = Transport.SelectedItem.ToString();
             _networkSettings.Save();
+
+            _chatSettings.VibrateOnIncomingMessage = vibrator.IsChecked;
+            _chatSettings.Save();
 
             NavigationService.GoBack();
         }

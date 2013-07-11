@@ -120,6 +120,8 @@ namespace Linphone.Views
                 NewChat.Visibility = Visibility.Visible;
                 NewChatSipAddress.Focus();
             }
+
+            scrollToBottom();
         }
 
         private void MessageBox_TextChanged(object sender, string text)

@@ -69,7 +69,7 @@
                 </ScrollViewer>
             </phone:PivotItem>
 
-            <!--Pivot item two-->
+            <!--Pivot item Call-->
             <phone:PivotItem Header="{Binding Path=LocalizedResources.CallMenu, Source={StaticResource LocalizedStrings}}">
                 <StackPanel Orientation="Vertical">
                     <toolkit:ToggleSwitch  
@@ -79,6 +79,16 @@
                     <toolkit:ToggleSwitch  
                         x:Name="sipInfo" 
                         Header="{Binding Path=LocalizedResources.SIPInfoSetting, Source={StaticResource LocalizedStrings}}">
+                    </toolkit:ToggleSwitch>
+                </StackPanel>
+            </phone:PivotItem>
+
+            <!--Pivot item Chat-->
+            <phone:PivotItem Header="{Binding Path=LocalizedResources.ChatMenu, Source={StaticResource LocalizedStrings}}">
+                <StackPanel Orientation="Vertical">
+                    <toolkit:ToggleSwitch  
+                        x:Name="vibrator" 
+                        Header="{Binding Path=LocalizedResources.VibratorSetting, Source={StaticResource LocalizedStrings}}">
                     </toolkit:ToggleSwitch>
                 </StackPanel>
             </phone:PivotItem>

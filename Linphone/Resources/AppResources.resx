@@ -470,4 +470,7 @@ http://www.linphone.org/m/help
   <data name="DisplayName" xml:space="preserve">
     <value>Display name</value>
   </data>
+  <data name="VibratorSetting" xml:space="preserve">
+    <value>Vibrate on incoming message</value>
+  </data>
 </root>

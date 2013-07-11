@@ -4,6 +4,7 @@ using Microsoft.Phone.Net.NetworkInformation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO.IsolatedStorage;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -1193,6 +1194,69 @@ namespace Linphone.Model
             set
             {
                 Set(TunnelModeKeyName, value);
+            }
+        }
+        #endregion
+    }
+    
+    /// <summary>
+    /// Utility class to handle chat settings.
+    /// </summary>
+    public class ChatSettingsManager : SettingsManager, ISettingsManager
+    {
+        IsolatedStorageSettings _settings;
+
+        #region Constants settings names
+        private const string VibrateOnIncomingMessageKeyName = "VibrateOnIncomingMessage";
+        #endregion
+
+        #region Implementation of the ISettingsManager interface
+        /// <summary>
+        /// Loads the call settings.
+        /// </summary>
+        public void Load()
+        {
+            _settings = IsolatedStorageSettings.ApplicationSettings;
+
+            string value;
+            if (_settings.Contains(VibrateOnIncomingMessageKeyName))
+                value = ((bool)_settings[VibrateOnIncomingMessageKeyName]).ToString();
+            else
+                value = true.ToString();
+
+            dict[VibrateOnIncomingMessageKeyName] = value;
+        }
+
+        /// <summary>
+        /// Saves the call settings.
+        /// </summary>
+        public void Save()
+        {
+            if (ValueChanged(VibrateOnIncomingMessageKeyName))
+            {
+                bool value = Convert.ToBoolean(GetNew(VibrateOnIncomingMessageKeyName));
+                if (_settings.Contains(VibrateOnIncomingMessageKeyName))
+                    _settings[VibrateOnIncomingMessageKeyName] = value;
+                else
+                    _settings.Add(VibrateOnIncomingMessageKeyName, value);
+                _settings.Save();
+            }
+        }
+        #endregion
+
+        #region Accessors
+        /// <summary>
+        /// DTMFs using RFC2833 setting (bool).
+        /// </summary>
+        public bool? VibrateOnIncomingMessage
+        {
+            get
+            {
+                return Convert.ToBoolean(Get(VibrateOnIncomingMessageKeyName));
+            }
+            set
+            {
+                Set(VibrateOnIncomingMessageKeyName, value.ToString());
             }
         }
         #endregion
