@@ -37,6 +37,7 @@ namespace Linphone
         {
             base.OnNavigatedTo(e);
             StatusBar = status;
+            BasePage.StatusBar.RefreshStatus(LinphoneManager.Instance.LastKnownState);
 
             // Create LinphoneCore if not created yet, otherwise do nothing
             Task t = LinphoneManager.Instance.InitLinphoneCore();
