@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Navigation;
+using System.Data.Linq;
 
 namespace Linphone
 {
@@ -85,18 +86,21 @@ namespace Linphone
             if (!DatabaseManager.Instance.DatabaseExists())
             {
                 DatabaseManager.Instance.CreateDatabase();
+                DatabaseManager.Instance.SubmitChanges();
             }
             else
             {
                 //Check if database exists but failed to create table => crash at start
                 try
                 {
-                    var test = from message in DatabaseManager.Instance.Messages select message;
+                    Table<ChatMessage> messages = DatabaseManager.Instance.Messages;
+                    var enumerator = messages.GetEnumerator();
                 }
                 catch
                 {
                     DatabaseManager.Instance.DeleteDatabase();
                     DatabaseManager.Instance.CreateDatabase();
+                    DatabaseManager.Instance.SubmitChanges();
                 }
             }
         }

@@ -30,12 +30,6 @@ namespace Linphone
 			/// <param name="incomingCallViewDismissedCallback">The callback to be called if the notified incoming call is dismissed by the user</param>
 			/// <returns>The system VoipPhoneCall that has been notified</returns>
             Windows::Phone::Networking::Voip::VoipPhoneCall^ OnIncomingCallReceived(LinphoneCall^ call, Platform::String^ contactName, Platform::String^ contactNumber, IncomingCallViewDismissedCallback^ incomingCallViewDismissedCallback); 
- 
-			/// <summary>
-			/// Terminate the native VoipPhoneCall.
-			/// </summary>
-			/// <param name="call">The VoipPhoneCall to be terminated</param>
-			void EndCall(Windows::Phone::Networking::Voip::VoipPhoneCall^ call);
 
 			/// <summary>
 			/// Starts an outgoing call using native VoipPhoneCall.

@@ -77,8 +77,10 @@ void CallController::OnAcceptCallRequested(VoipPhoneCall^ incomingCall, CallAnsw
 
 	incomingCall->NotifyCallActive();
 
-	if (this->onIncomingCallViewDismissed != nullptr)
+	if (this->onIncomingCallViewDismissed != nullptr) {
 		this->onIncomingCallViewDismissed();
+		this->onIncomingCallViewDismissed = nullptr;
+	}
 
 	if (this->call != nullptr) {
 #ifdef ACCEPT_WITH_VIDEO_OR_WITH_AUDIO_ONLY
@@ -101,21 +103,15 @@ void CallController::OnRejectCallRequested(VoipPhoneCall^ incomingCall, CallReje
 {
 	gApiLock.Lock();
 
-	incomingCall->NotifyCallEnded();
-
-	if (this->onIncomingCallViewDismissed != nullptr)
+	if (this->onIncomingCallViewDismissed != nullptr) {
 		this->onIncomingCallViewDismissed();
+		this->onIncomingCallViewDismissed = nullptr;
+	}
 
+	//This will call notifyCallEnded on the call state changed callback
 	if (this->call != nullptr)
 		Globals::Instance->LinphoneCore->TerminateCall(this->call);
 
-	gApiLock.Unlock();
-} 
-
-void CallController::EndCall(VoipPhoneCall^ call)
-{
-	gApiLock.Lock();
-	call->NotifyCallEnded();
 	gApiLock.Unlock();
 }
 
