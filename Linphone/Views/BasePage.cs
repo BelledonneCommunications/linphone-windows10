@@ -69,19 +69,5 @@ namespace Linphone
 
             this.ViewModel.OnNavigatedFrom(nee);
         }
-
-        /// <summary>
-        /// Can cancel back action if custom popup is open to close it
-        /// </summary>
-        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
-        {
-            if (LinphoneManager.Instance.MessageReceivedNotification != null && LinphoneManager.Instance.MessageReceivedNotification.IsVisible)
-            {
-                LinphoneManager.Instance.MessageReceivedNotification.Hide();
-                e.Cancel = true;
-            }
-
-            base.OnBackKeyPress(e);
-        }
     }
 }

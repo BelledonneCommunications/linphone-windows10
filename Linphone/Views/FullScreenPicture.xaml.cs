@@ -61,7 +61,8 @@ namespace Linphone.Views
             ApplicationBar.Buttons.Add(appBarSave);
             appBarSave.Click += (sender, e) =>
             {
-                Utils.SavePictureInMediaLibrary(_fileName);
+                bool result = Utils.SavePictureInMediaLibrary(_fileName);
+                MessageBox.Show(result ? AppResources.FileSavingSuccess : AppResources.FileSavingFailure, AppResources.FileSaving, MessageBoxButton.OK);
             };
         }
     }

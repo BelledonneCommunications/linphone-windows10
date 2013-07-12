@@ -114,6 +114,7 @@
                         Grid.Row="3"
                         x:Name="ECCalibratorStatusButton"
                         IsEnabled="False"
+                        BorderThickness="0"
                         Margin="0,30,0,0"
                         Content="{Binding Path=LocalizedResources.ECCalibrationNotRun, Source={StaticResource LocalizedStrings}}" />
                 </StackPanel>

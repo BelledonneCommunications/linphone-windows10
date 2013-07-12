@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using Linphone.Model;
 using Linphone.Views;
+using Linphone.Resources;
 
 namespace Linphone.Controls
 {
@@ -126,7 +127,8 @@ namespace Linphone.Controls
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            Utils.SavePictureInMediaLibrary(ChatMessage.ImageURL);
+            bool result = Utils.SavePictureInMediaLibrary(ChatMessage.ImageURL);
+            MessageBox.Show(result ? AppResources.FileSavingSuccess : AppResources.FileSavingFailure, AppResources.FileSaving, MessageBoxButton.OK);
         }
 
         /// <summary>

@@ -44,9 +44,13 @@
             Grid.Row="1"
             BorderThickness="0"
             VerticalAlignment="Center">
-            <Image 
-                x:Name="action" 
-                Stretch="None" />
+            <Rectangle Fill="{StaticResource PhoneForegroundBrush}" Width="48" Height="48">
+                <Rectangle.OpacityMask>
+                    <ImageBrush
+                        x:Name="action" 
+                        Stretch="None"/>
+                </Rectangle.OpacityMask>
+            </Rectangle>
         </Button>
 
         <Button 
@@ -55,9 +59,13 @@
             Grid.Row="1"
             BorderThickness="0"
             VerticalAlignment="Center">
-            <Image 
-                x:Name="action2" 
-                Stretch="None"/>
+            <Rectangle Fill="{StaticResource PhoneForegroundBrush}" Width="48" Height="48">
+                <Rectangle.OpacityMask>
+                    <ImageBrush
+                        x:Name="action2" 
+                        Stretch="None"/>
+                </Rectangle.OpacityMask>
+            </Rectangle>
         </Button>
     </Grid>
 </UserControl>

@@ -473,4 +473,16 @@ http://www.linphone.org/m/help
   <data name="VibratorSetting" xml:space="preserve">
     <value>Vibrate on incoming message</value>
   </data>
+  <data name="FileSaving" xml:space="preserve">
+    <value>Saving picture</value>
+  </data>
+  <data name="FileSavingFailure" xml:space="preserve">
+    <value>Operation failed</value>
+  </data>
+  <data name="FileSavingSuccess" xml:space="preserve">
+    <value>Operation successful</value>
+  </data>
+  <data name="MessageReceived" xml:space="preserve">
+    <value>Message received</value>
+  </data>
 </root>

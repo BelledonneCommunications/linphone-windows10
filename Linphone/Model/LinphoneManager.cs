@@ -4,6 +4,7 @@ using Linphone.Core;
 using Linphone.Core.OutOfProcess;
 using Linphone.Resources;
 using Linphone.Views;
+using Microsoft.Phone.Controls;
 using Microsoft.Phone.Net.NetworkInformation;
 using Microsoft.Phone.Networking.Voip;
 using System;
@@ -781,7 +782,7 @@ namespace Linphone.Model
         /// <summary>
         /// Custom message box to display incoming messages when not in chat view
         /// </summary>
-        public MessageReceivedNotification MessageReceivedNotification { get; set; }
+        public CustomMessageBox MessageReceivedNotification { get; set; }
 
         /// <summary>
         /// Callback for LinphoneCoreListener
@@ -825,21 +826,28 @@ namespace Linphone.Model
                     //Displays the message as a popup
                     if (MessageReceivedNotification != null)
                     {
-                        MessageReceivedNotification.Hide();
+                        MessageReceivedNotification.Dismiss();
                     }
 
-                    Popup messageNotif = new Popup();
-                    messageNotif.Width = Application.Current.Host.Content.ActualWidth;
-                    messageNotif.Height = Application.Current.Host.Content.ActualHeight;
-                    messageNotif.VerticalOffset = 25;
-
-                    MessageReceivedNotification = new MessageReceivedNotification(messageNotif, msg);
-                    MessageReceivedNotification.ShowClicked += (sender, chatMessage) =>
+                    MessageReceivedNotification = new CustomMessageBox()
                     {
-                        BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/Chat.xaml?sip=" + chatMessage.Contact, UriKind.RelativeOrAbsolute));
+                        Caption = url.Length > 0 ? AppResources.ImageMessageReceived : AppResources.MessageReceived,
+                        Message = url.Length > 0 ? "" : message.GetText(),
+                        LeftButtonContent = AppResources.Show,
+                        RightButtonContent = AppResources.Close
                     };
-                    messageNotif.Child = MessageReceivedNotification;
-                    messageNotif.IsOpen = true;
+
+                    MessageReceivedNotification.Dismissed += (s, e) =>
+                        {
+                            switch (e.Result)
+                            {
+                                case CustomMessageBoxResult.LeftButton:
+                                    BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/Chat.xaml?sip=" + msg.Contact, UriKind.RelativeOrAbsolute));
+                                    break;
+                            }
+                        };
+
+                    MessageReceivedNotification.Show();
 
                     //Update tile
                     UpdateLiveTile();

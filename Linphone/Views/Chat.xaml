@@ -42,11 +42,8 @@
                                 <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilyNormal}"/>
                                 <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}"/>
                                 <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="CaretBrush" Value="White"/>
-                                <Setter Property="Foreground" Value="White"/>
-                                <Setter Property="BorderBrush" Value="{StaticResource PhoneTextBoxBrush}"/>
+                                <Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}"/>
                                 <Setter Property="SelectionBackground" Value="{StaticResource PhoneAccentBrush}"/>
-                                <Setter Property="SelectionForeground" Value="{StaticResource PhoneTextBoxSelectionForegroundBrush}"/>
                                 <Setter Property="BorderThickness" Value="0"/>
                                 <Setter Property="Padding" Value="2"/>
                                 <Setter Property="Template">
@@ -71,7 +68,11 @@
                     <Button Grid.Column="2" x:Name="ChooseContact" BorderThickness="0" Click="ChooseContact_Click">
                         <Button.Template>
                             <ControlTemplate>
-                                <Image Source="/Assets/AppBar/people.contacts.png"/>
+                                <Rectangle Fill="{StaticResource PhoneForegroundBrush}" Width="48" Height="48">
+                                    <Rectangle.OpacityMask>
+                                        <ImageBrush ImageSource="/Assets/AppBar/people.contacts.png"/>
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
                             </ControlTemplate>
                         </Button.Template>
                     </Button>

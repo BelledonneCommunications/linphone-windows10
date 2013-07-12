@@ -25,12 +25,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="1" Margin="12,5,0,0">
-            <!--<TextBlock Foreground="Black" Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextNormalStyle}"/>-->
-            <TextBlock Text="{Binding Path=LocalizedResources.ContactsMenu, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-        </StackPanel>
-
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="2" Margin="12,0,12,0">
             <Grid.Resources>
@@ -217,7 +211,7 @@
             </Grid.Resources>
             <!--End of the hack-->
 
-            <phone:Pivot SelectionChanged="Pivot_SelectionChanged">
+            <phone:Pivot SelectionChanged="Pivot_SelectionChanged" Title="{Binding Path=LocalizedResources.ContactsMenu, Source={StaticResource LocalizedStrings}}">
                 <phone:PivotItem Header="{Binding Path=LocalizedResources.ContactsAll, Source={StaticResource LocalizedStrings}}">
                     <phone:LongListSelector
                         x:Name="contactsList"

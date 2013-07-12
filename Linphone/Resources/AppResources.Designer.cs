@@ -481,6 +481,33 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Saving picture.
+        /// </summary>
+        public static string FileSaving {
+            get {
+                return ResourceManager.GetString("FileSaving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operation failed.
+        /// </summary>
+        public static string FileSavingFailure {
+            get {
+                return ResourceManager.GetString("FileSavingFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operation successful.
+        /// </summary>
+        public static string FileSavingSuccess {
+            get {
+                return ResourceManager.GetString("FileSavingSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to G722.
         /// </summary>
         public static string G722Codec {
@@ -603,6 +630,15 @@ namespace Linphone.Resources {
         public static string LockScreenSettings {
             get {
                 return ResourceManager.GetString("LockScreenSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message received.
+        /// </summary>
+        public static string MessageReceived {
+            get {
+                return ResourceManager.GetString("MessageReceived", resourceCulture);
             }
         }
         

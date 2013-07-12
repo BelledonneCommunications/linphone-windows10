@@ -23,7 +23,7 @@ namespace Linphone.Controls
             set
             {
                 _action = value;
-                action.Source = new BitmapImage(new Uri(value, UriKind.RelativeOrAbsolute)); ;
+                action.ImageSource = new BitmapImage(new Uri(value, UriKind.RelativeOrAbsolute)); ;
             }
         }
 
@@ -40,7 +40,7 @@ namespace Linphone.Controls
             set
             {
                 _action2 = value;
-                action2.Source = new BitmapImage(new Uri(value, UriKind.RelativeOrAbsolute)); ;
+                action2.ImageSource = new BitmapImage(new Uri(value, UriKind.RelativeOrAbsolute)); ;
             }
         }
 

@@ -26,6 +26,17 @@ namespace Linphone.Views
             Video.Visibility = _settings.HideVideoSettings ? Visibility.Collapsed : Visibility.Visible;
         }
 
+        /// <summary>
+        /// Method called when the page is displayed.
+        /// </summary>
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            // Create LinphoneCore if not created yet, otherwise do nothing
+            await LinphoneManager.Instance.InitLinphoneCore();
+        }
+
+
         private void cancel_Click_1(object sender, EventArgs e)
         {
             NavigationService.GoBack();

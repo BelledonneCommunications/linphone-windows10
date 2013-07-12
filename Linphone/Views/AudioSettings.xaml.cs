@@ -35,6 +35,18 @@ namespace Linphone.Views
             GSM.IsChecked = _settings.GSM;
         }
 
+        /// <summary>
+        /// Method called when the page is displayed.
+        /// </summary>
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            LinphoneManager.Instance.ECListener = this;
+
+            // Create LinphoneCore if not created yet, otherwise do nothing
+            await LinphoneManager.Instance.InitLinphoneCore();
+        }
+
         private void cancel_Click_1(object sender, EventArgs e)
         {
             NavigationService.GoBack();
@@ -83,14 +95,6 @@ namespace Linphone.Views
             appBarCancel.Text = AppResources.CancelChanges;
             ApplicationBar.Buttons.Add(appBarCancel);
             appBarCancel.Click += cancel_Click_1;
-        }
-
-        /// <summary>
-        /// Actualises the echo calibrator listener when the pages changes.
-        /// </summary>
-        protected override void OnNavigatedTo(NavigationEventArgs nea)
-        {
-            LinphoneManager.Instance.ECListener = this;
         }
 
         /// <summary>
