@@ -41,7 +41,8 @@
             Grid.Row="0" 
             x:Name="Message" 
             Style="{StaticResource MessageStyle}"
-            TextAlignment="Left"/>
+            TextAlignment="Left"
+            Padding="5,0,0,0"/>
 
         <Button
             Grid.Row="0"
