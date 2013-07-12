@@ -48,6 +48,8 @@
             x:Name="ShowImage"
             Visibility="Collapsed"
             Click="ShowImage_Click"
+            Foreground="White"
+            BorderBrush="White"
             Content="{Binding Path=LocalizedResources.ShowImage, Source={StaticResource LocalizedStrings}}"/>
             
         <Image

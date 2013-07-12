@@ -52,6 +52,8 @@
             x:Name="ShowImage"
             Visibility="Collapsed"
             Click="ShowImage_Click"
+            Foreground="White"
+            BorderBrush="White"
             Content="{Binding Path=LocalizedResources.ShowImage, Source={StaticResource LocalizedStrings}}"/>
         
         <Button
@@ -59,6 +61,8 @@
             x:Name="DownloadImage"
             Visibility="Collapsed"
             Click="DownloadImage_Click"
+            Foreground="White"
+            BorderBrush="White"
             Content="{Binding Path=LocalizedResources.DownloadImage, Source={StaticResource LocalizedStrings}}"/>
 
         <ProgressBar
