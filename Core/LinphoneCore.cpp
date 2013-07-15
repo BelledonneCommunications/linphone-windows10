@@ -672,8 +672,7 @@ static void EchoCalibrationAudioUninit(void *data)
 	Linphone::Core::EchoCalibrationData *ecData = static_cast<Linphone::Core::EchoCalibrationData *>(data);
 	if (ecData != nullptr) {
 		ecData->call->NotifyCallEnded();
-		ecData->call = nullptr;
-		AudioRoutingManager::GetDefault()->SetAudioEndpoint(ecData->endpoint);
+		AudioRoutingManager::GetDefault()->SetAudioEndpoint(AudioRoutingEndpoint::Default);
 	}
 }
 

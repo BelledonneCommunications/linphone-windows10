@@ -12,6 +12,8 @@ using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Navigation;
 using System.Data.Linq;
+using Microsoft.Phone.Reactive;
+using Linphone.Agents;
 
 namespace Linphone
 {
@@ -178,6 +180,8 @@ namespace Linphone
 
             // Store the push channel URI 
             this.PushChannelUri = e.ChannelUri;
+            PushManager pushManager = new PushManager();
+            pushManager.PushChannelUri = e.ChannelUri;
 
             //  Let listeners know that we have a push channel URI 
             if (this.PushChannelUriChanged != null)
