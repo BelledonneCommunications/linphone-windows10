@@ -96,11 +96,6 @@
                     <TextBox
                         x:Name="Proxy"
                         KeyDown="Proxy_KeyDown">
-                        <TextBox.InputScope>
-                            <InputScope>
-                                <InputScopeName NameValue="Url" />
-                            </InputScope>
-                        </TextBox.InputScope>
                     </TextBox>
                 </StackPanel>
 
