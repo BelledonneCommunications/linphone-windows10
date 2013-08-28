@@ -485,4 +485,22 @@ http://www.linphone.org/m/help
   <data name="MessageReceived" xml:space="preserve">
     <value>Message received</value>
   </data>
+  <data name="CreateAccount" xml:space="preserve">
+    <value>Create a linphone.org account</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Log in</value>
+  </data>
+  <data name="LoginIn" xml:space="preserve">
+    <value>Loging in...</value>
+  </data>
+  <data name="LoginMenu" xml:space="preserve">
+    <value>Connection</value>
+  </data>
+  <data name="ErrorLogin" xml:space="preserve">
+    <value>Username and/or Domain cannot be empty</value>
+  </data>
+  <data name="LinphoneLogin" xml:space="preserve">
+    <value>Use linphone.org account</value>
+  </data>
 </root>

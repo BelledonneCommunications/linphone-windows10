@@ -175,6 +175,9 @@
     <Compile Include="Views\Dialer.xaml.cs">
       <DependentUpon>Dialer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\FirstLogin.xaml.cs">
+      <DependentUpon>FirstLogin.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FullScreenPicture.xaml.cs">
       <DependentUpon>FullScreenPicture.xaml</DependentUpon>
     </Compile>
@@ -360,6 +363,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FirstLogin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
