@@ -1208,6 +1208,7 @@ namespace Linphone.Model
 
         #region Constants settings names
         private const string VibrateOnIncomingMessageKeyName = "VibrateOnIncomingMessage";
+        private const string ScaleDownSentPicturesKeyName = "ScaleDownSentPictures";
         #endregion
 
         #region Implementation of the ISettingsManager interface
@@ -1223,8 +1224,13 @@ namespace Linphone.Model
                 value = ((bool)_settings[VibrateOnIncomingMessageKeyName]).ToString();
             else
                 value = true.ToString();
-
             dict[VibrateOnIncomingMessageKeyName] = value;
+
+            if (_settings.Contains(ScaleDownSentPicturesKeyName))
+                value = ((bool)_settings[ScaleDownSentPicturesKeyName]).ToString();
+            else
+                value = true.ToString();
+            dict[ScaleDownSentPicturesKeyName] = value;
         }
 
         /// <summary>
@@ -1239,6 +1245,15 @@ namespace Linphone.Model
                     _settings[VibrateOnIncomingMessageKeyName] = value;
                 else
                     _settings.Add(VibrateOnIncomingMessageKeyName, value);
+                _settings.Save();
+            }
+            if (ValueChanged(ScaleDownSentPicturesKeyName))
+            {
+                bool value = Convert.ToBoolean(GetNew(ScaleDownSentPicturesKeyName));
+                if (_settings.Contains(ScaleDownSentPicturesKeyName))
+                    _settings[ScaleDownSentPicturesKeyName] = value;
+                else
+                    _settings.Add(ScaleDownSentPicturesKeyName, value);
                 _settings.Save();
             }
         }
@@ -1257,6 +1272,17 @@ namespace Linphone.Model
             set
             {
                 Set(VibrateOnIncomingMessageKeyName, value.ToString());
+            }
+        }
+        public bool? ScaleDownSentPictures
+        {
+            get
+            {
+                return Convert.ToBoolean(Get(ScaleDownSentPicturesKeyName));
+            }
+            set 
+            {
+                Set(ScaleDownSentPicturesKeyName, value.ToString());
             }
         }
         #endregion

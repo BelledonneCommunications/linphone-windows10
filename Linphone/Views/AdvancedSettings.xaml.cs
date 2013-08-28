@@ -31,6 +31,7 @@ namespace Linphone.Views
             rfc2833.IsChecked = _callSettings.SendDTFMsRFC2833;
             sipInfo.IsChecked = _callSettings.SendDTFMsSIPInfo;
             vibrator.IsChecked = _chatSettings.VibrateOnIncomingMessage;
+            resizeDown.IsChecked = _chatSettings.ScaleDownSentPictures;
 
             List<string> tunnelModes = new List<string>
             {
@@ -84,6 +85,7 @@ namespace Linphone.Views
             _networkSettings.Save();
 
             _chatSettings.VibrateOnIncomingMessage = vibrator.IsChecked;
+            _chatSettings.ScaleDownSentPictures = resizeDown.IsChecked;
             _chatSettings.Save();
 
             NavigationService.GoBack();

@@ -397,6 +397,29 @@ namespace Linphone.Views
                 BitmapImage image = new BitmapImage();
                 image.SetSource(e.ChosenPhoto);
 
+                ChatSettingsManager chatMgr = new ChatSettingsManager();
+                chatMgr.Load();
+                if ((bool)chatMgr.ScaleDownSentPictures)
+                {
+                    // Resize down the image
+                    WriteableBitmap bm = new WriteableBitmap(image);
+                    MemoryStream ms = new MemoryStream();
+                    int w = image.PixelWidth;
+                    int h = image.PixelHeight;
+                    if (w > h && w > 500)
+                    {
+                        h = (500 * h) / w;
+                        w = 500;
+                    }
+                    else if (h > w && h > 500)
+                    {
+                        w = (500 * w) / h;
+                        h = 500;
+                    }
+                    bm.SaveJpeg(ms, w, h, 0, 100);
+                    image.SetSource(ms);
+                }
+
                 try
                 {
                     ProgressPopup.Visibility = Visibility.Visible;

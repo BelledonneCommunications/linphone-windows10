@@ -90,6 +90,10 @@
                         x:Name="vibrator" 
                         Header="{Binding Path=LocalizedResources.VibratorSetting, Source={StaticResource LocalizedStrings}}">
                     </toolkit:ToggleSwitch>
+                    <toolkit:ToggleSwitch  
+                        x:Name="resizeDown" 
+                        Header="{Binding Path=LocalizedResources.ResizeSetting, Source={StaticResource LocalizedStrings}}">
+                    </toolkit:ToggleSwitch>
                 </StackPanel>
             </phone:PivotItem>
         </phone:Pivot>

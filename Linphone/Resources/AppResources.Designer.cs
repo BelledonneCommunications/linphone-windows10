@@ -796,6 +796,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scale down sent pictures.
+        /// </summary>
+        public static string ResizeSetting {
+            get {
+                return ResourceManager.GetString("ResizeSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LeftToRight.
         /// </summary>
         public static string ResourceFlowDirection {

@@ -503,4 +503,7 @@ http://www.linphone.org/m/help
   <data name="LinphoneLogin" xml:space="preserve">
     <value>Use linphone.org account</value>
   </data>
+  <data name="ResizeSetting" xml:space="preserve">
+    <value>Scale down sent pictures</value>
+  </data>
 </root>
