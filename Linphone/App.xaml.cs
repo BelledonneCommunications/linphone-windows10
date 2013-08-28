@@ -255,6 +255,7 @@ namespace Linphone
         // Code to execute if a navigation fails
         private void RootFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
         {
+            BugCollector.LogException(e.Exception, "Navigation failed: " + e.Uri.ToString());
             if (Debugger.IsAttached)
             {
                 // A navigation has failed; break into the debugger
@@ -265,6 +266,7 @@ namespace Linphone
         // Code to execute on Unhandled Exceptions
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
+            BugCollector.LogException(e.ExceptionObject, "UnhandledException");
             if (Debugger.IsAttached)
             {
                 // An unhandled exception has occurred; break into the debugger

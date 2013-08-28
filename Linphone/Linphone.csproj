@@ -119,6 +119,7 @@
     <Compile Include="Model\AlphaKeyGroup.cs" />
     <Compile Include="Model\AssociationUriMapper.cs" />
     <Compile Include="Model\BaseModel.cs" />
+    <Compile Include="Model\BugCollector.cs" />
     <Compile Include="Model\CallControllerListener.cs" />
     <Compile Include="Model\CallLog.cs" />
     <Compile Include="Model\ContactManager.cs" />

@@ -506,4 +506,14 @@ http://www.linphone.org/m/help
   <data name="ResizeSetting" xml:space="preserve">
     <value>Scale down sent pictures</value>
   </data>
+  <data name="ReportCrash" xml:space="preserve">
+    <value>Report</value>
+  </data>
+  <data name="ReportCrashDialogCaption" xml:space="preserve">
+    <value>Crash detected</value>
+  </data>
+  <data name="ReportCrashDialogMessage" xml:space="preserve">
+    <value>The application has detected a crash. 
+Do you want to report it to the developpers ? It will help fix it faster.</value>
+  </data>
 </root>

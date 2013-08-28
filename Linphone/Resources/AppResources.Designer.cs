@@ -796,6 +796,34 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Report.
+        /// </summary>
+        public static string ReportCrash {
+            get {
+                return ResourceManager.GetString("ReportCrash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Crash detected.
+        /// </summary>
+        public static string ReportCrashDialogCaption {
+            get {
+                return ResourceManager.GetString("ReportCrashDialogCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The application has detected a crash. 
+        ///Do you want to report it to the developpers ? It will help fix it faster..
+        /// </summary>
+        public static string ReportCrashDialogMessage {
+            get {
+                return ResourceManager.GetString("ReportCrashDialogMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scale down sent pictures.
         /// </summary>
         public static string ResizeSetting {

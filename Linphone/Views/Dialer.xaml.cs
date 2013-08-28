@@ -1,6 +1,7 @@
 ﻿using Linphone.Controls;
 using Linphone.Model;
 using Linphone.Resources;
+using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System;
 using System.Threading.Tasks;
@@ -36,11 +37,39 @@ namespace Linphone
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+
+            if (BugCollector.HasExceptionToReport())
+            {
+                // Allow to report exceptions before the creation of the core in case the problem is in there
+                CustomMessageBox reportIssueDialog = new CustomMessageBox()
+                {
+                    Caption = AppResources.ReportCrashDialogCaption,
+                    Message = AppResources.ReportCrashDialogMessage,
+                    LeftButtonContent = AppResources.ReportCrash,
+                    RightButtonContent = AppResources.Close
+                };
+
+                reportIssueDialog.Dismissed += (s, ev) =>
+                {
+                    switch (ev.Result)
+                    {
+                        case CustomMessageBoxResult.LeftButton:
+                            BugCollector.ReportExceptions();
+                            break;
+                        case CustomMessageBoxResult.RightButton:
+                            BugCollector.DeleteFile();
+                            break;
+                    }
+                };
+
+                reportIssueDialog.Show();
+            }
+
             StatusBar = status;
             BasePage.StatusBar.RefreshStatus(LinphoneManager.Instance.LastKnownState);
 
             // Create LinphoneCore if not created yet, otherwise do nothing
-            Task t = LinphoneManager.Instance.InitLinphoneCore();
+            await LinphoneManager.Instance.InitLinphoneCore();
 
             BuildLocalizedApplicationBar();
 
@@ -50,8 +79,6 @@ namespace Linphone
                 String sipAddressToCall = NavigationContext.QueryString["sip"];
                 addressBox.Text = sipAddressToCall;
             }
-
-            await t;
         }
 
         private void call_Click_1(object sender, EventArgs e)
