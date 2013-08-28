@@ -260,7 +260,6 @@ namespace Linphone.Model
             LpConfig config = server.LinphoneCoreFactory.CreateLpConfig(SettingsManager.GetConfigPath(), SettingsManager.GetFactoryConfigPath());
             ConfigureLogger();
             server.LinphoneCoreFactory.CreateLinphoneCore(this, config);
-            server.LinphoneCore.SetUserAgent(DefaultValues.UserAgent, XDocument.Load("WMAppManifest.xml").Root.Element("App").Attribute("Version").Value);
             server.LinphoneCore.SetRootCA("Assets/rootca.pem");
             Debug.WriteLine("[LinphoneManager] LinphoneCore created");
 
@@ -268,21 +267,24 @@ namespace Linphone.Model
             CallController.MuteRequested += MuteRequested;
             CallController.UnmuteRequested += UnmuteRequested;
 
-            if (LinphoneCore.GetDefaultProxyConfig() != null)
-            {
-                string host, token;
-                host = ((App)App.Current).PushChannelUri.Host;
-                token = ((App)App.Current).PushChannelUri.AbsolutePath;
-                LinphoneCore.GetDefaultProxyConfig().SetContactParameters("app-id=" + host + ";pn-type=wp;pn-tok=" + token + ";pn-msg-str=IM_MSG;pn-call-str=IC_MSG;pn-call-snd=ring.caf;pn-msg-snd=msg.caf");
-            }
-
-            if (LinphoneCore.IsVideoSupported())
+            if (server.LinphoneCore.IsVideoSupported())
             {
                 DetectCameras();
             }
 
+            server.LinphoneCore.SetUserAgent(DefaultValues.UserAgent, XDocument.Load("WMAppManifest.xml").Root.Element("App").Attribute("Version").Value);
+            if (server.LinphoneCore.GetDefaultProxyConfig() != null)
+            {
+                string host, token;
+                host = ((App)App.Current).PushChannelUri.Host;
+                token = ((App)App.Current).PushChannelUri.AbsolutePath;
+                SIPAccountSettingsManager sipAccount = new SIPAccountSettingsManager();
+                sipAccount.Load();
+                server.LinphoneCore.GetDefaultProxyConfig().SetContactParameters("app-id=" + host + ";pn-type=wp;pn-tok=\"" + token + "\"");
+            }
+
             lastNetworkState = DeviceNetworkInformation.IsNetworkAvailable;
-            LinphoneCore.SetNetworkReachable(lastNetworkState);
+            server.LinphoneCore.SetNetworkReachable(lastNetworkState);
             DeviceNetworkInformation.NetworkAvailabilityChanged += new EventHandler<NetworkNotificationEventArgs>(OnNetworkStatusChanged);
 
             isLinphoneRunning = true;
