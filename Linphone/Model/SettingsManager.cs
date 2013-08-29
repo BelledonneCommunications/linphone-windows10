@@ -367,7 +367,7 @@ namespace Linphone.Model
         public void Save()
         {
             bool AccountChanged = ValueChanged(UsernameKeyName) || ValueChanged(PasswordKeyName) || ValueChanged(DomainKeyName)
-                || ValueChanged(ProxyKeyName) || ValueChanged(OutboundProxyKeyName);
+                || ValueChanged(ProxyKeyName) || ValueChanged(OutboundProxyKeyName) || ValueChanged(DisplayNameKeyName);
 
             if (AccountChanged)
             {
@@ -433,6 +433,7 @@ namespace Linphone.Model
 
                     lc.AddProxyConfig(cfg);
                     lc.SetDefaultProxyConfig(cfg);
+                    LinphoneManager.Instance.AddPushInformationsToContactParams();
                 }
             }
         }

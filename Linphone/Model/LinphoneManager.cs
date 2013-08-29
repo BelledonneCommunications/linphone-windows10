@@ -273,21 +273,27 @@ namespace Linphone.Model
             }
 
             server.LinphoneCore.SetUserAgent(DefaultValues.UserAgent, XDocument.Load("WMAppManifest.xml").Root.Element("App").Attribute("Version").Value);
-            if (server.LinphoneCore.GetDefaultProxyConfig() != null)
-            {
-                string host, token;
-                host = ((App)App.Current).PushChannelUri.Host;
-                token = ((App)App.Current).PushChannelUri.AbsolutePath;
-                SIPAccountSettingsManager sipAccount = new SIPAccountSettingsManager();
-                sipAccount.Load();
-                server.LinphoneCore.GetDefaultProxyConfig().SetContactParameters("app-id=" + host + ";pn-type=wp;pn-tok=\"" + token + "\"");
-            }
+            AddPushInformationsToContactParams();
 
             lastNetworkState = DeviceNetworkInformation.IsNetworkAvailable;
             server.LinphoneCore.SetNetworkReachable(lastNetworkState);
             DeviceNetworkInformation.NetworkAvailabilityChanged += new EventHandler<NetworkNotificationEventArgs>(OnNetworkStatusChanged);
 
             isLinphoneRunning = true;
+        }
+
+        /// <summary>
+        /// Sets the push notif infos into proxy config contacts params
+        /// </summary>
+        public void AddPushInformationsToContactParams()
+        {
+            if (server.LinphoneCore.GetDefaultProxyConfig() != null)
+            {
+                string host, token;
+                host = ((App)App.Current).PushChannelUri.Host;
+                token = ((App)App.Current).PushChannelUri.AbsolutePath;
+                server.LinphoneCore.GetDefaultProxyConfig().SetContactParameters("app-id=" + host + ";pn-type=wp;pn-tok=" + token);
+            }
         }
 
         /// <summary>
@@ -729,10 +735,14 @@ namespace Linphone.Model
 
             BaseModel.UIDispatcher.BeginInvoke(() =>
             {
-                Logger.Msg("[LinphoneManager] Registration state changed: " + state.ToString() + ", message=" + message + " for identity " + config.GetIdentity());
-                LastKnownState = state;
-                if (BasePage.StatusBar != null)
-                    BasePage.StatusBar.RefreshStatus(state);
+                try
+                {
+                    Logger.Msg("[LinphoneManager] Registration state changed: " + state.ToString() + ", message=" + message + " for identity " + config.GetIdentity());
+                    LastKnownState = state;
+                    if (BasePage.StatusBar != null)
+                        BasePage.StatusBar.RefreshStatus(state);
+                }
+                catch (Exception) { }
             });
         }
 

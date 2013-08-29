@@ -192,7 +192,7 @@ namespace Linphone
 
         private void PushChannel_ErrorOccurred(object sender, NotificationChannelErrorEventArgs e)
         {
-
+            Debug.WriteLine("[Linphone] Push channel error {0}", e.Message);
         }
 
         private const string incomingCallTaskName = "Linphone.IncomingCallTask";
