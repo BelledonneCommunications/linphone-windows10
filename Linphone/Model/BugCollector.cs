@@ -16,6 +16,7 @@ namespace Linphone.Model
     public class BugCollector
     {
         const string exceptionsFileName = "exceptions.log";
+        const string logFileName = "Linphone.log";
 
         internal static void LogException(Exception e, string extra)
         {
@@ -55,7 +56,7 @@ namespace Linphone.Model
             return false;
         }
 
-        internal static void ReportExceptions()
+        internal static async void ReportExceptions()
         {
             try
             {
@@ -69,16 +70,44 @@ namespace Linphone.Model
                             body += input.ReadToEnd();
                             input.Close();
                         }
-
-                        EmailComposeTask email = new EmailComposeTask();
-                        email.To = "linphone-wphone@belledonne-communications.com";
-                        email.Subject = "Exception report";
-                        email.Body = body;
-                        email.Show();
+                    }
+                    if (store.FileExists(logFileName))
+                    {
+                        body += "\r\n"; 
+                        // Limit the amount of linphone logs to the last 50ko
+                        string logs = await ReadLogs();
+                        if (logs.Length > 50000)
+                        {
+                            logs = logs.Substring(logs.Length - 50000);
+                        }
+                        body += logs;
                     }
                 }
+                EmailComposeTask email = new EmailComposeTask();
+                email.To = "linphone-wphone@belledonne-communications.com";
+                email.Subject = "Exception report";
+                email.Body = body;
+                email.Show();
             }
             catch (Exception) { }
+        }
+
+        internal static async Task<string> ReadLogs()
+        {
+            ApplicationSettingsManager appSettings = new ApplicationSettingsManager();
+            appSettings.Load();
+
+            byte[] data;
+            StorageFolder folder = ApplicationData.Current.LocalFolder;
+            StorageFile file = await folder.GetFileAsync(appSettings.LogOption);
+
+            using (Stream s = await file.OpenStreamForReadAsync())
+            {
+                data = new byte[s.Length];
+                await s.ReadAsync(data, 0, (int)s.Length);
+            }
+
+            return Encoding.UTF8.GetString(data, 0, data.Length);
         }
 
         internal static void DeleteFile()
