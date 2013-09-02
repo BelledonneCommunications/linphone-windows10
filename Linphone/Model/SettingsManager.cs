@@ -344,7 +344,14 @@ namespace Linphone.Model
                     dict[DomainKeyName] = address.GetDomain();
                     if (address.GetDomain() != proxyAddress.GetDomain())
                     {
-                        dict[ProxyKeyName] = proxyAddress.GetDomain();
+                        if (proxyPort > 0)
+                        {
+                            dict[ProxyKeyName] = String.Format("{0}:{1}", proxyAddress.GetDomain(), proxyPort);
+                        }
+                        else
+                        {
+                            dict[ProxyKeyName] = proxyAddress.GetDomain();
+                        }
                     }
                     else if (proxyPort > 0)
                     {
