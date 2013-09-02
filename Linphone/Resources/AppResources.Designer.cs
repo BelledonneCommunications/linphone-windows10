@@ -535,6 +535,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to G729.
+        /// </summary>
+        public static string G729Codec {
+            get {
+                return ResourceManager.GetString("G729Codec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GSM.
         /// </summary>
         public static string GSMCodec {

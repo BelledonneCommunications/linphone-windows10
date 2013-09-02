@@ -516,4 +516,7 @@ http://www.linphone.org/m/help
     <value>The application has detected a crash. 
 Do you want to report it to the developpers ? It will help fix it faster.</value>
   </data>
+  <data name="G729Codec" xml:space="preserve">
+    <value>G729</value>
+  </data>
 </root>

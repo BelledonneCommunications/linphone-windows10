@@ -545,6 +545,7 @@ namespace Linphone.Model
         private const string PCMUSettingKeyName = "CodecPCMU";
         private const string PCMASettingKeyName = "CodecPCMA";
         private const string G722SettingKeyName = "CodecG722";
+        private const string G729SettingKeyName = "CodecG729";
         private const string ILBCSettingKeyName = "CodecILBC";
         private const string SILK16SettingKeyName = "CodecSILK16";
         private const string GSMSettingKeyName = "CodecGSM";
@@ -562,6 +563,7 @@ namespace Linphone.Model
                 { new Tuple<String, int>("pcmu", 8000), PCMUSettingKeyName },
                 { new Tuple<String, int>("pcma", 8000), PCMASettingKeyName },
                 { new Tuple<String, int>("g722", 8000), G722SettingKeyName },
+                { new Tuple<String, int>("g729", 8000), G729SettingKeyName },
                 { new Tuple<String, int>("ilbc", 8000), ILBCSettingKeyName },
                 { new Tuple<String, int>("silk", 16000), SILK16SettingKeyName },
                 { new Tuple<String, int>("gsm", 8000), GSMSettingKeyName },
@@ -728,6 +730,21 @@ namespace Linphone.Model
             set
             {
                 Set(G722SettingKeyName, value.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Is G.729 audio codec enabled or disabled ? (Boolean)
+        /// </summary>
+        public bool G729
+        {
+            get
+            {
+                return Convert.ToBoolean(Get(G729SettingKeyName));
+            }
+            set
+            {
+                Set(G729SettingKeyName, value.ToString());
             }
         }
 

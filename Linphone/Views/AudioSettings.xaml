@@ -34,6 +34,7 @@
                                 <RowDefinition Height="Auto"></RowDefinition>
                                 <RowDefinition Height="Auto"></RowDefinition>
                                 <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
                             </Grid.RowDefinitions>
 
                             <toolkit:ToggleSwitch  
@@ -80,18 +81,24 @@
 
                             <toolkit:ToggleSwitch  
                         Grid.Row="7"
+                        x:Name="G729" 
+                        Header="{Binding Path=LocalizedResources.G729Codec, Source={StaticResource LocalizedStrings}}">
+                            </toolkit:ToggleSwitch>
+
+                            <toolkit:ToggleSwitch  
+                        Grid.Row="8"
                         x:Name="ILBC" 
                         Header="{Binding Path=LocalizedResources.ILBCCodec, Source={StaticResource LocalizedStrings}}">
                             </toolkit:ToggleSwitch>
 
                             <toolkit:ToggleSwitch  
-                        Grid.Row="8"
+                        Grid.Row="9"
                         x:Name="SILK16" 
                         Header="{Binding Path=LocalizedResources.SILK16Codec, Source={StaticResource LocalizedStrings}}">
                             </toolkit:ToggleSwitch>
 
                             <toolkit:ToggleSwitch  
-                        Grid.Row="9"
+                        Grid.Row="10"
                         x:Name="GSM" 
                         Header="{Binding Path=LocalizedResources.GSMCodec, Source={StaticResource LocalizedStrings}}">
                             </toolkit:ToggleSwitch>

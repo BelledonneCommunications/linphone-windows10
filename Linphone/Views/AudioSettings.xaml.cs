@@ -30,6 +30,7 @@ namespace Linphone.Views
             PCMU.IsChecked = _settings.PCMU;
             PCMA.IsChecked = _settings.PCMA;
             G722.IsChecked = _settings.G722;
+            G729.IsChecked = _settings.G729;
             ILBC.IsChecked = _settings.ILBC;
             SILK16.IsChecked = _settings.SILK16;
             GSM.IsChecked = _settings.GSM;
@@ -67,6 +68,7 @@ namespace Linphone.Views
             _settings.PCMU = ToBool(PCMU.IsChecked);
             _settings.PCMA = ToBool(PCMA.IsChecked);
             _settings.G722 = ToBool(G722.IsChecked);
+            _settings.G729 = ToBool(G729.IsChecked);
             _settings.ILBC = ToBool(ILBC.IsChecked);
             _settings.SILK16 = ToBool(SILK16.IsChecked);
             _settings.GSM = ToBool(GSM.IsChecked);
