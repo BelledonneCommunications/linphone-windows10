@@ -38,3 +38,9 @@ automatically once built.
 /!\ Please check the Linphone project in the solution is set as startup project.
 (The startup project is in bold in the project list)
 If not, right click on Linphone project and choose the menu "Set as StartUp project".
+
+To enable network log collect, add the following lines under the [app] section of your linphonerc:
+
+LogDestination=TCPRemote
+
+LogOption=ip:port
