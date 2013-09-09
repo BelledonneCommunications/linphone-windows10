@@ -1140,7 +1140,7 @@ namespace Linphone.Model
             }
 
             // Save tunnel configuration
-            if (LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable() && false) // Disable tunnel for now
+            if (LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable() && Customs.IsTunnelEnabled)
             {
                 if (ValueChanged(TunnelServerKeyName) || ValueChanged(TunnelPortKeyName))
                 {

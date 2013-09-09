@@ -48,16 +48,6 @@ namespace Linphone.Agents
                         server.LinphoneCore.SetRootCA("Assets/rootca.pem");
                         server.LinphoneCore.SetNetworkReachable(true);
                         Debug.WriteLine("[KeepAliveAgent] Linphone Core created");
-
-                        PushManager pushManager = new PushManager();
-                        if (server.LinphoneCore.GetDefaultProxyConfig() != null && pushManager.PushChannelUri != null)
-                        {
-                            string host, token;
-                            host = pushManager.PushChannelUri.Host;
-                            token = pushManager.PushChannelUri.AbsolutePath;
-                            server.LinphoneCore.GetDefaultProxyConfig().SetContactParameters("app-id=" + host + ";pn-type=wp;pn-tok=" + token + ";pn-msg-str=IM_MSG;pn-call-str=IC_MSG;pn-call-snd=ring.caf;pn-msg-snd=msg.caf");
-                            Debug.WriteLine("[KeepAliveAgent] Added push parameters to contact");
-                        }
                     }
                     else
                     {
@@ -114,13 +104,9 @@ namespace Linphone.Agents
         /// </summary>
         public void RegistrationState(LinphoneProxyConfig config, RegistrationState state, string message)
         {
-            if (config == null)
-                return;
-
-            Debug.WriteLine("[KeepAliveAgent] Registration state changed: " + state.ToString() + ", message=" + message + " for identity " + config.GetIdentity());
-            if (state == Linphone.Core.RegistrationState.RegistrationOk)
+            if (state == Linphone.Core.RegistrationState.RegistrationOk || state == Linphone.Core.RegistrationState.RegistrationFailed)
             {
-                Debug.WriteLine("[KeepAliveAgent] Notify complete");
+                Debug.WriteLine("[KeepAliveAgent] Notify complete (" + state.ToString() + ")");
                 base.NotifyComplete();
             }
         }

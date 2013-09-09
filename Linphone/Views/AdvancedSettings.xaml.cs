@@ -54,7 +54,7 @@ namespace Linphone.Views
             Transport.ItemsSource = transports;
             Transport.SelectedItem = _networkSettings.Transport;
 
-            TunnelPanel.Visibility = LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable() && false ? Visibility.Visible : Visibility.Collapsed; //Hidden properties for now
+            TunnelPanel.Visibility = LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable() && Customs.IsTunnelEnabled ? Visibility.Visible : Visibility.Collapsed; //Hidden properties for now
         }
 
         /// <summary>

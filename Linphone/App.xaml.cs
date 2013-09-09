@@ -180,8 +180,6 @@ namespace Linphone
 
             // Store the push channel URI 
             this.PushChannelUri = e.ChannelUri;
-            PushManager pushManager = new PushManager();
-            pushManager.PushChannelUri = e.ChannelUri;
 
             //  Let listeners know that we have a push channel URI 
             if (this.PushChannelUriChanged != null)
@@ -247,7 +245,7 @@ namespace Linphone
             }
 
             keepAliveTask = new VoipKeepAliveTask(keepAliveTaskName);
-            keepAliveTask.Interval = new TimeSpan(10000000 * 5);
+            keepAliveTask.Interval = new TimeSpan(1,0,0); // 1 hour
             keepAliveTask.Description = "keep-alive task";
             ScheduledActionService.Add(keepAliveTask);
         }

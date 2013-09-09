@@ -265,7 +265,7 @@ namespace Linphone.Views
                     streamContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
                     content.Add(streamContent);
 
-                    using (var message = await client.PostAsync(DefaultValues.PictureUploadScriptURL, content))
+                    using (var message = await client.PostAsync(Customs.PictureUploadScriptURL, content))
                     {
                         message.EnsureSuccessStatusCode();
                         response = await message.Content.ReadAsStringAsync();

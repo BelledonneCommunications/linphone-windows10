@@ -251,7 +251,7 @@ namespace Linphone.Model
                 server.LinphoneCore.CoreListener = this;
                 isLinphoneRunning = true;
                 // Set user-agent because it is not set if coming back from background mode
-                server.LinphoneCore.SetUserAgent(DefaultValues.UserAgent, XDocument.Load("WMAppManifest.xml").Root.Element("App").Attribute("Version").Value);
+                server.LinphoneCore.SetUserAgent(Customs.UserAgent, XDocument.Load("WMAppManifest.xml").Root.Element("App").Attribute("Version").Value);
                 return;
             }
 
@@ -272,7 +272,7 @@ namespace Linphone.Model
                 DetectCameras();
             }
 
-            server.LinphoneCore.SetUserAgent(DefaultValues.UserAgent, XDocument.Load("WMAppManifest.xml").Root.Element("App").Attribute("Version").Value);
+            server.LinphoneCore.SetUserAgent(Customs.UserAgent, XDocument.Load("WMAppManifest.xml").Root.Element("App").Attribute("Version").Value);
             AddPushInformationsToContactParams();
 
             lastNetworkState = DeviceNetworkInformation.IsNetworkAvailable;
@@ -292,10 +292,16 @@ namespace Linphone.Model
                 string host, token;
                 host = ((App)App.Current).PushChannelUri.Host;
                 token = ((App)App.Current).PushChannelUri.AbsolutePath;
-                /*SIPAccountSettingsManager sip = new SIPAccountSettingsManager();
-                sip.Load();
-                server.LinphoneCore.GetDefaultProxyConfig().SetContactParameters("pwd=" + sip.DisplayName + ";app-id=" + host + ";pn-type=wp;pn-tok=" + token);*/
-                server.LinphoneCore.GetDefaultProxyConfig().SetContactParameters("app-id=" + host + ";pn-type=wp;pn-tok=" + token);
+                if (Customs.AddPasswordInContactsParams)
+                {
+                    SIPAccountSettingsManager sip = new SIPAccountSettingsManager();
+                    sip.Load();
+                    server.LinphoneCore.GetDefaultProxyConfig().SetContactParameters("pwd=" + sip.DisplayName + ";app-id=" + host + ";pn-type=wp;pn-tok=" + token);
+                }
+                else
+                {
+                    server.LinphoneCore.GetDefaultProxyConfig().SetContactParameters("app-id=" + host + ";pn-type=wp;pn-tok=" + token);
+                }
             }
         }
 

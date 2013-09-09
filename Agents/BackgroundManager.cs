@@ -68,13 +68,6 @@ namespace Linphone.Agents
             //Globals.Instance.BackgroundModeLogger.Configure(true, OutputTraceDest.TCPRemote, "192.168.0.217:38954");
             //Globals.Instance.LinphoneCoreFactory.OutputTraceListener = Globals.Instance.BackgroundModeLogger;
 
-            /*
-            if (Globals.Instance.LinphoneCore.GetDefaultProxyConfig() != null)
-            {
-                LinphoneProxyConfig proxyCfg = OopServer.LinphoneCore.GetDefaultProxyConfig();
-                LinphoneAddress address = OopServer.LinphoneCoreFactory.CreateLinphoneAddress(proxyCfg.GetIdentity());
-                proxyCfg.SetContactParameters("pwd=" + address.GetDisplayName());
-            }*/
             OopServer.LinphoneCore.SetNetworkReachable(true);
         }
     }

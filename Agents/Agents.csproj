@@ -89,7 +89,6 @@
     <Compile Include="LinphoneForegroundLifeTimeAgent.cs" />
     <Compile Include="LinphoneScheduledAgent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PushManager.cs" />
     <Compile Include="RegistrationHelper.cs" />
     <Compile Include="TileManager.cs" />
     <Compile Include="$(ProjectDir)..\submodules\mswp8vid\VideoRenderer.cs" />
