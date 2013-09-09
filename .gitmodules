@@ -3,7 +3,7 @@
 	url = gitosis@git.linphone.org:antlr3.git
 [submodule "submodules/belle-sip"]
 	path = submodules/belle-sip
-	url = gitosis@git.linphone.org:belle-sip.git
+	url = git://git.linphone.org/belle-sip.git
 [submodule "submodules/gsm"]
 	path = submodules/gsm
 	url = git://git.linphone.org/gsm.git
@@ -18,7 +18,7 @@
 	url = git://git.linphone.org/speex.git
 [submodule "submodules/linphone"]
 	path = submodules/linphone
-	url = gitosis@git.linphone.org:linphone-private.git
+	url = git://git.linphone.org/linphone.git
 [submodule "submodules/tunnel"]
 	path = submodules/tunnel
 	url = gitosis@git.linphone.org:tunnel.git
