@@ -141,7 +141,7 @@ namespace Linphone.Model
         private Server server = null;
 
         // A timespan representing fifteen seconds 
-        private static readonly TimeSpan fifteenSecs = new TimeSpan(0, 0, 15);
+        private static readonly TimeSpan twentySecs = new TimeSpan(0, 0, 20);
 
         // A timespan representing an indefinite wait 
         private static readonly TimeSpan indefiniteWait = new TimeSpan(0, 0, 0, 0, -1);
@@ -177,11 +177,11 @@ namespace Linphone.Model
             string backgroundProcessReadyEventName = Globals.GetBackgroundProcessReadyEventName((uint)backgroundProcessID);
             using (EventWaitHandle backgroundProcessReadyEvent = new EventWaitHandle(initialState: false, mode: EventResetMode.ManualReset, name: backgroundProcessReadyEventName))
             {
-                TimeSpan timeout = Debugger.IsAttached ? indefiniteWait : fifteenSecs;
+                TimeSpan timeout = twentySecs;
                 if (!backgroundProcessReadyEvent.WaitOne(timeout))
                 {
                     // We timed out - something is wrong 
-                    throw new InvalidOperationException(string.Format("The background process did not become ready in {0} milliseconds", timeout.Milliseconds));
+                    throw new InvalidOperationException(string.Format("The background process ({0}) did not become ready in {1} seconds", backgroundProcessID, timeout.Seconds));
                 }
                 else
                 {
@@ -292,6 +292,9 @@ namespace Linphone.Model
                 string host, token;
                 host = ((App)App.Current).PushChannelUri.Host;
                 token = ((App)App.Current).PushChannelUri.AbsolutePath;
+                /*SIPAccountSettingsManager sip = new SIPAccountSettingsManager();
+                sip.Load();
+                server.LinphoneCore.GetDefaultProxyConfig().SetContactParameters("pwd=" + sip.DisplayName + ";app-id=" + host + ";pn-type=wp;pn-tok=" + token);*/
                 server.LinphoneCore.GetDefaultProxyConfig().SetContactParameters("app-id=" + host + ";pn-type=wp;pn-tok=" + token);
             }
         }

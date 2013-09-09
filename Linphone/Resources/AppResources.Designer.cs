@@ -373,6 +373,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete logs file.
+        /// </summary>
+        public static string DeleteLogs {
+            get {
+                return ResourceManager.GetString("DeleteLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Selection.
         /// </summary>
         public static string DeleteSelectionMenu {

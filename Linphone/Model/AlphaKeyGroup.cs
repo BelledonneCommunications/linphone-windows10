@@ -62,9 +62,11 @@ namespace Linphone.Model
             foreach (T item in items)
             {
                 int index = 0;
-                if (!slg.SupportsPhonetics)
+                if (slg != null && !slg.SupportsPhonetics)
                 {
-                    index = slg.GetGroupIndex(getKey(item));
+                    string key = getKey(item);
+                    if (key != null && key.Length > 0)
+                        index = slg.GetGroupIndex(key);
                 }
                 if (index >= 0 && index < list.Count)
                 {

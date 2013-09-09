@@ -38,6 +38,7 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
             
                 <toolkit:ToggleSwitch  
@@ -48,34 +49,41 @@
                 
                 <Button
                     Grid.Row="1"
+                    x:Name="DeleteLogs"
+                    Click="deleteLogs_Click_1"
+                    Margin="0,0,0,20"
+                    Content="{Binding Path=LocalizedResources.DeleteLogs, Source={StaticResource LocalizedStrings}}" />
+
+                <Button
+                    Grid.Row="2"
                     x:Name="Account"
                     Click="account_Click_1"
                     Margin="0,0,0,20"
                     Content="{Binding Path=LocalizedResources.AccountMenu, Source={StaticResource LocalizedStrings}}" />
-            
+
                 <Button
-                    Grid.Row="2"
+                    Grid.Row="3"
                     x:Name="Audio"
                     Click="audio_Click_1"
                     Margin="0,0,0,20"
                     Content="{Binding Path=LocalizedResources.AudioSettingsMenu, Source={StaticResource LocalizedStrings}}" />
 
                 <Button
-                    Grid.Row="3"
+                    Grid.Row="4"
                     x:Name="Video"
                     Click="video_Click_1"
                     Margin="0,0,0,20"
                     Content="{Binding Path=LocalizedResources.VideoSettingsMenu, Source={StaticResource LocalizedStrings}}" />
 
                 <Button
-                    Grid.Row="4"
+                    Grid.Row="5"
                     x:Name="Advanced"
                     Click="advanced_Click_1"
                     Margin="0,0,0,20"
                     Content="{Binding Path=LocalizedResources.AdvancedSettingsMenu, Source={StaticResource LocalizedStrings}}" />
 
                 <Button
-                    Grid.Row="5"
+                    Grid.Row="6"
                     Click="LockScreenSettings_Click_1"
                     x:Name="LockScreenSettings"
                     Margin="0,0,0,20"

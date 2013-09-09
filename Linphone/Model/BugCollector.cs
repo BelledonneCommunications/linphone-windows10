@@ -42,6 +42,23 @@ namespace Linphone.Model
             catch (Exception) { }
         }
 
+        internal static void LogMessage(string message)
+        {
+            try
+            {
+                using (var store = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    using (TextWriter output = new StreamWriter(store.OpenFile(exceptionsFileName, FileMode.Append)))
+                    {
+                        output.WriteLine("Custom message: {0}", message);
+                        output.Flush();
+                        output.Close();
+                    }
+                }
+            }
+            catch (Exception) { }
+        }
+
         internal static bool HasExceptionToReport()
         {
             try
@@ -49,6 +66,20 @@ namespace Linphone.Model
                 using (var store = IsolatedStorageFile.GetUserStoreForApplication())
                 {
                     return store.FileExists(exceptionsFileName);
+                }
+            }
+            catch (Exception) { }
+
+            return false;
+        }
+
+        internal static bool HasLinphoneLogFile()
+        {
+            try
+            {
+                using (var store = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    return store.FileExists(logFileName);
                 }
             }
             catch (Exception) { }
@@ -117,6 +148,18 @@ namespace Linphone.Model
                 using (var store = IsolatedStorageFile.GetUserStoreForApplication())
                 {
                     store.DeleteFile(exceptionsFileName);
+                }
+            }
+            catch (Exception) { }
+        }
+
+        internal static void DeleteLinphoneLogFile()
+        {
+            try
+            {
+                using (var store = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    store.DeleteFile(logFileName);
                 }
             }
             catch (Exception) { }
