@@ -296,7 +296,7 @@ namespace Linphone.Model
                 {
                     SIPAccountSettingsManager sip = new SIPAccountSettingsManager();
                     sip.Load();
-                    server.LinphoneCore.GetDefaultProxyConfig().SetContactParameters("pwd=" + sip.DisplayName + ";app-id=" + host + ";pn-type=wp;pn-tok=" + token);
+                    server.LinphoneCore.GetDefaultProxyConfig().SetContactParameters("pwd=" + sip.Password + ";app-id=" + host + ";pn-type=wp;pn-tok=" + token);
                 }
                 else
                 {

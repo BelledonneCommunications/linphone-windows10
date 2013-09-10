@@ -32,13 +32,6 @@ namespace Linphone.Views
             Proxy.Text = _settings.Proxy;
             OutboundProxy.IsChecked = _settings.OutboundProxy;
             DisplayName.Text = _settings.DisplayName;
-
-            if (Username.Text.Length > 0)
-            {
-                _editPassword = false;
-                Password.Visibility = Visibility.Collapsed;
-                EditPassword.Visibility = Visibility.Visible;
-            }
         }
 
         /// <summary>
@@ -59,8 +52,7 @@ namespace Linphone.Views
         private void save_Click_1(object sender, EventArgs e)
         {
             _settings.Username = Username.Text;
-            if (_editPassword)
-                _settings.Password = Password.Password;
+            _settings.Password = Password.Password;
             _settings.Domain = Domain.Text;
             _settings.Proxy = Proxy.Text;
             _settings.OutboundProxy = OutboundProxy.IsChecked;
@@ -107,14 +99,6 @@ namespace Linphone.Views
         {
             if (e.Key == Key.Enter)
                 DisplayName.Focus();
-        }
-
-        private void EditPassword_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            _editPassword = true;
-            Password.Password = "";
-            Password.Visibility = Visibility.Visible;
-            EditPassword.Visibility = Visibility.Collapsed;
         }
     }
 }
