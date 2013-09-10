@@ -26,7 +26,7 @@ In order to compile Linphone, you need:
 * A computer with Windows 8 (Pro if you want to use the emulator)
 * Visual Studio 11 (2012)
 * The Windows Phone 8 SDK
-* wget, awk and unzip from the GnuWin32 project and put them in your path (http://gnuwin32.sourceforge.net/) for some mediastreamer2 codecs
+* wget, awk, unzip, grep and sed from the GnuWin32 project and put them in your path (http://gnuwin32.sourceforge.net/) for belle-sip and some mediastreamer2 codecs
 * The Java Runtime Environment (JRE)
 
 To import the solution, open the Linphone.sln file at the root of the project.
@@ -42,5 +42,4 @@ If not, right click on Linphone project and choose the menu "Set as StartUp proj
 To enable network log collect, add the following lines under the [app] section of your linphonerc:
 
 LogDestination=TCPRemote
-
 LogOption=ip:port
