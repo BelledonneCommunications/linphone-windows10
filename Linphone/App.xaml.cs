@@ -245,7 +245,7 @@ namespace Linphone
             }
 
             keepAliveTask = new VoipKeepAliveTask(keepAliveTaskName);
-            keepAliveTask.Interval = new TimeSpan(1,0,0); // 1 hour
+            keepAliveTask.Interval = new TimeSpan(6,0,0); // 6 hour, the API round the value to the nearest 6 hours http://msdn.microsoft.com/en-US/library/windowsphone/develop/microsoft.phone.networking.voip.voipkeepalivetask.interval(v=vs.105).aspx
             keepAliveTask.Description = "keep-alive task";
             ScheduledActionService.Add(keepAliveTask);
         }
