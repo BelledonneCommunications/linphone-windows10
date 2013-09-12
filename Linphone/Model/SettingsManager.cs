@@ -419,6 +419,7 @@ namespace Linphone.Model
                     }
 
                     cfg = lc.CreateEmptyProxyConfig();
+                    cfg.Edit();
                     if (displayname != null && displayname.Length > 0)
                     {
                         cfg.SetIdentity(displayname, username, domain);
@@ -428,7 +429,6 @@ namespace Linphone.Model
                         cfg.SetIdentity(username, username, domain);
                     }
                     cfg.SetProxy(proxy);
-                    cfg.EnableRegister(true);
                     // Can't set string to null: http://stackoverflow.com/questions/12980915/exception-when-trying-to-read-null-string-in-c-sharp-winrt-component-from-winjs
                     var auth = lc.CreateAuthInfo(username, "", password, "", domain);
                     lc.AddAuthInfo(auth);
@@ -441,6 +441,8 @@ namespace Linphone.Model
                     lc.AddProxyConfig(cfg);
                     lc.SetDefaultProxyConfig(cfg);
                     LinphoneManager.Instance.AddPushInformationsToContactParams();
+                    cfg.EnableRegister(true);
+                    cfg.Done();
                 }
             }
         }
