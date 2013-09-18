@@ -51,6 +51,15 @@ namespace Linphone.Views
 
         private void save_Click_1(object sender, EventArgs e)
         {
+            if (Domain.Text.Contains(":"))
+            {
+                if (Proxy.Text.Length == 0)
+                {
+                    Proxy.Text = Domain.Text;
+                }
+                Domain.Text = Domain.Text.Split(':')[0];
+            }
+
             _settings.Username = Username.Text;
             _settings.Password = Password.Password;
             _settings.Domain = Domain.Text;

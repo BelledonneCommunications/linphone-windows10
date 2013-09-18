@@ -402,13 +402,13 @@ namespace Linphone.Model
                 String username = GetNew(UsernameKeyName);
                 String password = GetNew(PasswordKeyName);
                 String domain = GetNew(DomainKeyName);
+                String proxy = GetNew(ProxyKeyName);
                 String displayname = GetNew(DisplayNameKeyName);
                 bool outboundProxy = Convert.ToBoolean(GetNew(OutboundProxyKeyName));
                 lc.ClearAuthInfos();
                 lc.ClearProxyConfigs();
                 if ((username != null) && (username.Length > 0) && (domain != null) && (domain.Length > 0))
                 {
-                    String proxy = GetNew(ProxyKeyName);
                     if ((proxy != null) && (proxy.Length > 0))
                     {
                         proxy = String.Format("sip:{0}", proxy);
