@@ -134,8 +134,16 @@ namespace Linphone.Views
         private void speaker_Click_1(object sender, RoutedEventArgs e)
         {
             bool isSpeakerToggled = (bool)speaker.IsChecked;
-            speakerImg.Source = new BitmapImage(new Uri(isSpeakerToggled ? speakerOn : speakerOff, UriKind.RelativeOrAbsolute));
-            LinphoneManager.Instance.EnableSpeaker(isSpeakerToggled);
+            try
+            {
+                LinphoneManager.Instance.EnableSpeaker(isSpeakerToggled);
+                speakerImg.Source = new BitmapImage(new Uri(isSpeakerToggled ? speakerOn : speakerOff, UriKind.RelativeOrAbsolute));
+            }
+            catch 
+            {
+                Logger.Warn("Exception while trying to toggle speaker to {0}", isSpeakerToggled.ToString());
+                speaker.IsChecked = !isSpeakerToggled;
+            }
         }
 
         private void microphone_Click_1(object sender, RoutedEventArgs e)
@@ -272,7 +280,13 @@ namespace Linphone.Views
                     LinphoneCallParams param = call.GetCurrentParamsCopy();
                     Status.Text = mm.ToString("00") + ":" + ss.ToString("00");
 
-                    LinphoneCallStats audioStats = call.GetAudioStats();
+                    LinphoneCallStats audioStats = null;
+                    try
+                    {
+                        audioStats = call.GetAudioStats();
+                    }
+                    catch { }
+
                     if (audioStats != null)
                     {
                         AudioDownBw.Text = String.Format(AppResources.StatDownloadBW + ": {0:0.00} kb/s", audioStats.GetDownloadBandwidth());

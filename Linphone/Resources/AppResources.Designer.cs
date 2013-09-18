@@ -238,6 +238,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t create chat room for this SIP address, please check it is valid..
+        /// </summary>
+        public static string ChatRoomCreationError {
+            get {
+                return ResourceManager.GetString("ChatRoomCreationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
         public static string Close {
@@ -553,6 +562,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string GenericError {
+            get {
+                return ResourceManager.GetString("GenericError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GSM.
         /// </summary>
         public static string GSMCodec {
@@ -657,6 +675,15 @@ namespace Linphone.Resources {
         public static string IncomingCall {
             get {
                 return ResourceManager.GetString("IncomingCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The SIP address you provided is incorrect. Please ensure it matches the format username@domain..
+        /// </summary>
+        public static string InvalidSipAddressError {
+            get {
+                return ResourceManager.GetString("InvalidSipAddressError", resourceCulture);
             }
         }
         

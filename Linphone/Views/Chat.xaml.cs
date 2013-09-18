@@ -355,6 +355,11 @@ namespace Linphone.Views
                             LinphoneProxyConfig config = LinphoneManager.Instance.LinphoneCore.GetProxyConfigList()[0] as LinphoneProxyConfig;
                             sipAddress += "@" + config.GetDomain();
                         }
+                        else
+                        {
+                            System.Windows.MessageBox.Show(AppResources.InvalidSipAddressError, AppResources.GenericError, MessageBoxButton.OK);
+                            return;
+                        }
                     }
 
                     ContactManager.Instance.FindContact(sipAddress);
@@ -362,23 +367,38 @@ namespace Linphone.Views
                     ContactName.Visibility = Visibility.Visible;
                     NewChat.Visibility = Visibility.Collapsed;
 
-                    chatRoom = LinphoneManager.Instance.LinphoneCore.CreateChatRoom(sipAddress);
-
-                    if (DatabaseManager.Instance.Messages.Count(m => m.LocalContact.Equals(sipAddress) || m.RemoteContact.Equals(sipAddress)) > 0)
+                    try
                     {
-                        // Define the query to gather all of the messages linked to the current contact.
-                        var messagesInDB = from message in DatabaseManager.Instance.Messages where (message.LocalContact.Equals(sipAddress) || message.RemoteContact.Equals(sipAddress)) select message;
-                        // Execute the query and place the results into a collection.
-                        List<ChatMessage> messages = messagesInDB.ToList();
-                        DisplayPastMessages(messages);
+                        chatRoom = LinphoneManager.Instance.LinphoneCore.CreateChatRoom(sipAddress);
+
+                        if (DatabaseManager.Instance.Messages.Count(m => m.LocalContact.Equals(sipAddress) || m.RemoteContact.Equals(sipAddress)) > 0)
+                        {
+                            // Define the query to gather all of the messages linked to the current contact.
+                            var messagesInDB = from message in DatabaseManager.Instance.Messages where (message.LocalContact.Equals(sipAddress) || message.RemoteContact.Equals(sipAddress)) select message;
+                            // Execute the query and place the results into a collection.
+                            List<ChatMessage> messages = messagesInDB.ToList();
+                            DisplayPastMessages(messages);
+                        }
+                    }
+                    catch
+                    {
+                        Logger.Err("Can't create chat room for sip address {0}", sipAddress);
+                        throw;
                     }
                 }
 
-                if (MessageBox.Text != null && MessageBox.Text.Length > 0)
+                if (chatRoom != null)
                 {
-                    SendMessage(MessageBox.Text);
+                    if (MessageBox.Text != null && MessageBox.Text.Length > 0)
+                    {
+                        SendMessage(MessageBox.Text);
+                    }
+                    MessageBox.Reset();
                 }
-                MessageBox.Reset();
+                else
+                {
+                    System.Windows.MessageBox.Show(AppResources.ChatRoomCreationError, AppResources.GenericError, MessageBoxButton.OK);
+                }
             }
         }
 

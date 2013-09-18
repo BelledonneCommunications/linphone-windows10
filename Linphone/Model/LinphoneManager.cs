@@ -292,6 +292,13 @@ namespace Linphone.Model
                 string host, token;
                 host = ((App)App.Current).PushChannelUri.Host;
                 token = ((App)App.Current).PushChannelUri.AbsolutePath;
+
+                if (host == null || token == null)
+                {
+                    Logger.Warn("Can't set the PN params: {0} {1}", host, token);
+                    return;
+                }
+
                 if (Customs.AddPasswordInContactsParams)
                 {
                     SIPAccountSettingsManager sip = new SIPAccountSettingsManager();
@@ -751,7 +758,7 @@ namespace Linphone.Model
                     if (BasePage.StatusBar != null)
                         BasePage.StatusBar.RefreshStatus(state);
                 }
-                catch (Exception) { }
+                catch { }
             });
         }
 
@@ -898,21 +905,28 @@ namespace Linphone.Model
 
         private void LookupForContact(LinphoneCall call)
         {
-            string sipAddress = call.GetRemoteAddress().AsStringUriOnly();
-            if (call.GetRemoteAddress().GetDisplayName().Length == 0)
+            try
             {
-                if (sipAddress.StartsWith("sip:"))
+                string sipAddress = call.GetRemoteAddress().AsStringUriOnly();
+                if (call.GetRemoteAddress().GetDisplayName().Length == 0)
                 {
-                    sipAddress = sipAddress.Substring(4);
-                }
-                Logger.Msg("[LinphoneManager] Display name null, looking for remote address in contact: " + sipAddress);
+                    if (sipAddress.StartsWith("sip:"))
+                    {
+                        sipAddress = sipAddress.Substring(4);
+                    }
+                    Logger.Msg("[LinphoneManager] Display name null, looking for remote address in contact: " + sipAddress);
 
-                ContactManager.ContactFound += OnContactFound;
-                ContactManager.FindContact(sipAddress);
+                    ContactManager.ContactFound += OnContactFound;
+                    ContactManager.FindContact(sipAddress);
+                }
+                else
+                {
+                    Logger.Msg("[LinphoneManager] Display name found: " + call.GetRemoteAddress().GetDisplayName());
+                }
             }
-            else
+            catch 
             {
-                Logger.Msg("[LinphoneManager] Display name found: " + call.GetRemoteAddress().GetDisplayName());
+                Logger.Warn("[LinphoneManager] Execption occured while looking for contact...");
             }
         }
 

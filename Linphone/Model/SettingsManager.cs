@@ -202,20 +202,27 @@ namespace Linphone.Model
         {
             if (ValueChanged(LogLevelKeyName))
             {
-                Config.SetInt(ApplicationSection, LogLevelKeyName, Convert.ToInt32(GetNew(LogLevelKeyName)));
-                LinphoneManager.Instance.ConfigureLogger();
-                if ((Get(LogDestinationKeyName) == OutputTraceDest.File.ToString())
-                    && (GetNew(LogLevelKeyName) == ((int)OutputTraceLevel.None).ToString()))
+                try
                 {
-                    try
+                    Config.SetInt(ApplicationSection, LogLevelKeyName, Convert.ToInt32(GetNew(LogLevelKeyName)));
+                    LinphoneManager.Instance.ConfigureLogger();
+                    if ((Get(LogDestinationKeyName) == OutputTraceDest.File.ToString())
+                        && (GetNew(LogLevelKeyName) == ((int)OutputTraceLevel.None).ToString()))
                     {
-                        StorageFile logfile = await ApplicationData.Current.LocalFolder.GetFileAsync(Get(LogOptionKeyName));
-                        await logfile.DeleteAsync();
+                        try
+                        {
+                            StorageFile logfile = await ApplicationData.Current.LocalFolder.GetFileAsync(Get(LogOptionKeyName));
+                            await logfile.DeleteAsync();
+                        }
+                        catch
+                        {
+                            Logger.Warn("Failed deleting log file {0}", Get(LogOptionKeyName));
+                        }
                     }
-                    catch
-                    {
-                        Logger.Warn("Failed deleting log file {0}", Get(LogOptionKeyName));
-                    }
+                }
+                catch
+                {
+                    Logger.Warn("Failed setting the log level name {0}", Get(LogLevelKeyName));
                 }
             }
         }
@@ -1125,7 +1132,28 @@ namespace Linphone.Model
             if (ValueChanged(SIPTransportSettingKeyName))
             {
                 Transports transports = LinphoneManager.Instance.LinphoneCoreFactory.CreateTransports();
-                int port = Convert.ToInt32(GetNew(SIPPortKeyName));
+                int port;
+                try
+                {
+                    port = Convert.ToInt32(GetNew(SIPPortKeyName));
+                }
+                catch
+                {
+                    port = 5060;
+                    if (transports.UDP > 0)
+                    {
+                        port = transports.UDP;
+                    }
+                    else if (transports.TCP > 0)
+                    {
+                        port = transports.TCP;
+                    }
+                    else if (transports.TLS > 0)
+                    {
+                        port = transports.TLS;
+                    }
+                }
+
                 if (GetNew(SIPTransportSettingKeyName) == AppResources.TransportUDP)
                 {
                     transports.UDP = port;
