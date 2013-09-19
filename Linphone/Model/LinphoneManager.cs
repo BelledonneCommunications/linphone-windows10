@@ -289,9 +289,13 @@ namespace Linphone.Model
         {
             if (server.LinphoneCore.GetDefaultProxyConfig() != null)
             {
-                string host, token;
-                host = ((App)App.Current).PushChannelUri.Host;
-                token = ((App)App.Current).PushChannelUri.AbsolutePath;
+                string host = null, token = null;
+                try
+                {
+                    host = ((App)App.Current).PushChannelUri.Host;
+                    token = ((App)App.Current).PushChannelUri.AbsolutePath;
+                }
+                catch { }
 
                 if (host == null || token == null)
                 {
