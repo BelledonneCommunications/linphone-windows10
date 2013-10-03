@@ -3,6 +3,7 @@ using Linphone.Resources;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace Linphone.Views
     /// </summary>
     public partial class Console : BasePage
     {
+        private string logs;
         /// <summary>
         /// Public constructor
         /// </summary>
@@ -28,7 +30,7 @@ namespace Linphone.Views
 
         private async void Browser_LoadCompleted(object sender, NavigationEventArgs e)
         {
-            string logs = await ReadLogs();
+            logs = await ReadLogs();
             FormatAndDisplayLogs(logs);
         }
 
@@ -77,27 +79,18 @@ namespace Linphone.Views
         private async void refresh_Click_1(object sender, EventArgs e)
         {
             Browser.InvokeScript("clean");
-            string logs = await ReadLogs();
+            logs = await ReadLogs();
             FormatAndDisplayLogs(logs);
         }
 
-        private async void email_Click_1(object sender, EventArgs e)
+        private void email_Click_1(object sender, EventArgs e)
         {
-            try
-            {
-                // Limit the amount of linphone logs to the last 50ko
-                string logs = await ReadLogs();
-                if (logs.Length > 50000)
-                {
-                    logs = logs.Substring(logs.Length - 50000);
-                }
-                EmailComposeTask email = new EmailComposeTask();
-                email.To = "linphone-wphone@belledonne-communications.com";
-                email.Subject = "Logs report";
-                email.Body = logs;
-                email.Show();
-            }
-            catch (Exception) { }
+            string body = logs.Length > 32000 ? logs.Substring(logs.Length - 32000) : logs;
+            EmailComposeTask email = new EmailComposeTask();
+            email.To = "linphone-wphone@belledonne-communications.com";
+            email.Subject = "Logs report";
+            email.Body = body;
+            email.Show();
         }
 
         private void BuildLocalizedApplicationBar()

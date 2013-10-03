@@ -1,6 +1,7 @@
 ﻿using Microsoft.Phone.Tasks;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
@@ -105,13 +106,9 @@ namespace Linphone.Model
                     if (store.FileExists(logFileName))
                     {
                         body += "\r\n"; 
-                        // Limit the amount of linphone logs to the last 50ko
+                        // Limit the amount of linphone logs
                         string logs = await ReadLogs();
-                        if (logs.Length > 50000)
-                        {
-                            logs = logs.Substring(logs.Length - 50000);
-                        }
-                        body += logs;
+                        body += logs.Length > 32000 ? logs.Substring(logs.Length - 32000) : logs;
                     }
                 }
                 EmailComposeTask email = new EmailComposeTask();
@@ -148,6 +145,33 @@ namespace Linphone.Model
                 using (var store = IsolatedStorageFile.GetUserStoreForApplication())
                 {
                     store.DeleteFile(exceptionsFileName);
+                }
+            }
+            catch (Exception) { }
+        }
+
+        internal static void DeleteLinphoneLogFileIfFileTooBig()
+        {
+            bool delete = false;
+            try
+            {
+                using (var store = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    if (store.FileExists(logFileName))
+                    {
+                        using (var file = store.OpenFile(logFileName, FileMode.Open))
+                        {
+                            Debug.WriteLine("[BugCollector] Log file size is " + file.Length);
+                            if (file.Length > 200000)
+                            {
+                                delete = true;
+                            }
+                        }
+                        if (delete)
+                        {
+                            store.DeleteFile(logFileName);
+                        }
+                    }
                 }
             }
             catch (Exception) { }

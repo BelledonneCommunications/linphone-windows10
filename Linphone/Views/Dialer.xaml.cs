@@ -65,6 +65,8 @@ namespace Linphone
                 reportIssueDialog.Show();
             }
 
+            BugCollector.DeleteLinphoneLogFileIfFileTooBig();
+
             StatusBar = status;
             BasePage.StatusBar.RefreshStatus(LinphoneManager.Instance.LastKnownState);
 
