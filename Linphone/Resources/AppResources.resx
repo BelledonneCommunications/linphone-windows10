@@ -531,4 +531,7 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   <data name="InvalidSipAddressError" xml:space="preserve">
     <value>The SIP address you provided is incorrect. Please ensure it matches the format username@domain.</value>
   </data>
+  <data name="SendEmail" xml:space="preserve">
+    <value>Send by email</value>
+  </data>
 </root>

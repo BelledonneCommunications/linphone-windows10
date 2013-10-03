@@ -1,6 +1,7 @@
 ﻿using Linphone.Model;
 using Linphone.Resources;
 using Microsoft.Phone.Shell;
+using Microsoft.Phone.Tasks;
 using System;
 using System.IO;
 using System.Text;
@@ -80,6 +81,25 @@ namespace Linphone.Views
             FormatAndDisplayLogs(logs);
         }
 
+        private async void email_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                // Limit the amount of linphone logs to the last 50ko
+                string logs = await ReadLogs();
+                if (logs.Length > 50000)
+                {
+                    logs = logs.Substring(logs.Length - 50000);
+                }
+                EmailComposeTask email = new EmailComposeTask();
+                email.To = "linphone-wphone@belledonne-communications.com";
+                email.Subject = "Logs report";
+                email.Body = logs;
+                email.Show();
+            }
+            catch (Exception) { }
+        }
+
         private void BuildLocalizedApplicationBar()
         {
             ApplicationBar = new ApplicationBar();
@@ -88,6 +108,11 @@ namespace Linphone.Views
             appBarRefresh.Text = AppResources.Refresh;
             ApplicationBar.Buttons.Add(appBarRefresh);
             appBarRefresh.Click += refresh_Click_1;
+
+            ApplicationBarIconButton appBarEmail = new ApplicationBarIconButton(new Uri("/Assets/AppBar/feature.email.png", UriKind.Relative));
+            appBarEmail.Text = AppResources.SendEmail;
+            ApplicationBar.Buttons.Add(appBarEmail);
+            appBarEmail.Click += email_Click_1;
         }
     }
 }
