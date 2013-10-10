@@ -39,7 +39,7 @@ namespace Linphone.Model
                 Debug.WriteLine("[LinphoneManager] Network state changed:" + (lastNetworkState ? "Available" : "Unavailable"));
                 if (lastNetworkState)
                 {
-                    NetworkSettingsManager.ConfigureTunnel();
+                    ConfigureTunnel();
                 }
                 LinphoneCore.SetNetworkReachable(lastNetworkState);
             }
@@ -278,6 +278,7 @@ namespace Linphone.Model
             lastNetworkState = DeviceNetworkInformation.IsNetworkAvailable;
             server.LinphoneCore.SetNetworkReachable(lastNetworkState);
             DeviceNetworkInformation.NetworkAvailabilityChanged += new EventHandler<NetworkNotificationEventArgs>(OnNetworkStatusChanged);
+            ConfigureTunnel();
 
             isLinphoneRunning = true;
         }
@@ -330,6 +331,59 @@ namespace Linphone.Model
             server.LinphoneCoreFactory.OutputTraceListener = server.BackgroundModeLogger;
             server.LinphoneCoreFactory.SetLogLevel(appSettings.LogLevel);
             Logger.Instance.TraceListener = server.BackgroundModeLogger;
+        }
+
+        /// <summary>
+        /// Configures the Tunnel using the given mode
+        /// </summary>
+        /// <param name="mode">mode to apply</param>
+        public static void ConfigureTunnel(String mode)
+        {
+            if (LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable())
+            {
+                Tunnel tunnel = LinphoneManager.Instance.LinphoneCore.GetTunnel();
+                if (tunnel != null)
+                {
+                    if (mode == AppResources.TunnelModeDisabled)
+                    {
+                        tunnel.Enable(false);
+                    }
+                    else if (mode == AppResources.TunnelModeAlways)
+                    {
+                        tunnel.Enable(true);
+                    }
+                    else if (mode == AppResources.TunnelModeAuto)
+                    {
+                        tunnel.Enable(false);
+                        tunnel.AutoDetect();
+                    }
+                    else if (mode == AppResources.TunnelMode3GOnly)
+                    {
+                        if (DeviceNetworkInformation.IsWiFiEnabled)
+                        {
+                            tunnel.Enable(false);
+                        }
+                        else if (DeviceNetworkInformation.IsCellularDataEnabled)
+                        {
+                            tunnel.Enable(true);
+                        }
+                        else
+                        {
+                            tunnel.Enable(false);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Configures the Tunnel using the current setting value
+        /// </summary>
+        public void ConfigureTunnel()
+        {
+            NetworkSettingsManager settings = new NetworkSettingsManager();
+            settings.Load();
+            ConfigureTunnel(settings.TunnelMode);
         }
         #endregion
 
