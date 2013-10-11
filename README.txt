@@ -28,6 +28,7 @@ In order to compile Linphone, you need:
 * The Windows Phone 8 SDK
 * wget, gawk, unzip, grep and sed from the GnuWin32 project and put them in your PATH (http://gnuwin32.sourceforge.net/) for belle-sip and some mediastreamer2 codecs
 * The Java Runtime Environment (JRE). The 'java' command must be in the PATH.
+* The sources of the project. /!\ You can't have a folder that contains a space character in the path of the sources. /!\
 
 To import the solution, open the Linphone.sln file at the root of the project.
 
