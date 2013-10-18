@@ -997,56 +997,6 @@ namespace Linphone.Model
         #endregion
 
         /// <summary>
-        /// Configures the Tunnel using the given mode
-        /// </summary>
-        /// <param name="mode">mode to apply</param>
-        public static void ConfigureTunnel(String mode)
-        {
-            if (LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable()) {
-                Tunnel tunnel = LinphoneManager.Instance.LinphoneCore.GetTunnel();
-                if (tunnel != null)
-                {
-                    if (mode == AppResources.TunnelModeDisabled)
-                    {
-                        tunnel.Enable(false);
-                    }
-                    else if (mode == AppResources.TunnelModeAlways)
-                    {
-                        tunnel.Enable(true);
-                    }
-                    else if (mode == AppResources.TunnelModeAuto)
-                    {
-                        tunnel.AutoDetect();
-                    }
-                    else if (mode == AppResources.TunnelMode3GOnly)
-                    {
-                        if (DeviceNetworkInformation.IsWiFiEnabled)
-                        {
-                            tunnel.Enable(false);
-                        }
-                        else if (DeviceNetworkInformation.IsCellularDataEnabled)
-                        {
-                            tunnel.Enable(true);
-                        }
-                        else
-                        {
-                            tunnel.Enable(false);
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Configures the Tunnel using the current setting value
-        /// </summary>
-        public static void ConfigureTunnel()
-        {
-            NetworkSettingsManager settings = new NetworkSettingsManager();
-            ConfigureTunnel(settings.TunnelMode);
-        }
-
-        /// <summary>
         /// Public constructor.
         /// </summary>
         public NetworkSettingsManager()
@@ -1185,7 +1135,7 @@ namespace Linphone.Model
                 {
                     String mode = GetNew(TunnelModeKeyName);
                     Config.SetString(ApplicationSection, TunnelModeKeyName, TunnelModeToString[mode]);
-                    ConfigureTunnel(mode);
+                    LinphoneManager.Instance.ConfigureTunnel();
                 }
             }
         }
