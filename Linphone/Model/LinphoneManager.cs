@@ -219,6 +219,14 @@ namespace Linphone.Model
                 return;
             }
 
+            // Cancel any incoming call
+            if (LinphoneCore.GetCallsNb() == 1)
+            {
+                LinphoneCall call = (LinphoneCall)LinphoneCore.GetCalls()[0];
+                if (call.GetState() == LinphoneCallState.IncomingReceived)
+                    LinphoneCore.TerminateCall(call);
+            }
+
             BackgroundProcessConnected = false;
             isLinphoneRunning = false;
             Debug.WriteLine("[LinphoneManager] Background process disconnected from interface");
