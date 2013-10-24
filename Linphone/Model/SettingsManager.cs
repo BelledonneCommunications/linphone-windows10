@@ -1122,21 +1122,35 @@ namespace Linphone.Model
             // Save tunnel configuration
             if (LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable() && Customs.IsTunnelEnabled)
             {
+                Boolean needTunnelReconfigure = false;
                 if (ValueChanged(TunnelServerKeyName) || ValueChanged(TunnelPortKeyName))
                 {
                     Tunnel tunnel = LinphoneManager.Instance.LinphoneCore.GetTunnel();
                     if (tunnel != null)
                     {
                         tunnel.CleanServers();
-                        tunnel.AddServer(GetNew(TunnelServerKeyName), Convert.ToInt32(GetNew(TunnelPortKeyName)));
+                        String server = GetNew(TunnelServerKeyName);
+                        Int32 port = 0;
+                        try
+                        {
+                            port = Convert.ToInt32(GetNew(TunnelPortKeyName));
+                        }
+                        catch (System.FormatException) { }
+                        if ((server.Length > 0) && (port > 0))
+                        {
+                            tunnel.AddServer(GetNew(TunnelServerKeyName), Convert.ToInt32(GetNew(TunnelPortKeyName)));
+                        }
+                        needTunnelReconfigure = true;
                     }
                 }
                 if (ValueChanged(TunnelModeKeyName))
                 {
                     String mode = GetNew(TunnelModeKeyName);
                     Config.SetString(ApplicationSection, TunnelModeKeyName, TunnelModeToString[mode]);
-                    LinphoneManager.Instance.ConfigureTunnel();
+                    needTunnelReconfigure = true;
                 }
+                if (needTunnelReconfigure)
+                    LinphoneManager.Instance.ConfigureTunnel();
             }
         }
         #endregion
