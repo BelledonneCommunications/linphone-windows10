@@ -220,11 +220,20 @@ namespace Linphone.Model
             }
 
             // Cancel any incoming call
-            if (LinphoneCore.GetCallsNb() == 1)
+            try
             {
-                LinphoneCall call = (LinphoneCall)LinphoneCore.GetCalls()[0];
-                if (call.GetState() == LinphoneCallState.IncomingReceived)
-                    LinphoneCore.TerminateCall(call);
+                if (LinphoneCore.GetCallsNb() == 1)
+                {
+                    LinphoneCall call = (LinphoneCall)LinphoneCore.GetCalls()[0];
+                    if (call.GetState() == LinphoneCallState.IncomingReceived)
+                        LinphoneCore.TerminateCall(call);
+                }
+            }
+            catch (Exception)
+            {
+                // Catch "The RPC server is unavailable." exceptions that occur sometimes at this point.
+                // This is to clarify why the access to the RPC server is not reliable when called application
+                // deactivation handler...
             }
 
             BackgroundProcessConnected = false;
