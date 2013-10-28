@@ -118,9 +118,14 @@ namespace Linphone.Model
                 if (recent.Count >= RECENT_CONTACTS_MAX)
                     break;
 
-                Contact contact = (from c in _allContacts where (log.DisplayedName.Equals(c.DisplayName)) select c).FirstOrDefault();
-                if (contact != null && !recent.Contains(contact))
-                    recent.Add(contact);
+
+                try
+                {
+                    Contact contact = (from c in _allContacts where (log.DisplayedName.Equals(c.DisplayName)) select c).FirstOrDefault();
+                    if (contact != null && !recent.Contains(contact))
+                        recent.Add(contact);
+                }
+                catch { } // Prevent the app from crashing if current contact's displayname in the iteration is null
             }
 
             return recent;

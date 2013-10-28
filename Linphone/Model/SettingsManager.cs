@@ -418,7 +418,16 @@ namespace Linphone.Model
                 {
                     if ((proxy != null) && (proxy.Length > 0))
                     {
-                        proxy = String.Format("sip:{0}", proxy);
+                        // Check if proxy address is correct
+                        LinphoneAddress test = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress(proxy);
+                        if (test != null)
+                        {
+                            proxy = String.Format("sip:{0}", proxy);
+                        } 
+                        else 
+                        {
+                            proxy = String.Format("sip:{0}", domain);
+                        }
                     }
                     else
                     {
@@ -435,15 +444,17 @@ namespace Linphone.Model
                     {
                         cfg.SetIdentity(username, username, domain);
                     }
+
                     cfg.SetProxy(proxy);
-                    // Can't set string to null: http://stackoverflow.com/questions/12980915/exception-when-trying-to-read-null-string-in-c-sharp-winrt-component-from-winjs
-                    var auth = lc.CreateAuthInfo(username, "", password, "", "");
-                    lc.AddAuthInfo(auth);
 
                     if (outboundProxy)
                     {
                         cfg.SetRoute(proxy);
                     }
+
+                    // Can't set string to null: http://stackoverflow.com/questions/12980915/exception-when-trying-to-read-null-string-in-c-sharp-winrt-component-from-winjs
+                    var auth = lc.CreateAuthInfo(username, "", password, "", "");
+                    lc.AddAuthInfo(auth);
 
                     lc.AddProxyConfig(cfg);
                     lc.SetDefaultProxyConfig(cfg);

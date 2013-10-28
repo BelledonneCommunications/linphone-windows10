@@ -40,7 +40,6 @@ static void LinphoneNativeOutputTraceHandler(OrtpLogLevel lev, const char *fmt, 
 	nativeOutputTraceHandler(level, fmt2, args);
 }
 
-
 void LinphoneCoreFactory::CreateLinphoneCore(Linphone::Core::LinphoneCoreListener^ listener)
 {
 	CreateLinphoneCore(listener, nullptr);

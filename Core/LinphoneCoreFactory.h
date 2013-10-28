@@ -102,7 +102,7 @@ namespace Linphone
 			/// Constructs a LinphoneAddress object by parsing the user supplied address, given as a string.
 			/// </summary>
 			/// <param name="uri">address, should be like "sip:joe@sip.linphone.org"</param>
-			/// <returns>The LinphoneAddress that has been created</returns>
+			/// <returns>The LinphoneAddress that has been created, or null if the URI couldn't be parsed</returns>
 			LinphoneAddress^ CreateLinphoneAddress(Platform::String^ uri);
 
 			/// <summary>
