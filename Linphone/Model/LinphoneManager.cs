@@ -222,6 +222,7 @@ namespace Linphone.Model
             // Cancel any incoming call
             try
             {
+                LinphoneCore.CoreListener = null;
                 if (LinphoneCore.GetCallsNb() == 1)
                 {
                     LinphoneCall call = (LinphoneCall)LinphoneCore.GetCalls()[0];
@@ -243,6 +244,7 @@ namespace Linphone.Model
             // From this point onwards, it is no longer safe to use any objects in the background process, 
             // or for the background process to call back into this process.
             server = null;
+            BackgroundManager.Instance.OopServer = null;
 
             // Lastly, set the event that indicates that the UI is no longer connected to the background process. 
             if (uiDisconnectedEvent == null)
