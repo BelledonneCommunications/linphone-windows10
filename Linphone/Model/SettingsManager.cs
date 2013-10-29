@@ -419,12 +419,9 @@ namespace Linphone.Model
                     if ((proxy != null) && (proxy.Length > 0))
                     {
                         // Check if proxy address is correct
+                        proxy = String.Format("sip:{0}", proxy);
                         LinphoneAddress test = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress(proxy);
-                        if (test != null)
-                        {
-                            proxy = String.Format("sip:{0}", proxy);
-                        } 
-                        else 
+                        if (test == null)
                         {
                             proxy = String.Format("sip:{0}", domain);
                         }
