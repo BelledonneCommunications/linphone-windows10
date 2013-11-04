@@ -2,6 +2,7 @@
 using Linphone.Model;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Navigation;
 using System.Windows.Threading;
@@ -102,11 +103,18 @@ namespace Linphone
         /// </summary>
         public void CallEnded(LinphoneCall call)
         {
-            Logger.Msg("[CallListener] Call ended, can go back ? " + this.Page.NavigationService.CanGoBack);
+            Debug.WriteLine("[CallListener] Call ended, can go back ? " + this.Page.NavigationService.CanGoBack);
 
-            //Launch the Dialer and remove the incall view from the backstack
-            this.Page.NavigationService.Navigate(new Uri("/Views/Dialer.xaml", UriKind.RelativeOrAbsolute));
-            this.Page.NavigationService.RemoveBackEntry();
+            if (this.Page.NavigationService.CanGoBack)
+            {
+                this.Page.NavigationService.GoBack();
+            }
+            else
+            {
+                // Launch the Dialer and remove the incall view from the backstack
+                this.Page.NavigationService.Navigate(new Uri("/Views/Dialer.xaml", UriKind.RelativeOrAbsolute));
+                this.Page.NavigationService.RemoveBackEntry();
+            }
         }
 
         /// <summary>
