@@ -1,4 +1,5 @@
 ﻿using Linphone.Controls;
+using Linphone.Core;
 using Linphone.Model;
 using Linphone.Resources;
 using Microsoft.Phone.Controls;
@@ -80,6 +81,14 @@ namespace Linphone
             {
                 String sipAddressToCall = NavigationContext.QueryString["sip"];
                 addressBox.Text = sipAddressToCall;
+            }
+
+            // Navigate to the current call (if existing) when using the app launcher to restart the app while call is in background
+            if (LinphoneManager.Instance.LinphoneCore.GetCallsNb() > 0)
+            {
+                LinphoneCall call = LinphoneManager.Instance.LinphoneCore.GetCurrentCall();
+                String uri = call.GetRemoteAddress().AsStringUriOnly();
+                NavigationService.Navigate(new Uri("/Views/InCall.xaml?sip=" + uri, UriKind.RelativeOrAbsolute));
             }
         }
 
