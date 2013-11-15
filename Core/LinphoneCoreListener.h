@@ -22,7 +22,7 @@ namespace Linphone
 			/// </summary>
 			/// <param name="realm">The realm for which authentication information are requested</param>
 			/// <param name="username">The username for which authentication information are requested</param>
-			void AuthInfoRequested(Platform::String^ realm, Platform::String^ username);
+			void AuthInfoRequested(Platform::String^ realm, Platform::String^ username, Platform::String^ domain);
 
 			/// <summary>
 			/// Callback method called when the application state has changed.

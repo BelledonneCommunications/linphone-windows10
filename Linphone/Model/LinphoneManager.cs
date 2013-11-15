@@ -707,9 +707,9 @@ namespace Linphone.Model
         /// <summary>
         /// Callback for LinphoneCoreListener
         /// </summary>
-        public void AuthInfoRequested(string realm, string username)
+        public void AuthInfoRequested(string realm, string username, string domain)
         {
-            Logger.Msg("[LinphoneManager] Auth info requested: realm=" + realm + ", username=" + username);
+            Logger.Msg("[LinphoneManager] Auth info requested: realm=" + realm + ", username=" + username + ", domain=" + domain);
         }
 
         /// <summary>

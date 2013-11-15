@@ -47,6 +47,7 @@ namespace Linphone.Agents
                         server.LinphoneCoreFactory.CreateLinphoneCore(this, config);
                         server.LinphoneCore.SetRootCA("Assets/rootca.pem");
                         server.LinphoneCore.SetNetworkReachable(true);
+                        server.LinphoneCore.SetUserAgent("LinphoneWP8KeepAlive", "");
                         Debug.WriteLine("[KeepAliveAgent] Linphone Core created");
                     }
                     else
@@ -81,7 +82,7 @@ namespace Linphone.Agents
         /// <summary>
         /// Callback for LinphoneCoreListener
         /// </summary>
-        public void AuthInfoRequested(string realm, string username)
+        public void AuthInfoRequested(string realm, string username, string domain)
         {
         }
 

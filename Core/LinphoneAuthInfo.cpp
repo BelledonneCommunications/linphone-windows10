@@ -87,7 +87,7 @@ void Linphone::Core::LinphoneAuthInfo::SetHa1(Platform::String^ ha1)
 	gApiLock.Unlock();
 }
 
-Linphone::Core::LinphoneAuthInfo::LinphoneAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm)
+Linphone::Core::LinphoneAuthInfo::LinphoneAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm, Platform::String^ domain)
 {
 	gApiLock.Lock();
 	const char* cc_username = Utils::pstoccs(username);
@@ -95,12 +95,14 @@ Linphone::Core::LinphoneAuthInfo::LinphoneAuthInfo(Platform::String^ username, P
 	const char* cc_realm = Utils::pstoccs(realm);
 	const char* cc_userid = Utils::pstoccs(userid);
 	const char* cc_ha1 = Utils::pstoccs(ha1);
-	this->auth_info = linphone_auth_info_new(cc_username, cc_userid, cc_password, cc_ha1, cc_realm);
+	const char* cc_domain = Utils::pstoccs(domain);
+	this->auth_info = linphone_auth_info_new(cc_username, cc_userid, cc_password, cc_ha1, cc_realm, cc_domain);
 	delete(cc_username);
 	delete(cc_userid);
 	delete(cc_password);
 	delete(cc_ha1);
 	delete(cc_realm);
+	delete(cc_domain);
 	gApiLock.Unlock();
 }
 

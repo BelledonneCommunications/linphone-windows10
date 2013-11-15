@@ -450,7 +450,7 @@ namespace Linphone.Model
                     }
 
                     // Can't set string to null: http://stackoverflow.com/questions/12980915/exception-when-trying-to-read-null-string-in-c-sharp-winrt-component-from-winjs
-                    var auth = lc.CreateAuthInfo(username, "", password, "", "");
+                    var auth = lc.CreateAuthInfo(username, "", password, "", "", domain);
                     lc.AddAuthInfo(auth);
 
                     lc.AddProxyConfig(cfg);

@@ -257,10 +257,10 @@ void Linphone::Core::LinphoneCore::AddAuthInfo(Linphone::Core::LinphoneAuthInfo^
 	gApiLock.Unlock();
 }
 
-Linphone::Core::LinphoneAuthInfo^ Linphone::Core::LinphoneCore::CreateAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm)
+Linphone::Core::LinphoneAuthInfo^ Linphone::Core::LinphoneCore::CreateAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm, Platform::String^ domain)
 {
 	gApiLock.Lock();
-	Linphone::Core::LinphoneAuthInfo^ authInfo = ref new Linphone::Core::LinphoneAuthInfo(username, userid, password, ha1, realm);
+	Linphone::Core::LinphoneAuthInfo^ authInfo = ref new Linphone::Core::LinphoneAuthInfo(username, userid, password, ha1, realm, domain);
 	gApiLock.Unlock();
 	return authInfo;
 }
@@ -1461,12 +1461,12 @@ void global_state_changed(::LinphoneCore *lc, ::LinphoneGlobalState gstate, cons
 	Linphone::Core::gApiLock.LeaveListener();
 }
 
-void auth_info_requested(LinphoneCore *lc, const char *realm, const char *username) 
+void auth_info_requested(LinphoneCore *lc, const char *realm, const char *username, const char *domain) 
 {
 	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr) {
-		listener->AuthInfoRequested(Linphone::Core::Utils::cctops(realm), Linphone::Core::Utils::cctops(username));
+		listener->AuthInfoRequested(Linphone::Core::Utils::cctops(realm), Linphone::Core::Utils::cctops(username), Linphone::Core::Utils::cctops(domain));
 	}
 	Linphone::Core::gApiLock.LeaveListener();
 }
