@@ -235,7 +235,7 @@ namespace Linphone
 			/// <param name="password">The authentication password</param>
 			/// <param name="ha1">The authentication ha1</param>
 			/// <param name="realm">The authentication realm</param>
-			/// <param name="realm">The authentication domain</param>
+			/// <param name="domain">The authentication domain</param>
 			LinphoneAuthInfo^ CreateAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm, Platform::String^ domain);
 
 			/// <summary>
