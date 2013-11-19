@@ -38,6 +38,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 
                 <StackPanel Orientation="Vertical" Grid.Row="0">
@@ -56,7 +57,23 @@
                     </TextBox>
                 </StackPanel>
 
-                <StackPanel Orientation="Vertical" Grid.Row="1" Margin="0,10,0,0">
+                <StackPanel Orientation="Vertical" Grid.Row="1">
+                    <TextBlock
+                        Margin="10,0,0,0"
+                        Text="{Binding Path=LocalizedResources.SIPUserId, Source={StaticResource LocalizedStrings}}">
+                    </TextBlock>
+                    <TextBox
+                        x:Name="UserId"
+                        KeyDown="UserId_KeyDown">
+                        <TextBox.InputScope>
+                            <InputScope>
+                                <InputScopeName NameValue="EmailUserName" />
+                            </InputScope>
+                        </TextBox.InputScope>
+                    </TextBox>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Grid.Row="2" Margin="0,10,0,0">
                     <TextBlock
                         Margin="10,0,0,0"
                         Text="{Binding Path=LocalizedResources.SIPPassword, Source={StaticResource LocalizedStrings}}">
@@ -67,7 +84,7 @@
                     </PasswordBox>
                 </StackPanel>
 
-                <StackPanel Orientation="Vertical" Grid.Row="2" Margin="0,10,0,0">
+                <StackPanel Orientation="Vertical" Grid.Row="3" Margin="0,10,0,0">
                     <TextBlock
                         Margin="10,0,0,0"
                         Text="{Binding Path=LocalizedResources.SIPDomain, Source={StaticResource LocalizedStrings}}">
@@ -83,7 +100,7 @@
                     </TextBox>
                 </StackPanel>
 
-                <StackPanel Orientation="Vertical" Grid.Row="3" Margin="0,10,0,0">
+                <StackPanel Orientation="Vertical" Grid.Row="4" Margin="0,10,0,0">
                     <TextBlock
                         Margin="10,0,0,0"
                         Text="{Binding Path=LocalizedResources.SIPProxy, Source={StaticResource LocalizedStrings}}">
@@ -94,14 +111,14 @@
                     </TextBox>
                 </StackPanel>
 
-                <StackPanel Orientation="Vertical" Grid.Row="4" Margin="0,10,0,0">
+                <StackPanel Orientation="Vertical" Grid.Row="5" Margin="0,10,0,0">
                     <toolkit:ToggleSwitch  
                         x:Name="OutboundProxy" 
                         Header="{Binding Path=LocalizedResources.SIPOutboundProxy, Source={StaticResource LocalizedStrings}}">
                     </toolkit:ToggleSwitch>
                 </StackPanel>
 
-                <StackPanel Orientation="Vertical" Grid.Row="5" Margin="0,10,0,0">
+                <StackPanel Orientation="Vertical" Grid.Row="6" Margin="0,10,0,0">
                     <TextBlock
                         Margin="10,0,0,0"
                         Text="{Binding Path=LocalizedResources.DisplayName, Source={StaticResource LocalizedStrings}}">

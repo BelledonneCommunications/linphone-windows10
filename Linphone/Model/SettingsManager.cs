@@ -320,6 +320,7 @@ namespace Linphone.Model
     {
         #region Constants settings names
         private const string UsernameKeyName = "Username";
+        private const string UserIdKeyName = "UserId";
         private const string PasswordKeyName = "Password";
         private const string DomainKeyName = "Domain";
         private const string ProxyKeyName = "Proxy";
@@ -334,6 +335,7 @@ namespace Linphone.Model
         public void Load()
         {
             dict[UsernameKeyName] = "";
+            dict[UserIdKeyName] = "";
             dict[DomainKeyName] = "";
             dict[ProxyKeyName] = "";
             dict[PasswordKeyName] = "";
@@ -368,7 +370,9 @@ namespace Linphone.Model
                     var authInfos = LinphoneManager.Instance.LinphoneCore.GetAuthInfos();
                     if (authInfos.Count > 0)
                     {
-                        dict[PasswordKeyName] = ((LinphoneAuthInfo)authInfos[0]).GetPassword();
+                        LinphoneAuthInfo info = ((LinphoneAuthInfo)authInfos[0]);
+                        dict[PasswordKeyName] = info.GetPassword();
+                        dict[UserIdKeyName] = info.GetUserId();
                     }
                     dict[DisplayNameKeyName] = address.GetDisplayName();
                 }
@@ -380,7 +384,7 @@ namespace Linphone.Model
         /// </summary>
         public void Save()
         {
-            bool AccountChanged = ValueChanged(UsernameKeyName) || ValueChanged(PasswordKeyName) || ValueChanged(DomainKeyName)
+            bool AccountChanged = ValueChanged(UsernameKeyName) || ValueChanged(UserIdKeyName) || ValueChanged(PasswordKeyName) || ValueChanged(DomainKeyName)
                 || ValueChanged(ProxyKeyName) || ValueChanged(OutboundProxyKeyName) || ValueChanged(DisplayNameKeyName);
 
             if (AccountChanged)
@@ -407,6 +411,7 @@ namespace Linphone.Model
                 }
 
                 String username = GetNew(UsernameKeyName);
+                String userid = GetNew(UserIdKeyName);
                 String password = GetNew(PasswordKeyName);
                 String domain = GetNew(DomainKeyName);
                 String proxy = GetNew(ProxyKeyName);
@@ -450,7 +455,7 @@ namespace Linphone.Model
                     }
 
                     // Can't set string to null: http://stackoverflow.com/questions/12980915/exception-when-trying-to-read-null-string-in-c-sharp-winrt-component-from-winjs
-                    var auth = lc.CreateAuthInfo(username, "", password, "", "", domain);
+                    var auth = lc.CreateAuthInfo(username, userid, password, "", "", domain);
                     lc.AddAuthInfo(auth);
 
                     lc.AddProxyConfig(cfg);
@@ -476,6 +481,21 @@ namespace Linphone.Model
             set
             {
                 Set(UsernameKeyName, value);
+            }
+        }
+
+        /// <summary>
+        /// SIP Account userid setting (String).
+        /// </summary>
+        public string UserId
+        {
+            get
+            {
+                return Get(UserIdKeyName);
+            }
+            set
+            {
+                Set(UserIdKeyName, value);
             }
         }
 

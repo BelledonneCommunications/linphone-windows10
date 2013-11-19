@@ -534,4 +534,7 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   <data name="SendEmail" xml:space="preserve">
     <value>Send by email</value>
   </data>
+  <data name="SIPUserId" xml:space="preserve">
+    <value>Auth userid</value>
+  </data>
 </root>

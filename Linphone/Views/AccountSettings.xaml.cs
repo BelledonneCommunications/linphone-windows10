@@ -27,6 +27,7 @@ namespace Linphone.Views
 
             _settings.Load();
             Username.Text = _settings.Username;
+            UserId.Text = _settings.UserId;
             Password.Password = _settings.Password;
             Domain.Text = _settings.Domain;
             Proxy.Text = _settings.Proxy;
@@ -61,6 +62,7 @@ namespace Linphone.Views
             }
 
             _settings.Username = Username.Text;
+            _settings.UserId = UserId.Text;
             _settings.Password = Password.Password;
             _settings.Domain = Domain.Text;
             _settings.Proxy = Proxy.Text;
@@ -87,6 +89,12 @@ namespace Linphone.Views
         }
 
         private void Username_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                UserId.Focus();
+        }
+
+        private void UserId_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
                 Password.Focus();
