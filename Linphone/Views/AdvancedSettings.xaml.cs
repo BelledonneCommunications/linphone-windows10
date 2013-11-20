@@ -33,6 +33,8 @@ namespace Linphone.Views
             vibrator.IsChecked = _chatSettings.VibrateOnIncomingMessage;
             resizeDown.IsChecked = _chatSettings.ScaleDownSentPictures;
 
+            Stun.Text = _networkSettings.StunServer;
+
             List<string> tunnelModes = new List<string>
             {
                 AppResources.TunnelModeDisabled,
@@ -78,6 +80,7 @@ namespace Linphone.Views
             _callSettings.SendDTFMsSIPInfo = sipInfo.IsChecked;
             _callSettings.Save();
 
+            _networkSettings.StunServer = Stun.Text;
             _networkSettings.TunnelMode = tunnelMode.SelectedItem.ToString();
             _networkSettings.TunnelServer = tunnelServer.Text;
             _networkSettings.TunnelPort = tunnelPort.Text;

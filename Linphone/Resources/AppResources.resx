@@ -537,4 +537,7 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   <data name="SIPUserId" xml:space="preserve">
     <value>Auth userid</value>
   </data>
+  <data name="StunServer" xml:space="preserve">
+    <value>Stun server</value>
+  </data>
 </root>

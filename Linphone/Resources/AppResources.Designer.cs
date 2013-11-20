@@ -1112,6 +1112,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Stun server.
+        /// </summary>
+        public static string StunServer {
+            get {
+                return ResourceManager.GetString("StunServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à To:.
         /// </summary>
         public static string To {

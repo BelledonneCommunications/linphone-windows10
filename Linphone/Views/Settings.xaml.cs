@@ -33,13 +33,10 @@ namespace Linphone.Views
         {
             base.OnNavigatedTo(e);
 
-            if (BugCollector.HasLinphoneLogFile())
-                DeleteLogs.Visibility = (bool)Debug.IsChecked ? Visibility.Visible : Visibility.Collapsed;
-            else
-                DeleteLogs.Visibility = Visibility.Collapsed;
-
             // Create LinphoneCore if not created yet, otherwise do nothing
             await LinphoneManager.Instance.InitLinphoneCore();
+
+            DeleteLogs.IsEnabled = BugCollector.HasLinphoneLogFile();
         }
 
 
@@ -51,7 +48,7 @@ namespace Linphone.Views
         private void deleteLogs_Click_1(object sender, EventArgs e)
         {
             BugCollector.DeleteLinphoneLogFile();
-            DeleteLogs.Visibility = Visibility.Collapsed;
+            DeleteLogs.IsEnabled = false;
         }
 
         private void save_Click_1(object sender, EventArgs e)

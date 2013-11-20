@@ -1023,6 +1023,7 @@ namespace Linphone.Model
         #region Constants settings names
         private const string SIPTransportSettingKeyName = "SIPTransport";
         private const string SIPPortKeyName = "SIPPort";
+        private const string StunServerKeyName = "StunServer";
         private const string TunnelServerKeyName = "TunnelServer";
         private const string TunnelPortKeyName = "TunnelPort";
         private const string TunnelModeKeyName = "TunnelMode";
@@ -1083,6 +1084,8 @@ namespace Linphone.Model
             }
             dict[SIPTransportSettingKeyName] = tname;
             dict[SIPPortKeyName] = port.ToString();
+
+            dict[StunServerKeyName] = LinphoneManager.Instance.LinphoneCore.GetStunServer();
 
             // Load tunnel configuration
             dict[TunnelModeKeyName] = AppResources.TunnelModeDisabled;
@@ -1151,6 +1154,9 @@ namespace Linphone.Model
                 LinphoneManager.Instance.LinphoneCore.SetSignalingTransportsPorts(transports);
             }
 
+            if (ValueChanged(StunServerKeyName))
+                LinphoneManager.Instance.LinphoneCore.SetStunServer(GetNew(StunServerKeyName));
+
             // Save tunnel configuration
             if (LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable() && Customs.IsTunnelEnabled)
             {
@@ -1200,6 +1206,21 @@ namespace Linphone.Model
             set
             {
                 Set(SIPTransportSettingKeyName, value);
+            }
+        }
+
+        /// <summary>
+        /// Stun server setting (String).
+        /// </summary>
+        public string StunServer
+        {
+            get
+            {
+                return Get(StunServerKeyName);
+            }
+            set
+            {
+                Set(StunServerKeyName, value);
             }
         }
 

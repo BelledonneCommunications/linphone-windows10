@@ -22,11 +22,28 @@
             <phone:PivotItem Header="{Binding Path=LocalizedResources.NetworkMenu, Source={StaticResource LocalizedStrings}}">
                 <ScrollViewer>
                     <StackPanel Orientation="Vertical">
-                        <toolkit:ListPicker 
-                            Grid.Row="1"
+                        <toolkit:ListPicker
                             x:Name="Transport"
                             Header="{Binding Path=LocalizedResources.TransportSetting, Source={StaticResource LocalizedStrings}}">
                         </toolkit:ListPicker>
+                        
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock
+                                Margin="12,20,0,0"
+                                Text="{Binding Path=LocalizedResources.StunServer, Source={StaticResource LocalizedStrings}}" />
+
+                            <TextBox
+                                x:Name="Stun"
+                                IsEnabled="True"
+                                IsReadOnly="False">
+                                <TextBox.InputScope>
+                                    <InputScope>
+                                        <InputScopeName NameValue="Url" />
+                                    </InputScope>
+                                </TextBox.InputScope>
+                            </TextBox>
+                        </StackPanel>
+                            
 
                         <StackPanel x:Name="TunnelPanel" Orientation="Vertical">
                             <toolkit:ListPicker 
