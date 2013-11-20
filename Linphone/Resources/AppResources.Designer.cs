@@ -544,6 +544,51 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à ICE.
+        /// </summary>
+        public static string FirewallPolicyIce {
+            get {
+                return ResourceManager.GetString("FirewallPolicyIce", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à NAT.
+        /// </summary>
+        public static string FirewallPolicyNat {
+            get {
+                return ResourceManager.GetString("FirewallPolicyNat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à None.
+        /// </summary>
+        public static string FirewallPolicyNone {
+            get {
+                return ResourceManager.GetString("FirewallPolicyNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Firewall policy.
+        /// </summary>
+        public static string FirewallPolicySetting {
+            get {
+                return ResourceManager.GetString("FirewallPolicySetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à STUN.
+        /// </summary>
+        public static string FirewallPolicyStun {
+            get {
+                return ResourceManager.GetString("FirewallPolicyStun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à G722.
         /// </summary>
         public static string G722Codec {

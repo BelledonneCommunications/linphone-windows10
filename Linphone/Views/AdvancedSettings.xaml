@@ -26,7 +26,12 @@
                             x:Name="Transport"
                             Header="{Binding Path=LocalizedResources.TransportSetting, Source={StaticResource LocalizedStrings}}">
                         </toolkit:ListPicker>
-                        
+
+                        <toolkit:ListPicker
+                            x:Name="FirewallPolicy"
+                            Header="{Binding Path=LocalizedResources.FirewallPolicySetting, Source={StaticResource LocalizedStrings}}">
+                        </toolkit:ListPicker>
+
                         <StackPanel Orientation="Vertical">
                             <TextBlock
                                 Margin="12,20,0,0"

@@ -1018,11 +1018,14 @@ namespace Linphone.Model
     {
         private LpConfig Config;
         private Dictionary<string, string> TunnelModeToString;
+        private Dictionary<string, FirewallPolicy> FirewallPolicyToEnum;
         private Dictionary<string, string> StringToTunnelMode;
+        private Dictionary<string, string> StringToFirewallPolicy;
 
         #region Constants settings names
         private const string SIPTransportSettingKeyName = "SIPTransport";
         private const string SIPPortKeyName = "SIPPort";
+        private const string FirewallPolicyKeyName = "FirewallPolicy";
         private const string StunServerKeyName = "StunServer";
         private const string TunnelServerKeyName = "TunnelServer";
         private const string TunnelPortKeyName = "TunnelPort";
@@ -1056,6 +1059,20 @@ namespace Linphone.Model
                 { "auto", AppResources.TunnelModeAuto },
                 { "disabled", AppResources.TunnelModeDisabled }
             };
+            FirewallPolicyToEnum = new Dictionary<string, FirewallPolicy>()
+            {
+                { AppResources.FirewallPolicyNone, FirewallPolicy.NoFirewall },
+                { AppResources.FirewallPolicyNat, FirewallPolicy.UseNatAddress },
+                { AppResources.FirewallPolicyStun, FirewallPolicy.UseStun },
+                { AppResources.FirewallPolicyIce, FirewallPolicy.UseIce }
+            };
+            StringToFirewallPolicy = new Dictionary<string, string>()
+            {
+                { "NoFirewall", AppResources.FirewallPolicyNone },
+                { "UseNatAddress", AppResources.FirewallPolicyNat },
+                { "UseStun", AppResources.FirewallPolicyStun },
+                { "UseIce", AppResources.FirewallPolicyIce }
+            };
         }
 
         #region Implementation of the ISettingsManager interface
@@ -1086,6 +1103,7 @@ namespace Linphone.Model
             dict[SIPPortKeyName] = port.ToString();
 
             dict[StunServerKeyName] = LinphoneManager.Instance.LinphoneCore.GetStunServer();
+            dict[FirewallPolicyKeyName] = StringToFirewallPolicy[LinphoneManager.Instance.LinphoneCore.GetFirewallPolicy().ToString()];
 
             // Load tunnel configuration
             dict[TunnelModeKeyName] = AppResources.TunnelModeDisabled;
@@ -1157,6 +1175,12 @@ namespace Linphone.Model
             if (ValueChanged(StunServerKeyName))
                 LinphoneManager.Instance.LinphoneCore.SetStunServer(GetNew(StunServerKeyName));
 
+            if (ValueChanged(FirewallPolicyKeyName))
+            {
+                string firewallPolicy = GetNew(FirewallPolicyKeyName);
+                LinphoneManager.Instance.LinphoneCore.SetFirewallPolicy(FirewallPolicyToEnum[firewallPolicy]);
+            }
+
             // Save tunnel configuration
             if (LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable() && Customs.IsTunnelEnabled)
             {
@@ -1206,6 +1230,21 @@ namespace Linphone.Model
             set
             {
                 Set(SIPTransportSettingKeyName, value);
+            }
+        }
+
+        /// <summary>
+        /// Firewall policy setting (String).
+        /// </summary>
+        public string FWPolicy
+        {
+            get
+            {
+                return Get(FirewallPolicyKeyName);
+            }
+            set
+            {
+                Set(FirewallPolicyKeyName, value);
             }
         }
 
