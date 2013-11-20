@@ -23,7 +23,7 @@ namespace Linphone.Views
             BuildLocalizedApplicationBar();
             _settings.Load();
             Debug.IsChecked = _settings.DebugEnabled;
-            Video.Visibility = _settings.HideVideoSettings ? Visibility.Collapsed : Visibility.Visible;
+            Video.Visibility = Customs.EnableVideo ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>

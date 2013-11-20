@@ -733,6 +733,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à iSAC.
+        /// </summary>
+        public static string ISACCodec {
+            get {
+                return ResourceManager.GetString("ISACCodec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Use linphone.org account.
         /// </summary>
         public static string LinphoneLogin {
@@ -828,6 +837,15 @@ namespace Linphone.Resources {
         public static string OptionsMenu {
             get {
                 return ResourceManager.GetString("OptionsMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à OPUS.
+        /// </summary>
+        public static string OpusCodec {
+            get {
+                return ResourceManager.GetString("OpusCodec", resourceCulture);
             }
         }
         

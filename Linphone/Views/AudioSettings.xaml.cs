@@ -35,6 +35,8 @@ namespace Linphone.Views
             ILBC.IsChecked = _settings.ILBC;
             SILK16.IsChecked = _settings.SILK16;
             GSM.IsChecked = _settings.GSM;
+            OPUS.IsChecked = _settings.OPUS;
+            ISAC.IsChecked = _settings.Isac;
         }
 
         /// <summary>
@@ -73,6 +75,8 @@ namespace Linphone.Views
             _settings.ILBC = ToBool(ILBC.IsChecked);
             _settings.SILK16 = ToBool(SILK16.IsChecked);
             _settings.GSM = ToBool(GSM.IsChecked);
+            _settings.OPUS = ToBool(OPUS.IsChecked);
+            _settings.Isac = ToBool(ISAC.IsChecked);
             _settings.Save();
 
             NavigationService.GoBack();

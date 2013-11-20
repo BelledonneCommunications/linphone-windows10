@@ -555,4 +555,10 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   <data name="StunServer" xml:space="preserve">
     <value>Stun server</value>
   </data>
+  <data name="OpusCodec" xml:space="preserve">
+    <value>OPUS</value>
+  </data>
+  <data name="ISACCodec" xml:space="preserve">
+    <value>iSAC</value>
+  </data>
 </root>

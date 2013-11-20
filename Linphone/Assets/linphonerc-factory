@@ -30,8 +30,5 @@ displaytype=MSWP8Dis
 history_max_size=30
 max_calls=1
 
-[app]
-HideVideoSettings=1
-
 [default_values]
 reg_expires=28800

@@ -17,5 +17,6 @@ namespace Linphone.Model
         internal static string PictureUploadScriptURL = "https://linphone.org:444/upload.php";
         internal static string UserAgent = "LinphoneWP8";
         internal static bool EnableG729 = false;
+        internal static bool EnableVideo = false;
     }
 }

@@ -165,7 +165,6 @@ namespace Linphone.Model
         private const string LogLevelKeyName = "LogLevel";
         private const string LogDestinationKeyName = "LogDestination";
         private const string LogOptionKeyName = "LogOption";
-        private const string HideVideoSettingsKeyName = "HideVideoSettings";
         #endregion
 
         /// <summary>
@@ -192,7 +191,6 @@ namespace Linphone.Model
             dict[LogLevelKeyName] = Config.GetInt(ApplicationSection, LogLevelKeyName, (int)OutputTraceLevel.None).ToString();
             dict[LogDestinationKeyName] = Config.GetString(ApplicationSection, LogDestinationKeyName, OutputTraceDest.File.ToString());
             dict[LogOptionKeyName] = Config.GetString(ApplicationSection, LogOptionKeyName, "Linphone.log");
-            dict[HideVideoSettingsKeyName] = Config.GetBool(ApplicationSection, HideVideoSettingsKeyName, false).ToString();
         }
 
         /// <summary>
@@ -282,17 +280,6 @@ namespace Linphone.Model
             set
             {
                 Set(LogDestinationKeyName, value.ToString());
-            }
-        }
-
-        /// <summary>
-        /// Hide video settings (bool).
-        /// </summary>
-        public Boolean HideVideoSettings
-        {
-            get
-            {
-                return Convert.ToBoolean(Get(HideVideoSettingsKeyName));
             }
         }
 
@@ -597,6 +584,8 @@ namespace Linphone.Model
         private const string ILBCSettingKeyName = "CodecILBC";
         private const string SILK16SettingKeyName = "CodecSILK16";
         private const string GSMSettingKeyName = "CodecGSM";
+        private const string OpusSettingKeyName = "CodecOpus";
+        private const string IsacSettingKeyName = "CodecIsac";
         private const string H264SettingKeyName = "CodecH264";
         #endregion
 
@@ -615,6 +604,8 @@ namespace Linphone.Model
                 { new Tuple<String, int>("ilbc", 8000), ILBCSettingKeyName },
                 { new Tuple<String, int>("silk", 16000), SILK16SettingKeyName },
                 { new Tuple<String, int>("gsm", 8000), GSMSettingKeyName },
+                { new Tuple<String, int>("opus", 48000), OpusSettingKeyName },
+                { new Tuple<String, int>("isac", 16000), IsacSettingKeyName },
                 { new Tuple<String, int>("h264", 90000), H264SettingKeyName },
             };
 
@@ -838,6 +829,36 @@ namespace Linphone.Model
             set
             {
                 Set(GSMSettingKeyName, value.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Is OPUS audio codec enabled or disabled ? (Boolean)
+        /// </summary>
+        public bool OPUS
+        {
+            get
+            {
+                return Convert.ToBoolean(Get(OpusSettingKeyName));
+            }
+            set
+            {
+                Set(OpusSettingKeyName, value.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Is ISAC audio codec enabled or disabled ? (Boolean)
+        /// </summary>
+        public bool Isac
+        {
+            get
+            {
+                return Convert.ToBoolean(Get(IsacSettingKeyName));
+            }
+            set
+            {
+                Set(IsacSettingKeyName, value.ToString());
             }
         }
 

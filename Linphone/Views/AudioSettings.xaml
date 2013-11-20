@@ -35,73 +35,88 @@
                                 <RowDefinition Height="Auto"></RowDefinition>
                                 <RowDefinition Height="Auto"></RowDefinition>
                                 <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
                             </Grid.RowDefinitions>
 
                             <toolkit:ToggleSwitch  
-                        Grid.Row="0"
-                        x:Name="AMRNB" 
-                        Header="{Binding Path=LocalizedResources.AMRNBCodec, Source={StaticResource LocalizedStrings}}">
+                                Grid.Row="0"
+                                x:Name="OPUS" 
+                                Header="{Binding Path=LocalizedResources.OpusCodec, Source={StaticResource LocalizedStrings}}">
+                            </toolkit:ToggleSwitch>
+                            
+                            <toolkit:ToggleSwitch  
+                                Grid.Row="1"
+                                x:Name="AMRNB" 
+                                Header="{Binding Path=LocalizedResources.AMRNBCodec, Source={StaticResource LocalizedStrings}}">
                             </toolkit:ToggleSwitch>
 
                             <toolkit:ToggleSwitch  
-                        Grid.Row="1"
-                        x:Name="AMRWB" 
-                        Header="{Binding Path=LocalizedResources.AMRWBCodec, Source={StaticResource LocalizedStrings}}">
+                                Grid.Row="2"
+                                x:Name="AMRWB" 
+                                Header="{Binding Path=LocalizedResources.AMRWBCodec, Source={StaticResource LocalizedStrings}}">
                             </toolkit:ToggleSwitch>
 
                             <toolkit:ToggleSwitch  
-                        Grid.Row="2"
-                        x:Name="Speex16" 
-                        Header="{Binding Path=LocalizedResources.Speex16Codec, Source={StaticResource LocalizedStrings}}">
+                                Grid.Row="3"
+                                x:Name="Speex16" 
+                                Header="{Binding Path=LocalizedResources.Speex16Codec, Source={StaticResource LocalizedStrings}}">
                             </toolkit:ToggleSwitch>
 
                             <toolkit:ToggleSwitch  
-                        Grid.Row="3"
-                        x:Name="Speex8" 
-                        Header="{Binding Path=LocalizedResources.Speex8Codec, Source={StaticResource LocalizedStrings}}">
+                                Grid.Row="4"
+                                x:Name="Speex8" 
+                                Header="{Binding Path=LocalizedResources.Speex8Codec, Source={StaticResource LocalizedStrings}}">
                             </toolkit:ToggleSwitch>
 
                             <toolkit:ToggleSwitch  
-                        Grid.Row="4"
-                        x:Name="PCMU" 
-                        Header="{Binding Path=LocalizedResources.PCMUCodec, Source={StaticResource LocalizedStrings}}">
+                                Grid.Row="5"
+                                x:Name="PCMU" 
+                                Header="{Binding Path=LocalizedResources.PCMUCodec, Source={StaticResource LocalizedStrings}}">
                             </toolkit:ToggleSwitch>
 
                             <toolkit:ToggleSwitch  
-                        Grid.Row="5"
-                        x:Name="PCMA" 
-                        Header="{Binding Path=LocalizedResources.PCMACodec, Source={StaticResource LocalizedStrings}}">
+                                Grid.Row="6"
+                                x:Name="PCMA" 
+                                Header="{Binding Path=LocalizedResources.PCMACodec, Source={StaticResource LocalizedStrings}}">
                             </toolkit:ToggleSwitch>
 
                             <toolkit:ToggleSwitch  
-                        Grid.Row="6"
-                        x:Name="G722" 
-                        Header="{Binding Path=LocalizedResources.G722Codec, Source={StaticResource LocalizedStrings}}">
+                                Grid.Row="7"
+                                x:Name="G722" 
+                                Header="{Binding Path=LocalizedResources.G722Codec, Source={StaticResource LocalizedStrings}}">
                             </toolkit:ToggleSwitch>
 
                             <toolkit:ToggleSwitch  
-                        Grid.Row="7"
-                        x:Name="G729" 
-                        Header="{Binding Path=LocalizedResources.G729Codec, Source={StaticResource LocalizedStrings}}">
+                                Grid.Row="8"
+                                x:Name="G729" 
+                                Header="{Binding Path=LocalizedResources.G729Codec, Source={StaticResource LocalizedStrings}}">
                             </toolkit:ToggleSwitch>
 
                             <toolkit:ToggleSwitch  
-                        Grid.Row="8"
-                        x:Name="ILBC" 
-                        Header="{Binding Path=LocalizedResources.ILBCCodec, Source={StaticResource LocalizedStrings}}">
+                                Grid.Row="9"
+                                x:Name="ILBC" 
+                                Header="{Binding Path=LocalizedResources.ILBCCodec, Source={StaticResource LocalizedStrings}}">
                             </toolkit:ToggleSwitch>
 
                             <toolkit:ToggleSwitch  
-                        Grid.Row="9"
-                        x:Name="SILK16" 
-                        Header="{Binding Path=LocalizedResources.SILK16Codec, Source={StaticResource LocalizedStrings}}">
+                                Grid.Row="10"
+                                x:Name="SILK16" 
+                                Header="{Binding Path=LocalizedResources.SILK16Codec, Source={StaticResource LocalizedStrings}}">
                             </toolkit:ToggleSwitch>
 
                             <toolkit:ToggleSwitch  
-                        Grid.Row="10"
-                        x:Name="GSM" 
-                        Header="{Binding Path=LocalizedResources.GSMCodec, Source={StaticResource LocalizedStrings}}">
+                                Grid.Row="11"
+                                x:Name="GSM" 
+                                Header="{Binding Path=LocalizedResources.GSMCodec, Source={StaticResource LocalizedStrings}}">
                             </toolkit:ToggleSwitch>
+                            
+                            <toolkit:ToggleSwitch  
+                                Grid.Row="12"
+                                x:Name="ISAC" 
+                                Header="{Binding Path=LocalizedResources.ISACCodec, Source={StaticResource LocalizedStrings}}">
+                            </toolkit:ToggleSwitch>
+
 
                         </Grid>
                     </ScrollViewer.Content>
