@@ -216,9 +216,16 @@ namespace Linphone
                 }
             }
 
-            incomingCallTask = new VoipHttpIncomingCallTask(incomingCallTaskName, pushChannelName);
-            incomingCallTask.Description = "Incoming call task";
-            ScheduledActionService.Add(incomingCallTask);
+            try
+            {
+                incomingCallTask = new VoipHttpIncomingCallTask(incomingCallTaskName, pushChannelName);
+                incomingCallTask.Description = "Linphone incoming call task";
+                ScheduledActionService.Add(incomingCallTask);
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private const string keepAliveTaskName = "Linphone.KeepAliveTask";
