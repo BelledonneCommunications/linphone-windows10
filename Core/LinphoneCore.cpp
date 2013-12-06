@@ -357,6 +357,13 @@ void Linphone::Core::LinphoneCore::TerminateCall(Linphone::Core::LinphoneCall^ c
 	gApiLock.Unlock();
 }
 
+void Linphone::Core::LinphoneCore::DeclineCall(Linphone::Core::LinphoneCall^ call, DeclineReason reason)
+{
+	gApiLock.Lock();
+	linphone_core_decline_call(this->lc, call->call, (LinphoneReason)reason);
+	gApiLock.Unlock();
+}
+
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::GetCurrentCall() 
 {
 	gApiLock.Lock();

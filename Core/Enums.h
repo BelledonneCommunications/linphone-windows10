@@ -156,5 +156,21 @@ namespace Linphone
 			Delivered = 2,
 			NotDelivered = 3
 		};
+
+		public enum class DeclineReason : int
+		{
+			LinphoneReasonNone = 0,
+			LinphoneReasonNoResponse = 1, /**<No response received from remote*/
+			LinphoneReasonBadCredentials = 2, /**<Authentication failed due to bad*/
+			LinphoneReasonDeclined = 3, /**<The call has been declined*/
+			LinphoneReasonNotFound = 4, /**<Destination of the calls was not found.*/
+			LinphoneReasonNotAnswered = 5, /**<The call was not answered in time*/
+			LinphoneReasonBusy = 6, /**<Phone line was busy */
+			LinphoneReasonMedia = 7, /**<Incompatible media */
+			LinphoneReasonIOError = 8, /**<Transport error: connection failures, disconnections etc...*/
+			LinphoneReasonDoNotDisturb = 9, /**<Do not disturb reason*/
+			LinphoneReasonUnauthorized = 10, /**<Operation is unauthorized because missing credential*/
+			LinphoneReasonNotAcceptable = 11 /**<Operation like call update rejected by peer*/
+		};
 	}
 }

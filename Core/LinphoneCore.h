@@ -295,6 +295,11 @@ namespace Linphone
 			void TerminateCall(LinphoneCall^ call);
 
 			/// <summary>
+			/// Declines an incoming call with a specific reason.
+			/// </summary>
+			void DeclineCall(LinphoneCall^ call, DeclineReason reason);
+
+			/// <summary>
 			/// Gets the current active call.
 			/// If there is only one ongoing call that is in the paused state, then there is no current call.
 			/// </summary>

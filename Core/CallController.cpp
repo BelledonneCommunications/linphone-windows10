@@ -110,7 +110,7 @@ void CallController::OnRejectCallRequested(VoipPhoneCall^ incomingCall, CallReje
 
 	//This will call notifyCallEnded on the call state changed callback
 	if (this->call != nullptr)
-		Globals::Instance->LinphoneCore->TerminateCall(this->call);
+		Globals::Instance->LinphoneCore->DeclineCall(this->call, DeclineReason::LinphoneReasonBusy);
 
 	gApiLock.Unlock();
 }
