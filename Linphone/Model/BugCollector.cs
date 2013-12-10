@@ -7,6 +7,7 @@ using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Windows.Storage;
 
 namespace Linphone.Model
@@ -93,6 +94,9 @@ namespace Linphone.Model
             try
             {
                 string body = "";
+                body += "Version of the app : " + XDocument.Load("WMAppManifest.xml").Root.Element("App").Attribute("Version").Value;
+                body += "--------------------";
+
                 using (var store = IsolatedStorageFile.GetUserStoreForApplication())
                 {
                     if (store.FileExists(exceptionsFileName))
