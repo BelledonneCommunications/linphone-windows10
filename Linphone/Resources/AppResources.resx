@@ -279,7 +279,7 @@ http://www.linphone.org/m/help
     <value>Password</value>
   </data>
   <data name="SIPProxy" xml:space="preserve">
-    <value>Proxy</value>
+    <value>Proxy (not mandatory)</value>
   </data>
   <data name="SIPUsername" xml:space="preserve">
     <value>Username</value>
@@ -468,7 +468,7 @@ http://www.linphone.org/m/help
     <value>edit password</value>
   </data>
   <data name="DisplayName" xml:space="preserve">
-    <value>Display name</value>
+    <value>Display name (not mandatory)</value>
   </data>
   <data name="VibratorSetting" xml:space="preserve">
     <value>Vibrate on incoming message</value>
@@ -535,7 +535,7 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
     <value>Send by email</value>
   </data>
   <data name="SIPUserId" xml:space="preserve">
-    <value>Auth userid</value>
+    <value>Auth userid (not mandatory)</value>
   </data>
   <data name="FirewallPolicyIce" xml:space="preserve">
     <value>ICE</value>
@@ -560,5 +560,11 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   </data>
   <data name="ISACCodec" xml:space="preserve">
     <value>iSAC</value>
+  </data>
+  <data name="ConnectMenu" xml:space="preserve">
+    <value>Enable register</value>
+  </data>
+  <data name="DisconnectMenu" xml:space="preserve">
+    <value>Disable register</value>
   </data>
 </root>

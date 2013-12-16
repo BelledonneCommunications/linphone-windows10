@@ -5,6 +5,8 @@ using Linphone.Resources;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System;
+using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -151,6 +153,20 @@ namespace Linphone
             NavigationService.Navigate(new Uri("/Views/Console.xaml", UriKind.RelativeOrAbsolute));
         }
 
+        private void disconnect_Click_1(object sender, EventArgs e)
+        {
+            EnableRegister(false);
+            ApplicationBar.MenuItems.Clear();
+            BuildLocalizedApplicationBar();
+        }
+
+        private void connect_Click_1(object sender, EventArgs e)
+        {
+            EnableRegister(true);
+            ApplicationBar.MenuItems.Clear();
+            BuildLocalizedApplicationBar();
+        }
+
         private async void BuildLocalizedApplicationBar()
         {
             ApplicationBar = new ApplicationBar();
@@ -193,6 +209,22 @@ namespace Linphone
                 appBarConsole.Click += console_Click_1;
                 ApplicationBar.MenuItems.Add(appBarConsole);
             }
+
+            if (IsAccountConfigured())
+            {
+                if (IsRegisterEnabled())
+                {
+                    ApplicationBarMenuItem appBarDisconnect = new ApplicationBarMenuItem(AppResources.DisconnectMenu);
+                    appBarDisconnect.Click += disconnect_Click_1;
+                    ApplicationBar.MenuItems.Add(appBarDisconnect);
+                }
+                else
+                {
+                    ApplicationBarMenuItem appBarConnect = new ApplicationBarMenuItem(AppResources.ConnectMenu);
+                    appBarConnect.Click += connect_Click_1;
+                    ApplicationBar.MenuItems.Add(appBarConnect);
+                }
+            }
         }
 
         private void Title_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -215,6 +247,36 @@ namespace Linphone
         public void UnFocused()
         {
             numpad.Visibility = Visibility.Visible;
+        }
+
+        private bool IsRegisterEnabled()
+        {
+            LinphoneCore lc = LinphoneManager.Instance.LinphoneCore;
+            LinphoneProxyConfig cfg = lc.GetDefaultProxyConfig();
+            if (cfg != null)
+            {
+                return cfg.IsRegisterEnabled();
+            }
+            return true;
+        }
+
+        private bool IsAccountConfigured()
+        {
+            LinphoneCore lc = LinphoneManager.Instance.LinphoneCore;
+            LinphoneProxyConfig cfg = lc.GetDefaultProxyConfig();
+            return cfg != null;
+        }
+
+        private void EnableRegister(bool enable)
+        {
+            LinphoneCore lc = LinphoneManager.Instance.LinphoneCore;
+            LinphoneProxyConfig cfg = lc.GetDefaultProxyConfig();
+            if (cfg != null)
+            {
+                cfg.Edit();
+                cfg.EnableRegister(enable);
+                cfg.Done();
+            }
         }
     }
 }
