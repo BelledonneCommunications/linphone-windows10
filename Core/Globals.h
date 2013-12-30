@@ -67,7 +67,7 @@ namespace Linphone
 			/// <summary>
 			/// Gets the current instance of the native call controller
 			/// </summary>
-            property CallController^ CallController 
+            property CallController^ CallController
             { 
                 Linphone::Core::CallController^ get(); 
             }

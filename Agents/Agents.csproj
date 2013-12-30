@@ -85,6 +85,7 @@
   <ItemGroup>
     <Compile Include="AgentHost.cs" />
     <Compile Include="BackgroundManager.cs" />
+    <Compile Include="Customs.cs" />
     <Compile Include="LinphoneCallInProgressAgent.cs" />
     <Compile Include="LinphoneForegroundLifeTimeAgent.cs" />
     <Compile Include="LinphoneScheduledAgent.cs" />

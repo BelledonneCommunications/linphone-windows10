@@ -124,7 +124,6 @@
     <Compile Include="Model\CallLog.cs" />
     <Compile Include="Model\ContactManager.cs" />
     <Compile Include="Model\ContactPictureConverter.cs" />
-    <Compile Include="Model\Customs.cs" />
     <Compile Include="Model\EchoCalibratorListener.cs" />
     <Compile Include="Model\Conversation.cs" />
     <Compile Include="Model\DatabaseManager.cs" />

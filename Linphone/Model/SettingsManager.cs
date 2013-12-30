@@ -1,4 +1,5 @@
-﻿using Linphone.Core;
+﻿using Linphone.Agents;
+using Linphone.Core;
 using Linphone.Resources;
 using Microsoft.Phone.Net.NetworkInformation;
 using System;

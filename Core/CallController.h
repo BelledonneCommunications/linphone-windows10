@@ -1,6 +1,7 @@
 #pragma once
 
 #include <windows.phone.networking.voip.h>
+#include "Enums.h"
 #include "ApiLock.h"
 
 namespace Linphone
@@ -46,6 +47,15 @@ namespace Linphone
 			Windows::Phone::Networking::Voip::VoipPhoneCall^ NewIncomingCallForCustomIncomingCallView(Platform::String^ contactNumber);
 
 			/// <summary>
+			/// Changes the reason used when declining an incoming call.
+			/// </summary>
+			property Linphone::Core::DeclineReason DeclineReason
+            {
+                Linphone::Core::DeclineReason get();
+				void set(Linphone::Core::DeclineReason cb);
+            }
+
+			/// <summary>
 			/// Callback to be called when the PushNotification Agent has to be dismissed, i.e. after a call has been accepted, denied or stopped by the caller.
 			/// </summary>
 			property IncomingCallViewDismissedCallback^ IncomingCallViewDismissed
@@ -69,6 +79,8 @@ namespace Linphone
             Platform::String^ voipServiceName;
 			
             Platform::String^ callInProgressPageUri; 
+
+			Linphone::Core::DeclineReason declineReason;
 			
             // The URI to the contact image, jpg or png, 1mb max ! 
             Windows::Foundation::Uri^ defaultContactImageUri; 

@@ -5,6 +5,7 @@ using System;
 using System.Windows;
 using System.Collections.Generic;
 using System.Windows.Navigation;
+using Linphone.Agents;
 
 namespace Linphone.Views
 {

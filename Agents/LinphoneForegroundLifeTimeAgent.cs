@@ -22,6 +22,12 @@ namespace Linphone.Agents
             AgentHost.OnAgentStarted();
             //Force the callController to be initialized now to avoid creating it at the last moment (workaroud outgoing call crash after app started)
             Globals.Instance.CallController.IncomingCallViewDismissed = null;
+
+            // Changes the decline reason if needed.
+            if (Customs.DeclineCallWithBusyReason)
+            {
+                Globals.Instance.CallController.DeclineReason = DeclineReason.LinphoneReasonBusy;
+            }
         }
 
         /// <summary>

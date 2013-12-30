@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using System.IO.IsolatedStorage;
 using System.Net.Http.Headers;
 using Microsoft.Xna.Framework.Media;
+using Linphone.Agents;
 
 namespace Linphone.Views
 {

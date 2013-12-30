@@ -110,7 +110,7 @@ void CallController::OnRejectCallRequested(VoipPhoneCall^ incomingCall, CallReje
 
 	//This will call notifyCallEnded on the call state changed callback
 	if (this->call != nullptr)
-		Globals::Instance->LinphoneCore->DeclineCall(this->call, DeclineReason::LinphoneReasonBusy);
+		Globals::Instance->LinphoneCore->DeclineCall(this->call, this->declineReason);
 
 	gApiLock.Unlock();
 }
@@ -188,12 +188,28 @@ void CallController::CustomIncomingCallView::set(Platform::Boolean value)
 	gApiLock.Unlock();
 }
 
+DeclineReason CallController::DeclineReason::get()
+{
+	gApiLock.Lock();
+	Linphone::Core::DeclineReason value = this->declineReason;
+	gApiLock.Unlock();
+	return value;
+}
+
+void CallController::DeclineReason::set(Linphone::Core::DeclineReason value)
+{
+	gApiLock.Lock();
+	this->declineReason = value;
+	gApiLock.Unlock();
+}
+
 CallController::CallController() :
 		callInProgressPageUri(L"/Views/InCall.xaml"),
 		voipServiceName(nullptr),
 		defaultContactImageUri(nullptr),
 		linphoneImageUri(nullptr),
 		ringtoneUri(nullptr),
+		declineReason(Linphone::Core::DeclineReason::LinphoneReasonDeclined),
 		callCoordinator(VoipCallCoordinator::GetDefault())
 {
 	// URIs required for interactions with the VoipCallCoordinator
