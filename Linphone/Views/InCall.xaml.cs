@@ -1,4 +1,5 @@
-﻿using Linphone.Core;
+﻿using Linphone.Agents;
+using Linphone.Core;
 using Linphone.Model;
 using Linphone.Resources;
 using Microsoft.Xna.Framework.GamerServices;
@@ -209,21 +210,23 @@ namespace Linphone.Views
             {
                 oneSecondTimer = new Timer(new TimerCallback(timerTick), null, 0, 1000);
 
-                if (call.IsCameraEnabled() && !((InCallModel)ViewModel).IsVideoActive)
-                {
-                    // Show video if it was not shown yet
-                    ((InCallModel)ViewModel).IsVideoActive = true;
-                    video.IsChecked = true;
-                    ButtonsFadeInVideoAnimation.Begin();
-                    StartFadeTimer();
-                }
-                else if (!call.IsCameraEnabled() && ((InCallModel)ViewModel).IsVideoActive)
-                {
-                    // Stop video if it is no longer active
-                    ((InCallModel)ViewModel).IsVideoActive = false;
-                    video.IsChecked = false;
-                    ButtonsFadeInAudioAnimation.Begin();
-                    StopFadeTimer();
+                if (Customs.EnableVideo) { 
+                    if (call.IsCameraEnabled() && !((InCallModel)ViewModel).IsVideoActive)
+                    {
+                        // Show video if it was not shown yet
+                        ((InCallModel)ViewModel).IsVideoActive = true;
+                        video.IsChecked = true;
+                        ButtonsFadeInVideoAnimation.Begin();
+                        StartFadeTimer();
+                    }
+                    else if (!call.IsCameraEnabled() && ((InCallModel)ViewModel).IsVideoActive)
+                    {
+                        // Stop video if it is no longer active
+                        ((InCallModel)ViewModel).IsVideoActive = false;
+                        video.IsChecked = false;
+                        ButtonsFadeInAudioAnimation.Begin();
+                        StopFadeTimer();
+                    }
                 }
             }
             else if (oneSecondTimer != null)

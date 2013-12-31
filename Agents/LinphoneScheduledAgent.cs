@@ -48,6 +48,7 @@ namespace Linphone.Agents
                         server.LinphoneCore.SetRootCA("Assets/rootca.pem");
                         server.LinphoneCore.SetNetworkReachable(true);
                         server.LinphoneCore.SetUserAgent("LinphoneWP8KeepAlive", "");
+                        server.LinphoneCore.IterateEnabled = true;
                         Debug.WriteLine("[KeepAliveAgent] Linphone Core created");
                     }
                     else

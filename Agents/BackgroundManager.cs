@@ -70,6 +70,7 @@ namespace Linphone.Agents
             //Globals.Instance.LinphoneCoreFactory.OutputTraceListener = Globals.Instance.BackgroundModeLogger;
 
             OopServer.LinphoneCore.SetNetworkReachable(true);
+            OopServer.LinphoneCore.IterateEnabled = true;
         }
     }
 }

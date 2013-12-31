@@ -289,7 +289,7 @@ IVector<Object^>^ Linphone::Core::LinphoneCore::GetAuthInfos()
 void Linphone::Core::LinphoneCore::Destroy() 
 {
 	gApiLock.Lock();
-	IterateTimer->Cancel();
+	IterateEnabled = false;
 	gApiLock.Unlock();
 }
 
@@ -1560,8 +1560,42 @@ Linphone::Core::LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener) :
 Linphone::Core::LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener, LpConfig^ config) :
 	lc(nullptr),
 	listener(coreListener),
-	config(config)
+	config(config),
+	isIterateEnabled(false)
 {
+}
+
+void Linphone::Core::LinphoneCore::IterateEnabled::set(Platform::Boolean value)
+{
+	gApiLock.Lock();
+	if (isIterateEnabled && !value && IterateTimer)
+	{
+		// Disable the iterate
+		IterateTimer->Cancel();
+	}
+	else if (!isIterateEnabled && value) 
+	{
+		// Enable the iterate
+		TimeSpan period;
+		period.Duration = 20 * 10000;
+		IterateTimer = ThreadPoolTimer::CreatePeriodicTimer(
+			ref new TimerElapsedHandler([this](ThreadPoolTimer^ source)
+		{
+			if (source == IterateTimer) {
+				if (gApiLock.TryLock()) {
+					linphone_core_iterate(this->lc);
+					gApiLock.Unlock();
+				}
+			}
+		}), period);
+	}
+	isIterateEnabled = value;
+	gApiLock.Unlock();
+}
+
+Platform::Boolean Linphone::Core::LinphoneCore::IterateEnabled::get()
+{
+	return isIterateEnabled;
 }
 
 void Linphone::Core::LinphoneCore::Init()
@@ -1584,20 +1618,6 @@ void Linphone::Core::LinphoneCore::Init()
 	linphone_core_set_ring(this->lc, nullptr);
 	RefToPtrProxy<Mediastreamer2::WP8Video::IVideoRenderer^> *renderer = new RefToPtrProxy<Mediastreamer2::WP8Video::IVideoRenderer^>(Globals::Instance->VideoRenderer);
 	linphone_core_set_native_video_window_id(this->lc, (unsigned long)renderer);
-
-	// Launch iterate timer
-	TimeSpan period;
-	period.Duration = 20 * 10000;
-	IterateTimer = ThreadPoolTimer::CreatePeriodicTimer(
-		ref new TimerElapsedHandler([this](ThreadPoolTimer^ source)
-		{
-			if (source == IterateTimer) {
-				if (gApiLock.TryLock()) {
-					linphone_core_iterate(this->lc);
-					gApiLock.Unlock();
-				}
-			}
-		}), period);
 }
 
 Linphone::Core::LinphoneCore::~LinphoneCore()

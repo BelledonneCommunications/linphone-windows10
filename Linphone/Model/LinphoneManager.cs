@@ -299,6 +299,7 @@ namespace Linphone.Model
             DeviceNetworkInformation.NetworkAvailabilityChanged += new EventHandler<NetworkNotificationEventArgs>(OnNetworkStatusChanged);
             ConfigureTunnel();
 
+            server.LinphoneCore.IterateEnabled = true;
             isLinphoneRunning = true;
         }
 

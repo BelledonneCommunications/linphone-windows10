@@ -1032,6 +1032,16 @@ namespace Linphone
                 void set(LinphoneCoreListener^ listener);
             }
 
+			/// <summary>
+			/// Set it to true to start the iterate, set it to false to stop it. 
+			/// Is disabled by default.
+			/// </summary>
+			property Platform::Boolean IterateEnabled
+			{
+				Platform::Boolean get();
+				void set(Platform::Boolean value);
+			}
+
 		private:
 			friend ref class Linphone::Core::LinphoneCoreFactory;
 			friend class Linphone::Core::Utils;
@@ -1045,6 +1055,7 @@ namespace Linphone
 			LinphoneCoreListener^ listener;
 			LpConfig^ config;
 			Windows::System::Threading::ThreadPoolTimer ^IterateTimer;
+			Platform::Boolean isIterateEnabled;
 		};
 	}
 }
