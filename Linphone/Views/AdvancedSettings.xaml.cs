@@ -6,6 +6,7 @@ using System.Windows;
 using System.Collections.Generic;
 using System.Windows.Navigation;
 using Linphone.Agents;
+using Linphone.Core;
 
 namespace Linphone.Views
 {
@@ -17,6 +18,7 @@ namespace Linphone.Views
         private CallSettingsManager _callSettings = new CallSettingsManager();
         private NetworkSettingsManager _networkSettings = new NetworkSettingsManager();
         private ChatSettingsManager _chatSettings = new ChatSettingsManager();
+        private ApplicationSettingsManager _settings = new ApplicationSettingsManager();
 
         /// <summary>
         /// Public constructor.
@@ -29,6 +31,8 @@ namespace Linphone.Views
             _callSettings.Load();
             _networkSettings.Load();
             _chatSettings.Load();
+            _settings.Load();
+
             rfc2833.IsChecked = _callSettings.SendDTFMsRFC2833;
             sipInfo.IsChecked = _callSettings.SendDTFMsSIPInfo;
             vibrator.IsChecked = _chatSettings.VibrateOnIncomingMessage;
@@ -67,6 +71,26 @@ namespace Linphone.Views
             Transport.SelectedItem = _networkSettings.Transport;
 
             TunnelPanel.Visibility = LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable() && Customs.IsTunnelEnabled ? Visibility.Visible : Visibility.Collapsed; //Hidden properties for now
+
+            List<string> debugModes = new List<string>
+            {
+                OutputTraceDest.None.ToString(),
+                OutputTraceDest.File.ToString(),
+                OutputTraceDest.Debugger.ToString()
+            };
+            if (Customs.AllowTCPRemote)
+                debugModes.Add(OutputTraceDest.TCPRemote.ToString());
+            Debug.ItemsSource = debugModes;
+            TCPRemote.Text = _settings.LogOption.Equals(ApplicationSettingsManager.LinphoneLogFileName) ? "" : _settings.LogOption;
+            Debug.SelectedItem = _settings.LogDestination.ToString();
+        }
+
+        private void Debug_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Contains(OutputTraceDest.TCPRemote.ToString()))
+                FadeIn.Begin();
+            else
+                FadeOut.Begin();
         }
 
         /// <summary>
@@ -77,6 +101,8 @@ namespace Linphone.Views
             base.OnNavigatedTo(e);
             // Create LinphoneCore if not created yet, otherwise do nothing
             await LinphoneManager.Instance.InitLinphoneCore();
+
+            DeleteLogs.IsEnabled = BugCollector.HasLinphoneLogFile();
         }
 
         private void cancel_Click_1(object sender, EventArgs e)
@@ -102,7 +128,27 @@ namespace Linphone.Views
             _chatSettings.ScaleDownSentPictures = resizeDown.IsChecked;
             _chatSettings.Save();
 
+            OutputTraceDest debugMode = OutputTraceDest.None;
+            if (Debug.SelectedItem.Equals(OutputTraceDest.File.ToString()))
+                debugMode = OutputTraceDest.File;
+            else if (Debug.SelectedItem.Equals(OutputTraceDest.Debugger.ToString()))
+                debugMode = OutputTraceDest.Debugger;
+            else if (Debug.SelectedItem.Equals(OutputTraceDest.TCPRemote.ToString()))
+                debugMode = OutputTraceDest.TCPRemote;
+
+            _settings.LogDestination = debugMode;
+            if (debugMode == OutputTraceDest.TCPRemote)
+                _settings.LogOption = TCPRemote.Text;
+            _settings.DebugEnabled = debugMode != OutputTraceDest.None;
+            _settings.Save();
+
             NavigationService.GoBack();
+        }
+
+        private void deleteLogs_Click_1(object sender, EventArgs e)
+        {
+            BugCollector.DeleteLinphoneLogFile();
+            DeleteLogs.IsEnabled = false;
         }
 
         private void BuildLocalizedApplicationBar()

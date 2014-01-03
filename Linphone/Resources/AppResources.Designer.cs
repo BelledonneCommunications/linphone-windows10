@@ -366,6 +366,15 @@ namespace Linphone.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Debug.
         /// </summary>
+        public static string DebugMenu {
+            get {
+                return ResourceManager.GetString("DebugMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logs destination.
+        /// </summary>
         public static string DebugSetting {
             get {
                 return ResourceManager.GetString("DebugSetting", resourceCulture);
@@ -1198,6 +1207,15 @@ namespace Linphone.Resources {
         public static string StunServer {
             get {
                 return ResourceManager.GetString("StunServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TCPRemote ip:port.
+        /// </summary>
+        public static string TCPRemote {
+            get {
+                return ResourceManager.GetString("TCPRemote", resourceCulture);
             }
         }
         

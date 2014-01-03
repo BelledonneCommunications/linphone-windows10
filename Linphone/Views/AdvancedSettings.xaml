@@ -24,17 +24,19 @@
                     <StackPanel Orientation="Vertical">
                         <toolkit:ListPicker
                             x:Name="Transport"
+                            SelectionMode="Single"
                             Header="{Binding Path=LocalizedResources.TransportSetting, Source={StaticResource LocalizedStrings}}">
                         </toolkit:ListPicker>
 
                         <toolkit:ListPicker
                             x:Name="FirewallPolicy"
+                            SelectionMode="Single"
                             Header="{Binding Path=LocalizedResources.FirewallPolicySetting, Source={StaticResource LocalizedStrings}}">
                         </toolkit:ListPicker>
 
                         <StackPanel Orientation="Vertical">
                             <TextBlock
-                                Margin="12,20,0,0"
+                                Style="{StaticResource PhoneTextSubtleStyle}"
                                 Text="{Binding Path=LocalizedResources.StunServer, Source={StaticResource LocalizedStrings}}" />
 
                             <TextBox
@@ -52,13 +54,13 @@
 
                         <StackPanel x:Name="TunnelPanel" Orientation="Vertical">
                             <toolkit:ListPicker 
-                                Margin="12,20,0,0"
                                 x:Name="tunnelMode"
+                                SelectionMode="Single"
                                 Header="{Binding Path=LocalizedResources.TunnelMode, Source={StaticResource LocalizedStrings}}">
                             </toolkit:ListPicker>
                         
                             <TextBlock
-                                Margin="12,20,0,0"
+                                Style="{StaticResource PhoneTextSubtleStyle}"
                                 Text="{Binding Path=LocalizedResources.TunnelServer, Source={StaticResource LocalizedStrings}}" />
 
                             <TextBox
@@ -73,7 +75,7 @@
                             </TextBox>
 
                             <TextBlock
-                                Margin="12,0,0,0"
+                                Style="{StaticResource PhoneTextSubtleStyle}"
                                 Text="{Binding Path=LocalizedResources.TunnelPort, Source={StaticResource LocalizedStrings}}" />
 
                             <TextBox
@@ -116,6 +118,60 @@
                         x:Name="resizeDown" 
                         Header="{Binding Path=LocalizedResources.ResizeSetting, Source={StaticResource LocalizedStrings}}">
                     </toolkit:ToggleSwitch>
+                </StackPanel>
+            </phone:PivotItem>
+
+            <!--Pivot item Debug-->
+            <phone:PivotItem Header="{Binding Path=LocalizedResources.DebugMenu, Source={StaticResource LocalizedStrings}}">
+                <StackPanel Orientation="Vertical">
+                    <toolkit:ListPicker
+                        x:Name="Debug"
+                        SelectionChanged="Debug_SelectionChanged"
+                        SelectionMode="Single"
+                        Header="{Binding Path=LocalizedResources.DebugSetting, Source={StaticResource LocalizedStrings}}">
+                    </toolkit:ListPicker>
+
+                    <StackPanel Orientation="Vertical" x:Name="TCPRemoteOptions" Visibility="Collapsed">
+                        <StackPanel.Resources>
+                            <Storyboard x:Name="FadeOut">
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="TCPRemoteOptions">
+                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.5">
+                                        <DiscreteObjectKeyFrame.Value>
+                                            <Visibility>Collapsed</Visibility>
+                                        </DiscreteObjectKeyFrame.Value>
+                                    </DiscreteObjectKeyFrame>
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                            <Storyboard x:Name="FadeIn">
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="TCPRemoteOptions">
+                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.5">
+                                        <DiscreteObjectKeyFrame.Value>
+                                            <Visibility>Visible</Visibility>
+                                        </DiscreteObjectKeyFrame.Value>
+                                    </DiscreteObjectKeyFrame>
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </StackPanel.Resources>
+                        
+                        <TextBlock
+                            Style="{StaticResource PhoneTextSubtleStyle}"
+                            Text="{Binding Path=LocalizedResources.TCPRemote, Source={StaticResource LocalizedStrings}}">
+                        </TextBlock>
+
+                        <TextBox
+                            x:Name="TCPRemote">
+                            <TextBox.InputScope>
+                                <InputScope>
+                                    <InputScopeName NameValue="Formula" />
+                                </InputScope>
+                            </TextBox.InputScope>
+                        </TextBox>
+                    </StackPanel>
+
+                    <Button
+                        x:Name="DeleteLogs"
+                        Click="deleteLogs_Click_1"
+                        Content="{Binding Path=LocalizedResources.DeleteLogs, Source={StaticResource LocalizedStrings}}" />
                 </StackPanel>
             </phone:PivotItem>
         </phone:Pivot>

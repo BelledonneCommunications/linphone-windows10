@@ -21,36 +21,27 @@
         <phone:Pivot Title="{Binding Path=LocalizedResources.VideoSettingsMenu, Source={StaticResource LocalizedStrings}}">
             <phone:PivotItem Header="{Binding Path=LocalizedResources.OptionsMenu, Source={StaticResource LocalizedStrings}}">
                 <Grid Margin="12,0,12,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Vertical">
+                        <toolkit:ToggleSwitch
+                            x:Name="VideoEnabled"
+                            Header="{Binding Path=LocalizedResources.VideoEnabledSetting, Source={StaticResource LocalizedStrings}}">
+                        </toolkit:ToggleSwitch>
 
-                    <toolkit:ToggleSwitch
-                        Grid.Row="0"
-                        x:Name="VideoEnabled"
-                        Header="{Binding Path=LocalizedResources.VideoEnabledSetting, Source={StaticResource LocalizedStrings}}">
-                    </toolkit:ToggleSwitch>
+                        <toolkit:ToggleSwitch
+                            x:Name="AutomaticallyInitiateVideo"
+                            Header="{Binding Path=LocalizedResources.AutomaticallyInitiateVideoSetting, Source={StaticResource LocalizedStrings}}">
+                        </toolkit:ToggleSwitch>
 
-                    <toolkit:ToggleSwitch
-                        Grid.Row="1"
-                        x:Name="AutomaticallyInitiateVideo"
-                        Header="{Binding Path=LocalizedResources.AutomaticallyInitiateVideoSetting, Source={StaticResource LocalizedStrings}}">
-                    </toolkit:ToggleSwitch>
+                        <toolkit:ToggleSwitch
+                            x:Name="AutomaticallyAcceptVideo"
+                            Header="{Binding Path=LocalizedResources.AutomaticallyAcceptVideoSetting, Source={StaticResource LocalizedStrings}}">
+                        </toolkit:ToggleSwitch>
 
-                    <toolkit:ToggleSwitch
-                        Grid.Row="2"
-                        x:Name="AutomaticallyAcceptVideo"
-                        Header="{Binding Path=LocalizedResources.AutomaticallyAcceptVideoSetting, Source={StaticResource LocalizedStrings}}">
-                    </toolkit:ToggleSwitch>
-
-                    <toolkit:ToggleSwitch
-                        Grid.Row="3"
-                        x:Name="SelfViewEnabled"
-                        Header="{Binding Path=LocalizedResources.SelfViewEnabledSetting, Source={StaticResource LocalizedStrings}}">
-                    </toolkit:ToggleSwitch>
+                        <toolkit:ToggleSwitch
+                            x:Name="SelfViewEnabled"
+                            Header="{Binding Path=LocalizedResources.SelfViewEnabledSetting, Source={StaticResource LocalizedStrings}}">
+                        </toolkit:ToggleSwitch>
+                    </StackPanel>
                 </Grid>
             </phone:PivotItem>
 

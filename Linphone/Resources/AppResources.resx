@@ -135,7 +135,7 @@
     <value>Cancel</value>
   </data>
   <data name="DebugSetting" xml:space="preserve">
-    <value>Debug</value>
+    <value>Logs destination</value>
   </data>
   <data name="DeleteAllMenu" xml:space="preserve">
     <value>Delete All</value>
@@ -566,5 +566,11 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   </data>
   <data name="DisconnectMenu" xml:space="preserve">
     <value>Disable register</value>
+  </data>
+  <data name="DebugMenu" xml:space="preserve">
+    <value>Debug</value>
+  </data>
+  <data name="TCPRemote" xml:space="preserve">
+    <value>TCPRemote ip:port</value>
   </data>
 </root>

@@ -160,6 +160,7 @@ namespace Linphone.Model
     /// </summary>
     public class ApplicationSettingsManager : SettingsManager, ISettingsManager
     {
+        internal const String LinphoneLogFileName = "Linphone.log";
         private LpConfig Config;
 
         #region Constants settings names
@@ -191,7 +192,7 @@ namespace Linphone.Model
         {
             dict[LogLevelKeyName] = Config.GetInt(ApplicationSection, LogLevelKeyName, (int)OutputTraceLevel.None).ToString();
             dict[LogDestinationKeyName] = Config.GetString(ApplicationSection, LogDestinationKeyName, OutputTraceDest.File.ToString());
-            dict[LogOptionKeyName] = Config.GetString(ApplicationSection, LogOptionKeyName, "Linphone.log");
+            dict[LogOptionKeyName] = Config.GetString(ApplicationSection, LogOptionKeyName, LinphoneLogFileName);
         }
 
         /// <summary>
@@ -199,7 +200,22 @@ namespace Linphone.Model
         /// </summary>
         public async void Save()
         {
-            if (ValueChanged(LogLevelKeyName))
+            if (ValueChanged(LogDestinationKeyName) || ValueChanged(LogOptionKeyName))
+            {
+                var logsDestination = GetNew(LogDestinationKeyName);
+                Config.SetString(ApplicationSection, LogDestinationKeyName, logsDestination);
+
+                if (OutputTraceDest.File.ToString().Equals(logsDestination))
+                {
+                    Config.SetString(ApplicationSection, LogOptionKeyName, LinphoneLogFileName);
+                }
+                else if (OutputTraceDest.TCPRemote.ToString().Equals(logsDestination))
+                {
+                    Config.SetString(ApplicationSection, LogOptionKeyName, GetNew(LogOptionKeyName));
+                }
+                LinphoneManager.Instance.ConfigureLogger();
+            }
+            else if (ValueChanged(LogLevelKeyName))
             {
                 try
                 {

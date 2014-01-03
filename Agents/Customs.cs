@@ -11,14 +11,19 @@ namespace Linphone.Agents
     /// </summary>
     public class Customs
     {
-        public static bool IsTunnelEnabled = false;
-        public static bool AddPasswordInContactsParams = false;
-        public static bool UseCustomIncomingCallView = false;
-        public static string PictureUploadScriptURL = "https://linphone.org:444/upload.php";
-        public static string UserAgent = "LinphoneWP8";
-        public static bool EnableG729 = false;
-        public static bool EnableVideo = false;
+        public const bool IsTunnelEnabled = false;
+        public const bool AddPasswordInContactsParams = false;
+        public const bool UseCustomIncomingCallView = false;
+        public const string PictureUploadScriptURL = "https://linphone.org:444/upload.php";
+        public const string UserAgent = "LinphoneWP8";
+        public const bool EnableG729 = false;
+        public const bool EnableVideo = false;
+#if DEBUG
+        public const bool AllowTCPRemote = true; // Do not enable this for releases !!!
+#else
+        public const bool AllowTCPRemote = false; // Do not enable this for releases !!!
+#endif
 
-        internal static bool DeclineCallWithBusyReason = false;
+        internal const bool DeclineCallWithBusyReason = false;
     }
 }

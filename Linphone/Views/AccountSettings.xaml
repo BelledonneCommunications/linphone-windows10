@@ -41,9 +41,9 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 
-                <StackPanel Orientation="Vertical" Grid.Row="0">
+                <StackPanel Orientation="Vertical" Grid.Row="0" Margin="0,10,0,0">
                     <TextBlock
-                        Margin="10,0,0,0"
+                        Style="{StaticResource PhoneTextSubtleStyle}"
                         Text="{Binding Path=LocalizedResources.SIPUsername, Source={StaticResource LocalizedStrings}}">
                     </TextBlock>
                     <TextBox
@@ -57,9 +57,9 @@
                     </TextBox>
                 </StackPanel>
 
-                <StackPanel Orientation="Vertical" Grid.Row="1">
+                <StackPanel Orientation="Vertical" Grid.Row="1" Margin="0,10,0,0">
                     <TextBlock
-                        Margin="10,0,0,0"
+                        Style="{StaticResource PhoneTextSubtleStyle}"
                         Text="{Binding Path=LocalizedResources.SIPUserId, Source={StaticResource LocalizedStrings}}">
                     </TextBlock>
                     <TextBox
@@ -75,7 +75,7 @@
 
                 <StackPanel Orientation="Vertical" Grid.Row="2" Margin="0,10,0,0">
                     <TextBlock
-                        Margin="10,0,0,0"
+                        Style="{StaticResource PhoneTextSubtleStyle}"
                         Text="{Binding Path=LocalizedResources.SIPPassword, Source={StaticResource LocalizedStrings}}">
                     </TextBlock>
                     <PasswordBox
@@ -86,7 +86,7 @@
 
                 <StackPanel Orientation="Vertical" Grid.Row="3" Margin="0,10,0,0">
                     <TextBlock
-                        Margin="10,0,0,0"
+                        Style="{StaticResource PhoneTextSubtleStyle}"
                         Text="{Binding Path=LocalizedResources.SIPDomain, Source={StaticResource LocalizedStrings}}">
                     </TextBlock>
                     <TextBox
@@ -102,7 +102,7 @@
 
                 <StackPanel Orientation="Vertical" Grid.Row="4" Margin="0,10,0,0">
                     <TextBlock
-                        Margin="10,0,0,0"
+                        Style="{StaticResource PhoneTextSubtleStyle}"
                         Text="{Binding Path=LocalizedResources.SIPProxy, Source={StaticResource LocalizedStrings}}">
                     </TextBlock>
                     <TextBox
@@ -120,7 +120,7 @@
 
                 <StackPanel Orientation="Vertical" Grid.Row="6" Margin="0,10,0,0">
                     <TextBlock
-                        Margin="10,0,0,0"
+                        Style="{StaticResource PhoneTextSubtleStyle}"
                         Text="{Binding Path=LocalizedResources.DisplayName, Source={StaticResource LocalizedStrings}}">
                     </TextBlock>
                     <TextBox
