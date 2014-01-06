@@ -201,6 +201,15 @@ int Linphone::Core::LinphoneProxyConfig::LookupCCCFromE164(Platform::String^ e16
 	return ccc;
 }
 
+void Linphone::Core::LinphoneProxyConfig::SetContactUriParameters(Platform::String^ params)
+{
+	gApiLock.Lock();
+	const char* cc = Utils::pstoccs(params);
+	linphone_proxy_config_set_contact_uri_parameters(this->proxy_config, cc);
+	delete(cc);
+	gApiLock.Unlock();
+}
+
 Linphone::Core::LinphoneProxyConfig::LinphoneProxyConfig()
 {
 	gApiLock.Lock();

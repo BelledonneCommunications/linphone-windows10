@@ -177,6 +177,14 @@ namespace Linphone
 			/// <returns>The international prefix or -1 if not found</returns>
 			int LookupCCCFromE164(Platform::String^ e164);
 
+			/// <summary>
+			/// Set optional contact parameters that will be added to the contact information sent in the registration, inside the URI.
+			/// The main use case for this function is provide the proxy additional information regarding the user agent, like for example unique identifier or apple push id.
+			/// As an example, the contact address in the SIP register sent will look like <sip:joe@15.128.128.93:50421;apple-push-id=43143-DFE23F-2323-FA2232>.
+			/// </summary>
+			/// <param name="params">a string contaning the additional parameters in text form, like "myparam=something;myparam2=something_else"</param>
+			void SetContactUriParameters(Platform::String^ params);
+
 		private:
 			friend ref class Linphone::Core::LinphoneCore;
 			friend class Linphone::Core::Utils;

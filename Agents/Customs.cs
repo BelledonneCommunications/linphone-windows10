@@ -12,7 +12,7 @@ namespace Linphone.Agents
     public class Customs
     {
         public const bool IsTunnelEnabled = false;
-        public const bool AddPasswordInContactsParams = false;
+        public const bool AddPasswordInUriContactsParams = false;
         public const bool UseCustomIncomingCallView = false;
         public const string PictureUploadScriptURL = "https://linphone.org:444/upload.php";
         public const string UserAgent = "LinphoneWP8";

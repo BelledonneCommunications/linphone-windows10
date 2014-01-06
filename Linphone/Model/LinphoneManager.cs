@@ -324,15 +324,15 @@ namespace Linphone.Model
                     return;
                 }
 
-                if (Customs.AddPasswordInContactsParams)
+                if (Customs.AddPasswordInUriContactsParams)
                 {
                     SIPAccountSettingsManager sip = new SIPAccountSettingsManager();
                     sip.Load();
-                    server.LinphoneCore.GetDefaultProxyConfig().SetContactParameters("pwd=" + sip.Password + ";app-id=" + host + ";pn-type=wp;pn-tok=" + token);
+                    server.LinphoneCore.GetDefaultProxyConfig().SetContactUriParameters("pwd=" + sip.Password + ";app-id=" + host + ";pn-type=wp;pn-tok=" + token);
                 }
                 else
                 {
-                    server.LinphoneCore.GetDefaultProxyConfig().SetContactParameters("app-id=" + host + ";pn-type=wp;pn-tok=" + token);
+                    server.LinphoneCore.GetDefaultProxyConfig().SetContactUriParameters("app-id=" + host + ";pn-type=wp;pn-tok=" + token);
                 }
             }
         }
