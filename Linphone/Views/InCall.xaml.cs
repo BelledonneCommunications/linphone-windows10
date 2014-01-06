@@ -209,24 +209,21 @@ namespace Linphone.Views
             if (!isCallPaused)
             {
                 oneSecondTimer = new Timer(new TimerCallback(timerTick), null, 0, 1000);
-
-                if (Customs.EnableVideo) { 
-                    if (call.IsCameraEnabled() && !((InCallModel)ViewModel).IsVideoActive)
-                    {
-                        // Show video if it was not shown yet
-                        ((InCallModel)ViewModel).IsVideoActive = true;
-                        video.IsChecked = true;
-                        ButtonsFadeInVideoAnimation.Begin();
-                        StartFadeTimer();
-                    }
-                    else if (!call.IsCameraEnabled() && ((InCallModel)ViewModel).IsVideoActive)
-                    {
-                        // Stop video if it is no longer active
-                        ((InCallModel)ViewModel).IsVideoActive = false;
-                        video.IsChecked = false;
-                        ButtonsFadeInAudioAnimation.Begin();
-                        StopFadeTimer();
-                    }
+                if (call.GetCurrentParamsCopy().IsVideoEnabled() && !((InCallModel)ViewModel).IsVideoActive)
+                {
+                    // Show video if it was not shown yet
+                    ((InCallModel)ViewModel).IsVideoActive = true;
+                    video.IsChecked = true;
+                    ButtonsFadeInVideoAnimation.Begin();
+                    StartFadeTimer();
+                }
+                else if (!call.GetCurrentParamsCopy().IsVideoEnabled() && ((InCallModel)ViewModel).IsVideoActive)
+                {
+                    // Stop video if it is no longer active
+                    ((InCallModel)ViewModel).IsVideoActive = false;
+                    video.IsChecked = false;
+                    ButtonsFadeInAudioAnimation.Begin();
+                    StopFadeTimer();
                 }
             }
             else if (oneSecondTimer != null)
@@ -302,7 +299,7 @@ namespace Linphone.Views
                         AudioPType.Text = AppResources.StatPayload + ": " + audiopt.GetMimeType() + "/" + audiopt.GetClockRate();
                     }
 
-                    if (call.IsCameraEnabled())
+                    if (call.GetCurrentParamsCopy().IsVideoEnabled())
                     {
                         LinphoneCallStats videoStats = call.GetVideoStats();
                         if (videoStats != null)
