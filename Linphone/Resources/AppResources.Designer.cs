@@ -355,7 +355,7 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a linphone.org account.
+        ///   Looks up a localized string similar to create a linphone.org account.
         /// </summary>
         public static string CreateAccount {
             get {
@@ -769,7 +769,7 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use linphone.org account.
+        ///   Looks up a localized string similar to use linphone.org account.
         /// </summary>
         public static string LinphoneLogin {
             get {
@@ -787,7 +787,7 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Log in.
+        ///   Looks up a localized string similar to log in.
         /// </summary>
         public static string Login {
             get {
@@ -1135,6 +1135,15 @@ namespace Linphone.Resources {
         public static string SIPUsername {
             get {
                 return ResourceManager.GetString("SIPUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to skip.
+        /// </summary>
+        public static string Skip {
+            get {
+                return ResourceManager.GetString("Skip", resourceCulture);
             }
         }
         

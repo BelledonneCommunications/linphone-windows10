@@ -8,6 +8,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Linphone.Model;
+using Linphone.Resources;
 
 namespace Linphone.Views
 {
@@ -45,7 +46,7 @@ namespace Linphone.Views
 
         private void LogIn_Click(object sender, RoutedEventArgs e)
         {
-            ErrorMessage.Visibility = Visibility.Collapsed;
+            ErrorMessage.Text = "";
             if (Username.Text.Length > 0 && Domain.Text.Length > 0)
             {
                 LogIn.IsEnabled = false;
@@ -56,17 +57,28 @@ namespace Linphone.Views
                 Password.IsEnabled = false;
                 Domain.IsEnabled = false;
 
+                NetworkSettingsManager networkSettings = new NetworkSettingsManager();
                 _settings.Username = Username.Text;
-                _settings.Password = Password.Text;
+                _settings.Password = Password.Password;
                 _settings.Domain = Domain.Text;
+                if (Domain.Text.Equals("sip.linphone.org"))
+                {
+                    _settings.Proxy = "sip.linphone.org:5223";
+                    _settings.OutboundProxy = true;
+
+                    networkSettings.Transport = "TLS";
+                    networkSettings.StunServer = "sip.linphone.org";
+                    networkSettings.FWPolicy = "ICE";
+                }
                 _settings.Save();
+                networkSettings.Save();
 
                 NavigationService.Navigate(new Uri("/Views/Dialer.xaml", UriKind.RelativeOrAbsolute));
                 NavigationService.RemoveBackEntry(); // Prevent a back to this screen from the dialer
             }
             else
             {
-                ErrorMessage.Visibility = Visibility.Visible;
+                ErrorMessage.Text = AppResources.ErrorLogin;
             }
         }
 
@@ -78,8 +90,13 @@ namespace Linphone.Views
         private void LinphoneLogIn_Click(object sender, RoutedEventArgs e)
         {
             Domain.Text = "sip.linphone.org";
-            LinphoneLogIn.Visibility = Visibility.Collapsed;
-            ErrorMessage.Visibility = Visibility.Collapsed;
+            LinphoneLogIn.IsEnabled = false;
+        }
+
+        private void Skip_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/Dialer.xaml", UriKind.RelativeOrAbsolute));
+            NavigationService.RemoveBackEntry(); // Prevent a back to this screen from the dialer
         }
     }
 }

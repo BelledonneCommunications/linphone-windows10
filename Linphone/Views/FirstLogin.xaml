@@ -36,36 +36,52 @@
             </Grid.RowDefinitions>
             
             <StackPanel Grid.Row="0" VerticalAlignment="Center">
-                <toolkit:PhoneTextBox x:Name="Username" Hint="{Binding Path=LocalizedResources.SIPUsername, Source={StaticResource LocalizedStrings}}">
-                    <TextBox.InputScope>
-                        <InputScope>
-                            <InputScopeName NameValue="EmailUserName" />
-                        </InputScope>
-                    </TextBox.InputScope>
-                </toolkit:PhoneTextBox>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock 
+                        Text="{Binding Path=LocalizedResources.SIPUsername, Source={StaticResource LocalizedStrings}}"
+                        Style="{StaticResource PhoneTextSubtleStyle}"/>
+                    <TextBox x:Name="Username">
+                        <TextBox.InputScope>
+                            <InputScope>
+                                <InputScopeName NameValue="EmailUserName" />
+                            </InputScope>
+                        </TextBox.InputScope>
+                    </TextBox>
+                </StackPanel>
+                
+                <StackPanel Orientation="Vertical">
+                    <TextBlock 
+                        Text="{Binding Path=LocalizedResources.SIPPassword, Source={StaticResource LocalizedStrings}}"
+                        Style="{StaticResource PhoneTextSubtleStyle}"/>
+                    <PasswordBox x:Name="Password"/>
+                </StackPanel>
 
-                <toolkit:PhoneTextBox x:Name="Password" Hint="{Binding Path=LocalizedResources.SIPPassword, Source={StaticResource LocalizedStrings}}">
-                    <TextBox.InputScope>
-                        <InputScope>
-                            <InputScopeName NameValue="Password" />
-                        </InputScope>
-                    </TextBox.InputScope>
-                </toolkit:PhoneTextBox>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock 
+                        Text="{Binding Path=LocalizedResources.SIPDomain, Source={StaticResource LocalizedStrings}}"
+                        Style="{StaticResource PhoneTextSubtleStyle}"/>
+                    <TextBox x:Name="Domain">
+                        <TextBox.InputScope>
+                            <InputScope>
+                                <InputScopeName NameValue="Url" />
+                            </InputScope>
+                        </TextBox.InputScope>
+                    </TextBox>
+                </StackPanel>
 
-                <toolkit:PhoneTextBox x:Name="Domain" Hint="{Binding Path=LocalizedResources.SIPDomain, Source={StaticResource LocalizedStrings}}">
-                    <TextBox.InputScope>
-                        <InputScope>
-                            <InputScopeName NameValue="Url" />
-                        </InputScope>
-                    </TextBox.InputScope>
-                </toolkit:PhoneTextBox>
+                <Button 
+                    x:Name="LogIn" 
+                    Content="{Binding Path=LocalizedResources.Login, Source={StaticResource LocalizedStrings}}" 
+                    Click="LogIn_Click"/>
 
-                <Button x:Name="LogIn" Content="{Binding Path=LocalizedResources.Login, Source={StaticResource LocalizedStrings}}" Click="LogIn_Click"/>
+                <Button 
+                    x:Name="Skip" 
+                    Content="{Binding Path=LocalizedResources.Skip, Source={StaticResource LocalizedStrings}}" 
+                    BorderThickness="0"
+                    Click="Skip_Click"/>
 
                 <TextBlock 
                     x:Name="ErrorMessage" 
-                    Text="{Binding Path=LocalizedResources.ErrorLogin, Source={StaticResource LocalizedStrings}}" 
-                    Visibility="Collapsed"
                     HorizontalAlignment="Center"
                     Foreground="Red"/>
                 
@@ -75,8 +91,19 @@
                 </StackPanel>
             </StackPanel>
 
-            <Button x:Name="LinphoneLogIn" Grid.Row="1" Content="{Binding Path=LocalizedResources.LinphoneLogin, Source={StaticResource LocalizedStrings}}" Click="LinphoneLogIn_Click"/>
-            <Button x:Name="Register" Grid.Row="2" Content="{Binding Path=LocalizedResources.CreateAccount, Source={StaticResource LocalizedStrings}}" Click="Register_Click" IsEnabled="False"/>
+            <Button 
+                x:Name="LinphoneLogIn" 
+                Grid.Row="1" 
+                BorderThickness="0" 
+                Content="{Binding Path=LocalizedResources.LinphoneLogin, Source={StaticResource LocalizedStrings}}" 
+                Click="LinphoneLogIn_Click"/>
+            <Button 
+                x:Name="Register" 
+                Grid.Row="2" 
+                BorderThickness="0"
+                Content="{Binding Path=LocalizedResources.CreateAccount, Source={StaticResource LocalizedStrings}}" 
+                Click="Register_Click" 
+                IsEnabled="False"/>
         </Grid>
     </Grid>
 

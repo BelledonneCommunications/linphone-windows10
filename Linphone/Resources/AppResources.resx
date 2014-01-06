@@ -486,10 +486,10 @@ http://www.linphone.org/m/help
     <value>Message received</value>
   </data>
   <data name="CreateAccount" xml:space="preserve">
-    <value>Create a linphone.org account</value>
+    <value>create a linphone.org account</value>
   </data>
   <data name="Login" xml:space="preserve">
-    <value>Log in</value>
+    <value>log in</value>
   </data>
   <data name="LoginIn" xml:space="preserve">
     <value>Loging in...</value>
@@ -501,7 +501,7 @@ http://www.linphone.org/m/help
     <value>Username and/or Domain cannot be empty</value>
   </data>
   <data name="LinphoneLogin" xml:space="preserve">
-    <value>Use linphone.org account</value>
+    <value>use linphone.org account</value>
   </data>
   <data name="ResizeSetting" xml:space="preserve">
     <value>Scale down sent pictures</value>
@@ -572,5 +572,8 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   </data>
   <data name="TCPRemote" xml:space="preserve">
     <value>TCPRemote ip:port</value>
+  </data>
+  <data name="Skip" xml:space="preserve">
+    <value>skip</value>
   </data>
 </root>

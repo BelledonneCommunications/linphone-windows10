@@ -1182,31 +1182,23 @@ namespace Linphone.Model
                 {
                     port = 5060;
                     if (transports.UDP > 0)
-                    {
                         port = transports.UDP;
-                    }
                     else if (transports.TCP > 0)
-                    {
                         port = transports.TCP;
-                    }
                     else if (transports.TLS > 0)
-                    {
                         port = transports.TLS;
-                    }
                 }
 
+                if (port == 0)
+                    port = -1; // Random
+
                 if (GetNew(SIPTransportSettingKeyName) == AppResources.TransportUDP)
-                {
                     transports.UDP = port;
-                }
                 else if (GetNew(SIPTransportSettingKeyName) == AppResources.TransportTCP)
-                {
                     transports.TCP = port;
-                }
                 else if (GetNew(SIPTransportSettingKeyName) == AppResources.TransportTLS)
-                {
                     transports.TLS = port;
-                }
+
                 LinphoneManager.Instance.LinphoneCore.SetSignalingTransportsPorts(transports);
             }
 
@@ -1257,7 +1249,7 @@ namespace Linphone.Model
 
         #region Accessors
         /// <summary>
-        /// Transport setting (UDP or TCP).
+        /// Transport setting (UDP, TCP or TLS).
         /// </summary>
         public string Transport
         {
