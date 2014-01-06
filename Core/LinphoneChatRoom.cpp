@@ -43,6 +43,21 @@ Linphone::Core::LinphoneChatMessage^ Linphone::Core::LinphoneChatRoom::CreateLin
 	return chatMessage;
 }
 
+Platform::Boolean Linphone::Core::LinphoneChatRoom::IsRemoteComposing()
+{
+	gApiLock.Lock();
+	Platform::Boolean isComposing = (linphone_chat_room_is_remote_composing(this->room) == TRUE);
+	gApiLock.Unlock();
+	return isComposing;
+}
+
+void Linphone::Core::LinphoneChatRoom::Compose()
+{
+	gApiLock.Lock();
+	linphone_chat_room_compose(this->room);
+	gApiLock.Unlock();
+}
+
 Linphone::Core::LinphoneChatRoom::LinphoneChatRoom(::LinphoneChatRoom *cr) :
 	room(cr)
 {

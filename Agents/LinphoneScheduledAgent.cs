@@ -147,6 +147,13 @@ namespace Linphone.Agents
         public void MessageReceived(LinphoneChatMessage message)
         {
         }
+
+        /// <summary>
+        /// Callback for LinphoneCoreListener
+        /// </summary>
+        public void ComposingReceived(LinphoneChatRoom room)
+        {
+        }
         #endregion
     }
 }

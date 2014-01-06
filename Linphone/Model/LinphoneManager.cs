@@ -960,6 +960,14 @@ namespace Linphone.Model
                 });
             }
         }
+
+        /// <summary>
+        /// Callback for LinphoneCoreListener
+        /// </summary>
+        public void ComposingReceived(LinphoneChatRoom room)
+        {
+            
+        }
         #endregion
 
         /// <summary>

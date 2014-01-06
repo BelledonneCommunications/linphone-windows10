@@ -10,6 +10,7 @@ namespace Linphone
 		ref class LinphoneProxyConfig;
 		ref class LinphoneCallStats;
 		ref class LinphoneChatMessage;
+		ref class LinphoneChatRoom;
 
 		/// <summary>
 		/// Definition of the LinphoneCoreListener interface.
@@ -76,6 +77,12 @@ namespace Linphone
 			void CallStatsUpdated(LinphoneCall^ call, LinphoneCallStats^ stats);
 
 			void MessageReceived(LinphoneChatMessage^ message);
+
+			/// <summary>
+			/// Callback method called when the composing status for this room has been updated.
+			/// </summary>
+			/// <param name="room">The room for which the composing status has been updated</param>
+			void ComposingReceived(LinphoneChatRoom^ room);
 		};
 	}
 }

@@ -27,6 +27,16 @@ namespace Linphone
 			/// Sends a LinphoneChatMessage using the current ChatRoom, and sets the listener to be called when the massge state changes.
 			/// </summary>
 			void SendMessage(Linphone::Core::LinphoneChatMessage^ message, Linphone::Core::LinphoneChatMessageListener^ listener);
+
+			/// <summary>
+			/// Tells whether the remote is currently composing a message.
+			/// </summary>
+			Platform::Boolean IsRemoteComposing();
+
+			/// <summary>
+			/// Notify the destination of the chat message being composed that the user is typing a new message.
+			/// </summary>
+			void Compose();
 			
 			/// <summary>
 			/// Creates a LinphoneChatMessage from a String.

@@ -1550,6 +1550,22 @@ void message_received(LinphoneCore *lc, LinphoneChatRoom* chat_room, LinphoneCha
 	Linphone::Core::gApiLock.LeaveListener();
 }
 
+void composing_received(LinphoneCore *lc, LinphoneChatRoom *room) 
+{
+	Linphone::Core::gApiLock.EnterListener();
+	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
+	if (listener != nullptr)
+	{
+		Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneChatRoom^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneChatRoom^> *>(linphone_chat_room_get_user_data(room));
+		Linphone::Core::LinphoneChatRoom^ lRoom = (proxy) ? proxy->Ref() : nullptr;
+		if (lRoom == nullptr) {
+			lRoom = (Linphone::Core::LinphoneChatRoom^)Linphone::Core::Utils::CreateLinphoneChatRoom(room);
+		}
+		listener->ComposingReceived(lRoom);
+	}
+	Linphone::Core::gApiLock.LeaveListener();
+}
+
 Linphone::Core::LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener) :
 	lc(nullptr),
 	listener(coreListener)
@@ -1610,6 +1626,7 @@ void Linphone::Core::LinphoneCore::Init()
 	vtable->call_encryption_changed = call_encryption_changed;
 	vtable->call_stats_updated = call_stats_updated;
 	vtable->message_received = message_received;
+	vtable->is_composing_received = composing_received;
 
 	this->lc = linphone_core_new_with_config(vtable, config ? config->config : NULL, NULL);
 	RefToPtrProxy<LinphoneCore^> *proxy = new RefToPtrProxy<LinphoneCore^>(this);
