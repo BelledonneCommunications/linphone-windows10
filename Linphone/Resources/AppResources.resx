@@ -576,4 +576,7 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   <data name="Skip" xml:space="preserve">
     <value>skip</value>
   </data>
+  <data name="RemoteComposing" xml:space="preserve">
+    <value>remote is typing...</value>
+  </data>
 </root>

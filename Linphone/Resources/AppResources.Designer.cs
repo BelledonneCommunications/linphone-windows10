@@ -931,6 +931,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to remote is typing....
+        /// </summary>
+        public static string RemoteComposing {
+            get {
+                return ResourceManager.GetString("RemoteComposing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Report.
         /// </summary>
         public static string ReportCrash {

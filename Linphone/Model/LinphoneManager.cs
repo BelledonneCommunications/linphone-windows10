@@ -962,11 +962,23 @@ namespace Linphone.Model
         }
 
         /// <summary>
+        /// Listener to let a view to be notified by LinphoneManager when a composing is received.
+        /// </summary>
+        public ComposingReceivedListener ComposingListener { get; set; }
+
+        /// <summary>
         /// Callback for LinphoneCoreListener
         /// </summary>
         public void ComposingReceived(LinphoneChatRoom room)
         {
-            
+            if (ComposingListener != null && room != null)
+            {
+                string currentListenerSipAddress = ComposingListener.GetSipAddressAssociatedWithDisplayConversation();
+                string roomComposingSipAddress =  room.GetPeerAddress().AsStringUriOnly().Replace("sip:", "");
+
+                if (currentListenerSipAddress != null && roomComposingSipAddress.Equals(currentListenerSipAddress))
+                    ComposingListener.ComposeReceived();
+            }
         }
         #endregion
 

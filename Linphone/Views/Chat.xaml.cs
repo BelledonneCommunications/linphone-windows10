@@ -41,10 +41,23 @@ namespace Linphone.Views
         string GetSipAddressAssociatedWithDisplayConversation();
     }
 
+    public interface ComposingReceivedListener
+    {
+        /// <summary>
+        /// Callback called when a composing is received.
+        /// </summary>
+        void ComposeReceived();
+
+        /// <summary>
+        /// Returns the sip address of the current displayed conversation if possible
+        /// </summary>
+        string GetSipAddressAssociatedWithDisplayConversation();
+    }
+
     /// <summary>
     /// Displays chat messages between two users.
     /// </summary>
-    public partial class Chat : BasePage, LinphoneChatMessageListener, MessageReceivedListener
+    public partial class Chat : BasePage, LinphoneChatMessageListener, MessageReceivedListener, ComposingReceivedListener
     {
         private const int SENT_IMAGES_QUALITY = 50;
 
@@ -79,6 +92,7 @@ namespace Linphone.Views
         {
             base.OnNavigatedTo(e);
             LinphoneManager.Instance.MessageListener = this;
+            LinphoneManager.Instance.ComposingListener = this;
             _SentMessages = new List<OutgoingChatBubble>();
 
             // Create LinphoneCore if not created yet, otherwise do nothing
@@ -127,6 +141,8 @@ namespace Linphone.Views
 
         private void MessageBox_TextChanged(object sender, string text)
         {
+            if (chatRoom != null && text.Length > 0)
+                chatRoom.Compose();
             EnableAppBarSendMessageButton(text != null && text.Length > 0 && ((sipAddress != null && sipAddress.Length > 0) || (NewChatSipAddress.Text != null && NewChatSipAddress.Text.Length > 0)));
         }
 
@@ -191,8 +207,9 @@ namespace Linphone.Views
         {
             chatRoom = null;
             DatabaseManager.Instance.SubmitChanges();
-            base.OnNavigatingFrom(e);
             LinphoneManager.Instance.MessageListener = null;
+            LinphoneManager.Instance.ComposingListener = null;
+            base.OnNavigatingFrom(e);
         }
 
         /// <summary>
@@ -559,6 +576,23 @@ namespace Linphone.Views
                 bubble.MessageDeleted += bubble_MessageDeleted;
                 MessagesList.Children.Add(bubble);
 
+                scrollToBottom();
+            });
+        }
+        
+        /// <summary>
+        /// Callback called by LinphoneManager when a composing is received.
+        /// </summary>
+        public void ComposeReceived()
+        {
+            if (chatRoom == null)
+                return;
+
+            bool isRemoteComposing = chatRoom.IsRemoteComposing();
+
+            Dispatcher.BeginInvoke(() =>
+            {
+                RemoteComposing.Visibility = isRemoteComposing ? Visibility.Visible : Visibility.Collapsed;
                 scrollToBottom();
             });
         }

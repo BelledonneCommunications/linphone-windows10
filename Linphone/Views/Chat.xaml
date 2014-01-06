@@ -112,7 +112,15 @@
                 </StackPanel>
             </Border>
 
-            <controls:TextBoxChatBubble x:Name="MessageBox" Grid.Row="1"/>
+            <StackPanel Orientation="Vertical" Grid.Row="1">
+                <TextBlock
+                        x:Name="RemoteComposing"
+                        Text="{Binding LocalizedResources.RemoteComposing, Source={StaticResource LocalizedStrings}}"
+                        Visibility="Collapsed"
+                        Style="{StaticResource PhoneTextSubtleStyle}"/>
+                
+                <controls:TextBoxChatBubble x:Name="MessageBox"/>
+            </StackPanel>
         </Grid>
     </Grid>
 
