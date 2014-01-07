@@ -118,9 +118,7 @@ namespace Linphone.Views
                 cm.FindContact(sipAddress);
 
                 chatRoom = LinphoneManager.Instance.LinphoneCore.CreateChatRoom(sipAddress);
-                bool isRemoteComposing = chatRoom.IsRemoteComposing();
-                Debug.WriteLine("[Chat] Is remote composing ? " + isRemoteComposing);
-                RemoteComposing.Visibility = isRemoteComposing ? Visibility.Visible : Visibility.Collapsed;
+                UpdateComposingMessage();
 
                 if (e.NavigationMode != NavigationMode.Back)
                 {
@@ -588,16 +586,26 @@ namespace Linphone.Views
         /// </summary>
         public void ComposeReceived()
         {
+            Dispatcher.BeginInvoke(() =>
+            {
+                UpdateComposingMessage();
+                scrollToBottom();
+            });
+        }
+
+        public void UpdateComposingMessage()
+        {
             if (chatRoom == null)
                 return;
 
-            Dispatcher.BeginInvoke(() =>
-            {
-                bool isRemoteComposing = chatRoom.IsRemoteComposing();
-                Debug.WriteLine("[Chat] Is remote composing ? " + isRemoteComposing);
-                RemoteComposing.Visibility = isRemoteComposing ? Visibility.Visible : Visibility.Collapsed;
-                scrollToBottom();
-            });
+            bool isRemoteComposing = chatRoom.IsRemoteComposing();
+            Debug.WriteLine("[Chat] Is remote composing ? " + isRemoteComposing);
+            RemoteComposing.Visibility = isRemoteComposing ? Visibility.Visible : Visibility.Collapsed;
+
+            string remoteName = chatRoom.GetPeerAddress().GetDisplayName();
+            if (remoteName.Length <= 0)
+                remoteName = chatRoom.GetPeerAddress().GetUserName();
+            RemoteComposing.Text = remoteName + AppResources.RemoteComposing;
         }
 
         /// <summary>
