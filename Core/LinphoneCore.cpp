@@ -1371,7 +1371,7 @@ Linphone::Core::LinphoneChatRoom^ Linphone::Core::LinphoneCore::CreateChatRoom(P
 {
 	gApiLock.Lock();
 	const char* address = Linphone::Core::Utils::pstoccs(to);
-	Linphone::Core::LinphoneChatRoom^ chatRoom = (Linphone::Core::LinphoneChatRoom^) Linphone::Core::Utils::CreateLinphoneChatRoom(linphone_core_create_chat_room(this->lc, address));
+	Linphone::Core::LinphoneChatRoom^ chatRoom = (Linphone::Core::LinphoneChatRoom^) Linphone::Core::Utils::CreateLinphoneChatRoom(linphone_core_get_or_create_chat_room(this->lc, address));
 	delete(address);
 	gApiLock.Unlock();
 
