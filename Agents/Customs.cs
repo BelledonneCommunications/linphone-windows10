@@ -18,10 +18,14 @@ namespace Linphone.Agents
         public const string UserAgent = "LinphoneWP8";
         public const bool EnableG729 = false;
         public const bool EnableVideo = false;
+
+        // Do not enable these for releases !!!
 #if DEBUG
-        public const bool AllowTCPRemote = true; // Do not enable this for releases !!!
+        public const bool AllowTCPRemote = true;
+        public const bool ShowWizardUntilAccountConfigured = true;
 #else
-        public const bool AllowTCPRemote = false; // Do not enable this for releases !!!
+        public const bool AllowTCPRemote = false;
+        public const bool ShowWizardUntilAccountConfigured = false;
 #endif
 
         internal const bool DeclineCallWithBusyReason = false;
