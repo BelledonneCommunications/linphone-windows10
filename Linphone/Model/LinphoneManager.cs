@@ -222,13 +222,6 @@ namespace Linphone.Model
             try
             {
                 LinphoneCore.CoreListener = null;
-                // Cancel any incoming call
-                if (LinphoneCore.GetCallsNb() == 1)
-                {
-                    LinphoneCall call = (LinphoneCall)LinphoneCore.GetCalls()[0];
-                    if (call.GetState() == LinphoneCallState.IncomingReceived)
-                        LinphoneCore.TerminateCall(call);
-                }
                 LinphoneCore.SetNetworkReachable(false); // To prevent the app from sending an unregister to the server
                 LinphoneCore.Destroy();
                 Debug.WriteLine("[LinphoneManager] LinphoneCore has been destroyed");

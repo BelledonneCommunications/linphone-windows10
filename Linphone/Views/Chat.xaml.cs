@@ -593,7 +593,7 @@ namespace Linphone.Views
             });
         }
 
-        public void UpdateComposingMessage()
+        private void UpdateComposingMessage()
         {
             if (chatRoom == null)
                 return;

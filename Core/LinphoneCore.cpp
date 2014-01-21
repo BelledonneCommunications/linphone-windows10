@@ -289,6 +289,7 @@ IVector<Object^>^ Linphone::Core::LinphoneCore::GetAuthInfos()
 void Linphone::Core::LinphoneCore::Destroy() 
 {
 	gApiLock.Lock();
+	linphone_core_destroy(this->lc);
 	IterateEnabled = false;
 	gApiLock.Unlock();
 }
