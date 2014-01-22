@@ -38,6 +38,14 @@ namespace Linphone.Views
             vibrator.IsChecked = _chatSettings.VibrateOnIncomingMessage;
             resizeDown.IsChecked = _chatSettings.ScaleDownSentPictures;
 
+            List<string> mediaEncryptions = new List<string>
+            {
+                AppResources.MediaEncryptionNone,
+                AppResources.MediaEncryptionSRTP,
+            };
+            MediaEncryption.ItemsSource = mediaEncryptions;
+            MediaEncryption.SelectedItem = _networkSettings.MEncryption;
+
             List<string> firewallPolicies = new List<string>
             {
                 AppResources.FirewallPolicyNone,
@@ -116,6 +124,7 @@ namespace Linphone.Views
             _callSettings.SendDTFMsSIPInfo = sipInfo.IsChecked;
             _callSettings.Save();
 
+            _networkSettings.MEncryption = MediaEncryption.SelectedItem.ToString();
             _networkSettings.FWPolicy = FirewallPolicy.SelectedItem.ToString();
             _networkSettings.StunServer = Stun.Text;
             _networkSettings.TunnelMode = tunnelMode.SelectedItem.ToString();

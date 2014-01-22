@@ -29,6 +29,12 @@
                         </toolkit:ListPicker>
 
                         <toolkit:ListPicker
+                            x:Name="MediaEncryption"
+                            SelectionMode="Single"
+                            Header="{Binding Path=LocalizedResources.MediaEncryptionSetting, Source={StaticResource LocalizedStrings}}">
+                        </toolkit:ListPicker>
+                        
+                        <toolkit:ListPicker
                             x:Name="FirewallPolicy"
                             SelectionMode="Single"
                             Header="{Binding Path=LocalizedResources.FirewallPolicySetting, Source={StaticResource LocalizedStrings}}">

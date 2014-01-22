@@ -107,10 +107,14 @@ namespace Linphone.Model
         public RegistrationState LastKnownState {
             get
             {
-                if (isLinphoneRunning && LinphoneCore.GetDefaultProxyConfig() != null) 
+                try
                 {
-                    _lastKnownState = LinphoneCore.GetDefaultProxyConfig().GetState();
+                    if (isLinphoneRunning && LinphoneCore.GetDefaultProxyConfig() != null)
+                    {
+                        _lastKnownState = LinphoneCore.GetDefaultProxyConfig().GetState();
+                    }
                 }
+                catch { }
                 return _lastKnownState;
             }
 

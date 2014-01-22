@@ -580,4 +580,22 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
     <value> is writing...</value>
     <comment>Must start by a blank space</comment>
   </data>
+  <data name="CallStatsMenu" xml:space="preserve">
+    <value>Call</value>
+  </data>
+  <data name="MediaEncryptionNone" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="MediaEncryptionSetting" xml:space="preserve">
+    <value>Media encryption</value>
+  </data>
+  <data name="MediaEncryptionSRTP" xml:space="preserve">
+    <value>SRTP</value>
+  </data>
+  <data name="StatMediaEncryption" xml:space="preserve">
+    <value>Media encryption</value>
+  </data>
+  <data name="StatICE" xml:space="preserve">
+    <value>ICE connectivity</value>
+  </data>
 </root>

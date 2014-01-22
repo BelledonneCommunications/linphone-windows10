@@ -27,10 +27,13 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="emptyPanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock Style="{StaticResource PhoneTextSmallStyle}"/>
+            <TextBlock Style="{StaticResource PhoneTextSmallStyle}"/>
+            <TextBlock Style="{StaticResource PhoneTextSmallStyle}"/>
+            <TextBlock Style="{StaticResource PhoneTextSmallStyle}"/>
+            <TextBlock Style="{StaticResource PhoneTextSmallStyle}"/>
+            <TextBlock Style="{StaticResource PhoneTextSmallStyle}"/>
+            <TextBlock Style="{StaticResource PhoneTextSmallStyle}"/>
         </StackPanel>
 
         <!-- Statistics panel -->
@@ -40,20 +43,26 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TextBlock x:Name="AudioStats" Text="{Binding Path=LocalizedResources.AudioStatsMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextNormalStyle}" Grid.Column="0" Grid.Row="0"/>
-                <TextBlock x:Name="AudioDownBw" Style="{StaticResource PhoneTextNormalStyle}" Grid.Column="0" Grid.Row="1"/>
-                <TextBlock x:Name="AudioUpBw" Style="{StaticResource PhoneTextNormalStyle}" Grid.Column="0" Grid.Row="2"/>
-                <TextBlock x:Name="AudioPType" Style="{StaticResource PhoneTextNormalStyle}" Grid.Column="0" Grid.Row="3"/>
-                <TextBlock x:Name="VideoStats" Text="{Binding Path=LocalizedResources.VideoStatsMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextNormalStyle}" Grid.Column="1" Grid.Row="0" Visibility="Collapsed"/>
-                <TextBlock x:Name="VideoDownBw" Style="{StaticResource PhoneTextNormalStyle}" Grid.Column="1" Grid.Row="1"/>
-                <TextBlock x:Name="VideoUpBw" Style="{StaticResource PhoneTextNormalStyle}" Grid.Column="1" Grid.Row="2"/>
-                <TextBlock x:Name="VideoPType" Style="{StaticResource PhoneTextNormalStyle}" Grid.Column="1" Grid.Row="3"/>
+                <TextBlock x:Name="AudioStats" Text="{Binding Path=LocalizedResources.AudioStatsMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="0"/>
+                <TextBlock x:Name="AudioDownBw" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="1"/>
+                <TextBlock x:Name="AudioUpBw" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="2"/>
+                <TextBlock x:Name="AudioPType" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="3"/>
+                <TextBlock x:Name="VideoStats" Text="{Binding Path=LocalizedResources.VideoStatsMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="2" Grid.Row="0" Visibility="Collapsed"/>
+                <TextBlock x:Name="VideoDownBw" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="1"/>
+                <TextBlock x:Name="VideoUpBw" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="2"/>
+                <TextBlock x:Name="VideoPType" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="3"/>
+                <TextBlock x:Name="CallStats" Text="--" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"/>
+                <TextBlock x:Name="MediaEncryption" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2"/>
+                <TextBlock x:Name="ICE" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2"/>
             </Grid>
         </StackPanel>
 

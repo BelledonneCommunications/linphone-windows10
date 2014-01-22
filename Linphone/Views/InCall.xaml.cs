@@ -280,6 +280,8 @@ namespace Linphone.Views
                     LinphoneCallParams param = call.GetCurrentParamsCopy();
                     Status.Text = mm.ToString("00") + ":" + ss.ToString("00");
 
+                    MediaEncryption.Text = String.Format(AppResources.StatMediaEncryption + ": {0}", param.GetMediaEncryption().ToString());
+
                     LinphoneCallStats audioStats = null;
                     try
                     {
@@ -291,6 +293,7 @@ namespace Linphone.Views
                     {
                         AudioDownBw.Text = String.Format(AppResources.StatDownloadBW + ": {0:0.00} kb/s", audioStats.GetDownloadBandwidth());
                         AudioUpBw.Text = String.Format(AppResources.StatUploadBW + ": {0:0.00} kb/s", audioStats.GetUploadBandwidth());
+                        ICE.Text = String.Format(AppResources.StatICE + ": {0}", audioStats.GetIceState().ToString()); 
                     }
 
                     PayloadType audiopt = param.GetUsedAudioCodec();

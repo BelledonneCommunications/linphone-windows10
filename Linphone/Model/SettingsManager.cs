@@ -1057,12 +1057,15 @@ namespace Linphone.Model
         private LpConfig Config;
         private Dictionary<string, string> TunnelModeToString;
         private Dictionary<string, FirewallPolicy> FirewallPolicyToEnum;
+        private Dictionary<string, MediaEncryption> MediaEncryptionToEnum;
         private Dictionary<string, string> StringToTunnelMode;
         private Dictionary<string, string> StringToFirewallPolicy;
+        private Dictionary<string, string> StringToMediaEncryption;
 
         #region Constants settings names
         private const string SIPTransportSettingKeyName = "SIPTransport";
         private const string SIPPortKeyName = "SIPPort";
+        private const string MediaEncryptionKeyName = "MediaEncryption";
         private const string FirewallPolicyKeyName = "FirewallPolicy";
         private const string StunServerKeyName = "StunServer";
         private const string TunnelServerKeyName = "TunnelServer";
@@ -1111,6 +1114,16 @@ namespace Linphone.Model
                 { "UseStun", AppResources.FirewallPolicyStun },
                 { "UseIce", AppResources.FirewallPolicyIce }
             };
+            MediaEncryptionToEnum = new Dictionary<string, MediaEncryption>()
+            {
+                { AppResources.MediaEncryptionNone, MediaEncryption.None },
+                { AppResources.MediaEncryptionSRTP, MediaEncryption.SRTP }
+            };
+            StringToMediaEncryption = new Dictionary<string, string>()
+            {
+                { "None", AppResources.MediaEncryptionNone },
+                { "SRTP", AppResources.MediaEncryptionSRTP }
+            };
         }
 
         #region Implementation of the ISettingsManager interface
@@ -1142,6 +1155,7 @@ namespace Linphone.Model
 
             dict[StunServerKeyName] = LinphoneManager.Instance.LinphoneCore.GetStunServer();
             dict[FirewallPolicyKeyName] = StringToFirewallPolicy[LinphoneManager.Instance.LinphoneCore.GetFirewallPolicy().ToString()];
+            dict[MediaEncryptionKeyName] = StringToMediaEncryption[LinphoneManager.Instance.LinphoneCore.GetMediaEncryption().ToString()];
 
             // Load tunnel configuration
             dict[TunnelModeKeyName] = AppResources.TunnelModeDisabled;
@@ -1211,6 +1225,12 @@ namespace Linphone.Model
                 LinphoneManager.Instance.LinphoneCore.SetFirewallPolicy(FirewallPolicyToEnum[firewallPolicy]);
             }
 
+            if (ValueChanged(MediaEncryptionKeyName))
+            {
+                string mediaEncryption = GetNew(MediaEncryptionKeyName);
+                LinphoneManager.Instance.LinphoneCore.SetMediaEncryption(MediaEncryptionToEnum[mediaEncryption]);
+            }
+
             // Save tunnel configuration
             if (LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable() && Customs.IsTunnelEnabled)
             {
@@ -1260,6 +1280,21 @@ namespace Linphone.Model
             set
             {
                 Set(SIPTransportSettingKeyName, value);
+            }
+        }
+
+        /// <summary>
+        /// Media encryption setting (String).
+        /// </summary>
+        public string MEncryption
+        {
+            get
+            {
+                return Get(MediaEncryptionKeyName);
+            }
+            set
+            {
+                Set(MediaEncryptionKeyName, value);
             }
         }
 

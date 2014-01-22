@@ -211,6 +211,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Call.
+        /// </summary>
+        public static string CallStatsMenu {
+            get {
+                return ResourceManager.GetString("CallStatsMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string CancelChanges {
@@ -814,6 +823,33 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string MediaEncryptionNone {
+            get {
+                return ResourceManager.GetString("MediaEncryptionNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Media encryption.
+        /// </summary>
+        public static string MediaEncryptionSetting {
+            get {
+                return ResourceManager.GetString("MediaEncryptionSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SRTP.
+        /// </summary>
+        public static string MediaEncryptionSRTP {
+            get {
+                return ResourceManager.GetString("MediaEncryptionSRTP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Message received.
         /// </summary>
         public static string MessageReceived {
@@ -1189,6 +1225,24 @@ namespace Linphone.Resources {
         public static string StatDownloadBW {
             get {
                 return ResourceManager.GetString("StatDownloadBW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ICE connectivity.
+        /// </summary>
+        public static string StatICE {
+            get {
+                return ResourceManager.GetString("StatICE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Media encryption.
+        /// </summary>
+        public static string StatMediaEncryption {
+            get {
+                return ResourceManager.GetString("StatMediaEncryption", resourceCulture);
             }
         }
         

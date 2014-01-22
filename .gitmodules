@@ -64,3 +64,6 @@
 [submodule "submodules/msisac"]
 	path = submodules/msisac
 	url = git://git.linphone.org/msisac.git
+[submodule "submodules/srtp"]
+	path = submodules/srtp
+	url = git://git.linphone.org/srtp.git
