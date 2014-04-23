@@ -177,30 +177,40 @@ namespace Linphone.Model
                 throw;
             }
 
-            // Wait for the background process to become ready 
-            string backgroundProcessReadyEventName = Globals.GetBackgroundProcessReadyEventName((uint)backgroundProcessID);
-            using (EventWaitHandle backgroundProcessReadyEvent = new EventWaitHandle(initialState: false, mode: EventResetMode.ManualReset, name: backgroundProcessReadyEventName))
+            try
             {
-                TimeSpan timeout = twentySecs;
-                if (!backgroundProcessReadyEvent.WaitOne(timeout))
-                {
-                    // We timed out - something is wrong 
-                    throw new InvalidOperationException(string.Format("The background process ({0}) did not become ready in {1} seconds", backgroundProcessID, timeout.Seconds));
-                }
-                else
-                {
-                    Debug.WriteLine("[LinphoneManager] Background process {0} is ready", backgroundProcessID);
-                }
+                BackgroundManager.Instance.OopServer = null;
+                server = (Server)WindowsRuntimeMarshal.GetActivationFactory(typeof(Server)).ActivateInstance();
             }
-            // The background process is now ready. 
-            // It is possible that the background process now becomes "not ready" again, but the chances of this happening are slim, 
-            // and in that case, the following statement would fail - so, at this point, we don't explicitly guard against this condition. 
+            catch (Exception)
+            {
+                // Wait for the background process to become ready 
+                string backgroundProcessReadyEventName = Globals.GetBackgroundProcessReadyEventName((uint)backgroundProcessID);
+                using (EventWaitHandle backgroundProcessReadyEvent = new EventWaitHandle(initialState: false, mode: EventResetMode.ManualReset, name: backgroundProcessReadyEventName))
+                {
+                    TimeSpan timeout = twentySecs;
+                    if (!backgroundProcessReadyEvent.WaitOne(timeout))
+                    {
+                        // We timed out - something is wrong 
+                        throw new InvalidOperationException(string.Format("The background process ({0}) did not become ready in {1} seconds", backgroundProcessID, timeout.Seconds));
+                    }
+                    else
+                    {
+                        Debug.WriteLine("[LinphoneManager] Background process {0} is ready", backgroundProcessID);
+                    }
+                }
 
-            // Create an instance of the server in the background process. 
-            BackgroundManager.Instance.OopServer = null;
-            server = (Server)WindowsRuntimeMarshal.GetActivationFactory(typeof(Server)).ActivateInstance();
-            BackgroundManager.Instance.OopServer = server;
-
+                // The background process is now ready. 
+                // It is possible that the background process now becomes "not ready" again, but the chances of this happening are slim, 
+                // and in that case, the following statement would fail - so, at this point, we don't explicitly guard against this condition. 
+                server = (Server)WindowsRuntimeMarshal.GetActivationFactory(typeof(Server)).ActivateInstance();
+            }
+            finally
+            {
+                // Create an instance of the server in the background process. 
+                BackgroundManager.Instance.OopServer = server;
+            }
+            
             // Un-set an event that indicates that the UI process is disconnected from the background process. 
             // The background process waits for this event to get set before shutting down. 
             // This ensures that the background agent host process doesn't shut down while the UI process is connected to it. 

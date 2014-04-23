@@ -82,6 +82,7 @@ void Globals::StartServer(const Platform::Array<Platform::String^>^ outOfProcSer
         throw ref new Platform::COMException(hr, L"An error occurred trying to set an event that indicates that the background process is ready");
     }
 
+
     this->started = true;
 	gApiLock.Unlock();
 }
@@ -277,6 +278,7 @@ Globals::~Globals()
     if (this->started)
     {
         RoRevokeActivationFactories(this->serverRegistrationCookie);
+	    this->started = false;
     }
 
     // Set the event that indicates that no instance of the VoIP background process exists
