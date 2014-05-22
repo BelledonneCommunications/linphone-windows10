@@ -531,10 +531,14 @@ namespace Linphone.Model
         {
             BaseModel.UIDispatcher.BeginInvoke(() =>
             {
-                if (isMicMuted)
-                    CallController.NotifyMuted();
-                else
-                    CallController.NotifyUnmuted();
+                try
+                {
+                    if (isMicMuted)
+                        CallController.NotifyMuted();
+                    else
+                        CallController.NotifyUnmuted();
+                }
+                catch (Exception) { }
 
                 if (CallListener != null)
                     CallListener.MuteStateChanged(isMicMuted);

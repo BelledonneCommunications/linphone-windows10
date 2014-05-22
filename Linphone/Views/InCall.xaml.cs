@@ -151,11 +151,6 @@ namespace Linphone.Views
         {
             bool isMicToggled = (bool)microphone.IsChecked;
             LinphoneManager.Instance.MuteMic(isMicToggled);
-
-            if (isMicToggled)
-                LinphoneManager.Instance.CallController.NotifyMuted();
-            else
-                LinphoneManager.Instance.CallController.NotifyUnmuted();
         }
 
         private void stats_Click_1(object sender, RoutedEventArgs e)
