@@ -94,42 +94,42 @@ Linphone::Core::LinphoneCallStats::~LinphoneCallStats()
 	
 }
 
-float Linphone::Core::LinphoneCallStats::UpdateSenderLossRate(const ::LinphoneCallStats *stats)
+float Linphone::Core::LinphoneCallStats::GetSenderLossRate(const ::LinphoneCallStats *stats)
 {
 	gApiLock.Lock();
-	float value = linphone_call_stats_update_sender_loss_rate(stats);
+	float value = linphone_call_stats_get_sender_loss_rate(stats);
 	gApiLock.Unlock();
 	return value;
 }
 
-float Linphone::Core::LinphoneCallStats::UpdateReceiverLossRate(const ::LinphoneCallStats *stats)
+float Linphone::Core::LinphoneCallStats::GetReceiverLossRate(const ::LinphoneCallStats *stats)
 {
 	gApiLock.Lock();
-	float value = linphone_call_stats_update_receiver_loss_rate(stats);
+	float value = linphone_call_stats_get_receiver_loss_rate(stats);
 	gApiLock.Unlock();
 	return value;
 }
 
-float Linphone::Core::LinphoneCallStats::UpdateSenderInterarrivalJitter(const ::LinphoneCallStats *stats)
+float Linphone::Core::LinphoneCallStats::GetSenderInterarrivalJitter(const ::LinphoneCallStats *stats)
 {
 	gApiLock.Lock();
-	float value = linphone_call_stats_update_sender_interarrival_jitter(stats, this->call);
+	float value = linphone_call_stats_get_sender_interarrival_jitter(stats, this->call);
 	gApiLock.Unlock();
 	return value;
 }
 
-float Linphone::Core::LinphoneCallStats::UpdateReceiverInterarrivalJitter(const ::LinphoneCallStats *stats)
+float Linphone::Core::LinphoneCallStats::GetReceiverInterarrivalJitter(const ::LinphoneCallStats *stats)
 {
 	gApiLock.Lock();
-	float value = linphone_call_stats_update_receiver_interarrival_jitter(stats, this->call);
+	float value = linphone_call_stats_get_receiver_interarrival_jitter(stats, this->call);
 	gApiLock.Unlock();
 	return value;
 }
 
-int64 Linphone::Core::LinphoneCallStats::UpdateLatePacketsCumulativeNumber(const ::LinphoneCallStats *stats)
+int64 Linphone::Core::LinphoneCallStats::GetLatePacketsCumulativeNumber(const ::LinphoneCallStats *stats)
 {
 	gApiLock.Lock();
-	int64 value = linphone_call_stats_update_late_packets_cumulative_number(stats, this->call);
+	int64 value = linphone_call_stats_get_late_packets_cumulative_number(stats, this->call);
 	gApiLock.Unlock();
 	return value;
 }
@@ -140,12 +140,12 @@ void Linphone::Core::LinphoneCallStats::FillStats(const ::LinphoneCallStats *sta
 	this->iceState = (Linphone::Core::IceState) stats->ice_state;
 	this->downloadBandwidth = stats->download_bandwidth;
 	this->uploadBandwidth = stats->upload_bandwidth;
-	this->senderLossRate = UpdateSenderLossRate(stats);
-	this->receiverLossRate = UpdateReceiverLossRate(stats);
-	this->senderInterarrivalJitter = UpdateSenderInterarrivalJitter(stats);
-	this->receiverInterarrivalJitter = UpdateReceiverInterarrivalJitter(stats);
+	this->senderLossRate = GetSenderLossRate(stats);
+	this->receiverLossRate = GetReceiverLossRate(stats);
+	this->senderInterarrivalJitter = GetSenderInterarrivalJitter(stats);
+	this->receiverInterarrivalJitter = GetReceiverInterarrivalJitter(stats);
 	this->roundTripDelay = stats->round_trip_delay;
-	this->cumulativeLatePackets = UpdateLatePacketsCumulativeNumber(stats);
+	this->cumulativeLatePackets = GetLatePacketsCumulativeNumber(stats);
 	this->jitterBufferSize = stats->jitter_stats.jitter_buffer_size_ms;
 	this->localLossRate = stats->local_loss_rate;
 	this->localLateRate = stats->local_late_rate;

@@ -75,7 +75,7 @@
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <CompileAsWinRT>true</CompileAsWinRT>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
-      <AdditionalIncludeDirectories>$(ProjectDir)../submodules\oRTP\include;$(ProjectDir)../submodules/mediastreamer2/include;$(ProjectDir)../submodules/linphone;$(ProjectDir)../submodules/linphone/include;$(ProjectDir)../submodules/belle-sip/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)../submodules/linphone/oRTP/include;$(ProjectDir)../submodules/linphone/mediastreamer2/include;$(ProjectDir)../submodules/linphone;$(ProjectDir)../submodules/linphone/include;$(ProjectDir)../submodules/belle-sip/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">SyncCThrow</ExceptionHandling>
     </ClCompile>
     <Link>

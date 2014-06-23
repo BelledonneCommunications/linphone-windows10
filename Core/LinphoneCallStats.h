@@ -112,11 +112,11 @@ namespace Linphone
 			LinphoneCallStats(::LinphoneCallStats *callStats);
 			~LinphoneCallStats();
 
-			float Linphone::Core::LinphoneCallStats::UpdateSenderLossRate(const ::LinphoneCallStats *stats);
-			float Linphone::Core::LinphoneCallStats::UpdateReceiverLossRate(const ::LinphoneCallStats *stats);
-			float Linphone::Core::LinphoneCallStats::UpdateSenderInterarrivalJitter(const ::LinphoneCallStats *stats);
-			float Linphone::Core::LinphoneCallStats::UpdateReceiverInterarrivalJitter(const ::LinphoneCallStats *stats);
-			int64 Linphone::Core::LinphoneCallStats::UpdateLatePacketsCumulativeNumber(const ::LinphoneCallStats *stats);
+			float Linphone::Core::LinphoneCallStats::GetSenderLossRate(const ::LinphoneCallStats *stats);
+			float Linphone::Core::LinphoneCallStats::GetReceiverLossRate(const ::LinphoneCallStats *stats);
+			float Linphone::Core::LinphoneCallStats::GetSenderInterarrivalJitter(const ::LinphoneCallStats *stats);
+			float Linphone::Core::LinphoneCallStats::GetReceiverInterarrivalJitter(const ::LinphoneCallStats *stats);
+			int64 Linphone::Core::LinphoneCallStats::GetLatePacketsCumulativeNumber(const ::LinphoneCallStats *stats);
 			void Linphone::Core::LinphoneCallStats::FillStats(const ::LinphoneCallStats *stats);
 
 			::LinphoneCall *call;
