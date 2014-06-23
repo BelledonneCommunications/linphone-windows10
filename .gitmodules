@@ -7,12 +7,6 @@
 [submodule "submodules/gsm"]
 	path = submodules/gsm
 	url = git://git.linphone.org/gsm.git
-[submodule "submodules/mediastreamer2"]
-	path = submodules/mediastreamer2
-	url = gitosis@git.linphone.org:mediastreamer2-private.git
-[submodule "submodules/oRTP"]
-	path = submodules/oRTP
-	url = git://git.linphone.org/ortp.git
 [submodule "submodules/speex"]
 	path = submodules/speex
 	url = git://git.linphone.org/speex.git
