@@ -55,3 +55,6 @@
 [submodule "submodules/srtp"]
 	path = submodules/srtp
 	url = git://git.linphone.org/srtp.git
+[submodule "submodules/mswebrtc"]
+	path = submodules/mswebrtc
+	url = git://git.linphone.org/mswebrtc.git
