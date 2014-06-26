@@ -1,9 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|ARM">
       <Configuration>Debug</Configuration>
       <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|ARM">
       <Configuration>Release</Configuration>
@@ -22,6 +30,19 @@
     <ProjectName>Core</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110_wp80</PlatformToolset>
+    <MidlEnv>win32</MidlEnv>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v110_wp80</PlatformToolset>
+    <MidlEnv>win32</MidlEnv>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -43,7 +64,7 @@
   <PropertyGroup>
     <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+  <PropertyGroup>
     <TargetName>$(RootNamespace)</TargetName>
     <CustomBuildAfterTargets>PostBuildEvent</CustomBuildAfterTargets>
     <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
@@ -51,37 +72,19 @@
     <ExtensionsToDeleteOnClean>*.winmd;$(ExtensionsToDeleteOnClean)</ExtensionsToDeleteOnClean>
     <IgnoreImportLibrary>false</IgnoreImportLibrary>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
-    <TargetName>$(RootNamespace)</TargetName>
-    <CustomBuildAfterTargets>PostBuildEvent</CustomBuildAfterTargets>
-    <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
-    <IntDir>$(PlatformTarget)\$(Configuration)\</IntDir>
-    <ExtensionsToDeleteOnClean>*.winmd;$(ExtensionsToDeleteOnClean)</ExtensionsToDeleteOnClean>
-    <IgnoreImportLibrary>false</IgnoreImportLibrary>
-  </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-    <ClCompile>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINRT_DLL;_XKEYCHECK_H;WIN32_LEAN_AND_MEAN;IN_LINPHONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
-    <ClCompile>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINRT_DLL;WIN32_LEAN_AND_MEAN;NDEBUG;IN_LINPHONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup>
     <ClCompile>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINRT_DLL;WIN32_LEAN_AND_MEAN;IN_LINPHONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <CompileAsWinRT>true</CompileAsWinRT>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
       <AdditionalIncludeDirectories>$(ProjectDir)../submodules/linphone/oRTP/include;$(ProjectDir)../submodules/linphone/mediastreamer2/include;$(ProjectDir)../submodules/linphone;$(ProjectDir)../submodules/linphone/include;$(ProjectDir)../submodules/belle-sip/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">SyncCThrow</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <AdditionalDependencies>windowsphonecore.lib;runtimeobject.lib;PhoneAudioSes.lib;liblinphone_dll.lib;belle-sip_dll.lib;mediastreamer2_dll.lib;ws2_32.lib;ortp_dll.lib;gsm_dll.lib;speex_dll.lib;speexdsp_dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>windowsphonecore.lib;runtimeobject.lib;PhoneAudioSes.lib;liblinphone.lib;belle-sip.lib;mediastreamer2.lib;ws2_32.lib;ortp.lib;gsm.lib;speex.lib;speexdsp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>ole32.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateWindowsMetadata>true</GenerateWindowsMetadata>
       <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -102,11 +105,22 @@
 
         "$(ProjectDir)OopServerRegistrationHelper.exe" /winmd:"$(OutDir)$(RootNamespace).winmd" /dll_name:$(TargetName) /namespace:$(RootNamespace).OutOfProcess /app_manifest:"$(SolutionDir)Linphone\Properties\WMAppManifest.xml" /helper_dir:"$(SolutionDir)Agents"
 
-        popd</Command>
+        popd
+      </Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs>$(OutDir)$(RootNamespace).idl;$(OutDir)$(RootNamespace).OutOfProcess.idl;$(SolutionDir)$(ProjectName)ProxyStub\dlldata.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace)_i.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace)_p.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).h;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).OutOfProcess.h;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).OutOfProcess_i.c;$(SolutionDir)$(ProjectName)ProxyStub\$(RootNamespace).OutOfProcess_p.c;$(SolutionDir)Agents\RegistrationHelper.cs;%(Outputs)</Outputs>
     </CustomBuildStep>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+    <ClCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Reference Include="Windows">
@@ -170,18 +184,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\submodules\belle-sip\build\windows\belle-sip\belle-sip.vcxproj">
+    <ProjectReference Include="..\submodules\belle-sip\build\wp8\belle-sip\belle-sip.vcxproj">
       <Project>{4c225a82-800b-427b-ba7b-61686a9b347f}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\submodules\linphone\build\vsx\LibLinphone\LibLinphone.vcxproj">
+    <ProjectReference Include="..\submodules\linphone\build\wp8\LibLinphone.vcxproj">
       <Project>{08dd0d38-d9b5-4626-b60d-b4d76b571142}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\submodules\mswp8vid\mswp8vid\mswp8vid\mswp8vid.vcxproj">
+    <ProjectReference Include="..\submodules\mswp8vid\mswp8vid\mswp8vid.vcxproj">
       <Project>{0565952a-ea62-46a2-8261-f5b4b490da42}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsPhone\v$(TargetPlatformVersion)\Microsoft.Cpp.WindowsPhone.$(TargetPlatformVersion).targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
 </Project>
