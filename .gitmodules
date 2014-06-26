@@ -58,3 +58,6 @@
 [submodule "submodules/mswebrtc"]
 	path = submodules/mswebrtc
 	url = git://git.linphone.org/mswebrtc.git
+[submodule "submodules/opus"]
+	path = submodules/opus
+	url = git://git.linphone.org/opus.git
