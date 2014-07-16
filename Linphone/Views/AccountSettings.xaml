@@ -39,6 +39,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 
                 <StackPanel Orientation="Vertical" Grid.Row="0" Margin="0,10,0,0">
@@ -100,7 +101,14 @@
                     </TextBox>
                 </StackPanel>
 
-                <StackPanel Orientation="Vertical" Grid.Row="4" Margin="0,10,0,0">
+                <toolkit:ListPicker
+                    Grid.Row="4"
+                    x:Name="Transport"
+                    SelectionMode="Single"
+                    Header="{Binding Path=LocalizedResources.TransportSetting, Source={StaticResource LocalizedStrings}}">
+                </toolkit:ListPicker>
+                
+                <StackPanel Orientation="Vertical" Grid.Row="5" Margin="0,10,0,0">
                     <TextBlock
                         Style="{StaticResource PhoneTextSubtleStyle}"
                         Text="{Binding Path=LocalizedResources.SIPProxy, Source={StaticResource LocalizedStrings}}">
@@ -111,14 +119,14 @@
                     </TextBox>
                 </StackPanel>
 
-                <StackPanel Orientation="Vertical" Grid.Row="5" Margin="0,10,0,0">
+                <StackPanel Orientation="Vertical" Grid.Row="6" Margin="0,10,0,0">
                     <toolkit:ToggleSwitch  
                         x:Name="OutboundProxy" 
                         Header="{Binding Path=LocalizedResources.SIPOutboundProxy, Source={StaticResource LocalizedStrings}}">
                     </toolkit:ToggleSwitch>
                 </StackPanel>
 
-                <StackPanel Orientation="Vertical" Grid.Row="6" Margin="0,10,0,0">
+                <StackPanel Orientation="Vertical" Grid.Row="7" Margin="0,10,0,0">
                     <TextBlock
                         Style="{StaticResource PhoneTextSubtleStyle}"
                         Text="{Binding Path=LocalizedResources.DisplayName, Source={StaticResource LocalizedStrings}}">

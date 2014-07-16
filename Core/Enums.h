@@ -172,5 +172,13 @@ namespace Linphone
 			LinphoneReasonUnauthorized = 10, /**<Operation is unauthorized because missing credential*/
 			LinphoneReasonNotAcceptable = 11 /**<Operation like call update rejected by peer*/
 		};
+
+		public enum class LinphoneTransport : int
+		{
+			LinphoneTransportUDP = 0,
+			LinphoneTransportTCP = 1,
+			LinphoneTransportTLS = 2,
+			LinphoneTransportDTLS = 3
+		};
 	}
 }

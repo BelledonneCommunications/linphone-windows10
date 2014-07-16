@@ -2,6 +2,7 @@
 using Linphone.Resources;
 using Microsoft.Phone.Shell;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
@@ -33,6 +34,15 @@ namespace Linphone.Views
             Proxy.Text = _settings.Proxy;
             OutboundProxy.IsChecked = _settings.OutboundProxy;
             DisplayName.Text = _settings.DisplayName;
+
+            List<string> transports = new List<string>
+            {
+                AppResources.TransportUDP,
+                AppResources.TransportTCP,
+                AppResources.TransportTLS
+            };
+            Transport.ItemsSource = transports;
+            Transport.SelectedItem = _settings.Transport;
         }
 
         /// <summary>
@@ -68,6 +78,7 @@ namespace Linphone.Views
             _settings.Proxy = Proxy.Text;
             _settings.OutboundProxy = OutboundProxy.IsChecked;
             _settings.DisplayName = DisplayName.Text;
+            _settings.Transport = Transport.SelectedItem.ToString();
             _settings.Save();
 
             NavigationService.GoBack();

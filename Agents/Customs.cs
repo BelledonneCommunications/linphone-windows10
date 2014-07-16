@@ -22,7 +22,7 @@ namespace Linphone.Agents
         // Do not enable these for releases !!!
 #if DEBUG
         public const bool AllowTCPRemote = true;
-        public const bool ShowWizardUntilAccountConfigured = true;
+        public const bool ShowWizardUntilAccountConfigured = false;
 #else
         public const bool AllowTCPRemote = false;
         public const bool ShowWizardUntilAccountConfigured = false;

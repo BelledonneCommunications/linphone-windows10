@@ -978,12 +978,14 @@ namespace Linphone
 			Windows::Foundation::Collections::IVector<Platform::Object^>^ GetVideoCodecs();
 
 			/// <summary>
+			/// Deprecated! 
 			/// Tells whether video is enabled or not.
 			/// </summary>
 			/// <returns>true if video is enabled, false otherwise</returns>
 			Platform::Boolean IsVideoEnabled();
 
 			/// <summary>
+			/// Deprecated!
 			/// Enables video.
 			/// This method does not have any effect during calls. It just indicates LinphoneCore to
 			/// initiate future calls with video or not. The two boolean parameters indicate in which
@@ -992,6 +994,32 @@ namespace Linphone
 			/// <param name="enableCapture">Indicates whether video capture is enabled</param>
 			/// <param name="enableDisplay">Indicates whether video display should be shown</param>
 			void EnableVideo(Platform::Boolean enableCapture, Platform::Boolean enableDisplay);
+
+			/// <summary>
+			/// Tells whether video capture is enabled.
+			/// </summary>
+			/// <returns>TRUE if video capture is enabled, FALSE if disabled.</returns>
+			Platform::Boolean IsVideoCaptureEnabled();
+
+			/// <summary>
+			/// Tells whether video display is enabled.
+			/// </summary>
+			/// <returns>TRUE if video capture is enabled, FALSE if disabled.</returns>
+			Platform::Boolean IsVideoDisplayEnabled();
+
+			/// <summary>
+			/// Enable or disable video capture.
+			///This function does not have any effect during calls. It just indicates the LinphoneCore to initiate future calls with video capture or not.
+			/// </summary>
+			/// <param name="enable">TRUE to enable video capture, FALSE to disable it.</param>
+			void EnableVideoCapture(Platform::Boolean enable);
+
+			/// <summary>
+			/// Enable or disable video display.
+			/// This function does not have any effect during calls. It just indicates the LinphoneCore to initiate future calls with video display or not.
+			/// </summary>
+			/// <param name="enable">TRUE to enable video display, FALSE to disable it.</param>
+			void EnableVideoDisplay(Platform::Boolean enable);
 
 			/// <summary>
 			/// Gets the native video window id.

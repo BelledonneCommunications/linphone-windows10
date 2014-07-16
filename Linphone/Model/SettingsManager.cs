@@ -330,7 +330,28 @@ namespace Linphone.Model
         private const string ProxyKeyName = "Proxy";
         private const string OutboundProxyKeyName = "OutboundProxy";
         private const string DisplayNameKeyName = "DisplayName";
+        private const string TransportKeyName = "Transport";
+
+        private Dictionary<LinphoneTransport, string> EnumToTransport;
+        private Dictionary<string, LinphoneTransport> TransportToEnum;
         #endregion
+
+        public SIPAccountSettingsManager()
+        {
+            EnumToTransport = new Dictionary<LinphoneTransport, string>()
+            {
+                { LinphoneTransport.LinphoneTransportUDP, AppResources.TransportUDP },
+                { LinphoneTransport.LinphoneTransportTCP, AppResources.TransportTCP },
+                { LinphoneTransport.LinphoneTransportTLS, AppResources.TransportTLS }
+            };
+
+            TransportToEnum = new Dictionary<string, LinphoneTransport>()
+            {
+                { AppResources.TransportUDP, LinphoneTransport.LinphoneTransportUDP },
+                { AppResources.TransportTCP, LinphoneTransport.LinphoneTransportTCP },
+                { AppResources.TransportTLS, LinphoneTransport.LinphoneTransportTLS }
+            };
+        }
 
         #region Implementation of the ISettingsManager interface
         /// <summary>
@@ -345,6 +366,8 @@ namespace Linphone.Model
             dict[PasswordKeyName] = "";
             dict[DisplayNameKeyName] = "";
             dict[OutboundProxyKeyName] = false.ToString();
+            dict[TransportKeyName] = AppResources.TransportUDP;
+
             LinphoneProxyConfig cfg = LinphoneManager.Instance.LinphoneCore.GetDefaultProxyConfig();
             if (cfg != null)
             {
@@ -352,24 +375,10 @@ namespace Linphone.Model
                 if (address != null)
                 {
                     LinphoneAddress proxyAddress = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress(cfg.GetAddr());
-                    int proxyPort = proxyAddress.GetPort();
+                    dict[ProxyKeyName] = proxyAddress.AsStringUriOnly();
+                    dict[TransportKeyName] = EnumToTransport[proxyAddress.GetTransport()];
                     dict[UsernameKeyName] = address.GetUserName();
                     dict[DomainKeyName] = address.GetDomain();
-                    if (address.GetDomain() != proxyAddress.GetDomain())
-                    {
-                        if (proxyPort > 0)
-                        {
-                            dict[ProxyKeyName] = String.Format("{0}:{1}", proxyAddress.GetDomain(), proxyPort);
-                        }
-                        else
-                        {
-                            dict[ProxyKeyName] = proxyAddress.GetDomain();
-                        }
-                    }
-                    else if (proxyPort > 0)
-                    {
-                        dict[ProxyKeyName] = String.Format("{0}:{1}", proxyAddress.GetDomain(), proxyPort);
-                    }
                     dict[OutboundProxyKeyName] = (cfg.GetRoute().Length > 0).ToString();
                     var authInfos = LinphoneManager.Instance.LinphoneCore.GetAuthInfos();
                     if (authInfos.Count > 0)
@@ -389,7 +398,7 @@ namespace Linphone.Model
         public void Save()
         {
             bool AccountChanged = ValueChanged(UsernameKeyName) || ValueChanged(UserIdKeyName) || ValueChanged(PasswordKeyName) || ValueChanged(DomainKeyName)
-                || ValueChanged(ProxyKeyName) || ValueChanged(OutboundProxyKeyName) || ValueChanged(DisplayNameKeyName);
+                || ValueChanged(ProxyKeyName) || ValueChanged(OutboundProxyKeyName) || ValueChanged(DisplayNameKeyName) || ValueChanged(TransportKeyName);
 
             if (AccountChanged)
             {
@@ -420,6 +429,7 @@ namespace Linphone.Model
                 String domain = GetNew(DomainKeyName);
                 String proxy = GetNew(ProxyKeyName);
                 String displayname = GetNew(DisplayNameKeyName);
+                String transport = GetNew(TransportKeyName);
                 bool outboundProxy = Convert.ToBoolean(GetNew(OutboundProxyKeyName));
                 lc.ClearAuthInfos();
                 lc.ClearProxyConfigs();
@@ -428,16 +438,34 @@ namespace Linphone.Model
                     if ((proxy != null) && (proxy.Length > 0))
                     {
                         // Check if proxy address is correct
-                        proxy = String.Format("sip:{0}", proxy);
                         LinphoneAddress test = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress(proxy);
                         if (test == null)
                         {
                             proxy = String.Format("sip:{0}", domain);
                         }
+
+                        if (transport != null)
+                        {
+                            LinphoneAddress temp = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress(proxy);
+                            if (temp != null)
+                            {
+                                temp.SetTransport(TransportToEnum[transport]);
+                                proxy = temp.AsStringUriOnly();
+                            }
+                        }
                     }
                     else
                     {
                         proxy = String.Format("sip:{0}", domain);
+                        if (transport != null)
+                        {
+                            LinphoneAddress temp = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress(proxy);
+                            if (temp != null)
+                            {
+                                temp.SetTransport(TransportToEnum[transport]);
+                                proxy = temp.AsStringUriOnly();
+                            }
+                        }
                     }
 
                     cfg = lc.CreateEmptyProxyConfig();
@@ -579,6 +607,21 @@ namespace Linphone.Model
             set
             {
                 Set(DisplayNameKeyName, value);
+            }
+        }
+
+        /// <summary>
+        /// Transport (String).
+        /// </summary>
+        public string Transport
+        {
+            get
+            {
+                return Get(TransportKeyName);
+            }
+            set
+            {
+                Set(TransportKeyName, value);
             }
         }
         #endregion
@@ -940,7 +983,8 @@ namespace Linphone.Model
             }
             if (ValueChanged(VideoEnabledKeyName))
             {
-                LinphoneManager.Instance.LinphoneCore.EnableVideo(Convert.ToBoolean(GetNew(VideoEnabledKeyName)), Convert.ToBoolean(GetNew(VideoEnabledKeyName)));
+                bool isVideoEnabled = Convert.ToBoolean(GetNew(VideoEnabledKeyName));
+                LinphoneManager.Instance.LinphoneCore.EnableVideo(isVideoEnabled, isVideoEnabled);
             }
             if (ValueChanged(AutomaticallyInitiateVideoKeyName) || ValueChanged(AutomaticallyAcceptVideoKeyName))
             {
@@ -1059,12 +1103,10 @@ namespace Linphone.Model
         private Dictionary<string, FirewallPolicy> FirewallPolicyToEnum;
         private Dictionary<string, MediaEncryption> MediaEncryptionToEnum;
         private Dictionary<string, string> StringToTunnelMode;
-        private Dictionary<string, string> StringToFirewallPolicy;
-        private Dictionary<string, string> StringToMediaEncryption;
+        private Dictionary<FirewallPolicy, string> EnumToFirewallPolicy;
+        private Dictionary<MediaEncryption, string> EnumToMediaEncryption;
 
         #region Constants settings names
-        private const string SIPTransportSettingKeyName = "SIPTransport";
-        private const string SIPPortKeyName = "SIPPort";
         private const string MediaEncryptionKeyName = "MediaEncryption";
         private const string FirewallPolicyKeyName = "FirewallPolicy";
         private const string StunServerKeyName = "StunServer";
@@ -1107,22 +1149,22 @@ namespace Linphone.Model
                 { AppResources.FirewallPolicyStun, FirewallPolicy.UseStun },
                 { AppResources.FirewallPolicyIce, FirewallPolicy.UseIce }
             };
-            StringToFirewallPolicy = new Dictionary<string, string>()
+            EnumToFirewallPolicy = new Dictionary<FirewallPolicy, string>()
             {
-                { "NoFirewall", AppResources.FirewallPolicyNone },
-                { "UseNatAddress", AppResources.FirewallPolicyNat },
-                { "UseStun", AppResources.FirewallPolicyStun },
-                { "UseIce", AppResources.FirewallPolicyIce }
+                { FirewallPolicy.NoFirewall, AppResources.FirewallPolicyNone },
+                { FirewallPolicy.UseNatAddress, AppResources.FirewallPolicyNat },
+                { FirewallPolicy.UseStun, AppResources.FirewallPolicyStun },
+                { FirewallPolicy.UseIce, AppResources.FirewallPolicyIce }
             };
             MediaEncryptionToEnum = new Dictionary<string, MediaEncryption>()
             {
                 { AppResources.MediaEncryptionNone, MediaEncryption.None },
                 { AppResources.MediaEncryptionSRTP, MediaEncryption.SRTP }
             };
-            StringToMediaEncryption = new Dictionary<string, string>()
+            EnumToMediaEncryption = new Dictionary<MediaEncryption, string>()
             {
-                { "None", AppResources.MediaEncryptionNone },
-                { "SRTP", AppResources.MediaEncryptionSRTP }
+                { MediaEncryption.None, AppResources.MediaEncryptionNone },
+                { MediaEncryption.SRTP, AppResources.MediaEncryptionSRTP }
             };
         }
 
@@ -1132,30 +1174,9 @@ namespace Linphone.Model
         /// </summary>
         public void Load()
         {
-            Transports transports = LinphoneManager.Instance.LinphoneCore.GetSignalingTransportsPorts();
-            String tname = AppResources.TransportUDP;
-            int port = 5060;
-            if (transports.UDP > 0)
-            {
-                tname = AppResources.TransportUDP;
-                port = transports.UDP;
-            }
-            else if (transports.TCP > 0)
-            {
-                tname = AppResources.TransportTCP;
-                port = transports.TCP;
-            }
-            else if (transports.TLS > 0)
-            {
-                tname = AppResources.TransportTLS;
-                port = transports.TLS;
-            }
-            dict[SIPTransportSettingKeyName] = tname;
-            dict[SIPPortKeyName] = port.ToString();
-
             dict[StunServerKeyName] = LinphoneManager.Instance.LinphoneCore.GetStunServer();
-            dict[FirewallPolicyKeyName] = StringToFirewallPolicy[LinphoneManager.Instance.LinphoneCore.GetFirewallPolicy().ToString()];
-            dict[MediaEncryptionKeyName] = StringToMediaEncryption[LinphoneManager.Instance.LinphoneCore.GetMediaEncryption().ToString()];
+            dict[FirewallPolicyKeyName] = EnumToFirewallPolicy[LinphoneManager.Instance.LinphoneCore.GetFirewallPolicy()];
+            dict[MediaEncryptionKeyName] = EnumToMediaEncryption[LinphoneManager.Instance.LinphoneCore.GetMediaEncryption()];
 
             // Load tunnel configuration
             dict[TunnelModeKeyName] = AppResources.TunnelModeDisabled;
@@ -1184,38 +1205,6 @@ namespace Linphone.Model
         /// </summary>
         public void Save()
         {
-            if (ValueChanged(SIPTransportSettingKeyName))
-            {
-                Transports transports = LinphoneManager.Instance.LinphoneCoreFactory.CreateTransports();
-                int port;
-                try
-                {
-                    port = Convert.ToInt32(GetNew(SIPPortKeyName));
-                }
-                catch
-                {
-                    port = 5060;
-                    if (transports.UDP > 0)
-                        port = transports.UDP;
-                    else if (transports.TCP > 0)
-                        port = transports.TCP;
-                    else if (transports.TLS > 0)
-                        port = transports.TLS;
-                }
-
-                if (port == 0)
-                    port = -1; // Random
-
-                if (GetNew(SIPTransportSettingKeyName) == AppResources.TransportUDP)
-                    transports.UDP = port;
-                else if (GetNew(SIPTransportSettingKeyName) == AppResources.TransportTCP)
-                    transports.TCP = port;
-                else if (GetNew(SIPTransportSettingKeyName) == AppResources.TransportTLS)
-                    transports.TLS = port;
-
-                LinphoneManager.Instance.LinphoneCore.SetSignalingTransportsPorts(transports);
-            }
-
             if (ValueChanged(StunServerKeyName))
                 LinphoneManager.Instance.LinphoneCore.SetStunServer(GetNew(StunServerKeyName));
 
@@ -1268,21 +1257,6 @@ namespace Linphone.Model
         #endregion
 
         #region Accessors
-        /// <summary>
-        /// Transport setting (UDP, TCP or TLS).
-        /// </summary>
-        public string Transport
-        {
-            get
-            {
-                return Get(SIPTransportSettingKeyName);
-            }
-            set
-            {
-                Set(SIPTransportSettingKeyName, value);
-            }
-        }
-
         /// <summary>
         /// Media encryption setting (String).
         /// </summary>

@@ -23,12 +23,6 @@
                 <ScrollViewer>
                     <StackPanel Orientation="Vertical">
                         <toolkit:ListPicker
-                            x:Name="Transport"
-                            SelectionMode="Single"
-                            Header="{Binding Path=LocalizedResources.TransportSetting, Source={StaticResource LocalizedStrings}}">
-                        </toolkit:ListPicker>
-
-                        <toolkit:ListPicker
                             x:Name="MediaEncryption"
                             SelectionMode="Single"
                             Header="{Binding Path=LocalizedResources.MediaEncryptionSetting, Source={StaticResource LocalizedStrings}}">

@@ -69,15 +69,6 @@ namespace Linphone.Views
             tunnelPort.Text = _networkSettings.TunnelPort;
             tunnelServer.Text = _networkSettings.TunnelServer;
 
-            List<string> transports = new List<string>
-            {
-                AppResources.TransportUDP,
-                AppResources.TransportTCP,
-                AppResources.TransportTLS
-            };
-            Transport.ItemsSource = transports;
-            Transport.SelectedItem = _networkSettings.Transport;
-
             TunnelPanel.Visibility = LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable() && Customs.IsTunnelEnabled ? Visibility.Visible : Visibility.Collapsed; //Hidden properties for now
 
             List<string> debugModes = new List<string>
@@ -130,7 +121,6 @@ namespace Linphone.Views
             _networkSettings.TunnelMode = tunnelMode.SelectedItem.ToString();
             _networkSettings.TunnelServer = tunnelServer.Text;
             _networkSettings.TunnelPort = tunnelPort.Text;
-            _networkSettings.Transport = Transport.SelectedItem.ToString();
             _networkSettings.Save();
 
             _chatSettings.VibrateOnIncomingMessage = vibrator.IsChecked;

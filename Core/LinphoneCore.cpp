@@ -1330,10 +1330,40 @@ Platform::Boolean Linphone::Core::LinphoneCore::IsVideoEnabled()
 	return enabled;
 }
 
+Platform::Boolean Linphone::Core::LinphoneCore::IsVideoCaptureEnabled()
+{
+	gApiLock.Lock();
+	Platform::Boolean enabled = (linphone_core_video_capture_enabled(this->lc) == TRUE);
+	gApiLock.Unlock();
+	return enabled;
+}
+
+Platform::Boolean Linphone::Core::LinphoneCore::IsVideoDisplayEnabled()
+{
+	gApiLock.Lock();
+	Platform::Boolean enabled = (linphone_core_video_display_enabled(this->lc) == TRUE);
+	gApiLock.Unlock();
+	return enabled;
+}
+
 void Linphone::Core::LinphoneCore::EnableVideo(Platform::Boolean enableCapture, Platform::Boolean enableDisplay)
 {
 	gApiLock.Lock();
 	linphone_core_enable_video(this->lc, enableCapture, enableDisplay);
+	gApiLock.Unlock();
+}
+
+void Linphone::Core::LinphoneCore::EnableVideoCapture(Platform::Boolean enable) 
+{
+	gApiLock.Lock();
+	linphone_core_enable_video_capture(this->lc, enable);
+	gApiLock.Unlock();
+}
+
+void Linphone::Core::LinphoneCore::EnableVideoDisplay(Platform::Boolean enable) 
+{
+	gApiLock.Lock();
+	linphone_core_enable_video_display(this->lc, enable);
 	gApiLock.Unlock();
 }
 

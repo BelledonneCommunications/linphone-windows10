@@ -2,7 +2,6 @@
 firewall_policy=0
 
 [sip]
-sip_random_port=1
 default_proxy=0
 
 [rtp]

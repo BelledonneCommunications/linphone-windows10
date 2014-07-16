@@ -63,15 +63,15 @@ namespace Linphone.Views
                 _settings.Domain = Domain.Text;
                 if (Domain.Text.Equals("sip.linphone.org"))
                 {
-                    _settings.Proxy = "sip.linphone.org:5223";
+                    _settings.Proxy = "<sip:sip.linphone.org:5223;transport=tls>";
+                    _settings.Transport = AppResources.TransportTLS;
                     _settings.OutboundProxy = true;
 
-                    networkSettings.Transport = "TLS";
-                    networkSettings.StunServer = "sip.linphone.org";
-                    networkSettings.FWPolicy = "ICE";
+                    networkSettings.StunServer = "stun.linphone.org";
+                    networkSettings.FWPolicy = AppResources.FirewallPolicyIce;
                 }
-                _settings.Save();
                 networkSettings.Save();
+                _settings.Save();
 
                 NavigationService.Navigate(new Uri("/Views/Dialer.xaml", UriKind.RelativeOrAbsolute));
                 NavigationService.RemoveBackEntry(); // Prevent a back to this screen from the dialer

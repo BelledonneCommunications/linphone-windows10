@@ -56,6 +56,12 @@ namespace Linphone
 			int GetPort();
 
 			/// <summary>
+			/// Gets the transport of the address.
+			/// </summary>
+			/// <returns>The transport if specified. If not set, it will return UDP.</returns>
+			LinphoneTransport GetTransport();
+
+			/// <summary>
 			/// Sets the human display name of the address.
 			/// </summary>
 			/// <param name="name">The human display name to set to the address</param>
@@ -78,6 +84,12 @@ namespace Linphone
 			/// </summary>
 			/// <param name="port">The port to set to the address</param>
 			void SetPort(int port);
+
+			/// <summary>
+			/// Sets the transport in the address.
+			/// </summary>
+			/// <param name="transport">The transport to set.</param>
+			void SetTransport(LinphoneTransport transport);
 
 			void Clean();
 
