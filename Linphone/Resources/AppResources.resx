@@ -598,4 +598,19 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   <data name="StatICE" xml:space="preserve">
     <value>ICE connectivity</value>
   </data>
+  <data name="AccountMenuSubtitle" xml:space="preserve">
+    <value>account settings</value>
+  </data>
+  <data name="AdvancedSettingsMenuSubtitle" xml:space="preserve">
+    <value>debug mode, media encryption, firewall policy</value>
+  </data>
+  <data name="AudioSettingsMenuSubtitle" xml:space="preserve">
+    <value>audio codecs and echo canceller</value>
+  </data>
+  <data name="LockScreenSettingsSubtitle" xml:space="preserve">
+    <value>go to the lockscreen settings page</value>
+  </data>
+  <data name="VideoSettingsMenuSubtitle" xml:space="preserve">
+    <value>video policy and codecs</value>
+  </data>
 </root>

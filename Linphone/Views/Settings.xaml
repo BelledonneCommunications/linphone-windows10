@@ -31,36 +31,66 @@
         <!--ContentPanel - place additional content here-->
         <ScrollViewer x:Name="ContentPanel" Grid.Row="1">
             <Grid Margin="12,0,12,0">
-                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                    <Button
-                        x:Name="Account"
-                        Click="account_Click_1"
-                        Margin="0,0,0,20"
-                        Content="{Binding Path=LocalizedResources.AccountMenu, Source={StaticResource LocalizedStrings}}" />
+                <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+                    <StackPanel Orientation="Vertical" Tap="account_Click_1" Margin="0,12,0,0">
+                        <TextBlock
+                            Style="{StaticResource PhoneTextTitle2Style}"
+                            HorizontalAlignment="Left"
+                            Text="{Binding Path=LocalizedResources.AccountMenu, Source={StaticResource LocalizedStrings}}"/>
+                        
+                        <TextBlock
+                            Style="{StaticResource PhoneTextSmallStyle}"
+                            HorizontalAlignment="Left"
+                            Text="{Binding Path=LocalizedResources.AccountMenuSubtitle, Source={StaticResource LocalizedStrings}}"/>
+                    </StackPanel>
 
-                    <Button
-                        x:Name="Audio"
-                        Click="audio_Click_1"
-                        Margin="0,0,0,20"
-                        Content="{Binding Path=LocalizedResources.AudioSettingsMenu, Source={StaticResource LocalizedStrings}}" />
+                    <StackPanel Orientation="Vertical" Tap="audio_Click_1" Margin="0,12,0,0">
+                        <TextBlock
+                            Style="{StaticResource PhoneTextTitle2Style}"
+                            HorizontalAlignment="Left"
+                            Text="{Binding Path=LocalizedResources.AudioSettingsMenu, Source={StaticResource LocalizedStrings}}"/>
 
-                    <Button
-                        x:Name="Video"
-                        Click="video_Click_1"
-                        Margin="0,0,0,20"
-                        Content="{Binding Path=LocalizedResources.VideoSettingsMenu, Source={StaticResource LocalizedStrings}}" />
+                        <TextBlock
+                            Style="{StaticResource PhoneTextSmallStyle}"
+                            HorizontalAlignment="Left"
+                            Text="{Binding Path=LocalizedResources.AudioSettingsMenuSubtitle, Source={StaticResource LocalizedStrings}}"/>
+                    </StackPanel>
 
-                    <Button
-                        x:Name="Advanced"
-                        Click="advanced_Click_1"
-                        Margin="0,0,0,20"
-                        Content="{Binding Path=LocalizedResources.AdvancedSettingsMenu, Source={StaticResource LocalizedStrings}}" />
+                    <StackPanel x:Name="Video" Orientation="Vertical" Tap="video_Click_1" Margin="0,12,0,0">
+                        <TextBlock
+                            Style="{StaticResource PhoneTextTitle2Style}"
+                            HorizontalAlignment="Left"
+                            Text="{Binding Path=LocalizedResources.VideoSettingsMenu, Source={StaticResource LocalizedStrings}}"/>
 
-                    <Button
-                        Click="LockScreenSettings_Click_1"
-                        x:Name="LockScreenSettings"
-                        Margin="0,0,0,20"
-                        Content="{Binding Path=LocalizedResources.LockScreenSettings, Source={StaticResource LocalizedStrings}}" />
+                        <TextBlock
+                            Style="{StaticResource PhoneTextSmallStyle}"
+                            HorizontalAlignment="Left"
+                            Text="{Binding Path=LocalizedResources.VideoSettingsMenuSubtitle, Source={StaticResource LocalizedStrings}}"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Tap="advanced_Click_1" Margin="0,12,0,0">
+                        <TextBlock
+                            Style="{StaticResource PhoneTextTitle2Style}"
+                            HorizontalAlignment="Left"
+                            Text="{Binding Path=LocalizedResources.AdvancedSettingsMenu, Source={StaticResource LocalizedStrings}}"/>
+
+                        <TextBlock
+                            Style="{StaticResource PhoneTextSmallStyle}"
+                            HorizontalAlignment="Left"
+                            Text="{Binding Path=LocalizedResources.AdvancedSettingsMenuSubtitle, Source={StaticResource LocalizedStrings}}"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Tap="LockScreenSettings_Click_1" Margin="0,12,0,0">
+                        <TextBlock
+                            Style="{StaticResource PhoneTextTitle2Style}"
+                            HorizontalAlignment="Left"
+                            Text="{Binding Path=LocalizedResources.LockScreenSettings, Source={StaticResource LocalizedStrings}}"/>
+
+                        <TextBlock
+                            Style="{StaticResource PhoneTextSmallStyle}"
+                            HorizontalAlignment="Left"
+                            Text="{Binding Path=LocalizedResources.LockScreenSettingsSubtitle, Source={StaticResource LocalizedStrings}}"/>
+                    </StackPanel>
                 </StackPanel>
             </Grid>
         </ScrollViewer>
