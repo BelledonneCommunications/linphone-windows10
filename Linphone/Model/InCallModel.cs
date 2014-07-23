@@ -42,6 +42,7 @@ namespace Linphone.Views
                 SpeakerButtonVisibility = Visibility.Collapsed;
                 StatsButtonVisibility = Visibility.Collapsed;
                 VideoButtonVisibility = Visibility.Collapsed;
+                CameraButtonVisibility = Visibility.Collapsed;
             }
             else
             {
@@ -51,6 +52,7 @@ namespace Linphone.Views
                 SpeakerButtonVisibility = Visibility.Visible;
                 StatsButtonVisibility = Visibility.Visible;
                 VideoButtonVisibility = Visibility.Visible;
+                CameraButtonVisibility = Visibility.Visible;
             }
         }
 

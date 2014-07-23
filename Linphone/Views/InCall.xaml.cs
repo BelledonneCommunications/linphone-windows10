@@ -313,10 +313,16 @@ namespace Linphone.Views
                         }
 
                         VideoStats.Visibility = Visibility.Visible;
+                        VideoDownBw.Visibility = Visibility.Visible;
+                        VideoUpBw.Visibility = Visibility.Visible;
+                        VideoPType.Visibility = Visibility.Visible;
                     }
                     else
                     {
                         VideoStats.Visibility = Visibility.Collapsed;
+                        VideoDownBw.Visibility = Visibility.Collapsed;
+                        VideoUpBw.Visibility = Visibility.Collapsed;
+                        VideoPType.Visibility = Visibility.Collapsed;
                     }
                 });
             } catch {
