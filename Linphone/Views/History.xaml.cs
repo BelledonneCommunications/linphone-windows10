@@ -124,6 +124,8 @@ namespace Linphone.Views
         private void SetAddressGoToDialerAndCall(String address)
         {
             NavigationService.Navigate(new Uri("/Views/Dialer.xaml?sip=" + address, UriKind.RelativeOrAbsolute));
+            NavigationService.RemoveBackEntry(); // Prevent a back to this screen
+            NavigationService.RemoveBackEntry(); // Prevent a back to the dialer from the dialer
         }
 
         private void callLog_Click_1(object sender, RoutedEventArgs e)
