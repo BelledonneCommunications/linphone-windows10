@@ -17,7 +17,6 @@ namespace Linphone.Agents
         public const string PictureUploadScriptURL = "https://linphone.org:444/upload.php";
         public const string UserAgent = "LinphoneWP8";
         public const bool EnableG729 = false;
-        public const bool EnableVideo = false;
 
         // Do not enable these for releases !!!
 #if DEBUG

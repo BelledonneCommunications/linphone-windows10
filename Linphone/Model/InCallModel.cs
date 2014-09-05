@@ -22,8 +22,6 @@ namespace Linphone.Views
         public InCallModel()
             : base()
         {
-            VideoButtonVisibility = Visibility.Visible;
-            CameraButtonVisibility = Visibility.Visible;
         }
 
         #region Actions
@@ -262,8 +260,8 @@ namespace Linphone.Views
             }
             set
             {
-                if (!LinphoneManager.Instance.LinphoneCore.IsVideoSupported()
-                    || !LinphoneManager.Instance.LinphoneCore.IsVideoEnabled())
+                bool isVideoEnabled = LinphoneManager.Instance.LinphoneCore.IsVideoSupported() && (LinphoneManager.Instance.LinphoneCore.IsVideoDisplayEnabled() || LinphoneManager.Instance.LinphoneCore.IsVideoCaptureEnabled());
+                if (!isVideoEnabled)
                 {
                     value = Visibility.Collapsed;
                 }
@@ -286,9 +284,8 @@ namespace Linphone.Views
             }
             set
             {
-                if (!LinphoneManager.Instance.LinphoneCore.IsVideoSupported()
-                    || !LinphoneManager.Instance.LinphoneCore.IsVideoEnabled()
-                    || (LinphoneManager.Instance.NumberOfCameras < 2))
+                bool isVideoEnabled = LinphoneManager.Instance.LinphoneCore.IsVideoSupported() && (LinphoneManager.Instance.LinphoneCore.IsVideoDisplayEnabled() || LinphoneManager.Instance.LinphoneCore.IsVideoCaptureEnabled());
+                if (!isVideoEnabled || (LinphoneManager.Instance.NumberOfCameras < 2))
                 {
                     value = Visibility.Collapsed;
                 }

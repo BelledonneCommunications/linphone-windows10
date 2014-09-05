@@ -23,6 +23,8 @@ dtmf_player_amp=0.1
 
 [video]
 displaytype=MSWP8Dis
+capture=0
+display=0
 
 [misc]
 history_max_size=30

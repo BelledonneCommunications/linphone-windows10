@@ -19,7 +19,6 @@ namespace Linphone.Views
         public Settings()
         {
             InitializeComponent();
-            Video.Visibility = Customs.EnableVideo ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>
@@ -31,6 +30,8 @@ namespace Linphone.Views
 
             // Create LinphoneCore if not created yet, otherwise do nothing
             await LinphoneManager.Instance.InitLinphoneCore();
+            bool isVideoEnabled = LinphoneManager.Instance.LinphoneCore.IsVideoSupported() && (LinphoneManager.Instance.LinphoneCore.IsVideoDisplayEnabled() || LinphoneManager.Instance.LinphoneCore.IsVideoCaptureEnabled());
+            Video.Visibility = isVideoEnabled ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void account_Click_1(object sender, RoutedEventArgs e)
