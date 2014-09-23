@@ -236,9 +236,13 @@ namespace Linphone.Model
             try
             {
                 LinphoneCore.CoreListener = null;
-                LinphoneCore.SetNetworkReachable(false); // To prevent the app from sending an unregister to the server
-                LinphoneCore.Destroy();
-                Debug.WriteLine("[LinphoneManager] LinphoneCore has been destroyed");
+                if (LinphoneCore.GetCallsNb() == 0)
+                {
+                    LinphoneCore.SetNetworkReachable(false); // To prevent the app from sending an unregister to the server
+                    LinphoneCore.Destroy();
+                    Debug.WriteLine("[LinphoneManager] LinphoneCore has been destroyed");
+                    isLinphoneRunning = false;
+                }
             }
             catch (Exception)
             {
@@ -248,7 +252,6 @@ namespace Linphone.Model
             }
 
             BackgroundProcessConnected = false;
-            isLinphoneRunning = false;
             Debug.WriteLine("[LinphoneManager] Background process disconnected from interface");
 
             // From this point onwards, it is no longer safe to use any objects in the background process, 
