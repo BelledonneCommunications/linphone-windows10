@@ -82,7 +82,6 @@ void Globals::StartServer(const Platform::Array<Platform::String^>^ outOfProcSer
         throw ref new Platform::COMException(hr, L"An error occurred trying to set an event that indicates that the background process is ready");
     }
 
-
     this->started = true;
 	gApiLock.Unlock();
 }

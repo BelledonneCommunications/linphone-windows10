@@ -50,6 +50,7 @@ Linphone::Core::LinphoneChatMessage::LinphoneChatMessage(::LinphoneChatMessage *
 
 Linphone::Core::LinphoneChatMessage::~LinphoneChatMessage()
 {
+	linphone_chat_message_unref(message);
 	RefToPtrProxy<LinphoneChatMessage^> *chat_message = reinterpret_cast< RefToPtrProxy<LinphoneChatMessage^> *>(linphone_chat_message_get_user_data(this->message));
 	delete chat_message;
 }

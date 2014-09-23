@@ -179,17 +179,23 @@ Platform::String^ Linphone::Core::LinphoneCall::GetRemoteContact()
 	return contact;
 }
 
-void Linphone::Core::LinphoneCall::CallContext::set(Platform::Object^ cc)
+void Linphone::Core::LinphoneCall::CallContext::set(Windows::Phone::Networking::Voip::VoipPhoneCall^ cc)
 {
 	this->callContext = cc;
 }
 
 Platform::Object^ Linphone::Core::LinphoneCall::GetCallStartTimeFromContext()
 {
-	if (this->callContext != nullptr) {
-		return ((Windows::Phone::Networking::Voip::VoipPhoneCall^)this->callContext)->StartTime;
+	Platform::Object^ result = nullptr;
+	try {
+		if (this->callContext != nullptr) {
+			result = this->callContext->StartTime;
+		}
 	}
-	return nullptr;
+	catch (Platform::COMException^ ex) {
+
+	}
+	return result;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCall::IsCameraEnabled()
@@ -222,7 +228,7 @@ void Linphone::Core::LinphoneCall::SendVFURequest()
 	gApiLock.Unlock();
 }
 
-Platform::Object^  Linphone::Core::LinphoneCall::CallContext::get()
+Windows::Phone::Networking::Voip::VoipPhoneCall^ Linphone::Core::LinphoneCall::CallContext::get()
 {
 	return this->callContext;
 }
@@ -233,12 +239,15 @@ Linphone::Core::LinphoneCall::LinphoneCall(::LinphoneCall *call) :
 	gApiLock.Lock();
 	RefToPtrProxy<LinphoneCall^> *proxy = new RefToPtrProxy<LinphoneCall^>(this);
 	linphone_call_set_user_pointer(this->call, proxy);
+	this->callContext = nullptr;
 	gApiLock.Unlock();
 }
 
 Linphone::Core::LinphoneCall::~LinphoneCall()
 {
 	gApiLock.Lock();
+	this->callContext = nullptr;
+	linphone_call_unref(call);
 	RefToPtrProxy<LinphoneCall^> *proxy = reinterpret_cast< RefToPtrProxy<LinphoneCall^> *>(linphone_call_get_user_pointer(this->call));
 	delete proxy;
 	gApiLock.Unlock();

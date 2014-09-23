@@ -310,6 +310,7 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::Invite(Platform::Str
 	Linphone::Core::LinphoneCall^ lCall = nullptr;
 	const char *cc = Linphone::Core::Utils::pstoccs(destination);
 	::LinphoneCall *call = linphone_core_invite(this->lc, cc);
+	call = linphone_call_ref(call);
 	delete(cc);
 	if (call != NULL) {
 		Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
@@ -326,6 +327,7 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddress(Linpho
 	gApiLock.Lock();
 	Linphone::Core::LinphoneCall^ lCall = nullptr;
 	::LinphoneCall *call = linphone_core_invite_address(this->lc, destination->address);
+	call = linphone_call_ref(call);
 	if (call != NULL) {
 		Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
 		lCall = (proxy) ? proxy->Ref() : nullptr;
@@ -341,6 +343,7 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddressWithPar
 	gApiLock.Lock();
 	Linphone::Core::LinphoneCall^ lCall = nullptr;
 	::LinphoneCall *call = linphone_core_invite_address_with_params(this->lc, destination->address, params->params);
+	call = linphone_call_ref(call);
 	if (call != NULL) {
 		Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
 		lCall = (proxy) ? proxy->Ref() : nullptr;
@@ -1426,6 +1429,7 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 	Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
 	Linphone::Core::LinphoneCall^ lCall = (proxy) ? proxy->Ref() : nullptr;
 	if (lCall == nullptr) {
+		call = linphone_call_ref(call);
 		lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
 	}
 		
@@ -1573,7 +1577,7 @@ void message_received(LinphoneCore *lc, LinphoneChatRoom* chat_room, LinphoneCha
 		Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneChatMessage^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneChatMessage^> *>(linphone_chat_message_get_user_data(message));
 		Linphone::Core::LinphoneChatMessage^ lMessage = (proxy) ? proxy->Ref() : nullptr;
 		if (lMessage == nullptr) {
-			linphone_chat_message_ref(message);
+			message = linphone_chat_message_ref(message);
 			lMessage = (Linphone::Core::LinphoneChatMessage^)Linphone::Core::Utils::CreateLinphoneChatMessage(message);
 		}
 

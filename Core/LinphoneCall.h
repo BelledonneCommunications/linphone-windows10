@@ -192,10 +192,10 @@ namespace Linphone
 			/// <summary>
 			/// Gets the CallContext object (native VoipPhoneCall)
 			/// </summary>
-			property Platform::Object^ CallContext
+			property Windows::Phone::Networking::Voip::VoipPhoneCall^ CallContext
             {
-                Platform::Object^ get();
-				void set(Platform::Object^ cc);
+				Windows::Phone::Networking::Voip::VoipPhoneCall^ get();
+				void set(Windows::Phone::Networking::Voip::VoipPhoneCall^ cc);
             }
 
 		private:
@@ -206,7 +206,7 @@ namespace Linphone
 			LinphoneCall(::LinphoneCall *call);
 			~LinphoneCall();
 			
-			Platform::Object^ callContext;
+			Windows::Phone::Networking::Voip::VoipPhoneCall^ callContext;
 			::LinphoneCall *call;
 		};
 	}
