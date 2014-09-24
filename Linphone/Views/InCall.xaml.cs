@@ -201,9 +201,13 @@ namespace Linphone.Views
             pause.IsChecked = isCallPaused;
             pauseImg.Source = new BitmapImage(new Uri(isCallPaused ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
 
-            if (!isCallPaused)
+            if (oneSecondTimer == null)
             {
                 oneSecondTimer = new Timer(new TimerCallback(timerTick), null, 0, 1000);
+            }
+
+            if (!isCallPaused)
+            {
                 if (call.GetCurrentParamsCopy().IsVideoEnabled() && !((InCallModel)ViewModel).IsVideoActive)
                 {
                     // Show video if it was not shown yet
@@ -220,10 +224,6 @@ namespace Linphone.Views
                     ButtonsFadeInAudioAnimation.Begin();
                     StopFadeTimer();
                 }
-            }
-            else if (oneSecondTimer != null)
-            {
-                oneSecondTimer.Dispose();
             }
         }
 
@@ -259,12 +259,19 @@ namespace Linphone.Views
         {
             try
             {
-                LinphoneCall call = LinphoneManager.Instance.LinphoneCore.GetCurrentCall();
-                if (call == null)
+                if (LinphoneManager.Instance.LinphoneCore.GetCallsNb() == 0)
                 {
                     oneSecondTimer.Dispose();
+                    oneSecondTimer = null;
                     return;
                 }
+
+                LinphoneCall call = LinphoneManager.Instance.LinphoneCore.GetCurrentCall();
+                if (call == null)
+                    call = (LinphoneCall)LinphoneManager.Instance.LinphoneCore.GetCalls()[0];
+                if (call == null)
+                    return;
+
                 startTime = (DateTimeOffset)call.GetCallStartTimeFromContext();
                 DateTimeOffset now = DateTimeOffset.Now;
                 TimeSpan elapsed = now.Subtract(startTime);
@@ -327,6 +334,7 @@ namespace Linphone.Views
                 });
             } catch {
                 oneSecondTimer.Dispose();
+                oneSecondTimer = null;
             }
         }
 
