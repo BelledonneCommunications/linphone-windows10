@@ -25,7 +25,7 @@ namespace Linphone.Model
         /// <summary>
         /// Called when the call changes its state to paused or resumed.
         /// </summary>
-        void PauseStateChanged(LinphoneCall call, bool isCallPaused);
+        void PauseStateChanged(LinphoneCall call, bool isCallPaused, bool isCallPausedByRemote);
 
         /// <summary>
         /// Called when the call is updated by the remote party.

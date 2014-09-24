@@ -45,7 +45,7 @@ namespace Linphone.Views
             var call = LinphoneManager.Instance.LinphoneCore.GetCurrentCall();
             if (call != null && call.GetState() == Core.LinphoneCallState.StreamsRunning)
             {
-                PauseStateChanged(call, false);
+                PauseStateChanged(call, false, false);
             }
         }
 
@@ -196,17 +196,18 @@ namespace Linphone.Views
         /// <summary>
         /// Called when the call changes its state to paused or resumed.
         /// </summary>
-        public void PauseStateChanged(LinphoneCall call, bool isCallPaused)
+        public void PauseStateChanged(LinphoneCall call, bool isCallPaused, bool isCallPausedByRemote)
         {
-            pause.IsChecked = isCallPaused;
-            pauseImg.Source = new BitmapImage(new Uri(isCallPaused ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
+            pause.IsChecked = isCallPaused || isCallPausedByRemote;
+            pauseImg.Source = new BitmapImage(new Uri(isCallPaused || isCallPausedByRemote ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
+            pause.Visibility = isCallPausedByRemote ? Visibility.Collapsed : Visibility.Visible;
 
             if (oneSecondTimer == null)
             {
                 oneSecondTimer = new Timer(new TimerCallback(timerTick), null, 0, 1000);
             }
 
-            if (!isCallPaused)
+            if (!isCallPaused && !isCallPausedByRemote)
             {
                 if (call.GetCurrentParamsCopy().IsVideoEnabled() && !((InCallModel)ViewModel).IsVideoActive)
                 {
@@ -277,8 +278,14 @@ namespace Linphone.Views
                 TimeSpan elapsed = now.Subtract(startTime);
                 var ss = elapsed.Seconds;
                 var mm = elapsed.Minutes;
+
                 Status.Dispatcher.BeginInvoke(delegate()
                 {
+                    if (LinphoneManager.Instance.LinphoneCore.GetCallsNb() == 0)
+                    {
+                        return;
+                    }
+
                     LinphoneCallParams param = call.GetCurrentParamsCopy();
                     Status.Text = mm.ToString("00") + ":" + ss.ToString("00");
 
@@ -304,7 +311,7 @@ namespace Linphone.Views
                         AudioPType.Text = AppResources.StatPayload + ": " + audiopt.GetMimeType() + "/" + audiopt.GetClockRate();
                     }
 
-                    if (call.GetCurrentParamsCopy().IsVideoEnabled())
+                    if (param.IsVideoEnabled())
                     {
                         LinphoneCallStats videoStats = call.GetVideoStats();
                         if (videoStats != null)

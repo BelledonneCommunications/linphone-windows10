@@ -28,7 +28,7 @@ namespace Linphone
         /// <summary>
         /// Called when the call changes its state to paused or resumed.
         /// </summary>
-        void PauseStateChanged(LinphoneCall call, bool isCallPaused);
+        void PauseStateChanged(LinphoneCall call, bool isCallPaused, bool isCallPausedByRemote);
     }
 
     /// <summary>
@@ -129,10 +129,10 @@ namespace Linphone
         /// <summary>
         /// Called when the call changes its state to paused or resumed.
         /// </summary>
-        public void PauseStateChanged(LinphoneCall call, bool isCallPaused)
+        public void PauseStateChanged(LinphoneCall call, bool isCallPaused, bool isCallPausedByRemote)
         {
             if (this.PauseListener != null)
-                this.PauseListener.PauseStateChanged(call, isCallPaused);
+                this.PauseListener.PauseStateChanged(call, isCallPaused, isCallPausedByRemote);
         }
 
         /// <summary>

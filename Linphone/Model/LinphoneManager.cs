@@ -801,8 +801,9 @@ namespace Linphone.Model
                 Logger.Msg("[LinphoneManager] Call paused");
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
+                    bool pausedByRemote = state == LinphoneCallState.PausedByRemote;
                     if (CallListener != null)
-                        CallListener.PauseStateChanged(call, true);
+                        CallListener.PauseStateChanged(call, !pausedByRemote, pausedByRemote);
                 });
             }
             else if (state == LinphoneCallState.StreamsRunning)
@@ -811,7 +812,7 @@ namespace Linphone.Model
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
                     if (CallListener != null)
-                        CallListener.PauseStateChanged(call, false);
+                        CallListener.PauseStateChanged(call, false, false);
                 });
             }
             else if (state == LinphoneCallState.Released)
