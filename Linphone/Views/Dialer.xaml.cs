@@ -41,34 +41,37 @@ namespace Linphone
         {
             base.OnNavigatedTo(e);
 
-            if (BugCollector.HasExceptionToReport())
+            if (e.NavigationMode == NavigationMode.New)
             {
-                // Allow to report exceptions before the creation of the core in case the problem is in there
-                CustomMessageBox reportIssueDialog = new CustomMessageBox()
+                if (BugCollector.HasExceptionToReport())
                 {
-                    Caption = AppResources.ReportCrashDialogCaption,
-                    Message = AppResources.ReportCrashDialogMessage,
-                    LeftButtonContent = AppResources.ReportCrash,
-                    RightButtonContent = AppResources.Close
-                };
-
-                reportIssueDialog.Dismissed += (s, ev) =>
-                {
-                    switch (ev.Result)
+                    // Allow to report exceptions before the creation of the core in case the problem is in there
+                    CustomMessageBox reportIssueDialog = new CustomMessageBox()
                     {
-                        case CustomMessageBoxResult.LeftButton:
-                            BugCollector.ReportExceptions();
-                            break;
-                        case CustomMessageBoxResult.RightButton:
-                            BugCollector.DeleteFile();
-                            break;
-                    }
-                };
+                        Caption = AppResources.ReportCrashDialogCaption,
+                        Message = AppResources.ReportCrashDialogMessage,
+                        LeftButtonContent = AppResources.ReportCrash,
+                        RightButtonContent = AppResources.Close
+                    };
 
-                reportIssueDialog.Show();
+                    reportIssueDialog.Dismissed += (s, ev) =>
+                    {
+                        switch (ev.Result)
+                        {
+                            case CustomMessageBoxResult.LeftButton:
+                                BugCollector.ReportExceptions();
+                                break;
+                            case CustomMessageBoxResult.RightButton:
+                                BugCollector.DeleteFile();
+                                break;
+                        }
+                    };
+
+                    reportIssueDialog.Show();
+                }
+
+                BugCollector.DeleteLinphoneLogFileIfFileTooBig();
             }
-
-            BugCollector.DeleteLinphoneLogFileIfFileTooBig();
 
             StatusBar = status;
             BasePage.StatusBar.RefreshStatus(LinphoneManager.Instance.LastKnownState);

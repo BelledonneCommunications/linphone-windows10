@@ -275,16 +275,22 @@ namespace Linphone.Model
         /// </summary>
         public async Task InitLinphoneCore()
         {
-            if ((server.LinphoneCoreFactory != null) && (server.LinphoneCore != null))
+            if (server.LinphoneCoreFactory != null && server.LinphoneCore != null)
             {
                 // Reconnect the listeners when coming back from background mode
                 Debug.WriteLine("[LinphoneManager] LinphoneCore already created, skipping");
 
                 server.LinphoneCore.CoreListener = this;
-                isLinphoneRunning = true;
                 // Set user-agent because it is not set if coming back from background mode
-                server.LinphoneCore.SetUserAgent(Customs.UserAgent, XDocument.Load("WMAppManifest.xml").Root.Element("App").Attribute("Version").Value);
-                return;
+                try
+                {
+                    server.LinphoneCore.SetUserAgent(Customs.UserAgent, XDocument.Load("WMAppManifest.xml").Root.Element("App").Attribute("Version").Value);
+                    isLinphoneRunning = true;
+                    return;
+                } catch {
+                    // It happens server.LinphoneCore is available but the real core behind is broken, we'll catch this here and force recreate a new core
+                    Debug.WriteLine("[LinphoneManager] Exception happened while setting the UA, force creation of a new LinphoneCore");
+                }
             }
 
             Debug.WriteLine("[LinphoneManager] Creating LinphoneCore");
