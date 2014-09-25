@@ -14,7 +14,7 @@ void Linphone::Core::LpConfig::SetBool(Platform::String^ section, Platform::Stri
 
 int Linphone::Core::LpConfig::GetInt(Platform::String^ section, Platform::String^ key, int defaultValue)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const char *ccSection = Linphone::Core::Utils::pstoccs(section);
 	const char *ccKey = Linphone::Core::Utils::pstoccs(key);
 	int value = lp_config_get_int(this->config, ccSection, ccKey, defaultValue);
@@ -26,7 +26,7 @@ int Linphone::Core::LpConfig::GetInt(Platform::String^ section, Platform::String
 
 void Linphone::Core::LpConfig::SetInt(Platform::String^ section, Platform::String^ key, int value)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const char *ccSection = Linphone::Core::Utils::pstoccs(section);
 	const char *ccKey = Linphone::Core::Utils::pstoccs(key);
 	lp_config_set_int(this->config, ccSection, ccKey, value);
@@ -37,7 +37,7 @@ void Linphone::Core::LpConfig::SetInt(Platform::String^ section, Platform::Strin
 
 int64 Linphone::Core::LpConfig::GetInt64(Platform::String^ section, Platform::String^ key, int64 defaultValue)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const char *ccSection = Linphone::Core::Utils::pstoccs(section);
 	const char *ccKey = Linphone::Core::Utils::pstoccs(key);
 	int64 value = lp_config_get_int64(this->config, ccSection, ccKey, defaultValue);
@@ -49,7 +49,7 @@ int64 Linphone::Core::LpConfig::GetInt64(Platform::String^ section, Platform::St
 
 void Linphone::Core::LpConfig::SetInt64(Platform::String^ section, Platform::String^ key, int64 value)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const char *ccSection = Linphone::Core::Utils::pstoccs(section);
 	const char *ccKey = Linphone::Core::Utils::pstoccs(key);
 	lp_config_set_int64(this->config, ccSection, ccKey, value);
@@ -60,7 +60,7 @@ void Linphone::Core::LpConfig::SetInt64(Platform::String^ section, Platform::Str
 
 float Linphone::Core::LpConfig::GetFloat(Platform::String^ section, Platform::String^ key, float defaultValue)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const char *ccSection = Linphone::Core::Utils::pstoccs(section);
 	const char *ccKey = Linphone::Core::Utils::pstoccs(key);
 	float value = lp_config_get_float(this->config, ccSection, ccKey, defaultValue);
@@ -72,7 +72,7 @@ float Linphone::Core::LpConfig::GetFloat(Platform::String^ section, Platform::St
 
 void Linphone::Core::LpConfig::SetFloat(Platform::String^ section, Platform::String^ key, float value)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const char *ccSection = Linphone::Core::Utils::pstoccs(section);
 	const char *ccKey = Linphone::Core::Utils::pstoccs(key);
 	lp_config_set_float(this->config, ccSection, ccKey, value);
@@ -83,7 +83,7 @@ void Linphone::Core::LpConfig::SetFloat(Platform::String^ section, Platform::Str
 
 Platform::String^ Linphone::Core::LpConfig::GetString(Platform::String^ section, Platform::String^ key, Platform::String^ defaultValue)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const char *ccSection = Linphone::Core::Utils::pstoccs(section);
 	const char *ccKey = Linphone::Core::Utils::pstoccs(key);
 	const char *ccDefaultValue = Linphone::Core::Utils::pstoccs(defaultValue);
@@ -98,7 +98,7 @@ Platform::String^ Linphone::Core::LpConfig::GetString(Platform::String^ section,
 
 void Linphone::Core::LpConfig::SetString(Platform::String^ section, Platform::String^ key, Platform::String^ value)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const char *ccSection = Linphone::Core::Utils::pstoccs(section);
 	const char *ccKey = Linphone::Core::Utils::pstoccs(key);
 	const char *ccValue = Linphone::Core::Utils::pstoccs(value);
@@ -111,7 +111,7 @@ void Linphone::Core::LpConfig::SetString(Platform::String^ section, Platform::St
 
 Platform::Array<int>^ Linphone::Core::LpConfig::GetRange(Platform::String^ section, Platform::String^ key, const Platform::Array<int>^ defaultValue)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Platform::Array<int>^ range = ref new Platform::Array<int>(2);
 	const char *ccSection = Linphone::Core::Utils::pstoccs(section);
 	const char *ccKey = Linphone::Core::Utils::pstoccs(key);
@@ -124,7 +124,7 @@ Platform::Array<int>^ Linphone::Core::LpConfig::GetRange(Platform::String^ secti
 
 void Linphone::Core::LpConfig::SetRange(Platform::String^ section, Platform::String^ key, const Platform::Array<int>^ value)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const char *ccSection = Linphone::Core::Utils::pstoccs(section);
 	const char *ccKey = Linphone::Core::Utils::pstoccs(key);
 	lp_config_set_range(this->config, ccSection, ccKey, value[0], value[1]);
@@ -141,7 +141,7 @@ Linphone::Core::LpConfig::LpConfig(::LpConfig *config) :
 
 Linphone::Core::LpConfig::LpConfig(Platform::String^ configPath, Platform::String^ factoryConfigPath)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const char *ccConfigPath = Linphone::Core::Utils::pstoccs(configPath);
 	const char *ccFactoryConfigPath = Linphone::Core::Utils::pstoccs(factoryConfigPath);
 	this->config = lp_config_new_with_factory(ccConfigPath, ccFactoryConfigPath);

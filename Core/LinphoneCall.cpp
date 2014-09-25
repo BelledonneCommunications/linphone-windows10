@@ -12,7 +12,7 @@ using namespace Windows::Phone::Networking::Voip;
 
 Linphone::Core::LinphoneCallState Linphone::Core::LinphoneCall::GetState()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Linphone::Core::LinphoneCallState state = (Linphone::Core::LinphoneCallState)linphone_call_get_state(this->call);
 	gApiLock.Unlock();
 	return state;
@@ -20,7 +20,7 @@ Linphone::Core::LinphoneCallState Linphone::Core::LinphoneCall::GetState()
 
 Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCall::GetRemoteAddress()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const ::LinphoneAddress *addr = linphone_call_get_remote_address(this->call);
 	Linphone::Core::LinphoneAddress^ address = (Linphone::Core::LinphoneAddress^)Linphone::Core::Utils::CreateLinphoneAddress((void*)addr);
 	gApiLock.Unlock();
@@ -29,7 +29,7 @@ Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCall::GetRemoteAddress(
 
 Linphone::Core::CallDirection Linphone::Core::LinphoneCall::GetDirection()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Linphone::Core::CallDirection direction = (Linphone::Core::CallDirection)linphone_call_get_dir(this->call);
 	gApiLock.Unlock();
 	return direction;
@@ -37,7 +37,7 @@ Linphone::Core::CallDirection Linphone::Core::LinphoneCall::GetDirection()
 
 Linphone::Core::LinphoneCallLog^ Linphone::Core::LinphoneCall::GetCallLog()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Linphone::Core::LinphoneCallLog^ log = (Linphone::Core::LinphoneCallLog^) Linphone::Core::Utils::CreateLinphoneCallLog(linphone_call_get_call_log(this->call));
 	gApiLock.Unlock();
 	return log;
@@ -45,7 +45,7 @@ Linphone::Core::LinphoneCallLog^ Linphone::Core::LinphoneCall::GetCallLog()
 
 Linphone::Core::LinphoneCallStats^ Linphone::Core::LinphoneCall::GetAudioStats()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Linphone::Core::LinphoneCallStats^ stats = (Linphone::Core::LinphoneCallStats^) Linphone::Core::Utils::CreateLinphoneCallStats(this->call, (int)Linphone::Core::MediaType::Audio);
 	gApiLock.Unlock();
 	return stats;
@@ -53,7 +53,7 @@ Linphone::Core::LinphoneCallStats^ Linphone::Core::LinphoneCall::GetAudioStats()
 
 Linphone::Core::LinphoneCallParams^ Linphone::Core::LinphoneCall::GetRemoteParams()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Linphone::Core::LinphoneCallParams^ params = nullptr;
 	if (linphone_call_get_remote_params(this->call) != nullptr) {
 		params = (Linphone::Core::LinphoneCallParams^) Linphone::Core::Utils::CreateLinphoneCallParams(linphone_call_params_copy(linphone_call_get_remote_params(this->call)));
@@ -64,7 +64,7 @@ Linphone::Core::LinphoneCallParams^ Linphone::Core::LinphoneCall::GetRemoteParam
 
 Linphone::Core::LinphoneCallParams^ Linphone::Core::LinphoneCall::GetCurrentParamsCopy()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Linphone::Core::LinphoneCallParams^ params = (Linphone::Core::LinphoneCallParams^) Linphone::Core::Utils::CreateLinphoneCallParams(linphone_call_params_copy(linphone_call_get_current_params(this->call)));
 	gApiLock.Unlock();
 	return params;
@@ -72,14 +72,14 @@ Linphone::Core::LinphoneCallParams^ Linphone::Core::LinphoneCall::GetCurrentPara
 
 void Linphone::Core::LinphoneCall::EnableEchoCancellation(Platform::Boolean enable)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	linphone_call_enable_echo_cancellation(this->call, enable);
 	gApiLock.Unlock();
 }
 
 Platform::Boolean Linphone::Core::LinphoneCall::IsEchoCancellationEnabled()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Platform::Boolean enabled = (linphone_call_echo_cancellation_enabled(this->call) == TRUE);
 	gApiLock.Unlock();
 	return enabled;
@@ -87,14 +87,14 @@ Platform::Boolean Linphone::Core::LinphoneCall::IsEchoCancellationEnabled()
 
 void Linphone::Core::LinphoneCall::EnableEchoLimiter(Platform::Boolean enable)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	linphone_call_enable_echo_limiter(this->call, enable);
 	gApiLock.Unlock();
 }
 
 Platform::Boolean Linphone::Core::LinphoneCall::IsEchoLimiterEnabled()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Platform::Boolean enabled = (linphone_call_echo_limiter_enabled(this->call) == TRUE);
 	gApiLock.Unlock();
 	return enabled;
@@ -102,7 +102,7 @@ Platform::Boolean Linphone::Core::LinphoneCall::IsEchoLimiterEnabled()
 
 int Linphone::Core::LinphoneCall::GetDuration()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	int duration = linphone_call_get_duration(this->call);
 	gApiLock.Unlock();
 	return duration;
@@ -110,7 +110,7 @@ int Linphone::Core::LinphoneCall::GetDuration()
 
 float Linphone::Core::LinphoneCall::GetCurrentQuality()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	float quality = linphone_call_get_current_quality(this->call);
 	gApiLock.Unlock();
 	return quality;
@@ -118,7 +118,7 @@ float Linphone::Core::LinphoneCall::GetCurrentQuality()
 
 float Linphone::Core::LinphoneCall::GetAverageQuality()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	float quality = linphone_call_get_average_quality(this->call);
 	gApiLock.Unlock();
 	return quality;
@@ -126,7 +126,7 @@ float Linphone::Core::LinphoneCall::GetAverageQuality()
 
 Platform::String^ Linphone::Core::LinphoneCall::GetAuthenticationToken()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Platform::String^ token = Linphone::Core::Utils::cctops(linphone_call_get_authentication_token(this->call));
 	gApiLock.Unlock();
 	return token;
@@ -134,7 +134,7 @@ Platform::String^ Linphone::Core::LinphoneCall::GetAuthenticationToken()
 
 Platform::Boolean Linphone::Core::LinphoneCall::IsAuthenticationTokenVerified()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Platform::Boolean verified = (linphone_call_get_authentication_token_verified(this->call) == TRUE);
 	gApiLock.Unlock();
 	return verified;
@@ -142,14 +142,14 @@ Platform::Boolean Linphone::Core::LinphoneCall::IsAuthenticationTokenVerified()
 
 void Linphone::Core::LinphoneCall::SetAuthenticationTokenVerified(Platform::Boolean verified)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	linphone_call_set_authentication_token_verified(this->call, verified);
 	gApiLock.Unlock();
 }
 
 Platform::Boolean Linphone::Core::LinphoneCall::IsInConference()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Platform::Boolean inConference = (linphone_call_is_in_conference(this->call) == TRUE);
 	gApiLock.Unlock();
 	return inConference;
@@ -157,7 +157,7 @@ Platform::Boolean Linphone::Core::LinphoneCall::IsInConference()
 
 float Linphone::Core::LinphoneCall::GetPlayVolume()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	float volume = linphone_call_get_play_volume(this->call);
 	gApiLock.Unlock();
 	return volume;
@@ -165,7 +165,7 @@ float Linphone::Core::LinphoneCall::GetPlayVolume()
 
 Platform::String^ Linphone::Core::LinphoneCall::GetRemoteUserAgent()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Platform::String^ userAgent = Linphone::Core::Utils::cctops(linphone_call_get_remote_user_agent(this->call));
 	gApiLock.Unlock();
 	return userAgent;
@@ -173,7 +173,7 @@ Platform::String^ Linphone::Core::LinphoneCall::GetRemoteUserAgent()
 
 Platform::String^ Linphone::Core::LinphoneCall::GetRemoteContact()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Platform::String^ contact = Linphone::Core::Utils::cctops(linphone_call_get_remote_contact(this->call));
 	gApiLock.Unlock();
 	return contact;
@@ -200,7 +200,7 @@ Platform::Object^ Linphone::Core::LinphoneCall::GetCallStartTimeFromContext()
 
 Platform::Boolean Linphone::Core::LinphoneCall::IsCameraEnabled()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Platform::Boolean enabled = (linphone_call_camera_enabled(this->call) == TRUE);
 	gApiLock.Unlock();
 	return enabled;
@@ -208,14 +208,14 @@ Platform::Boolean Linphone::Core::LinphoneCall::IsCameraEnabled()
 
 void Linphone::Core::LinphoneCall::EnableCamera(Platform::Boolean enable)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	linphone_call_enable_camera(this->call, enable);
 	gApiLock.Unlock();
 }
 
 Linphone::Core::LinphoneCallStats^ Linphone::Core::LinphoneCall::GetVideoStats()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Linphone::Core::LinphoneCallStats^ stats = (Linphone::Core::LinphoneCallStats^) Linphone::Core::Utils::CreateLinphoneCallStats(this->call, (int)Linphone::Core::MediaType::Video);
 	gApiLock.Unlock();
 	return stats;
@@ -223,7 +223,7 @@ Linphone::Core::LinphoneCallStats^ Linphone::Core::LinphoneCall::GetVideoStats()
 
 void Linphone::Core::LinphoneCall::SendVFURequest()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	linphone_call_send_vfu_request(this->call);
 	gApiLock.Unlock();
 }
@@ -236,19 +236,19 @@ Windows::Phone::Networking::Voip::VoipPhoneCall^ Linphone::Core::LinphoneCall::C
 Linphone::Core::LinphoneCall::LinphoneCall(::LinphoneCall *call) :
 	call(call)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	RefToPtrProxy<LinphoneCall^> *proxy = new RefToPtrProxy<LinphoneCall^>(this);
-	linphone_call_set_user_pointer(this->call, proxy);
+	linphone_call_set_user_data(this->call, proxy);
 	this->callContext = nullptr;
 	gApiLock.Unlock();
 }
 
 Linphone::Core::LinphoneCall::~LinphoneCall()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	this->callContext = nullptr;
 	linphone_call_unref(call);
-	RefToPtrProxy<LinphoneCall^> *proxy = reinterpret_cast< RefToPtrProxy<LinphoneCall^> *>(linphone_call_get_user_pointer(this->call));
+	RefToPtrProxy<LinphoneCall^> *proxy = reinterpret_cast< RefToPtrProxy<LinphoneCall^> *>(linphone_call_get_user_data(this->call));
 	delete proxy;
 	gApiLock.Unlock();
 }

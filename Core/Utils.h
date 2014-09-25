@@ -6,7 +6,12 @@
 namespace Linphone
 {
     namespace Core
-    {
+	{
+#ifdef TRACE_LOCKS
+#define TRACE OutputDebugString(Linphone::Core::Utils::cctops(ms_strdup_printf("### Locked in %s\r\n", __FUNCTION__))->Data())
+#else
+#define TRACE
+#endif
 		/// <summary>
 		/// Class to hold static methods for some interfaces between C code and C++/CX code.
 		/// </summary>

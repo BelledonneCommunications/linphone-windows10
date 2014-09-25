@@ -5,14 +5,14 @@
 
 void Linphone::Core::LinphoneCallParams::SetAudioBandwidth(int value)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	linphone_call_params_set_audio_bandwidth_limit(this->params, value);
 	gApiLock.Unlock();
 }
 
 Linphone::Core::MediaEncryption Linphone::Core::LinphoneCallParams::GetMediaEncryption()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Linphone::Core::MediaEncryption enc = (Linphone::Core::MediaEncryption) linphone_call_params_get_media_encryption(this->params);
 	gApiLock.Unlock();
 	return enc;
@@ -20,14 +20,14 @@ Linphone::Core::MediaEncryption Linphone::Core::LinphoneCallParams::GetMediaEncr
 
 void Linphone::Core::LinphoneCallParams::SetMediaEncryption(Linphone::Core::MediaEncryption menc)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	linphone_call_params_set_media_encryption(this->params, (LinphoneMediaEncryption) menc);
 	gApiLock.Unlock();
 }
 
 Linphone::Core::PayloadType^ Linphone::Core::LinphoneCallParams::GetUsedAudioCodec()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Linphone::Core::PayloadType^ payloadType = nullptr;
 	const ::PayloadType *pt = linphone_call_params_get_used_audio_codec(this->params);
 	if (pt != nullptr) {
@@ -39,14 +39,14 @@ Linphone::Core::PayloadType^ Linphone::Core::LinphoneCallParams::GetUsedAudioCod
 
 void Linphone::Core::LinphoneCallParams::EnableLowBandwidth(Platform::Boolean enable)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	linphone_call_params_enable_low_bandwidth(this->params, enable);
 	gApiLock.Unlock();
 }
 
 Platform::Boolean Linphone::Core::LinphoneCallParams::IsLowBandwidthEnabled()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Platform::Boolean enabled = (linphone_call_params_low_bandwidth_enabled(this->params) == TRUE);
 	gApiLock.Unlock();
 	return enabled;
@@ -54,7 +54,7 @@ Platform::Boolean Linphone::Core::LinphoneCallParams::IsLowBandwidthEnabled()
 
 Platform::Boolean Linphone::Core::LinphoneCallParams::IsVideoEnabled()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Platform::Boolean enabled = (linphone_call_params_video_enabled(this->params) == TRUE);
 	gApiLock.Unlock();
 	return enabled;
@@ -62,14 +62,14 @@ Platform::Boolean Linphone::Core::LinphoneCallParams::IsVideoEnabled()
 
 void Linphone::Core::LinphoneCallParams::EnableVideo(Platform::Boolean enable)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	linphone_call_params_enable_video(this->params, enable);
 	gApiLock.Unlock();
 }
 
 Linphone::Core::PayloadType^ Linphone::Core::LinphoneCallParams::GetUsedVideoCodec()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Linphone::Core::PayloadType^ payloadType = nullptr;
 	const ::PayloadType *pt = linphone_call_params_get_used_video_codec(this->params);
 	if (pt != nullptr) {

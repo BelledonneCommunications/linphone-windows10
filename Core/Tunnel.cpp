@@ -77,7 +77,7 @@ Linphone::Core::Tunnel::~Tunnel()
 
 Platform::Boolean Linphone::Core::Tunnel::IsEnabled()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Platform::Boolean enabled = (linphone_tunnel_enabled(this->lt) == TRUE);
 	gApiLock.Unlock();
 	return enabled;
@@ -85,14 +85,14 @@ Platform::Boolean Linphone::Core::Tunnel::IsEnabled()
 
 void Linphone::Core::Tunnel::Enable(Platform::Boolean enable)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	linphone_tunnel_enable(this->lt, enable);
 	gApiLock.Unlock();
 }
 
 void Linphone::Core::Tunnel::AutoDetect()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	linphone_tunnel_auto_detect(this->lt);
 	gApiLock.Unlock();
 }
@@ -113,7 +113,7 @@ static void AddServerConfigToVector(void *vServerConfig, void *vector)
 
 IVector<Object^>^ Linphone::Core::Tunnel::GetServers()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	IVector<Object^>^ serverconfigs = ref new Vector<Object^>();
 	const MSList *configList = linphone_tunnel_get_servers(this->lt);
 	RefToPtrProxy<IVector<Object^>^> *serverConfigPtr = new RefToPtrProxy<IVector<Object^>^>(serverconfigs);
@@ -124,14 +124,14 @@ IVector<Object^>^ Linphone::Core::Tunnel::GetServers()
 
 void Linphone::Core::Tunnel::CleanServers()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	linphone_tunnel_clean_servers(this->lt);
 	gApiLock.Unlock();
 }
 
 void Linphone::Core::Tunnel::SetHttpProxy(Platform::String^ host, int port, Platform::String^ username, Platform::String^ password)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const char* h = Linphone::Core::Utils::pstoccs(host);
 	const char* u = Linphone::Core::Utils::pstoccs(username);
 	const char* pwd = Linphone::Core::Utils::pstoccs(password);
@@ -144,7 +144,7 @@ void Linphone::Core::Tunnel::SetHttpProxy(Platform::String^ host, int port, Plat
 
 void Linphone::Core::Tunnel::AddServer(Platform::String^ host, int port)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const char* h = Linphone::Core::Utils::pstoccs(host);
 	LinphoneTunnelConfig* config = linphone_tunnel_config_new();
 	linphone_tunnel_config_set_host(config, h);
@@ -156,7 +156,7 @@ void Linphone::Core::Tunnel::AddServer(Platform::String^ host, int port)
 
 void Linphone::Core::Tunnel::AddServer(Platform::String^ host, int port, int udpMirrorPort, int roundTripDelay)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const char* h = Linphone::Core::Utils::pstoccs(host);
 	LinphoneTunnelConfig* config = linphone_tunnel_config_new();
 	linphone_tunnel_config_set_host(config, h);

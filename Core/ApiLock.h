@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Utils.h"
+
 namespace Linphone
 {
     namespace Core

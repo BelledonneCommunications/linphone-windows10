@@ -24,7 +24,7 @@ Platform::String^ Linphone::Core::LinphoneChatMessage::GetExternalBodyUrl()
 
 void Linphone::Core::LinphoneChatMessage::SetExternalBodyUrl(Platform::String^ url)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const char* body = Linphone::Core::Utils::pstoccs(url);
 	linphone_chat_message_set_external_body_url(this->message, body);
 	delete(body);

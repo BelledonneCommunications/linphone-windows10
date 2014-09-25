@@ -13,7 +13,7 @@ using namespace Windows::Phone::Networking::Voip;
 
 VoipPhoneCall^ CallController::OnIncomingCallReceived(Linphone::Core::LinphoneCall^ call, Platform::String^ contactName, Platform::String^ contactNumber, IncomingCallViewDismissedCallback^ incomingCallViewDismissedCallback)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 
 	VoipPhoneCall^ incomingCall = nullptr;
 	this->call = call;
@@ -73,7 +73,7 @@ VoipPhoneCall^ CallController::OnIncomingCallReceived(Linphone::Core::LinphoneCa
 
 void CallController::OnAcceptCallRequested(VoipPhoneCall^ incomingCall, CallAnswerEventArgs^ args)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 
 	incomingCall->NotifyCallActive();
 
@@ -101,7 +101,7 @@ void CallController::OnAcceptCallRequested(VoipPhoneCall^ incomingCall, CallAnsw
  
 void CallController::OnRejectCallRequested(VoipPhoneCall^ incomingCall, CallRejectEventArgs^ args)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 
 	if (this->onIncomingCallViewDismissed != nullptr) {
 		this->onIncomingCallViewDismissed();
@@ -117,7 +117,7 @@ void CallController::OnRejectCallRequested(VoipPhoneCall^ incomingCall, CallReje
 
 VoipPhoneCall^ CallController::NewOutgoingCall(Platform::String^ number)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 
 	VoipPhoneCall^ outgoingCall = nullptr;
 	this->call = call;
@@ -160,7 +160,7 @@ VoipPhoneCall^ CallController::NewIncomingCallForCustomIncomingCallView(Platform
 
 IncomingCallViewDismissedCallback^ CallController::IncomingCallViewDismissed::get()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	IncomingCallViewDismissedCallback^ cb = this->onIncomingCallViewDismissed;
 	gApiLock.Unlock();
 	return cb;
@@ -168,14 +168,14 @@ IncomingCallViewDismissedCallback^ CallController::IncomingCallViewDismissed::ge
 
 void CallController::IncomingCallViewDismissed::set(IncomingCallViewDismissedCallback^ cb)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	this->onIncomingCallViewDismissed = cb;
 	gApiLock.Unlock();
 }
 
 Platform::Boolean CallController::CustomIncomingCallView::get()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Platform::Boolean value = this->customIncomingCallView;
 	gApiLock.Unlock();
 	return value;
@@ -183,14 +183,14 @@ Platform::Boolean CallController::CustomIncomingCallView::get()
 
 void CallController::CustomIncomingCallView::set(Platform::Boolean value)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	this->customIncomingCallView = value;
 	gApiLock.Unlock();
 }
 
 DeclineReason CallController::DeclineReason::get()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Linphone::Core::DeclineReason value = this->declineReason;
 	gApiLock.Unlock();
 	return value;
@@ -198,7 +198,7 @@ DeclineReason CallController::DeclineReason::get()
 
 void CallController::DeclineReason::set(Linphone::Core::DeclineReason value)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	this->declineReason = value;
 	gApiLock.Unlock();
 }

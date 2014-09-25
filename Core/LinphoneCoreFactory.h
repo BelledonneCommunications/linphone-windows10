@@ -165,6 +165,11 @@ namespace Linphone
 			/// <param name="logLevel">The log level to use</param>
 			void SetLogLevel(OutputTraceLevel logLevel);
 
+			/// <summary>
+			/// Destroys the LinphoneCore attached to this factory
+			/// </summary>
+			void Destroy();
+
 		private:
 			friend ref class Linphone::Core::Globals;
 

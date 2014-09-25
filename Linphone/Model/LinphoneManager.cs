@@ -239,9 +239,8 @@ namespace Linphone.Model
                 if (LinphoneCore.GetCallsNb() == 0)
                 {
                     LinphoneCore.SetNetworkReachable(false); // To prevent the app from sending an unregister to the server
-                    LinphoneCore.Destroy();
+                    LinphoneCoreFactory.Destroy();
                     Debug.WriteLine("[LinphoneManager] LinphoneCore has been destroyed");
-                    isLinphoneRunning = false;
                 }
             }
             catch (Exception)
@@ -251,6 +250,7 @@ namespace Linphone.Model
                 // deactivation handler...
             }
 
+            isLinphoneRunning = false;
             BackgroundProcessConnected = false;
             Debug.WriteLine("[LinphoneManager] Background process disconnected from interface");
 
@@ -291,6 +291,7 @@ namespace Linphone.Model
                     // It happens server.LinphoneCore is available but the real core behind is broken, we'll catch this here and force recreate a new core
                     Debug.WriteLine("[LinphoneManager] Exception happened while setting the UA, force creation of a new LinphoneCore");
                 }
+                //TODO: Crash not fixed
             }
 
             Debug.WriteLine("[LinphoneManager] Creating LinphoneCore");

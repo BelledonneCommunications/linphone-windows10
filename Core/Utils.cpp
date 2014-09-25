@@ -87,14 +87,14 @@ Platform::String^ Linphone::Core::Utils::cctops(const char* cc)
 
 void Linphone::Core::Utils::LinphoneCoreSetLogHandler(void* logfunc)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	linphone_core_set_log_handler(static_cast<OrtpLogFunc>(logfunc));
 	gApiLock.Unlock();
 }
 
 void Linphone::Core::Utils::LinphoneCoreSetLogLevel(int loglevel)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	linphone_core_set_log_level(static_cast<OrtpLogLevel>(loglevel));
 	gApiLock.Unlock();
 }
@@ -204,7 +204,7 @@ Platform::Object^ Linphone::Core::Utils::CreateVideoSize(int width, int height, 
 
 void Linphone::Core::Utils::EchoCalibrationCallback(void *lc, int status, int delay_ms, void *data)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	EchoCalibrationData *ecData = static_cast<EchoCalibrationData *>(data);
 	if (ecData != nullptr) {
 		delete ecData;

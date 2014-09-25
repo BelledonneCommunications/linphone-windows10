@@ -27,7 +27,7 @@ static void chat_room_callback(::LinphoneChatMessage* msg, ::LinphoneChatMessage
 
 void Linphone::Core::LinphoneChatRoom::SendMessage(Linphone::Core::LinphoneChatMessage^ message, Linphone::Core::LinphoneChatMessageListener^ listener)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	RefToPtrProxy<LinphoneChatMessageListener^> *listenerPtr = new RefToPtrProxy<LinphoneChatMessageListener^>(listener);
 	linphone_chat_room_send_message2(this->room, message->message, chat_room_callback, listenerPtr);
 	gApiLock.Unlock();
@@ -35,7 +35,7 @@ void Linphone::Core::LinphoneChatRoom::SendMessage(Linphone::Core::LinphoneChatM
 
 Linphone::Core::LinphoneChatMessage^ Linphone::Core::LinphoneChatRoom::CreateLinphoneChatMessage(Platform::String^ message)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const char* msg = Linphone::Core::Utils::pstoccs(message);
 	Linphone::Core::LinphoneChatMessage^ chatMessage = (Linphone::Core::LinphoneChatMessage^) Linphone::Core::Utils::CreateLinphoneChatMessage(linphone_chat_room_create_message(this->room, msg));
 	delete(msg);
@@ -45,7 +45,7 @@ Linphone::Core::LinphoneChatMessage^ Linphone::Core::LinphoneChatRoom::CreateLin
 
 Platform::Boolean Linphone::Core::LinphoneChatRoom::IsRemoteComposing()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Platform::Boolean isComposing = (linphone_chat_room_is_remote_composing(this->room) == TRUE);
 	gApiLock.Unlock();
 	return isComposing;
@@ -53,7 +53,7 @@ Platform::Boolean Linphone::Core::LinphoneChatRoom::IsRemoteComposing()
 
 void Linphone::Core::LinphoneChatRoom::Compose()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	linphone_chat_room_compose(this->room);
 	gApiLock.Unlock();
 }

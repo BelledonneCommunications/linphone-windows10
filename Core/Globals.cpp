@@ -25,7 +25,7 @@ Globals^ Globals::singleton = nullptr;
 void Globals::StartServer(const Platform::Array<Platform::String^>^ outOfProcServerClassNames)
 {
     // Make sure only one API call is in progress at a time
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 
     std::unique_ptr<PFNGETACTIVATIONFACTORY[]> activationFactoryCallbacks;
     std::unique_ptr<HSTRING[]> hOutOfProcServerClassNames;
@@ -116,7 +116,7 @@ Globals^ Globals::Instance::get()
     if (Globals::singleton == nullptr)
     {
         // Make sure only one API call is in progress at a time
-		gApiLock.Lock();
+		TRACE; gApiLock.Lock();
 
         if (Globals::singleton == nullptr)
         {
@@ -135,7 +135,7 @@ LinphoneCoreFactory^ Globals::LinphoneCoreFactory::get()
 	if (this->linphoneCoreFactory == nullptr)
     {
         // Make sure only one API call is in progress at a time
-		gApiLock.Lock();
+		TRACE; gApiLock.Lock();
 
         if (this->linphoneCoreFactory == nullptr)
         {
@@ -158,7 +158,7 @@ Linphone::Core::CallController^ Globals::CallController::get()
 	if (this->callController == nullptr) 
     { 
         // Make sure only one API call is in progress at a time
-		gApiLock.Lock();
+		TRACE; gApiLock.Lock();
  
         if (this->callController == nullptr) 
         { 
@@ -177,7 +177,7 @@ Linphone::Core::BackgroundModeLogger^ Globals::BackgroundModeLogger::get()
 	if (this->backgroundModeLogger == nullptr)
 	{
 		// Make sure only one API call is in progress at a time
-		gApiLock.Lock();
+		TRACE; gApiLock.Lock();
 
 		if (this->backgroundModeLogger == nullptr)
 		{
@@ -197,7 +197,7 @@ Mediastreamer2::WP8Video::IVideoRenderer^ Globals::VideoRenderer::get()
 
 void Globals::VideoRenderer::set(Mediastreamer2::WP8Video::IVideoRenderer^ value)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	this->videoRenderer = value;
 	gApiLock.Unlock();
 }

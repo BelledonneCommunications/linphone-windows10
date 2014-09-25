@@ -5,21 +5,21 @@
 
 void Linphone::Core::LinphoneProxyConfig::Edit()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	linphone_proxy_config_edit(this->proxy_config);
 	gApiLock.Unlock();
 }
 
 void Linphone::Core::LinphoneProxyConfig::Done()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	linphone_proxy_config_done(this->proxy_config);
 	gApiLock.Unlock();
 }
 
 void Linphone::Core::LinphoneProxyConfig::SetIdentity(Platform::String^ displayname, Platform::String^ username, Platform::String^ domain)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 
 	const char* cc_username = Utils::pstoccs(username);
 	const char* cc_domain = Utils::pstoccs(domain);
@@ -41,7 +41,7 @@ void Linphone::Core::LinphoneProxyConfig::SetIdentity(Platform::String^ displayn
 
 Platform::String^ Linphone::Core::LinphoneProxyConfig::GetIdentity()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Platform::String^ identity = Utils::cctops(linphone_proxy_config_get_identity(this->proxy_config));
 	gApiLock.Unlock();
 	return identity;
@@ -49,7 +49,7 @@ Platform::String^ Linphone::Core::LinphoneProxyConfig::GetIdentity()
 
 void Linphone::Core::LinphoneProxyConfig::SetProxy(Platform::String^ proxyUri)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const char* cc = Utils::pstoccs(proxyUri);
 	linphone_proxy_config_set_server_addr(this->proxy_config, cc);
 	delete(cc);
@@ -58,14 +58,14 @@ void Linphone::Core::LinphoneProxyConfig::SetProxy(Platform::String^ proxyUri)
 
 void Linphone::Core::LinphoneProxyConfig::EnableRegister(Platform::Boolean enable)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	linphone_proxy_config_enable_register(this->proxy_config, enable);
 	gApiLock.Unlock();
 }
 
 Platform::Boolean Linphone::Core::LinphoneProxyConfig::IsRegisterEnabled()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Platform::Boolean enabled = (linphone_proxy_config_register_enabled(this->proxy_config) == TRUE);
 	gApiLock.Unlock();
 	return enabled;
@@ -73,7 +73,7 @@ Platform::Boolean Linphone::Core::LinphoneProxyConfig::IsRegisterEnabled()
 
 Platform::String^ Linphone::Core::LinphoneProxyConfig::NormalizePhoneNumber(Platform::String^ phoneNumber)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const char* cc = Utils::pstoccs(phoneNumber);
 	char* result = (char*) malloc(phoneNumber->Length());
 	int result_size = 0;
@@ -87,7 +87,7 @@ Platform::String^ Linphone::Core::LinphoneProxyConfig::NormalizePhoneNumber(Plat
 
 void Linphone::Core::LinphoneProxyConfig::SetDialPrefix(Platform::String^ prefix)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const char* cc = Utils::pstoccs(prefix);
 	linphone_proxy_config_set_dial_prefix(this->proxy_config, cc);
 	delete(cc);
@@ -96,14 +96,14 @@ void Linphone::Core::LinphoneProxyConfig::SetDialPrefix(Platform::String^ prefix
 
 void Linphone::Core::LinphoneProxyConfig::SetDialEscapePlus(Platform::Boolean value)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	linphone_proxy_config_set_dial_escape_plus(this->proxy_config, value);
 	gApiLock.Unlock();
 }
 
 Platform::String^ Linphone::Core::LinphoneProxyConfig::GetAddr()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Platform::String^ addr = Utils::cctops(linphone_proxy_config_get_addr(this->proxy_config));
 	gApiLock.Unlock();
 	return addr;
@@ -111,7 +111,7 @@ Platform::String^ Linphone::Core::LinphoneProxyConfig::GetAddr()
 
 Platform::String^ Linphone::Core::LinphoneProxyConfig::GetDomain()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Platform::String^ domain = Utils::cctops(linphone_proxy_config_get_domain(this->proxy_config));
 	gApiLock.Unlock();
 	return domain;
@@ -119,7 +119,7 @@ Platform::String^ Linphone::Core::LinphoneProxyConfig::GetDomain()
 
 Platform::Boolean Linphone::Core::LinphoneProxyConfig::IsRegistered()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Platform::Boolean registered = (linphone_proxy_config_is_registered(this->proxy_config) == TRUE);
 	gApiLock.Unlock();
 	return registered;
@@ -127,7 +127,7 @@ Platform::Boolean Linphone::Core::LinphoneProxyConfig::IsRegistered()
 
 void Linphone::Core::LinphoneProxyConfig::SetRoute(Platform::String^ routeUri)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const char* cc = Utils::pstoccs(routeUri);
 	linphone_proxy_config_set_route(this->proxy_config, cc);
 	delete(cc);
@@ -136,7 +136,7 @@ void Linphone::Core::LinphoneProxyConfig::SetRoute(Platform::String^ routeUri)
 
 Platform::String^ Linphone::Core::LinphoneProxyConfig::GetRoute()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Platform::String^ route = Utils::cctops(linphone_proxy_config_get_route(this->proxy_config));
 	gApiLock.Unlock();
 	return route;
@@ -144,14 +144,14 @@ Platform::String^ Linphone::Core::LinphoneProxyConfig::GetRoute()
 
 void Linphone::Core::LinphoneProxyConfig::EnablePublish(Platform::Boolean enable)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	linphone_proxy_config_enable_publish(this->proxy_config, enable);
 	gApiLock.Unlock();
 }
 
 Platform::Boolean Linphone::Core::LinphoneProxyConfig::IsPublishEnabled()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Platform::Boolean enabled = (linphone_proxy_config_publish_enabled(this->proxy_config) == TRUE);
 	gApiLock.Unlock();
 	return enabled;
@@ -159,7 +159,7 @@ Platform::Boolean Linphone::Core::LinphoneProxyConfig::IsPublishEnabled()
 
 Linphone::Core::RegistrationState Linphone::Core::LinphoneProxyConfig::GetState()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	Linphone::Core::RegistrationState state = (Linphone::Core::RegistrationState)linphone_proxy_config_get_state(this->proxy_config);
 	gApiLock.Unlock();
 	return state;
@@ -167,14 +167,14 @@ Linphone::Core::RegistrationState Linphone::Core::LinphoneProxyConfig::GetState(
 
 void Linphone::Core::LinphoneProxyConfig::SetExpires(int delay)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	linphone_proxy_config_expires(this->proxy_config, delay);
 	gApiLock.Unlock();
 }
 
 void Linphone::Core::LinphoneProxyConfig::SetContactParameters(Platform::String^ params)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const char* cc = Utils::pstoccs(params);
 	linphone_proxy_config_set_contact_parameters(this->proxy_config, cc);
 	delete(cc);
@@ -183,7 +183,7 @@ void Linphone::Core::LinphoneProxyConfig::SetContactParameters(Platform::String^
 
 int Linphone::Core::LinphoneProxyConfig::LookupCCCFromIso(Platform::String^ iso)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const char* isochar = Linphone::Core::Utils::pstoccs(iso);
 	int ccc = linphone_dial_plan_lookup_ccc_from_iso(isochar);
 	delete(isochar);
@@ -193,7 +193,7 @@ int Linphone::Core::LinphoneProxyConfig::LookupCCCFromIso(Platform::String^ iso)
 
 int Linphone::Core::LinphoneProxyConfig::LookupCCCFromE164(Platform::String^ e164)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const char* e164char = Linphone::Core::Utils::pstoccs(e164);
 	int ccc = linphone_dial_plan_lookup_ccc_from_e164(e164char);
 	delete(e164char);
@@ -203,7 +203,7 @@ int Linphone::Core::LinphoneProxyConfig::LookupCCCFromE164(Platform::String^ e16
 
 void Linphone::Core::LinphoneProxyConfig::SetContactUriParameters(Platform::String^ params)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	const char* cc = Utils::pstoccs(params);
 	linphone_proxy_config_set_contact_uri_parameters(this->proxy_config, cc);
 	delete(cc);
@@ -212,7 +212,7 @@ void Linphone::Core::LinphoneProxyConfig::SetContactUriParameters(Platform::Stri
 
 Linphone::Core::LinphoneProxyConfig::LinphoneProxyConfig()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	this->proxy_config = linphone_proxy_config_new();
 	RefToPtrProxy<LinphoneProxyConfig^> *proxy = new RefToPtrProxy<LinphoneProxyConfig^>(this);
 	linphone_proxy_config_set_user_data(this->proxy_config, proxy);
@@ -221,7 +221,7 @@ Linphone::Core::LinphoneProxyConfig::LinphoneProxyConfig()
 
 Linphone::Core::LinphoneProxyConfig::LinphoneProxyConfig(::LinphoneProxyConfig* proxy_config)
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	this->proxy_config = proxy_config;
 	RefToPtrProxy<LinphoneProxyConfig^> *proxy = new RefToPtrProxy<LinphoneProxyConfig^>(this);
 	linphone_proxy_config_set_user_data(this->proxy_config, proxy);
@@ -230,7 +230,7 @@ Linphone::Core::LinphoneProxyConfig::LinphoneProxyConfig(::LinphoneProxyConfig* 
 
 Linphone::Core::LinphoneProxyConfig::~LinphoneProxyConfig()
 {
-	gApiLock.Lock();
+	TRACE; gApiLock.Lock();
 	RefToPtrProxy<LinphoneProxyConfig^> *proxy = reinterpret_cast< RefToPtrProxy<LinphoneProxyConfig^> *>(linphone_proxy_config_get_user_data(this->proxy_config));
 	delete proxy;
 	gApiLock.Unlock();
