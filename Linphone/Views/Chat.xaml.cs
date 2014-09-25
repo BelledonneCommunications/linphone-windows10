@@ -112,9 +112,16 @@ namespace Linphone.Views
                 {
                     sipAddress = sipAddress.Replace("sip:", "");
                 }
+
+                string displayedSipAddress = sipAddress;
+                if (displayedSipAddress.Contains("@"))
+                {
+                    displayedSipAddress = displayedSipAddress.Split( new string[] { "@" }, StringSplitOptions.RemoveEmptyEntries)[0];
+                }
+
                 EnableAppBarSendMessageButton(false);
 
-                ContactName.Text = sipAddress;
+                ContactName.Text = displayedSipAddress;
                 cm.FindContact(sipAddress);
 
                 chatRoom = LinphoneManager.Instance.LinphoneCore.CreateChatRoom(sipAddress);
