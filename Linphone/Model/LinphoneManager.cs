@@ -925,25 +925,26 @@ namespace Linphone.Model
         /// </summary>
         public void MessageReceived(LinphoneChatMessage message)
         {
-            string sipAddress = message.GetFrom().AsStringUriOnly().Replace("sip:", "");
-            Logger.Msg("[LinphoneManager] Message received from " + sipAddress + ": " + message.GetText());
+            
+            BaseModel.UIDispatcher.BeginInvoke(() =>
+            {
+                string sipAddress = message.GetFrom().AsStringUriOnly().Replace("sip:", "");
+                Logger.Msg("[LinphoneManager] Message received from " + sipAddress + ": " + message.GetText());
 
-            //Vibrate
-            ChatSettingsManager settings = new ChatSettingsManager();
-            settings.Load();
-            if ((bool)settings.VibrateOnIncomingMessage)
-            {
-                VibrationDevice vibrator = VibrationDevice.GetDefault();
-                vibrator.Vibrate(TimeSpan.FromSeconds(1));
-            }
+                //Vibrate
+                ChatSettingsManager settings = new ChatSettingsManager();
+                settings.Load();
+                if ((bool)settings.VibrateOnIncomingMessage)
+                {
+                    VibrationDevice vibrator = VibrationDevice.GetDefault();
+                    vibrator.Vibrate(TimeSpan.FromSeconds(1));
+                }
 
-            if (MessageListener != null && MessageListener.GetSipAddressAssociatedWithDisplayConversation() != null && MessageListener.GetSipAddressAssociatedWithDisplayConversation().Equals(sipAddress))
-            {
-                MessageListener.MessageReceived(message);
-            }
-            else
-            {
-                BaseModel.UIDispatcher.BeginInvoke(() =>
+                if (MessageListener != null && MessageListener.GetSipAddressAssociatedWithDisplayConversation() != null && MessageListener.GetSipAddressAssociatedWithDisplayConversation().Equals(sipAddress))
+                {
+                    MessageListener.MessageReceived(message);
+                }
+                else
                 {
                     DateTime date = new DateTime();
                     date = date.AddYears(1969); //Timestamp is calculated from 01/01/1970, and DateTime is initialized to 01/01/0001.
@@ -987,8 +988,8 @@ namespace Linphone.Model
 
                     //Update tile
                     UpdateLiveTile();
-                });
-            }
+                }
+            });
         }
 
         /// <summary>
@@ -1001,14 +1002,17 @@ namespace Linphone.Model
         /// </summary>
         public void ComposingReceived(LinphoneChatRoom room)
         {
-            if (ComposingListener != null && room != null)
+            BaseModel.UIDispatcher.BeginInvoke(() =>
             {
-                string currentListenerSipAddress = ComposingListener.GetSipAddressAssociatedWithDisplayConversation();
-                string roomComposingSipAddress =  room.GetPeerAddress().AsStringUriOnly().Replace("sip:", "");
+                if (ComposingListener != null && room != null)
+                {
+                    string currentListenerSipAddress = ComposingListener.GetSipAddressAssociatedWithDisplayConversation();
+                    string roomComposingSipAddress = room.GetPeerAddress().AsStringUriOnly().Replace("sip:", "");
 
-                if (currentListenerSipAddress != null && roomComposingSipAddress.Equals(currentListenerSipAddress))
-                    ComposingListener.ComposeReceived();
-            }
+                    if (currentListenerSipAddress != null && roomComposingSipAddress.Equals(currentListenerSipAddress))
+                        ComposingListener.ComposeReceived();
+                }
+            });
         }
         #endregion
 
