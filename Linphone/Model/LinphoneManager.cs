@@ -340,7 +340,7 @@ namespace Linphone.Model
 
                 if (host == null || token == null)
                 {
-                    Logger.Warn("Can't set the PN params: {0} {1}", host, token);
+                    Logger.Warn("Can't set the PN params: {0} {1}\r\n", host, token);
                     return;
                 }
 
@@ -562,13 +562,13 @@ namespace Linphone.Model
 
         private void UnmuteRequested(VoipCallCoordinator sender, MuteChangeEventArgs args)
         {
-            Logger.Msg("[LinphoneManager] Unmute requested");
+            Logger.Msg("[LinphoneManager] Unmute requested\r\n");
             MuteMic(true);
         }
 
         private void MuteRequested(VoipCallCoordinator sender, MuteChangeEventArgs args)
         {
-            Logger.Msg("[LinphoneManager] Mute requested");
+            Logger.Msg("[LinphoneManager] Mute requested\r\n");
             MuteMic(false);
         }
 
@@ -599,13 +599,13 @@ namespace Linphone.Model
 
         private void CallResumeRequested(VoipPhoneCall sender, CallStateChangeEventArgs args)
         {
-            Logger.Msg("[LinphoneManager] Resume requested");
+            Logger.Msg("[LinphoneManager] Resume requested\r\n");
             ResumeCurrentCall();
         }
 
         private void CallHoldRequested(VoipPhoneCall sender, CallStateChangeEventArgs args)
         {
-            Logger.Msg("[LinphoneManager] Pause requested");
+            Logger.Msg("[LinphoneManager] Pause requested\r\n");
             PauseCurrentCall();
         }
         #endregion
@@ -613,7 +613,7 @@ namespace Linphone.Model
         #region Audio route handling
         private void AudioEndpointChanged(AudioRoutingManager sender, object args)
         {
-            Logger.Msg("[LinphoneManager] AudioEndpointChanged:" + sender.GetAudioEndpoint().ToString());
+            Logger.Msg("[LinphoneManager] AudioEndpointChanged:" + sender.GetAudioEndpoint().ToString() + "\r\n");
         }
 
         /// <summary>
@@ -737,7 +737,7 @@ namespace Linphone.Model
         /// </summary>
         public void AuthInfoRequested(string realm, string username, string domain)
         {
-            Logger.Msg("[LinphoneManager] Auth info requested: realm=" + realm + ", username=" + username + ", domain=" + domain);
+            Logger.Msg("[LinphoneManager] Auth info requested: realm=" + realm + ", username=" + username + ", domain=" + domain + "\r\n");
         }
 
         /// <summary>
@@ -745,7 +745,7 @@ namespace Linphone.Model
         /// </summary>
         public void GlobalState(GlobalState state, string message)
         {
-            Logger.Msg("[LinphoneManager] Global state changed: " + state.ToString() + ", message=" + message);
+            Logger.Msg("[LinphoneManager] Global state changed: " + state.ToString() + ", message=" + message + "\r\n");
         }
 
         /// <summary>
@@ -757,7 +757,7 @@ namespace Linphone.Model
             {
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    Logger.Msg("[LinphoneManager] Outgoing progress");
+                    Logger.Msg("[LinphoneManager] Outgoing progress\r\n");
                     LookupForContact(call);
 
                     if (CallListener != null)
@@ -772,7 +772,7 @@ namespace Linphone.Model
             {
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    Logger.Msg("[LinphoneManager] Incoming received"); 
+                    Logger.Msg("[LinphoneManager] Incoming received\r\n"); 
                     if (false) //TODO: Find a proper way to let the user choose between the two.
                     {
                         BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/IncomingCall.xaml?sip=" + call.GetRemoteAddress().AsStringUriOnly(), UriKind.RelativeOrAbsolute));
@@ -787,7 +787,7 @@ namespace Linphone.Model
             {
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    Logger.Msg("[LinphoneManager] Connected");
+                    Logger.Msg("[LinphoneManager] Connected\r\n");
                     if (CallListener != null)
                     {
                         string sipAddress = call.GetRemoteAddress().AsStringUriOnly();
@@ -799,7 +799,7 @@ namespace Linphone.Model
             {
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    Logger.Msg("[LinphoneManager] Call ended");
+                    Logger.Msg("[LinphoneManager] Call ended\r\n");
                     if (CallListener != null)
                         CallListener.CallEnded(call);
                 });
@@ -808,7 +808,7 @@ namespace Linphone.Model
             {
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    Logger.Msg("[LinphoneManager] Call paused");
+                    Logger.Msg("[LinphoneManager] Call paused\r\n");
                     bool pausedByRemote = state == LinphoneCallState.PausedByRemote;
                     if (CallListener != null)
                         CallListener.PauseStateChanged(call, !pausedByRemote, pausedByRemote);
@@ -818,7 +818,7 @@ namespace Linphone.Model
             {
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    Logger.Msg("[LinphoneManager] Call running");
+                    Logger.Msg("[LinphoneManager] Call running\r\n");
                     if (CallListener != null)
                         CallListener.PauseStateChanged(call, false, false);
                 });
@@ -827,7 +827,7 @@ namespace Linphone.Model
             {
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    Logger.Msg("[LinphoneManager] Call released");
+                    Logger.Msg("[LinphoneManager] Call released\r\n");
                     //Update tile
                     UpdateLiveTile();
                 });
@@ -864,7 +864,7 @@ namespace Linphone.Model
             {
                 try
                 {
-                    Logger.Msg("[LinphoneManager] Registration state changed: " + state.ToString() + ", message=" + message + " for identity " + config.GetIdentity());
+                    Logger.Msg("[LinphoneManager] Registration state changed: " + state.ToString() + ", message=" + message + " for identity " + config.GetIdentity() + "\r\n");
                     LastKnownState = state;
                     if (BasePage.StatusBar != null)
                         BasePage.StatusBar.RefreshStatus(state);
@@ -886,10 +886,10 @@ namespace Linphone.Model
         /// </summary>
         public void EcCalibrationStatus(EcCalibratorStatus status, int delayMs)
         {
-            Logger.Msg("[LinphoneManager] Echo canceller calibration status: " + status.ToString());
+            Logger.Msg("[LinphoneManager] Echo canceller calibration status: " + status.ToString() + "\r\n");
             if (status == EcCalibratorStatus.Done)
             {
-                Logger.Msg("[LinphoneManager] Echo canceller delay: {0} ms", delayMs);
+                Logger.Msg("[LinphoneManager] Echo canceller delay: {0} ms\r\n", delayMs);
             }
             if (ECListener != null)
             {
@@ -932,7 +932,7 @@ namespace Linphone.Model
             BaseModel.UIDispatcher.BeginInvoke(() =>
             {
                 string sipAddress = message.GetFrom().AsStringUriOnly().Replace("sip:", "");
-                Logger.Msg("[LinphoneManager] Message received from " + sipAddress + ": " + message.GetText());
+                Logger.Msg("[LinphoneManager] Message received from " + sipAddress + ": " + message.GetText() + "\r\n");
 
                 //Vibrate
                 ChatSettingsManager settings = new ChatSettingsManager();
@@ -1049,19 +1049,19 @@ namespace Linphone.Model
                     {
                         sipAddress = sipAddress.Substring(4);
                     }
-                    Logger.Msg("[LinphoneManager] Display name null, looking for remote address in contact: " + sipAddress);
+                    Logger.Msg("[LinphoneManager] Display name null, looking for remote address in contact: " + sipAddress + "\r\n");
 
                     ContactManager.ContactFound += OnContactFound;
                     ContactManager.FindContact(sipAddress);
                 }
                 else
                 {
-                    Logger.Msg("[LinphoneManager] Display name found: " + call.GetRemoteAddress().GetDisplayName());
+                    Logger.Msg("[LinphoneManager] Display name found: " + call.GetRemoteAddress().GetDisplayName() + "\r\n");
                 }
             }
             catch 
             {
-                Logger.Warn("[LinphoneManager] Execption occured while looking for contact...");
+                Logger.Warn("[LinphoneManager] Execption occured while looking for contact...\r\n");
             }
         }
 
@@ -1072,7 +1072,7 @@ namespace Linphone.Model
         {
             if (e.ContactFound != null)
             {
-                Logger.Msg("[LinphoneManager] Contact found: " + e.ContactFound.DisplayName);
+                Logger.Msg("[LinphoneManager] Contact found: " + e.ContactFound.DisplayName + "\r\n");
                 ContactManager.ContactFound -= OnContactFound;
 
                 // Store the contact name as display name for call logs
