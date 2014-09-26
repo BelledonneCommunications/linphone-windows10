@@ -11,6 +11,38 @@
 #include "LpConfig.h"
 #include "PayloadType.h"
 #include <Stringapiset.h>
+#include <time.h>
+
+Platform::String^ Linphone::Core::Utils::formatLogMessage(OutputTraceLevel level, Platform::String^ msg) {
+	const char * cmsg = pstoccs(msg);
+	char * clevel;
+	char * cmsg_with_level;
+	struct timeval tp;
+	struct tm *lt;
+	time_t tt;
+	ortp_gettimeofday(&tp, NULL);
+	tt = tp.tv_sec;
+	lt = localtime(&tt);
+
+	switch (level) {
+	case OutputTraceLevel::Error:
+		clevel = "error";
+		break;
+	case OutputTraceLevel::Warning:
+		clevel = "warn";
+		break;
+	case OutputTraceLevel::Message:
+		clevel = "message";
+		break;
+	case OutputTraceLevel::Debug:
+	case OutputTraceLevel::None:
+	default:
+		clevel = "debug";
+		break;
+	}
+	cmsg_with_level = ms_strdup_printf("[%s] [%.2i:%.2i:%.2i] %s", clevel, lt->tm_hour, lt->tm_min, lt->tm_sec, cmsg);
+	return cctops(cmsg_with_level);
+}
 
 std::wstring Linphone::Core::Utils::UTF8ToUTF16(const char *utf8)
 {

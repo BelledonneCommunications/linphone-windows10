@@ -82,9 +82,10 @@ void Linphone::Core::BackgroundModeLogger::Configure(bool enable, OutputTraceDes
 void Linphone::Core::BackgroundModeLogger::OutputTrace(OutputTraceLevel level, Platform::String^ msg)
 {
 	if (this->enabled) {
+		Platform::String^ message = Linphone::Core::Utils::formatLogMessage(level, msg);
 		std::lock_guard<std::recursive_mutex> lock(this->lock);
 		if (this->dest == OutputTraceDest::Debugger) {
-			OutputDebugString(msg->Data());
+			OutputDebugString(message->Data());
 		}
 		else if (this->dest == OutputTraceDest::File) {
 			if (this->d->stream == nullptr) {
@@ -94,7 +95,7 @@ void Linphone::Core::BackgroundModeLogger::OutputTrace(OutputTraceLevel level, P
 				}).wait();
 			}
 			if (this->d->stream != nullptr) {
-				const char *cMsg = Utils::pstoccs(msg);
+				const char *cMsg = Utils::pstoccs(message);
 				*(this->d->stream) << cMsg;
 				this->d->stream->flush();
 				delete cMsg;
@@ -114,8 +115,8 @@ void Linphone::Core::BackgroundModeLogger::OutputTrace(OutputTraceLevel level, P
 			if (this->d->dataWriter != nullptr) {
 				this->d->dataWriter->WriteUInt64(GetTickCount64());
 				this->d->dataWriter->WriteByte(static_cast<unsigned char>(level));
-				this->d->dataWriter->WriteUInt16(msg->Length());
-				this->d->dataWriter->WriteString(msg);
+				this->d->dataWriter->WriteUInt16(message->Length());
+				this->d->dataWriter->WriteString(message);
 				DataWriterStoreOperation^ op = this->d->dataWriter->StoreAsync();
 				create_task(op).then([this](task<unsigned int> written) {
 					return this->d->dataWriter->FlushAsync();

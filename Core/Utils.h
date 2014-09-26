@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "Enums.h"
 #include <inspectable.h>
 
 namespace Linphone
@@ -18,6 +19,11 @@ namespace Linphone
 		class Utils
 		{
 		public:
+			/// <summary>
+			/// Formats a message with log level and time
+			/// </summary>
+			static Platform::String^ Linphone::Core::Utils::formatLogMessage(OutputTraceLevel level, Platform::String^ msg);
+
 			/// <summary>
 			/// Converts a Platform::String into a C char*.
 			/// Required to send strings from C# to C.
