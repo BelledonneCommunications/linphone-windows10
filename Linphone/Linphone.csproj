@@ -109,6 +109,7 @@
     <Compile Include="Model\HubTileConverterFix.cs" />
     <Compile Include="Model\LinphoneManager.cs" />
     <Compile Include="Model\Logger.cs" />
+    <Compile Include="Model\SipUriToUsernameConverter.cs" />
     <Compile Include="Model\MissedToBrushConverter.cs" />
     <Compile Include="Model\SettingsManager.cs" />
     <Compile Include="Model\InCallModel.cs" />

@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:linphone="clr-namespace:Linphone"
+    xmlns:model="clr-namespace:Linphone.Model"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -15,6 +16,10 @@
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
 
+    <linphone:BasePage.Resources>
+        <model:SipUriToUsernameConverter x:Key="SipUriToUsernameConverter"/>
+    </linphone:BasePage.Resources>
+    
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
@@ -36,7 +41,7 @@
                         <StackPanel Margin="0,-16,0,40" 
                             Tag="{Binding BindsDirectlyToSource=True}" 
                             Tap="conversation_Click_1">
-                            <TextBlock Text="{Binding DisplayedName}"
+                            <TextBlock Text="{Binding DisplayedName, Converter={StaticResource SipUriToUsernameConverter}}"
                                 Margin="0,0,0,-4"
                                 HorizontalAlignment="Left" 
                                 FontSize="{StaticResource PhoneFontSizeExtraLarge}" 
