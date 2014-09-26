@@ -750,25 +750,26 @@ namespace Linphone.Model
         /// </summary>
         public void CallState(LinphoneCall call, LinphoneCallState state)
         {
-            string sipAddress = call.GetRemoteAddress().AsStringUriOnly();
-
-            Logger.Msg("[LinphoneManager] Call state changed: " + sipAddress + " => " + state.ToString());
             if (state == LinphoneCallState.OutgoingProgress)
             {
-                Logger.Msg("[LinphoneManager] Outgoing progress");
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
+                    Logger.Msg("[LinphoneManager] Outgoing progress");
                     LookupForContact(call);
 
                     if (CallListener != null)
+                    {
+                        string sipAddress = call.GetRemoteAddress().AsStringUriOnly();
                         CallListener.NewCallStarted(sipAddress);
+
+                    }
                 });
             }
             else if (state == LinphoneCallState.IncomingReceived)
             {
-                Logger.Msg("[LinphoneManager] Incoming received"); 
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
+                    Logger.Msg("[LinphoneManager] Incoming received"); 
                     if (false) //TODO: Find a proper way to let the user choose between the two.
                     {
                         BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/IncomingCall.xaml?sip=" + call.GetRemoteAddress().AsStringUriOnly(), UriKind.RelativeOrAbsolute));
@@ -781,27 +782,30 @@ namespace Linphone.Model
             }
             else if (state == LinphoneCallState.Connected)
             {
-                Logger.Msg("[LinphoneManager] Connected");
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
+                    Logger.Msg("[LinphoneManager] Connected");
                     if (CallListener != null)
+                    {
+                        string sipAddress = call.GetRemoteAddress().AsStringUriOnly();
                         CallListener.NewCallStarted(sipAddress);
+                    }
                 });
             }
             else if (state == LinphoneCallState.CallEnd || state == LinphoneCallState.Error)
             {
-                Logger.Msg("[LinphoneManager] Call ended");
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
+                    Logger.Msg("[LinphoneManager] Call ended");
                     if (CallListener != null)
                         CallListener.CallEnded(call);
                 });
             }
             else if (state == LinphoneCallState.Paused || state == LinphoneCallState.PausedByRemote)
             {
-                Logger.Msg("[LinphoneManager] Call paused");
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
+                    Logger.Msg("[LinphoneManager] Call paused");
                     bool pausedByRemote = state == LinphoneCallState.PausedByRemote;
                     if (CallListener != null)
                         CallListener.PauseStateChanged(call, !pausedByRemote, pausedByRemote);
@@ -809,35 +813,36 @@ namespace Linphone.Model
             }
             else if (state == LinphoneCallState.StreamsRunning)
             {
-                Logger.Msg("[LinphoneManager] Call running");
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
+                    Logger.Msg("[LinphoneManager] Call running");
                     if (CallListener != null)
                         CallListener.PauseStateChanged(call, false, false);
                 });
             }
             else if (state == LinphoneCallState.Released)
             {
-                Logger.Msg("[LinphoneManager] Call released");
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
+                    Logger.Msg("[LinphoneManager] Call released");
                     //Update tile
                     UpdateLiveTile();
                 });
             }
             else if (state == LinphoneCallState.UpdatedByRemote)
             {
-                Boolean videoAdded = false;
-                VideoPolicy policy = LinphoneManager.Instance.LinphoneCore.GetVideoPolicy();
-                LinphoneCallParams remoteParams = call.GetRemoteParams();
-                LinphoneCallParams localParams = call.GetCurrentParamsCopy();
-                if (!policy.AutomaticallyAccept && remoteParams.IsVideoEnabled() && !localParams.IsVideoEnabled() && !LinphoneManager.Instance.LinphoneCore.IsInConference())
-                {
-                    LinphoneManager.Instance.LinphoneCore.DeferCallUpdate(call);
-                    videoAdded = true;
-                }
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
+                    Boolean videoAdded = false;
+                    VideoPolicy policy = LinphoneManager.Instance.LinphoneCore.GetVideoPolicy();
+                    LinphoneCallParams remoteParams = call.GetRemoteParams();
+                    LinphoneCallParams localParams = call.GetCurrentParamsCopy();
+                    if (!policy.AutomaticallyAccept && remoteParams.IsVideoEnabled() && !localParams.IsVideoEnabled() && !LinphoneManager.Instance.LinphoneCore.IsInConference())
+                    {
+                        LinphoneManager.Instance.LinphoneCore.DeferCallUpdate(call);
+                        videoAdded = true;
+                    }
+
                     if (CallListener != null)
                         CallListener.CallUpdatedByRemote(call, videoAdded);
                 });

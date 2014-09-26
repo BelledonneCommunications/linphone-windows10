@@ -239,14 +239,12 @@ Linphone::Core::LinphoneCall::LinphoneCall(::LinphoneCall *call) :
 	TRACE; gApiLock.Lock();
 	RefToPtrProxy<LinphoneCall^> *proxy = new RefToPtrProxy<LinphoneCall^>(this);
 	linphone_call_set_user_data(this->call, proxy);
-	this->callContext = nullptr;
 	gApiLock.Unlock();
 }
 
 Linphone::Core::LinphoneCall::~LinphoneCall()
 {
 	TRACE; gApiLock.Lock();
-	this->callContext = nullptr;
 	linphone_call_unref(call);
 	RefToPtrProxy<LinphoneCall^> *proxy = reinterpret_cast< RefToPtrProxy<LinphoneCall^> *>(linphone_call_get_user_data(this->call));
 	delete proxy;

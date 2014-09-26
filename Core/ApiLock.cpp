@@ -77,12 +77,12 @@ namespace Linphone
 
 		void ApiLock::EnterListener()
 		{
-			d->inListener = true;
+			//d->inListener = true;
 		}
 
 		void ApiLock::LeaveListener()
 		{
-			d->inListener = false;
+			//d->inListener = false;
 		}
     }
 }

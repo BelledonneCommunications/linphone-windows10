@@ -313,7 +313,7 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::Invite(Platform::Str
 	call = linphone_call_ref(call);
 	delete(cc);
 	if (call != NULL) {
-		Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
+		Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_data(call));
 		lCall = (proxy) ? proxy->Ref() : nullptr;
 		if (lCall == nullptr)
 			lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
@@ -329,7 +329,7 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddress(Linpho
 	::LinphoneCall *call = linphone_core_invite_address(this->lc, destination->address);
 	call = linphone_call_ref(call);
 	if (call != NULL) {
-		Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
+		Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_data(call));
 		lCall = (proxy) ? proxy->Ref() : nullptr;
 		if (lCall == nullptr)
 			lCall = (Linphone::Core::LinphoneCall^) Linphone::Core::Utils::CreateLinphoneCall(call);
