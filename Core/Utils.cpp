@@ -40,7 +40,7 @@ Platform::String^ Linphone::Core::Utils::formatLogMessage(OutputTraceLevel level
 		clevel = "debug";
 		break;
 	}
-	cmsg_with_level = ms_strdup_printf("[%s] [%.2i:%.2i:%.2i] %s", clevel, lt->tm_hour, lt->tm_min, lt->tm_sec, cmsg);
+	cmsg_with_level = ms_strdup_printf("[%i-%.2i-%.2i %.2i:%.2i:%.2i:%.3i] [%s] %s", 1900 + lt->tm_year, lt->tm_mon, lt->tm_mday, lt->tm_hour, lt->tm_min, lt->tm_sec, (int)(tp.tv_usec / 1000), clevel, cmsg);
 	return cctops(cmsg_with_level);
 }
 
