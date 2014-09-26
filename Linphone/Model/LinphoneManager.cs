@@ -541,20 +541,23 @@ namespace Linphone.Model
         {
             BaseModel.UIDispatcher.BeginInvoke(() =>
             {
-                try
+                if (LinphoneCore.GetCallsNb() > 0)
                 {
-                    if (isMicMuted)
-                        CallController.NotifyMuted();
-                    else
-                        CallController.NotifyUnmuted();
+                    try
+                    {
+                        if (isMicMuted)
+                            CallController.NotifyMuted();
+                        else
+                            CallController.NotifyUnmuted();
+                    }
+                    catch (Exception) { }
+
+                    if (CallListener != null)
+                        CallListener.MuteStateChanged(isMicMuted);
+
+                    LinphoneCore.MuteMic(isMicMuted);
                 }
-                catch (Exception) { }
-
-                if (CallListener != null)
-                    CallListener.MuteStateChanged(isMicMuted);
             });
-
-            LinphoneCore.MuteMic(isMicMuted);
         }
 
         private void UnmuteRequested(VoipCallCoordinator sender, MuteChangeEventArgs args)
