@@ -205,7 +205,6 @@ namespace Linphone.Views
             scrollToBottom();
 
             DatabaseManager.Instance.SubmitChanges();
-            LinphoneManager.Instance.UpdateLiveTile();
         }
 
         /// <summary>

@@ -1,9 +1,11 @@
 ﻿using Microsoft.Phone.Shell;
 using System;
 using System.Collections.Generic;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace Linphone.Agents
 {
@@ -12,6 +14,9 @@ namespace Linphone.Agents
     /// </summary>
     public class TileManager
     {
+        private string TileCountKey = "TileCount";
+        private IsolatedStorageSettings settings;
+
         private static TileManager singleton;
         /// <summary>
         /// Static instance to access the class.
@@ -32,14 +37,32 @@ namespace Linphone.Agents
         /// </summary>
         public TileManager()
         {
-
+            settings = IsolatedStorageSettings.ApplicationSettings;
         }
 
         /// <summary>
-        /// Displays the number of missed call and unread messages on the live tile and on the lock screen
+        /// Update the count to display on the Tile, and update the Tile with the new count
         /// </summary>
-        /// <param name="missedCalls">Number of missed calls + number of unread messages</param>
-        public void UpdateTileWithMissedCallsAndUnreadMessages(int count)
+        /// <param name="toAdd"></param>
+        public void UpdateCount(int toAdd)
+        {
+            int count = 0;
+            try
+            {
+                count = (int)settings[TileCountKey];
+                count += toAdd;
+                settings[TileCountKey] = count;
+            }
+            catch (KeyNotFoundException)
+            {
+                settings.Add(TileCountKey, toAdd);
+                count = toAdd;
+            }
+            settings.Save();
+            UpdateTile(count);
+        }
+
+        private void UpdateTile(int count)
         {
             ShellTile tile = ShellTile.ActiveTiles.FirstOrDefault();
             if (tile != null)
@@ -55,7 +78,16 @@ namespace Linphone.Agents
         /// </summary>
         public void RemoveCountOnTile()
         {
-            UpdateTileWithMissedCallsAndUnreadMessages(0);
+            try
+            {
+                settings[TileCountKey] = 0;
+            }
+            catch (KeyNotFoundException)
+            {
+                settings.Add(TileCountKey, 0);
+            }
+            settings.Save();
+            UpdateTile(0);
         }
     }
 }

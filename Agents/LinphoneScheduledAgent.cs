@@ -69,6 +69,11 @@ namespace Linphone.Agents
         {
             Debug.WriteLine("[IncomingCallAgent] Incoming call processing is now complete.");
             BackgroundManager.Instance.OopServer.CallController.IncomingCallViewDismissed = null;
+
+            TileManager.Instance.UpdateCount(BackgroundManager.Instance.OopServer.LinphoneCore.GetMissedCallsCount());
+
+            BackgroundManager.Instance.OopServer.LinphoneCore.SetNetworkReachable(false); // To prevent the core from unregister
+            BackgroundManager.Instance.OopServer.LinphoneCoreFactory.Destroy();
             base.NotifyComplete();
         } 
 

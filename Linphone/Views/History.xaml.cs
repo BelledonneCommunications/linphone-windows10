@@ -43,7 +43,6 @@ namespace Linphone.Views
             await LinphoneManager.Instance.InitLinphoneCore();
 
             LinphoneManager.Instance.LinphoneCore.ResetMissedCallsCount();
-            LinphoneManager.Instance.UpdateLiveTile();
 
             List<CallLog> callsHistory = LinphoneManager.Instance.GetCallsHistory();
             Calls.ItemsSource = callsHistory;
