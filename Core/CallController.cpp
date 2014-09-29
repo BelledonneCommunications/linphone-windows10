@@ -217,7 +217,7 @@ CallController::CallController() :
     this->defaultContactImageUri = ref new Uri(installFolder, "Assets\\unknown.png");
     this->voipServiceName = ref new String(L"Linphone");
 	this->linphoneImageUri = ref new Uri(installFolder, "Assets\\pnicon.png");
-	this->ringtoneUri = ref new Uri(installFolder, "Assets\\Sounds\\Ringtone.wma");
+	this->ringtoneUri = ref new Uri(installFolder, "Assets\\Sounds\\oldphone.wma");
 
 	this->acceptCallRequestedHandler = ref new TypedEventHandler<VoipPhoneCall^, CallAnswerEventArgs^>(this, &CallController::OnAcceptCallRequested);
     this->rejectCallRequestedHandler = ref new TypedEventHandler<VoipPhoneCall^, CallRejectEventArgs^>(this, &CallController::OnRejectCallRequested);
