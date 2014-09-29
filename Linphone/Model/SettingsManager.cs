@@ -54,7 +54,7 @@ namespace Linphone.Model
             StorageFile destFile = null;
             try
             {
-                destFile = await StorageFile.GetFileFromPathAsync(GetConfigPath());
+                destFile = await ApplicationData.Current.LocalFolder.GetFileAsync("linphonerc");
             }
             catch (System.IO.FileNotFoundException)
             {
@@ -62,7 +62,12 @@ namespace Linphone.Model
             if (destFile == null)
             {
                 StorageFile sourceFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/linphonerc"));
-                destFile = await sourceFile.CopyAsync(ApplicationData.Current.LocalFolder);
+                try
+                {
+                    destFile = await sourceFile.CopyAsync(ApplicationData.Current.LocalFolder, "linphonerc", NameCollisionOption.FailIfExists);
+                } catch {
+                    System.Diagnostics.Debug.WriteLine("An error occured while installing config file");
+                }
             }
             if (destFile != null)
             {
