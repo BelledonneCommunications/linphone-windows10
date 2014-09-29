@@ -93,6 +93,11 @@ namespace Linphone.Views
             email.Show();
         }
 
+        private void delete_Click_1(object sender, EventArgs e)
+        {
+            BugCollector.DeleteLinphoneLogFile();
+        }
+
         private void BuildLocalizedApplicationBar()
         {
             ApplicationBar = new ApplicationBar();
@@ -106,6 +111,11 @@ namespace Linphone.Views
             appBarEmail.Text = AppResources.SendEmail;
             ApplicationBar.Buttons.Add(appBarEmail);
             appBarEmail.Click += email_Click_1;
+
+            ApplicationBarIconButton appBarDelete = new ApplicationBarIconButton(new Uri("/Assets/AppBar/delete.png", UriKind.Relative));
+            appBarDelete.Text = AppResources.DeleteLogs;
+            ApplicationBar.Buttons.Add(appBarDelete);
+            appBarDelete.Click += delete_Click_1;
         }
     }
 }

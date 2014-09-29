@@ -175,24 +175,7 @@ namespace Linphone
         {
             ApplicationSettingsManager appSettings = new ApplicationSettingsManager();
             appSettings.Load();
-            if (appSettings.LogDestination == Core.OutputTraceDest.File)
-            {
-                StorageFile logFile = null;
-                try
-                {
-                    logFile = await ApplicationData.Current.LocalFolder.GetFileAsync(appSettings.LogOption);
-                }
-                catch (FileNotFoundException)
-                {
-                    Debug.WriteLine("Linphone log file couldn't be found...");
-                }
-                if (logFile == null)
-                {
-                    logFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(appSettings.LogOption);
-                }
-                return logFile != null;
-            }
-            return false;
+            return await BugCollector.HasLinphoneLogFile() && appSettings.LogDestination == Core.OutputTraceDest.File;
         }
 
         private async void BuildLocalizedApplicationBar()

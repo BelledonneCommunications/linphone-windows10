@@ -75,18 +75,20 @@ namespace Linphone.Model
             return false;
         }
 
-        internal static bool HasLinphoneLogFile()
+        internal static async Task<bool> HasLinphoneLogFile()
         {
+            ApplicationSettingsManager appSettings = new ApplicationSettingsManager();
+            appSettings.Load();
+
             try
             {
-                using (var store = IsolatedStorageFile.GetUserStoreForApplication())
-                {
-                    return store.FileExists(logFileName);
-                }
+                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(appSettings.LogOption);
+                return file != null;
             }
-            catch (Exception) { }
-
-            return false;
+            catch (FileNotFoundException)
+            {
+                return false;
+            }
         }
 
         internal static async void ReportExceptions()
@@ -181,16 +183,23 @@ namespace Linphone.Model
             catch (Exception) { }
         }
 
-        internal static void DeleteLinphoneLogFile()
+        internal static async void DeleteLinphoneLogFile()
         {
+            ApplicationSettingsManager appSettings = new ApplicationSettingsManager();
+            appSettings.Load();
+
+            StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(appSettings.LogOption);
+            if (file == null)
+                return;
+
             try
             {
-                using (var store = IsolatedStorageFile.GetUserStoreForApplication())
-                {
-                    store.DeleteFile(logFileName);
-                }
+                await file.DeleteAsync();
             }
-            catch (Exception) { }
+            catch (UnauthorizedAccessException)
+            {
+                Debug.WriteLine("Can't delete linphone logs...");
+            }
         }
     }
 }

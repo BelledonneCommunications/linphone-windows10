@@ -101,7 +101,7 @@ namespace Linphone.Views
             // Create LinphoneCore if not created yet, otherwise do nothing
             await LinphoneManager.Instance.InitLinphoneCore();
 
-            DeleteLogs.IsEnabled = BugCollector.HasLinphoneLogFile();
+            DeleteLogs.IsEnabled = await BugCollector.HasLinphoneLogFile();
         }
 
         private void cancel_Click_1(object sender, EventArgs e)
