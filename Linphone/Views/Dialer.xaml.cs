@@ -6,6 +6,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -170,6 +171,30 @@ namespace Linphone
             BuildLocalizedApplicationBar();
         }
 
+        private async Task<bool> IsLogFileExisting()
+        {
+            ApplicationSettingsManager appSettings = new ApplicationSettingsManager();
+            appSettings.Load();
+            if (appSettings.LogDestination == Core.OutputTraceDest.File)
+            {
+                StorageFile logFile = null;
+                try
+                {
+                    logFile = await ApplicationData.Current.LocalFolder.GetFileAsync(appSettings.LogOption);
+                }
+                catch (FileNotFoundException)
+                {
+                    Debug.WriteLine("Linphone log file couldn't be found...");
+                }
+                if (logFile == null)
+                {
+                    logFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(appSettings.LogOption);
+                }
+                return logFile != null;
+            }
+            return false;
+        }
+
         private async void BuildLocalizedApplicationBar()
         {
             ApplicationBar = new ApplicationBar();
@@ -198,15 +223,7 @@ namespace Linphone
             appBarAbout.Click += about_Click_1;
             ApplicationBar.MenuItems.Add(appBarAbout);
 
-            ApplicationSettingsManager appSettings = new ApplicationSettingsManager();
-            appSettings.Load();
-            StorageFile logFile = null;
-            try
-            {
-                logFile = await ApplicationData.Current.LocalFolder.GetFileAsync(appSettings.LogOption);
-            }
-            catch { }
-            if (appSettings.LogDestination == Core.OutputTraceDest.File && logFile != null)
+            if (await IsLogFileExisting())
             {
                 ApplicationBarMenuItem appBarConsole = new ApplicationBarMenuItem(AppResources.ConsoleMenu);
                 appBarConsole.Click += console_Click_1;
