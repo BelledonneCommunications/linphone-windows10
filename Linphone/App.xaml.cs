@@ -155,13 +155,14 @@ namespace Linphone
 
                 // Bind this new channel for toast events.
                 httpChannel.BindToShellToast();
+                PushChannelUri = httpChannel.ChannelUri;
             }
             else
             {
                 // This is an existing channel. 
                 PushChannelUri = httpChannel.ChannelUri;
 
-                Debug.WriteLine("[Linphone] Existing Push channel URI is {0}", PushChannelUri);
+                Logger.Dbg("[Linphone] Existing Push channel URI is {0}", PushChannelUri);
 
                 //  Let listeners know that we have a push channel URI 
                 if (PushChannelUriChanged != null)
@@ -176,10 +177,10 @@ namespace Linphone
 
         private void PushChannel_ChannelUriUpdated(object sender, NotificationChannelUriEventArgs e)
         {
-            Debug.WriteLine("[Linphone] New Push channel URI is {0}", e.ChannelUri);
+            Logger.Dbg("[Linphone] New Push channel URI is {0}", e.ChannelUri);
 
             // Store the push channel URI 
-            this.PushChannelUri = e.ChannelUri;
+            PushChannelUri = e.ChannelUri;
 
             //  Let listeners know that we have a push channel URI 
             if (this.PushChannelUriChanged != null)
