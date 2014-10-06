@@ -1050,6 +1050,17 @@ namespace Linphone
 			/// Creates a ChatRoom to send text messages to given addrees.
 			/// </summary>
 			Linphone::Core::LinphoneChatRoom^ CreateChatRoom(Platform::String^ to);
+
+			/// <summary>
+			/// Sets the log collection upload server URL.
+			/// </summary>
+			/// <param name="url">The URL of the log collection upload server</param>
+			void SetLogCollectionUploadServerUrl(Platform::String^ url);
+
+			/// <summary>
+			/// Starts the upload of the log collection.
+			/// </summary>
+			void UploadLogCollection();
 			
 			/// <summary>
 			/// The LinphoneCoreListener that handles the events coming from the core.

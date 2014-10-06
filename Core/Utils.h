@@ -42,6 +42,12 @@ namespace Linphone
 			static Platform::String^ Linphone::Core::Utils::cctops(const char* cc);
 
 			/// <summary>
+			/// Enables the linphone core log collection to upload logs on a server.
+			/// </summary>
+			/// <param name="enable">Boolean value telling whether to enable log collection or not.</param>
+			static void LinphoneCoreEnableLogCollection(bool enable);
+
+			/// <summary>
 			/// Define a log handler.
 			/// </summary>
 			/// <param name="logfunc">The function pointer of the log handler.</param>

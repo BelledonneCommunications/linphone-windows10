@@ -48,7 +48,10 @@ void LinphoneCoreFactory::CreateLinphoneCore(Linphone::Core::LinphoneCoreListene
 void LinphoneCoreFactory::CreateLinphoneCore(Linphone::Core::LinphoneCoreListener^ listener, Linphone::Core::LpConfig^ config)
 {
 	TRACE; gApiLock.Lock();
-	Utils::LinphoneCoreSetLogHandler(LinphoneNativeOutputTraceHandler);
+	//Utils::LinphoneCoreSetLogHandler(LinphoneNativeOutputTraceHandler);
+	Utils::LinphoneCoreSetLogHandler(ortp_logv_out);
+	Utils::LinphoneCoreSetLogLevel(ORTP_MESSAGE | ORTP_WARNING | ORTP_ERROR | ORTP_FATAL);
+	Utils::LinphoneCoreEnableLogCollection(true);
 	this->linphoneCore = ref new Linphone::Core::LinphoneCore(listener, config);
 	this->linphoneCore->Init();
 	gApiLock.Unlock();

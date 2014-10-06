@@ -1412,6 +1412,22 @@ Linphone::Core::LinphoneChatRoom^ Linphone::Core::LinphoneCore::CreateChatRoom(P
 	return chatRoom;
 }
 
+void Linphone::Core::LinphoneCore::SetLogCollectionUploadServerUrl(Platform::String^ url)
+{
+	TRACE; gApiLock.Lock();
+	const char *curl = Linphone::Core::Utils::pstoccs(url);
+	linphone_core_set_log_collection_upload_server_url(this->lc, curl);
+	delete(curl);
+	gApiLock.Unlock();
+}
+
+void Linphone::Core::LinphoneCore::UploadLogCollection()
+{
+	TRACE; gApiLock.Lock();
+	linphone_core_upload_log_collection(this->lc);
+	gApiLock.Unlock();
+}
+
 Linphone::Core::LinphoneCoreListener^ Linphone::Core::LinphoneCore::CoreListener::get()
 {
 	return this->listener;

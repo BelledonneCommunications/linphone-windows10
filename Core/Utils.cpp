@@ -13,6 +13,8 @@
 #include <Stringapiset.h>
 #include <time.h>
 
+using namespace Windows::Storage;
+
 Platform::String^ Linphone::Core::Utils::formatLogMessage(OutputTraceLevel level, Platform::String^ msg) {
 	const char * cmsg = pstoccs(msg);
 	char * clevel;
@@ -121,6 +123,14 @@ void Linphone::Core::Utils::LinphoneCoreSetLogHandler(void* logfunc)
 {
 	TRACE; gApiLock.Lock();
 	linphone_core_set_log_handler(static_cast<OrtpLogFunc>(logfunc));
+	gApiLock.Unlock();
+}
+
+void Linphone::Core::Utils::LinphoneCoreEnableLogCollection(bool enable)
+{
+	TRACE; gApiLock.Lock();
+	linphone_core_enable_log_collection(enable);
+	linphone_core_set_log_collection_path(pstoccs(ApplicationData::Current->LocalFolder->Path));
 	gApiLock.Unlock();
 }
 
