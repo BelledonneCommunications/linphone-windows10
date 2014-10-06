@@ -32,3 +32,4 @@ display=0
 [misc]
 history_max_size=30
 max_calls=1
+log_collection_upload_server_url=https://www.linphone.org:444/lft.php
