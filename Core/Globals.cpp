@@ -254,8 +254,8 @@ Globals::~Globals()
     if (uiDisconnectedEvent != NULL)
     {
         // The event exists - wait for it to get signaled (for a maximum of 30 seconds)
-        DWORD reason = ::WaitForSingleObjectEx(uiDisconnectedEvent, 30 * 1000, FALSE);
-        _ASSERT(reason != WAIT_FAILED); // We don't care about any of the other reasons why WaitForSingleObjectEx returned
+        DWORD reason = ::WaitForSingleObjectEx(uiDisconnectedEvent, 3 * 1000, FALSE);
+        //_ASSERT(reason != WAIT_FAILED); // We don't care about any of the other reasons why WaitForSingleObjectEx returned
     }
 
     // At this point, the UI is no longer connected to the background process.

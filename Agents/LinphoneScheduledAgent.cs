@@ -72,8 +72,11 @@ namespace Linphone.Agents
 
             TileManager.Instance.UpdateCount(BackgroundManager.Instance.OopServer.LinphoneCore.GetMissedCallsCount());
 
-            BackgroundManager.Instance.OopServer.LinphoneCore.SetNetworkReachable(false); // To prevent the core from unregister
-            BackgroundManager.Instance.OopServer.LinphoneCoreFactory.Destroy();
+            if (BackgroundManager.Instance.OopServer.LinphoneCore.GetCallsNb() == 0)
+            {
+                BackgroundManager.Instance.OopServer.LinphoneCore.SetNetworkReachable(false); // To prevent the core from unregister
+                BackgroundManager.Instance.OopServer.LinphoneCoreFactory.Destroy();
+            }
             base.NotifyComplete();
         } 
 

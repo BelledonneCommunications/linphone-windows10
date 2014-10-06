@@ -145,7 +145,7 @@ namespace Linphone.Model
         private Server server = null;
 
         // A timespan representing fifteen seconds 
-        private static readonly TimeSpan twentySecs = new TimeSpan(0, 0, 20);
+        private static readonly TimeSpan twoSecs = new TimeSpan(0, 0, 2);
 
         // A timespan representing an indefinite wait 
         private static readonly TimeSpan indefiniteWait = new TimeSpan(0, 0, 0, 0, -1);
@@ -180,8 +180,7 @@ namespace Linphone.Model
 
             try
             {
-                BackgroundManager.Instance.OopServer = null;
-                server = (Server)WindowsRuntimeMarshal.GetActivationFactory(typeof(Server)).ActivateInstance();
+                server = BackgroundManager.Instance.OopServer;
             }
             catch (Exception)
             {
@@ -189,7 +188,7 @@ namespace Linphone.Model
                 string backgroundProcessReadyEventName = Globals.GetBackgroundProcessReadyEventName((uint)backgroundProcessID);
                 using (EventWaitHandle backgroundProcessReadyEvent = new EventWaitHandle(initialState: false, mode: EventResetMode.ManualReset, name: backgroundProcessReadyEventName))
                 {
-                    TimeSpan timeout = twentySecs;
+                    TimeSpan timeout = twoSecs;
                     if (!backgroundProcessReadyEvent.WaitOne(timeout))
                     {
                         // We timed out - something is wrong 
@@ -204,12 +203,7 @@ namespace Linphone.Model
                 // The background process is now ready. 
                 // It is possible that the background process now becomes "not ready" again, but the chances of this happening are slim, 
                 // and in that case, the following statement would fail - so, at this point, we don't explicitly guard against this condition. 
-                server = (Server)WindowsRuntimeMarshal.GetActivationFactory(typeof(Server)).ActivateInstance();
-            }
-            finally
-            {
-                // Create an instance of the server in the background process. 
-                BackgroundManager.Instance.OopServer = server;
+                server = BackgroundManager.Instance.OopServer;
             }
             
             // Un-set an event that indicates that the UI process is disconnected from the background process. 
@@ -279,7 +273,7 @@ namespace Linphone.Model
             if (server.LinphoneCoreFactory != null && server.LinphoneCore != null)
             {
                 // Reconnect the listeners when coming back from background mode
-                Debug.WriteLine("[LinphoneManager] LinphoneCore already created, skipping");
+                Logger.Dbg("[LinphoneManager] LinphoneCore already created, skipping");
 
                 server.LinphoneCore.CoreListener = this;
                 // Set user-agent because it is not set if coming back from background mode
@@ -290,7 +284,7 @@ namespace Linphone.Model
                     return;
                 } catch {
                     // It happens server.LinphoneCore is available but the real core behind is broken, we'll catch this here and force recreate a new core
-                    Debug.WriteLine("[LinphoneManager] Exception happened while setting the UA, force creation of a new LinphoneCore");
+                    Logger.Dbg("[LinphoneManager] Exception happened while setting the UA, force creation of a new LinphoneCore");
                 }
                 //TODO: Crash not fixed
             }
@@ -301,7 +295,7 @@ namespace Linphone.Model
             ConfigureLogger();
             server.LinphoneCoreFactory.CreateLinphoneCore(this, config);
             server.LinphoneCore.SetRootCA("Assets/rootca.pem");
-            Debug.WriteLine("[LinphoneManager] LinphoneCore created");
+            Logger.Dbg("[LinphoneManager] LinphoneCore created");
 
             AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;
             CallController.MuteRequested += MuteRequested;
