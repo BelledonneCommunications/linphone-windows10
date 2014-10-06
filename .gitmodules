@@ -61,3 +61,6 @@
 [submodule "submodules/opus"]
 	path = submodules/opus
 	url = git://git.linphone.org/opus.git
+[submodule "submodules/zlib"]
+	path = submodules/zlib
+	url = git://git.linphone.org/zlib.git
