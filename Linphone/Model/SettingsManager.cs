@@ -59,6 +59,7 @@ namespace Linphone.Model
             catch (System.IO.FileNotFoundException)
             {
             }
+
             if (destFile == null)
             {
                 StorageFile sourceFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/linphonerc"));
@@ -490,6 +491,7 @@ namespace Linphone.Model
                     {
                         cfg.SetRoute(proxy);
                     }
+                    cfg.SetExpires(28800);
 
                     // Can't set string to null: http://stackoverflow.com/questions/12980915/exception-when-trying-to-read-null-string-in-c-sharp-winrt-component-from-winjs
                     if (userid == null)

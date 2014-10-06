@@ -290,7 +290,6 @@ namespace Linphone.Model
             }
 
             Debug.WriteLine("[LinphoneManager] Creating LinphoneCore");
-            await SettingsManager.InstallConfigFile();
             LpConfig config = server.LinphoneCoreFactory.CreateLpConfig(SettingsManager.GetConfigPath(), SettingsManager.GetFactoryConfigPath());
             ConfigureLogger();
             server.LinphoneCoreFactory.CreateLinphoneCore(this, config);
