@@ -85,12 +85,7 @@ namespace Linphone.Views
 
         private void email_Click_1(object sender, EventArgs e)
         {
-            string body = logs.Length > 32000 ? logs.Substring(logs.Length - 32000) : logs;
-            EmailComposeTask email = new EmailComposeTask();
-            email.To = "linphone-wphone@belledonne-communications.com";
-            email.Subject = "Logs report";
-            email.Body = body;
-            email.Show();
+            LinphoneManager.Instance.LinphoneCore.UploadLogCollection();
         }
 
         private void delete_Click_1(object sender, EventArgs e)

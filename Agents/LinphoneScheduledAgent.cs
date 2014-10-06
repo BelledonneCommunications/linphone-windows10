@@ -162,6 +162,10 @@ namespace Linphone.Agents
         public void ComposingReceived(LinphoneChatRoom room)
         {
         }
+
+        public void LogUploadStatusChanged(bool uploadComplete, string info)
+        {
+        }
         #endregion
     }
 }

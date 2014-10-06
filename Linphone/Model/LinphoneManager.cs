@@ -7,6 +7,7 @@ using Linphone.Views;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Net.NetworkInformation;
 using Microsoft.Phone.Networking.Voip;
+using Microsoft.Phone.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -1005,6 +1006,17 @@ namespace Linphone.Model
                 }
             });
         }
+
+        public void LogUploadStatusChanged(bool uploadComplete, string info)
+        {
+            BaseModel.UIDispatcher.BeginInvoke(() =>
+            {
+                if (uploadComplete)
+                {
+                    SendEmail(info);
+                }
+            });
+        }
         #endregion
 
         #region Contact Lookup
@@ -1061,5 +1073,14 @@ namespace Linphone.Model
             }
         }
         #endregion
+
+        private void SendEmail(string body)
+        {
+            EmailComposeTask email = new EmailComposeTask();
+            email.To = "linphone-wphone@belledonne-communications.com";
+            email.Subject = "Logs report";
+            email.Body = body;
+            email.Show();
+        }
     }
 }

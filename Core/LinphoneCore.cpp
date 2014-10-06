@@ -1618,6 +1618,26 @@ void composing_received(LinphoneCore *lc, LinphoneChatRoom *room)
 	Linphone::Core::gApiLock.LeaveListener();
 }
 
+void log_collection_upload_progress_indication(LinphoneCore *lc, size_t progress) {
+	Linphone::Core::gApiLock.EnterListener();
+	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
+	if (listener != nullptr)
+	{
+		//TODO
+	}
+	Linphone::Core::gApiLock.LeaveListener();
+}
+
+void log_collection_upload_state_changed(LinphoneCore *lc, LinphoneCoreLogCollectionUploadState state, const char *info) {
+	Linphone::Core::gApiLock.EnterListener();
+	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
+	if (listener != nullptr)
+	{
+		listener->LogUploadStatusChanged(state == LinphoneCoreLogCollectionUploadState::LinphoneCoreLogCollectionUploadStateDelivered, info ? Linphone::Core::Utils::cctops(info) : nullptr);
+	}
+	Linphone::Core::gApiLock.LeaveListener();
+}
+
 Linphone::Core::LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener) :
 	lc(nullptr),
 	listener(coreListener)
@@ -1679,6 +1699,8 @@ void Linphone::Core::LinphoneCore::Init()
 	vtable->call_stats_updated = call_stats_updated;
 	vtable->message_received = message_received;
 	vtable->is_composing_received = composing_received;
+	vtable->log_collection_upload_progress_indication = log_collection_upload_progress_indication;
+	vtable->log_collection_upload_state_changed = log_collection_upload_state_changed;
 
 	this->lc = linphone_core_new_with_config(vtable, config ? config->config : NULL, NULL);
 	RefToPtrProxy<LinphoneCore^> *proxy = new RefToPtrProxy<LinphoneCore^>(this);

@@ -83,6 +83,8 @@ namespace Linphone
 			/// </summary>
 			/// <param name="room">The room for which the composing status has been updated</param>
 			void ComposingReceived(LinphoneChatRoom^ room);
+
+			void LogUploadStatusChanged(Platform::Boolean uploadComplete, Platform::String^ info);
 		};
 	}
 }
