@@ -45,15 +45,6 @@ namespace Linphone
             }
 
 			/// <summary>
-			/// The listener class to output trace logs.
-			/// </summary>
-			property OutputTraceListener^ OutputTraceListener
-			{
-				Linphone::Core::OutputTraceListener^ get();
-				void set(Linphone::Core::OutputTraceListener^ listener);
-			}
-
-			/// <summary>
 			/// Creates a LinphoneCore instance.
 			/// To access the created LinphoneCore use the LinphoneCoreFactory::LinphoneCore property.
 			/// </summary>
@@ -174,7 +165,6 @@ namespace Linphone
 			friend ref class Linphone::Core::Globals;
 
 			Linphone::Core::LinphoneCore^ linphoneCore;
-			Linphone::Core::OutputTraceListener^ outputTraceListener;
 
 			LinphoneCoreFactory();
 			~LinphoneCoreFactory();

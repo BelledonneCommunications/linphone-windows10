@@ -357,13 +357,8 @@ namespace Linphone.Model
         /// </summary>
         public void ConfigureLogger()
         {
-            // To have the debug output in the debugger use the following commented configure and set your debugger to native mode
-            //server.BackgroundModeLogger.Configure(SettingsManager.isDebugEnabled, OutputTraceDest.Debugger, "");
-            // Else output the debug traces to a file
             ApplicationSettingsManager appSettings = new ApplicationSettingsManager();
             appSettings.Load();
-            server.BackgroundModeLogger.Configure(appSettings.DebugEnabled, appSettings.LogDestination, appSettings.LogOption);
-            server.LinphoneCoreFactory.OutputTraceListener = server.BackgroundModeLogger;
             server.LinphoneCoreFactory.SetLogLevel(appSettings.LogLevel);
             Logger.Instance.TraceListener = server.BackgroundModeLogger;
         }
