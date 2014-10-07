@@ -200,7 +200,7 @@ namespace Linphone.Views
         {
             pause.IsChecked = isCallPaused || isCallPausedByRemote;
             pauseImg.Source = new BitmapImage(new Uri(isCallPaused || isCallPausedByRemote ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
-            pause.Visibility = isCallPausedByRemote ? Visibility.Collapsed : Visibility.Visible;
+            //((InCallModel)ViewModel).PauseButtonVisibility = isCallPausedByRemote ? Visibility.Collapsed : Visibility.Visible;
 
             if (oneSecondTimer == null)
             {
