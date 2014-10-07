@@ -10,7 +10,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="Portrait" Orientation="Portrait"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Landscape"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
     
@@ -19,6 +19,7 @@
         x:Name="LayoutRoot"
         Background="Transparent"
         Tap="LayoutRoot_Tap">
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -26,7 +27,7 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="emptyPanel" Grid.Row="0" Margin="12,17,0,28">
+        <StackPanel x:Name="emptyPanel" Grid.Row="0">
             <TextBlock Style="{StaticResource PhoneTextSmallStyle}"/>
             <TextBlock Style="{StaticResource PhoneTextSmallStyle}"/>
             <TextBlock Style="{StaticResource PhoneTextSmallStyle}"/>
@@ -37,8 +38,8 @@
         </StackPanel>
 
         <!-- Statistics panel -->
-        <StackPanel x:Name="statsPanel" Grid.Row="1" Margin="12,17,0,28" Visibility="Collapsed">
-            <Grid Grid.Row="1" Margin="0,0,0,0">
+        <StackPanel x:Name="statsPanel" Grid.Row="1" Visibility="Collapsed">
+            <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
@@ -226,9 +227,7 @@
                     Click="dialpad_Click_1"
                     Background="{StaticResource PhoneChromeBrush}"
                     IsChecked="{Binding IsDialpadToggled}">
-                    <StackPanel Orientation="Vertical">
-                        <Image Source="/Assets/AppBar/dialpad.png" Stretch="None"/>
-                    </StackPanel>
+                    <Image Source="/Assets/AppBar/dialpad.png" Stretch="None"/>
                 </ToggleButton>
 
                 <ToggleButton 
