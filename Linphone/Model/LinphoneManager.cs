@@ -1012,6 +1012,17 @@ namespace Linphone.Model
                 if (uploadComplete)
                 {
                     SendEmail(info);
+                } 
+                else if (info != null) 
+                {
+                    Logger.Err(String.Format("[LinphoneManager] Logs upload error: {0}", info));
+                    var notif = new CustomMessageBox()
+                    {
+                        Caption = "Logfile upload failed",
+                        Message = info,
+                        RightButtonContent = AppResources.Close
+                    };
+                    notif.Show();
                 }
             });
         }
@@ -1023,7 +1034,7 @@ namespace Linphone.Model
         {
             BaseModel.UIDispatcher.BeginInvoke(() =>
             {
-                
+                Logger.Msg(String.Format("[LinphoneManager] Logs upload progress is {0}", progress));
             });
         }
         #endregion
