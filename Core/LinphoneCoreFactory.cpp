@@ -20,7 +20,6 @@ void LinphoneCoreFactory::CreateLinphoneCore(Linphone::Core::LinphoneCoreListene
 void LinphoneCoreFactory::CreateLinphoneCore(Linphone::Core::LinphoneCoreListener^ listener, Linphone::Core::LpConfig^ config)
 {
 	TRACE; gApiLock.Lock();
-	Utils::LinphoneCoreSetLogHandler(ortp_logv_out);
 	Utils::LinphoneCoreEnableLogCollection(true);
 	this->linphoneCore = ref new Linphone::Core::LinphoneCore(listener, config);
 	this->linphoneCore->Init();
