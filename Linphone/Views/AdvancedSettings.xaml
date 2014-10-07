@@ -124,54 +124,13 @@
             <!--Pivot item Debug-->
             <phone:PivotItem Header="{Binding Path=LocalizedResources.DebugMenu, Source={StaticResource LocalizedStrings}}">
                 <StackPanel Orientation="Vertical">
-                    <toolkit:ListPicker
+                    <toolkit:ToggleSwitch
                         x:Name="Debug"
-                        SelectionChanged="Debug_SelectionChanged"
-                        SelectionMode="Single"
-                        Header="{Binding Path=LocalizedResources.DebugSetting, Source={StaticResource LocalizedStrings}}">
-                    </toolkit:ListPicker>
+                        Header="{Binding Path=LocalizedResources.DebugSetting, Source={StaticResource LocalizedStrings}}"
+                        Checked="Debug_Checked" Unchecked="Debug_Unchecked">
+                    </toolkit:ToggleSwitch>
 
-                    <StackPanel Orientation="Vertical" x:Name="TCPRemoteOptions" Visibility="Collapsed">
-                        <StackPanel.Resources>
-                            <Storyboard x:Name="FadeOut">
-                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="TCPRemoteOptions">
-                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.5">
-                                        <DiscreteObjectKeyFrame.Value>
-                                            <Visibility>Collapsed</Visibility>
-                                        </DiscreteObjectKeyFrame.Value>
-                                    </DiscreteObjectKeyFrame>
-                                </ObjectAnimationUsingKeyFrames>
-                            </Storyboard>
-                            <Storyboard x:Name="FadeIn">
-                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="TCPRemoteOptions">
-                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.5">
-                                        <DiscreteObjectKeyFrame.Value>
-                                            <Visibility>Visible</Visibility>
-                                        </DiscreteObjectKeyFrame.Value>
-                                    </DiscreteObjectKeyFrame>
-                                </ObjectAnimationUsingKeyFrames>
-                            </Storyboard>
-                        </StackPanel.Resources>
-                        
-                        <TextBlock
-                            Style="{StaticResource PhoneTextSubtleStyle}"
-                            Text="{Binding Path=LocalizedResources.TCPRemote, Source={StaticResource LocalizedStrings}}">
-                        </TextBlock>
-
-                        <TextBox
-                            x:Name="TCPRemote">
-                            <TextBox.InputScope>
-                                <InputScope>
-                                    <InputScopeName NameValue="Formula" />
-                                </InputScope>
-                            </TextBox.InputScope>
-                        </TextBox>
-                    </StackPanel>
-
-                    <Button
-                        x:Name="DeleteLogs"
-                        Click="deleteLogs_Click_1"
-                        Content="{Binding Path=LocalizedResources.DeleteLogs, Source={StaticResource LocalizedStrings}}" />
+                    <Button x:Name="SendLogs" Content="{Binding Path=LocalizedResources.SendLogsEmail, Source={StaticResource LocalizedStrings}}" Click="SendLogs_Click"/>
                 </StackPanel>
             </phone:PivotItem>
         </phone:Pivot>

@@ -7,11 +7,13 @@ using Microsoft.Phone.Shell;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using System.Xml.Serialization;
 using Windows.Storage;
 
 namespace Linphone
@@ -152,11 +154,6 @@ namespace Linphone
             NavigationService.Navigate(new Uri("/Views/About.xaml", UriKind.RelativeOrAbsolute));
         }
 
-        private void console_Click_1(object sender, EventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/Views/Console.xaml", UriKind.RelativeOrAbsolute));
-        }
-
         private void disconnect_Click_1(object sender, EventArgs e)
         {
             EnableRegister(false);
@@ -171,14 +168,7 @@ namespace Linphone
             BuildLocalizedApplicationBar();
         }
 
-        private async Task<bool> IsLogFileExisting()
-        {
-            ApplicationSettingsManager appSettings = new ApplicationSettingsManager();
-            appSettings.Load();
-            return await BugCollector.HasLinphoneLogFile() && appSettings.LogDestination == Core.OutputTraceDest.File;
-        }
-
-        private async void BuildLocalizedApplicationBar()
+        private void BuildLocalizedApplicationBar()
         {
             ApplicationBar = new ApplicationBar();
 
@@ -205,13 +195,6 @@ namespace Linphone
             ApplicationBarMenuItem appBarAbout = new ApplicationBarMenuItem(AppResources.AboutMenu);
             appBarAbout.Click += about_Click_1;
             ApplicationBar.MenuItems.Add(appBarAbout);
-
-            if (await IsLogFileExisting())
-            {
-                ApplicationBarMenuItem appBarConsole = new ApplicationBarMenuItem(AppResources.ConsoleMenu);
-                appBarConsole.Click += console_Click_1;
-                ApplicationBar.MenuItems.Add(appBarConsole);
-            }
 
             if (IsAccountConfigured())
             {

@@ -16,7 +16,7 @@ namespace Linphone.Views
     {
         private SIPAccountSettingsManager _settings = new SIPAccountSettingsManager();
 
-        private bool _editPassword = true;
+        private bool saveSettingsOnLeave = true;
 
         /// <summary>
         /// Public constructor.
@@ -45,22 +45,7 @@ namespace Linphone.Views
             Transport.SelectedItem = _settings.Transport;
         }
 
-        /// <summary>
-        /// Method called when the page is displayed.
-        /// </summary>
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            // Create LinphoneCore if not created yet, otherwise do nothing
-            await LinphoneManager.Instance.InitLinphoneCore();
-        }
-
-        private void cancel_Click_1(object sender, EventArgs e)
-        {
-            NavigationService.GoBack();
-        }
-
-        private void save_Click_1(object sender, EventArgs e)
+        private void Save()
         {
             if (Domain.Text.Contains(":"))
             {
@@ -80,7 +65,38 @@ namespace Linphone.Views
             _settings.DisplayName = DisplayName.Text;
             _settings.Transport = Transport.SelectedItem.ToString();
             _settings.Save();
+        }
 
+        /// <summary>
+        /// Method called when the page is displayed.
+        /// </summary>
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            // Create LinphoneCore if not created yet, otherwise do nothing
+            await LinphoneManager.Instance.InitLinphoneCore();
+        }
+
+        /// <summary>
+        /// Method called when the user is navigation away from this page
+        /// </summary>
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            if (saveSettingsOnLeave)
+            {
+                Save();
+            }
+            base.OnNavigatingFrom(e);
+        }
+
+        private void cancel_Click_1(object sender, EventArgs e)
+        {
+            saveSettingsOnLeave = false;
+            NavigationService.GoBack();
+        }
+
+        private void save_Click_1(object sender, EventArgs e)
+        {
             NavigationService.GoBack();
         }
 

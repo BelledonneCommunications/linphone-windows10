@@ -14,6 +14,7 @@ namespace Linphone.Views
     {
         private CallSettingsManager _callSettings = new CallSettingsManager();
         private CodecsSettingsManager _codecsSettings = new CodecsSettingsManager();
+        private bool saveSettingsOnLeave = true;
 
         /// <summary>
         /// Public constructor.
@@ -33,8 +34,43 @@ namespace Linphone.Views
             H264.IsChecked = _codecsSettings.H264;
         }
 
+        /// <summary>
+        /// Method called when the page is displayed.
+        /// </summary>
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            // Create LinphoneCore if not created yet, otherwise do nothing
+            await LinphoneManager.Instance.InitLinphoneCore();
+        }
+
+        /// <summary>
+        /// Method called when the user is navigation away from this page
+        /// </summary>
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            if (saveSettingsOnLeave)
+            {
+                Save();
+            }
+            base.OnNavigatingFrom(e);
+        }
+
+        private void Save()
+        {
+            _codecsSettings.H264 = ToBool(H264.IsChecked);
+            _codecsSettings.Save();
+
+            _callSettings.VideoEnabled = ToBool(VideoEnabled.IsChecked);
+            _callSettings.AutomaticallyInitiateVideo = ToBool(AutomaticallyInitiateVideo.IsChecked);
+            _callSettings.AutomaticallyAcceptVideo = ToBool(AutomaticallyAcceptVideo.IsChecked);
+            _callSettings.SelfViewEnabled = ToBool(SelfViewEnabled.IsChecked);
+            _callSettings.Save();
+        }
+
         private void cancel_Click_1(object sender, EventArgs e)
         {
+            saveSettingsOnLeave = false;
             NavigationService.GoBack();
         }
 
@@ -46,15 +82,6 @@ namespace Linphone.Views
 
         private void save_Click_1(object sender, EventArgs e)
         {
-            _codecsSettings.H264 = ToBool(H264.IsChecked);
-            _codecsSettings.Save();
-
-            _callSettings.VideoEnabled = ToBool(VideoEnabled.IsChecked);
-            _callSettings.AutomaticallyInitiateVideo = ToBool(AutomaticallyInitiateVideo.IsChecked);
-            _callSettings.AutomaticallyAcceptVideo = ToBool(AutomaticallyAcceptVideo.IsChecked);
-            _callSettings.SelfViewEnabled = ToBool(SelfViewEnabled.IsChecked);
-            _callSettings.Save();
-
             NavigationService.GoBack();
         }
 

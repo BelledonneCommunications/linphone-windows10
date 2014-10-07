@@ -103,7 +103,7 @@ namespace Linphone.Views
             appBarRefresh.Click += refresh_Click_1;
 
             ApplicationBarIconButton appBarEmail = new ApplicationBarIconButton(new Uri("/Assets/AppBar/feature.email.png", UriKind.Relative));
-            appBarEmail.Text = AppResources.SendEmail;
+            appBarEmail.Text = AppResources.SendLogsEmail;
             ApplicationBar.Buttons.Add(appBarEmail);
             appBarEmail.Click += email_Click_1;
 

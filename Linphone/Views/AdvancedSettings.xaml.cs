@@ -19,6 +19,7 @@ namespace Linphone.Views
         private NetworkSettingsManager _networkSettings = new NetworkSettingsManager();
         private ChatSettingsManager _chatSettings = new ChatSettingsManager();
         private ApplicationSettingsManager _settings = new ApplicationSettingsManager();
+        private bool saveSettingsOnLeave = true;
 
         /// <summary>
         /// Public constructor.
@@ -71,45 +72,10 @@ namespace Linphone.Views
 
             TunnelPanel.Visibility = LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable() && Customs.IsTunnelEnabled ? Visibility.Visible : Visibility.Collapsed; //Hidden properties for now
 
-            List<string> debugModes = new List<string>
-            {
-                OutputTraceDest.None.ToString(),
-                OutputTraceDest.File.ToString(),
-                OutputTraceDest.Debugger.ToString()
-            };
-            if (Customs.AllowTCPRemote)
-                debugModes.Add(OutputTraceDest.TCPRemote.ToString());
-            Debug.ItemsSource = debugModes;
-            TCPRemote.Text = _settings.LogOption.Equals(ApplicationSettingsManager.LinphoneLogFileName) ? "" : _settings.LogOption;
-            Debug.SelectedItem = _settings.LogDestination.ToString();
+            Debug.IsChecked = _settings.DebugEnabled;
         }
 
-        private void Debug_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            if (e.AddedItems.Contains(OutputTraceDest.TCPRemote.ToString()))
-                FadeIn.Begin();
-            else
-                FadeOut.Begin();
-        }
-
-        /// <summary>
-        /// Method called when the page is displayed.
-        /// </summary>
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            // Create LinphoneCore if not created yet, otherwise do nothing
-            await LinphoneManager.Instance.InitLinphoneCore();
-
-            DeleteLogs.IsEnabled = await BugCollector.HasLinphoneLogFile();
-        }
-
-        private void cancel_Click_1(object sender, EventArgs e)
-        {
-            NavigationService.GoBack();
-        }
-
-        private void save_Click_1(object sender, EventArgs e)
+        private void Save()
         {
             _callSettings.SendDTFMsRFC2833 = rfc2833.IsChecked;
             _callSettings.SendDTFMsSIPInfo = sipInfo.IsChecked;
@@ -127,27 +93,43 @@ namespace Linphone.Views
             _chatSettings.ScaleDownSentPictures = resizeDown.IsChecked;
             _chatSettings.Save();
 
-            OutputTraceDest debugMode = OutputTraceDest.None;
-            if (Debug.SelectedItem.Equals(OutputTraceDest.File.ToString()))
-                debugMode = OutputTraceDest.File;
-            else if (Debug.SelectedItem.Equals(OutputTraceDest.Debugger.ToString()))
-                debugMode = OutputTraceDest.Debugger;
-            else if (Debug.SelectedItem.Equals(OutputTraceDest.TCPRemote.ToString()))
-                debugMode = OutputTraceDest.TCPRemote;
-
-            _settings.LogDestination = debugMode;
-            if (debugMode == OutputTraceDest.TCPRemote)
-                _settings.LogOption = TCPRemote.Text;
-            _settings.DebugEnabled = debugMode != OutputTraceDest.None;
+            _settings.DebugEnabled = (bool)Debug.IsChecked;
             _settings.Save();
 
+            LinphoneManager.Instance.ConfigureLogger();
+        }
+
+        /// <summary>
+        /// Method called when the page is displayed.
+        /// </summary>
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            // Create LinphoneCore if not created yet, otherwise do nothing
+            await LinphoneManager.Instance.InitLinphoneCore();
+        }
+
+        /// <summary>
+        /// Method called when the user is navigation away from this page
+        /// </summary>
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            if (saveSettingsOnLeave)
+            {
+                Save();
+            }
+            base.OnNavigatingFrom(e);
+        }
+
+        private void cancel_Click_1(object sender, EventArgs e)
+        {
+            saveSettingsOnLeave = false;
             NavigationService.GoBack();
         }
 
-        private void deleteLogs_Click_1(object sender, EventArgs e)
+        private void save_Click_1(object sender, EventArgs e)
         {
-            BugCollector.DeleteLinphoneLogFile();
-            DeleteLogs.IsEnabled = false;
+            NavigationService.GoBack();
         }
 
         private void BuildLocalizedApplicationBar()
@@ -163,6 +145,21 @@ namespace Linphone.Views
             appBarCancel.Text = AppResources.CancelChanges;
             ApplicationBar.Buttons.Add(appBarCancel);
             appBarCancel.Click += cancel_Click_1;
+        }
+
+        private void SendLogs_Click(object sender, RoutedEventArgs e)
+        {
+            LinphoneManager.Instance.LinphoneCore.UploadLogCollection();
+        }
+
+        private void Debug_Checked(object sender, RoutedEventArgs e)
+        {
+            _settings.LogLevel = OutputTraceLevel.Message;
+        }
+
+        private void Debug_Unchecked(object sender, RoutedEventArgs e)
+        {
+            _settings.LogLevel = OutputTraceLevel.None;
         }
     }
 }

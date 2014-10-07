@@ -409,7 +409,7 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs destination.
+        ///   Looks up a localized string similar to Enable debug logs.
         /// </summary>
         public static string DebugSetting {
             get {
@@ -1094,11 +1094,11 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Send by email.
+        ///   Looks up a localized string similar to Send logs by email.
         /// </summary>
-        public static string SendEmail {
+        public static string SendLogsEmail {
             get {
-                return ResourceManager.GetString("SendEmail", resourceCulture);
+                return ResourceManager.GetString("SendLogsEmail", resourceCulture);
             }
         }
         

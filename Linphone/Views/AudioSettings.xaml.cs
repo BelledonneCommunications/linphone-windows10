@@ -14,6 +14,7 @@ namespace Linphone.Views
     public partial class AudioSettings : BasePage, EchoCalibratorListener
     {
         private CodecsSettingsManager _settings = new CodecsSettingsManager();
+        private bool saveSettingsOnLeave = true;
 
         /// <summary>
         /// Public constructor.
@@ -52,18 +53,19 @@ namespace Linphone.Views
             await LinphoneManager.Instance.InitLinphoneCore();
         }
 
-        private void cancel_Click_1(object sender, EventArgs e)
+        /// <summary>
+        /// Method called when the user is navigation away from this page
+        /// </summary>
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            NavigationService.GoBack();
+            if (saveSettingsOnLeave)
+            {
+                Save();
+            }
+            base.OnNavigatingFrom(e);
         }
 
-        private bool ToBool(bool? enabled)
-        {
-            if (!enabled.HasValue) enabled = false;
-            return (bool)enabled;
-        }
-
-        private void save_Click_1(object sender, EventArgs e)
+        private void Save()
         {
             _settings.AMRNB = ToBool(AMRNB.IsChecked);
             _settings.AMRWB = ToBool(AMRWB.IsChecked);
@@ -79,7 +81,22 @@ namespace Linphone.Views
             _settings.OPUS = ToBool(OPUS.IsChecked);
             _settings.Isac = ToBool(ISAC.IsChecked);
             _settings.Save();
+        }
 
+        private void cancel_Click_1(object sender, EventArgs e)
+        {
+            saveSettingsOnLeave = false;
+            NavigationService.GoBack();
+        }
+
+        private bool ToBool(bool? enabled)
+        {
+            if (!enabled.HasValue) enabled = false;
+            return (bool)enabled;
+        }
+
+        private void save_Click_1(object sender, EventArgs e)
+        {
             NavigationService.GoBack();
         }
 

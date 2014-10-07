@@ -135,7 +135,7 @@
     <value>Cancel</value>
   </data>
   <data name="DebugSetting" xml:space="preserve">
-    <value>Logs destination</value>
+    <value>Enable debug logs</value>
   </data>
   <data name="DeleteAllMenu" xml:space="preserve">
     <value>Delete All</value>
@@ -531,8 +531,8 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   <data name="InvalidSipAddressError" xml:space="preserve">
     <value>The SIP address you provided is incorrect. Please ensure it matches the format username@domain.</value>
   </data>
-  <data name="SendEmail" xml:space="preserve">
-    <value>Send by email</value>
+  <data name="SendLogsEmail" xml:space="preserve">
+    <value>Send logs by email</value>
   </data>
   <data name="SIPUserId" xml:space="preserve">
     <value>Auth userid (not mandatory)</value>
