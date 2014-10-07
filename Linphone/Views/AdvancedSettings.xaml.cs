@@ -105,6 +105,7 @@ namespace Linphone.Views
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            saveSettingsOnLeave = true;
             // Create LinphoneCore if not created yet, otherwise do nothing
             await LinphoneManager.Instance.InitLinphoneCore();
         }
@@ -149,6 +150,7 @@ namespace Linphone.Views
 
         private void SendLogs_Click(object sender, RoutedEventArgs e)
         {
+            saveSettingsOnLeave = false;
             LinphoneManager.Instance.LinphoneCore.UploadLogCollection();
         }
 

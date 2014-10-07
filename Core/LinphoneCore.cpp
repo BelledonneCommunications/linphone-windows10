@@ -1623,7 +1623,7 @@ void log_collection_upload_progress_indication(LinphoneCore *lc, size_t progress
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr)
 	{
-		//TODO
+		listener->LogUploadProgressChanged((int)progress);
 	}
 	Linphone::Core::gApiLock.LeaveListener();
 }

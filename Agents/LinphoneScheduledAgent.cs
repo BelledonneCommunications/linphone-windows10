@@ -163,7 +163,17 @@ namespace Linphone.Agents
         {
         }
 
+        /// <summary>
+        /// Callback for LinphoneCoreListener
+        /// </summary>
         public void LogUploadStatusChanged(bool uploadComplete, string info)
+        {
+        }
+
+        /// <summary>
+        /// Callback for LinphoneCoreListener
+        /// </summary>
+        public void LogUploadProgressChanged(int progress)
         {
         }
         #endregion

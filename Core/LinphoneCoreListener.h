@@ -84,7 +84,18 @@ namespace Linphone
 			/// <param name="room">The room for which the composing status has been updated</param>
 			void ComposingReceived(LinphoneChatRoom^ room);
 
+			/// <summary>
+			/// Callback method called when the status of the current log upload changes.
+			/// </summary>
+			/// <param name="uploadComplete">Tells whether or not the upload is complete</param>
+			/// <param name="info">An error message if the upload went wrong, the url of the uploaded logs if it went well, null if upload not yet finished</param>
 			void LogUploadStatusChanged(Platform::Boolean uploadComplete, Platform::String^ info);
+
+			/// <summary>
+			/// Callback method called when the progress of the current logs upload has changed.
+			/// </summary>
+			/// <param name="progress"></param>
+			void LogUploadProgressChanged(int progress);
 		};
 	}
 }

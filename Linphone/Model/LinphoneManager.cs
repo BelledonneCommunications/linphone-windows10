@@ -1002,6 +1002,9 @@ namespace Linphone.Model
             });
         }
 
+        /// <summary>
+        /// Callback for LinphoneCoreListener
+        /// </summary>
         public void LogUploadStatusChanged(bool uploadComplete, string info)
         {
             BaseModel.UIDispatcher.BeginInvoke(() =>
@@ -1010,6 +1013,17 @@ namespace Linphone.Model
                 {
                     SendEmail(info);
                 }
+            });
+        }
+
+        /// <summary>
+        /// Callback for LinphoneCoreListener
+        /// </summary>
+        public void LogUploadProgressChanged(int progress)
+        {
+            BaseModel.UIDispatcher.BeginInvoke(() =>
+            {
+                
             });
         }
         #endregion
