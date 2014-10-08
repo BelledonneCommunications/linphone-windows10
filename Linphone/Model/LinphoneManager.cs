@@ -738,6 +738,9 @@ namespace Linphone.Model
             Logger.Msg("[LinphoneManager] Global state changed: " + state.ToString() + ", message=" + message + "\r\n");
         }
 
+        public delegate void CallStateChangedEventHandler(LinphoneCall call, LinphoneCallState state);
+        public event CallStateChangedEventHandler CallStateChanged;
+
         /// <summary>
         /// Callback for LinphoneCoreListener
         /// </summary>
@@ -838,6 +841,14 @@ namespace Linphone.Model
                         CallListener.CallUpdatedByRemote(call, videoAdded);
                 });
             }
+
+            BaseModel.UIDispatcher.BeginInvoke(() =>
+            {
+                if (CallStateChanged != null)
+                {
+                    CallStateChanged(call, state);
+                }
+            });
         }
 
         /// <summary>

@@ -72,6 +72,7 @@
             BorderThickness="0"
             Margin="-10"
             Click="microphone_Click_1"
+            IsEnabled="False"
             IsChecked="{Binding MuteButtonToggled}"
             Visibility="{Binding MicrophoneButtonVisibility}"
             Background="{StaticResource PhoneChromeBrush}">
@@ -88,6 +89,7 @@
             BorderThickness="0"
             Margin="-10"
             Click="pause_Click_1"
+            IsEnabled="False"
             IsChecked="{Binding PauseButtonToggled}"
             Visibility="{Binding PauseButtonVisibility}"
             Background="{StaticResource PhoneChromeBrush}">

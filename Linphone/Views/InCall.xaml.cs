@@ -103,6 +103,9 @@ namespace Linphone.Views
         private void buttons_PauseClick(object sender, bool isPaused)
         {
             ((InCallModel)ViewModel).PauseButtonToggled = isPaused;
+            buttons.pauseImg.Source = new BitmapImage(new Uri(isPaused ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
+            buttons_landscape.pauseImg.Source = new BitmapImage(new Uri(isPaused ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
+
             if (isPaused)
                 LinphoneManager.Instance.PauseCurrentCall();
             else
@@ -142,6 +145,7 @@ namespace Linphone.Views
             this.ViewModel.MuteListener = this;
             this.ViewModel.PauseListener = this;
             this.ViewModel.CallUpdatedByRemoteListener = this;
+            LinphoneManager.Instance.CallStateChanged += CallStateChanged;
 
             if (NavigationContext.QueryString.ContainsKey("sip"))
             {
@@ -164,6 +168,29 @@ namespace Linphone.Views
             await t;
         }
 
+        private void CallStateChanged(LinphoneCall call, LinphoneCallState state)
+        {
+            if (state == LinphoneCallState.StreamsRunning)
+            {
+                buttons.pause.IsEnabled = true;
+                buttons.microphone.IsEnabled = true;
+                buttons_landscape.pause.IsEnabled = true;
+                buttons_landscape.microphone.IsEnabled = true;
+            }
+            else if (state == LinphoneCallState.PausedByRemote)
+            {
+                buttons.pause.IsEnabled = false;
+                buttons.microphone.IsEnabled = false;
+                buttons_landscape.pause.IsEnabled = false;
+                buttons_landscape.microphone.IsEnabled = false;
+            }
+            else if (state == LinphoneCallState.Paused)
+            {
+                buttons.microphone.IsEnabled = false;
+                buttons_landscape.microphone.IsEnabled = false;
+            }
+        }
+
         /// <summary>
         /// Method called when the page is leaved.
         /// </summary>
@@ -182,6 +209,7 @@ namespace Linphone.Views
             base.OnNavigatedFrom(nee);
             this.ViewModel.MuteListener = null;
             this.ViewModel.PauseListener = null;
+            LinphoneManager.Instance.CallStateChanged -= CallStateChanged;
         }
 
         /// <summary>
@@ -210,6 +238,7 @@ namespace Linphone.Views
         {
             ((InCallModel)ViewModel).MuteButtonToggled = isMicMuted;
             buttons.microImg.Source = new BitmapImage(new Uri(isMicMuted ? micOn : micOff, UriKind.RelativeOrAbsolute));
+            buttons_landscape.microImg.Source = new BitmapImage(new Uri(isMicMuted ? micOn : micOff, UriKind.RelativeOrAbsolute));
         }
 
         /// <summary>
@@ -218,8 +247,6 @@ namespace Linphone.Views
         public void PauseStateChanged(LinphoneCall call, bool isCallPaused, bool isCallPausedByRemote)
         {
             ((InCallModel)ViewModel).PauseButtonToggled = isCallPaused || isCallPausedByRemote;
-            buttons.pauseImg.Source = new BitmapImage(new Uri(isCallPaused || isCallPausedByRemote ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
-            //((InCallModel)ViewModel).PauseButtonVisibility = isCallPausedByRemote ? Visibility.Collapsed : Visibility.Visible;
 
             if (oneSecondTimer == null)
             {
