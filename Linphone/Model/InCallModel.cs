@@ -49,6 +49,11 @@ namespace Linphone.Views
                     EmptyPanelVisibility = Visibility.Visible;
                     StatsPanelVisibility = Visibility.Collapsed;
                 }
+                if (StatsButtonToggled)
+                {
+                    EmptyPanelVisibility = Visibility.Collapsed;
+                    StatsPanelVisibility = Visibility.Visible;
+                }
             }
             else if (currentOrientation.StartsWith("Landscape"))
             {
@@ -56,34 +61,6 @@ namespace Linphone.Views
                 LandscapeButtonsVisibility = Visibility.Visible;
                 EmptyPanelVisibility = Visibility.Collapsed;
                 StatsPanelVisibility = Visibility.Collapsed;
-            }
-        }
-
-        /// <summary>
-        /// Show or hide the display of the dialpad.
-        /// </summary>
-        public void ToggleDialpad()
-        {
-            IsDialpadToggled = !IsDialpadToggled;
-            if (IsDialpadToggled)
-            {
-                NumpadVisibility = Visibility.Visible;
-                PauseButtonVisibility = Visibility.Collapsed;
-                MicrophoneButtonVisibility = Visibility.Collapsed;
-                SpeakerButtonVisibility = Visibility.Collapsed;
-                StatsButtonVisibility = Visibility.Collapsed;
-                VideoButtonVisibility = Visibility.Collapsed;
-                CameraButtonVisibility = Visibility.Collapsed;
-            }
-            else
-            {
-                NumpadVisibility = Visibility.Collapsed;
-                PauseButtonVisibility = Visibility.Visible;
-                MicrophoneButtonVisibility = Visibility.Visible;
-                SpeakerButtonVisibility = Visibility.Visible;
-                StatsButtonVisibility = Visibility.Visible;
-                VideoButtonVisibility = Visibility.Visible;
-                CameraButtonVisibility = Visibility.Visible;
             }
         }
 
@@ -189,26 +166,6 @@ namespace Linphone.Views
         #endregion
 
         #region Button properties
-
-        /// <summary>
-        /// Is the dialpad displayed (Boolean).
-        /// </summary>
-        public Boolean IsDialpadToggled
-        {
-            get
-            {
-                return this.isDialpadToggled;
-            }
-            set
-            {
-                if (this.isDialpadToggled != value)
-                {
-                    this.isDialpadToggled = value;
-                    this.OnPropertyChanged();
-                }
-            }
-        }
-
         /// <summary>
         /// Visibility of the numeric pad.
         /// </summary>
@@ -428,9 +385,103 @@ namespace Linphone.Views
             }
         }
 
+        public bool StatsButtonToggled
+        {
+            get
+            {
+                return this.isStatsToggled;
+            }
+            set
+            {
+                if (this.isStatsToggled != value)
+                {
+                    this.isStatsToggled = value;
+                    this.OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool SpeakerButtonToggled
+        {
+            get
+            {
+                return this.isSpeakerToggled;
+            }
+            set
+            {
+                if (this.isSpeakerToggled != value)
+                {
+                    this.isSpeakerToggled = value;
+                    this.OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool MuteButtonToggled
+        {
+            get
+            {
+                return this.isMuteToggled;
+            }
+            set
+            {
+                if (this.isMuteToggled != value)
+                {
+                    this.isMuteToggled = value;
+                    this.OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool PauseButtonToggled
+        {
+            get
+            {
+                return this.isPauseToggled;
+            }
+            set
+            {
+                if (this.isPauseToggled != value)
+                {
+                    this.isPauseToggled = value;
+                    this.OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool DialpadButtonToggled
+        {
+            get
+            {
+                return this.isDialpadToggled;
+            }
+            set
+            {
+                if (this.isDialpadToggled != value)
+                {
+                    this.isDialpadToggled = value;
+                    this.OnPropertyChanged();
+                }
+            }
+        }
         #endregion
 
         #region Video properties
+        public bool VideoButtonToggled
+        {
+            get
+            {
+                return this.isVideoToggled;
+            }
+            set
+            {
+                if (this.isVideoToggled != value)
+                {
+                    this.isVideoToggled = value;
+                    this.OnPropertyChanged();
+                }
+            }
+        }
 
         /// <summary>
         /// Is the video active (Boolean).
@@ -581,7 +632,6 @@ namespace Linphone.Views
 
         #region Private variables
 
-        private Boolean isDialpadToggled = false;
         private Visibility numpadVisibility = Visibility.Collapsed;
         private Visibility pauseButtonVisibility = Visibility.Visible;
         private Visibility microphoneButtonVisibility = Visibility.Visible;
@@ -601,7 +651,12 @@ namespace Linphone.Views
         private Visibility localVideoVisibility = Visibility.Collapsed;
         private Double localVideoRotation = 0;
         private Double localVideoScaleX = 1.0;
-
+        private bool isStatsToggled = false;
+        private bool isMuteToggled = false;
+        private bool isSpeakerToggled = false;
+        private bool isDialpadToggled = false;
+        private bool isPauseToggled = false;
+        private bool isVideoToggled = false;
         #endregion
     }
 }

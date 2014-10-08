@@ -38,13 +38,14 @@
         </Button>
 
         <ToggleButton
+            x:Name="dialpad"
             Grid.Row="0"
             Grid.Column="2"
             BorderThickness="0"
             Margin="-10"
             Click="dialpad_Click_1"
             Background="{StaticResource PhoneChromeBrush}"
-            IsChecked="{Binding IsDialpadToggled}">
+            IsChecked="{Binding DialpadButtonToggled}">
             <Image Source="/Assets/AppBar/dialpad.png" Stretch="None"/>
         </ToggleButton>
 
@@ -55,6 +56,7 @@
             BorderThickness="0"
             Margin="-10"
             Click="speaker_Click_1"
+            IsChecked="{Binding SpeakerButtonToggled}"
             Visibility="{Binding SpeakerButtonVisibility}"
             Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
@@ -70,6 +72,7 @@
             BorderThickness="0"
             Margin="-10"
             Click="microphone_Click_1"
+            IsChecked="{Binding MuteButtonToggled}"
             Visibility="{Binding MicrophoneButtonVisibility}"
             Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
@@ -85,6 +88,7 @@
             BorderThickness="0"
             Margin="-10"
             Click="pause_Click_1"
+            IsChecked="{Binding PauseButtonToggled}"
             Visibility="{Binding PauseButtonVisibility}"
             Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
@@ -100,6 +104,7 @@
             BorderThickness="0"
             Margin="-10"
             Click="stats_Click_1"
+            IsChecked="{Binding StatsButtonToggled}"
             Visibility="{Binding StatsButtonVisibility}"
             Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
@@ -115,6 +120,7 @@
             BorderThickness="0"
             Margin="-10"
             Click="video_Click_1"
+            IsChecked="{Binding VideoButtonToggled}"
             Visibility="{Binding VideoButtonVisibility}"
             Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
@@ -143,6 +149,6 @@
             Grid.Row="1"
             Grid.RowSpan="2"
             Grid.ColumnSpan="3"
-            Visibility="Collapsed"/>
+            Visibility="{Binding NumpadVisibility}"/>
     </Grid>
 </UserControl>

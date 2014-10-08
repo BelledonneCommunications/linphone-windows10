@@ -34,6 +34,18 @@ namespace Linphone.Controls
         public delegate void PauseClickEventHandler(object sender, bool isPaused);
         public event PauseClickEventHandler PauseClick;
 
+        public delegate bool SpeakerClickEventHandler(object sender, bool isSpeakerOn);
+        public event SpeakerClickEventHandler SpeakerClick;
+
+        public delegate void MuteClickEventHandler(object sender, bool isMuteOn);
+        public event MuteClickEventHandler MuteClick;
+
+        public delegate void VideoClickEventHandler(object sender, bool isVideoOn);
+        public event VideoClickEventHandler VideoClick;
+
+        public delegate void DialpadClickEventHandler(object sender, bool isDialpadShown);
+        public event DialpadClickEventHandler DialpadClick;
+
         /// <summary>
         /// Public constructor
         /// </summary>
@@ -50,22 +62,16 @@ namespace Linphone.Controls
         private void speaker_Click_1(object sender, RoutedEventArgs e)
         {
             bool isSpeakerToggled = (bool)speaker.IsChecked;
-            try
+            if (SpeakerClick(this, isSpeakerToggled))
             {
-                LinphoneManager.Instance.EnableSpeaker(isSpeakerToggled);
-                speakerImg.Source = new BitmapImage(new Uri(isSpeakerToggled ? speakerOn : speakerOff, UriKind.RelativeOrAbsolute));
-            }
-            catch
-            {
-                Logger.Warn("Exception while trying to toggle speaker to {0}", isSpeakerToggled.ToString());
-                speaker.IsChecked = !isSpeakerToggled;
+                speakerImg.Source = new BitmapImage(new Uri((bool)speaker.IsChecked ? speakerOn : speakerOff, UriKind.RelativeOrAbsolute));
             }
         }
 
         private void microphone_Click_1(object sender, RoutedEventArgs e)
         {
             bool isMicToggled = (bool)microphone.IsChecked;
-            LinphoneManager.Instance.MuteMic(isMicToggled);
+            MuteClick(this, isMicToggled);
         }
 
         /*private void stats_Click_1(object sender, RoutedEventArgs e)
@@ -77,11 +83,8 @@ namespace Linphone.Controls
         private void video_Click_1(object sender, RoutedEventArgs e)
         {
             bool isVideoToggled = (bool)video.IsChecked;
-            if (!LinphoneManager.Instance.EnableVideo(isVideoToggled))
-            {
-                if (isVideoToggled) video.IsChecked = false;
-            }
-            videoImg.Source = new BitmapImage(new Uri(isVideoToggled ? videoOn : videoOff, UriKind.RelativeOrAbsolute));
+            videoImg.Source = new BitmapImage(new Uri((bool)video.IsChecked ? videoOn : videoOff, UriKind.RelativeOrAbsolute));
+            VideoClick(this, isVideoToggled);
         }
 
         private void camera_Click_1(object sender, RoutedEventArgs e)
@@ -91,7 +94,8 @@ namespace Linphone.Controls
 
         private void dialpad_Click_1(object sender, RoutedEventArgs e)
         {
-            numpad.Visibility = numpad.Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
+            bool isDialpadChecked = (bool)dialpad.IsChecked;
+            DialpadClick(this, isDialpadChecked);
         }
 
         private void pause_Click_1(object sender, RoutedEventArgs e)
