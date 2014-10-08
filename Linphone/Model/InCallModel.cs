@@ -16,15 +16,48 @@ namespace Linphone.Views
     /// </summary>
     public class InCallModel : BaseModel
     {
+        private string currentOrientation = "PortraitUp";
         /// <summary>
         /// Public constructor.
         /// </summary>
         public InCallModel()
             : base()
         {
+            currentOrientation = CurrentPage.Orientation.ToString();
+        }
+
+        public void OrientationChanged(object sender, Microsoft.Phone.Controls.OrientationChangedEventArgs e)
+        {
+            string orientation = e.Orientation.ToString();
+            if (!orientation.Equals(currentOrientation))
+            {
+                currentOrientation = orientation;
+                AdjustDisplayAccordingToOrientation();
+            }
         }
 
         #region Actions
+
+        private void AdjustDisplayAccordingToOrientation()
+        {
+            if (currentOrientation.StartsWith("Portrait"))
+            {
+                PortraitButtonsVisibility = Visibility.Visible;
+                LandscapeButtonsVisibility = Visibility.Collapsed;
+                if (StatsPanelVisibility != Visibility.Visible) 
+                {
+                    EmptyPanelVisibility = Visibility.Visible;
+                    StatsPanelVisibility = Visibility.Collapsed;
+                }
+            }
+            else if (currentOrientation.StartsWith("Landscape"))
+            {
+                PortraitButtonsVisibility = Visibility.Collapsed;
+                LandscapeButtonsVisibility = Visibility.Visible;
+                EmptyPanelVisibility = Visibility.Collapsed;
+                StatsPanelVisibility = Visibility.Collapsed;
+            }
+        }
 
         /// <summary>
         /// Show or hide the display of the dialpad.
@@ -61,6 +94,15 @@ namespace Linphone.Views
         {
             LinphoneManager.Instance.ToggleCameras();
             ShowLocalVideo();
+        }
+
+        /// <summary>
+        /// Changes the visibility of the stats panel
+        /// </summary>
+        public void ChangeStatsVisibility(bool areStatsVisible)
+        {
+            StatsPanelVisibility = areStatsVisible ? Visibility.Visible : Visibility.Collapsed;
+            EmptyPanelVisibility = areStatsVisible ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void ShowRemoteVideo()
@@ -129,6 +171,19 @@ namespace Linphone.Views
         {
             LocalVideoUri = null;
             LocalVideoVisibility = Visibility.Collapsed;
+        }
+
+        internal void ShowButtonsAndPanel()
+        {
+            AdjustDisplayAccordingToOrientation();
+        }
+
+        internal void HideButtonsAndPanel()
+        {
+            PortraitButtonsVisibility = Visibility.Collapsed;
+            LandscapeButtonsVisibility = Visibility.Collapsed;
+            EmptyPanelVisibility = Visibility.Collapsed;
+            StatsPanelVisibility = Visibility.Collapsed;
         }
 
         #endregion
@@ -297,6 +352,82 @@ namespace Linphone.Views
             }
         }
 
+        /// <summary>
+        /// Visibility of the portrait buttons.
+        /// </summary>
+        public Visibility PortraitButtonsVisibility
+        {
+            get
+            {
+                return this.portraitButtonsVisibility;
+            }
+            set
+            {
+                if (this.portraitButtonsVisibility != value)
+                {
+                    this.portraitButtonsVisibility = value;
+                    this.OnPropertyChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Visibility of the landscape buttons.
+        /// </summary>
+        public Visibility LandscapeButtonsVisibility
+        {
+            get
+            {
+                return this.landscapeButtonsVisibility;
+            }
+            set
+            {
+                if (this.landscapeButtonsVisibility != value)
+                {
+                    this.landscapeButtonsVisibility = value;
+                    this.OnPropertyChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Visibility of the portrait buttons.
+        /// </summary>
+        public Visibility EmptyPanelVisibility
+        {
+            get
+            {
+                return this.emptyPanelVisibility;
+            }
+            set
+            {
+                if (this.emptyPanelVisibility != value)
+                {
+                    this.emptyPanelVisibility = value;
+                    this.OnPropertyChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Visibility of the landscape buttons.
+        /// </summary>
+        public Visibility StatsPanelVisibility
+        {
+            get
+            {
+                return this.statsPanelVisibility;
+            }
+            set
+            {
+                if (this.statsPanelVisibility != value)
+                {
+                    this.statsPanelVisibility = value;
+                    this.OnPropertyChanged();
+                }
+            }
+        }
+
         #endregion
 
         #region Video properties
@@ -458,6 +589,10 @@ namespace Linphone.Views
         private Visibility statsButtonVisibility = Visibility.Visible;
         private Visibility videoButtonVisibility = Visibility.Collapsed;
         private Visibility cameraButtonVisibility = Visibility.Collapsed;
+        private Visibility portraitButtonsVisibility = Visibility.Visible;
+        private Visibility landscapeButtonsVisibility = Visibility.Collapsed;
+        private Visibility emptyPanelVisibility = Visibility.Visible;
+        private Visibility statsPanelVisibility = Visibility.Collapsed;
         private Boolean isVideoActive = false;
         private Uri remoteVideoUri = null;
         private Visibility remoteVideoVisibility = Visibility.Collapsed;

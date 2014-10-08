@@ -76,6 +76,12 @@
     <Compile Include="Controls\AddressBox.xaml.cs">
       <DependentUpon>AddressBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CallControlsL.xaml.cs">
+      <DependentUpon>CallControlsL.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CallControlsP.xaml.cs">
+      <DependentUpon>CallControlsP.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\IncomingChatBubble.xaml.cs">
       <DependentUpon>IncomingChatBubble.xaml</DependentUpon>
     </Compile>
@@ -84,6 +90,9 @@
     </Compile>
     <Compile Include="Controls\MessageReceivedNotification.xaml.cs">
       <DependentUpon>MessageReceivedNotification.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Numpad.xaml.cs">
+      <DependentUpon>Numpad.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\OutgoingChatBubble.xaml.cs">
       <DependentUpon>OutgoingChatBubble.xaml</DependentUpon>
@@ -280,6 +289,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\CallControlsL.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CallControlsP.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\IncomingChatBubble.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -289,6 +306,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\MessageReceivedNotification.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Numpad.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -7,27 +7,31 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:linphone="clr-namespace:Linphone"
+    xmlns:controls="clr-namespace:Linphone.Controls"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="PortraitOrLandscape" Orientation="Landscape"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
+    OrientationChanged="OrientationChanged"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
     
-    <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid
         x:Name="LayoutRoot"
         Background="Transparent"
         Tap="LayoutRoot_Tap">
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
 
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="emptyPanel" Grid.Row="0">
+        <StackPanel x:Name="emptyPanel" Grid.Row="0" Visibility="{Binding EmptyPanelVisibility}">
             <TextBlock Style="{StaticResource PhoneTextSmallStyle}"/>
             <TextBlock Style="{StaticResource PhoneTextSmallStyle}"/>
             <TextBlock Style="{StaticResource PhoneTextSmallStyle}"/>
@@ -38,7 +42,7 @@
         </StackPanel>
 
         <!-- Statistics panel -->
-        <StackPanel x:Name="statsPanel" Grid.Row="1" Visibility="Collapsed">
+        <StackPanel x:Name="statsPanel" Grid.Row="1" Visibility="{Binding StatsPanelVisibility}">
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
@@ -67,8 +71,107 @@
             </Grid>
         </StackPanel>
 
-        <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="2">
+            <!-- Animations -->
+            <Grid.Resources>
+                <Storyboard x:Name="ButtonsFadeOutAnimation">
+                    <DoubleAnimation
+                        Storyboard.TargetName="buttons"
+                        Storyboard.TargetProperty="(Opacity)"
+                        Duration="0:0:0.5"
+                        To="0.0"
+                        Completed="ButtonsFadeOutAnimation_Completed"/>
+                    <DoubleAnimation
+                        Storyboard.TargetName="buttons_landscape"
+                        Storyboard.TargetProperty="(Opacity)"
+                        Duration="0:0:0.5"
+                        To="0.0"/>
+                    <DoubleAnimation
+                        Storyboard.TargetName="statsPanel"
+                        Storyboard.TargetProperty="(Opacity)"
+                        Duration="0:0:0.5"
+                        To="0.0"/>
+                    <DoubleAnimation
+                        Storyboard.TargetName="Status"
+                        Storyboard.TargetProperty="(Opacity)"
+                        Duration="0:0:0.5"
+                        To="0.0"/>
+                    <DoubleAnimation
+                        Storyboard.TargetName="Contact"
+                        Storyboard.TargetProperty="(Opacity)"
+                        Duration="0:0:0.5"
+                        To="0.0"/>
+                    <DoubleAnimation
+                        Storyboard.TargetName="Number"
+                        Storyboard.TargetProperty="(Opacity)"
+                        Duration="0:0:0.5"
+                        To="0.0"/>
+                </Storyboard>
+                <Storyboard x:Name="ButtonsFadeInVideoAnimation">
+                    <DoubleAnimation
+                        Storyboard.TargetName="buttons"
+                        Storyboard.TargetProperty="(Opacity)"
+                        Duration="0:0:0.5"
+                        To="0.7"/>
+                    <DoubleAnimation
+                        Storyboard.TargetName="buttons_landscape"
+                        Storyboard.TargetProperty="(Opacity)"
+                        Duration="0:0:0.5"
+                        To="0.7"/>
+                    <DoubleAnimation
+                        Storyboard.TargetName="statsPanel"
+                        Storyboard.TargetProperty="(Opacity)"
+                        Duration="0:0:0.5"
+                        To="1.0"/>
+                    <DoubleAnimation
+                        Storyboard.TargetName="Status"
+                        Storyboard.TargetProperty="(Opacity)"
+                        Duration="0:0:0.5"
+                        To="1.0"/>
+                    <DoubleAnimation
+                        Storyboard.TargetName="Contact"
+                        Storyboard.TargetProperty="(Opacity)"
+                        Duration="0:0:0.5"
+                        To="1.0"/>
+                    <DoubleAnimation
+                        Storyboard.TargetName="Number"
+                        Storyboard.TargetProperty="(Opacity)"
+                        Duration="0:0:0.5"
+                        To="1.0"/>
+                </Storyboard>
+                <Storyboard x:Name="ButtonsFadeInAudioAnimation">
+                    <DoubleAnimation
+                        Storyboard.TargetName="buttons"
+                        Storyboard.TargetProperty="(Opacity)"
+                        Duration="0:0:0.5"
+                        To="1.0"/>
+                    <DoubleAnimation
+                        Storyboard.TargetName="buttons_landscape"
+                        Storyboard.TargetProperty="(Opacity)"
+                        Duration="0:0:0.5"
+                        To="1.0"/>
+                    <DoubleAnimation
+                        Storyboard.TargetName="statsPanel"
+                        Storyboard.TargetProperty="(Opacity)"
+                        Duration="0:0:0.5"
+                        To="1.0"/>
+                    <DoubleAnimation
+                        Storyboard.TargetName="Status"
+                        Storyboard.TargetProperty="(Opacity)"
+                        Duration="0:0:0.5"
+                        To="1.0"/>
+                    <DoubleAnimation
+                        Storyboard.TargetName="Contact"
+                        Storyboard.TargetProperty="(Opacity)"
+                        Duration="0:0:0.5"
+                        To="1.0"/>
+                    <DoubleAnimation
+                        Storyboard.TargetName="Number"
+                        Storyboard.TargetProperty="(Opacity)"
+                        Duration="0:0:0.5"
+                        To="1.0"/>
+                </Storyboard>
+            </Grid.Resources>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -99,425 +202,27 @@
                 Margin="12,0,12,0"
                 FontSize="25"/>
 
-            <!-- Buttons -->
-            <Grid
+            <controls:CallControlsP 
                 x:Name="buttons"
-                Grid.Row="3"
-                Margin="0,25,0,0"
-                Opacity="{Binding ButtonsOpacity}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <!-- Animations -->
-                <Grid.Resources>
-                    <Storyboard x:Name="ButtonsFadeOutAnimation">
-                        <DoubleAnimation
-                            Storyboard.TargetName="buttons"
-                            Storyboard.TargetProperty="(Opacity)"
-                            Duration="0:0:0.5"
-                            To="0.0"
-                            Completed="ButtonsFadeOutAnimation_Completed"/>
-                        <DoubleAnimation
-                            Storyboard.TargetName="statsPanel"
-                            Storyboard.TargetProperty="(Opacity)"
-                            Duration="0:0:0.5"
-                            To="0.0"/>
-                        <DoubleAnimation
-                            Storyboard.TargetName="Status"
-                            Storyboard.TargetProperty="(Opacity)"
-                            Duration="0:0:0.5"
-                            To="0.0"/>
-                        <DoubleAnimation
-                            Storyboard.TargetName="Contact"
-                            Storyboard.TargetProperty="(Opacity)"
-                            Duration="0:0:0.5"
-                            To="0.0"/>
-                        <DoubleAnimation
-                            Storyboard.TargetName="Number"
-                            Storyboard.TargetProperty="(Opacity)"
-                            Duration="0:0:0.5"
-                            To="0.0"/>
-                    </Storyboard>
-                    <Storyboard x:Name="ButtonsFadeInVideoAnimation">
-                        <DoubleAnimation
-                            Storyboard.TargetName="buttons"
-                            Storyboard.TargetProperty="(Opacity)"
-                            Duration="0:0:0.5"
-                            To="0.7"/>
-                        <DoubleAnimation
-                            Storyboard.TargetName="statsPanel"
-                            Storyboard.TargetProperty="(Opacity)"
-                            Duration="0:0:0.5"
-                            To="1.0"/>
-                        <DoubleAnimation
-                            Storyboard.TargetName="Status"
-                            Storyboard.TargetProperty="(Opacity)"
-                            Duration="0:0:0.5"
-                            To="1.0"/>
-                        <DoubleAnimation
-                            Storyboard.TargetName="Contact"
-                            Storyboard.TargetProperty="(Opacity)"
-                            Duration="0:0:0.5"
-                            To="1.0"/>
-                        <DoubleAnimation
-                            Storyboard.TargetName="Number"
-                            Storyboard.TargetProperty="(Opacity)"
-                            Duration="0:0:0.5"
-                            To="1.0"/>
-                    </Storyboard>
-                    <Storyboard x:Name="ButtonsFadeInAudioAnimation">
-                        <DoubleAnimation
-                            Storyboard.TargetName="buttons"
-                            Storyboard.TargetProperty="(Opacity)"
-                            Duration="0:0:0.5"
-                            To="1.0"/>
-                        <DoubleAnimation
-                            Storyboard.TargetName="statsPanel"
-                            Storyboard.TargetProperty="(Opacity)"
-                            Duration="0:0:0.5"
-                            To="1.0"/>
-                        <DoubleAnimation
-                            Storyboard.TargetName="Status"
-                            Storyboard.TargetProperty="(Opacity)"
-                            Duration="0:0:0.5"
-                            To="1.0"/>
-                        <DoubleAnimation
-                            Storyboard.TargetName="Contact"
-                            Storyboard.TargetProperty="(Opacity)"
-                            Duration="0:0:0.5"
-                            To="1.0"/>
-                        <DoubleAnimation
-                            Storyboard.TargetName="Number"
-                            Storyboard.TargetProperty="(Opacity)"
-                            Duration="0:0:0.5"
-                            To="1.0"/>
-                    </Storyboard>
-                </Grid.Resources>
+                Visibility="{Binding PortraitButtonsVisibility}"
+                Grid.Row="3"/>
 
-                <Button 
-                    x:Name="hangUp"
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"
-                    BorderThickness="0"
-                    Margin="-10"
-                    Background="{StaticResource PhoneAccentBrush}"
-                    Content="{Binding Path=LocalizedResources.HangUp, Source={StaticResource LocalizedStrings}}"
-                    Click="hangUp_Click"
-                    ClickMode="Release">
-                    <Button.Style>
-                        <StaticResource ResourceKey="AccentColorButton"/>
-                    </Button.Style>
-                </Button>
-
-                <ToggleButton 
-                    x:Name="dialpad"
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    BorderThickness="0"
-                    Margin="-10"
-                    Click="dialpad_Click_1"
-                    Background="{StaticResource PhoneChromeBrush}"
-                    IsChecked="{Binding IsDialpadToggled}">
-                    <Image Source="/Assets/AppBar/dialpad.png" Stretch="None"/>
-                </ToggleButton>
-
-                <ToggleButton 
-                    x:Name="speaker"
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    BorderThickness="0"
-                    Margin="-10"
-                    Click="speaker_Click_1"
-                    Visibility="{Binding SpeakerButtonVisibility}"
-                    Background="{StaticResource PhoneChromeBrush}">
-                    <StackPanel Orientation="Vertical">
-                        <Image x:Name="speakerImg" Source="/Assets/AppBar/speaker.png" Stretch="None"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Speaker, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap" Margin="5,0,5,10"/>
-                    </StackPanel>
-                </ToggleButton>
-
-                <ToggleButton 
-                    x:Name="microphone"
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    BorderThickness="0"
-                    Margin="-10"
-                    Click="microphone_Click_1"
-                    Visibility="{Binding MicrophoneButtonVisibility}"
-                    Background="{StaticResource PhoneChromeBrush}">
-                    <StackPanel Orientation="Vertical">
-                        <Image x:Name="microImg" Source="/Assets/AppBar/mic.png" Stretch="None"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Mute, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
-                    </StackPanel>
-                </ToggleButton>
-
-                <ToggleButton
-                    x:Name="pause"
-                    Grid.Row="1"
-                    Grid.Column="2"
-                    BorderThickness="0"
-                    Margin="-10"
-                    Click="pause_Click_1"
-                    Visibility="{Binding PauseButtonVisibility}"
-                    Background="{StaticResource PhoneChromeBrush}">
-                    <StackPanel Orientation="Vertical">
-                        <Image x:Name="pauseImg" Source="/Assets/AppBar/pause.png" Stretch="None"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Hold, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
-                    </StackPanel>
-                </ToggleButton>
-                
-                <ToggleButton 
-                    x:Name="stats"
-                    Grid.Row="2"
-                    Grid.Column="0"
-                    BorderThickness="0"
-                    Margin="-10"
-                    Click="stats_Click_1"
-                    Visibility="{Binding StatsButtonVisibility}"
-                    Background="{StaticResource PhoneChromeBrush}">
-                    <StackPanel Orientation="Vertical">
-                        <Image x:Name="statsImg" Source="/Assets/AppBar/stats.png" Stretch="None"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Stats, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
-                    </StackPanel>
-                </ToggleButton>
-
-                <ToggleButton 
-                    x:Name="video"
-                    Grid.Row="2"
-                    Grid.Column="1"
-                    BorderThickness="0"
-                    Margin="-10"
-                    Click="video_Click_1"
-                    Visibility="{Binding VideoButtonVisibility}"
-                    Background="{StaticResource PhoneChromeBrush}">
-                    <StackPanel Orientation="Vertical">
-                        <Image x:Name="videoImg" Source="/Assets/AppBar/feature.video.png" Stretch="None"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Video, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
-                    </StackPanel>
-                </ToggleButton>
-
-                <Button 
-                    x:Name="camera"
-                    Grid.Row="3"
-                    Grid.Column="0"
-                    BorderThickness="0"
-                    Margin="-10"
-                    Click="camera_Click_1"
-                    Visibility="{Binding CameraButtonVisibility}"
-                    Background="Transparent">
-                    <StackPanel Orientation="Vertical">
-                        <Image x:Name="cameraImg" Source="/Assets/AppBar/feature.camera.png" Stretch="None"/>
-                    </StackPanel>
-                </Button>
-
-                <!-- Numeric pad buttons -->
-                <Grid
-                    x:Name="numpad"
-                    Grid.Row="3"
-                    Grid.ColumnSpan="3"
-                    Visibility="{Binding NumpadVisibility}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-
-                    <Button
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        BorderThickness="0"
-                        Margin="-10"
-                        Click="Numpad_Click_1"
-                        Tag="1"
-                        Background="{StaticResource PhoneChromeBrush}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="1" FontSize="30"/>
-                            <TextBlock Text="         " FontSize="20" Foreground="Gray" Margin="10,0,0,0" VerticalAlignment="Center"/>
-                        </StackPanel>    
-                    </Button>
-
-                    <Button
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        BorderThickness="0"
-                        Margin="-10"
-                        Click="Numpad_Click_1"
-                        Tag="2"
-                        Background="{StaticResource PhoneChromeBrush}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="2" FontSize="30"/>
-                            <TextBlock Text="ABC" FontSize="20" Foreground="Gray" Margin="10,0,0,0" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button
-                        Grid.Row="0"
-                        Grid.Column="2"
-                        BorderThickness="0"
-                        Margin="-10"
-                        Click="Numpad_Click_1"
-                        Tag="3"
-                        Background="{StaticResource PhoneChromeBrush}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="3" FontSize="30"/>
-                            <TextBlock Text="DEF   " FontSize="20" Foreground="Gray" Margin="10,0,0,0" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        BorderThickness="0"
-                        Margin="-10"
-                        Click="Numpad_Click_1"
-                        Tag="4"
-                        Background="{StaticResource PhoneChromeBrush}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="4" FontSize="30"/>
-                            <TextBlock Text="GHI   " FontSize="20" Foreground="Gray" Margin="10,0,0,0" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        BorderThickness="0"
-                        Margin="-10"
-                        Click="Numpad_Click_1"
-                        Tag="5"
-                        Background="{StaticResource PhoneChromeBrush}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="5" FontSize="30"/>
-                            <TextBlock Text="JKL  " FontSize="20" Foreground="Gray" Margin="10,0,0,0" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button
-                        Grid.Row="1"
-                        Grid.Column="2"
-                        BorderThickness="0"
-                        Margin="-10"
-                        Click="Numpad_Click_1"
-                        Tag="6"
-                        Background="{StaticResource PhoneChromeBrush}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="6" FontSize="30"/>
-                            <TextBlock Text="MNO " FontSize="20" Foreground="Gray" Margin="10,0,0,0" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        BorderThickness="0"
-                        Margin="-10"
-                        Click="Numpad_Click_1"
-                        Tag="7"
-                        Background="{StaticResource PhoneChromeBrush}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="7" FontSize="30"/>
-                            <TextBlock Text="PQRS" FontSize="20" Foreground="Gray" Margin="10,0,0,0" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        BorderThickness="0"
-                        Margin="-10"
-                        Click="Numpad_Click_1"
-                        Tag="8"
-                        Background="{StaticResource PhoneChromeBrush}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="8" FontSize="30"/>
-                            <TextBlock Text="TUV " FontSize="20" Foreground="Gray" Margin="10,0,0,0" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button
-                        Grid.Row="2"
-                        Grid.Column="2"
-                        BorderThickness="0"
-                        Margin="-10"
-                        Click="Numpad_Click_1"
-                        Tag="9"
-                        Background="{StaticResource PhoneChromeBrush}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="9" FontSize="30"/>
-                            <TextBlock Text="WXYZ" FontSize="20" Foreground="Gray" Margin="10,0,0,0" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        BorderThickness="0"
-                        Margin="-10"
-                        Click="Numpad_Click_1"
-                        Tag="*"
-                        Background="{StaticResource PhoneChromeBrush}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="＊" FontSize="30"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button
-                        Grid.Row="3"
-                        Grid.Column="1"
-                        BorderThickness="0"
-                        Margin="-10"
-                        Click="Numpad_Click_1"
-                        Tag="0"
-                        Background="{StaticResource PhoneChromeBrush}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="0" FontSize="30"/>
-                            <TextBlock Text="        " FontSize="20" Foreground="Gray" Margin="10,0,0,0" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button
-                        Grid.Row="3"
-                        Grid.Column="2"
-                        BorderThickness="0"
-                        Margin="-10"
-                        Click="Numpad_Click_1"
-                        Tag="#"
-                        Background="{StaticResource PhoneChromeBrush}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="#" FontSize="30"/>
-                        </StackPanel>
-                    </Button>
-
-                </Grid>
-
-            </Grid>
+            <controls:CallControlsL
+                x:Name="buttons_landscape"
+                Visibility="{Binding LandscapeButtonsVisibility}"
+                Grid.Row="3"/>
         </Grid>
 
         <!-- Remote video media element -->
         <Grid Grid.RowSpan="3" Canvas.ZIndex="-2">
             <MediaElement
-                x:Name="remoteVideo"
-                Visibility="{Binding RemoteVideoVisibility}"
-                MediaOpened="remoteVideo_MediaOpened_1"
-                MediaFailed="remoteVideo_MediaFailed_1"
-                Source="{Binding RemoteVideoUri}"
-                RenderTransformOrigin="0.5,0.5"
-                Stretch="Uniform"/>
+            x:Name="remoteVideo"
+            Visibility="{Binding RemoteVideoVisibility}"
+            MediaOpened="remoteVideo_MediaOpened_1"
+            MediaFailed="remoteVideo_MediaFailed_1"
+            Source="{Binding RemoteVideoUri}"
+            RenderTransformOrigin="0.5,0.5"
+            Stretch="Uniform"/>
         </Grid>
 
         <!-- Local video media element -->
@@ -549,7 +254,5 @@
                 </MediaElement.RenderTransform>
             </MediaElement>
         </Grid>
-
     </Grid>
-
 </linphone:BasePage>
