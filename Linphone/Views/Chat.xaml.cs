@@ -96,7 +96,7 @@ namespace Linphone.Views
             _SentMessages = new List<OutgoingChatBubble>();
 
             // Create LinphoneCore if not created yet, otherwise do nothing
-            await LinphoneManager.Instance.InitLinphoneCore();
+            LinphoneManager.Instance.InitLinphoneCore();
 
             ContactManager cm = ContactManager.Instance;
             cm.ContactFound += cm_ContactFound;

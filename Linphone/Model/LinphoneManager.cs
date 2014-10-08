@@ -269,7 +269,7 @@ namespace Linphone.Model
         /// <summary>
         /// Creates a new LinphoneCore (if not created yet) using a LinphoneCoreFactory.
         /// </summary>
-        public async Task InitLinphoneCore()
+        public async void InitLinphoneCore()
         {
             if (server.LinphoneCoreFactory != null && server.LinphoneCore != null)
             {
@@ -287,7 +287,6 @@ namespace Linphone.Model
                     // It happens server.LinphoneCore is available but the real core behind is broken, we'll catch this here and force recreate a new core
                     Logger.Dbg("[LinphoneManager] Exception happened while setting the UA, force creation of a new LinphoneCore");
                 }
-                //TODO: Crash not fixed
             }
 
             Debug.WriteLine("[LinphoneManager] Creating LinphoneCore");

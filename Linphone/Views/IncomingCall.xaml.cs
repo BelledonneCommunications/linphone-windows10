@@ -63,7 +63,7 @@ namespace Linphone.Views
         protected override async void OnNavigatedTo(NavigationEventArgs nee)
         {
             // Create LinphoneCore if not created yet, otherwise do nothing
-            Task t = LinphoneManager.Instance.InitLinphoneCore();
+            LinphoneManager.Instance.InitLinphoneCore();
 
             base.OnNavigatedTo(nee);
 
@@ -84,8 +84,6 @@ namespace Linphone.Views
                     cm.FindContact(_callingNumber);
                 }
             }
-
-            await t;
         }
 
         /// <summary>

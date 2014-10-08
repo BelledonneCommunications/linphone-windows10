@@ -50,7 +50,7 @@ namespace Linphone.Views
             LinphoneManager.Instance.ECListener = this;
 
             // Create LinphoneCore if not created yet, otherwise do nothing
-            await LinphoneManager.Instance.InitLinphoneCore();
+            LinphoneManager.Instance.InitLinphoneCore();
         }
 
         /// <summary>

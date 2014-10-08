@@ -139,7 +139,7 @@ namespace Linphone.Views
         protected override async void OnNavigatedTo(NavigationEventArgs nee)
         {
             // Create LinphoneCore if not created yet, otherwise do nothing
-            Task t = LinphoneManager.Instance.InitLinphoneCore();
+            LinphoneManager.Instance.InitLinphoneCore();
 
             base.OnNavigatedTo(nee);
             this.ViewModel.MuteListener = this;
@@ -164,8 +164,6 @@ namespace Linphone.Views
                     cm.FindContact(calledNumber);
                 }
             }
-
-            await t;
         }
 
         private void CallStateChanged(LinphoneCall call, LinphoneCallState state)

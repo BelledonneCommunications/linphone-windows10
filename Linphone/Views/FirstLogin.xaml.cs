@@ -35,7 +35,7 @@ namespace Linphone.Views
             base.OnNavigatedTo(e);
 
             // Create LinphoneCore if not created yet, otherwise do nothing
-            await LinphoneManager.Instance.InitLinphoneCore();
+            LinphoneManager.Instance.InitLinphoneCore();
 
             if (LinphoneManager.Instance.LinphoneCore.GetProxyConfigList().Count > 0)
             {

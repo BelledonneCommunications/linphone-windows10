@@ -80,7 +80,7 @@ namespace Linphone
             BasePage.StatusBar.RefreshStatus(LinphoneManager.Instance.LastKnownState);
 
             // Create LinphoneCore if not created yet, otherwise do nothing
-            await LinphoneManager.Instance.InitLinphoneCore();
+            LinphoneManager.Instance.InitLinphoneCore();
 
             BuildLocalizedApplicationBar();
 
