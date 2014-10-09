@@ -649,7 +649,6 @@ namespace Linphone.Model
             return false;
         }
 
-        private int nbCameras = 0;
         private String frontCamera = null;
         private String backCamera = null;
 
@@ -681,7 +680,6 @@ namespace Linphone.Model
                     LinphoneCore.SetVideoDevice(backCamera);
                 }
             }
-            this.nbCameras = nbCameras;
         }
 
         /// <summary>
@@ -691,7 +689,7 @@ namespace Linphone.Model
         {
             get
             {
-                return nbCameras;
+                return LinphoneCore.GetVideoDevices().Count;
             }
         }
 

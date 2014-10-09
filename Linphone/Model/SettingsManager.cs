@@ -1188,14 +1188,12 @@ namespace Linphone.Model
         /// </summary>
         public void Load()
         {
-#if DEBUG
-            dict[StunServerKeyName] = "stun.linphone.org";
-            dict[FirewallPolicyKeyName] = EnumToFirewallPolicy[FirewallPolicy.UseIce];
-            dict[MediaEncryptionKeyName] = EnumToMediaEncryption[MediaEncryption.SRTP];
-#else
             dict[StunServerKeyName] = LinphoneManager.Instance.LinphoneCore.GetStunServer();
             dict[FirewallPolicyKeyName] = EnumToFirewallPolicy[LinphoneManager.Instance.LinphoneCore.GetFirewallPolicy()];
             dict[MediaEncryptionKeyName] = EnumToMediaEncryption[LinphoneManager.Instance.LinphoneCore.GetMediaEncryption()];
+#if DEBUG
+            if (dict[StunServerKeyName].Length <= 0)
+                dict[StunServerKeyName] = "stun.linphone.org";
 #endif
 
             // Load tunnel configuration
