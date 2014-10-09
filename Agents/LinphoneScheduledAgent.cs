@@ -166,7 +166,7 @@ namespace Linphone.Agents
         /// <summary>
         /// Callback for LinphoneCoreListener
         /// </summary>
-        public void LogUploadStatusChanged(bool uploadComplete, string info)
+        public void LogUploadStatusChanged(LinphoneCoreLogCollectionUploadState state, string info)
         {
         }
 

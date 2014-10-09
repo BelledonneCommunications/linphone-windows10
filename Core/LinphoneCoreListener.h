@@ -87,9 +87,9 @@ namespace Linphone
 			/// <summary>
 			/// Callback method called when the status of the current log upload changes.
 			/// </summary>
-			/// <param name="uploadComplete">Tells whether or not the upload is complete</param>
+			/// <param name="state">Tells the state of the upload</param>
 			/// <param name="info">An error message if the upload went wrong, the url of the uploaded logs if it went well, null if upload not yet finished</param>
-			void LogUploadStatusChanged(Platform::Boolean uploadComplete, Platform::String^ info);
+			void LogUploadStatusChanged(LinphoneCoreLogCollectionUploadState state, Platform::String^ info);
 
 			/// <summary>
 			/// Callback method called when the progress of the current logs upload has changed.

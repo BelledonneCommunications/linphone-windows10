@@ -1634,12 +1634,12 @@ void log_collection_upload_progress_indication(LinphoneCore *lc, size_t progress
 	Linphone::Core::gApiLock.LeaveListener();
 }
 
-void log_collection_upload_state_changed(LinphoneCore *lc, LinphoneCoreLogCollectionUploadState state, const char *info) {
+void log_collection_upload_state_changed(LinphoneCore *lc, ::LinphoneCoreLogCollectionUploadState state, const char *info) {
 	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr)
 	{
-		listener->LogUploadStatusChanged(state == LinphoneCoreLogCollectionUploadState::LinphoneCoreLogCollectionUploadStateDelivered, info ? Linphone::Core::Utils::cctops(info) : nullptr);
+		listener->LogUploadStatusChanged((Linphone::Core::LinphoneCoreLogCollectionUploadState)state, info ? Linphone::Core::Utils::cctops(info) : nullptr);
 	}
 	Linphone::Core::gApiLock.LeaveListener();
 }

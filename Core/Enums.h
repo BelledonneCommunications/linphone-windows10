@@ -180,5 +180,12 @@ namespace Linphone
 			LinphoneTransportTLS = 2,
 			LinphoneTransportDTLS = 3
 		};
+
+		public enum class LinphoneCoreLogCollectionUploadState : int
+		{
+			LinphoneCoreLogCollectionUploadStateInProgress = 0, /**< Delivery in progress */
+			LinphoneCoreLogCollectionUploadStateDelivered = 1, /**< Log collection upload successfully delivered and acknowledged by remote end point */
+			LinphoneCoreLogCollectionUploadStateNotDelivered = 2
+		};
 	}
 }

@@ -1013,15 +1013,15 @@ namespace Linphone.Model
         /// <summary>
         /// Callback for LinphoneCoreListener
         /// </summary>
-        public void LogUploadStatusChanged(bool uploadComplete, string info)
+        public void LogUploadStatusChanged(LinphoneCoreLogCollectionUploadState state, string info)
         {
             BaseModel.UIDispatcher.BeginInvoke(() =>
             {
-                if (uploadComplete)
+                if (state == LinphoneCoreLogCollectionUploadState.LinphoneCoreLogCollectionUploadStateDelivered)
                 {
                     SendEmail(info);
-                } 
-                else if (info != null) 
+                }
+                else if (state == LinphoneCoreLogCollectionUploadState.LinphoneCoreLogCollectionUploadStateNotDelivered) 
                 {
                     Logger.Err(String.Format("[LinphoneManager] Logs upload error: {0}", info));
                     var notif = new CustomMessageBox()
