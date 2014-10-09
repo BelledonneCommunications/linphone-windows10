@@ -210,7 +210,6 @@
 
             <controls:CallControlsL
                 x:Name="buttons_landscape"
-                VerticalAlignment="Bottom"
                 Visibility="{Binding LandscapeButtonsVisibility}"
                 Grid.Row="3"/>
         </Grid>
