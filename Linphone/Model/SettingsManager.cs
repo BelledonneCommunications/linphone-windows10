@@ -367,12 +367,19 @@ namespace Linphone.Model
         {
             dict[UsernameKeyName] = "";
             dict[UserIdKeyName] = "";
-            dict[DomainKeyName] = "";
-            dict[ProxyKeyName] = "";
             dict[PasswordKeyName] = "";
             dict[DisplayNameKeyName] = "";
+#if DEBUG
+            dict[DomainKeyName] = "sip.linphone.org";
+            dict[ProxyKeyName] = "sip:sip.linphone.org:5223;transport=tls";
+            dict[OutboundProxyKeyName] = true.ToString();
+            dict[TransportKeyName] = AppResources.TransportTLS;
+#else
+            dict[DomainKeyName] = "";
+            dict[ProxyKeyName] = "";
             dict[OutboundProxyKeyName] = false.ToString();
             dict[TransportKeyName] = AppResources.TransportUDP;
+#endif
 
             LinphoneProxyConfig cfg = LinphoneManager.Instance.LinphoneCore.GetDefaultProxyConfig();
             if (cfg != null)
@@ -1181,9 +1188,15 @@ namespace Linphone.Model
         /// </summary>
         public void Load()
         {
+#if DEBUG
+            dict[StunServerKeyName] = "stun.linphone.org";
+            dict[FirewallPolicyKeyName] = EnumToFirewallPolicy[FirewallPolicy.UseIce];
+            dict[MediaEncryptionKeyName] = EnumToMediaEncryption[MediaEncryption.SRTP];
+#else
             dict[StunServerKeyName] = LinphoneManager.Instance.LinphoneCore.GetStunServer();
             dict[FirewallPolicyKeyName] = EnumToFirewallPolicy[LinphoneManager.Instance.LinphoneCore.GetFirewallPolicy()];
             dict[MediaEncryptionKeyName] = EnumToMediaEncryption[LinphoneManager.Instance.LinphoneCore.GetMediaEncryption()];
+#endif
 
             // Load tunnel configuration
             dict[TunnelModeKeyName] = AppResources.TunnelModeDisabled;
