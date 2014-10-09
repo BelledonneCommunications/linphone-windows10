@@ -196,7 +196,7 @@ namespace Linphone.Model
         /// </summary>
         public void Load()
         {
-            dict[LogLevelKeyName] = Config.GetInt(ApplicationSection, LogLevelKeyName, (int)OutputTraceLevel.None).ToString();
+            dict[LogLevelKeyName] = Config.GetInt(ApplicationSection, LogLevelKeyName, (int)OutputTraceLevel.Message).ToString();
             dict[LogDestinationKeyName] = Config.GetString(ApplicationSection, LogDestinationKeyName, OutputTraceDest.File.ToString());
             dict[LogOptionKeyName] = Config.GetString(ApplicationSection, LogOptionKeyName, LinphoneLogFileName);
         }
