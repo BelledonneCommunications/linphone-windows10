@@ -478,6 +478,24 @@ namespace Linphone.Views
         new private void OrientationChanged(object sender, Microsoft.Phone.Controls.OrientationChangedEventArgs e)
         {
             ((InCallModel)ViewModel).OrientationChanged(sender, e);
+
+            int rotation = 0;
+            switch (e.Orientation)
+            {
+                case Microsoft.Phone.Controls.PageOrientation.PortraitUp:
+                    rotation = 0;
+                    break;
+                case Microsoft.Phone.Controls.PageOrientation.PortraitDown:
+                    rotation = 180;
+                    break;
+                case Microsoft.Phone.Controls.PageOrientation.LandscapeLeft:
+                    rotation = 90;
+                    break;
+                case Microsoft.Phone.Controls.PageOrientation.LandscapeRight:
+                    rotation = 270;
+                    break;
+            }
+            LinphoneManager.Instance.LinphoneCore.SetDeviceRotation(rotation);
         }
     }
 }

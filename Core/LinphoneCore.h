@@ -1061,6 +1061,14 @@ namespace Linphone
 			/// Starts the upload of the log collection.
 			/// </summary>
 			void UploadLogCollection();
+
+			/// <summary>
+			/// Tells the core the device current orientation. This can be used by capture filters
+			/// on mobile devices to select between portrait / landscape mode and to produce properly
+			///	oriented images.The exact meaning of the value in rotation if left to each device
+			///	specific implementations.
+			/// </summary>
+			void SetDeviceRotation(int rotation);
 			
 			/// <summary>
 			/// The LinphoneCoreListener that handles the events coming from the core.
