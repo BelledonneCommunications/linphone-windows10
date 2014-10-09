@@ -483,19 +483,21 @@ namespace Linphone.Views
             switch (e.Orientation)
             {
                 case Microsoft.Phone.Controls.PageOrientation.PortraitUp:
-                    rotation = 0;
-                    break;
-                case Microsoft.Phone.Controls.PageOrientation.PortraitDown:
-                    rotation = 180;
-                    break;
-                case Microsoft.Phone.Controls.PageOrientation.LandscapeLeft:
                     rotation = 90;
                     break;
-                case Microsoft.Phone.Controls.PageOrientation.LandscapeRight:
+                case Microsoft.Phone.Controls.PageOrientation.PortraitDown:
                     rotation = 270;
+                    break;
+                case Microsoft.Phone.Controls.PageOrientation.LandscapeLeft:
+                    rotation = 0;
+                    break;
+                case Microsoft.Phone.Controls.PageOrientation.LandscapeRight:
+                    rotation = 180;
                     break;
             }
             LinphoneManager.Instance.LinphoneCore.SetDeviceRotation(rotation);
+            Logger.Dbg("[InCall] preview rotation = " + rotation);
+            ((InCallModel)ViewModel).LocalVideoRotation = rotation;
         }
     }
 }
