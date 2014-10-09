@@ -27,6 +27,7 @@ namespace Linphone.Views
 
             bool isVideoEnabled = LinphoneManager.Instance.LinphoneCore.IsVideoSupported() && (LinphoneManager.Instance.LinphoneCore.IsVideoDisplayEnabled() || LinphoneManager.Instance.LinphoneCore.IsVideoCaptureEnabled());
             videoButtonVisibility = isVideoEnabled ? Visibility.Visible : Visibility.Collapsed;
+            cameraButtonVisibility = isVideoEnabled && LinphoneManager.Instance.NumberOfCameras >= 2 ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public void OrientationChanged(object sender, Microsoft.Phone.Controls.OrientationChangedEventArgs e)
@@ -294,11 +295,6 @@ namespace Linphone.Views
             }
             set
             {
-                bool isVideoEnabled = LinphoneManager.Instance.LinphoneCore.IsVideoSupported() && (LinphoneManager.Instance.LinphoneCore.IsVideoDisplayEnabled() || LinphoneManager.Instance.LinphoneCore.IsVideoCaptureEnabled());
-                if (!isVideoEnabled || (LinphoneManager.Instance.NumberOfCameras < 2))
-                {
-                    value = Visibility.Collapsed;
-                }
                 if (this.cameraButtonVisibility != value)
                 {
                     this.cameraButtonVisibility = value;
