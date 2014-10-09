@@ -204,11 +204,13 @@
 
             <controls:CallControlsP 
                 x:Name="buttons"
+                VerticalAlignment="Bottom"
                 Visibility="{Binding PortraitButtonsVisibility}"
                 Grid.Row="3"/>
 
             <controls:CallControlsL
                 x:Name="buttons_landscape"
+                VerticalAlignment="Bottom"
                 Visibility="{Binding LandscapeButtonsVisibility}"
                 Grid.Row="3"/>
         </Grid>
