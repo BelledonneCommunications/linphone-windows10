@@ -24,6 +24,9 @@ namespace Linphone.Views
             : base()
         {
             currentOrientation = CurrentPage.Orientation.ToString();
+
+            bool isVideoEnabled = LinphoneManager.Instance.LinphoneCore.IsVideoSupported() && (LinphoneManager.Instance.LinphoneCore.IsVideoDisplayEnabled() || LinphoneManager.Instance.LinphoneCore.IsVideoCaptureEnabled());
+            videoButtonVisibility = isVideoEnabled ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public void OrientationChanged(object sender, Microsoft.Phone.Controls.OrientationChangedEventArgs e)
@@ -272,11 +275,6 @@ namespace Linphone.Views
             }
             set
             {
-                bool isVideoEnabled = LinphoneManager.Instance.LinphoneCore.IsVideoSupported() && (LinphoneManager.Instance.LinphoneCore.IsVideoDisplayEnabled() || LinphoneManager.Instance.LinphoneCore.IsVideoCaptureEnabled());
-                if (!isVideoEnabled)
-                {
-                    value = Visibility.Collapsed;
-                }
                 if (this.videoButtonVisibility != value)
                 {
                     this.videoButtonVisibility = value;

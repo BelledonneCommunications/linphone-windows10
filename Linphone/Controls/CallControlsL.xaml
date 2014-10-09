@@ -111,6 +111,7 @@
             BorderThickness="0"
             Margin="-10"
             Click="video_Click_1"
+            IsEnabled="False"
             IsChecked="{Binding VideoButtonToggled}"
             Visibility="{Binding VideoButtonVisibility}"
             Background="{StaticResource PhoneChromeBrush}">

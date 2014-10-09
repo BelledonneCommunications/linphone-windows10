@@ -174,18 +174,25 @@ namespace Linphone.Views
                 buttons.microphone.IsEnabled = true;
                 buttons_landscape.pause.IsEnabled = true;
                 buttons_landscape.microphone.IsEnabled = true;
+                buttons.video.IsEnabled = true;
+                buttons_landscape.video.IsEnabled = true;
+                ((InCallModel)ViewModel).VideoButtonToggled = call.GetCurrentParamsCopy().IsVideoEnabled();
             }
             else if (state == LinphoneCallState.PausedByRemote)
             {
                 buttons.pause.IsEnabled = false;
                 buttons.microphone.IsEnabled = false;
+                buttons.video.IsEnabled = false;
                 buttons_landscape.pause.IsEnabled = false;
                 buttons_landscape.microphone.IsEnabled = false;
+                buttons_landscape.video.IsEnabled = false;
             }
             else if (state == LinphoneCallState.Paused)
             {
                 buttons.microphone.IsEnabled = false;
+                buttons.video.IsEnabled = false;
                 buttons_landscape.microphone.IsEnabled = false;
+                buttons_landscape.video.IsEnabled = false;
             }
         }
 
