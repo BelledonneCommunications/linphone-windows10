@@ -340,7 +340,7 @@ namespace Linphone.Views
                     LinphoneCallParams param = call.GetCurrentParamsCopy();
                     Status.Text = mm.ToString("00") + ":" + ss.ToString("00");
 
-                    MediaEncryption.Text = String.Format(AppResources.StatMediaEncryption + ": {0}", param.GetMediaEncryption().ToString());
+                    ((InCallModel)ViewModel).MediaEncryption = String.Format(AppResources.StatMediaEncryption + ": {0}", param.GetMediaEncryption().ToString());
 
                     LinphoneCallStats audioStats = null;
                     try
@@ -351,15 +351,15 @@ namespace Linphone.Views
 
                     if (audioStats != null)
                     {
-                        AudioDownBw.Text = String.Format(AppResources.StatDownloadBW + ": {0:0.00} kb/s", audioStats.GetDownloadBandwidth());
-                        AudioUpBw.Text = String.Format(AppResources.StatUploadBW + ": {0:0.00} kb/s", audioStats.GetUploadBandwidth());
-                        ICE.Text = String.Format(AppResources.StatICE + ": {0}", audioStats.GetIceState().ToString()); 
+                        ((InCallModel)ViewModel).AudioDownBw = String.Format(AppResources.StatDownloadBW + ": {0:0.00} kb/s", audioStats.GetDownloadBandwidth());
+                        ((InCallModel)ViewModel).AudioUpBw = String.Format(AppResources.StatUploadBW + ": {0:0.00} kb/s", audioStats.GetUploadBandwidth());
+                        ((InCallModel)ViewModel).ICE = String.Format(AppResources.StatICE + ": {0}", audioStats.GetIceState().ToString()); 
                     }
 
                     PayloadType audiopt = param.GetUsedAudioCodec();
                     if (audiopt != null) 
                     {
-                        AudioPType.Text = AppResources.StatPayload + ": " + audiopt.GetMimeType() + "/" + audiopt.GetClockRate();
+                        ((InCallModel)ViewModel).AudioPType = AppResources.StatPayload + ": " + audiopt.GetMimeType() + "/" + audiopt.GetClockRate();
                     }
 
                     if (param.IsVideoEnabled())
@@ -367,27 +367,27 @@ namespace Linphone.Views
                         LinphoneCallStats videoStats = call.GetVideoStats();
                         if (videoStats != null)
                         {
-                            VideoDownBw.Text = String.Format(AppResources.StatDownloadBW + ": {0:0.00} kb/s", videoStats.GetDownloadBandwidth());
-                            VideoUpBw.Text = String.Format(AppResources.StatUploadBW + ": {0:0.00} kb/s", videoStats.GetUploadBandwidth());
+                            ((InCallModel)ViewModel).VideoDownBw = String.Format(AppResources.StatDownloadBW + ": {0:0.00} kb/s", videoStats.GetDownloadBandwidth());
+                            ((InCallModel)ViewModel).VideoUpBw = String.Format(AppResources.StatUploadBW + ": {0:0.00} kb/s", videoStats.GetUploadBandwidth());
                         }
 
                         PayloadType videopt = param.GetUsedVideoCodec();
                         if (videopt != null)
                         {
-                            VideoPType.Text = AppResources.StatPayload + ": " + videopt.GetMimeType() + "/" + videopt.GetClockRate();
+                            ((InCallModel)ViewModel).VideoPType = AppResources.StatPayload + ": " + videopt.GetMimeType() + "/" + videopt.GetClockRate();
                         }
 
-                        VideoStats.Visibility = Visibility.Visible;
+                        /*VideoStats.Visibility = Visibility.Visible;
                         VideoDownBw.Visibility = Visibility.Visible;
                         VideoUpBw.Visibility = Visibility.Visible;
-                        VideoPType.Visibility = Visibility.Visible;
+                        VideoPType.Visibility = Visibility.Visible;*/
                     }
                     else
                     {
-                        VideoStats.Visibility = Visibility.Collapsed;
+                        /*VideoStats.Visibility = Visibility.Collapsed;
                         VideoDownBw.Visibility = Visibility.Collapsed;
                         VideoUpBw.Visibility = Visibility.Collapsed;
-                        VideoPType.Visibility = Visibility.Collapsed;
+                        VideoPType.Visibility = Visibility.Collapsed;*/
                     }
                 });
             } catch {

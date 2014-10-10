@@ -16,218 +16,151 @@
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
     
-    <Grid
-        x:Name="LayoutRoot"
-        Background="Transparent"
-        Tap="LayoutRoot_Tap">
+    <Grid x:Name="LayoutRoot" Background="Transparent" Tap="LayoutRoot_Tap">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-
-        <StackPanel x:Name="emptyPanel" Grid.Row="0" Visibility="{Binding EmptyPanelVisibility}">
-            <TextBlock Style="{StaticResource PhoneTextSmallStyle}"/>
-            <TextBlock Style="{StaticResource PhoneTextSmallStyle}"/>
-            <TextBlock Style="{StaticResource PhoneTextSmallStyle}"/>
-            <TextBlock Style="{StaticResource PhoneTextSmallStyle}"/>
-            <TextBlock Style="{StaticResource PhoneTextSmallStyle}"/>
-            <TextBlock Style="{StaticResource PhoneTextSmallStyle}"/>
-            <TextBlock Style="{StaticResource PhoneTextSmallStyle}"/>
-        </StackPanel>
-
-        <!-- Statistics panel -->
-        <StackPanel x:Name="statsPanel" Grid.Row="1" Visibility="{Binding StatsPanelVisibility}">
-            <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <TextBlock x:Name="AudioStats" Text="{Binding Path=LocalizedResources.AudioStatsMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="0"/>
-                <TextBlock x:Name="AudioDownBw" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="1"/>
-                <TextBlock x:Name="AudioUpBw" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="2"/>
-                <TextBlock x:Name="AudioPType" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="3"/>
-                <TextBlock x:Name="VideoStats" Text="{Binding Path=LocalizedResources.VideoStatsMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="2" Grid.Row="0" Visibility="Collapsed"/>
-                <TextBlock x:Name="VideoDownBw" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="1"/>
-                <TextBlock x:Name="VideoUpBw" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="2"/>
-                <TextBlock x:Name="VideoPType" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="3"/>
-                <TextBlock x:Name="CallStats" Text="--" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"/>
-                <TextBlock x:Name="MediaEncryption" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2"/>
-                <TextBlock x:Name="ICE" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2"/>
-            </Grid>
-        </StackPanel>
-
-        <Grid x:Name="ContentPanel" Grid.Row="2">
-            <!-- Animations -->
-            <Grid.Resources>
-                <Storyboard x:Name="ButtonsFadeOutAnimation">
-                    <DoubleAnimation
+        <!-- Animations -->
+        <Grid.Resources>
+            <Storyboard x:Name="ButtonsFadeOutAnimation">
+                <DoubleAnimation
                         Storyboard.TargetName="buttons"
                         Storyboard.TargetProperty="(Opacity)"
                         Duration="0:0:0.5"
                         To="0.0"
                         Completed="ButtonsFadeOutAnimation_Completed"/>
-                    <DoubleAnimation
+                <DoubleAnimation
                         Storyboard.TargetName="buttons_landscape"
                         Storyboard.TargetProperty="(Opacity)"
                         Duration="0:0:0.5"
                         To="0.0"/>
-                    <DoubleAnimation
-                        Storyboard.TargetName="statsPanel"
-                        Storyboard.TargetProperty="(Opacity)"
-                        Duration="0:0:0.5"
-                        To="0.0"/>
-                    <DoubleAnimation
+                <DoubleAnimation
                         Storyboard.TargetName="Status"
                         Storyboard.TargetProperty="(Opacity)"
                         Duration="0:0:0.5"
                         To="0.0"/>
-                    <DoubleAnimation
+                <DoubleAnimation
                         Storyboard.TargetName="Contact"
                         Storyboard.TargetProperty="(Opacity)"
                         Duration="0:0:0.5"
                         To="0.0"/>
-                    <DoubleAnimation
+                <DoubleAnimation
                         Storyboard.TargetName="Number"
                         Storyboard.TargetProperty="(Opacity)"
                         Duration="0:0:0.5"
                         To="0.0"/>
-                </Storyboard>
-                <Storyboard x:Name="ButtonsFadeInVideoAnimation">
-                    <DoubleAnimation
+            </Storyboard>
+            <Storyboard x:Name="ButtonsFadeInVideoAnimation">
+                <DoubleAnimation
                         Storyboard.TargetName="buttons"
                         Storyboard.TargetProperty="(Opacity)"
                         Duration="0:0:0.5"
                         To="0.7"/>
-                    <DoubleAnimation
+                <DoubleAnimation
                         Storyboard.TargetName="buttons_landscape"
                         Storyboard.TargetProperty="(Opacity)"
                         Duration="0:0:0.5"
                         To="0.7"/>
-                    <DoubleAnimation
-                        Storyboard.TargetName="statsPanel"
-                        Storyboard.TargetProperty="(Opacity)"
-                        Duration="0:0:0.5"
-                        To="1.0"/>
-                    <DoubleAnimation
+                <DoubleAnimation
                         Storyboard.TargetName="Status"
                         Storyboard.TargetProperty="(Opacity)"
                         Duration="0:0:0.5"
                         To="1.0"/>
-                    <DoubleAnimation
+                <DoubleAnimation
                         Storyboard.TargetName="Contact"
                         Storyboard.TargetProperty="(Opacity)"
                         Duration="0:0:0.5"
                         To="1.0"/>
-                    <DoubleAnimation
+                <DoubleAnimation
                         Storyboard.TargetName="Number"
                         Storyboard.TargetProperty="(Opacity)"
                         Duration="0:0:0.5"
                         To="1.0"/>
-                </Storyboard>
-                <Storyboard x:Name="ButtonsFadeInAudioAnimation">
-                    <DoubleAnimation
+            </Storyboard>
+            <Storyboard x:Name="ButtonsFadeInAudioAnimation">
+                <DoubleAnimation
                         Storyboard.TargetName="buttons"
                         Storyboard.TargetProperty="(Opacity)"
                         Duration="0:0:0.5"
                         To="1.0"/>
-                    <DoubleAnimation
+                <DoubleAnimation
                         Storyboard.TargetName="buttons_landscape"
                         Storyboard.TargetProperty="(Opacity)"
                         Duration="0:0:0.5"
                         To="1.0"/>
-                    <DoubleAnimation
-                        Storyboard.TargetName="statsPanel"
-                        Storyboard.TargetProperty="(Opacity)"
-                        Duration="0:0:0.5"
-                        To="1.0"/>
-                    <DoubleAnimation
+                <DoubleAnimation
                         Storyboard.TargetName="Status"
                         Storyboard.TargetProperty="(Opacity)"
                         Duration="0:0:0.5"
                         To="1.0"/>
-                    <DoubleAnimation
+                <DoubleAnimation
                         Storyboard.TargetName="Contact"
                         Storyboard.TargetProperty="(Opacity)"
                         Duration="0:0:0.5"
                         To="1.0"/>
-                    <DoubleAnimation
+                <DoubleAnimation
                         Storyboard.TargetName="Number"
                         Storyboard.TargetProperty="(Opacity)"
                         Duration="0:0:0.5"
                         To="1.0"/>
-                </Storyboard>
-            </Grid.Resources>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
+            </Storyboard>
+        </Grid.Resources>
 
-            <!-- Status text -->
-            <TextBlock
-                Grid.Row="0"
-                x:Name="Status"
-                Style="{StaticResource PhoneTextAccentStyle}"
-                Text="{Binding Path=LocalizedResources.Dialing, Source={StaticResource LocalizedStrings}}"
-                Margin="12,0,12,0"
-                FontSize="20" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <!-- Status text -->
+        <TextBlock
+            Grid.Row="0"
+            x:Name="Status"
+            Style="{StaticResource PhoneTextAccentStyle}"
+            Text="{Binding Path=LocalizedResources.Dialing, Source={StaticResource LocalizedStrings}}"
+            Margin="12,0,12,0"
+            FontSize="20" />
 
-            <!-- Contact text -->
-            <TextBlock
-                Grid.Row="1"
-                x:Name="Contact"
-                Margin="12,0,12,0"
-                FontSize="60"/>
+        <!-- Contact text -->
+        <TextBlock
+            Grid.Row="1"
+            x:Name="Contact"
+            Margin="12,0,12,0"
+            FontSize="60"/>
 
-            <!-- Number text -->
-            <TextBlock
-                Grid.Row="2"
-                x:Name="Number"
-                Margin="12,0,12,0"
-                FontSize="25"/>
+        <!-- Number text -->
+        <TextBlock
+            Grid.Row="2"
+            x:Name="Number"
+            Margin="12,0,12,0"
+            FontSize="25"/>
 
-            <controls:CallControlsP 
-                x:Name="buttons"
-                VerticalAlignment="Bottom"
-                Visibility="{Binding PortraitButtonsVisibility}"
-                Grid.Row="3"/>
+        <controls:CallControlsP 
+            x:Name="buttons"
+            VerticalAlignment="Bottom"
+            Visibility="{Binding PortraitButtonsVisibility}"
+            Grid.Row="3"/>
 
-            <controls:CallControlsL
-                x:Name="buttons_landscape"
-                Visibility="{Binding LandscapeButtonsVisibility}"
-                Grid.Row="3"/>
-        </Grid>
+        <controls:CallControlsL
+            x:Name="buttons_landscape"
+            Visibility="{Binding LandscapeButtonsVisibility}"
+            Grid.Row="3"/>
 
         <!-- Remote video media element -->
-        <Grid Grid.RowSpan="3" Canvas.ZIndex="-2">
+        <Grid Grid.RowSpan="4" Canvas.ZIndex="-2">
             <MediaElement
-            x:Name="remoteVideo"
-            Visibility="{Binding RemoteVideoVisibility}"
-            MediaOpened="remoteVideo_MediaOpened_1"
-            MediaFailed="remoteVideo_MediaFailed_1"
-            Source="{Binding RemoteVideoUri}"
-            RenderTransformOrigin="0.5,0.5"
-            Stretch="Uniform"/>
+                x:Name="remoteVideo"
+                Visibility="{Binding RemoteVideoVisibility}"
+                MediaOpened="remoteVideo_MediaOpened_1"
+                MediaFailed="remoteVideo_MediaFailed_1"
+                Source="{Binding RemoteVideoUri}"
+                RenderTransformOrigin="0.5,0.5"
+                Stretch="Uniform"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"/>
         </Grid>
 
         <!-- Local video media element -->
-        <Grid Grid.RowSpan="3" Canvas.ZIndex="-1">
+        <Grid Grid.RowSpan="4" Canvas.ZIndex="-1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
@@ -243,13 +176,14 @@
                 x:Name="localVideo"
                 Grid.Row="3"
                 Grid.Column="2"
-                Margin="5"
                 Visibility="{Binding LocalVideoVisibility}"
                 MediaOpened="localVideo_MediaOpened_1"
                 MediaFailed="localVideo_MediaFailed_1"
                 Source="{Binding LocalVideoUri}"
                 RenderTransformOrigin="0.5,0.5"
-                Stretch="Uniform">
+                Stretch="Uniform"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
                 <MediaElement.RenderTransform>
                     <CompositeTransform Rotation="{Binding LocalVideoRotation}" ScaleX="{Binding LocalVideoScaleX}"/>
                 </MediaElement.RenderTransform>

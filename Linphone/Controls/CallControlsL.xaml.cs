@@ -74,11 +74,11 @@ namespace Linphone.Controls
             MuteClick(this, isMicToggled);
         }
 
-        /*private void stats_Click_1(object sender, RoutedEventArgs e)
+        private void stats_Click_1(object sender, RoutedEventArgs e)
         {
             bool areStatsVisible = (bool)stats.IsChecked;
             StatsClick(this, areStatsVisible);
-        }*/
+        }
 
         private void video_Click_1(object sender, RoutedEventArgs e)
         {

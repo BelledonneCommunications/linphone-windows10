@@ -23,13 +23,19 @@ namespace Linphone.Views
         public InCallModel()
             : base()
         {
-            currentOrientation = CurrentPage.Orientation.ToString();
+            if (CurrentPage != null)
+            {
+                currentOrientation = CurrentPage.Orientation.ToString();
+            }
 
             bool isVideoEnabled = LinphoneManager.Instance.LinphoneCore.IsVideoSupported() && (LinphoneManager.Instance.LinphoneCore.IsVideoDisplayEnabled() || LinphoneManager.Instance.LinphoneCore.IsVideoCaptureEnabled());
             videoButtonVisibility = isVideoEnabled ? Visibility.Visible : Visibility.Collapsed;
             cameraButtonVisibility = isVideoEnabled && LinphoneManager.Instance.NumberOfCameras >= 2 ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// Called when user rotates the device
+        /// </summary>
         public void OrientationChanged(object sender, Microsoft.Phone.Controls.OrientationChangedEventArgs e)
         {
             string orientation = e.Orientation.ToString();
@@ -48,23 +54,11 @@ namespace Linphone.Views
             {
                 PortraitButtonsVisibility = Visibility.Visible;
                 LandscapeButtonsVisibility = Visibility.Collapsed;
-                if (StatsPanelVisibility != Visibility.Visible) 
-                {
-                    EmptyPanelVisibility = Visibility.Visible;
-                    StatsPanelVisibility = Visibility.Collapsed;
-                }
-                if (StatsButtonToggled)
-                {
-                    EmptyPanelVisibility = Visibility.Collapsed;
-                    StatsPanelVisibility = Visibility.Visible;
-                }
             }
             else if (currentOrientation.StartsWith("Landscape"))
             {
                 PortraitButtonsVisibility = Visibility.Collapsed;
                 LandscapeButtonsVisibility = Visibility.Visible;
-                EmptyPanelVisibility = Visibility.Collapsed;
-                StatsPanelVisibility = Visibility.Collapsed;
             }
         }
 
@@ -83,7 +77,6 @@ namespace Linphone.Views
         public void ChangeStatsVisibility(bool areStatsVisible)
         {
             StatsPanelVisibility = areStatsVisible ? Visibility.Visible : Visibility.Collapsed;
-            EmptyPanelVisibility = areStatsVisible ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void ShowRemoteVideo()
@@ -163,8 +156,6 @@ namespace Linphone.Views
         {
             PortraitButtonsVisibility = Visibility.Collapsed;
             LandscapeButtonsVisibility = Visibility.Collapsed;
-            EmptyPanelVisibility = Visibility.Collapsed;
-            StatsPanelVisibility = Visibility.Collapsed;
         }
 
         #endregion
@@ -342,25 +333,6 @@ namespace Linphone.Views
         }
 
         /// <summary>
-        /// Visibility of the portrait buttons.
-        /// </summary>
-        public Visibility EmptyPanelVisibility
-        {
-            get
-            {
-                return this.emptyPanelVisibility;
-            }
-            set
-            {
-                if (this.emptyPanelVisibility != value)
-                {
-                    this.emptyPanelVisibility = value;
-                    this.OnPropertyChanged();
-                }
-            }
-        }
-
-        /// <summary>
         /// Visibility of the landscape buttons.
         /// </summary>
         public Visibility StatsPanelVisibility
@@ -379,6 +351,9 @@ namespace Linphone.Views
             }
         }
 
+        /// <summary>
+        /// Checked state of the stats button
+        /// </summary>
         public bool StatsButtonToggled
         {
             get
@@ -395,6 +370,9 @@ namespace Linphone.Views
             }
         }
 
+        /// <summary>
+        /// Checked state of the speaker button
+        /// </summary>
         public bool SpeakerButtonToggled
         {
             get
@@ -411,6 +389,9 @@ namespace Linphone.Views
             }
         }
 
+        /// <summary>
+        /// Checked state of the mute button
+        /// </summary>
         public bool MuteButtonToggled
         {
             get
@@ -427,6 +408,9 @@ namespace Linphone.Views
             }
         }
 
+        /// <summary>
+        /// Checked state of the pause button
+        /// </summary>
         public bool PauseButtonToggled
         {
             get
@@ -443,6 +427,9 @@ namespace Linphone.Views
             }
         }
 
+        /// <summary>
+        /// Checked state of the numpad button
+        /// </summary>
         public bool DialpadButtonToggled
         {
             get
@@ -461,6 +448,9 @@ namespace Linphone.Views
         #endregion
 
         #region Video properties
+        /// <summary>
+        /// Checked state of the video button
+        /// </summary>
         public bool VideoButtonToggled
         {
             get
@@ -624,6 +614,71 @@ namespace Linphone.Views
 
         #endregion
 
+        #region Stats properties
+        public string MediaEncryption
+        {
+            get
+            {
+                return mediaEncryption;
+            }
+            set
+            {
+                mediaEncryption = value;
+                this.OnPropertyChanged();
+            }
+        }
+        public string AudioDownBw
+        {
+            get
+            {
+                return audioDownBw;
+            }
+            set
+            {
+                audioDownBw = value;
+                this.OnPropertyChanged();
+            }
+        }
+        public string AudioPType
+        {
+            get
+            {
+                return audioPType;
+            }
+            set
+            {
+                audioPType = value;
+                this.OnPropertyChanged();
+            }
+        }
+        public string AudioUpBw
+        {
+            get
+            {
+                return audioUpBw;
+            }
+            set
+            {
+                audioUpBw = value;
+                this.OnPropertyChanged();
+            }
+        }
+        public string ICE
+        {
+            get
+            {
+                return ice;
+            }
+            set
+            {
+                ice = value;
+                this.OnPropertyChanged();
+            }
+        }
+        public string VideoDownBw { get; set; }
+        public string VideoUpBw { get; set; }
+        public string VideoPType { get; set; }
+        #endregion
         #region Private variables
 
         private Visibility numpadVisibility = Visibility.Collapsed;
@@ -635,7 +690,6 @@ namespace Linphone.Views
         private Visibility cameraButtonVisibility = Visibility.Collapsed;
         private Visibility portraitButtonsVisibility = Visibility.Visible;
         private Visibility landscapeButtonsVisibility = Visibility.Collapsed;
-        private Visibility emptyPanelVisibility = Visibility.Visible;
         private Visibility statsPanelVisibility = Visibility.Collapsed;
         private Boolean isVideoActive = false;
         private Uri remoteVideoUri = null;
@@ -651,6 +705,11 @@ namespace Linphone.Views
         private bool isDialpadToggled = false;
         private bool isPauseToggled = false;
         private bool isVideoToggled = false;
+        private string mediaEncryption = "";
+        private string audioDownBw = "";
+        private string audioPType = "";
+        private string audioUpBw = "";
+        private string ice = "";
         #endregion
     }
 }

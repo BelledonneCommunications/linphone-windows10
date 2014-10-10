@@ -153,5 +153,33 @@
             Grid.RowSpan="2"
             Grid.ColumnSpan="3"
             Visibility="{Binding NumpadVisibility}"/>
+
+        <!-- Statistics panel -->
+        <Grid Background="{StaticResource PhoneChromeBrush}" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="3" Visibility="{Binding StatsPanelVisibility}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="AudioStats" Text="{Binding Path=LocalizedResources.AudioStatsMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="0"/>
+            <TextBlock Text="{Binding AudioDownBw}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="1"/>
+            <TextBlock Text="{Binding AudioUpBw}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="2"/>
+            <TextBlock Text="{Binding AudioPType}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="3"/>
+            <TextBlock x:Name="VideoStats" Text="{Binding Path=LocalizedResources.VideoStatsMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="2" Grid.Row="0"/>
+            <TextBlock Text="{Binding VideoDownBw}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="1"/>
+            <TextBlock Text="{Binding VideoUpBw}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="2"/>
+            <TextBlock Text="{Binding VideoPType}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="3"/>
+            <TextBlock x:Name="CallStats" Text="--" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"/>
+            <TextBlock Text="{Binding MediaEncryption}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2"/>
+            <TextBlock Text="{Binding ICE}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2"/>
+        </Grid>
     </Grid>
 </UserControl>
