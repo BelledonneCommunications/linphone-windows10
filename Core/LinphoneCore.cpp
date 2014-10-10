@@ -1373,7 +1373,7 @@ void Linphone::Core::LinphoneCore::EnableVideoDisplay(Platform::Boolean enable)
 int Linphone::Core::LinphoneCore::GetNativeVideoWindowId()
 {
 	TRACE; gApiLock.Lock();
-	int id = linphone_core_get_native_video_window_id(this->lc);
+	int id = Globals::Instance->VideoRenderer->GetNativeWindowId();
 	gApiLock.Unlock();
 	return id;
 }
