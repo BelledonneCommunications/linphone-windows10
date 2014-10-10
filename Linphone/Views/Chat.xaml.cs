@@ -88,7 +88,7 @@ namespace Linphone.Views
         /// Method called when the page is displayed.
         /// Check if the uri contains a sip address, if yes, it displays the matching chat history.
         /// </summary>
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             LinphoneManager.Instance.MessageListener = this;

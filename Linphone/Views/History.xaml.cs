@@ -35,7 +35,7 @@ namespace Linphone.Views
         /// Fetches the logs from the LinphoneManager and displays them.
         /// </summary>
         /// <param name="e"></param>
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 

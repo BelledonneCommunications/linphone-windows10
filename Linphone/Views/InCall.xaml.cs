@@ -65,28 +65,34 @@ namespace Linphone.Views
 
         private void buttons_DialpadClick(object sender, bool isDialpadShown)
         {
-            ((InCallModel)ViewModel).DialpadButtonToggled = isDialpadShown;
-            ((InCallModel)ViewModel).NumpadVisibility = isDialpadShown ? Visibility.Visible : Visibility.Collapsed;
+            buttons.dialpad.IsChecked = isDialpadShown;
+            buttons_landscape.dialpad.IsChecked = isDialpadShown;
+            buttons.numpad.Visibility = isDialpadShown ? Visibility.Visible : Visibility.Collapsed;
+            buttons_landscape.numpad.Visibility = isDialpadShown ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void buttons_VideoClick(object sender, bool isVideoOn)
         {
-            ((InCallModel)ViewModel).VideoButtonToggled = isVideoOn;
+            buttons.video.IsChecked = isVideoOn;
+            buttons_landscape.video.IsChecked = isVideoOn;
             if (!LinphoneManager.Instance.EnableVideo(isVideoOn))
             {
-                ((InCallModel)ViewModel).VideoButtonToggled = !isVideoOn;
+                buttons.video.IsChecked = !isVideoOn;
+                buttons_landscape.video.IsChecked = !isVideoOn;
             }
         }
 
         private void buttons_MuteClick(object sender, bool isMuteOn)
         {
-            ((InCallModel)ViewModel).MuteButtonToggled = isMuteOn;
+            buttons.microphone.IsChecked = isMuteOn;
+            buttons_landscape.microphone.IsChecked = isMuteOn;
             LinphoneManager.Instance.MuteMic(isMuteOn);
         }
 
         private bool buttons_SpeakerClick(object sender, bool isSpeakerOn)
         {
-            ((InCallModel)ViewModel).SpeakerButtonToggled = isSpeakerOn;
+            buttons.speaker.IsChecked = isSpeakerOn;
+            buttons_landscape.speaker.IsChecked = isSpeakerOn;
             try
             {
                 LinphoneManager.Instance.EnableSpeaker(isSpeakerOn);
@@ -95,14 +101,16 @@ namespace Linphone.Views
             catch
             {
                 Logger.Warn("Exception while trying to toggle speaker to {0}", isSpeakerOn.ToString());
-                ((InCallModel)ViewModel).SpeakerButtonToggled = !isSpeakerOn;
+                buttons.speaker.IsChecked = isSpeakerOn;
+                buttons_landscape.speaker.IsChecked = isSpeakerOn;
             }
             return false;
         }
 
         private void buttons_PauseClick(object sender, bool isPaused)
         {
-            ((InCallModel)ViewModel).PauseButtonToggled = isPaused;
+            buttons.pause.IsChecked = isPaused;
+            buttons_landscape.pause.IsChecked = isPaused;
             buttons.pauseImg.Source = new BitmapImage(new Uri(isPaused ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
             buttons_landscape.pauseImg.Source = new BitmapImage(new Uri(isPaused ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
 
@@ -119,8 +127,10 @@ namespace Linphone.Views
 
         private void buttons_StatsClick(object sender, bool areStatsVisible)
         {
-            ((InCallModel)ViewModel).StatsButtonToggled = areStatsVisible;
-            ((InCallModel)ViewModel).ChangeStatsVisibility(areStatsVisible);
+            buttons.stats.IsChecked = areStatsVisible;
+            buttons_landscape.stats.IsChecked = areStatsVisible;
+            buttons.statsPanel.Visibility = areStatsVisible ? Visibility.Visible : Visibility.Collapsed;
+            buttons_landscape.statsPanel.Visibility = areStatsVisible ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void buttons_HangUpClick(object sender)
@@ -136,7 +146,7 @@ namespace Linphone.Views
         /// Method called when the page is displayed.
         /// Searches for a matching contact using the current call address or number and display information if found.
         /// </summary>
-        protected override async void OnNavigatedTo(NavigationEventArgs nee)
+        protected override void OnNavigatedTo(NavigationEventArgs nee)
         {
             // Create LinphoneCore if not created yet, otherwise do nothing
             LinphoneManager.Instance.InitLinphoneCore();
@@ -168,7 +178,7 @@ namespace Linphone.Views
 
         private void CallStateChanged(LinphoneCall call, LinphoneCallState state)
         {
-            if (state == LinphoneCallState.StreamsRunning)
+            if (state == LinphoneCallState.StreamsRunning || state == LinphoneCallState.Connected)
             {
                 buttons.pause.IsEnabled = true;
                 buttons.microphone.IsEnabled = true;
@@ -176,7 +186,9 @@ namespace Linphone.Views
                 buttons_landscape.microphone.IsEnabled = true;
                 buttons.video.IsEnabled = true;
                 buttons_landscape.video.IsEnabled = true;
-                ((InCallModel)ViewModel).VideoButtonToggled = call.GetCurrentParamsCopy().IsVideoEnabled();
+                bool isVideoEnabled = call.GetCurrentParamsCopy().IsVideoEnabled();
+                buttons.video.IsChecked = isVideoEnabled;
+                buttons_landscape.video.IsChecked = isVideoEnabled;
             }
             else if (state == LinphoneCallState.PausedByRemote)
             {
@@ -241,7 +253,8 @@ namespace Linphone.Views
         /// </summary>
         public void MuteStateChanged(Boolean isMicMuted)
         {
-            ((InCallModel)ViewModel).MuteButtonToggled = isMicMuted;
+            buttons.microphone.IsChecked = isMicMuted;
+            buttons_landscape.microphone.IsChecked = isMicMuted;
             buttons.microImg.Source = new BitmapImage(new Uri(isMicMuted ? micOn : micOff, UriKind.RelativeOrAbsolute));
             buttons_landscape.microImg.Source = new BitmapImage(new Uri(isMicMuted ? micOn : micOff, UriKind.RelativeOrAbsolute));
         }
@@ -251,7 +264,8 @@ namespace Linphone.Views
         /// </summary>
         public void PauseStateChanged(LinphoneCall call, bool isCallPaused, bool isCallPausedByRemote)
         {
-            ((InCallModel)ViewModel).PauseButtonToggled = isCallPaused || isCallPausedByRemote;
+            buttons.pause.IsChecked = isCallPaused || isCallPausedByRemote;
+            buttons_landscape.pause.IsChecked = isCallPaused || isCallPausedByRemote;
 
             if (oneSecondTimer == null)
             {
@@ -264,7 +278,8 @@ namespace Linphone.Views
                 {
                     // Show video if it was not shown yet
                     ((InCallModel)ViewModel).IsVideoActive = true;
-                    ((InCallModel)ViewModel).VideoButtonToggled = true;
+                    buttons.video.IsChecked = true;
+                    buttons_landscape.video.IsChecked = true;
                     ButtonsFadeInVideoAnimation.Begin();
                     StartFadeTimer();
                 }
@@ -272,7 +287,8 @@ namespace Linphone.Views
                 {
                     // Stop video if it is no longer active
                     ((InCallModel)ViewModel).IsVideoActive = false;
-                    ((InCallModel)ViewModel).VideoButtonToggled = false;
+                    buttons.video.IsChecked = false;
+                    buttons_landscape.video.IsChecked = false;
                     ButtonsFadeInAudioAnimation.Begin();
                     StopFadeTimer();
                 }

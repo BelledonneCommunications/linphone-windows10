@@ -60,7 +60,7 @@ namespace Linphone.Views
         /// Method called when the page is displayed.
         /// Searches for a matching contact using the current call address or number and display information if found.
         /// </summary>
-        protected override async void OnNavigatedTo(NavigationEventArgs nee)
+        protected override void OnNavigatedTo(NavigationEventArgs nee)
         {
             // Create LinphoneCore if not created yet, otherwise do nothing
             LinphoneManager.Instance.InitLinphoneCore();

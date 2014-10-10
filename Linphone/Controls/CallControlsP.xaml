@@ -44,8 +44,7 @@
             BorderThickness="0"
             Margin="-10"
             Click="dialpad_Click_1"
-            Background="{StaticResource PhoneChromeBrush}"
-            IsChecked="{Binding DialpadButtonToggled}">
+            Background="{StaticResource PhoneChromeBrush}">
             <Image Source="/Assets/AppBar/dialpad.png" Stretch="None"/>
         </ToggleButton>
 
@@ -56,8 +55,6 @@
             BorderThickness="0"
             Margin="-10"
             Click="speaker_Click_1"
-            IsChecked="{Binding SpeakerButtonToggled}"
-            Visibility="{Binding SpeakerButtonVisibility}"
             Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
                 <Image x:Name="speakerImg" Source="/Assets/AppBar/speaker.png" Stretch="None"/>
@@ -73,8 +70,6 @@
             Margin="-10"
             Click="microphone_Click_1"
             IsEnabled="False"
-            IsChecked="{Binding MuteButtonToggled}"
-            Visibility="{Binding MicrophoneButtonVisibility}"
             Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
                 <Image x:Name="microImg" Source="/Assets/AppBar/mic.png" Stretch="None"/>
@@ -90,8 +85,6 @@
             Margin="-10"
             Click="pause_Click_1"
             IsEnabled="False"
-            IsChecked="{Binding PauseButtonToggled}"
-            Visibility="{Binding PauseButtonVisibility}"
             Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
                 <Image x:Name="pauseImg" Source="/Assets/AppBar/pause.png" Stretch="None"/>
@@ -106,8 +99,6 @@
             BorderThickness="0"
             Margin="-10"
             Click="stats_Click_1"
-            IsChecked="{Binding StatsButtonToggled}"
-            Visibility="{Binding StatsButtonVisibility}"
             Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
                 <Image x:Name="statsImg" Source="/Assets/AppBar/stats.png" Stretch="None"/>
@@ -152,10 +143,10 @@
             Grid.Row="1"
             Grid.RowSpan="2"
             Grid.ColumnSpan="3"
-            Visibility="{Binding NumpadVisibility}"/>
+            Visibility="Collapsed"/>
 
         <!-- Statistics panel -->
-        <Grid Background="{StaticResource PhoneChromeBrush}" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="3" Visibility="{Binding StatsPanelVisibility}">
+        <Grid x:Name="statsPanel" Background="{StaticResource PhoneChromeBrush}" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="3" Visibility="Collapsed">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>

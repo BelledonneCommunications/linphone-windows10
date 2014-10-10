@@ -71,14 +71,6 @@ namespace Linphone.Views
             ShowLocalVideo();
         }
 
-        /// <summary>
-        /// Changes the visibility of the stats panel
-        /// </summary>
-        public void ChangeStatsVisibility(bool areStatsVisible)
-        {
-            StatsPanelVisibility = areStatsVisible ? Visibility.Visible : Visibility.Collapsed;
-        }
-
         private void ShowRemoteVideo()
         {
             Int32 id = LinphoneManager.Instance.LinphoneCore.GetNativeVideoWindowId();
@@ -162,101 +154,6 @@ namespace Linphone.Views
 
         #region Button properties
         /// <summary>
-        /// Visibility of the numeric pad.
-        /// </summary>
-        public Visibility NumpadVisibility
-        {
-            get
-            {
-                return this.numpadVisibility;
-            }
-            set
-            {
-                if (this.numpadVisibility != value)
-                {
-                    this.numpadVisibility = value;
-                    this.OnPropertyChanged();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Visibility of the pause button.
-        /// </summary>
-        public Visibility PauseButtonVisibility
-        {
-            get
-            {
-                return this.pauseButtonVisibility;
-            }
-            set
-            {
-                if (this.pauseButtonVisibility != value)
-                {
-                    this.pauseButtonVisibility = value;
-                    this.OnPropertyChanged();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Visibility of the microphone button.
-        /// </summary>
-        public Visibility MicrophoneButtonVisibility
-        {
-            get
-            {
-                return this.microphoneButtonVisibility;
-            }
-            set
-            {
-                if (this.microphoneButtonVisibility != value)
-                {
-                    this.microphoneButtonVisibility = value;
-                    this.OnPropertyChanged();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Visibility of the speaker button.
-        /// </summary>
-        public Visibility SpeakerButtonVisibility
-        {
-            get
-            {
-                return this.speakerButtonVisibility;
-            }
-            set
-            {
-                if (this.speakerButtonVisibility != value)
-                {
-                    this.speakerButtonVisibility = value;
-                    this.OnPropertyChanged();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Visibility of the statistics button.
-        /// </summary>
-        public Visibility StatsButtonVisibility
-        {
-            get
-            {
-                return this.statsButtonVisibility;
-            }
-            set
-            {
-                if (this.statsButtonVisibility != value)
-                {
-                    this.statsButtonVisibility = value;
-                    this.OnPropertyChanged();
-                }
-            }
-        }
-
-        /// <summary>
         /// Visibility of the video button.
         /// </summary>
         public Visibility VideoButtonVisibility
@@ -331,142 +228,9 @@ namespace Linphone.Views
                 }
             }
         }
-
-        /// <summary>
-        /// Visibility of the landscape buttons.
-        /// </summary>
-        public Visibility StatsPanelVisibility
-        {
-            get
-            {
-                return this.statsPanelVisibility;
-            }
-            set
-            {
-                if (this.statsPanelVisibility != value)
-                {
-                    this.statsPanelVisibility = value;
-                    this.OnPropertyChanged();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Checked state of the stats button
-        /// </summary>
-        public bool StatsButtonToggled
-        {
-            get
-            {
-                return this.isStatsToggled;
-            }
-            set
-            {
-                if (this.isStatsToggled != value)
-                {
-                    this.isStatsToggled = value;
-                    this.OnPropertyChanged();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Checked state of the speaker button
-        /// </summary>
-        public bool SpeakerButtonToggled
-        {
-            get
-            {
-                return this.isSpeakerToggled;
-            }
-            set
-            {
-                if (this.isSpeakerToggled != value)
-                {
-                    this.isSpeakerToggled = value;
-                    this.OnPropertyChanged();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Checked state of the mute button
-        /// </summary>
-        public bool MuteButtonToggled
-        {
-            get
-            {
-                return this.isMuteToggled;
-            }
-            set
-            {
-                if (this.isMuteToggled != value)
-                {
-                    this.isMuteToggled = value;
-                    this.OnPropertyChanged();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Checked state of the pause button
-        /// </summary>
-        public bool PauseButtonToggled
-        {
-            get
-            {
-                return this.isPauseToggled;
-            }
-            set
-            {
-                if (this.isPauseToggled != value)
-                {
-                    this.isPauseToggled = value;
-                    this.OnPropertyChanged();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Checked state of the numpad button
-        /// </summary>
-        public bool DialpadButtonToggled
-        {
-            get
-            {
-                return this.isDialpadToggled;
-            }
-            set
-            {
-                if (this.isDialpadToggled != value)
-                {
-                    this.isDialpadToggled = value;
-                    this.OnPropertyChanged();
-                }
-            }
-        }
         #endregion
 
         #region Video properties
-        /// <summary>
-        /// Checked state of the video button
-        /// </summary>
-        public bool VideoButtonToggled
-        {
-            get
-            {
-                return this.isVideoToggled;
-            }
-            set
-            {
-                if (this.isVideoToggled != value)
-                {
-                    this.isVideoToggled = value;
-                    this.OnPropertyChanged();
-                }
-            }
-        }
-
         /// <summary>
         /// Is the video active (Boolean).
         /// </summary>
@@ -725,17 +489,10 @@ namespace Linphone.Views
         }
         #endregion
         #region Private variables
-
-        private Visibility numpadVisibility = Visibility.Collapsed;
-        private Visibility pauseButtonVisibility = Visibility.Visible;
-        private Visibility microphoneButtonVisibility = Visibility.Visible;
-        private Visibility speakerButtonVisibility = Visibility.Visible;
-        private Visibility statsButtonVisibility = Visibility.Visible;
         private Visibility videoButtonVisibility = Visibility.Collapsed;
         private Visibility cameraButtonVisibility = Visibility.Collapsed;
         private Visibility portraitButtonsVisibility = Visibility.Visible;
         private Visibility landscapeButtonsVisibility = Visibility.Collapsed;
-        private Visibility statsPanelVisibility = Visibility.Collapsed;
         private Boolean isVideoActive = false;
         private Uri remoteVideoUri = null;
         private Visibility remoteVideoVisibility = Visibility.Collapsed;
@@ -744,12 +501,6 @@ namespace Linphone.Views
         private Visibility localVideoVisibility = Visibility.Collapsed;
         private Double localVideoRotation = 0;
         private Double localVideoScaleX = 1.0;
-        private bool isStatsToggled = false;
-        private bool isMuteToggled = false;
-        private bool isSpeakerToggled = false;
-        private bool isDialpadToggled = false;
-        private bool isPauseToggled = false;
-        private bool isVideoToggled = false;
         private string mediaEncryption = "";
         private string audioDownBw = "";
         private string audioPType = "";

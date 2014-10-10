@@ -30,7 +30,7 @@ namespace Linphone.Views
         /// <summary>
         /// Method called when the page is displayed.
         /// </summary>
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
