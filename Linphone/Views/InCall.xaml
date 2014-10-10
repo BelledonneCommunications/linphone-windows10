@@ -147,14 +147,15 @@
 
         <!-- Remote video media element -->
         <Grid Grid.RowSpan="4" Canvas.ZIndex="-2">
-            <MediaElement
-                x:Name="remoteVideo"
-                Visibility="{Binding RemoteVideoVisibility}"
-                MediaOpened="remoteVideo_MediaOpened_1"
-                MediaFailed="remoteVideo_MediaFailed_1"
-                Source="{Binding RemoteVideoUri}"
-                RenderTransformOrigin="0.5,0.5"
-                Stretch="Uniform"/>
+            <Viewbox Stretch="Uniform">
+                <MediaElement
+                    x:Name="remoteVideo"
+                    Visibility="{Binding RemoteVideoVisibility}"
+                    MediaOpened="remoteVideo_MediaOpened_1"
+                    MediaFailed="remoteVideo_MediaFailed_1"
+                    Source="{Binding RemoteVideoUri}"
+                    RenderTransformOrigin="0.5,0.5"/>
+            </Viewbox>
         </Grid>
 
         <!-- Local video media element -->
