@@ -173,10 +173,10 @@
             <TextBlock Text="{Binding AudioDownBw}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="1"/>
             <TextBlock Text="{Binding AudioUpBw}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="2"/>
             <TextBlock Text="{Binding AudioPType}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="3"/>
-            <TextBlock x:Name="VideoStats" Text="{Binding Path=LocalizedResources.VideoStatsMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="2" Grid.Row="0"/>
-            <TextBlock Text="{Binding VideoDownBw}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="1"/>
-            <TextBlock Text="{Binding VideoUpBw}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="2"/>
-            <TextBlock Text="{Binding VideoPType}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="3"/>
+            <TextBlock x:Name="VideoStats" Visibility="{Binding VideoStatsVisibility}" Text="{Binding Path=LocalizedResources.VideoStatsMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="2" Grid.Row="0"/>
+            <TextBlock Text="{Binding VideoDownBw}" Visibility="{Binding VideoStatsVisibility}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="1"/>
+            <TextBlock Text="{Binding VideoUpBw}" Visibility="{Binding VideoStatsVisibility}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="2"/>
+            <TextBlock Text="{Binding VideoPType}" Visibility="{Binding VideoStatsVisibility}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="3"/>
             <TextBlock x:Name="CallStats" Text="--" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"/>
             <TextBlock Text="{Binding MediaEncryption}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2"/>
             <TextBlock Text="{Binding ICE}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2"/>

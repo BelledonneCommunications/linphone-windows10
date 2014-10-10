@@ -11,7 +11,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Landscape"
     OrientationChanged="OrientationChanged"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
@@ -154,9 +154,7 @@
                 MediaFailed="remoteVideo_MediaFailed_1"
                 Source="{Binding RemoteVideoUri}"
                 RenderTransformOrigin="0.5,0.5"
-                Stretch="Uniform"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"/>
+                Stretch="Uniform"/>
         </Grid>
 
         <!-- Local video media element -->

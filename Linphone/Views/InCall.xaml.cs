@@ -377,17 +377,11 @@ namespace Linphone.Views
                             ((InCallModel)ViewModel).VideoPType = AppResources.StatPayload + ": " + videopt.GetMimeType() + "/" + videopt.GetClockRate();
                         }
 
-                        /*VideoStats.Visibility = Visibility.Visible;
-                        VideoDownBw.Visibility = Visibility.Visible;
-                        VideoUpBw.Visibility = Visibility.Visible;
-                        VideoPType.Visibility = Visibility.Visible;*/
+                        ((InCallModel)ViewModel).VideoStatsVisibility = Visibility.Visible;
                     }
                     else
                     {
-                        /*VideoStats.Visibility = Visibility.Collapsed;
-                        VideoDownBw.Visibility = Visibility.Collapsed;
-                        VideoUpBw.Visibility = Visibility.Collapsed;
-                        VideoPType.Visibility = Visibility.Collapsed;*/
+                        ((InCallModel)ViewModel).VideoStatsVisibility = Visibility.Collapsed;
                     }
                 });
             } catch {

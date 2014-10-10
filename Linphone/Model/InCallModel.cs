@@ -675,9 +675,54 @@ namespace Linphone.Views
                 this.OnPropertyChanged();
             }
         }
-        public string VideoDownBw { get; set; }
-        public string VideoUpBw { get; set; }
-        public string VideoPType { get; set; }
+        public string VideoDownBw
+        {
+            get
+            {
+                return videoDownBw;
+            }
+            set
+            {
+                videoDownBw = value;
+                this.OnPropertyChanged();
+            }
+        }
+        public string VideoUpBw
+        {
+            get
+            {
+                return videoUpBw;
+            }
+            set
+            {
+                videoUpBw = value;
+                this.OnPropertyChanged();
+            }
+        }
+        public string VideoPType
+        {
+            get
+            {
+                return videoPType;
+            }
+            set
+            {
+                videoPType = value;
+                this.OnPropertyChanged();
+            }
+        }
+        public Visibility VideoStatsVisibility
+        {
+            get
+            {
+                return videoStatsVisibility;
+            }
+            set
+            {
+                videoStatsVisibility = value;
+                this.OnPropertyChanged();
+            }
+        }
         #endregion
         #region Private variables
 
@@ -709,7 +754,11 @@ namespace Linphone.Views
         private string audioDownBw = "";
         private string audioPType = "";
         private string audioUpBw = "";
+        private string videoDownBw = "";
+        private string videoPType = "";
+        private string videoUpBw = "";
         private string ice = "";
+        private Visibility videoStatsVisibility = Visibility.Collapsed;
         #endregion
     }
 }
