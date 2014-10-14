@@ -596,18 +596,20 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Enables the speaker in the current call
+        /// Property that handles the audio routing between the speaker and the earpiece.
         /// </summary>
-        /// <param name="enable">true to enable, false to disable</param>
-        public void EnableSpeaker(bool enable)
+        public bool SpeakerEnabled
         {
-            if (enable)
+            get
             {
-                AudioRoutingManager.GetDefault().SetAudioEndpoint(AudioRoutingEndpoint.Speakerphone);
+                return AudioRoutingManager.GetDefault().GetAudioEndpoint() == AudioRoutingEndpoint.Speakerphone;
             }
-            else
+            set
             {
-                AudioRoutingManager.GetDefault().SetAudioEndpoint(AudioRoutingEndpoint.Earpiece);
+                if (value)
+                    AudioRoutingManager.GetDefault().SetAudioEndpoint(AudioRoutingEndpoint.Speakerphone);
+                else
+                    AudioRoutingManager.GetDefault().SetAudioEndpoint(AudioRoutingEndpoint.Earpiece);
             }
         }
         #endregion

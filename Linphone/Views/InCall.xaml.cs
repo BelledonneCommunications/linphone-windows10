@@ -43,6 +43,16 @@ namespace Linphone.Views
             if (call != null && call.GetState() == Core.LinphoneCallState.StreamsRunning)
             {
                 PauseStateChanged(call, false, false);
+                if (LinphoneManager.Instance.SpeakerEnabled)
+                {
+                    buttons.speaker.IsChecked = true;
+                    buttons_landscape.speaker.IsChecked = true;
+                }
+                if (LinphoneManager.Instance.LinphoneCore.IsMicMuted())
+                {
+                    buttons.microphone.IsChecked = true;
+                    buttons_landscape.microphone.IsChecked = true;
+                }
             }
 
             buttons.HangUpClick += buttons_HangUpClick;
@@ -95,7 +105,7 @@ namespace Linphone.Views
             buttons_landscape.speaker.IsChecked = isSpeakerOn;
             try
             {
-                LinphoneManager.Instance.EnableSpeaker(isSpeakerOn);
+                LinphoneManager.Instance.SpeakerEnabled = isSpeakerOn;
                 return true;
             }
             catch
