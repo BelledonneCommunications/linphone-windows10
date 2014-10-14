@@ -532,32 +532,22 @@ namespace Linphone.Model
             {
                 if (LinphoneCore.GetCallsNb() > 0)
                 {
-                    try
-                    {
-                        if (isMicMuted)
-                            CallController.NotifyMuted();
-                        else
-                            CallController.NotifyUnmuted();
-                    }
-                    catch (Exception) { }
-
+                    LinphoneCore.MuteMic(isMicMuted);
                     if (CallListener != null)
                         CallListener.MuteStateChanged(isMicMuted);
-
-                    LinphoneCore.MuteMic(isMicMuted);
                 }
             });
         }
 
         private void UnmuteRequested(VoipCallCoordinator sender, MuteChangeEventArgs args)
         {
-            Logger.Msg("[LinphoneManager] Unmute requested\r\n");
+            Debug.WriteLine("[LinphoneManager] Unmute requested");
             MuteMic(true);
         }
 
         private void MuteRequested(VoipCallCoordinator sender, MuteChangeEventArgs args)
         {
-            Logger.Msg("[LinphoneManager] Mute requested\r\n");
+            Debug.WriteLine("[LinphoneManager] Mute requested");
             MuteMic(false);
         }
 

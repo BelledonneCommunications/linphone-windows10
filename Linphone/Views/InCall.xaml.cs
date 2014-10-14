@@ -84,9 +84,9 @@ namespace Linphone.Views
 
         private void buttons_MuteClick(object sender, bool isMuteOn)
         {
-            buttons.microphone.IsChecked = isMuteOn;
-            buttons_landscape.microphone.IsChecked = isMuteOn;
-            LinphoneManager.Instance.MuteMic(isMuteOn);
+            LinphoneManager.Instance.LinphoneCore.NotifyMute(isMuteOn);
+            if (LinphoneManager.Instance.CallListener != null)
+                LinphoneManager.Instance.CallListener.MuteStateChanged(isMuteOn);
         }
 
         private bool buttons_SpeakerClick(object sender, bool isSpeakerOn)

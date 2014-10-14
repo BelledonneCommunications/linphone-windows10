@@ -1428,9 +1428,18 @@ void Linphone::Core::LinphoneCore::UploadLogCollection()
 	gApiLock.Unlock();
 }
 
-void Linphone::Core::LinphoneCore::SetDeviceRotation(int rotation) {
+void Linphone::Core::LinphoneCore::SetDeviceRotation(int rotation)
+{
 	TRACE; gApiLock.Lock();
 	linphone_core_set_device_rotation(this->lc, rotation);
+	gApiLock.Unlock();
+}
+
+void Linphone::Core::LinphoneCore::NotifyMute(bool isMuted)
+{
+	TRACE; gApiLock.Lock();
+	Globals::Instance->CallController->NotifyMute(isMuted);
+	MuteMic(isMuted);
 	gApiLock.Unlock();
 }
 

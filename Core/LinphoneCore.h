@@ -1069,6 +1069,12 @@ namespace Linphone
 			///	specific implementations.
 			/// </summary>
 			void SetDeviceRotation(int rotation);
+
+			/// <summary>
+			/// Notifies the system that the call needs to be muted/unmuted.
+			/// </summary>
+			/// <param name="isMuted">The new mute state</param>
+			void NotifyMute(bool isMuted);
 			
 			/// <summary>
 			/// The LinphoneCoreListener that handles the events coming from the core.

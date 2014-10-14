@@ -158,6 +158,14 @@ VoipPhoneCall^ CallController::NewIncomingCallForCustomIncomingCallView(Platform
 	return incomingCall;
 }
 
+void CallController::NotifyMute(bool isMuted)
+{
+	if (isMuted)
+		this->callCoordinator->NotifyMuted();
+	else
+		this->callCoordinator->NotifyUnmuted();
+}
+
 IncomingCallViewDismissedCallback^ CallController::IncomingCallViewDismissed::get()
 {
 	TRACE; gApiLock.Lock();

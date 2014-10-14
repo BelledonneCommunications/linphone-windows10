@@ -47,6 +47,12 @@ namespace Linphone
 			Windows::Phone::Networking::Voip::VoipPhoneCall^ NewIncomingCallForCustomIncomingCallView(Platform::String^ contactNumber);
 
 			/// <summary>
+			/// Notifies the system that the call needs to be muted/unmuted.
+			/// </summary>
+			/// <param name="isMuted">The new mute state</param>
+			void NotifyMute(bool isMuted);
+
+			/// <summary>
 			/// Changes the reason used when declining an incoming call.
 			/// </summary>
 			property Linphone::Core::DeclineReason DeclineReason
