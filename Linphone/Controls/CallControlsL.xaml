@@ -118,6 +118,7 @@
 			BorderThickness="0"
 			Margin="-10"
 			Click="camera_Click_1"
+            IsEnabled="False"
 			Visibility="{Binding CameraButtonVisibility}"
 			Background="Transparent">
             <StackPanel Orientation="Vertical">

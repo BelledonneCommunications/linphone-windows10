@@ -174,10 +174,26 @@ namespace Linphone.Views
                     cm.FindContact(calledNumber);
                 }
             }
+
+            // Callback CallStateChanged set too late when call is incoming, so trigger it manually
+            if (LinphoneManager.Instance.LinphoneCore.GetCallsNb() > 0)
+            {
+                LinphoneCall call = (LinphoneCall)LinphoneManager.Instance.LinphoneCore.GetCalls()[0];
+                if (call.GetState() == LinphoneCallState.StreamsRunning)
+                {
+                    CallStateChanged(call, LinphoneCallState.StreamsRunning);
+                }
+            }
         }
 
-        private void CallStateChanged(LinphoneCall call, LinphoneCallState state)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="call"></param>
+        /// <param name="state"></param>
+        public void CallStateChanged(LinphoneCall call, LinphoneCallState state)
         {
+            Logger.Dbg("[InCall] Call state changed: " + state.ToString());
             if (state == LinphoneCallState.StreamsRunning || state == LinphoneCallState.Connected)
             {
                 buttons.pause.IsEnabled = true;
@@ -186,6 +202,8 @@ namespace Linphone.Views
                 buttons_landscape.microphone.IsEnabled = true;
                 buttons.video.IsEnabled = true;
                 buttons_landscape.video.IsEnabled = true;
+                buttons.camera.IsEnabled = true;
+                buttons_landscape.camera.IsEnabled = true;
                 bool isVideoEnabled = call.GetCurrentParamsCopy().IsVideoEnabled();
                 buttons.video.IsChecked = isVideoEnabled;
                 buttons_landscape.video.IsChecked = isVideoEnabled;
@@ -195,16 +213,20 @@ namespace Linphone.Views
                 buttons.pause.IsEnabled = false;
                 buttons.microphone.IsEnabled = false;
                 buttons.video.IsEnabled = false;
+                buttons.camera.IsEnabled = false;
                 buttons_landscape.pause.IsEnabled = false;
                 buttons_landscape.microphone.IsEnabled = false;
                 buttons_landscape.video.IsEnabled = false;
+                buttons_landscape.camera.IsEnabled = false;
             }
             else if (state == LinphoneCallState.Paused)
             {
                 buttons.microphone.IsEnabled = false;
                 buttons.video.IsEnabled = false;
+                buttons.camera.IsEnabled = false;
                 buttons_landscape.microphone.IsEnabled = false;
                 buttons_landscape.video.IsEnabled = false;
+                buttons_landscape.camera.IsEnabled = false;
             }
         }
 
