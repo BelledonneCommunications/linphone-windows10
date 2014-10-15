@@ -46,6 +46,7 @@ namespace Linphone.Agents
                         LpConfig config = server.LinphoneCoreFactory.CreateLpConfig(ApplicationData.Current.LocalFolder.Path + "\\linphonerc", "Assets/linphonerc-factory");
                         server.LinphoneCoreFactory.CreateLinphoneCore(this, config);
                         server.LinphoneCore.SetRootCA("Assets/rootca.pem");
+                        server.LinphoneCore.SetChatDatabasePath(ApplicationData.Current.LocalFolder.Path + "\\chat.db");
                         server.LinphoneCore.SetNetworkReachable(true);
                         server.LinphoneCore.SetUserAgent("LinphoneWP8KeepAlive", "");
                         server.LinphoneCore.IterateEnabled = true;
