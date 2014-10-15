@@ -5,6 +5,7 @@ using Microsoft.Phone.Net.NetworkInformation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.IO.IsolatedStorage;
 using System.Threading;
 using System.Threading.Tasks;
@@ -82,8 +83,7 @@ namespace Linphone.Model
         /// <returns>The path of the config file</returns>
         public static String GetConfigPath()
         {
-            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-            return localFolder.Path + "\\linphonerc";
+            return Path.Combine(ApplicationData.Current.LocalFolder.Path, "linphonerc");
         }
 
         /// <summary>
@@ -92,8 +92,7 @@ namespace Linphone.Model
         /// <returns>The path of the config file</returns>
         public static String GetChatDatabasePath()
         {
-            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-            return localFolder.Path + "\\chat.sqlite";
+            return Path.Combine(ApplicationData.Current.LocalFolder.Path, "chat.db");
         }
 
         /// <summary>
