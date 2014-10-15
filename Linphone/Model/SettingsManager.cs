@@ -87,6 +87,16 @@ namespace Linphone.Model
         }
 
         /// <summary>
+        /// Get the path of the database file used to store chat messages stored in the Isolated Storage
+        /// </summary>
+        /// <returns>The path of the config file</returns>
+        public static String GetChatDatabasePath()
+        {
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            return localFolder.Path + "\\chat.sqlite";
+        }
+
+        /// <summary>
         /// Get the path of the factory config file stored in the package
         /// </summary>
         /// <returns>The path of the factory config file</returns>

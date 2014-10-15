@@ -1,5 +1,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Windows Phone
+# Visual Studio Express 2013 for Windows
+VisualStudioVersion = 12.0.30324.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "srtp", "submodules\srtp\build\wp8\srtp\srtp.vcxproj", "{B4B96BC4-2B72-4964-98E4-7FD048A43363}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "oRTP", "submodules\linphone\oRTP\build\wp8\oRTP\oRTP.vcxproj", "{FFC7B532-0502-4D88-AC98-9E89071CBC97}"
@@ -96,6 +98,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opus", "submodules\opus\build\wp8\opus\opus.vcxproj", "{D450EC75-DF02-48B0-A4FB-ACA79BD894AB}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib", "submodules\linphone\build\wp8\zlib\zlib.vcxproj", "{7AFAC3BB-D97B-4578-B9FE-5E1D2B94EA2F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sqlite", "submodules\sqlite\sqlite.vcxproj", "{A45D63B9-60DE-476C-8836-F8EEDBE139D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -485,6 +489,18 @@ Global
 		{7AFAC3BB-D97B-4578-B9FE-5E1D2B94EA2F}.Release|Win32.Build.0 = Release|Win32
 		{7AFAC3BB-D97B-4578-B9FE-5E1D2B94EA2F}.Release|x86.ActiveCfg = Release|Win32
 		{7AFAC3BB-D97B-4578-B9FE-5E1D2B94EA2F}.Release|x86.Build.0 = Release|Win32
+		{A45D63B9-60DE-476C-8836-F8EEDBE139D0}.Debug|ARM.ActiveCfg = Debug|ARM
+		{A45D63B9-60DE-476C-8836-F8EEDBE139D0}.Debug|ARM.Build.0 = Debug|ARM
+		{A45D63B9-60DE-476C-8836-F8EEDBE139D0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A45D63B9-60DE-476C-8836-F8EEDBE139D0}.Debug|Win32.Build.0 = Debug|Win32
+		{A45D63B9-60DE-476C-8836-F8EEDBE139D0}.Debug|x86.ActiveCfg = Debug|Win32
+		{A45D63B9-60DE-476C-8836-F8EEDBE139D0}.Debug|x86.Build.0 = Debug|Win32
+		{A45D63B9-60DE-476C-8836-F8EEDBE139D0}.Release|ARM.ActiveCfg = Release|ARM
+		{A45D63B9-60DE-476C-8836-F8EEDBE139D0}.Release|ARM.Build.0 = Release|ARM
+		{A45D63B9-60DE-476C-8836-F8EEDBE139D0}.Release|Win32.ActiveCfg = Release|Win32
+		{A45D63B9-60DE-476C-8836-F8EEDBE139D0}.Release|Win32.Build.0 = Release|Win32
+		{A45D63B9-60DE-476C-8836-F8EEDBE139D0}.Release|x86.ActiveCfg = Release|Win32
+		{A45D63B9-60DE-476C-8836-F8EEDBE139D0}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

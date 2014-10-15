@@ -294,6 +294,7 @@ namespace Linphone.Model
             ConfigureLogger();
             server.LinphoneCoreFactory.CreateLinphoneCore(this, config);
             server.LinphoneCore.SetRootCA("Assets/rootca.pem");
+            server.LinphoneCore.SetChatDatabasePath(SettingsManager.GetChatDatabasePath());
             Logger.Dbg("[LinphoneManager] LinphoneCore created");
 
             AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;

@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Phone
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sqlite", "sqlite.vcxproj", "{D5EC8C11-C1D9-47E3-BB82-A93C300FD902}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+		Debug|Win32 = Debug|Win32
+		Release|ARM = Release|ARM
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D5EC8C11-C1D9-47E3-BB82-A93C300FD902}.Debug|ARM.ActiveCfg = Debug|ARM
+		{D5EC8C11-C1D9-47E3-BB82-A93C300FD902}.Debug|ARM.Build.0 = Debug|ARM
+		{D5EC8C11-C1D9-47E3-BB82-A93C300FD902}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D5EC8C11-C1D9-47E3-BB82-A93C300FD902}.Debug|Win32.Build.0 = Debug|Win32
+		{D5EC8C11-C1D9-47E3-BB82-A93C300FD902}.Release|ARM.ActiveCfg = Release|ARM
+		{D5EC8C11-C1D9-47E3-BB82-A93C300FD902}.Release|ARM.Build.0 = Release|ARM
+		{D5EC8C11-C1D9-47E3-BB82-A93C300FD902}.Release|Win32.ActiveCfg = Release|Win32
+		{D5EC8C11-C1D9-47E3-BB82-A93C300FD902}.Release|Win32.Build.0 = Release|Win32
+		{6BD78980-9C71-4341-8775-AD19E9EC7305}.Debug|ARM.ActiveCfg = Debug|ARM
+		{6BD78980-9C71-4341-8775-AD19E9EC7305}.Debug|ARM.Build.0 = Debug|ARM
+		{6BD78980-9C71-4341-8775-AD19E9EC7305}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6BD78980-9C71-4341-8775-AD19E9EC7305}.Debug|Win32.Build.0 = Debug|Win32
+		{6BD78980-9C71-4341-8775-AD19E9EC7305}.Release|ARM.ActiveCfg = Release|ARM
+		{6BD78980-9C71-4341-8775-AD19E9EC7305}.Release|ARM.Build.0 = Release|ARM
+		{6BD78980-9C71-4341-8775-AD19E9EC7305}.Release|Win32.ActiveCfg = Release|Win32
+		{6BD78980-9C71-4341-8775-AD19E9EC7305}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

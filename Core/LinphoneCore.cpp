@@ -1443,6 +1443,13 @@ void Linphone::Core::LinphoneCore::NotifyMute(bool isMuted)
 	gApiLock.Unlock();
 }
 
+void Linphone::Core::LinphoneCore::SetChatDatabasePath(Platform::String^ chatDatabasePath)
+{
+	TRACE; gApiLock.Lock();
+	linphone_core_set_chat_database_path(this->lc, Linphone::Core::Utils::pstoccs(chatDatabasePath));
+	gApiLock.Unlock();
+}
+
 Linphone::Core::LinphoneCoreListener^ Linphone::Core::LinphoneCore::CoreListener::get()
 {
 	return this->listener;

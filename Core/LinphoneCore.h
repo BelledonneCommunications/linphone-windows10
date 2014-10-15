@@ -1075,6 +1075,12 @@ namespace Linphone
 			/// </summary>
 			/// <param name="isMuted">The new mute state</param>
 			void NotifyMute(bool isMuted);
+
+			/// <summary>
+			/// Sets the path to the database file used to store chat messages
+			/// </summary>
+			/// <param name="chatDatabasePath">The path to the database file</param>
+			void SetChatDatabasePath(Platform::String^ chatDatabasePath);
 			
 			/// <summary>
 			/// The LinphoneCoreListener that handles the events coming from the core.
