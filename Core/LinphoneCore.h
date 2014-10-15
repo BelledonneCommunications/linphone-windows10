@@ -1049,7 +1049,7 @@ namespace Linphone
 			/// <summary>
 			/// Creates a ChatRoom to send text messages to given addrees.
 			/// </summary>
-			Linphone::Core::LinphoneChatRoom^ CreateChatRoom(Platform::String^ to);
+			Linphone::Core::LinphoneChatRoom^ GetOrCreateChatRoom(Platform::String^ to);
 
 			/// <summary>
 			/// Sets the log collection upload server URL.

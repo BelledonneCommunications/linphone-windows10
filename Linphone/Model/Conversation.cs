@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Linphone.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,7 +29,7 @@ namespace Linphone.Model
         {
             get
             {
-                return Messages.Last().Message;
+                return Messages.Last().GetText();
             }
         }
 
@@ -39,28 +40,32 @@ namespace Linphone.Model
         {
             get
             {
-                return FormatDate(Messages.Last().Timestamp);
+                return FormatDate(Messages.Last().GetTime());
             }
         }
 
         /// <summary>
         /// List of messages sent and received.
         /// </summary>
-        public List<ChatMessage> Messages { get; set; }
+        public IList<LinphoneChatMessage> Messages { get; set; }
 
         /// <summary>
         /// Public constructor.
         /// </summary>
-        public Conversation(string sipAddress, string displayName, List<ChatMessage> messages)
+        public Conversation(string sipAddress, string displayName, IList<Object> messages)
         {
             SipAddress = sipAddress;
             DisplayedName = displayName;
-            Messages = messages;
+            Messages = new List<LinphoneChatMessage>();
+            foreach (LinphoneChatMessage msg in messages)
+            {
+                Messages.Add(msg);
+            }
         }
 
         private string FormatDate(long timestamp)
         {
-            DateTime date = new DateTime(timestamp * TimeSpan.TicksPerSecond);
+            DateTime date = new DateTime(timestamp * TimeSpan.TicksPerSecond).AddYears(1969);
             DateTime now = DateTime.Now;
             if (now.Year == date.Year && now.Month == date.Month && now.Day == date.Day)
                 return String.Format("{0:HH:mm}", date);

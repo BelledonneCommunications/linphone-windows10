@@ -124,7 +124,7 @@ namespace Linphone.Views
                 ContactName.Text = displayedSipAddress;
                 cm.FindContact(sipAddress);
 
-                chatRoom = LinphoneManager.Instance.LinphoneCore.CreateChatRoom(sipAddress);
+                chatRoom = LinphoneManager.Instance.LinphoneCore.GetOrCreateChatRoom(sipAddress);
                 UpdateComposingMessage();
 
                 if (e.NavigationMode != NavigationMode.Back)
@@ -394,7 +394,7 @@ namespace Linphone.Views
 
                     try
                     {
-                        chatRoom = LinphoneManager.Instance.LinphoneCore.CreateChatRoom(sipAddress);
+                        chatRoom = LinphoneManager.Instance.LinphoneCore.GetOrCreateChatRoom(sipAddress);
 
                         if (DatabaseManager.Instance.Messages.Count(m => m.LocalContact.Equals(sipAddress) || m.RemoteContact.Equals(sipAddress)) > 0)
                         {

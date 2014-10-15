@@ -1,4 +1,5 @@
-﻿using Linphone.Model;
+﻿using Linphone.Core;
+using Linphone.Model;
 using Linphone.Resources;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
@@ -69,10 +70,10 @@ namespace Linphone.Views
             {
                 displayName = e.ContactFound.DisplayName;
             }
-            _conversations.Add(new Conversation(address, displayName, _allMessages.Where(m => m.RemoteContact.Equals(address) || m.LocalContact.Equals(address)).ToList()));
+            _conversations.Add(new Conversation(address, displayName, LinphoneManager.Instance.LinphoneCore.GetOrCreateChatRoom(address).GetHistory()));
 
             _sortedConversations = new ObservableCollection<Conversation>();
-            foreach (var i in _conversations.OrderByDescending(g => g.Messages.Last().Timestamp).ToList())
+            foreach (var i in _conversations.OrderByDescending(g => g.Messages.Last().GetTime()).ToList())
             {
                 _sortedConversations.Add(i);
             }
@@ -95,18 +96,11 @@ namespace Linphone.Views
 
         private void GetMessagesAndDisplayConversationsList()
         {
-            // Define the query to gather all of the messages.
-            var messagesInDB = from ChatMessage message in DatabaseManager.Instance.Messages select message;
-            // Execute the query and place the results into a collection.
-            _allMessages = new List<ChatMessage>(messagesInDB);
-            // Get distinct conversations by addresses.
-            var filtered = _allMessages.GroupBy(m => m.Contact).Select(g => g.First()).OrderByDescending(m => m.Timestamp).ToList();
-
             _conversations = new ObservableCollection<Conversation>();
             _sortedConversations = new ObservableCollection<Conversation>();
-            foreach (var conversation in filtered)
+            foreach (LinphoneChatRoom conversation in LinphoneManager.Instance.LinphoneCore.GetChatRooms())
             {
-                string address = conversation.LocalContact.Length > 0 ? conversation.LocalContact : conversation.RemoteContact;
+                string address = conversation.GetPeerAddress().AsStringUriOnly();
                 ContactManager.Instance.FindContact(address);
             }
             Conversations.ItemsSource = _sortedConversations;
@@ -116,9 +110,8 @@ namespace Linphone.Views
         {
             foreach (var c in _selection)
             {
-                DatabaseManager.Instance.Messages.DeleteAllOnSubmit(c.Messages);
+                LinphoneManager.Instance.LinphoneCore.GetOrCreateChatRoom(c.SipAddress).DeleteHistory();
             }
-            DatabaseManager.Instance.SubmitChanges();
 
             GetMessagesAndDisplayConversationsList();            
 

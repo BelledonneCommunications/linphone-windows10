@@ -1401,7 +1401,7 @@ void Linphone::Core::LinphoneCore::EnableSelfView(Platform::Boolean enable)
 	gApiLock.Unlock();
 }
 
-Linphone::Core::LinphoneChatRoom^ Linphone::Core::LinphoneCore::CreateChatRoom(Platform::String^ to)
+Linphone::Core::LinphoneChatRoom^ Linphone::Core::LinphoneCore::GetOrCreateChatRoom(Platform::String^ to)
 {
 	TRACE; gApiLock.Lock();
 	const char* address = Linphone::Core::Utils::pstoccs(to);
