@@ -48,6 +48,14 @@ Linphone::Core::LinphoneChatMessage::LinphoneChatMessage(::LinphoneChatMessage *
 	linphone_chat_message_set_user_data(this->message, chat_message);
 }
 
+Platform::Boolean Linphone::Core::LinphoneChatMessage::IsOutgoing() 
+{
+	TRACE; gApiLock.Lock();
+	bool_t is_outgoing = linphone_chat_message_is_outgoing(this->message);
+	gApiLock.Unlock();
+	return is_outgoing;
+}
+
 Linphone::Core::LinphoneChatMessage::~LinphoneChatMessage()
 {
 	linphone_chat_message_unref(message);

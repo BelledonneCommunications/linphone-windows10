@@ -129,11 +129,8 @@ namespace Linphone.Views
 
                 if (e.NavigationMode != NavigationMode.Back)
                 {
-                    // Define the query to gather all of the messages linked to the current contact.
-                    var messagesInDB = from message in DatabaseManager.Instance.Messages where (message.LocalContact.Equals(sipAddress) || message.RemoteContact.Equals(sipAddress)) select message;
-                    // Execute the query and place the results into a collection.
-                    List<ChatMessage> messages = messagesInDB.ToList();
-                    DisplayPastMessages(messages);
+                    chatRoom.MarkAsRead();
+                    DisplayPastMessages(chatRoom.GetHistory());
                 }
             }
             else if (e.NavigationMode != NavigationMode.Back || sipAddress == null || sipAddress.Length == 0)
@@ -173,14 +170,12 @@ namespace Linphone.Views
             }
         }
 
-        private void DisplayPastMessages(List<ChatMessage> messages)
+        private void DisplayPastMessages(IList<Object> messages)
         {
-            foreach (var message in messages)
+            foreach (LinphoneChatMessage message in messages)
             {
-                message.MarkedAsRead = true;
-
-                DateTime date = new DateTime(message.Timestamp * TimeSpan.TicksPerSecond);
-                if (message.IsIncoming)
+                DateTime date = new DateTime(message.GetTime() * TimeSpan.TicksPerSecond).AddYears(1969);
+                if (!message.IsOutgoing())
                 {
                     IncomingChatBubble bubble = new IncomingChatBubble(message, FormatDate(date));
                     bubble.MessageDeleted += bubble_MessageDeleted;
@@ -189,16 +184,16 @@ namespace Linphone.Views
                 else
                 {
                     OutgoingChatBubble bubble;
-                    if (message.ImageURL != null && message.ImageURL.Length > 0)
+                    /*if (message.ImageURL != null && message.ImageURL.Length > 0)
                     {
                         bubble = new OutgoingChatBubble(message, null, FormatDate(date));
                     }
                     else
-                    {
+                    {*/
                         bubble = new OutgoingChatBubble(message, FormatDate(date));
-                    }
+                    //}
                     bubble.MessageDeleted += bubble_MessageDeleted;
-                    bubble.UpdateStatus((LinphoneChatMessageState)message.Status);
+                    bubble.UpdateStatus(message.GetState());
                     MessagesList.Children.Add(bubble);
                 }
             }
@@ -247,18 +242,14 @@ namespace Linphone.Views
                 LinphoneChatMessage chatMessage = chatRoom.CreateLinphoneChatMessage(message);
                 long time = chatMessage.GetTime();
                 chatRoom.SendMessage(chatMessage, this);
+
+                DateTime date = new DateTime(chatMessage.GetTime() * TimeSpan.TicksPerSecond).AddYears(1969);
+                OutgoingChatBubble bubble = new OutgoingChatBubble(chatMessage, FormatDate(date));
+                bubble.MessageDeleted += bubble_MessageDeleted;
+                MessagesList.Children.Add(bubble);
+                _SentMessages.Add(bubble);
+                scrollToBottom();
             }
-
-            DateTime now = DateTime.Now;
-            ChatMessage msg = new ChatMessage { Message = message, ImageURL = "", MarkedAsRead = true, IsIncoming = false, RemoteContact = sipAddress, LocalContact = "", Timestamp = (now.Ticks / TimeSpan.TicksPerSecond), Status = (int)LinphoneChatMessageState.InProgress };
-            DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
-            DatabaseManager.Instance.SubmitChanges();
-
-            OutgoingChatBubble bubble = new OutgoingChatBubble(msg, FormatDate(now));
-            bubble.MessageDeleted += bubble_MessageDeleted;
-            MessagesList.Children.Add(bubble);
-            _SentMessages.Add(bubble);
-            scrollToBottom();
         }
 
         private async Task<string> UploadImageMessage(BitmapImage image, string filePath)
@@ -313,18 +304,14 @@ namespace Linphone.Views
                 chatMessage.SetExternalBodyUrl(url);
                 long time = chatMessage.GetTime();
                 chatRoom.SendMessage(chatMessage, this);
+
+                DateTime date = new DateTime(chatMessage.GetTime() * TimeSpan.TicksPerSecond).AddYears(1969);
+                OutgoingChatBubble bubble = new OutgoingChatBubble(chatMessage, image, FormatDate(date));
+                bubble.MessageDeleted += bubble_MessageDeleted;
+                MessagesList.Children.Add(bubble);
+                _SentMessages.Add(bubble);
+                scrollToBottom();
             }
-
-            DateTime now = DateTime.Now;
-            ChatMessage msg = new ChatMessage { ImageURL = localFileName, Message = "", MarkedAsRead = true, IsIncoming = false, RemoteContact = sipAddress, LocalContact = "", Timestamp = (now.Ticks / TimeSpan.TicksPerSecond), Status = (int)LinphoneChatMessageState.InProgress };
-            DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
-            DatabaseManager.Instance.SubmitChanges();
-
-            OutgoingChatBubble bubble = new OutgoingChatBubble(msg, image, FormatDate(now));
-            bubble.MessageDeleted += bubble_MessageDeleted;
-            MessagesList.Children.Add(bubble);
-            _SentMessages.Add(bubble);
-            scrollToBottom();
         }
 
         /// <summary>
@@ -342,18 +329,11 @@ namespace Linphone.Views
 
             Dispatcher.BeginInvoke(() =>
             {
-                OutgoingChatBubble bubble = _SentMessages.Where(b => b.ChatMessage.Message.Equals(messageText)).Last();
+                OutgoingChatBubble bubble = _SentMessages.Where(b => b.ChatMessage.GetText().Equals(messageText)).Last();
                 if (bubble != null)
                 {
                     bubble.UpdateStatus(state);
                     _SentMessages.Remove(bubble);
-
-                    ChatMessage msgToUpdate = bubble.ChatMessage;
-                    if (msgToUpdate != null)
-                    {
-                        msgToUpdate.Status = (int)state;
-                        DatabaseManager.Instance.SubmitChanges();// Submit changes to save the changes while the object is locally referenced.
-                    }
                 }
             });
         }
@@ -396,13 +376,9 @@ namespace Linphone.Views
                     {
                         chatRoom = LinphoneManager.Instance.LinphoneCore.GetOrCreateChatRoom(sipAddress);
 
-                        if (DatabaseManager.Instance.Messages.Count(m => m.LocalContact.Equals(sipAddress) || m.RemoteContact.Equals(sipAddress)) > 0)
+                        if (chatRoom.GetHistorySize() > 0)
                         {
-                            // Define the query to gather all of the messages linked to the current contact.
-                            var messagesInDB = from message in DatabaseManager.Instance.Messages where (message.LocalContact.Equals(sipAddress) || message.RemoteContact.Equals(sipAddress)) select message;
-                            // Execute the query and place the results into a collection.
-                            List<ChatMessage> messages = messagesInDB.ToList();
-                            DisplayPastMessages(messages);
+                            DisplayPastMessages(chatRoom.GetHistory());
                         }
                     }
                     catch
@@ -572,14 +548,7 @@ namespace Linphone.Views
                 date = date.AddSeconds(message.GetTime());
                 date = date.Add(TimeZoneInfo.Local.GetUtcOffset(date));
 
-                //TODO: Temp hack to remove
-                string url = message.GetExternalBodyUrl();
-                url = url.Replace("\"", "");
-                ChatMessage msg = new ChatMessage { Message = message.GetText(), ImageURL = url, MarkedAsRead = true, IsIncoming = true, LocalContact = sipAddress, RemoteContact = "", Timestamp = (date.Ticks / TimeSpan.TicksPerSecond) };
-                DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
-                DatabaseManager.Instance.SubmitChanges();
-
-                IncomingChatBubble bubble = new IncomingChatBubble(msg, FormatDate(date));
+                IncomingChatBubble bubble = new IncomingChatBubble(message, FormatDate(date));
                 bubble.MessageDeleted += bubble_MessageDeleted;
                 MessagesList.Children.Add(bubble);
 
@@ -648,10 +617,10 @@ namespace Linphone.Views
         /// <summary>
         /// Callback called when a user selects the delete context menu
         /// </summary>
-        public void bubble_MessageDeleted(object sender, ChatMessage message)
+        public void bubble_MessageDeleted(object sender, LinphoneChatMessage message)
         {
             MessagesList.Children.Remove(sender as UserControl);
-            DatabaseManager.Instance.Messages.DeleteOnSubmit(message);
+            //DatabaseManager.Instance.Messages.DeleteOnSubmit(message);
         }
     }
 }

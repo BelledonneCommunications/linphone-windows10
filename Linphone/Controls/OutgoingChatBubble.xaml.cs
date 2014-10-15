@@ -21,12 +21,12 @@ namespace Linphone.Controls
     /// </summary>
     public partial class OutgoingChatBubble : UserControl
     {
-        private ChatMessage _message;
+        private LinphoneChatMessage _message;
 
         /// <summary>
         /// Chat message associated with this bubble
         /// </summary>
-        public ChatMessage ChatMessage
+        public LinphoneChatMessage ChatMessage
         {
             get
             {
@@ -51,7 +51,7 @@ namespace Linphone.Controls
         /// <summary>
         /// Public constructor.
         /// </summary>
-        public OutgoingChatBubble(ChatMessage message, string timestamp)
+        public OutgoingChatBubble(LinphoneChatMessage message, string timestamp)
         {
             InitializeComponent();
 
@@ -59,7 +59,7 @@ namespace Linphone.Controls
             Message.Visibility = Visibility.Visible;
             Image.Visibility = Visibility.Collapsed;
             ShowImage.Visibility = Visibility.Collapsed;
-            Message.Text = message.Message;
+            Message.Text = message.GetText();
             Timestamp.Text = timestamp;
 
             Background.Fill = _darkAccentBrush;
@@ -69,7 +69,7 @@ namespace Linphone.Controls
         /// <summary>
         /// Public constructor.
         /// </summary>
-        public OutgoingChatBubble(ChatMessage message, BitmapImage image, string timestamp)
+        public OutgoingChatBubble(LinphoneChatMessage message, BitmapImage image, string timestamp)
         {
             InitializeComponent();
             ChatMessage = message;
@@ -127,14 +127,14 @@ namespace Linphone.Controls
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            bool result = Utils.SavePictureInMediaLibrary(ChatMessage.ImageURL);
-            MessageBox.Show(result ? AppResources.FileSavingSuccess : AppResources.FileSavingFailure, AppResources.FileSaving, MessageBoxButton.OK);
+            /*bool result = Utils.SavePictureInMediaLibrary(ChatMessage.ImageURL);
+            MessageBox.Show(result ? AppResources.FileSavingSuccess : AppResources.FileSavingFailure, AppResources.FileSaving, MessageBoxButton.OK);*/
         }
 
         /// <summary>
         /// Delegate for delete event.
         /// </summary>
-        public delegate void MessageDeletedEventHandler(object sender, ChatMessage message);
+        public delegate void MessageDeletedEventHandler(object sender, LinphoneChatMessage message);
 
         /// <summary>
         /// Handler for delete event.
@@ -143,15 +143,15 @@ namespace Linphone.Controls
 
         private void ShowImage_Click(object sender, RoutedEventArgs e)
         {
-            Image.Source = Utils.GetThumbnailBitmapFromImage(Utils.ReadImageFromIsolatedStorage(ChatMessage.ImageURL));
+            /*Image.Source = Utils.GetThumbnailBitmapFromImage(Utils.ReadImageFromIsolatedStorage(ChatMessage.ImageURL));
             ShowImage.Visibility = Visibility.Collapsed;
             Image.Visibility = Visibility.Visible;
-            Save.Visibility = Visibility.Visible;
+            Save.Visibility = Visibility.Visible;*/
         }
 
         private void Image_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/FullScreenPicture.xaml?uri=" + ChatMessage.ImageURL, UriKind.RelativeOrAbsolute));
+            //BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/FullScreenPicture.xaml?uri=" + ChatMessage.ImageURL, UriKind.RelativeOrAbsolute));
         }
     }
 }

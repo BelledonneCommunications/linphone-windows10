@@ -12,6 +12,7 @@ using Linphone.Views;
 using System.Windows.Media.Imaging;
 using Microsoft.Xna.Framework.Media;
 using Linphone.Resources;
+using Linphone.Core;
 
 namespace Linphone.Controls
 {
@@ -20,12 +21,12 @@ namespace Linphone.Controls
     /// </summary>
     public partial class IncomingChatBubble : UserControl
     {
-        private ChatMessage _message;
+        private LinphoneChatMessage _message;
 
         /// <summary>
         /// Chat message associated with this bubble
         /// </summary>
-        public ChatMessage ChatMessage
+        public LinphoneChatMessage ChatMessage
         {
             get
             {
@@ -40,14 +41,14 @@ namespace Linphone.Controls
         /// <summary>
         /// Public constructor.
         /// </summary>
-        public IncomingChatBubble(ChatMessage message, string timestamp)
+        public IncomingChatBubble(LinphoneChatMessage message, string timestamp)
         {
             InitializeComponent();
             ChatMessage = message;
-            Message.Text = message.Message;
+            Message.Text = message.GetText();
             Timestamp.Text = timestamp;
 
-            if (ChatMessage.ImageURL != null && ChatMessage.ImageURL.Length > 0)
+            /*if (ChatMessage.ImageURL != null && ChatMessage.ImageURL.Length > 0)
             {
                 Message.Visibility = Visibility.Collapsed;
                 Copy.Visibility = Visibility.Collapsed;
@@ -60,7 +61,7 @@ namespace Linphone.Controls
                 {
                     ShowImage.Visibility = Visibility.Visible;
                 }
-            }
+            }*/
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)
@@ -78,14 +79,14 @@ namespace Linphone.Controls
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            bool result = Utils.SavePictureInMediaLibrary(ChatMessage.ImageURL);
-            MessageBox.Show(result ? AppResources.FileSavingSuccess : AppResources.FileSavingFailure, AppResources.FileSaving, MessageBoxButton.OK);
+            /*bool result = Utils.SavePictureInMediaLibrary(ChatMessage.ImageURL);
+            MessageBox.Show(result ? AppResources.FileSavingSuccess : AppResources.FileSavingFailure, AppResources.FileSaving, MessageBoxButton.OK);*/
         }
 
         /// <summary>
         /// Delegate for delete event.
         /// </summary>
-        public delegate void MessageDeletedEventHandler(object sender, ChatMessage message);
+        public delegate void MessageDeletedEventHandler(object sender, LinphoneChatMessage message);
 
         /// <summary>
         /// Handler for delete event.
@@ -94,7 +95,7 @@ namespace Linphone.Controls
 
         private void DownloadImage_Click(object sender, RoutedEventArgs e)
         {
-            DownloadImage.Visibility = Visibility.Collapsed;
+            /*DownloadImage.Visibility = Visibility.Collapsed;
             ProgressBar.Visibility = Visibility.Visible;
             BitmapImage image = Utils.GetThumbnailBitmapFromImage(Utils.DownloadImageAndStoreItInIsolatedStorage(ChatMessage.ImageURL, ChatMessage));
             if (image != null)
@@ -107,21 +108,20 @@ namespace Linphone.Controls
             {
                 DownloadImage.Visibility = Visibility.Visible;
             }
-            ProgressBar.Visibility = Visibility.Collapsed;
-
+            ProgressBar.Visibility = Visibility.Collapsed;*/
         }
 
         private void ShowImage_Click(object sender, RoutedEventArgs e)
         {
-            Image.Source = Utils.GetThumbnailBitmapFromImage(Utils.ReadImageFromIsolatedStorage(ChatMessage.ImageURL));
+            /*Image.Source = Utils.GetThumbnailBitmapFromImage(Utils.ReadImageFromIsolatedStorage(ChatMessage.ImageURL));
             ShowImage.Visibility = Visibility.Collapsed;
             Image.Visibility = Visibility.Visible;
-            Save.Visibility = Visibility.Visible;
+            Save.Visibility = Visibility.Visible;*/
         }
 
         private void Image_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/FullScreenPicture.xaml?uri=" + ChatMessage.ImageURL, UriKind.RelativeOrAbsolute));
+            //BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/FullScreenPicture.xaml?uri=" + ChatMessage.ImageURL, UriKind.RelativeOrAbsolute));
         }
     }
 }

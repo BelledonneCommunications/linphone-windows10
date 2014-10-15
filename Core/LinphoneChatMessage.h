@@ -52,6 +52,11 @@ namespace Linphone
 			/// </summary>
 			Linphone::Core::LinphoneChatMessageState GetState();
 
+			/// <summary>
+			/// Returns true if the message was outgoing, otherwise return false.
+			/// </summary>
+			Platform::Boolean Linphone::Core::LinphoneChatMessage::IsOutgoing();
+
 		private:
 			friend class Linphone::Core::Utils;
 			friend ref class Linphone::Core::LinphoneCore;
