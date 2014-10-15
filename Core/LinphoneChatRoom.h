@@ -43,6 +43,31 @@ namespace Linphone
 			/// </summary>
 			Linphone::Core::LinphoneChatMessage^ CreateLinphoneChatMessage(Platform::String^ message);
 
+			/// <summary>
+			/// Returns the amount of messages associated with the peer of this chatRoom.
+			/// </summary>
+			int GetHistorySize();
+
+			/// <summary>
+			/// Deletes all the messages associated with the peer of this chat room
+			/// </summary>
+			void DeleteHistory();
+
+			/// <summary>
+			/// Returns the amount of unread messages associated with the peer of this chatRoom.
+			/// </summary>
+			int GetUnreadMessageCount();
+
+			/// <summary>
+			/// Marks all the messages in this conversation as read
+			/// </summary>
+			void MarkAsRead();
+
+			/// <summary>
+			/// Gets the list of the messages in the history of this chatroom
+			/// </summary>
+			Windows::Foundation::Collections::IVector<Platform::Object^>^ GetHistory();
+
 		private:
 			friend class Linphone::Core::Utils;
 			friend ref class Linphone::Core::LinphoneCore;

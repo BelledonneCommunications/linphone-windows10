@@ -1081,6 +1081,11 @@ namespace Linphone
 			/// </summary>
 			/// <param name="chatDatabasePath">The path to the database file</param>
 			void SetChatDatabasePath(Platform::String^ chatDatabasePath);
+
+			/// <summary>
+			/// Gets the list of the created chatrooms
+			/// </summary>
+			Windows::Foundation::Collections::IVector<Platform::Object^>^ GetChatRooms();
 			
 			/// <summary>
 			/// The LinphoneCoreListener that handles the events coming from the core.

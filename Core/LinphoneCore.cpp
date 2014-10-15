@@ -1450,6 +1450,26 @@ void Linphone::Core::LinphoneCore::SetChatDatabasePath(Platform::String^ chatDat
 	gApiLock.Unlock();
 }
 
+static void AddChatRoomListToVector(void *vRoom, void *vector)
+{
+	::LinphoneChatRoom *chatRoom = (LinphoneChatRoom*) vRoom;
+	Linphone::Core::RefToPtrProxy<IVector<Object^>^> *list = reinterpret_cast< Linphone::Core::RefToPtrProxy<IVector<Object^>^> *>(vector);
+	IVector<Object^>^ rooms = (list) ? list->Ref() : nullptr;
+	Linphone::Core::LinphoneChatRoom^ room = (Linphone::Core::LinphoneChatRoom^) Linphone::Core::Utils::CreateLinphoneChatRoom(chatRoom);
+	rooms->Append(room);
+}
+
+IVector<Object^>^ Linphone::Core::LinphoneCore::GetChatRooms()
+{
+	TRACE; gApiLock.Lock();
+	IVector<Object^>^ rooms = ref new Vector<Object^>();
+	MSList* roomList = linphone_core_get_chat_rooms(this->lc);
+	RefToPtrProxy<IVector<Object^>^> *roomsPtr = new RefToPtrProxy<IVector<Object^>^>(rooms);
+	ms_list_for_each2(roomList, AddChatRoomListToVector, roomsPtr);
+	gApiLock.Unlock();
+	return rooms;
+}
+
 Linphone::Core::LinphoneCoreListener^ Linphone::Core::LinphoneCore::CoreListener::get()
 {
 	return this->listener;

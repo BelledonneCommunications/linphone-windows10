@@ -1,6 +1,12 @@
 #include "LinphoneChatRoom.h"
 #include "LinphoneAddress.h"
 #include "ApiLock.h"
+#include <collection.h>
+
+using namespace Platform;
+using namespace Platform::Collections;
+using namespace Windows::Foundation;
+using namespace Windows::Foundation::Collections;
 
 Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneChatRoom::GetPeerAddress()
 {
@@ -56,6 +62,56 @@ void Linphone::Core::LinphoneChatRoom::Compose()
 	TRACE; gApiLock.Lock();
 	linphone_chat_room_compose(this->room);
 	gApiLock.Unlock();
+}
+
+int Linphone::Core::LinphoneChatRoom::GetHistorySize()
+{
+	TRACE; gApiLock.Lock();
+	int size = linphone_chat_room_get_history_size(this->room);
+	gApiLock.Unlock();
+	return size;
+}
+
+void Linphone::Core::LinphoneChatRoom::DeleteHistory()
+{
+	TRACE; gApiLock.Lock();
+	linphone_chat_room_delete_history(this->room);
+	gApiLock.Unlock();
+}
+
+int Linphone::Core::LinphoneChatRoom::GetUnreadMessageCount()
+{
+	TRACE; gApiLock.Lock();
+	int unread = linphone_chat_room_get_unread_messages_count(this->room);
+	gApiLock.Unlock();
+	return unread;
+}
+
+void Linphone::Core::LinphoneChatRoom::MarkAsRead()
+{
+	TRACE; gApiLock.Lock();
+	linphone_chat_room_mark_as_read(this->room);
+	gApiLock.Unlock();
+}
+
+static void AddChatMessageToVector(void *vMessage, void *vector)
+{
+	::LinphoneChatMessage *chatMessage = (LinphoneChatMessage*)vMessage;
+	Linphone::Core::RefToPtrProxy<IVector<Object^>^> *list = reinterpret_cast< Linphone::Core::RefToPtrProxy<IVector<Object^>^> *>(vector);
+	IVector<Object^>^ messages = (list) ? list->Ref() : nullptr;
+	Linphone::Core::LinphoneChatMessage^ message = (Linphone::Core::LinphoneChatMessage^) Linphone::Core::Utils::CreateLinphoneChatMessage(chatMessage);
+	messages->Append(message);
+}
+
+IVector<Object^>^ Linphone::Core::LinphoneChatRoom::GetHistory()
+{
+	TRACE; gApiLock.Lock();
+	IVector<Object^>^ history = ref new Vector<Object^>();
+	MSList* messages = linphone_chat_room_get_history(this->room, 0);
+	RefToPtrProxy<IVector<Object^>^> *historyPtr = new RefToPtrProxy<IVector<Object^>^>(history);
+	ms_list_for_each2(messages, AddChatMessageToVector, historyPtr);
+	gApiLock.Unlock();
+	return history;
 }
 
 Linphone::Core::LinphoneChatRoom::LinphoneChatRoom(::LinphoneChatRoom *cr) :
