@@ -613,6 +613,36 @@ namespace Linphone.Model
                     AudioRoutingManager.GetDefault().SetAudioEndpoint(AudioRoutingEndpoint.Earpiece);
             }
         }
+
+        /// <summary>
+        /// Property that handles the audio routing between the speaker and the earpiece.
+        /// </summary>
+        public bool BluetoothEnabled
+        {
+            get
+            {
+                var audioRoute = AudioRoutingManager.GetDefault().GetAudioEndpoint();
+                return audioRoute == AudioRoutingEndpoint.Bluetooth || audioRoute == AudioRoutingEndpoint.BluetoothWithNoiseAndEchoCancellation;
+            }
+            set
+            {
+                if (value)
+                    AudioRoutingManager.GetDefault().SetAudioEndpoint(AudioRoutingEndpoint.Bluetooth);
+                else
+                    AudioRoutingManager.GetDefault().SetAudioEndpoint(AudioRoutingEndpoint.Earpiece);
+            }
+        }
+
+        /// <summary>
+        /// Returns true of the Bluetooth audio route is available
+        /// </summary>
+        public bool IsBluetoothAvailable
+        {
+            get
+            {
+                return (AudioRoutingManager.GetDefault().AvailableAudioEndpoints & AvailableAudioRoutingEndpoints.Bluetooth) != 0;
+            }
+        }
         #endregion
 
         #region Video handling

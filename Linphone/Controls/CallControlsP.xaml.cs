@@ -46,6 +46,9 @@ namespace Linphone.Controls
         public delegate void DialpadClickEventHandler(object sender, bool isDialpadShown);
         public event DialpadClickEventHandler DialpadClick;
 
+        public delegate void BluetoothClickEventHandler(object sender, bool isBluetoothOn);
+        public event DialpadClickEventHandler BluetoothClick;
+
         /// <summary>
         /// Public constructor
         /// </summary>
@@ -57,6 +60,12 @@ namespace Linphone.Controls
         private void hangUp_Click(object sender, RoutedEventArgs e)
         {
             HangUpClick(this);
+        }
+
+        private void bluetooth_Click_1(object sender, RoutedEventArgs e)
+        {
+            bool isBluetoothToggled = (bool)bluetooth.IsChecked;
+            BluetoothClick(this, isBluetoothToggled);
         }
 
         private void speaker_Click_1(object sender, RoutedEventArgs e)

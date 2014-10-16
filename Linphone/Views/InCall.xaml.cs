@@ -14,6 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using Windows.Phone.Media.Devices;
 
 namespace Linphone.Views
 {
@@ -71,6 +72,8 @@ namespace Linphone.Views
             buttons_landscape.VideoClick += buttons_VideoClick;
             buttons.DialpadClick += buttons_DialpadClick;
             buttons_landscape.DialpadClick += buttons_DialpadClick;
+            buttons.BluetoothClick += buttons_BluetoothClick;
+            buttons_landscape.BluetoothClick += buttons_BluetoothClick;
         }
 
         private void buttons_DialpadClick(object sender, bool isDialpadShown)
@@ -99,8 +102,28 @@ namespace Linphone.Views
                 LinphoneManager.Instance.CallListener.MuteStateChanged(isMuteOn);
         }
 
+        private void buttons_BluetoothClick(object sender, bool isBluetoothOn)
+        {
+            buttons.speaker.IsChecked = false;
+            buttons_landscape.speaker.IsChecked = false;
+            buttons.bluetooth.IsChecked = isBluetoothOn;
+            buttons_landscape.bluetooth.IsChecked = isBluetoothOn;
+            try
+            {
+                LinphoneManager.Instance.BluetoothEnabled = isBluetoothOn;
+            }
+            catch
+            {
+                Logger.Warn("Exception while trying to toggle bluetooth to {0}", isBluetoothOn.ToString());
+                buttons.bluetooth.IsChecked = isBluetoothOn;
+                buttons_landscape.bluetooth.IsChecked = isBluetoothOn;
+            }
+        }
+
         private bool buttons_SpeakerClick(object sender, bool isSpeakerOn)
         {
+            buttons.bluetooth.IsChecked = false;
+            buttons_landscape.bluetooth.IsChecked = false;
             buttons.speaker.IsChecked = isSpeakerOn;
             buttons_landscape.speaker.IsChecked = isSpeakerOn;
             try
@@ -166,6 +189,7 @@ namespace Linphone.Views
             this.ViewModel.PauseListener = this;
             this.ViewModel.CallUpdatedByRemoteListener = this;
             LinphoneManager.Instance.CallStateChanged += CallStateChanged;
+            AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;
 
             if (NavigationContext.QueryString.ContainsKey("sip"))
             {
@@ -194,6 +218,20 @@ namespace Linphone.Views
                     CallStateChanged(call, LinphoneCallState.StreamsRunning);
                 }
             }
+        }
+
+        private void AudioEndpointChanged(AudioRoutingManager sender, object args)
+        {
+            BaseModel.UIDispatcher.BeginInvoke(() =>
+            {
+                bool isBluetoothAudioRouteAvailable = LinphoneManager.Instance.IsBluetoothAvailable;
+                buttons.bluetooth.IsEnabled = isBluetoothAudioRouteAvailable;
+                buttons_landscape.bluetooth.IsEnabled = isBluetoothAudioRouteAvailable;
+
+                bool isUsingBluetoothAudioRoute = LinphoneManager.Instance.BluetoothEnabled;
+                buttons.bluetooth.IsChecked = isUsingBluetoothAudioRoute;
+                buttons_landscape.bluetooth.IsChecked = isUsingBluetoothAudioRoute;
+            });
         }
 
         /// <summary>
@@ -238,6 +276,8 @@ namespace Linphone.Views
                 buttons_landscape.video.IsEnabled = false;
                 buttons_landscape.camera.IsEnabled = false;
             }
+
+            AudioEndpointChanged(null, null);
         }
 
         /// <summary>
@@ -259,6 +299,7 @@ namespace Linphone.Views
             this.ViewModel.MuteListener = null;
             this.ViewModel.PauseListener = null;
             LinphoneManager.Instance.CallStateChanged -= CallStateChanged;
+            AudioRoutingManager.GetDefault().AudioEndpointChanged -= AudioEndpointChanged;
         }
 
         /// <summary>

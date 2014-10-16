@@ -220,6 +220,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to bluetooth.
+        /// </summary>
+        public static string Bluetooth {
+            get {
+                return ResourceManager.GetString("Bluetooth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Call.
         /// </summary>
         public static string Call {

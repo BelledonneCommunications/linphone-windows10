@@ -8,10 +8,11 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    d:DesignHeight="400" d:DesignWidth="480">
+    d:DesignHeight="500" d:DesignWidth="480">
     
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -22,32 +23,37 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Button
+        <ToggleButton 
+            x:Name="video"
             Grid.Row="0"
             Grid.Column="0"
-            Grid.ColumnSpan="2"
             BorderThickness="0"
             Margin="-10"
-            Background="{StaticResource PhoneAccentBrush}"
-            Content="{Binding Path=LocalizedResources.HangUp, Source={StaticResource LocalizedStrings}}"
-            Click="hangUp_Click"
-            ClickMode="Release">
-            <Button.Style>
-                <StaticResource ResourceKey="AccentColorButton"/>
-            </Button.Style>
-        </Button>
-
-        <ToggleButton
-            x:Name="dialpad"
-            Grid.Row="0"
-            Grid.Column="2"
-            BorderThickness="0"
-            Margin="-10"
-            Click="dialpad_Click_1"
+            Click="video_Click_1"
+            IsEnabled="False"
+            Visibility="{Binding VideoButtonVisibility}"
             Background="{StaticResource PhoneChromeBrush}">
-            <Image Source="/Assets/AppBar/dialpad.png" Stretch="None"/>
+            <StackPanel Orientation="Vertical">
+                <Image x:Name="videoImg" Source="/Assets/AppBar/feature.video.png" Stretch="None"/>
+                <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Video, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
+            </StackPanel>
         </ToggleButton>
 
+        <Button 
+            x:Name="camera"
+            Grid.Row="0"
+            Grid.Column="1"
+            BorderThickness="0"
+            Margin="-10"
+            Click="camera_Click_1"
+            IsEnabled="False"
+            Visibility="{Binding CameraButtonVisibility}"
+            Background="Transparent">
+            <StackPanel Orientation="Vertical">
+                <Image x:Name="cameraImg" Source="/Assets/AppBar/feature.camera.png" Stretch="None"/>
+            </StackPanel>
+        </Button>
+        
         <ToggleButton
             x:Name="speaker"
             Grid.Row="1"
@@ -76,11 +82,11 @@
                 <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Mute, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
             </StackPanel>
         </ToggleButton>
-
+        
         <ToggleButton
             x:Name="pause"
-            Grid.Row="1"
-            Grid.Column="2"
+            Grid.Row="2"
+            Grid.Column="0"
             BorderThickness="0"
             Margin="-10"
             Click="pause_Click_1"
@@ -91,11 +97,11 @@
                 <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Hold, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
             </StackPanel>
         </ToggleButton>
-
+        
         <ToggleButton 
             x:Name="stats"
             Grid.Row="2"
-            Grid.Column="0"
+            Grid.Column="1"
             BorderThickness="0"
             Margin="-10"
             Click="stats_Click_1"
@@ -105,46 +111,47 @@
                 <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Stats, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
             </StackPanel>
         </ToggleButton>
-
+        
         <ToggleButton 
-            x:Name="video"
-            Grid.Row="2"
-            Grid.Column="1"
-            BorderThickness="0"
-            Margin="-10"
-            Click="video_Click_1"
-            IsEnabled="False"
-            IsChecked="{Binding VideoButtonToggled}"
-            Visibility="{Binding VideoButtonVisibility}"
-            Background="{StaticResource PhoneChromeBrush}">
-            <StackPanel Orientation="Vertical">
-                <Image x:Name="videoImg" Source="/Assets/AppBar/feature.video.png" Stretch="None"/>
-                <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Video, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
-            </StackPanel>
-        </ToggleButton>
-
-        <Button 
-            x:Name="camera"
+            x:Name="bluetooth"
             Grid.Row="2"
             Grid.Column="2"
             BorderThickness="0"
             Margin="-10"
-            Click="camera_Click_1"
+            Click="bluetooth_Click_1"
             IsEnabled="False"
-            Visibility="{Binding CameraButtonVisibility}"
-            Background="Transparent">
+            Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
-                <Image x:Name="cameraImg" Source="/Assets/AppBar/feature.camera.png" Stretch="None"/>
+                <Image x:Name="bluetoothImg" Source="/Assets/AppBar/appbar.connection.bluetooth.png" Stretch="None"/>
+                <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Bluetooth, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
             </StackPanel>
+        </ToggleButton>
+
+        <Button
+            Grid.Row="3"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            BorderThickness="0"
+            Margin="-10"
+            Background="{StaticResource PhoneAccentBrush}"
+            Content="{Binding Path=LocalizedResources.HangUp, Source={StaticResource LocalizedStrings}}"
+            Click="hangUp_Click"
+            ClickMode="Release">
+            <Button.Style>
+                <StaticResource ResourceKey="AccentColorButton"/>
+            </Button.Style>
         </Button>
 
-        <!-- Numeric pad buttons -->
-        <controls:Numpad
-            x:Name="numpad"
-            Grid.Row="1"
-            Grid.RowSpan="2"
-            Grid.ColumnSpan="3"
-            Visibility="Collapsed"/>
+        <ToggleButton
+            x:Name="dialpad"
+            Grid.Row="3"
+            Grid.Column="2"
+            BorderThickness="0"
+            Margin="-10"
+            Click="dialpad_Click_1"
+            Background="{StaticResource PhoneChromeBrush}">
+            <Image Source="/Assets/AppBar/dialpad.png" Stretch="None"/>
+        </ToggleButton>
 
         <!-- Statistics panel -->
         <Grid x:Name="statsPanel" Background="{StaticResource PhoneChromeBrush}" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="3" Visibility="Collapsed">
@@ -173,5 +180,13 @@
             <TextBlock Text="{Binding MediaEncryption}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2"/>
             <TextBlock Text="{Binding ICE}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2"/>
         </Grid>
+
+        <!-- Numeric pad buttons -->
+        <controls:Numpad
+            x:Name="numpad"
+            Grid.Row="0"
+            Grid.RowSpan="3"
+            Grid.ColumnSpan="3"
+            Visibility="Collapsed"/>
     </Grid>
 </UserControl>
