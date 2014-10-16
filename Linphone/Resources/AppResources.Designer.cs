@@ -1346,6 +1346,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to camera.
+        /// </summary>
+        public static string ToggleCamera {
+            get {
+                return ResourceManager.GetString("ToggleCamera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to transfer.
         /// </summary>
         public static string Transfer {

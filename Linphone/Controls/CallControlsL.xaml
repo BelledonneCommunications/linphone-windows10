@@ -81,25 +81,11 @@
                 <Image x:Name="pauseImg" Source="/Assets/AppBar/pause.png" Stretch="None"/>
             </StackPanel>
         </ToggleButton>
-        
-        <ToggleButton 
-            x:Name="transfer"
-            Grid.Row="2"
-            Grid.Column="1"
-            BorderThickness="0"
-            Margin="-10"
-            Click="transfer_Click_1"
-            IsEnabled="False"
-            Background="{StaticResource PhoneChromeBrush}">
-            <StackPanel Orientation="Vertical">
-                <Image x:Name="transferImg" Source="/Assets/AppBar/transfer.png" Stretch="None"/>
-            </StackPanel>
-        </ToggleButton>
 
         <ToggleButton 
 			x:Name="video"
 			Grid.Row="2"
-			Grid.Column="2"
+			Grid.Column="1"
 			BorderThickness="0"
 			Margin="-10"
 			Click="video_Click_1"
@@ -110,6 +96,21 @@
                 <Image x:Name="videoImg" Source="/Assets/AppBar/feature.video.png" Stretch="None"/>
             </StackPanel>
         </ToggleButton>
+
+        <Button 
+			x:Name="camera"
+			Grid.Row="2"
+			Grid.Column="2"
+			BorderThickness="0"
+			Margin="-10"
+			Click="camera_Click_1"
+            IsEnabled="False"
+			Visibility="{Binding CameraButtonVisibility}"
+			Background="{StaticResource PhoneChromeBrush}">
+            <StackPanel Orientation="Vertical">
+                <Image x:Name="cameraImg" Source="/Assets/AppBar/feature.camera.png" Stretch="None"/>
+            </StackPanel>
+        </Button>
 
         <Button
             x:Name="hangUp"
@@ -123,21 +124,6 @@
 			Click="hangUp_Click"
 			ClickMode="Release" 
             Style="{StaticResource AccentColorButton}"/>
-
-        <Button 
-			x:Name="camera"
-			Grid.Row="3"
-			Grid.Column="3"
-			BorderThickness="0"
-			Margin="-10"
-			Click="camera_Click_1"
-            IsEnabled="False"
-			Visibility="{Binding CameraButtonVisibility}"
-			Background="Transparent">
-            <StackPanel Orientation="Vertical">
-                <Image x:Name="cameraImg" Source="/Assets/AppBar/feature.camera.png" Stretch="None"/>
-            </StackPanel>
-        </Button>
 
         <ToggleButton 
 			x:Name="stats"

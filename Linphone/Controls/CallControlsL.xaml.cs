@@ -62,11 +62,6 @@ namespace Linphone.Controls
             HangUpClick(this);
         }
 
-        private void transfer_Click_1(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void bluetooth_Click_1(object sender, RoutedEventArgs e)
         {
             bool isBluetoothToggled = (bool)bluetooth.IsChecked;
