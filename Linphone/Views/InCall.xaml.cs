@@ -32,6 +32,9 @@ namespace Linphone.Views
         private Timer fadeTimer;
         private DateTimeOffset startTime;
 
+        private static double BUTTON_DISABLED_OPACITY = 0.4;
+        private static double BUTTON_ENABLED_OPACITY = 1.0;
+
         /// <summary>
         /// Public constructor.
         /// </summary>
@@ -227,6 +230,8 @@ namespace Linphone.Views
                 bool isBluetoothAudioRouteAvailable = LinphoneManager.Instance.IsBluetoothAvailable;
                 buttons.bluetooth.IsEnabled = isBluetoothAudioRouteAvailable;
                 buttons_landscape.bluetooth.IsEnabled = isBluetoothAudioRouteAvailable;
+                buttons.bluetoothImg.Opacity = isBluetoothAudioRouteAvailable ? BUTTON_ENABLED_OPACITY : BUTTON_DISABLED_OPACITY;
+                buttons_landscape.bluetoothImg.Opacity = isBluetoothAudioRouteAvailable ? BUTTON_ENABLED_OPACITY : BUTTON_DISABLED_OPACITY;
 
                 bool isUsingBluetoothAudioRoute = LinphoneManager.Instance.BluetoothEnabled;
                 buttons.bluetooth.IsChecked = isUsingBluetoothAudioRoute;
@@ -248,12 +253,20 @@ namespace Linphone.Views
                 buttons.microphone.IsEnabled = true;
                 buttons_landscape.pause.IsEnabled = true;
                 buttons_landscape.microphone.IsEnabled = true;
+                buttons.pauseImg.Opacity = BUTTON_ENABLED_OPACITY;
+                buttons.microImg.Opacity = BUTTON_ENABLED_OPACITY;
+                buttons_landscape.pauseImg.Opacity = BUTTON_ENABLED_OPACITY;
+                buttons_landscape.microImg.Opacity = BUTTON_ENABLED_OPACITY;
 
                 bool isVideoAvailable = LinphoneManager.Instance.IsVideoAvailable;
                 buttons.video.IsEnabled = isVideoAvailable;
                 buttons_landscape.video.IsEnabled = isVideoAvailable;
+                buttons.videoImg.Opacity = isVideoAvailable ? BUTTON_ENABLED_OPACITY : BUTTON_DISABLED_OPACITY;
+                buttons_landscape.videoImg.Opacity = isVideoAvailable ? BUTTON_ENABLED_OPACITY : BUTTON_DISABLED_OPACITY;
                 buttons.camera.IsEnabled = isVideoAvailable;
                 buttons_landscape.camera.IsEnabled = isVideoAvailable;
+                buttons.cameraImg.Opacity = isVideoAvailable ? BUTTON_ENABLED_OPACITY : BUTTON_DISABLED_OPACITY;
+                buttons_landscape.cameraImg.Opacity = isVideoAvailable ? BUTTON_ENABLED_OPACITY : BUTTON_DISABLED_OPACITY;
 
                 bool isVideoEnabled = call.GetCurrentParamsCopy().IsVideoEnabled();
                 buttons.video.IsChecked = isVideoEnabled;
@@ -265,19 +278,33 @@ namespace Linphone.Views
                 buttons.microphone.IsEnabled = false;
                 buttons.video.IsEnabled = false;
                 buttons.camera.IsEnabled = false;
+                buttons.pauseImg.Opacity = BUTTON_DISABLED_OPACITY;
+                buttons.microImg.Opacity = BUTTON_DISABLED_OPACITY;
+                buttons.videoImg.Opacity = BUTTON_DISABLED_OPACITY;
+                buttons.cameraImg.Opacity = BUTTON_DISABLED_OPACITY;
                 buttons_landscape.pause.IsEnabled = false;
                 buttons_landscape.microphone.IsEnabled = false;
                 buttons_landscape.video.IsEnabled = false;
                 buttons_landscape.camera.IsEnabled = false;
+                buttons_landscape.pauseImg.Opacity = BUTTON_DISABLED_OPACITY;
+                buttons_landscape.microImg.Opacity = BUTTON_DISABLED_OPACITY;
+                buttons_landscape.videoImg.Opacity = BUTTON_DISABLED_OPACITY;
+                buttons_landscape.cameraImg.Opacity = BUTTON_DISABLED_OPACITY;
             }
             else if (state == LinphoneCallState.Paused)
             {
                 buttons.microphone.IsEnabled = false;
                 buttons.video.IsEnabled = false;
                 buttons.camera.IsEnabled = false;
+                buttons.microImg.Opacity = BUTTON_DISABLED_OPACITY;
+                buttons.videoImg.Opacity = BUTTON_DISABLED_OPACITY;
+                buttons.cameraImg.Opacity = BUTTON_DISABLED_OPACITY;
                 buttons_landscape.microphone.IsEnabled = false;
                 buttons_landscape.video.IsEnabled = false;
                 buttons_landscape.camera.IsEnabled = false;
+                buttons_landscape.microImg.Opacity = BUTTON_DISABLED_OPACITY;
+                buttons_landscape.videoImg.Opacity = BUTTON_DISABLED_OPACITY;
+                buttons_landscape.cameraImg.Opacity = BUTTON_DISABLED_OPACITY;
             }
 
             AudioEndpointChanged(null, null);

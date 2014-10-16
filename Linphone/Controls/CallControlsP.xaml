@@ -24,18 +24,6 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <ToggleButton
-            Grid.Row="1"
-            Grid.Column="1"
-            BorderThickness="0"
-            Margin="-10"
-            IsEnabled="False">
-            <StackPanel Orientation="Vertical">
-                <Image x:Name="transferImg" Source="/Assets/AppBar/empty.png" Stretch="None"/>
-                <TextBlock HorizontalAlignment="Center" FontSize="20" Text=" " TextWrapping="Wrap"  Margin="5,0,5,10"/>
-            </StackPanel>
-        </ToggleButton>
-
         <Button 
             x:Name="camera"
             Grid.Row="1"
@@ -47,10 +35,22 @@
             Visibility="{Binding CameraButtonVisibility}"
             Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
-                <Image x:Name="cameraImg" Source="/Assets/AppBar/feature.camera.png" Stretch="None"/>
+                <Image x:Name="cameraImg" Source="/Assets/AppBar/feature.camera.png" Stretch="None" Opacity="0.4"/>
                 <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.ToggleCamera, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
             </StackPanel>
         </Button>
+        
+        <ToggleButton
+            Grid.Row="1"
+            Grid.Column="1"
+            BorderThickness="0"
+            Margin="-10"
+            IsEnabled="False">
+            <StackPanel Orientation="Vertical">
+                <Image Source="/Assets/AppBar/empty.png" Stretch="None"/>
+                <TextBlock HorizontalAlignment="Center" FontSize="20" Text=" " TextWrapping="Wrap"  Margin="5,0,5,10"/>
+            </StackPanel>
+        </ToggleButton>
 
         <ToggleButton
             x:Name="speaker"
@@ -76,7 +76,7 @@
             IsEnabled="False"
             Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
-                <Image x:Name="microImg" Source="/Assets/AppBar/mic.png" Stretch="None"/>
+                <Image x:Name="microImg" Source="/Assets/AppBar/mic.png" Stretch="None" Opacity="0.4"/>
                 <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Mute, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
             </StackPanel>
         </ToggleButton>
@@ -91,7 +91,7 @@
             IsEnabled="False"
             Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
-                <Image x:Name="bluetoothImg" Source="/Assets/AppBar/appbar.connection.bluetooth.png" Stretch="None"/>
+                <Image x:Name="bluetoothImg" Source="/Assets/AppBar/appbar.connection.bluetooth.png" Stretch="None" Opacity="0.4"/>
                 <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Bluetooth, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
             </StackPanel>
         </ToggleButton>
@@ -106,7 +106,7 @@
             IsEnabled="False"
             Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
-                <Image x:Name="pauseImg" Source="/Assets/AppBar/pause.png" Stretch="None"/>
+                <Image x:Name="pauseImg" Source="/Assets/AppBar/pause.png" Stretch="None" Opacity="0.4"/>
                 <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Hold, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
             </StackPanel>
         </ToggleButton>
@@ -122,7 +122,7 @@
             Visibility="{Binding VideoButtonVisibility}"
             Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
-                <Image x:Name="videoImg" Source="/Assets/AppBar/feature.video.png" Stretch="None"/>
+                <Image x:Name="videoImg" Source="/Assets/AppBar/feature.video.png" Stretch="None" Opacity="0.4"/>
                 <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Video, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
             </StackPanel>
         </ToggleButton>

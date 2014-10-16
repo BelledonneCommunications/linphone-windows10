@@ -50,7 +50,7 @@
 			IsEnabled="False"
 			Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
-                <Image x:Name="microImg" Source="/Assets/AppBar/mic.png" Stretch="None"/>
+                <Image x:Name="microImg" Source="/Assets/AppBar/mic.png" Stretch="None" Opacity="0.4"/>
             </StackPanel>
         </ToggleButton>
 
@@ -64,7 +64,7 @@
             IsEnabled="False"
             Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
-                <Image x:Name="bluetoothImg" Source="/Assets/AppBar/appbar.connection.bluetooth.png" Stretch="None"/>
+                <Image x:Name="bluetoothImg" Source="/Assets/AppBar/appbar.connection.bluetooth.png" Stretch="None" Opacity="0.4"/>
             </StackPanel>
         </ToggleButton>
 
@@ -78,7 +78,7 @@
 			IsEnabled="False"
 			Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
-                <Image x:Name="pauseImg" Source="/Assets/AppBar/pause.png" Stretch="None"/>
+                <Image x:Name="pauseImg" Source="/Assets/AppBar/pause.png" Stretch="None" Opacity="0.4"/>
             </StackPanel>
         </ToggleButton>
 
@@ -93,7 +93,7 @@
 			Visibility="{Binding VideoButtonVisibility}"
 			Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
-                <Image x:Name="videoImg" Source="/Assets/AppBar/feature.video.png" Stretch="None"/>
+                <Image x:Name="videoImg" Source="/Assets/AppBar/feature.video.png" Stretch="None" Opacity="0.4"/>
             </StackPanel>
         </ToggleButton>
 
@@ -108,7 +108,7 @@
 			Visibility="{Binding CameraButtonVisibility}"
 			Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
-                <Image x:Name="cameraImg" Source="/Assets/AppBar/feature.camera.png" Stretch="None"/>
+                <Image x:Name="cameraImg" Source="/Assets/AppBar/feature.camera.png" Stretch="None" Opacity="0.4"/>
             </StackPanel>
         </Button>
 
