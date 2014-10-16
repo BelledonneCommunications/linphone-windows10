@@ -248,10 +248,13 @@ namespace Linphone.Views
                 buttons.microphone.IsEnabled = true;
                 buttons_landscape.pause.IsEnabled = true;
                 buttons_landscape.microphone.IsEnabled = true;
-                buttons.video.IsEnabled = true;
-                buttons_landscape.video.IsEnabled = true;
-                buttons.camera.IsEnabled = true;
-                buttons_landscape.camera.IsEnabled = true;
+
+                bool isVideoAvailable = LinphoneManager.Instance.IsVideoAvailable;
+                buttons.video.IsEnabled = isVideoAvailable;
+                buttons_landscape.video.IsEnabled = isVideoAvailable;
+                buttons.camera.IsEnabled = isVideoAvailable;
+                buttons_landscape.camera.IsEnabled = isVideoAvailable;
+
                 bool isVideoEnabled = call.GetCurrentParamsCopy().IsVideoEnabled();
                 buttons.video.IsChecked = isVideoEnabled;
                 buttons_landscape.video.IsChecked = isVideoEnabled;

@@ -82,6 +82,21 @@
                 <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Mute, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
             </StackPanel>
         </ToggleButton>
+
+        <ToggleButton 
+            x:Name="bluetooth"
+            Grid.Row="1"
+            Grid.Column="3"
+            BorderThickness="0"
+            Margin="-10"
+            Click="bluetooth_Click_1"
+            IsEnabled="False"
+            Background="{StaticResource PhoneChromeBrush}">
+            <StackPanel Orientation="Vertical">
+                <Image x:Name="bluetoothImg" Source="/Assets/AppBar/appbar.connection.bluetooth.png" Stretch="None"/>
+                <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Bluetooth, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
+            </StackPanel>
+        </ToggleButton>
         
         <ToggleButton
             x:Name="pause"
@@ -99,17 +114,17 @@
         </ToggleButton>
 
         <ToggleButton 
-            x:Name="bluetooth"
+            x:Name="transfer"
             Grid.Row="2"
             Grid.Column="1"
             BorderThickness="0"
             Margin="-10"
-            Click="bluetooth_Click_1"
+            Click="transfer_Click_1"
             IsEnabled="False"
             Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
-                <Image x:Name="bluetoothImg" Source="/Assets/AppBar/appbar.connection.bluetooth.png" Stretch="None"/>
-                <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Bluetooth, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
+                <Image x:Name="transferImg" Source="/Assets/AppBar/transfer.png" Stretch="None"/>
+                <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Transfer, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
             </StackPanel>
         </ToggleButton>
 
@@ -128,6 +143,7 @@
         </ToggleButton>
 
         <Button
+            x:Name="hangUp"
             Grid.Row="3"
             Grid.Column="0"
             Grid.ColumnSpan="2"
@@ -136,11 +152,8 @@
             Background="{StaticResource PhoneAccentBrush}"
             Content="{Binding Path=LocalizedResources.HangUp, Source={StaticResource LocalizedStrings}}"
             Click="hangUp_Click"
-            ClickMode="Release">
-            <Button.Style>
-                <StaticResource ResourceKey="AccentColorButton"/>
-            </Button.Style>
-        </Button>
+            ClickMode="Release"
+            Style="{StaticResource AccentColorButton}"/>
 
         <ToggleButton
             x:Name="dialpad"

@@ -634,7 +634,7 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Returns true of the Bluetooth audio route is available
+        /// Returns true if the Bluetooth audio route is available
         /// </summary>
         public bool IsBluetoothAvailable
         {
@@ -646,6 +646,16 @@ namespace Linphone.Model
         #endregion
 
         #region Video handling
+        /// <summary>
+        /// Returns true if the video is available
+        /// </summary>
+        public bool IsVideoAvailable
+        {
+            get
+            {
+                return LinphoneCore.IsVideoSupported() && (LinphoneCore.IsVideoDisplayEnabled() || LinphoneCore.IsVideoCaptureEnabled());
+            }
+        }
 
         /// <summary>
         /// Enables disables video.

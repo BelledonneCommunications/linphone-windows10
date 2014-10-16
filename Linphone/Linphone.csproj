@@ -190,6 +190,7 @@
     <Content Include="Assets\AppBar\chat.png" />
     <Content Include="Assets\AppBar\clear.png" />
     <Content Include="Assets\AppBar\stats.png" />
+    <Content Include="Assets\AppBar\transfer.png" />
     <Content Include="Assets\linphonerc-factory" />
     <Content Include="Assets\lockscreen_logo.png" />
     <Content Include="Assets\rootca.pem" />

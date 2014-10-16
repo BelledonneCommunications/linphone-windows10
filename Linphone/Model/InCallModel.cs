@@ -28,9 +28,9 @@ namespace Linphone.Views
                 currentOrientation = CurrentPage.Orientation.ToString();
             }
 
-            bool isVideoEnabled = LinphoneManager.Instance.LinphoneCore.IsVideoSupported() && (LinphoneManager.Instance.LinphoneCore.IsVideoDisplayEnabled() || LinphoneManager.Instance.LinphoneCore.IsVideoCaptureEnabled());
-            videoButtonVisibility = isVideoEnabled ? Visibility.Visible : Visibility.Collapsed;
-            cameraButtonVisibility = isVideoEnabled && LinphoneManager.Instance.NumberOfCameras >= 2 ? Visibility.Visible : Visibility.Collapsed;
+            bool isVideoAvailable = LinphoneManager.Instance.IsVideoAvailable;
+            videoButtonVisibility = Visibility.Visible;// isVideoEnabled ? Visibility.Visible : Visibility.Collapsed;
+            cameraButtonVisibility = isVideoAvailable && LinphoneManager.Instance.NumberOfCameras >= 2 ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>

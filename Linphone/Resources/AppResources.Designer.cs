@@ -1346,6 +1346,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to transfer.
+        /// </summary>
+        public static string Transfer {
+            get {
+                return ResourceManager.GetString("Transfer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Transport.
         /// </summary>
         public static string TransportSetting {

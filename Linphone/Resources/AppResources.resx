@@ -616,4 +616,7 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   <data name="Bluetooth" xml:space="preserve">
     <value>bluetooth</value>
   </data>
+  <data name="Transfer" xml:space="preserve">
+    <value>transfer</value>
+  </data>
 </root>
