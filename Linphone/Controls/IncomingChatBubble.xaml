@@ -26,7 +26,7 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid Margin="5,10,100,0">
+    <Grid Margin="5,0,100,5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -37,7 +37,7 @@
             Grid.Row="0"
             Data="m 0,0 l 0,8 l 16,0 l -16,-16"
             Fill="{StaticResource PhoneAccentBrush}"
-            Margin="10,0,0,-1"
+            Margin="10,10,0,-1"
             HorizontalAlignment="Left"/>
 
         <Rectangle Fill="{StaticResource PhoneAccentBrush}" Grid.RowSpan="2" Grid.Row="1"/>

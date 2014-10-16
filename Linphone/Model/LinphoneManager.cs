@@ -947,10 +947,6 @@ namespace Linphone.Model
                     string url = message.GetExternalBodyUrl();
                     url = url.Replace("\"", "");
 
-                    ChatMessage msg = new ChatMessage { Message = message.GetText(), ImageURL = url, MarkedAsRead = false, IsIncoming = true, LocalContact = sipAddress, RemoteContact = "", Timestamp = timestamp };
-                    DatabaseManager.Instance.Messages.InsertOnSubmit(msg);
-                    DatabaseManager.Instance.SubmitChanges(System.Data.Linq.ConflictMode.ContinueOnConflict);
-
                     //Displays the message as a popup
                     if (MessageReceivedNotification != null)
                     {
@@ -966,14 +962,14 @@ namespace Linphone.Model
                     };
 
                     MessageReceivedNotification.Dismissed += (s, e) =>
+                    {
+                        switch (e.Result)
                         {
-                            switch (e.Result)
-                            {
-                                case CustomMessageBoxResult.LeftButton:
-                                    BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/Chat.xaml?sip=" + msg.Contact, UriKind.RelativeOrAbsolute));
-                                    break;
-                            }
-                        };
+                            case CustomMessageBoxResult.LeftButton:
+                                BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/Chat.xaml?sip=" + message.GetPeerAddress().AsStringUriOnly(), UriKind.RelativeOrAbsolute));
+                                break;
+                        }
+                    };
 
                     MessageReceivedNotification.Show();
                 }

@@ -10,6 +10,7 @@ using Microsoft.Phone.Shell;
 using Linphone.Model;
 using System.Windows.Controls.Primitives;
 using Linphone.Resources;
+using Linphone.Core;
 
 namespace Linphone.Controls
 {
@@ -19,7 +20,7 @@ namespace Linphone.Controls
     public partial class MessageReceivedNotification : UserControl
     {
         private Popup _popup;
-        private ChatMessage _message;
+        private LinphoneChatMessage _message;
 
         /// <summary>
         /// Getter for Popup.IsOpen
@@ -35,18 +36,21 @@ namespace Linphone.Controls
         /// <summary>
         /// Public constructor
         /// </summary>
-        public MessageReceivedNotification(Popup popup, ChatMessage message)
+        public MessageReceivedNotification(Popup popup, LinphoneChatMessage message)
         {
             InitializeComponent();
 
             _popup = popup;
             _message = message;
 
-            if (message.Message != null && message.Message.Length > 0)
-                Message.Text = message.Message;
+            string text = message.GetText();
+            if (text != null && text.Length > 0)
+                Message.Text = text;
             else
                 Message.Text = AppResources.ImageMessageReceived;
-            Sender.Text = message.Contact;
+
+            string displayName = message.GetPeerAddress().GetDisplayName();
+            Sender.Text = displayName == null || displayName.Length <= 0 ? message.GetPeerAddress().GetUserName() : displayName;
 
             ContactManager.Instance.ContactFound += (sender, e) =>
             {
@@ -55,7 +59,7 @@ namespace Linphone.Controls
                     Sender.Text = e.ContactFound.DisplayName;
                 }
             };
-            ContactManager.Instance.FindContact(message.Contact);
+            ContactManager.Instance.FindContact(message.GetPeerAddress().AsStringUriOnly());
 
             BaseModel.CurrentPage.ApplicationBar.IsVisible = false;
         }
@@ -77,7 +81,7 @@ namespace Linphone.Controls
         /// <summary>
         /// Delegate for show button clicked event.
         /// </summary>
-        public delegate void ShowClickedEventHandler(object sender, ChatMessage message);
+        public delegate void ShowClickedEventHandler(object sender, LinphoneChatMessage message);
 
         /// <summary>
         /// Handler for show button clicked event.

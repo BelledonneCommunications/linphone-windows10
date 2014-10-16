@@ -195,8 +195,6 @@ namespace Linphone.Views
                 }
             }
             scrollToBottom();
-
-            DatabaseManager.Instance.SubmitChanges();
         }
 
         /// <summary>
@@ -205,7 +203,6 @@ namespace Linphone.Views
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             chatRoom = null;
-            DatabaseManager.Instance.SubmitChanges();
             LinphoneManager.Instance.MessageListener = null;
             LinphoneManager.Instance.ComposingListener = null;
             base.OnNavigatingFrom(e);

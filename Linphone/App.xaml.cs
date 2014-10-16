@@ -83,28 +83,6 @@ namespace Linphone
                 // and consume battery power when the user is not using the phone.
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
-
-            // Create the message database if it does not exist.
-            if (!DatabaseManager.Instance.DatabaseExists())
-            {
-                DatabaseManager.Instance.CreateDatabase();
-                DatabaseManager.Instance.SubmitChanges();
-            }
-            else
-            {
-                //Check if database exists but failed to create table => crash at start
-                try
-                {
-                    Table<ChatMessage> messages = DatabaseManager.Instance.Messages;
-                    var enumerator = messages.GetEnumerator();
-                }
-                catch
-                {
-                    DatabaseManager.Instance.DeleteDatabase();
-                    DatabaseManager.Instance.CreateDatabase();
-                    DatabaseManager.Instance.SubmitChanges();
-                }
-            }
         }
 
         // Code to execute when the application is launching (eg, from Start)

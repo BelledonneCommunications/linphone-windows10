@@ -21,7 +21,6 @@ namespace Linphone.Views
     {
         private bool _usingSelectionAppBar = false;
         private IEnumerable<Conversation> _selection;
-        private List<ChatMessage> _allMessages;
         private ObservableCollection<Conversation> _conversations, _sortedConversations;
 
         /// <summary>

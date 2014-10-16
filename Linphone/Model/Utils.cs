@@ -106,30 +106,6 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Download an image received using the given url and store it locally
-        /// </summary>
-        /// <param name="url">Url to download the image</param>
-        /// <param name="message">ChatMessage linked to the image</param>
-        /// <returns>The Bitmap Image for display</returns>
-        public static BitmapImage DownloadImageAndStoreItInIsolatedStorage(string url, ChatMessage message)
-        {
-            //Download image
-            BitmapImage image = new BitmapImage(new Uri(url));
-            image.ImageOpened += (sender, e) =>
-            {
-                //Store it in isolated storage
-                string fileName = url.Substring(url.LastIndexOf("/") + 1);
-                SaveImageInLocalFolder(image, fileName);
-
-                //Update image url in database to point on local image
-                message.ImageURL = fileName;
-                DatabaseManager.Instance.SubmitChanges();
-            };
-
-            return image;
-        }
-
-        /// <summary>
         /// Saves a BitmapImage as a JPEG file in the local storage
         /// </summary>
         /// <param name="image">The bitmap image to save</param>
