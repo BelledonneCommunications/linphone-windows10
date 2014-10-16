@@ -69,7 +69,11 @@ namespace Linphone.Views
             {
                 displayName = e.ContactFound.DisplayName;
             }
-            _conversations.Add(new Conversation(address, displayName, LinphoneManager.Instance.LinphoneCore.GetOrCreateChatRoom(address).GetHistory()));
+            LinphoneChatRoom room = LinphoneManager.Instance.LinphoneCore.GetOrCreateChatRoom(address);
+            if (room.GetHistorySize() > 0)
+            {
+                _conversations.Add(new Conversation(address, displayName, room.GetHistory()));
+            }
 
             _sortedConversations = new ObservableCollection<Conversation>();
             foreach (var i in _conversations.OrderByDescending(g => g.Messages.Last().GetTime()).ToList())
@@ -99,8 +103,11 @@ namespace Linphone.Views
             _sortedConversations = new ObservableCollection<Conversation>();
             foreach (LinphoneChatRoom conversation in LinphoneManager.Instance.LinphoneCore.GetChatRooms())
             {
-                string address = conversation.GetPeerAddress().AsStringUriOnly();
-                ContactManager.Instance.FindContact(address);
+                if (conversation.GetHistorySize() > 0)
+                {
+                    string address = conversation.GetPeerAddress().AsStringUriOnly();
+                    ContactManager.Instance.FindContact(address);
+                }
             }
             Conversations.ItemsSource = _sortedConversations;
         }
