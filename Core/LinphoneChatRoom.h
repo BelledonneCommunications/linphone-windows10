@@ -68,6 +68,11 @@ namespace Linphone
 			/// </summary>
 			Windows::Foundation::Collections::IVector<Platform::Object^>^ GetHistory();
 
+			/// <summary>
+			/// Deletes a message from the history of the chatroom
+			/// </summary>
+			void DeleteMessageFromHistory(Linphone::Core::LinphoneChatMessage^ message);
+
 		private:
 			friend class Linphone::Core::Utils;
 			friend ref class Linphone::Core::LinphoneCore;

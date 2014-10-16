@@ -114,6 +114,13 @@ IVector<Object^>^ Linphone::Core::LinphoneChatRoom::GetHistory()
 	return history;
 }
 
+void Linphone::Core::LinphoneChatRoom::DeleteMessageFromHistory(Linphone::Core::LinphoneChatMessage^ message)
+{
+	TRACE; gApiLock.Lock();
+	linphone_chat_room_delete_message(this->room, message->message);
+	gApiLock.Unlock();
+}
+
 Linphone::Core::LinphoneChatRoom::LinphoneChatRoom(::LinphoneChatRoom *cr) :
 	room(cr)
 {

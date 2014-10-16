@@ -180,15 +180,7 @@ namespace Linphone.Views
                 }
                 else
                 {
-                    OutgoingChatBubble bubble;
-                    /*if (message.ImageURL != null && message.ImageURL.Length > 0)
-                    {
-                        bubble = new OutgoingChatBubble(message, null, FormatDate(date));
-                    }
-                    else
-                    {*/
-                        bubble = new OutgoingChatBubble(message, FormatDate(date));
-                    //}
+                    OutgoingChatBubble bubble = new OutgoingChatBubble(message, FormatDate(date));
                     bubble.MessageDeleted += bubble_MessageDeleted;
                     bubble.UpdateStatus(message.GetState());
                     MessagesList.Children.Add(bubble);
@@ -316,6 +308,7 @@ namespace Linphone.Views
             Logger.Msg("[Chat] Message " + messageText + ", state changed: " + state.ToString());
             if (state == LinphoneChatMessageState.InProgress)
             {
+                // No need to update the status in the bubble, it is already in progress
                 return;
             }
 
@@ -611,7 +604,10 @@ namespace Linphone.Views
         public void bubble_MessageDeleted(object sender, LinphoneChatMessage message)
         {
             MessagesList.Children.Remove(sender as UserControl);
-            //DatabaseManager.Instance.Messages.DeleteOnSubmit(message);
+            if (chatRoom != null) 
+            {
+                chatRoom.DeleteMessageFromHistory(message);
+            }
         }
     }
 }
