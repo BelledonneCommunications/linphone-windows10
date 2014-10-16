@@ -82,6 +82,9 @@
     <Compile Include="Controls\CallControlsP.xaml.cs">
       <DependentUpon>CallControlsP.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ChatBubble.xaml.cs">
+      <DependentUpon>ChatBubble.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\IncomingChatBubble.xaml.cs">
       <DependentUpon>IncomingChatBubble.xaml</DependentUpon>
     </Compile>
@@ -294,6 +297,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\CallControlsP.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ChatBubble.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

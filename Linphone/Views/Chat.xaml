@@ -16,17 +16,15 @@
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
 
-    <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
+        <StackPanel Grid.Row="0" Margin="12,17,0,10">
             <!--<TextBlock Text="{Binding Path=LocalizedResources.ChatMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextNormalStyle}"/>-->
-            <TextBlock x:Name="ContactName" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="ContactName" Margin="9,-7,0,0" Style="{StaticResource PhoneTextLargeStyle}"/>
             <Border x:Name="NewChat" BorderThickness="0,0,0,3" BorderBrush="{StaticResource PhoneAccentBrush}">
                 <Grid>
                     <Grid.ColumnDefinitions>

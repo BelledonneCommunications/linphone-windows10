@@ -19,25 +19,8 @@ namespace Linphone.Controls
     /// <summary>
     /// Control to display sent chat messages.
     /// </summary>
-    public partial class OutgoingChatBubble : UserControl
+    public partial class OutgoingChatBubble : ChatBubble
     {
-        private LinphoneChatMessage _message;
-
-        /// <summary>
-        /// Chat message associated with this bubble
-        /// </summary>
-        public LinphoneChatMessage ChatMessage
-        {
-            get
-            {
-                return _message;
-            }
-            set
-            {
-                _message = value;
-            }
-        }
-
         private SolidColorBrush _darkAccentBrush
         {
             get
@@ -51,11 +34,11 @@ namespace Linphone.Controls
         /// <summary>
         /// Public constructor.
         /// </summary>
-        public OutgoingChatBubble(LinphoneChatMessage message, string timestamp)
+        public OutgoingChatBubble(LinphoneChatMessage message, string timestamp) :
+            base(message)
         {
             InitializeComponent();
 
-            ChatMessage = message;
             Message.Visibility = Visibility.Visible;
             Image.Visibility = Visibility.Collapsed;
             ShowImage.Visibility = Visibility.Collapsed;
@@ -69,10 +52,10 @@ namespace Linphone.Controls
         /// <summary>
         /// Public constructor.
         /// </summary>
-        public OutgoingChatBubble(LinphoneChatMessage message, BitmapImage image, string timestamp)
+        public OutgoingChatBubble(LinphoneChatMessage message, BitmapImage image, string timestamp) :
+            base(message)
         {
             InitializeComponent();
-            ChatMessage = message;
             Message.Visibility = Visibility.Collapsed;
             Copy.Visibility = Visibility.Collapsed;
 

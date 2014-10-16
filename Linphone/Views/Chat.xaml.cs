@@ -82,8 +82,6 @@ namespace Linphone.Views
             BuildLocalizedApplicationBar();
         }
 
-        private List<OutgoingChatBubble> _SentMessages;
-
         /// <summary>
         /// Method called when the page is displayed.
         /// Check if the uri contains a sip address, if yes, it displays the matching chat history.
@@ -93,7 +91,6 @@ namespace Linphone.Views
             base.OnNavigatedTo(e);
             LinphoneManager.Instance.MessageListener = this;
             LinphoneManager.Instance.ComposingListener = this;
-            _SentMessages = new List<OutgoingChatBubble>();
 
             // Create LinphoneCore if not created yet, otherwise do nothing
             LinphoneManager.Instance.InitLinphoneCore();
@@ -247,7 +244,6 @@ namespace Linphone.Views
                 OutgoingChatBubble bubble = new OutgoingChatBubble(chatMessage, FormatDate(date));
                 bubble.MessageDeleted += bubble_MessageDeleted;
                 MessagesList.Children.Add(bubble);
-                _SentMessages.Add(bubble);
                 scrollToBottom();
             }
         }
@@ -309,7 +305,6 @@ namespace Linphone.Views
                 OutgoingChatBubble bubble = new OutgoingChatBubble(chatMessage, image, FormatDate(date));
                 bubble.MessageDeleted += bubble_MessageDeleted;
                 MessagesList.Children.Add(bubble);
-                _SentMessages.Add(bubble);
                 scrollToBottom();
             }
         }
@@ -324,16 +319,15 @@ namespace Linphone.Views
             Logger.Msg("[Chat] Message " + messageText + ", state changed: " + state.ToString());
             if (state == LinphoneChatMessageState.InProgress)
             {
-                return; //We don't need to save the inprogress event in db.
+                return;
             }
 
             Dispatcher.BeginInvoke(() =>
             {
-                OutgoingChatBubble bubble = _SentMessages.Where(b => b.ChatMessage.GetText().Equals(messageText)).Last();
+                ChatBubble bubble = (ChatBubble)MessagesList.Children.Where(b => ((ChatBubble)b).ChatMessage.Equals(message)).Last();
                 if (bubble != null)
                 {
-                    bubble.UpdateStatus(state);
-                    _SentMessages.Remove(bubble);
+                    ((OutgoingChatBubble)bubble).UpdateStatus(state);
                 }
             });
         }

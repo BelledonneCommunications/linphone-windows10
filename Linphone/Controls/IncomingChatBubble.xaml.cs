@@ -19,32 +19,15 @@ namespace Linphone.Controls
     /// <summary>
     /// Control to display received chat messages.
     /// </summary>
-    public partial class IncomingChatBubble : UserControl
+    public partial class IncomingChatBubble : ChatBubble
     {
-        private LinphoneChatMessage _message;
-
-        /// <summary>
-        /// Chat message associated with this bubble
-        /// </summary>
-        public LinphoneChatMessage ChatMessage
-        {
-            get
-            {
-                return _message;
-            }
-            set
-            {
-                _message = value;
-            }
-        }
-
         /// <summary>
         /// Public constructor.
         /// </summary>
-        public IncomingChatBubble(LinphoneChatMessage message, string timestamp)
+        public IncomingChatBubble(LinphoneChatMessage message, string timestamp) :
+            base (message)
         {
             InitializeComponent();
-            ChatMessage = message;
             Message.Text = message.GetText();
             Timestamp.Text = timestamp;
 
@@ -68,7 +51,7 @@ namespace Linphone.Controls
         {
             if (MessageDeleted != null)
             {
-                MessageDeleted(this, _message);
+                MessageDeleted(this, ChatMessage);
             }
         }
 
