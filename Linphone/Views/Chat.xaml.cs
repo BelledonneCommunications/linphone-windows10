@@ -586,7 +586,7 @@ namespace Linphone.Views
         private void scrollToBottom()
         {
             MessagesScroll.UpdateLayout();
-            MessagesScroll.ScrollToVerticalOffset(MessagesList.ActualHeight);
+            MessagesScroll.ScrollToVerticalOffset(MessagesScroll.ScrollableHeight);
         }
 
         private string FormatDate(DateTime date)

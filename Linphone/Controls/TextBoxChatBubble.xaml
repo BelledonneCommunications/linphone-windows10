@@ -10,7 +10,7 @@
     <UserControl.Resources>
         <Style x:Key="ChatTextBox" TargetType="TextBox">
             <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilyNormal}"/>
-            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}"/>
+            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeNormal}"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="{StaticResource PhoneTextBoxForegroundBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource PhoneTextBoxBrush}"/>
@@ -66,7 +66,7 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid Margin="60,10,5,15">
+    <Grid Margin="60,5,5,5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -79,12 +79,14 @@
             x:Name="Message"
             TextChanged="Message_TextChanged"
             InputScope="Chat"
-            TextAlignment="Left" 
+            TextAlignment="Left"
+            TextWrapping="Wrap"
+            AcceptsReturn="True"
             Style="{StaticResource ChatTextBox}"/>
 
         <Path 
             Grid.Row="1"
-            Data="m 0,0 l 16,0 l 0,16 l -16,-16"
+            Data="m 0,0 l 8,0 l 0,16 l -16,-16"
             Fill="WhiteSmoke"
             Margin="0,-1,10,0"
             HorizontalAlignment="Right"/>

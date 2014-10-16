@@ -957,15 +957,15 @@ namespace Linphone.Model
                     {
                         Caption = url.Length > 0 ? AppResources.ImageMessageReceived : AppResources.MessageReceived,
                         Message = url.Length > 0 ? "" : message.GetText(),
-                        LeftButtonContent = AppResources.Show,
-                        RightButtonContent = AppResources.Close
+                        LeftButtonContent = AppResources.Close,
+                        RightButtonContent = AppResources.Show
                     };
 
                     MessageReceivedNotification.Dismissed += (s, e) =>
                     {
                         switch (e.Result)
                         {
-                            case CustomMessageBoxResult.LeftButton:
+                            case CustomMessageBoxResult.RightButton:
                                 BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/Chat.xaml?sip=" + message.GetPeerAddress().AsStringUriOnly(), UriKind.RelativeOrAbsolute));
                                 break;
                         }
