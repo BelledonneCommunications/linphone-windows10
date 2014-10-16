@@ -12,7 +12,7 @@
     
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -53,7 +53,7 @@
                 <Image x:Name="cameraImg" Source="/Assets/AppBar/feature.camera.png" Stretch="None"/>
             </StackPanel>
         </Button>
-        
+
         <ToggleButton
             x:Name="speaker"
             Grid.Row="1"
@@ -97,25 +97,11 @@
                 <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Hold, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
             </StackPanel>
         </ToggleButton>
-        
-        <ToggleButton 
-            x:Name="stats"
-            Grid.Row="2"
-            Grid.Column="1"
-            BorderThickness="0"
-            Margin="-10"
-            Click="stats_Click_1"
-            Background="{StaticResource PhoneChromeBrush}">
-            <StackPanel Orientation="Vertical">
-                <Image x:Name="statsImg" Source="/Assets/AppBar/stats.png" Stretch="None"/>
-                <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Stats, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
-            </StackPanel>
-        </ToggleButton>
-        
+
         <ToggleButton 
             x:Name="bluetooth"
             Grid.Row="2"
-            Grid.Column="2"
+            Grid.Column="1"
             BorderThickness="0"
             Margin="-10"
             Click="bluetooth_Click_1"
@@ -124,6 +110,20 @@
             <StackPanel Orientation="Vertical">
                 <Image x:Name="bluetoothImg" Source="/Assets/AppBar/appbar.connection.bluetooth.png" Stretch="None"/>
                 <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Bluetooth, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
+            </StackPanel>
+        </ToggleButton>
+
+        <ToggleButton 
+            x:Name="stats"
+            Grid.Row="2"
+            Grid.Column="2"
+            BorderThickness="0"
+            Margin="-10"
+            Click="stats_Click_1"
+            Background="{StaticResource PhoneChromeBrush}">
+            <StackPanel Orientation="Vertical">
+                <Image x:Name="statsImg" Source="/Assets/AppBar/stats.png" Stretch="None"/>
+                <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Stats, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
             </StackPanel>
         </ToggleButton>
 
