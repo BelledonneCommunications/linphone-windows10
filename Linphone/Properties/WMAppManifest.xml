@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US" />
-  <App xmlns="" ProductID="{bb0b8f3f-8638-49cf-b968-e097a2e6cbbe}" Title="Linphone" RuntimeType="Silverlight" Version="1.0.3" Genre="apps.normal" Author="Belledonne Communications" Description="VoIP SIP client" Publisher="Linphone" PublisherID="{c333a626-bb9d-4f5c-bbe9-09b7448be4e0}">
+  <App xmlns="" ProductID="{bb0b8f3f-8638-49cf-b968-e097a2e6cbbe}" Title="Linphone" RuntimeType="Silverlight" Version="1.0.4" Genre="apps.normal" Author="Belledonne Communications" Description="VoIP SIP client" Publisher="Linphone" PublisherID="{c333a626-bb9d-4f5c-bbe9-09b7448be4e0}">
     <IconPath IsRelative="true" IsResource="false">Assets\AppIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
