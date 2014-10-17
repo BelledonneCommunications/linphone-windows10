@@ -336,13 +336,13 @@ http://www.linphone.org/m/help
     <value>Codec</value>
   </data>
   <data name="StatDownloadBW" xml:space="preserve">
-    <value>Download</value>
+    <value>Down</value>
   </data>
   <data name="AudioStatsMenu" xml:space="preserve">
     <value>Audio stats</value>
   </data>
   <data name="StatUploadBW" xml:space="preserve">
-    <value>Upload</value>
+    <value>Up</value>
   </data>
   <data name="SIPInfoSetting" xml:space="preserve">
     <value>Send DTMFs as SIP INFO</value>

@@ -314,11 +314,15 @@ namespace Linphone.Views
 
             Dispatcher.BeginInvoke(() =>
             {
-                ChatBubble bubble = (ChatBubble)MessagesList.Children.Where(b => ((ChatBubble)b).ChatMessage.Equals(message)).Last();
-                if (bubble != null)
+                try
                 {
-                    ((OutgoingChatBubble)bubble).UpdateStatus(state);
+                    ChatBubble bubble = (ChatBubble)MessagesList.Children.Where(b => ((ChatBubble)b).ChatMessage.Equals(message)).Last();
+                    if (bubble != null)
+                    {
+                        ((OutgoingChatBubble)bubble).UpdateStatus(state);
+                    }
                 }
+                catch { }
             });
         }
 

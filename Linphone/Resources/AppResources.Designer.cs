@@ -1265,7 +1265,7 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download.
+        ///   Looks up a localized string similar to Down.
         /// </summary>
         public static string StatDownloadBW {
             get {
@@ -1310,7 +1310,7 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Upload.
+        ///   Looks up a localized string similar to Up.
         /// </summary>
         public static string StatUploadBW {
             get {

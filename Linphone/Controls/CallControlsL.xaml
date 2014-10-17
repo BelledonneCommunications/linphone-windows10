@@ -97,10 +97,23 @@
             </StackPanel>
         </ToggleButton>
 
-        <Button 
-			x:Name="camera"
+        <ToggleButton 
+			x:Name="stats"
 			Grid.Row="2"
 			Grid.Column="2"
+			BorderThickness="0"
+			Margin="-10"
+			Click="stats_Click_1"
+			Background="{StaticResource PhoneChromeBrush}">
+            <StackPanel Orientation="Vertical">
+                <Image x:Name="statsImg" Source="/Assets/AppBar/stats.png" Stretch="None"/>
+            </StackPanel>
+        </ToggleButton>
+
+        <Button 
+			x:Name="camera"
+			Grid.Row="3"
+			Grid.Column="3"
 			BorderThickness="0"
 			Margin="-10"
 			Click="camera_Click_1"
@@ -125,23 +138,11 @@
 			ClickMode="Release" 
             Style="{StaticResource AccentColorButton}"/>
 
-        <ToggleButton 
-			x:Name="stats"
-			Grid.Row="3"
-			Grid.Column="4"
-			BorderThickness="0"
-			Margin="-10"
-			Click="stats_Click_1"
-			Background="{StaticResource PhoneChromeBrush}">
-            <StackPanel Orientation="Vertical">
-                <Image x:Name="statsImg" Source="/Assets/AppBar/stats.png" Stretch="None"/>
-            </StackPanel>
-        </ToggleButton>
-
         <ToggleButton
 			x:Name="dialpad"
 			Grid.Row="3"
-			Grid.Column="5"
+			Grid.Column="4"
+            Grid.ColumnSpan="2"
 			BorderThickness="0"
 			Margin="-10"
 			Click="dialpad_Click_1"

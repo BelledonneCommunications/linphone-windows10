@@ -64,10 +64,8 @@ namespace Linphone
                             case CustomMessageBoxResult.LeftButton:
                                 BugCollector.ReportExceptions();
                                 break;
-                            case CustomMessageBoxResult.RightButton:
-                                BugCollector.DeleteFile();
-                                break;
                         }
+                        BugCollector.DeleteFile();
                     };
 
                     reportIssueDialog.Show();
