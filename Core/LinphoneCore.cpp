@@ -1493,7 +1493,12 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 		
 	Linphone::Core::CallController^ callController = Linphone::Core::Globals::Instance->CallController;
 	if (state == Linphone::Core::LinphoneCallState::IncomingReceived) {
-		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = callController->OnIncomingCallReceived(lCall, lCall->GetRemoteAddress()->GetDisplayName(), lCall->GetRemoteAddress()->AsStringUriOnly(), callController->IncomingCallViewDismissed);
+		Platform::String^ name = lCall->GetRemoteAddress()->GetDisplayName();
+		if (name == nullptr || name->Length() <= 0) 
+		{
+			name = lCall->GetRemoteAddress()->GetUserName();
+		}
+		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = callController->OnIncomingCallReceived(lCall, name, lCall->GetRemoteAddress()->AsStringUriOnly(), callController->IncomingCallViewDismissed);
 		lCall->CallContext = platformCall;
 	} 
 	else if (state == Linphone::Core::LinphoneCallState::OutgoingProgress) {
