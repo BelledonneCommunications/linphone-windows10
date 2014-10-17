@@ -467,7 +467,7 @@ namespace Linphone.Views
 
         private void DisableAppBarSendButtons()
         {
-            if (ApplicationBar.Buttons.Count == 2)
+            if (ApplicationBar.Buttons.Count == 1/*2*/)
             {
                 foreach (ApplicationBarIconButton button in ApplicationBar.Buttons)
                 {
@@ -487,11 +487,11 @@ namespace Linphone.Views
 
         private void EnableAppBarSendImageMessageButton(bool enable)
         {
-            ApplicationBarIconButton button = (ApplicationBarIconButton)ApplicationBar.Buttons[1];
+            /*ApplicationBarIconButton button = (ApplicationBarIconButton)ApplicationBar.Buttons[1];
             if (button.Text.Equals(AppResources.SendPicture))
             {
                 button.IsEnabled = enable;
-            }
+            }*/
         }
 
         private void AddSendButtonsToAppBar()
@@ -504,11 +504,11 @@ namespace Linphone.Views
             appBarSend.Click += send_Click_1;
             appBarSend.IsEnabled = MessageBox.Text != null && MessageBox.Text.Length > 0;
 
-            ApplicationBarIconButton appBarSendImage = new ApplicationBarIconButton(new Uri("/Assets/AppBar/feature.camera.png", UriKind.Relative));
+            /*ApplicationBarIconButton appBarSendImage = new ApplicationBarIconButton(new Uri("/Assets/AppBar/feature.camera.png", UriKind.Relative));
             appBarSendImage.Text = AppResources.SendPicture;
             ApplicationBar.Buttons.Add(appBarSendImage);
             appBarSendImage.Click += attach_image_Click_1;
-            appBarSendImage.IsEnabled = true;
+            appBarSendImage.IsEnabled = true;*/
         }
 
         private void AddCancelUploadButtonInAppBar()
