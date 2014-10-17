@@ -108,6 +108,9 @@ namespace Linphone.Views
             saveSettingsOnLeave = true;
             // Create LinphoneCore if not created yet, otherwise do nothing
             LinphoneManager.Instance.InitLinphoneCore();
+
+            ProgressPopup.Visibility = Visibility.Collapsed;
+            SendLogs.IsEnabled = true;
         }
 
         /// <summary>
@@ -150,6 +153,8 @@ namespace Linphone.Views
 
         private void SendLogs_Click(object sender, RoutedEventArgs e)
         {
+            ProgressPopup.Visibility = Visibility.Visible;
+            SendLogs.IsEnabled = false;
             saveSettingsOnLeave = false;
             LinphoneManager.Instance.LinphoneCore.UploadLogCollection();
         }

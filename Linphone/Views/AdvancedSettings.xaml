@@ -131,6 +131,23 @@
                     </toolkit:ToggleSwitch>
 
                     <Button x:Name="SendLogs" Content="{Binding Path=LocalizedResources.SendLogsEmail, Source={StaticResource LocalizedStrings}}" Click="SendLogs_Click"/>
+
+                    <Border 
+                        x:Name="ProgressPopup"
+                        Grid.Row="1"
+                        Padding="5"
+                        Visibility="Collapsed"
+                        BorderThickness="10">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                            <ProgressBar
+                                IsIndeterminate="True"
+                                Width="300"/>
+                            <TextBlock
+                                Width="300"
+                                TextAlignment="Center"
+                                Text="{Binding LocalizedResources.Uploading, Source={StaticResource LocalizedStrings}}" />
+                        </StackPanel>
+                    </Border>
                 </StackPanel>
             </phone:PivotItem>
         </phone:Pivot>
