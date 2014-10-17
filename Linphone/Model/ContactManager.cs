@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Linphone.Model
 {
@@ -13,26 +14,32 @@ namespace Linphone.Model
         /// <summary>
         /// Contact found if actually found.
         /// </summary>
-        public Contact ContactFound;
+        public Contact ContactFound { get; set; }
 
         /// <summary>
         /// Phone number used to find this contact.
         /// </summary>
-        public String PhoneNumber;
+        public String PhoneNumber { get; set; }
 
         /// <summary>
         /// Phone label associated to the phone number.
         /// </summary>
-        public String PhoneLabel;
+        public String PhoneLabel { get; set; }
+
+        /// <summary>
+        /// String used as request
+        /// </summary>
+        public String Request { get; set; }
 
         /// <summary>
         /// Public constructor.
         /// </summary>
-        public ContactFoundEventArgs(Contact contact, String number, String label = null)
+        public ContactFoundEventArgs(Contact contact, String number, String label = null, String request = null)
         {
             ContactFound = contact;
             PhoneNumber = number;
             PhoneLabel = label;
+            Request = request;
         }
     }
 
@@ -131,6 +138,16 @@ namespace Linphone.Model
             return recent;
         }
 
+        private static bool IsDigitsOnly(string str)
+        {
+            foreach (char c in str)
+            {
+                if (c < '0' || c > '9')
+                    return false;
+            }
+            return true;
+        }
+
         /// <summary>
         /// Searches if there is a contact for whom the phone number of the email address is stored.
         /// </summary>
@@ -139,11 +156,18 @@ namespace Linphone.Model
         {
             if (numberOrAddress.Contains('@'))
             {
-                FindContactByEmail(numberOrAddress);
+                string cleanAddress = numberOrAddress.Replace("sip:", "").Replace("sips:", "");
+                FindContactByEmail(cleanAddress, numberOrAddress);
+                string number = cleanAddress.Split(new string[] { "@" }, StringSplitOptions.RemoveEmptyEntries)[0];
+                if (IsDigitsOnly(number))
+                {
+                    FindContactByNumber(number, numberOrAddress);
+                }
             }
             else
             {
-                FindContactByNumber(numberOrAddress);
+                FindContactByNumber(numberOrAddress, numberOrAddress);
+                FindContactByEmail(numberOrAddress + "@sip.linphone.org", numberOrAddress);
             }
         }
 
@@ -151,12 +175,12 @@ namespace Linphone.Model
         /// Searches if a there is a contact for whom the phone number is stored.
         /// </summary>
         /// <param name="number">phone number to use to filter the contacts.</param>
-        private void FindContactByNumber(String number)
+        private void FindContactByNumber(String number, String original)
         {
             Microsoft.Phone.UserData.Contacts contacts = new Microsoft.Phone.UserData.Contacts();
             contacts.SearchCompleted += contact_PhoneSearchCompleted;
 
-            contacts.SearchAsync(number, FilterKind.PhoneNumber, "Search by phone number");
+            contacts.SearchAsync(number, FilterKind.PhoneNumber, original);
         }
 
         private void contact_PhoneSearchCompleted(object sender, Microsoft.Phone.UserData.ContactsSearchEventArgs e)
@@ -175,11 +199,7 @@ namespace Linphone.Model
                         label = phone.Kind.ToString();
                     }
                 }
-                ContactFound(this, new ContactFoundEventArgs(result, number, label));
-            }
-            else
-            {
-                ContactFound(this, new ContactFoundEventArgs(null, number, null));
+                ContactFound(this, new ContactFoundEventArgs(result, number, label, (string)e.State));
             }
         }
 
@@ -187,12 +207,12 @@ namespace Linphone.Model
         /// Searches if a there is a contact for whom the email is stored.
         /// </summary>
         /// <param name="email">email to use to filter the contacts.</param>
-        private void FindContactByEmail(String email)
+        private void FindContactByEmail(String email, String original)
         {
             Microsoft.Phone.UserData.Contacts contacts = new Microsoft.Phone.UserData.Contacts();
             contacts.SearchCompleted += contact_EmailSearchCompleted;
 
-            contacts.SearchAsync(email, FilterKind.EmailAddress, "Search by email address");
+            contacts.SearchAsync(email, FilterKind.EmailAddress, original);
         }
 
         private void contact_EmailSearchCompleted(object sender, Microsoft.Phone.UserData.ContactsSearchEventArgs e)
@@ -209,11 +229,7 @@ namespace Linphone.Model
                         label = email.Kind.ToString();
                     }
                 }
-                ContactFound(this, new ContactFoundEventArgs(result, address, label));
-            }
-            else
-            {
-                ContactFound(this, new ContactFoundEventArgs(null, address, null));
+                ContactFound(this, new ContactFoundEventArgs(result, address, label, (string)e.State));
             }
         }
     }

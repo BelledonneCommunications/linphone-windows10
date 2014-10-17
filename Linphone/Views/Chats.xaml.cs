@@ -68,19 +68,29 @@ namespace Linphone.Views
             if (e.ContactFound != null)
             {
                 displayName = e.ContactFound.DisplayName;
-            }
-            LinphoneChatRoom room = LinphoneManager.Instance.LinphoneCore.GetOrCreateChatRoom(address);
-            if (room.GetHistorySize() > 0)
-            {
-                _conversations.Add(new Conversation(address, displayName, room.GetHistory()));
-            }
+                Conversation conv = null;
+                foreach (var conversation in _conversations)
+                {
+                    if (conversation.SipAddress.Equals(e.Request))
+                    {
+                        conv = conversation;
+                        break;
+                    }
+                }
+                if (conv != null)
+                {
+                    _conversations.Remove(conv);
+                    conv.DisplayedName = displayName;
+                    _conversations.Add(conv);
+                }
 
-            _sortedConversations = new ObservableCollection<Conversation>();
-            foreach (var i in _conversations.OrderByDescending(g => g.Messages.Last().GetTime()).ToList())
-            {
-                _sortedConversations.Add(i);
+                _sortedConversations = new ObservableCollection<Conversation>();
+                foreach (var i in _conversations.OrderByDescending(g => g.Messages.Last().GetTime()).ToList())
+                {
+                    _sortedConversations.Add(i);
+                }
+                Conversations.ItemsSource = _sortedConversations;
             }
-            Conversations.ItemsSource = _sortedConversations;
         }
 
         private void BuildLocalizedApplicationBar()
@@ -105,9 +115,21 @@ namespace Linphone.Views
             {
                 if (conversation.GetHistorySize() > 0)
                 {
-                    string address = conversation.GetPeerAddress().AsStringUriOnly();
+                    string address = conversation.GetPeerAddress().AsStringUriOnly().Replace("sip:", "");
+                    string name = conversation.GetPeerAddress().GetDisplayName();
+                    if (name == null || name.Length <= 0)
+                    {
+                        name = conversation.GetPeerAddress().GetUserName();
+                    }
+                    _conversations.Add(new Conversation(address, name, conversation.GetHistory()));
                     ContactManager.Instance.FindContact(address);
                 }
+            }
+
+            _sortedConversations = new ObservableCollection<Conversation>();
+            foreach (var i in _conversations.OrderByDescending(g => g.Messages.Last().GetTime()).ToList())
+            {
+                _sortedConversations.Add(i);
             }
             Conversations.ItemsSource = _sortedConversations;
         }
