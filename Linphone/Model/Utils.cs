@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
@@ -17,6 +18,7 @@ namespace Linphone.Model
     {
         private const int LOCAL_IMAGES_QUALITY = 100;
         private const int THUMBNAIL_WIDTH = 420;
+        private const string LOCAL_IMAGES_PATH = "ChatImages";
 
         /// <summary>
         /// Saves an image sent or received in the media library of the device.
@@ -117,19 +119,30 @@ namespace Linphone.Model
             {
                 using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
                 {
-                    if (store.FileExists(fileName))
+                    if (!store.DirectoryExists(LOCAL_IMAGES_PATH))
                     {
-                        store.DeleteFile(fileName);
+                        store.CreateDirectory(LOCAL_IMAGES_PATH);
+                    }
+                    string filePath = Path.Combine(LOCAL_IMAGES_PATH, fileName);
+                    if (store.FileExists(filePath))
+                    {
+                        store.DeleteFile(filePath);
                     }
 
-                    using (IsolatedStorageFileStream file = store.CreateFile(fileName))
+                    using (IsolatedStorageFileStream file = store.CreateFile(filePath))
                     {
                         WriteableBitmap bitmap = new WriteableBitmap(image);
                         Extensions.SaveJpeg(bitmap, file, bitmap.PixelWidth, bitmap.PixelHeight, 0, LOCAL_IMAGES_QUALITY);
                         file.Flush();
+                        Int32 unixTimestamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                        HMACSHA1 hashObj = new HMACSHA1();
+                        byte[] hashArray = hashObj.ComputeHash(file);
+                        string hash = BitConverter.ToString(hashArray).Replace("-", "") + "-" + unixTimestamp;
                         file.Close();
                         bitmap = null;
-                        return file.Name;
+                        string newFilePath = Path.Combine(LOCAL_IMAGES_PATH, hash + Path.GetExtension(filePath));
+                        store.MoveFile(filePath, newFilePath);
+                        return newFilePath;
                     }
                 }
             }
