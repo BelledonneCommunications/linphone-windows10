@@ -178,16 +178,15 @@ namespace Linphone.Views
         {
             foreach (LinphoneChatMessage message in messages)
             {
-                DateTime date = new DateTime(message.GetTime() * TimeSpan.TicksPerSecond).AddYears(1969);
                 if (!message.IsOutgoing())
                 {
-                    IncomingChatBubble bubble = new IncomingChatBubble(message, FormatDate(date));
+                    IncomingChatBubble bubble = new IncomingChatBubble(message);
                     bubble.MessageDeleted += bubble_MessageDeleted;
                     MessagesList.Children.Add(bubble);
                 }
                 else
                 {
-                    OutgoingChatBubble bubble = new OutgoingChatBubble(message, FormatDate(date));
+                    OutgoingChatBubble bubble = new OutgoingChatBubble(message);
                     bubble.MessageDeleted += bubble_MessageDeleted;
                     bubble.UpdateStatus(message.GetState());
                     MessagesList.Children.Add(bubble);
@@ -234,12 +233,6 @@ namespace Linphone.Views
             {
                 LinphoneChatMessage chatMessage = chatRoom.CreateLinphoneChatMessage(message);
                 chatRoom.SendMessage(chatMessage, this);
-
-                DateTime date = new DateTime(chatMessage.GetTime() * TimeSpan.TicksPerSecond).AddYears(1969);
-                OutgoingChatBubble bubble = new OutgoingChatBubble(chatMessage, FormatDate(date));
-                bubble.MessageDeleted += bubble_MessageDeleted;
-                MessagesList.Children.Add(bubble);
-                scrollToBottom();
             }
         }
 
@@ -250,11 +243,6 @@ namespace Linphone.Views
         {
             string messageText = message.GetText();
             Logger.Msg("[Chat] Message " + messageText + ", state changed: " + state.ToString());
-            if (state == LinphoneChatMessageState.InProgress)
-            {
-                // No need to update the status in the bubble, it is already in progress
-                return;
-            }
 
             Dispatcher.BeginInvoke(() =>
             {
@@ -265,15 +253,27 @@ namespace Linphone.Views
                     AddSendButtonsToAppBar();
                 }
 
-                try
+                if (state == LinphoneChatMessageState.InProgress)
                 {
-                    ChatBubble bubble = (ChatBubble)MessagesList.Children.Where(b => ((ChatBubble)b).ChatMessage.Equals(message)).Last();
-                    if (bubble != null)
-                    {
-                        ((OutgoingChatBubble)bubble).UpdateStatus(state);
-                    }
+                    // Create the chat bubble for both text or image messages
+                    OutgoingChatBubble bubble = new OutgoingChatBubble(message);
+                    bubble.MessageDeleted += bubble_MessageDeleted;
+                    MessagesList.Children.Add(bubble);
+                    scrollToBottom();
                 }
-                catch { }
+                else
+                {
+                    // Update the outgoing status of the message
+                    try
+                    {
+                        ChatBubble bubble = (ChatBubble)MessagesList.Children.Where(b => ((ChatBubble)b).ChatMessage.Equals(message)).Last();
+                        if (bubble != null)
+                        {
+                            ((OutgoingChatBubble)bubble).UpdateStatus(state);
+                        }
+                    }
+                    catch { }
+                }
             });
         }
 
@@ -503,13 +503,7 @@ namespace Linphone.Views
         {
             MessagesList.Dispatcher.BeginInvoke(() =>
             {
-                DateTime date = new DateTime();
-
-                date = date.AddYears(1969); //Timestamp is calculated from 01/01/1970, and DateTime is initialized to 01/01/0001.
-                date = date.AddSeconds(message.GetTime());
-                date = date.Add(TimeZoneInfo.Local.GetUtcOffset(date));
-
-                IncomingChatBubble bubble = new IncomingChatBubble(message, FormatDate(date));
+                IncomingChatBubble bubble = new IncomingChatBubble(message);
                 bubble.MessageDeleted += bubble_MessageDeleted;
                 MessagesList.Children.Add(bubble);
 
@@ -557,17 +551,6 @@ namespace Linphone.Views
         {
             MessagesScroll.UpdateLayout();
             MessagesScroll.ScrollToVerticalOffset(MessagesScroll.ScrollableHeight);
-        }
-
-        private string FormatDate(DateTime date)
-        {
-            DateTime now = DateTime.Now;
-            if (now.Year == date.Year && now.Month == date.Month && now.Day == date.Day)
-                return String.Format("{0:HH:mm}", date);
-            else if (now.Year == date.Year)
-                return String.Format("{0:ddd d MMM, HH:mm}", date);
-            else
-                return String.Format("{0:ddd d MMM yyyy, HH:mm}", date);
         }
 
         private void ChooseContact_Click(object sender, RoutedEventArgs e)

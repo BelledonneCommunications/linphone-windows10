@@ -24,12 +24,12 @@ namespace Linphone.Controls
         /// <summary>
         /// Public constructor.
         /// </summary>
-        public IncomingChatBubble(LinphoneChatMessage message, string timestamp) :
+        public IncomingChatBubble(LinphoneChatMessage message) :
             base (message)
         {
             InitializeComponent();
             Message.Text = message.GetText();
-            Timestamp.Text = timestamp;
+            Timestamp.Text = HumanFriendlyTimeStamp;
 
             /*if (ChatMessage.ImageURL != null && ChatMessage.ImageURL.Length > 0)
             {

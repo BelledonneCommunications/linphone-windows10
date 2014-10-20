@@ -30,10 +30,30 @@ namespace Linphone.Controls
             }
         }
 
+        public string HumanFriendlyTimeStamp
+        {
+            get
+            {
+                DateTime date = new DateTime(ChatMessage.GetTime() * TimeSpan.TicksPerSecond).AddYears(1969);
+                return FormatDate(date);
+            }
+        }
+
         public ChatBubble(LinphoneChatMessage message)
         {
             InitializeComponent();
             ChatMessage = message;
+        }
+
+        private string FormatDate(DateTime date)
+        {
+            DateTime now = DateTime.Now;
+            if (now.Year == date.Year && now.Month == date.Month && now.Day == date.Day)
+                return String.Format("{0:HH:mm}", date);
+            else if (now.Year == date.Year)
+                return String.Format("{0:ddd d MMM, HH:mm}", date);
+            else
+                return String.Format("{0:ddd d MMM yyyy, HH:mm}", date);
         }
     }
 }

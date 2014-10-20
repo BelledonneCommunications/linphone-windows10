@@ -34,7 +34,7 @@ namespace Linphone.Controls
         /// <summary>
         /// Public constructor.
         /// </summary>
-        public OutgoingChatBubble(LinphoneChatMessage message, string timestamp) :
+        public OutgoingChatBubble(LinphoneChatMessage message) :
             base(message)
         {
             InitializeComponent();
@@ -43,7 +43,7 @@ namespace Linphone.Controls
             Image.Visibility = Visibility.Collapsed;
             ShowImage.Visibility = Visibility.Collapsed;
             Message.Text = message.GetText();
-            Timestamp.Text = timestamp;
+            Timestamp.Text = HumanFriendlyTimeStamp;
 
             Background.Fill = _darkAccentBrush;
             Path.Fill = _darkAccentBrush;
@@ -52,7 +52,7 @@ namespace Linphone.Controls
         /// <summary>
         /// Public constructor.
         /// </summary>
-        public OutgoingChatBubble(LinphoneChatMessage message, BitmapImage image, string timestamp) :
+        public OutgoingChatBubble(LinphoneChatMessage message, BitmapImage image) :
             base(message)
         {
             InitializeComponent();
@@ -71,7 +71,7 @@ namespace Linphone.Controls
                 Save.Visibility = Visibility.Visible;
             }
             Image.Source = image;
-            Timestamp.Text = timestamp;
+            Timestamp.Text = HumanFriendlyTimeStamp;
 
             Background.Fill = _darkAccentBrush;
             Path.Fill = _darkAccentBrush;
