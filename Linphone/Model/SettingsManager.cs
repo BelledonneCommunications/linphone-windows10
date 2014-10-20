@@ -266,7 +266,7 @@ namespace Linphone.Model
         {
             get
             {
-                return Convert.ToInt32(Get(LogLevelKeyName)) != (int)OutputTraceLevel.None;
+                return Convert.ToInt32(Get(LogLevelKeyName)) == (int)OutputTraceLevel.Message;
             }
             set
             {
