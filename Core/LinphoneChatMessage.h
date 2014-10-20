@@ -1,6 +1,7 @@
 #pragma once
 
 #include "LinphoneCore.h"
+#include "LinphoneChatMessageListener.h"
 #include "LinphoneChatRoom.h"
 #include "Enums.h"
 
@@ -72,7 +73,10 @@ namespace Linphone
 			/// </summary>
 			void SetAppData(Platform::String^ appData);
 
-			void StartFileDownload(LinphoneChatMessageListener^ listener);
+			/// <summary>
+			/// Starts the download of the image in the message if exists
+			/// </summary>
+			void StartFileDownload(Linphone::Core::LinphoneChatMessageListener^ listener);
 
 		private:
 			friend class Linphone::Core::Utils;

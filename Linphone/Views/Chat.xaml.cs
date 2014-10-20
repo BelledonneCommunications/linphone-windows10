@@ -256,6 +256,11 @@ namespace Linphone.Views
                     MessagesList.Children.Add(bubble);
                     scrollToBottom();
                 }
+                else if (state == LinphoneChatMessageState.FileTransferDone && (message.GetAppData() == null || message.GetAppData().Length <= 0))
+                {
+                    // Only in case of image downlaod the appData will be empty
+                    //TODO
+                }
                 else
                 {
                     // Update the outgoing status of the message
