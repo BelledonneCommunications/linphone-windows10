@@ -187,6 +187,7 @@
   <ItemGroup>
     <Content Include="Assets\AppBar\appbar.connection.bluetooth.png" />
     <Content Include="Assets\AppBar\appbar.message.send.png" />
+    <Content Include="Assets\AppBar\appbar.paperclip.png" />
     <Content Include="Assets\AppBar\chat.png" />
     <Content Include="Assets\AppBar\clear.png" />
     <Content Include="Assets\AppBar\empty.png" />

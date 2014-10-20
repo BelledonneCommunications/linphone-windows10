@@ -22,6 +22,11 @@ namespace Linphone.Controls
         public string Text { get; set; }
 
         /// <summary>
+        /// Sets the filename associated with the image to send
+        /// </summary>
+        public string ImageName { get; set; }
+
+        /// <summary>
         /// Public constructor.
         /// </summary>
         public TextBoxChatBubble()
@@ -35,6 +40,7 @@ namespace Linphone.Controls
         public void Reset()
         {
             Message.Text = "";
+            ImageName = null;
             Message.Visibility = Visibility.Visible;
             Image.Visibility = Visibility.Collapsed;
         }

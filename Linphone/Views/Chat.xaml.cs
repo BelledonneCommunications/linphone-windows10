@@ -116,8 +116,6 @@ namespace Linphone.Views
                     displayedSipAddress = displayedSipAddress.Split( new string[] { "@" }, StringSplitOptions.RemoveEmptyEntries)[0];
                 }
 
-                EnableAppBarSendMessageButton(false);
-
                 ContactName.Text = displayedSipAddress;
                 cm.FindContact(sipAddress);
 
@@ -276,25 +274,40 @@ namespace Linphone.Views
             return response;
         }
 
-        private void SendImageMessage(string localFileName, string url, BitmapImage image)
+        private async void SendImageMessage(string localFileName, BitmapImage image)
         {
-            if (url == null || url.Length == 0)
+            try
             {
-                return;
+                ProgressPopup.Visibility = Visibility.Visible;
+                MessageBox.Visibility = Visibility.Collapsed;
+                AddCancelUploadButtonInAppBar();
+
+                string url = await UploadImageMessage(image, localFileName);
+                if (url == null || url.Length == 0)
+                {
+                    return;
+                }
+
+                if (chatRoom != null)
+                {
+                    LinphoneChatMessage chatMessage = chatRoom.CreateLinphoneChatMessage("");
+                    chatMessage.SetExternalBodyUrl(url);
+                    long time = chatMessage.GetTime();
+                    chatRoom.SendMessage(chatMessage, this);
+
+                    DateTime date = new DateTime(chatMessage.GetTime() * TimeSpan.TicksPerSecond).AddYears(1969);
+                    OutgoingChatBubble bubble = new OutgoingChatBubble(chatMessage, image, FormatDate(date));
+                    bubble.MessageDeleted += bubble_MessageDeleted;
+                    MessagesList.Children.Add(bubble);
+                    scrollToBottom();
+                }
             }
-
-            if (chatRoom != null)
+            catch { }
+            finally
             {
-                LinphoneChatMessage chatMessage = chatRoom.CreateLinphoneChatMessage("");
-                chatMessage.SetExternalBodyUrl(url);
-                long time = chatMessage.GetTime();
-                chatRoom.SendMessage(chatMessage, this);
-
-                DateTime date = new DateTime(chatMessage.GetTime() * TimeSpan.TicksPerSecond).AddYears(1969);
-                OutgoingChatBubble bubble = new OutgoingChatBubble(chatMessage, image, FormatDate(date));
-                bubble.MessageDeleted += bubble_MessageDeleted;
-                MessagesList.Children.Add(bubble);
-                scrollToBottom();
+                ProgressPopup.Visibility = Visibility.Collapsed;
+                MessageBox.Visibility = Visibility.Visible;
+                AddSendButtonsToAppBar();
             }
         }
 
@@ -382,6 +395,10 @@ namespace Linphone.Views
                     {
                         SendMessage(MessageBox.Text);
                     }
+                    else if (MessageBox.ImageName != null)
+                    {
+                        SendImageMessage(MessageBox.ImageName, (BitmapImage)MessageBox.Image.Source);
+                    }
                     MessageBox.Reset();
                 }
                 else
@@ -399,7 +416,7 @@ namespace Linphone.Views
             task.Show();
         }
 
-        private async void task_Completed(object sender, PhotoResult e)
+        private void task_Completed(object sender, PhotoResult e)
         {
             if (e.TaskResult == TaskResult.OK)
             {
@@ -428,25 +445,10 @@ namespace Linphone.Views
                     bm.SaveJpeg(ms, w, h, 0, 100);
                     image.SetSource(ms);
                 }
-
-                try
-                {
-                    ProgressPopup.Visibility = Visibility.Visible;
-                    MessageBox.Visibility = Visibility.Collapsed;
-                    AddCancelUploadButtonInAppBar();
-
-                    string url = await UploadImageMessage(image, e.OriginalFileName);
-
-                    string fileName = e.OriginalFileName.Substring(e.OriginalFileName.LastIndexOf("\\") + 1);
-                    SendImageMessage(fileName, url, image);
-                }
-                catch { }
-                finally
-                {
-                    ProgressPopup.Visibility = Visibility.Collapsed;
-                    MessageBox.Visibility = Visibility.Visible;
-                    AddSendButtonsToAppBar();
-                }
+                MessageBox.SetImage(image);
+                string fileName = e.OriginalFileName.Substring(e.OriginalFileName.LastIndexOf("\\") + 1);
+                MessageBox.ImageName = fileName;
+                EnableAppBarSendMessageButton(true);
             }
         }
 
@@ -502,9 +504,9 @@ namespace Linphone.Views
             appBarSend.Text = AppResources.SendMessage;
             ApplicationBar.Buttons.Add(appBarSend);
             appBarSend.Click += send_Click_1;
-            appBarSend.IsEnabled = MessageBox.Text != null && MessageBox.Text.Length > 0;
+            appBarSend.IsEnabled = ((MessageBox.Text != null && MessageBox.Text.Length > 0) || (MessageBox.ImageName != null && MessageBox.ImageName.Length > 0));
 
-            ApplicationBarIconButton appBarSendImage = new ApplicationBarIconButton(new Uri("/Assets/AppBar/feature.camera.png", UriKind.Relative));
+            ApplicationBarIconButton appBarSendImage = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.paperclip.png", UriKind.Relative));
             appBarSendImage.Text = AppResources.SendPicture;
             ApplicationBar.Buttons.Add(appBarSendImage);
             appBarSendImage.Click += attach_image_Click_1;
