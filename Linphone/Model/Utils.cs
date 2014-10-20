@@ -142,7 +142,10 @@ namespace Linphone.Model
                         bitmap = null;
                         string newFilePath = Path.Combine(LOCAL_IMAGES_PATH, hash + Path.GetExtension(filePath));
                         store.MoveFile(filePath, newFilePath);
-                        return newFilePath;
+                        IsolatedStorageFileStream newFile = store.OpenFile(newFilePath, FileMode.Open);
+                        fileName = newFile.Name;
+                        newFile.Close();
+                        return fileName;
                     }
                 }
             }
