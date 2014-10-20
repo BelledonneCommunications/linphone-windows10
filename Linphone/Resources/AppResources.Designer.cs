@@ -74,7 +74,7 @@ namespace Linphone.Resources {
         ///http://www.linphone.org
         ///
         ///Instructions
-        ///http://www.linphone.org/m/help
+        ///http://www.linphone.org/user-guide.html
         ///
         ///©2013 Belledonne Communications.
         /// </summary>
