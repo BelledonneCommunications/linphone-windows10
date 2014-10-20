@@ -83,8 +83,6 @@ namespace Linphone.Views
             BuildLocalizedApplicationBar();
         }
 
-        private Task onNavigatedToTask = null;
-
         /// <summary>
         /// Method called when the page is displayed.
         /// Check if the uri contains a sip address, if yes, it displays the matching chat history.
@@ -140,12 +138,6 @@ namespace Linphone.Views
             }
 
             scrollToBottom();
-
-            if (onNavigatedToTask != null)
-            {
-                onNavigatedToTask.Start();
-                onNavigatedToTask = null;
-            }
         }
 
         private void MessageBox_TextChanged(object sender, string text)
