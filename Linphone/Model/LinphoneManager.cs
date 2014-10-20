@@ -1042,6 +1042,14 @@ namespace Linphone.Model
         /// <summary>
         /// Callback for LinphoneCoreListener
         /// </summary>
+        public void FileTransferProgressIndication(LinphoneChatMessage message, int offset, int total)
+        {
+            Logger.Msg(String.Format("FileTransferProgressIndication: {0}/{1}", offset, total));
+        }
+
+        /// <summary>
+        /// Callback for LinphoneCoreListener
+        /// </summary>
         public void LogUploadStatusChanged(LinphoneCoreLogCollectionUploadState state, string info)
         {
             BaseModel.UIDispatcher.BeginInvoke(() =>

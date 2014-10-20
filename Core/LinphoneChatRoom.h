@@ -73,6 +73,17 @@ namespace Linphone
 			/// </summary>
 			void DeleteMessageFromHistory(Linphone::Core::LinphoneChatMessage^ message);
 
+			/// <summary>
+			/// Creates a LinphoneChatMessage to transfer a file.
+			/// </summary>
+			/// <param name="type">MIME type of the file to transfer</param>
+			/// <param name="subtype">MIME subtype of the file to transfer</param>
+			/// <param name="name">Name of the file to transfer</param>
+			/// <param name="size">Size in bytes of the file to transfer</param>
+			/// <param name="filepath">Path to the file to transfer</param>
+			/// <returns>A new LinphoneChatMessage</returns>
+			Linphone::Core::LinphoneChatMessage^ CreateFileTransferMessage(Platform::String^ type, Platform::String^ subtype, Platform::String^ name, int size, Platform::String^ filepath);
+
 		private:
 			friend class Linphone::Core::Utils;
 			friend ref class Linphone::Core::LinphoneCore;

@@ -49,6 +49,29 @@ Linphone::Core::LinphoneChatMessage^ Linphone::Core::LinphoneChatRoom::CreateLin
 	return chatMessage;
 }
 
+Linphone::Core::LinphoneChatMessage^ Linphone::Core::LinphoneChatRoom::CreateFileTransferMessage(Platform::String^ type, Platform::String^ subtype, Platform::String^ name, int size, Platform::String^ filepath)
+{
+	TRACE; gApiLock.Lock();
+	const char *ctype = Linphone::Core::Utils::pstoccs(type);
+	const char *csubtype = Linphone::Core::Utils::pstoccs(subtype);
+	const char *cname = Linphone::Core::Utils::pstoccs(name);
+	const char *cfilepath = Linphone::Core::Utils::pstoccs(filepath);
+	LinphoneContent content;
+	memset(&content, 0, sizeof(content));
+	content.type = (char *)ctype;
+	content.subtype = (char *)csubtype;
+	content.size = size;
+	content.name = (char *)cname;
+	Linphone::Core::LinphoneChatMessage^ chatMessage = (Linphone::Core::LinphoneChatMessage^) Linphone::Core::Utils::CreateLinphoneChatMessage(
+		linphone_chat_room_create_file_transfer_message_from_file(this->room, &content, cfilepath));
+	delete(ctype);
+	delete(csubtype);
+	delete(cname);
+	delete(cfilepath);
+	gApiLock.Unlock();
+	return chatMessage;
+}
+
 Platform::Boolean Linphone::Core::LinphoneChatRoom::IsRemoteComposing()
 {
 	TRACE; gApiLock.Lock();

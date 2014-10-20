@@ -22,6 +22,7 @@ using System.IO.IsolatedStorage;
 using System.Net.Http.Headers;
 using Microsoft.Xna.Framework.Media;
 using Linphone.Agents;
+using Windows.Storage;
 
 namespace Linphone.Views
 {
@@ -82,6 +83,8 @@ namespace Linphone.Views
             BuildLocalizedApplicationBar();
         }
 
+        private Task onNavigatedToTask = null;
+
         /// <summary>
         /// Method called when the page is displayed.
         /// Check if the uri contains a sip address, if yes, it displays the matching chat history.
@@ -137,6 +140,12 @@ namespace Linphone.Views
             }
 
             scrollToBottom();
+
+            if (onNavigatedToTask != null)
+            {
+                onNavigatedToTask.Start();
+                onNavigatedToTask = null;
+            }
         }
 
         private void MessageBox_TextChanged(object sender, string text)
@@ -224,7 +233,6 @@ namespace Linphone.Views
             if (chatRoom != null)
             {
                 LinphoneChatMessage chatMessage = chatRoom.CreateLinphoneChatMessage(message);
-                long time = chatMessage.GetTime();
                 chatRoom.SendMessage(chatMessage, this);
 
                 DateTime date = new DateTime(chatMessage.GetTime() * TimeSpan.TicksPerSecond).AddYears(1969);
@@ -235,89 +243,12 @@ namespace Linphone.Views
             }
         }
 
-        private async Task<string> UploadImageMessage(BitmapImage image, string filePath)
-        {
-            string fileName = filePath.Substring(filePath.LastIndexOf("\\") + 1);
-
-            //Copy image in local folder
-            Utils.SaveImageInLocalFolder(image, fileName);
-
-            //Upload the image
-            string response;
-            string boundary = "----------" + DateTime.Now.Ticks.ToString();
-            using (var client = new HttpClient())
-            {
-                _httpPostClient = client;
-                using (var content = new MultipartFormDataContent(boundary))
-                {
-                    MemoryStream ms = new MemoryStream();
-                    WriteableBitmap bitmap = new WriteableBitmap(image);
-                    Extensions.SaveJpeg(bitmap, ms, image.PixelWidth, image.PixelHeight, 0, SENT_IMAGES_QUALITY);
-                    ms.Flush();
-                    ms.Position = 0;
-                    StreamContent streamContent = new StreamContent(ms);
-                    streamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
-                    {
-                        Name = "\"userfile\"",
-                        FileName = "\"" + fileName + "\""
-                    };
-                    streamContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                    content.Add(streamContent);
-
-                    using (var message = await client.PostAsync(Customs.PictureUploadScriptURL, content))
-                    {
-                        message.EnsureSuccessStatusCode();
-                        response = await message.Content.ReadAsStringAsync();
-                    }
-                }
-            }
-            return response;
-        }
-
-        private async void SendImageMessage(string localFileName, BitmapImage image)
-        {
-            try
-            {
-                ProgressPopup.Visibility = Visibility.Visible;
-                MessageBox.Visibility = Visibility.Collapsed;
-                AddCancelUploadButtonInAppBar();
-
-                string url = await UploadImageMessage(image, localFileName);
-                if (url == null || url.Length == 0)
-                {
-                    return;
-                }
-
-                if (chatRoom != null)
-                {
-                    LinphoneChatMessage chatMessage = chatRoom.CreateLinphoneChatMessage("");
-                    chatMessage.SetExternalBodyUrl(url);
-                    long time = chatMessage.GetTime();
-                    chatRoom.SendMessage(chatMessage, this);
-
-                    DateTime date = new DateTime(chatMessage.GetTime() * TimeSpan.TicksPerSecond).AddYears(1969);
-                    OutgoingChatBubble bubble = new OutgoingChatBubble(chatMessage, image, FormatDate(date));
-                    bubble.MessageDeleted += bubble_MessageDeleted;
-                    MessagesList.Children.Add(bubble);
-                    scrollToBottom();
-                }
-            }
-            catch { }
-            finally
-            {
-                ProgressPopup.Visibility = Visibility.Collapsed;
-                MessageBox.Visibility = Visibility.Visible;
-                AddSendButtonsToAppBar();
-            }
-        }
-
         /// <summary>
         /// Callback called by LinphoneCore when the state of a sent message changes.
         /// </summary>
         public void MessageStateChanged(LinphoneChatMessage message, LinphoneChatMessageState state)
         {
             string messageText = message.GetText();
-            string externalBodyUrl = message.GetExternalBodyUrl();
             Logger.Msg("[Chat] Message " + messageText + ", state changed: " + state.ToString());
             if (state == LinphoneChatMessageState.InProgress)
             {
@@ -327,6 +258,9 @@ namespace Linphone.Views
 
             Dispatcher.BeginInvoke(() =>
             {
+                ProgressPopup.Visibility = Visibility.Collapsed;
+                MessageBox.Visibility = Visibility.Visible;
+                AddSendButtonsToAppBar();
                 try
                 {
                     ChatBubble bubble = (ChatBubble)MessagesList.Children.Where(b => ((ChatBubble)b).ChatMessage.Equals(message)).Last();
@@ -337,6 +271,43 @@ namespace Linphone.Views
                 }
                 catch { }
             });
+        }
+
+        private void CreateChatRoom()
+        {
+            sipAddress = NewChatSipAddress.Text;
+            if (!sipAddress.Contains("@"))
+            {
+                if (LinphoneManager.Instance.LinphoneCore.GetProxyConfigList().Count > 0)
+                {
+                    LinphoneProxyConfig config = LinphoneManager.Instance.LinphoneCore.GetProxyConfigList()[0] as LinphoneProxyConfig;
+                    sipAddress += "@" + config.GetDomain();
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show(AppResources.InvalidSipAddressError, AppResources.GenericError, MessageBoxButton.OK);
+                    return;
+                }
+            }
+
+            ContactManager.Instance.FindContact(sipAddress);
+            ContactName.Text = sipAddress;
+            ContactName.Visibility = Visibility.Visible;
+            NewChat.Visibility = Visibility.Collapsed;
+
+            try
+            {
+                chatRoom = LinphoneManager.Instance.LinphoneCore.GetOrCreateChatRoom(sipAddress);
+                if (chatRoom.GetHistorySize() > 0)
+                {
+                    DisplayPastMessages(chatRoom.GetHistory());
+                }
+            }
+            catch
+            {
+                Logger.Err("Can't create chat room for sip address {0}", sipAddress);
+                throw;
+            }
         }
 
         private void cancel_Click_1(object sender, EventArgs e)
@@ -352,41 +323,7 @@ namespace Linphone.Views
             {
                 if (chatRoom == null) //This code will be executed only in case of new conversation
                 {
-                    sipAddress = NewChatSipAddress.Text;
-
-                    if (!sipAddress.Contains("@"))
-                    {
-                        if (LinphoneManager.Instance.LinphoneCore.GetProxyConfigList().Count > 0)
-                        {
-                            LinphoneProxyConfig config = LinphoneManager.Instance.LinphoneCore.GetProxyConfigList()[0] as LinphoneProxyConfig;
-                            sipAddress += "@" + config.GetDomain();
-                        }
-                        else
-                        {
-                            System.Windows.MessageBox.Show(AppResources.InvalidSipAddressError, AppResources.GenericError, MessageBoxButton.OK);
-                            return;
-                        }
-                    }
-
-                    ContactManager.Instance.FindContact(sipAddress);
-                    ContactName.Text = sipAddress;
-                    ContactName.Visibility = Visibility.Visible;
-                    NewChat.Visibility = Visibility.Collapsed;
-
-                    try
-                    {
-                        chatRoom = LinphoneManager.Instance.LinphoneCore.GetOrCreateChatRoom(sipAddress);
-
-                        if (chatRoom.GetHistorySize() > 0)
-                        {
-                            DisplayPastMessages(chatRoom.GetHistory());
-                        }
-                    }
-                    catch
-                    {
-                        Logger.Err("Can't create chat room for sip address {0}", sipAddress);
-                        throw;
-                    }
+                    CreateChatRoom();
                 }
 
                 if (chatRoom != null)
@@ -411,15 +348,44 @@ namespace Linphone.Views
         private void attach_image_Click_1(object sender, EventArgs e)
         {
             PhotoChooserTask task = new PhotoChooserTask();
-            task.Completed += task_Completed;
+            task.Completed += imageSelectionTask_Completed;
             task.ShowCamera = true;
             task.Show();
         }
 
-        private void task_Completed(object sender, PhotoResult e)
+        private void InitiateImageUpload(string filePath, string fileName)
+        {
+            BaseModel.UIDispatcher.BeginInvoke(() =>
+            {
+                if (chatRoom == null) //This code will be executed only in case of new conversation
+                {
+                    CreateChatRoom();
+                }
+                if (chatRoom != null)
+                {
+                    ProgressPopup.Visibility = Visibility.Visible;
+                    MessageBox.Visibility = Visibility.Collapsed;
+                    AddCancelUploadButtonInAppBar();
+
+                    FileInfo fileInfo = new FileInfo(filePath);
+                    LinphoneChatMessage msg = chatRoom.CreateFileTransferMessage("application", "octet-stream", fileName, (int)fileInfo.Length, filePath);
+                    chatRoom.SendMessage(msg, this);
+                }
+                else
+                {
+                    ProgressPopup.Visibility = Visibility.Collapsed;
+                    MessageBox.Visibility = Visibility.Visible;
+                    AddSendButtonsToAppBar();
+                    System.Windows.MessageBox.Show(AppResources.ChatRoomCreationError, AppResources.GenericError, MessageBoxButton.OK);
+                }
+            });
+        }
+
+        private void imageSelectionTask_Completed(object sender, PhotoResult e)
         {
             if (e.TaskResult == TaskResult.OK)
             {
+                string fileName = e.OriginalFileName.Substring(e.OriginalFileName.LastIndexOf("\\") + 1);
                 BitmapImage image = new BitmapImage();
                 image.SetSource(e.ChosenPhoto);
 
@@ -445,10 +411,11 @@ namespace Linphone.Views
                     bm.SaveJpeg(ms, w, h, 0, 100);
                     image.SetSource(ms);
                 }
-                MessageBox.SetImage(image);
-                string fileName = e.OriginalFileName.Substring(e.OriginalFileName.LastIndexOf("\\") + 1);
-                MessageBox.ImageName = fileName;
-                EnableAppBarSendMessageButton(true);
+                string filePath = Utils.SaveImageInLocalFolder(image, fileName);
+                if (filePath != null)
+                {
+                    onNavigatedToTask = new Task(() => InitiateImageUpload(filePath, fileName));
+                }
             }
         }
 

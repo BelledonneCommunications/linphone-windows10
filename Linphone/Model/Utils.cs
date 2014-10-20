@@ -111,7 +111,7 @@ namespace Linphone.Model
         /// <param name="image">The bitmap image to save</param>
         /// <param name="fileName">The file's name to use</param>
         /// <returns>true if the operation succeeds</returns>
-        public static bool SaveImageInLocalFolder(BitmapImage image, string fileName)
+        public static string SaveImageInLocalFolder(BitmapImage image, string fileName)
         {
             try
             {
@@ -129,12 +129,12 @@ namespace Linphone.Model
                         file.Flush();
                         file.Close();
                         bitmap = null;
-                        return true;
+                        return file.Name;
                     }
                 }
             }
             catch { }
-            return false;
+            return null;
         }
     }
 }

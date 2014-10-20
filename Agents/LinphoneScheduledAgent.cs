@@ -167,6 +167,13 @@ namespace Linphone.Agents
         /// <summary>
         /// Callback for LinphoneCoreListener
         /// </summary>
+        public void FileTransferProgressIndication(LinphoneChatMessage message, int offset, int total)
+        {
+        }
+
+        /// <summary>
+        /// Callback for LinphoneCoreListener
+        /// </summary>
         public void LogUploadStatusChanged(LinphoneCoreLogCollectionUploadState state, string info)
         {
         }

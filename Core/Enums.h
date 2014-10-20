@@ -154,7 +154,9 @@ namespace Linphone
 			Idle = 0,
 			InProgress = 1,
 			Delivered = 2,
-			NotDelivered = 3
+			NotDelivered = 3,
+			FileTransferError = 4,
+			FileTransferDone = 5
 		};
 
 		public enum class DeclineReason : int

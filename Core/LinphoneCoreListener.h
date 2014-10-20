@@ -85,6 +85,14 @@ namespace Linphone
 			void ComposingReceived(LinphoneChatRoom^ room);
 
 			/// <summary>
+			/// Callback method called to notify the progression of a file transfer.
+			/// </summary>
+			/// <param name="message">The chat message</param>
+			/// <param name="offset">The number of bytes sent/received since the beginning of the file transfer</param>
+			/// <param name="total">The total number of bytes to be sent/received</param>
+			void FileTransferProgressIndication(LinphoneChatMessage^ message, int offset, int total);
+
+			/// <summary>
 			/// Callback method called when the status of the current log upload changes.
 			/// </summary>
 			/// <param name="state">Tells the state of the upload</param>
