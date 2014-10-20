@@ -11,6 +11,9 @@ using Linphone.Core;
 
 namespace Linphone.Controls
 {
+    /// <summary>
+    /// Parent class for OutgoingChatBubble and IncomingChatBubble
+    /// </summary>
     public partial class ChatBubble : UserControl
     {
         private LinphoneChatMessage _message;
@@ -30,6 +33,9 @@ namespace Linphone.Controls
             }
         }
 
+        /// <summary>
+        /// Human readable timestamp
+        /// </summary>
         public string HumanFriendlyTimeStamp
         {
             get
@@ -39,6 +45,9 @@ namespace Linphone.Controls
             }
         }
 
+        /// <summary>
+        /// Public constructor
+        /// </summary>
         public ChatBubble(LinphoneChatMessage message)
         {
             InitializeComponent();

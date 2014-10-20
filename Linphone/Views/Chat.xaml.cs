@@ -241,8 +241,7 @@ namespace Linphone.Views
         /// </summary>
         public void MessageStateChanged(LinphoneChatMessage message, LinphoneChatMessageState state)
         {
-            string messageText = message.GetText();
-            Logger.Msg("[Chat] Message " + messageText + ", state changed: " + state.ToString());
+            Logger.Msg("[Chat] Message state changed: " + state.ToString());
 
             Dispatcher.BeginInvoke(() =>
             {
