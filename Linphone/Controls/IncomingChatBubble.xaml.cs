@@ -114,15 +114,19 @@ namespace Linphone.Controls
         /// </summary>
         public void RefreshImage(string filePath)
         {
+            ProgressBar.Visibility = Visibility.Collapsed;
             if (filePath != null && filePath.Length > 0)
             {
                 Download.Visibility = Visibility.Collapsed;
-                ProgressBar.Visibility = Visibility.Collapsed;
                 Image.Visibility = Visibility.Visible;
                 Save.Visibility = Visibility.Visible;
 
                 BitmapImage image = Utils.ReadImageFromIsolatedStorage(filePath);
                 Image.Source = image;
+            }
+            else
+            {
+                Download.Visibility = Visibility.Visible;
             }
         }
 

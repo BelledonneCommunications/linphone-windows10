@@ -258,8 +258,17 @@ namespace Linphone.Views
                 }
                 else if (state == LinphoneChatMessageState.FileTransferDone && (message.GetAppData() == null || message.GetAppData().Length <= 0))
                 {
-                    // Only in case of image downlaod the appData will be empty
+                    // Only in case of an image download the appData will be empty
                     //TODO
+                    try
+                    {
+                        ChatBubble bubble = (ChatBubble)MessagesList.Children.Where(b => ((ChatBubble)b).ChatMessage.Equals(message)).Last();
+                        if (bubble != null)
+                        {
+                            ((IncomingChatBubble)bubble).RefreshImage(null);
+                        }
+                    }
+                    catch { }
                 }
                 else
                 {
