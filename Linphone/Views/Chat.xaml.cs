@@ -572,7 +572,7 @@ namespace Linphone.Views
         /// </summary>
         public void bubble_DownloadImage(object sender, LinphoneChatMessage message)
         {
-            //TODO
+            message.StartFileDownload(this);
         }
     }
 }

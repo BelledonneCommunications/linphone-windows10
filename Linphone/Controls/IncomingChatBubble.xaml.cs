@@ -109,6 +109,23 @@ namespace Linphone.Controls
             }
         }
 
+        /// <summary>
+        /// Displays the image in the bubble
+        /// </summary>
+        public void RefreshImage(string filePath)
+        {
+            if (filePath != null && filePath.Length > 0)
+            {
+                Download.Visibility = Visibility.Collapsed;
+                ProgressBar.Visibility = Visibility.Collapsed;
+                Image.Visibility = Visibility.Visible;
+                Save.Visibility = Visibility.Visible;
+
+                BitmapImage image = Utils.ReadImageFromIsolatedStorage(filePath);
+                Image.Source = image;
+            }
+        }
+
         private void Image_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/FullScreenPicture.xaml?uri=" + ChatMessage.GetAppData(), UriKind.RelativeOrAbsolute));

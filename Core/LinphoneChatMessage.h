@@ -72,6 +72,8 @@ namespace Linphone
 			/// </summary>
 			void SetAppData(Platform::String^ appData);
 
+			void StartFileDownload(LinphoneChatMessageListener^ listener);
+
 		private:
 			friend class Linphone::Core::Utils;
 			friend ref class Linphone::Core::LinphoneCore;

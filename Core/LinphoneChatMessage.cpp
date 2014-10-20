@@ -41,13 +41,6 @@ Linphone::Core::LinphoneChatMessageState  Linphone::Core::LinphoneChatMessage::G
 	return (Linphone::Core::LinphoneChatMessageState) linphone_chat_message_get_state(this->message);
 }
 
-Linphone::Core::LinphoneChatMessage::LinphoneChatMessage(::LinphoneChatMessage *cm) :
-	message(cm)
-{
-	RefToPtrProxy<LinphoneChatMessage^> *chat_message = new RefToPtrProxy<LinphoneChatMessage^>(this);
-	linphone_chat_message_set_user_data(this->message, chat_message);
-}
-
 Platform::Boolean Linphone::Core::LinphoneChatMessage::IsOutgoing() 
 {
 	TRACE; gApiLock.Lock();
@@ -82,6 +75,39 @@ void Linphone::Core::LinphoneChatMessage::SetAppData(Platform::String^ appData)
 	TRACE; gApiLock.Lock();
 	linphone_chat_message_set_appdata(this->message, Linphone::Core::Utils::pstoccs(appData));
 	gApiLock.Unlock();
+}
+
+static void status_cb(::LinphoneChatMessage* msg, ::LinphoneChatMessageState state, void* ud)
+{
+	Linphone::Core::gApiLock.EnterListener();
+	Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneChatMessageListener^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneChatMessageListener^> *>(ud);
+	Linphone::Core::LinphoneChatMessageListener^ listener = (proxy) ? proxy->Ref() : nullptr;
+
+	if (listener != nullptr) {
+		Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneChatMessage^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneChatMessage^> *>(linphone_chat_message_get_user_data(msg));
+		Linphone::Core::LinphoneChatMessage^ lChatMessage = (proxy) ? proxy->Ref() : nullptr;
+		if (lChatMessage == nullptr) {
+			lChatMessage = (Linphone::Core::LinphoneChatMessage^)Linphone::Core::Utils::CreateLinphoneChatMessage(msg);
+		}
+
+		listener->MessageStateChanged(lChatMessage, (Linphone::Core::LinphoneChatMessageState) state);
+	}
+	Linphone::Core::gApiLock.LeaveListener();
+}
+
+void Linphone::Core::LinphoneChatMessage::StartFileDownload(Linphone::Core::LinphoneChatMessageListener^ listener)
+{
+	TRACE; gApiLock.Lock();
+	RefToPtrProxy<LinphoneChatMessageListener^> *listenerPtr = new RefToPtrProxy<LinphoneChatMessageListener^>(listener);
+	linphone_chat_message_start_file_download(this->message, status_cb, listenerPtr);
+	gApiLock.Unlock();
+}
+
+Linphone::Core::LinphoneChatMessage::LinphoneChatMessage(::LinphoneChatMessage *cm) :
+	message(cm)
+{
+	RefToPtrProxy<LinphoneChatMessage^> *chat_message = new RefToPtrProxy<LinphoneChatMessage^>(this);
+	linphone_chat_message_set_user_data(this->message, chat_message);
 }
 
 Linphone::Core::LinphoneChatMessage::~LinphoneChatMessage()
