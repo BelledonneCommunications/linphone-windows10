@@ -258,9 +258,13 @@ namespace Linphone.Views
 
             Dispatcher.BeginInvoke(() =>
             {
-                ProgressPopup.Visibility = Visibility.Collapsed;
-                MessageBox.Visibility = Visibility.Visible;
-                AddSendButtonsToAppBar();
+                if (ProgressPopup.Visibility == Visibility.Visible)
+                {
+                    ProgressPopup.Visibility = Visibility.Collapsed;
+                    MessageBox.Visibility = Visibility.Visible;
+                    AddSendButtonsToAppBar();
+                }
+
                 try
                 {
                     ChatBubble bubble = (ChatBubble)MessagesList.Children.Where(b => ((ChatBubble)b).ChatMessage.Equals(message)).Last();
@@ -332,9 +336,9 @@ namespace Linphone.Views
                     {
                         SendMessage(MessageBox.Text);
                     }
-                    else if (MessageBox.ImageName != null)
+                    else if (MessageBox.ImageName != null && MessageBox.ImageLocalPath != null)
                     {
-                        SendImageMessage(MessageBox.ImageName, (BitmapImage)MessageBox.Image.Source);
+                        InitiateImageUpload(MessageBox.ImageLocalPath, MessageBox.ImageName);
                     }
                     MessageBox.Reset();
                 }
@@ -412,10 +416,10 @@ namespace Linphone.Views
                     image.SetSource(ms);
                 }
                 string filePath = Utils.SaveImageInLocalFolder(image, fileName);
-                if (filePath != null)
-                {
-                    onNavigatedToTask = new Task(() => InitiateImageUpload(filePath, fileName));
-                }
+                MessageBox.SetImage(image);
+                MessageBox.ImageName = fileName;
+                MessageBox.ImageLocalPath = filePath;
+                EnableAppBarSendMessageButton(true);
             }
         }
 
@@ -471,7 +475,7 @@ namespace Linphone.Views
             appBarSend.Text = AppResources.SendMessage;
             ApplicationBar.Buttons.Add(appBarSend);
             appBarSend.Click += send_Click_1;
-            appBarSend.IsEnabled = ((MessageBox.Text != null && MessageBox.Text.Length > 0) || (MessageBox.ImageName != null && MessageBox.ImageName.Length > 0));
+            appBarSend.IsEnabled = ((MessageBox.Text != null && MessageBox.Text.Length > 0) || (MessageBox.ImageName != null && MessageBox.ImageName.Length > 0 && MessageBox.ImageLocalPath != null && MessageBox.ImageLocalPath.Length > 0));
 
             ApplicationBarIconButton appBarSendImage = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.paperclip.png", UriKind.Relative));
             appBarSendImage.Text = AppResources.SendPicture;

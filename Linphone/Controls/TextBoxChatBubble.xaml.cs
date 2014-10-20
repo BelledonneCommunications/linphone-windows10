@@ -27,6 +27,11 @@ namespace Linphone.Controls
         public string ImageName { get; set; }
 
         /// <summary>
+        /// Sets the local path where the image is stored
+        /// </summary>
+        public string ImageLocalPath { get; set; }
+
+        /// <summary>
         /// Public constructor.
         /// </summary>
         public TextBoxChatBubble()
@@ -41,6 +46,7 @@ namespace Linphone.Controls
         {
             Message.Text = "";
             ImageName = null;
+            ImageLocalPath = null;
             Message.Visibility = Visibility.Visible;
             Image.Visibility = Visibility.Collapsed;
         }
@@ -59,6 +65,7 @@ namespace Linphone.Controls
             Image.Source = image;
             Image.Visibility = Visibility.Visible;
             Message.Visibility = Visibility.Collapsed;
+            Message.Text = "";
         }
 
         /// <summary>
