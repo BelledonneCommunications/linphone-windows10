@@ -42,6 +42,9 @@ namespace Linphone.Views
         string GetSipAddressAssociatedWithDisplayConversation();
     }
 
+    /// <summary>
+    /// Listener to let this view to be notified by LinphoneManager when a composing is received.
+    /// </summary>
     public interface ComposingReceivedListener
     {
         /// <summary>
@@ -174,6 +177,7 @@ namespace Linphone.Views
                 {
                     IncomingChatBubble bubble = new IncomingChatBubble(message);
                     bubble.MessageDeleted += bubble_MessageDeleted;
+                    bubble.DownloadImage += bubble_DownloadImage;
                     MessagesList.Children.Add(bubble);
                 }
                 else
@@ -497,6 +501,7 @@ namespace Linphone.Views
             {
                 IncomingChatBubble bubble = new IncomingChatBubble(message);
                 bubble.MessageDeleted += bubble_MessageDeleted;
+                bubble.DownloadImage += bubble_DownloadImage;
                 MessagesList.Children.Add(bubble);
 
                 scrollToBottom();
@@ -560,6 +565,14 @@ namespace Linphone.Views
             {
                 chatRoom.DeleteMessageFromHistory(message);
             }
+        }
+
+        /// <summary>
+        /// Callback called when a user wants to download an image in a message
+        /// </summary>
+        public void bubble_DownloadImage(object sender, LinphoneChatMessage message)
+        {
+            //TODO
         }
     }
 }

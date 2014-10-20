@@ -49,7 +49,7 @@ namespace Linphone.Controls
                 else
                 {
                     // Image needs to be downloaded
-                    DownloadImage.Visibility = Visibility.Visible;
+                    Download.Visibility = Visibility.Visible;
                 }
             }
             else
@@ -89,22 +89,24 @@ namespace Linphone.Controls
         /// </summary>
         public event MessageDeletedEventHandler MessageDeleted;
 
+        /// <summary>
+        /// Delegate for download event.
+        /// </summary>
+        public delegate void DownloadImageEventHandler(object sender, LinphoneChatMessage message);
+
+        /// <summary>
+        /// Handler for download event.
+        /// </summary>
+        public event DownloadImageEventHandler DownloadImage;
+
         private void DownloadImage_Click(object sender, RoutedEventArgs e)
         {
-            /*DownloadImage.Visibility = Visibility.Collapsed;
-            ProgressBar.Visibility = Visibility.Visible;
-            BitmapImage image = Utils.GetThumbnailBitmapFromImage(Utils.DownloadImageAndStoreItInIsolatedStorage(ChatMessage.ImageURL, ChatMessage));
-            if (image != null)
+            if (DownloadImage != null)
             {
-                Image.Visibility = Visibility.Visible;
-                Image.Source = image;
-                Save.Visibility = Visibility.Visible;
+                Download.Visibility = Visibility.Collapsed;
+                ProgressBar.Visibility = Visibility.Visible;
+                DownloadImage(this, ChatMessage);
             }
-            else
-            {
-                DownloadImage.Visibility = Visibility.Visible;
-            }
-            ProgressBar.Visibility = Visibility.Collapsed;*/
         }
 
         private void Image_Tap(object sender, System.Windows.Input.GestureEventArgs e)
