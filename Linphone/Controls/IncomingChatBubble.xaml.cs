@@ -75,8 +75,8 @@ namespace Linphone.Controls
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            /*bool result = Utils.SavePictureInMediaLibrary(ChatMessage.ImageURL);
-            MessageBox.Show(result ? AppResources.FileSavingSuccess : AppResources.FileSavingFailure, AppResources.FileSaving, MessageBoxButton.OK);*/
+            bool result = Utils.SavePictureInMediaLibrary(ChatMessage.GetAppData());
+            MessageBox.Show(result ? AppResources.FileSavingSuccess : AppResources.FileSavingFailure, AppResources.FileSaving, MessageBoxButton.OK);
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace Linphone.Controls
 
         private void Image_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            //BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/FullScreenPicture.xaml?uri=" + ChatMessage.ImageURL, UriKind.RelativeOrAbsolute));
+            BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/FullScreenPicture.xaml?uri=" + ChatMessage.GetAppData(), UriKind.RelativeOrAbsolute));
         }
     }
 }
