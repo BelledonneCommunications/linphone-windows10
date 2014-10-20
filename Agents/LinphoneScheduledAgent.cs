@@ -44,6 +44,7 @@ namespace Linphone.Agents
                     {
                         var server = BackgroundManager.Instance.OopServer;
                         LpConfig config = server.LinphoneCoreFactory.CreateLpConfig(ApplicationData.Current.LocalFolder.Path + "\\linphonerc", "Assets/linphonerc-factory");
+                        server.LinphoneCoreFactory.SetLogLevel((OutputTraceLevel)config.GetInt("app", "LogLevel", 255)); //255 is None
                         server.LinphoneCoreFactory.CreateLinphoneCore(this, config);
                         server.LinphoneCore.SetRootCA("Assets/rootca.pem");
                         server.LinphoneCore.SetChatDatabasePath(ApplicationData.Current.LocalFolder.Path + "\\chat.db");

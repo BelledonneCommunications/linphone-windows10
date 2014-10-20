@@ -62,6 +62,7 @@ namespace Linphone.Agents
         {
             // Initiate incoming call processing by creating the Linphone Core
             LpConfig config = OopServer.LinphoneCoreFactory.CreateLpConfig(ApplicationData.Current.LocalFolder.Path + "\\linphonerc", "Assets/linphonerc-factory");
+            OopServer.LinphoneCoreFactory.SetLogLevel((OutputTraceLevel) config.GetInt("app", "LogLevel", 255)); //255 is None
             OopServer.LinphoneCoreFactory.CreateLinphoneCore(null, config);
             OopServer.LinphoneCore.SetRootCA("Assets/rootca.pem");
             OopServer.LinphoneCore.SetChatDatabasePath(ApplicationData.Current.LocalFolder.Path + "\\chat.db");
