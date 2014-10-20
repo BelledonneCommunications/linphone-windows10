@@ -36,6 +36,7 @@ namespace Linphone.Controls
         {
             Message.Text = "";
             Message.Visibility = Visibility.Visible;
+            Image.Visibility = Visibility.Collapsed;
         }
 
         private void Message_TextChanged(object sender, TextChangedEventArgs e)
@@ -45,6 +46,13 @@ namespace Linphone.Controls
             {
                 TextChanged(this, Message.Text);
             }
+        }
+
+        public void SetImage(BitmapImage image)
+        {
+            Image.Source = image;
+            Image.Visibility = Visibility.Visible;
+            Message.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>

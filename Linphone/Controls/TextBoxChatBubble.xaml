@@ -70,12 +70,20 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Rectangle Fill="WhiteSmoke"/>
+        <Rectangle Fill="WhiteSmoke" Grid.RowSpan="2" Grid.Row="0"/>
 
-        <TextBox
+        <Image
             Grid.Row="0"
+            x:Name="Image"
+            Stretch="Uniform"
+            Margin="10"
+            Visibility="Collapsed"/>
+        
+        <TextBox
+            Grid.Row="1"
             x:Name="Message"
             TextChanged="Message_TextChanged"
             InputScope="Chat"
@@ -85,7 +93,7 @@
             Style="{StaticResource ChatTextBox}"/>
 
         <Path 
-            Grid.Row="1"
+            Grid.Row="2"
             Data="m 0,0 l 8,0 l 0,16 l -16,-16"
             Fill="WhiteSmoke"
             Margin="0,-1,10,0"
