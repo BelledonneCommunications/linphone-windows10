@@ -39,40 +39,26 @@ namespace Linphone.Controls
         {
             InitializeComponent();
 
-            Message.Visibility = Visibility.Visible;
-            Image.Visibility = Visibility.Collapsed;
-            ShowImage.Visibility = Visibility.Collapsed;
-            Message.Text = message.GetText();
-            Timestamp.Text = HumanFriendlyTimeStamp;
-
-            Background.Fill = _darkAccentBrush;
-            Path.Fill = _darkAccentBrush;
-        }
-
-        /// <summary>
-        /// Public constructor.
-        /// </summary>
-        public OutgoingChatBubble(LinphoneChatMessage message, BitmapImage image) :
-            base(message)
-        {
-            InitializeComponent();
-            Message.Visibility = Visibility.Collapsed;
-            Copy.Visibility = Visibility.Collapsed;
-
-            if (image == null)
+            string filePath = message.GetAppData();
+            bool isImageMessage = filePath != null && filePath.Length > 0;
+            if (isImageMessage)
             {
-                ShowImage.Visibility = Visibility.Visible;
-                Image.Visibility = Visibility.Collapsed;
+                Message.Visibility = Visibility.Collapsed;
+                Copy.Visibility = Visibility.Collapsed;
+                Image.Visibility = Visibility.Visible;
+                Save.Visibility = Visibility.Visible;
+
+                BitmapImage image = Utils.ReadImageFromIsolatedStorage(filePath);
+                Image.Source = image;
             }
             else
             {
-                ShowImage.Visibility = Visibility.Collapsed;
-                Image.Visibility = Visibility.Visible;
-                Save.Visibility = Visibility.Visible;
+                Message.Visibility = Visibility.Visible;
+                Image.Visibility = Visibility.Collapsed;
+                Message.Text = message.GetText();
             }
-            Image.Source = image;
-            Timestamp.Text = HumanFriendlyTimeStamp;
 
+            Timestamp.Text = HumanFriendlyTimeStamp;
             Background.Fill = _darkAccentBrush;
             Path.Fill = _darkAccentBrush;
         }
@@ -123,14 +109,6 @@ namespace Linphone.Controls
         /// Handler for delete event.
         /// </summary>
         public event MessageDeletedEventHandler MessageDeleted;
-
-        private void ShowImage_Click(object sender, RoutedEventArgs e)
-        {
-            /*Image.Source = Utils.GetThumbnailBitmapFromImage(Utils.ReadImageFromIsolatedStorage(ChatMessage.ImageURL));
-            ShowImage.Visibility = Visibility.Collapsed;
-            Image.Visibility = Visibility.Visible;
-            Save.Visibility = Visibility.Visible;*/
-        }
 
         private void Image_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {

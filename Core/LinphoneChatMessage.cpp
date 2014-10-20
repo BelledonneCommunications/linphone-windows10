@@ -56,6 +56,34 @@ Platform::Boolean Linphone::Core::LinphoneChatMessage::IsOutgoing()
 	return is_outgoing;
 }
 
+Platform::String^ Linphone::Core::LinphoneChatMessage::GetFileTransferName() 
+{
+	TRACE; gApiLock.Lock();
+	Platform::String^ fileName;
+	const LinphoneContent *content = linphone_chat_message_get_file_transfer_information(this->message);
+	if (content) 
+	{
+		fileName = Linphone::Core::Utils::cctops(content->name);
+	}
+	gApiLock.Unlock();
+	return fileName;
+}
+
+Platform::String^ Linphone::Core::LinphoneChatMessage::GetAppData()
+{
+	TRACE; gApiLock.Lock();
+	Platform::String^ appData = Linphone::Core::Utils::cctops(linphone_chat_message_get_appdata(this->message));
+	gApiLock.Unlock();
+	return appData;
+}
+
+void Linphone::Core::LinphoneChatMessage::SetAppData(Platform::String^ appData)
+{
+	TRACE; gApiLock.Lock();
+	linphone_chat_message_set_appdata(this->message, Linphone::Core::Utils::pstoccs(appData));
+	gApiLock.Unlock();
+}
+
 Linphone::Core::LinphoneChatMessage::~LinphoneChatMessage()
 {
 	linphone_chat_message_unref(message);

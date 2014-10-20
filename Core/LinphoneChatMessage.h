@@ -55,7 +55,22 @@ namespace Linphone
 			/// <summary>
 			/// Returns true if the message was outgoing, otherwise return false.
 			/// </summary>
-			Platform::Boolean Linphone::Core::LinphoneChatMessage::IsOutgoing();
+			Platform::Boolean IsOutgoing();
+
+			/// <summary>
+			/// Returns the name of the file used in the file transfer if it exists
+			/// </summary>
+			Platform::String^ GetFileTransferName();
+
+			/// <summary>
+			/// Returns the content of the appData
+			/// </summary>
+			Platform::String^ GetAppData();
+
+			/// <summary>
+			/// Sets the content of the appData
+			/// </summary>
+			void SetAppData(Platform::String^ appData);
 
 		private:
 			friend class Linphone::Core::Utils;

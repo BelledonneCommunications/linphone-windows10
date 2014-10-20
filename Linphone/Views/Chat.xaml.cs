@@ -364,6 +364,7 @@ namespace Linphone.Views
 
                     FileInfo fileInfo = new FileInfo(filePath);
                     LinphoneChatMessage msg = chatRoom.CreateFileTransferMessage("application", "octet-stream", fileName, (int)fileInfo.Length, filePath);
+                    msg.SetAppData(filePath);
                     chatRoom.SendMessage(msg, this);
                 }
                 else

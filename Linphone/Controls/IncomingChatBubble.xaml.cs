@@ -28,23 +28,36 @@ namespace Linphone.Controls
             base (message)
         {
             InitializeComponent();
-            Message.Text = message.GetText();
             Timestamp.Text = HumanFriendlyTimeStamp;
 
-            /*if (ChatMessage.ImageURL != null && ChatMessage.ImageURL.Length > 0)
+            string fileName = message.GetFileTransferName();
+            string filePath = message.GetAppData();
+            bool isImageMessage = fileName != null && fileName.Length > 0;
+            if (isImageMessage)
             {
                 Message.Visibility = Visibility.Collapsed;
                 Copy.Visibility = Visibility.Collapsed;
-
-                if (ChatMessage.ImageURL.StartsWith("http"))
+                if (filePath != null && filePath.Length > 0)
                 {
-                    DownloadImage.Visibility = Visibility.Visible;
+                    // Image already downloaded
+                    Image.Visibility = Visibility.Visible;
+                    Save.Visibility = Visibility.Visible;
+
+                    BitmapImage image = Utils.ReadImageFromIsolatedStorage(filePath);
+                    Image.Source = image;
                 }
                 else
                 {
-                    ShowImage.Visibility = Visibility.Visible;
+                    // Image needs to be downloaded
+                    DownloadImage.Visibility = Visibility.Visible;
                 }
-            }*/
+            }
+            else
+            {
+                Message.Visibility = Visibility.Visible;
+                Image.Visibility = Visibility.Collapsed;
+                Message.Text = message.GetText();
+            }
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)
@@ -92,14 +105,6 @@ namespace Linphone.Controls
                 DownloadImage.Visibility = Visibility.Visible;
             }
             ProgressBar.Visibility = Visibility.Collapsed;*/
-        }
-
-        private void ShowImage_Click(object sender, RoutedEventArgs e)
-        {
-            /*Image.Source = Utils.GetThumbnailBitmapFromImage(Utils.ReadImageFromIsolatedStorage(ChatMessage.ImageURL));
-            ShowImage.Visibility = Visibility.Collapsed;
-            Image.Visibility = Visibility.Visible;
-            Save.Visibility = Visibility.Visible;*/
         }
 
         private void Image_Tap(object sender, System.Windows.Input.GestureEventArgs e)

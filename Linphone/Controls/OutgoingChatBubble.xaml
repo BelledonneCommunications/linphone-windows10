@@ -45,15 +45,6 @@
             TextAlignment="Left"
             Padding="5,0,0,0"/>
 
-        <Button
-            Grid.Row="0"
-            x:Name="ShowImage"
-            Visibility="Collapsed"
-            Click="ShowImage_Click"
-            Foreground="White"
-            BorderBrush="White"
-            Content="{Binding Path=LocalizedResources.ShowImage, Source={StaticResource LocalizedStrings}}"/>
-            
         <Image
             Grid.Row="0" 
             Margin="5"
