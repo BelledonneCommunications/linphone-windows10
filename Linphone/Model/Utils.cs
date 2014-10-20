@@ -49,34 +49,6 @@ namespace Linphone.Model
         }
 
         /// <summary>
-        /// Get a thumbnail of a picture (used for chat images)
-        /// </summary>
-        /// <param name="image">The image to size down</param>
-        /// <returns>The thumbnail picture</returns>
-        public static BitmapImage GetThumbnailBitmapFromImage(BitmapImage image)
-        {
-            if (image == null)
-                return null;
-
-            if (image.PixelWidth <= THUMBNAIL_WIDTH)
-                return image;
-
-            MemoryStream ms = new MemoryStream();
-            WriteableBitmap bitmap = new WriteableBitmap(image);
-
-            int w, h;
-            w = THUMBNAIL_WIDTH;
-            h = (image.PixelHeight * w) / image.PixelWidth;
-
-            bitmap.SaveJpeg(ms, w, h, 0, LOCAL_IMAGES_QUALITY);
-
-            BitmapImage thumbnail = new BitmapImage();
-            thumbnail.SetSource(ms);
-
-            return thumbnail;
-        }
-
-        /// <summary>
         /// Returns a BitmapImage of a file stored in isolated storage
         /// </summary>
         /// <param name="fileName">Name of the file to open</param>
