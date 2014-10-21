@@ -23,11 +23,6 @@ namespace Linphone.Views
     /// </summary>
     public partial class InCall : BasePage, MuteChangedListener, PauseChangedListener, CallUpdatedByRemoteListener
     {
-        private const string micOn = "/Assets/AppBar/mic.png";
-        private const string micOff = "/Assets/AppBar/mic.png";
-        private const string pauseOn = "/Assets/AppBar/play.png";
-        private const string pauseOff = "/Assets/AppBar/pause.png";
-
         private Timer oneSecondTimer;
         private Timer fadeTimer;
         private DateTimeOffset startTime;
@@ -145,11 +140,6 @@ namespace Linphone.Views
 
         private void buttons_PauseClick(object sender, bool isPaused)
         {
-            buttons.pause.IsChecked = isPaused;
-            buttons_landscape.pause.IsChecked = isPaused;
-            buttons.pauseImg.Source = new BitmapImage(new Uri(isPaused ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
-            buttons_landscape.pauseImg.Source = new BitmapImage(new Uri(isPaused ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
-
             if (isPaused)
                 LinphoneManager.Instance.PauseCurrentCall();
             else
@@ -223,6 +213,9 @@ namespace Linphone.Views
             }
         }
 
+        private const string bluetoothOn = "/Assets/Incall_Icons/bluetooth_on.png";
+        private const string bluetoothOff = "/Assets/Incall_Icons/bluetooth_off.png";
+
         private void AudioEndpointChanged(AudioRoutingManager sender, object args)
         {
             BaseModel.UIDispatcher.BeginInvoke(() =>
@@ -236,6 +229,8 @@ namespace Linphone.Views
                 bool isUsingBluetoothAudioRoute = LinphoneManager.Instance.BluetoothEnabled;
                 buttons.bluetooth.IsChecked = isUsingBluetoothAudioRoute;
                 buttons_landscape.bluetooth.IsChecked = isUsingBluetoothAudioRoute;
+                buttons.bluetoothImg.Source = new BitmapImage(new Uri(isUsingBluetoothAudioRoute ? bluetoothOn : bluetoothOff, UriKind.RelativeOrAbsolute));
+                buttons_landscape.bluetoothImg.Source = new BitmapImage(new Uri(isUsingBluetoothAudioRoute ? bluetoothOn : bluetoothOff, UriKind.RelativeOrAbsolute));
             });
         }
 
@@ -351,6 +346,9 @@ namespace Linphone.Views
             }
         }
 
+        private const string micOn = "/Assets/Incall_Icons/micro_on.png";
+        private const string micOff = "/Assets/Incall_Icons/micro_off.png";
+
         /// <summary>
         /// Called when the mute status of the microphone changes.
         /// </summary>
@@ -358,9 +356,14 @@ namespace Linphone.Views
         {
             buttons.microphone.IsChecked = isMicMuted;
             buttons_landscape.microphone.IsChecked = isMicMuted;
-            buttons.microImg.Source = new BitmapImage(new Uri(isMicMuted ? micOn : micOff, UriKind.RelativeOrAbsolute));
-            buttons_landscape.microImg.Source = new BitmapImage(new Uri(isMicMuted ? micOn : micOff, UriKind.RelativeOrAbsolute));
+            buttons.microImg.Source = new BitmapImage(new Uri(isMicMuted ? micOff : micOn, UriKind.RelativeOrAbsolute));
+            buttons_landscape.microImg.Source = new BitmapImage(new Uri(isMicMuted ? micOff : micOn, UriKind.RelativeOrAbsolute));
         }
+
+        private const string pauseOn = "/Assets/Incall_Icons/pause.png";
+        private const string pauseOff = "/Assets/Incall_Icons/play.png";
+        private const string videoOn = "/Assets/Incall_Icons/video_on.png";
+        private const string videoOff = "/Assets/Incall_Icons/video_off.png";
 
         /// <summary>
         /// Called when the call changes its state to paused or resumed.
@@ -369,6 +372,8 @@ namespace Linphone.Views
         {
             buttons.pause.IsChecked = isCallPaused || isCallPausedByRemote;
             buttons_landscape.pause.IsChecked = isCallPaused || isCallPausedByRemote;
+            buttons.pauseImg.Source = new BitmapImage(new Uri(isCallPaused || isCallPausedByRemote ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
+            buttons_landscape.pauseImg.Source = new BitmapImage(new Uri(isCallPaused || isCallPausedByRemote ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
 
             if (oneSecondTimer == null)
             {
@@ -383,6 +388,8 @@ namespace Linphone.Views
                     ((InCallModel)ViewModel).IsVideoActive = true;
                     buttons.video.IsChecked = true;
                     buttons_landscape.video.IsChecked = true;
+                    buttons.videoImg.Source = new BitmapImage(new Uri(videoOn, UriKind.RelativeOrAbsolute));
+                    buttons_landscape.videoImg.Source = new BitmapImage(new Uri(videoOn, UriKind.RelativeOrAbsolute));
                     ButtonsFadeInVideoAnimation.Begin();
                     StartFadeTimer();
                 }
@@ -392,6 +399,8 @@ namespace Linphone.Views
                     ((InCallModel)ViewModel).IsVideoActive = false;
                     buttons.video.IsChecked = false;
                     buttons_landscape.video.IsChecked = false;
+                    buttons.videoImg.Source = new BitmapImage(new Uri(videoOff, UriKind.RelativeOrAbsolute));
+                    buttons_landscape.videoImg.Source = new BitmapImage(new Uri(videoOff, UriKind.RelativeOrAbsolute));
                     ButtonsFadeInAudioAnimation.Begin();
                     StopFadeTimer();
                 }

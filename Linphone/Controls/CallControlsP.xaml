@@ -35,7 +35,7 @@
             Visibility="{Binding CameraButtonVisibility}"
             Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
-                <Image x:Name="cameraImg" Source="/Assets/AppBar/feature.camera.png" Stretch="None" Opacity="0.4"/>
+                <Image x:Name="cameraImg" Source="/Assets/Incall_Icons/camera.png" Stretch="None" Opacity="0.4"/>
                 <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.ToggleCamera, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
             </StackPanel>
         </Button>
@@ -61,7 +61,7 @@
             Click="speaker_Click_1"
             Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
-                <Image x:Name="speakerImg" Source="/Assets/AppBar/speaker.png" Stretch="None"/>
+                <Image x:Name="speakerImg" Source="/Assets/Incall_Icons/speaker_off.png" Stretch="None"/>
                 <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Speaker, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap" Margin="5,0,5,10"/>
             </StackPanel>
         </ToggleButton>
@@ -76,7 +76,7 @@
             IsEnabled="False"
             Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
-                <Image x:Name="microImg" Source="/Assets/AppBar/mic.png" Stretch="None" Opacity="0.4"/>
+                <Image x:Name="microImg" Source="/Assets/Incall_Icons/micro_on.png" Stretch="None" Opacity="0.4"/>
                 <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Mute, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
             </StackPanel>
         </ToggleButton>
@@ -91,7 +91,7 @@
             IsEnabled="False"
             Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
-                <Image x:Name="bluetoothImg" Source="/Assets/AppBar/appbar.connection.bluetooth.png" Stretch="None" Opacity="0.4"/>
+                <Image x:Name="bluetoothImg" Source="/Assets/Incall_Icons/bluetooth_off.png" Stretch="None" Opacity="0.4"/>
                 <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Bluetooth, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
             </StackPanel>
         </ToggleButton>
@@ -106,7 +106,7 @@
             IsEnabled="False"
             Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
-                <Image x:Name="pauseImg" Source="/Assets/AppBar/pause.png" Stretch="None" Opacity="0.4"/>
+                <Image x:Name="pauseImg" Source="/Assets/Incall_Icons/play.png" Stretch="None" Opacity="0.4"/>
                 <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Hold, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
             </StackPanel>
         </ToggleButton>
@@ -122,7 +122,7 @@
             Visibility="{Binding VideoButtonVisibility}"
             Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
-                <Image x:Name="videoImg" Source="/Assets/AppBar/feature.video.png" Stretch="None" Opacity="0.4"/>
+                <Image x:Name="videoImg" Source="/Assets/Incall_Icons/video_off.png" Stretch="None" Opacity="0.4"/>
                 <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Video, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
             </StackPanel>
         </ToggleButton>
@@ -136,7 +136,7 @@
             Click="stats_Click_1"
             Background="{StaticResource PhoneChromeBrush}">
             <StackPanel Orientation="Vertical">
-                <Image x:Name="statsImg" Source="/Assets/AppBar/stats.png" Stretch="None"/>
+                <Image x:Name="statsImg" Source="/Assets/Incall_Icons/stats.png" Stretch="None"/>
                 <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=LocalizedResources.Stats, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"  Margin="5,0,5,10"/>
             </StackPanel>
         </ToggleButton>
@@ -162,7 +162,7 @@
             Margin="-10"
             Click="dialpad_Click_1"
             Background="{StaticResource PhoneChromeBrush}">
-            <Image Source="/Assets/AppBar/dialpad.png" Stretch="None"/>
+            <Image Source="/Assets/Incall_Icons/dialpad.png" Stretch="None"/>
         </ToggleButton>
 
         <!-- Statistics panel -->

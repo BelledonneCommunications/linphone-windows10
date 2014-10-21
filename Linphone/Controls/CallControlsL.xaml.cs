@@ -17,10 +17,16 @@ namespace Linphone.Controls
     /// </summary>
     public partial class CallControlsL : UserControl
     {
-        private const string speakerOn = "/Assets/AppBar/speaker.png";
-        private const string speakerOff = "/Assets/AppBar/speaker.png";
-        private const string videoOn = "/Assets/AppBar/feature.video.png";
-        private const string videoOff = "/Assets/AppBar/feature.video.png";
+        private const string speakerOn = "/Assets/Incall_Icons/speaker_on.png";
+        private const string speakerOff = "/Assets/Incall_Icons/speaker_off.png";
+        private const string bluetoothOn = "/Assets/Incall_Icons/bluetooth_on.png";
+        private const string bluetoothOff = "/Assets/Incall_Icons/bluetooth_off.png";
+        private const string videoOn = "/Assets/Incall_Icons/video_on.png";
+        private const string videoOff = "/Assets/Incall_Icons/video_off.png";
+        private const string pauseOn = "/Assets/Incall_Icons/pause.png";
+        private const string pauseOff = "/Assets/Incall_Icons/play.png";
+        private const string micOn = "/Assets/Incall_Icons/micro_on.png";
+        private const string micOff = "/Assets/Incall_Icons/micro_off.png";
 
         public delegate void HangUpClickEventHandler(object sender);
         public event HangUpClickEventHandler HangUpClick;
@@ -65,6 +71,7 @@ namespace Linphone.Controls
         private void bluetooth_Click_1(object sender, RoutedEventArgs e)
         {
             bool isBluetoothToggled = (bool)bluetooth.IsChecked;
+            bluetoothImg.Source = new BitmapImage(new Uri(isBluetoothToggled ? bluetoothOn : bluetoothOff, UriKind.RelativeOrAbsolute));
             BluetoothClick(this, isBluetoothToggled);
         }
 
@@ -73,13 +80,14 @@ namespace Linphone.Controls
             bool isSpeakerToggled = (bool)speaker.IsChecked;
             if (SpeakerClick(this, isSpeakerToggled))
             {
-                speakerImg.Source = new BitmapImage(new Uri((bool)speaker.IsChecked ? speakerOn : speakerOff, UriKind.RelativeOrAbsolute));
+                speakerImg.Source = new BitmapImage(new Uri(isSpeakerToggled ? speakerOn : speakerOff, UriKind.RelativeOrAbsolute));
             }
         }
 
         private void microphone_Click_1(object sender, RoutedEventArgs e)
         {
             bool isMicToggled = (bool)microphone.IsChecked;
+            microImg.Source = new BitmapImage(new Uri(isMicToggled ? micOff : micOn, UriKind.RelativeOrAbsolute));
             MuteClick(this, isMicToggled);
         }
 
@@ -92,7 +100,7 @@ namespace Linphone.Controls
         private void video_Click_1(object sender, RoutedEventArgs e)
         {
             bool isVideoToggled = (bool)video.IsChecked;
-            videoImg.Source = new BitmapImage(new Uri((bool)video.IsChecked ? videoOn : videoOff, UriKind.RelativeOrAbsolute));
+            videoImg.Source = new BitmapImage(new Uri(isVideoToggled ? videoOn : videoOff, UriKind.RelativeOrAbsolute));
             VideoClick(this, isVideoToggled);
         }
 
@@ -110,6 +118,7 @@ namespace Linphone.Controls
         private void pause_Click_1(object sender, RoutedEventArgs e)
         {
             bool isPauseToggled = (bool)pause.IsChecked;
+            pauseImg.Source = new BitmapImage(new Uri(isPauseToggled ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
             PauseClick(this, isPauseToggled);
         }
     }
