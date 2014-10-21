@@ -62,6 +62,14 @@ Platform::String^ Linphone::Core::LinphoneChatMessage::GetFileTransferName()
 	return fileName;
 }
 
+Platform::String^ Linphone::Core::LinphoneChatMessage::GetFileTransferFilePath()
+{
+	TRACE; gApiLock.Lock();
+	Platform::String^ filePath = Linphone::Core::Utils::cctops(linphone_chat_message_get_file_transfer_filepath(this->message));
+	gApiLock.Unlock();
+	return filePath;
+}
+
 Platform::String^ Linphone::Core::LinphoneChatMessage::GetAppData()
 {
 	TRACE; gApiLock.Lock();

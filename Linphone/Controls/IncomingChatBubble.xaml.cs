@@ -112,8 +112,9 @@ namespace Linphone.Controls
         /// <summary>
         /// Displays the image in the bubble
         /// </summary>
-        public void RefreshImage(string filePath)
+        public void RefreshImage()
         {
+            string filePath = ChatMessage.GetAppData();
             ProgressBar.Visibility = Visibility.Collapsed;
             if (filePath != null && filePath.Length > 0)
             {

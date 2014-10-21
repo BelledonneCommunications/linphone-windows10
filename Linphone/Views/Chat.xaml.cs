@@ -256,16 +256,15 @@ namespace Linphone.Views
                     MessagesList.Children.Add(bubble);
                     scrollToBottom();
                 }
-                else if (state == LinphoneChatMessageState.FileTransferDone && (message.GetAppData() == null || message.GetAppData().Length <= 0))
+                else if (state == LinphoneChatMessageState.FileTransferDone && !message.IsOutgoing())
                 {
-                    // Only in case of an image download the appData will be empty
-                    //TODO
                     try
                     {
+                        message.SetAppData(message.GetFileTransferFilePath());
                         ChatBubble bubble = (ChatBubble)MessagesList.Children.Where(b => ((ChatBubble)b).ChatMessage.Equals(message)).Last();
                         if (bubble != null)
                         {
-                            ((IncomingChatBubble)bubble).RefreshImage(null);
+                            ((IncomingChatBubble)bubble).RefreshImage();
                         }
                     }
                     catch { }

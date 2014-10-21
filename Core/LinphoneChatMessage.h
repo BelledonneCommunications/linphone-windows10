@@ -64,6 +64,11 @@ namespace Linphone
 			Platform::String^ GetFileTransferName();
 
 			/// <summary>
+			/// Gets the path to the file to read from or write to during the file transfer.
+			/// </summary>
+			Platform::String^ Linphone::Core::LinphoneChatMessage::GetFileTransferFilePath();
+
+			/// <summary>
 			/// Returns the content of the appData
 			/// </summary>
 			Platform::String^ GetAppData();
