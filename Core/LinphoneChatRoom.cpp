@@ -57,13 +57,15 @@ Linphone::Core::LinphoneChatMessage^ Linphone::Core::LinphoneChatRoom::CreateFil
 	const char *cname = Linphone::Core::Utils::pstoccs(name);
 	const char *cfilepath = Linphone::Core::Utils::pstoccs(filepath);
 	LinphoneContent content;
+	::LinphoneChatMessage *msg;
 	memset(&content, 0, sizeof(content));
 	content.type = (char *)ctype;
 	content.subtype = (char *)csubtype;
 	content.size = size;
 	content.name = (char *)cname;
-	Linphone::Core::LinphoneChatMessage^ chatMessage = (Linphone::Core::LinphoneChatMessage^) Linphone::Core::Utils::CreateLinphoneChatMessage(
-		linphone_chat_room_create_file_transfer_message_from_file(this->room, &content, cfilepath));
+	msg = linphone_chat_room_create_file_transfer_message(this->room, &content);
+	linphone_chat_message_set_file_transfer_filepath(msg, cfilepath);
+	Linphone::Core::LinphoneChatMessage^ chatMessage = (Linphone::Core::LinphoneChatMessage^) Linphone::Core::Utils::CreateLinphoneChatMessage(msg);
 	delete(ctype);
 	delete(csubtype);
 	delete(cname);

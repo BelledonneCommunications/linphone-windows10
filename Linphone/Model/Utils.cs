@@ -106,10 +106,7 @@ namespace Linphone.Model
                         WriteableBitmap bitmap = new WriteableBitmap(image);
                         Extensions.SaveJpeg(bitmap, file, bitmap.PixelWidth, bitmap.PixelHeight, 0, LOCAL_IMAGES_QUALITY);
                         file.Flush();
-                        Int32 unixTimestamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-                        HMACSHA1 hashObj = new HMACSHA1();
-                        byte[] hashArray = hashObj.ComputeHash(file);
-                        string hash = BitConverter.ToString(hashArray).Replace("-", "") + "-" + unixTimestamp;
+                        string hash = GetRandomHash();
                         file.Close();
                         bitmap = null;
                         string newFilePath = Path.Combine(LOCAL_IMAGES_PATH, hash + Path.GetExtension(filePath));
@@ -123,6 +120,38 @@ namespace Linphone.Model
             }
             catch { }
             return null;
+        }
+
+        public static string GetImageRandomFileName()
+        {
+            try
+            {
+                using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    string hash = GetRandomHash();
+                    string filePath = Path.Combine(LOCAL_IMAGES_PATH, hash + ".jpg");
+                    if (!store.DirectoryExists(LOCAL_IMAGES_PATH))
+                    {
+                        store.CreateDirectory(LOCAL_IMAGES_PATH);
+                    }
+                    IsolatedStorageFileStream newFile = store.OpenFile(filePath, FileMode.OpenOrCreate);
+                    string fileName = newFile.Name;
+                    newFile.Close();
+                    return fileName;
+                }
+            }
+            catch { }
+            return null;
+        }
+
+        private static string GetRandomHash()
+        {
+            byte[] bytes = new byte[1024];
+            RNGCryptoServiceProvider cryptProv = new RNGCryptoServiceProvider();
+            cryptProv.GetBytes(bytes);
+            SHA1Managed s = new SHA1Managed();
+            byte[] hashBytes = s.ComputeHash(bytes);
+            return BitConverter.ToString(hashBytes).Replace("-", "");
         }
     }
 }

@@ -76,7 +76,7 @@ namespace Linphone
 			/// <summary>
 			/// Starts the download of the image in the message if exists
 			/// </summary>
-			void StartFileDownload(Linphone::Core::LinphoneChatMessageListener^ listener);
+			void StartFileDownload(Linphone::Core::LinphoneChatMessageListener^ listener, Platform::String^ filepath);
 
 		private:
 			friend class Linphone::Core::Utils;

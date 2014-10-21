@@ -586,7 +586,7 @@ namespace Linphone.Views
         /// </summary>
         public void bubble_DownloadImage(object sender, LinphoneChatMessage message)
         {
-            message.StartFileDownload(this);
+            message.StartFileDownload(this, Utils.GetImageRandomFileName());
         }
     }
 }

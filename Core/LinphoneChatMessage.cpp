@@ -95,11 +95,14 @@ static void status_cb(::LinphoneChatMessage* msg, ::LinphoneChatMessageState sta
 	Linphone::Core::gApiLock.LeaveListener();
 }
 
-void Linphone::Core::LinphoneChatMessage::StartFileDownload(Linphone::Core::LinphoneChatMessageListener^ listener)
+void Linphone::Core::LinphoneChatMessage::StartFileDownload(Linphone::Core::LinphoneChatMessageListener^ listener, Platform::String^ filepath)
 {
 	TRACE; gApiLock.Lock();
 	RefToPtrProxy<LinphoneChatMessageListener^> *listenerPtr = new RefToPtrProxy<LinphoneChatMessageListener^>(listener);
+	const char *cfilepath = Utils::pstoccs(filepath);
+	linphone_chat_message_set_file_transfer_filepath(this->message, cfilepath);
 	linphone_chat_message_start_file_download(this->message, status_cb, listenerPtr);
+	delete(cfilepath);
 	gApiLock.Unlock();
 }
 
