@@ -457,38 +457,7 @@ namespace Linphone.Model
                 lc.ClearProxyConfigs();
                 if ((username != null) && (username.Length > 0) && (domain != null) && (domain.Length > 0))
                 {
-                    if ((proxy != null) && (proxy.Length > 0))
-                    {
-                        // Check if proxy address is correct
-                        LinphoneAddress test = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress(proxy);
-                        if (test == null)
-                        {
-                            proxy = String.Format("sip:{0}", domain);
-                        }
-
-                        if (transport != null)
-                        {
-                            LinphoneAddress temp = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress(proxy);
-                            if (temp != null)
-                            {
-                                temp.SetTransport(TransportToEnum[transport]);
-                                proxy = temp.AsStringUriOnly();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        proxy = String.Format("sip:{0}", domain);
-                        if (transport != null)
-                        {
-                            LinphoneAddress temp = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress(proxy);
-                            if (temp != null)
-                            {
-                                temp.SetTransport(TransportToEnum[transport]);
-                                proxy = temp.AsStringUriOnly();
-                            }
-                        }
-                    }
+                    
 
                     cfg = lc.CreateEmptyProxyConfig();
                     cfg.Edit();
@@ -501,11 +470,20 @@ namespace Linphone.Model
                         cfg.SetIdentity(username, username, domain);
                     }
 
+                    if ((proxy == null) || (proxy.Length <= 0))
+                    {
+                        proxy = "sip:" + domain;
+                    }
                     cfg.SetProxy(proxy);
 
-                    if (outboundProxy)
+                    if (transport != null)
                     {
-                        cfg.SetRoute(proxy);
+                        LinphoneAddress proxyAddr = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress(cfg.GetAddr());
+                        if (proxyAddr != null)
+                        {
+                            proxyAddr.SetTransport(TransportToEnum[transport]);
+                            cfg.SetProxy(proxyAddr.AsStringUriOnly());
+                        }
                     }
                     cfg.SetExpires(28800);
 
