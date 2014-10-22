@@ -90,6 +90,8 @@
                     x:Name="MessagesList" 
                     Orientation="Vertical"
                     VerticalAlignment="Bottom">
+
+                    <controls:TextBoxChatBubble x:Name="MessageBox"/>
                 </StackPanel>
             </ScrollViewer>
             
@@ -110,14 +112,11 @@
                 </StackPanel>
             </Border>
 
-            <StackPanel Orientation="Vertical" Grid.Row="1">
-                <TextBlock
-                        x:Name="RemoteComposing"
-                        Visibility="Collapsed"
-                        Style="{StaticResource PhoneTextSubtleStyle}"/>
-                
-                <controls:TextBoxChatBubble x:Name="MessageBox"/>
-            </StackPanel>
+            <TextBlock
+                x:Name="RemoteComposing"
+                Visibility="Collapsed"
+                Grid.Row="1"
+                Style="{StaticResource PhoneTextSubtleStyle}"/>
         </Grid>
     </Grid>
 

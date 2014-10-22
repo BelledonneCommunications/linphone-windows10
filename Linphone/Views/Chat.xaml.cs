@@ -177,14 +177,14 @@ namespace Linphone.Views
                     IncomingChatBubble bubble = new IncomingChatBubble(message);
                     bubble.MessageDeleted += bubble_MessageDeleted;
                     bubble.DownloadImage += bubble_DownloadImage;
-                    MessagesList.Children.Add(bubble);
+                    MessagesList.Children.Insert(MessagesList.Children.Count - 1, bubble);
                 }
                 else
                 {
                     OutgoingChatBubble bubble = new OutgoingChatBubble(message);
                     bubble.MessageDeleted += bubble_MessageDeleted;
                     bubble.UpdateStatus(message.GetState());
-                    MessagesList.Children.Add(bubble);
+                    MessagesList.Children.Insert(MessagesList.Children.Count - 1, bubble);
                 }
             }
             scrollToBottom();
@@ -252,7 +252,7 @@ namespace Linphone.Views
                     // Create the chat bubble for both text or image messages
                     OutgoingChatBubble bubble = new OutgoingChatBubble(message);
                     bubble.MessageDeleted += bubble_MessageDeleted;
-                    MessagesList.Children.Add(bubble);
+                    MessagesList.Children.Insert(MessagesList.Children.Count - 1, bubble);
                     scrollToBottom();
                 }
                 else if (state == LinphoneChatMessageState.FileTransferDone && !message.IsOutgoing())
@@ -505,7 +505,7 @@ namespace Linphone.Views
                 IncomingChatBubble bubble = new IncomingChatBubble(message);
                 bubble.MessageDeleted += bubble_MessageDeleted;
                 bubble.DownloadImage += bubble_DownloadImage;
-                MessagesList.Children.Add(bubble);
+                MessagesList.Children.Insert(MessagesList.Children.Count - 1, bubble);
 
                 scrollToBottom();
             });

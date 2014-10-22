@@ -60,12 +60,21 @@ namespace Linphone.Controls
             }
         }
 
+        /// <summary>
+        /// Sets and displays the BitmapImage that will be sent we the user clicks on the send button
+        /// </summary>
+        /// <param name="image">the BitmapImage to display</param>
         public void SetImage(BitmapImage image)
         {
             Image.Source = image;
             Image.Visibility = Visibility.Visible;
             Message.Visibility = Visibility.Collapsed;
             Message.Text = "";
+        }
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            Reset();
         }
 
         /// <summary>

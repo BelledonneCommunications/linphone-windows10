@@ -76,7 +76,7 @@
             HorizontalAlignment="Right"/>
         
         <toolkit:ContextMenuService.ContextMenu>
-            <toolkit:ContextMenu>
+            <toolkit:ContextMenu IsZoomEnabled="False">
                 <toolkit:MenuItem x:Name="Delete" Header="{Binding Path=LocalizedResources.ContextMenuDelete, Source={StaticResource LocalizedStrings}}" Click="Delete_Click"/>
                 <toolkit:MenuItem x:Name="Copy" Header="{Binding Path=LocalizedResources.ContextMenuCopy, Source={StaticResource LocalizedStrings}}" Click="Copy_Click"/>
                 <toolkit:MenuItem x:Name="Save" Header="{Binding Path=LocalizedResources.ContextMenuSave, Source={StaticResource LocalizedStrings}}" Click="Save_Click" Visibility="Collapsed"/>
