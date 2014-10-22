@@ -175,10 +175,7 @@ namespace Linphone.Model
             _isIncoming = isIncoming;
             _isMissed = isMissed;
 
-            _startDate = new DateTime();
-            _startDate = _startDate.AddYears(1969); //Timestamp is calculated from 01/01/1970, and DateTime is initialized to 01/01/0001
-            _startDate = _startDate.AddSeconds(startDate);
-            _startDate = _startDate.Add(TimeZoneInfo.Local.GetUtcOffset(_startDate));
+            _startDate = new DateTime(startDate * TimeSpan.TicksPerSecond, DateTimeKind.Utc).AddYears(1969).ToLocalTime();
         }
     }
 }

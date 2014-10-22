@@ -40,7 +40,7 @@ namespace Linphone.Controls
         {
             get
             {
-                DateTime date = new DateTime(ChatMessage.GetTime() * TimeSpan.TicksPerSecond).AddYears(1969);
+                DateTime date = new DateTime(ChatMessage.GetTime() * TimeSpan.TicksPerSecond, DateTimeKind.Utc).AddYears(1969).ToLocalTime();
                 return FormatDate(date);
             }
         }

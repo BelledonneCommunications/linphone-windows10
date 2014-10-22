@@ -65,7 +65,7 @@ namespace Linphone.Model
 
         private string FormatDate(long timestamp)
         {
-            DateTime date = new DateTime(timestamp * TimeSpan.TicksPerSecond).AddYears(1969);
+            DateTime date = new DateTime(timestamp * TimeSpan.TicksPerSecond, DateTimeKind.Utc).AddYears(1969).ToLocalTime();
             DateTime now = DateTime.Now;
             if (now.Year == date.Year && now.Month == date.Month && now.Day == date.Day)
                 return String.Format("{0:HH:mm}", date);

@@ -977,11 +977,15 @@ namespace Linphone.Model
                 }
                 else
                 {
-                    DateTime date = new DateTime();
-                    date = date.AddYears(1969); //Timestamp is calculated from 01/01/1970, and DateTime is initialized to 01/01/0001.
-                    date = date.AddSeconds(message.GetTime());
-                    date = date.Add(TimeZoneInfo.Local.GetUtcOffset(date));
-                    long timestamp = (date.Ticks / TimeSpan.TicksPerSecond);
+                    DateTime date = new DateTime(message.GetTime() * TimeSpan.TicksPerSecond, DateTimeKind.Utc).AddYears(1969).ToLocalTime();
+                    DateTime now = DateTime.Now;
+                    string dateStr;
+                    if (now.Year == date.Year && now.Month == date.Month && now.Day == date.Day)
+                        dateStr = String.Format("{0:HH:mm}", date);
+                    else if (now.Year == date.Year)
+                        dateStr = String.Format("{0:ddd d MMM, HH:mm}", date);
+                    else
+                        dateStr = String.Format("{0:ddd d MMM yyyy, HH:mm}", date);
 
                     //TODO: Temp hack to remove
                     string url = message.GetExternalBodyUrl();
@@ -995,6 +999,7 @@ namespace Linphone.Model
 
                     MessageReceivedNotification = new CustomMessageBox()
                     {
+                        Title = dateStr,
                         Caption = url.Length > 0 ? AppResources.ImageMessageReceived : AppResources.MessageReceived,
                         Message = url.Length > 0 ? "" : message.GetText(),
                         LeftButtonContent = AppResources.Close,
