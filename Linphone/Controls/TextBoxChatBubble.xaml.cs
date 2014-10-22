@@ -14,7 +14,7 @@ namespace Linphone.Controls
     /// <summary>
     /// Custom TextBox to look like a chat bubble.
     /// </summary>
-    public partial class TextBoxChatBubble : UserControl
+    public partial class TextBoxChatBubble : ChatBubble
     {
         /// <summary>
         /// Public accessor to this control text.
@@ -34,7 +34,8 @@ namespace Linphone.Controls
         /// <summary>
         /// Public constructor.
         /// </summary>
-        public TextBoxChatBubble()
+        public TextBoxChatBubble() 
+            : base(null)
         {
             InitializeComponent();
         }

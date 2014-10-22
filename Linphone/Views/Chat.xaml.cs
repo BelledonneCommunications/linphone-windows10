@@ -260,7 +260,7 @@ namespace Linphone.Views
                     try
                     {
                         message.SetAppData(message.GetFileTransferFilePath());
-                        ChatBubble bubble = (ChatBubble)MessagesList.Children.Where(b => ((ChatBubble)b).ChatMessage.Equals(message)).Last();
+                        ChatBubble bubble = (ChatBubble)MessagesList.Children.Where(b => message.Equals(((ChatBubble)b).ChatMessage)).Last();
                         if (bubble != null)
                         {
                             ((IncomingChatBubble)bubble).RefreshImage();
@@ -273,7 +273,7 @@ namespace Linphone.Views
                     // Update the outgoing status of the message
                     try
                     {
-                        ChatBubble bubble = (ChatBubble)MessagesList.Children.Where(b => ((ChatBubble)b).ChatMessage.Equals(message)).Last();
+                        ChatBubble bubble = (ChatBubble)MessagesList.Children.Where(b => message.Equals(((ChatBubble)b).ChatMessage)).Last();
                         if (bubble != null)
                         {
                             ((OutgoingChatBubble)bubble).UpdateStatus(state);
