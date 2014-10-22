@@ -1641,7 +1641,6 @@ void message_received(LinphoneCore *lc, LinphoneChatRoom* chat_room, LinphoneCha
 		Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneChatMessage^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneChatMessage^> *>(linphone_chat_message_get_user_data(message));
 		Linphone::Core::LinphoneChatMessage^ lMessage = (proxy) ? proxy->Ref() : nullptr;
 		if (lMessage == nullptr) {
-			message = linphone_chat_message_ref(message);
 			lMessage = (Linphone::Core::LinphoneChatMessage^)Linphone::Core::Utils::CreateLinphoneChatMessage(message);
 		}
 

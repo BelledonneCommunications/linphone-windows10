@@ -117,6 +117,7 @@ void Linphone::Core::LinphoneChatMessage::StartFileDownload(Linphone::Core::Linp
 Linphone::Core::LinphoneChatMessage::LinphoneChatMessage(::LinphoneChatMessage *cm) :
 	message(cm)
 {
+	message = linphone_chat_message_ref(message);
 	RefToPtrProxy<LinphoneChatMessage^> *chat_message = new RefToPtrProxy<LinphoneChatMessage^>(this);
 	linphone_chat_message_set_user_data(this->message, chat_message);
 }
