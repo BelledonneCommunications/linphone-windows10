@@ -114,16 +114,7 @@ namespace Linphone.Views
                     sipAddress = sipAddress.Replace("sip:", "");
                 }
 
-                string displayedSipAddress = sipAddress;
-                if (displayedSipAddress.Contains("@"))
-                {
-                    displayedSipAddress = displayedSipAddress.Split( new string[] { "@" }, StringSplitOptions.RemoveEmptyEntries)[0];
-                }
-
-                ContactName.Text = displayedSipAddress;
-                cm.FindContact(sipAddress);
-
-                chatRoom = LinphoneManager.Instance.LinphoneCore.GetOrCreateChatRoom(sipAddress);
+                CreateChatRoom(sipAddress);
                 UpdateComposingMessage();
 
                 if (e.NavigationMode != NavigationMode.Back)
@@ -284,9 +275,8 @@ namespace Linphone.Views
             });
         }
 
-        private void CreateChatRoom()
+        private void CreateChatRoom(string sipAddress)
         {
-            sipAddress = NewChatSipAddress.Text;
             if (!sipAddress.Contains("@"))
             {
                 if (LinphoneManager.Instance.LinphoneCore.GetProxyConfigList().Count > 0)
@@ -301,6 +291,7 @@ namespace Linphone.Views
                 }
             }
 
+            this.sipAddress = sipAddress;
             ContactManager.Instance.FindContact(sipAddress);
             string displayedSipAddress = sipAddress;
             if (displayedSipAddress.Contains("@"))
@@ -314,10 +305,6 @@ namespace Linphone.Views
             try
             {
                 chatRoom = LinphoneManager.Instance.LinphoneCore.GetOrCreateChatRoom(sipAddress);
-                if (chatRoom.GetHistorySize() > 0)
-                {
-                    DisplayPastMessages(chatRoom.GetHistory());
-                }
             }
             catch
             {
@@ -339,7 +326,7 @@ namespace Linphone.Views
             {
                 if (chatRoom == null) //This code will be executed only in case of new conversation
                 {
-                    CreateChatRoom();
+                    CreateChatRoom(NewChatSipAddress.Text);
                 }
 
                 if (chatRoom != null)
@@ -375,7 +362,7 @@ namespace Linphone.Views
             {
                 if (chatRoom == null) //This code will be executed only in case of new conversation
                 {
-                    CreateChatRoom();
+                    CreateChatRoom(NewChatSipAddress.Text);
                 }
                 if (chatRoom != null)
                 {
