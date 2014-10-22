@@ -256,6 +256,7 @@ namespace Linphone.Views
                         {
                             ((IncomingChatBubble)bubble).RefreshImage();
                         }
+                        EnableDownloadButtons(true);
                     }
                     catch { }
                 }
@@ -562,7 +563,19 @@ namespace Linphone.Views
         /// </summary>
         public void bubble_DownloadImage(object sender, LinphoneChatMessage message)
         {
+            EnableDownloadButtons(false);
             message.StartFileDownload(this, Utils.GetImageRandomFileName());
+        }
+
+        private void EnableDownloadButtons(bool enable)
+        {
+            foreach (ChatBubble bubble in MessagesList.Children)
+            {
+                if (bubble.GetType() == typeof(IncomingChatBubble))
+                {
+                    (bubble as IncomingChatBubble).Download.IsEnabled = enable;
+                }
+            }
         }
     }
 }
