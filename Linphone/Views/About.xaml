@@ -28,7 +28,7 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <ScrollViewer x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                 <Rectangle Fill="{StaticResource PhoneForegroundBrush}" Width="80" Height="80">
                     <Rectangle.OpacityMask>
@@ -49,7 +49,7 @@
                     FontSize="25"
                     TextAlignment="Center" />
             </StackPanel>
-        </Grid>
+        </ScrollViewer>
     </Grid>
 
 </linphone:BasePage>

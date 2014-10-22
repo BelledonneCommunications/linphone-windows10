@@ -76,7 +76,10 @@ namespace Linphone.Resources {
         ///Instructions
         ///http://www.linphone.org/user-guide.html
         ///
-        ///©2013 Belledonne Communications.
+        ///©2013 Belledonne Communications
+        ///
+        ///Icons under licence cc-by-sa from https://github.com/google/material-design-icons 
+        ///and cc-by-nd from https://github.com/Templarian/WindowsIcons.
         /// </summary>
         public static string AboutText {
             get {
