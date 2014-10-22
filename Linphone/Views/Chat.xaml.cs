@@ -564,6 +564,7 @@ namespace Linphone.Views
         public void bubble_DownloadImage(object sender, LinphoneChatMessage message)
         {
             EnableDownloadButtons(false);
+            this.Focus(); // Focus the page in order to remove focus from the text box and hide the soft keyboard
             message.StartFileDownload(this, Utils.GetImageRandomFileName());
         }
 
