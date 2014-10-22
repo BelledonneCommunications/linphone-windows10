@@ -134,11 +134,11 @@ namespace Linphone.Views
             }
             else if (e.NavigationMode != NavigationMode.Back || sipAddress == null || sipAddress.Length == 0)
             {
-                DisableAppBarSendButtons();
                 ContactName.Visibility = Visibility.Collapsed; 
                 NewChat.Visibility = Visibility.Visible;
                 NewChatSipAddress.Focus();
             }
+            RefreshSendMessageButtonEnabledState();
 
             scrollToBottom();
         }
@@ -147,13 +147,12 @@ namespace Linphone.Views
         {
             if (chatRoom != null && text.Length > 0)
                 chatRoom.Compose();
-            EnableAppBarSendMessageButton(text != null && text.Length > 0 && ((sipAddress != null && sipAddress.Length > 0) || (NewChatSipAddress.Text != null && NewChatSipAddress.Text.Length > 0)));
+            RefreshSendMessageButtonEnabledState();
         }
 
         private void NewChatSipAddress_TextChanged(object sender, TextChangedEventArgs e)
         {
-            EnableAppBarSendMessageButton(MessageBox.Text != null && MessageBox.Text.Length > 0 && NewChatSipAddress.Text != null && NewChatSipAddress.Text.Length > 0);
-            EnableAppBarSendImageMessageButton(NewChatSipAddress.Text != null && NewChatSipAddress.Text.Length > 0);
+            RefreshSendMessageButtonEnabledState();
         }
 
         /// <summary>
@@ -303,7 +302,12 @@ namespace Linphone.Views
             }
 
             ContactManager.Instance.FindContact(sipAddress);
-            ContactName.Text = sipAddress;
+            string displayedSipAddress = sipAddress;
+            if (displayedSipAddress.Contains("@"))
+            {
+                displayedSipAddress = displayedSipAddress.Split(new string[] { "@" }, StringSplitOptions.RemoveEmptyEntries)[0];
+            }
+            ContactName.Text = displayedSipAddress;
             ContactName.Visibility = Visibility.Visible;
             NewChat.Visibility = Visibility.Collapsed;
 
@@ -428,7 +432,7 @@ namespace Linphone.Views
                 MessageBox.SetImage(image);
                 MessageBox.ImageName = fileName;
                 MessageBox.ImageLocalPath = filePath;
-                EnableAppBarSendMessageButton(true);
+                RefreshSendMessageButtonEnabledState();
             }
         }
 
@@ -447,33 +451,19 @@ namespace Linphone.Views
             }
         }
 
-        private void DisableAppBarSendButtons()
-        {
-            if (ApplicationBar.Buttons.Count == 2)
-            {
-                foreach (ApplicationBarIconButton button in ApplicationBar.Buttons)
-                {
-                    button.IsEnabled = false;
-                }
-            }
-        }
-
-        private void EnableAppBarSendMessageButton(bool enable)
+        private void RefreshSendMessageButtonEnabledState()
         {
             ApplicationBarIconButton button = (ApplicationBarIconButton)ApplicationBar.Buttons[0];
             if (button.Text.Equals(AppResources.SendMessage))
             {
-                button.IsEnabled = enable;
+                button.IsEnabled = ShouldSendMessageButtonBeEnabled();
             }
         }
 
-        private void EnableAppBarSendImageMessageButton(bool enable)
+        private bool ShouldSendMessageButtonBeEnabled()
         {
-            ApplicationBarIconButton button = (ApplicationBarIconButton)ApplicationBar.Buttons[1];
-            if (button.Text.Equals(AppResources.SendPicture))
-            {
-                button.IsEnabled = enable;
-            }
+            return ((MessageBox.Text != null && MessageBox.Text.Length > 0) || (MessageBox.ImageName != null && MessageBox.ImageName.Length > 0 && MessageBox.ImageLocalPath != null && MessageBox.ImageLocalPath.Length > 0))
+                && ((sipAddress != null && sipAddress.Length > 0) || (NewChatSipAddress.Text != null && NewChatSipAddress.Text.Length > 0));
         }
 
         private void AddSendButtonsToAppBar()
@@ -484,7 +474,7 @@ namespace Linphone.Views
             appBarSend.Text = AppResources.SendMessage;
             ApplicationBar.Buttons.Add(appBarSend);
             appBarSend.Click += send_Click_1;
-            appBarSend.IsEnabled = ((MessageBox.Text != null && MessageBox.Text.Length > 0) || (MessageBox.ImageName != null && MessageBox.ImageName.Length > 0 && MessageBox.ImageLocalPath != null && MessageBox.ImageLocalPath.Length > 0));
+            appBarSend.IsEnabled = ShouldSendMessageButtonBeEnabled();
 
             ApplicationBarIconButton appBarSendImage = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.paperclip.png", UriKind.Relative));
             appBarSendImage.Text = AppResources.SendPicture;
