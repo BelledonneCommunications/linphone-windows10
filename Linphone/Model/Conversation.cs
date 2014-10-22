@@ -29,7 +29,12 @@ namespace Linphone.Model
         {
             get
             {
-                return Messages.Last().GetText();
+                string lastText = Messages.Last().GetText();
+                if (lastText == null || lastText.Length <= 0)
+                {
+                    return Resources.AppResources.ImageMessageReceived;
+                }
+                return lastText;
             }
         }
 
@@ -41,6 +46,14 @@ namespace Linphone.Model
             get
             {
                 return FormatDate(Messages.Last().GetTime());
+            }
+        }
+
+        public bool IsLastMessageUnread
+        {
+            get
+            {
+                return !Messages.Last().IsRead();
             }
         }
 

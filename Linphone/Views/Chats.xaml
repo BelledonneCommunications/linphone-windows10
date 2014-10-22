@@ -17,6 +17,7 @@
     shell:SystemTray.IsVisible="True">
 
     <linphone:BasePage.Resources>
+        <model:MissedToBrushConverter x:Key="MissedToBrushConverter"/>
         <model:SipUriToUsernameConverter x:Key="SipUriToUsernameConverter"/>
     </linphone:BasePage.Resources>
     
@@ -34,30 +35,30 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,30,12,0">
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
            <toolkit:LongListMultiSelector x:Name="Conversations" SelectionChanged="conversations_SelectionChanged_1">
                 <toolkit:LongListMultiSelector.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Margin="0,-16,0,40" 
+                        <StackPanel
+                            Margin="0,0,0,10"
                             Tag="{Binding BindsDirectlyToSource=True}" 
                             Tap="conversation_Click_1">
                             <TextBlock Text="{Binding DisplayedName, Converter={StaticResource SipUriToUsernameConverter}}"
-                                Margin="0,0,0,-4"
                                 HorizontalAlignment="Left" 
-                                FontSize="{StaticResource PhoneFontSizeExtraLarge}" 
+                                FontSize="{StaticResource PhoneFontSizeLarge}" 
                                 FontFamily="{StaticResource PhoneFontFamilySemiLight}"/>
                             <TextBlock Text="{Binding LatestMessage}" 
-                                Margin="0,0,0,-4"
                                 HorizontalAlignment="Left"
-                                Foreground="{StaticResource PhoneSubtleBrush}"
-                                FontSize="{StaticResource PhoneFontSizeNormal}"/>
+                                TextWrapping="Wrap"
+                                Foreground="{Binding IsLastMessageUnread, Converter={StaticResource MissedToBrushConverter}}"
+                                FontSize="{StaticResource PhoneFontSizeSmall}"/>
                         </StackPanel>
                     </DataTemplate>
                 </toolkit:LongListMultiSelector.ItemTemplate>
                 <toolkit:LongListMultiSelector.ItemInfoTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding LatestMessageDate}" 
-                            Margin="5,0,5,-4"
+                            Margin="0,20,0,0"
                             FontSize="{StaticResource PhoneFontSizeSmall}"/>
                     </DataTemplate>
                 </toolkit:LongListMultiSelector.ItemInfoTemplate>

@@ -59,6 +59,11 @@ namespace Linphone
 			Platform::Boolean IsOutgoing();
 
 			/// <summary>
+			/// Returns true if the message has been read, otherwise return false.
+			/// </summary>
+			Platform::Boolean IsRead();
+
+			/// <summary>
 			/// Returns the name of the file used in the file transfer if it exists
 			/// </summary>
 			Platform::String^ GetFileTransferName();

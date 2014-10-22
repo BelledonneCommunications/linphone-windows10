@@ -49,6 +49,14 @@ Platform::Boolean Linphone::Core::LinphoneChatMessage::IsOutgoing()
 	return is_outgoing;
 }
 
+Platform::Boolean Linphone::Core::LinphoneChatMessage::IsRead()
+{
+	TRACE; gApiLock.Lock();
+	bool_t is_read = linphone_chat_message_is_read(this->message);
+	gApiLock.Unlock();
+	return is_read;
+}
+
 Platform::String^ Linphone::Core::LinphoneChatMessage::GetFileTransferName() 
 {
 	TRACE; gApiLock.Lock();
