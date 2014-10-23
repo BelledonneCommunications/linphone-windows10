@@ -46,6 +46,7 @@ namespace Linphone.Controls
         public void Reset()
         {
             Message.Text = "";
+            Text = null;
             ImageName = null;
             ImageLocalPath = null;
             Message.Visibility = Visibility.Visible;
@@ -75,7 +76,10 @@ namespace Linphone.Controls
 
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
+            string previousText = Text;
             Reset();
+            Text = previousText;
+            Message.Text = Text;
         }
 
         /// <summary>
