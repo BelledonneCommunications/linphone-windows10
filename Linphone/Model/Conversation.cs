@@ -83,7 +83,7 @@ namespace Linphone.Model
             if (now.Year == date.Year && now.Month == date.Month && now.Day == date.Day)
                 return String.Format("{0:HH:mm}", date);
             else if (now.Year == date.Year && now.DayOfYear - date.DayOfYear <= 6)
-                return String.Format("{0:dddd}", date);
+                return String.Format("{0:ddd}", date);
             else if (now.Year == date.Year)
                 return String.Format("{0:MM/dd}", date);
             else
