@@ -108,7 +108,7 @@ namespace Linphone.Agents
         /// <summary>
         /// Callback for LinphoneCoreListener
         /// </summary>
-        public void CallState(LinphoneCall call, LinphoneCallState state)
+        public void CallState(LinphoneCall call, LinphoneCallState state, string message)
         {
         }
 

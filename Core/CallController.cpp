@@ -196,15 +196,15 @@ void CallController::CustomIncomingCallView::set(Platform::Boolean value)
 	gApiLock.Unlock();
 }
 
-DeclineReason CallController::DeclineReason::get()
+Reason CallController::DeclineReason::get()
 {
 	TRACE; gApiLock.Lock();
-	Linphone::Core::DeclineReason value = this->declineReason;
+	Linphone::Core::Reason value = this->declineReason;
 	gApiLock.Unlock();
 	return value;
 }
 
-void CallController::DeclineReason::set(Linphone::Core::DeclineReason value)
+void CallController::DeclineReason::set(Linphone::Core::Reason value)
 {
 	TRACE; gApiLock.Lock();
 	this->declineReason = value;
@@ -217,7 +217,7 @@ CallController::CallController() :
 		defaultContactImageUri(nullptr),
 		linphoneImageUri(nullptr),
 		ringtoneUri(nullptr),
-		declineReason(Linphone::Core::DeclineReason::LinphoneReasonDeclined),
+		declineReason(Linphone::Core::Reason::LinphoneReasonDeclined),
 		callCoordinator(VoipCallCoordinator::GetDefault())
 {
 	// URIs required for interactions with the VoipCallCoordinator

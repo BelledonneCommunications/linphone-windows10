@@ -233,6 +233,11 @@ Windows::Phone::Networking::Voip::VoipPhoneCall^ Linphone::Core::LinphoneCall::C
 	return this->callContext;
 }
 
+Linphone::Core::Reason Linphone::Core::LinphoneCall::Reason::get()
+{
+	return (Linphone::Core::Reason)linphone_call_get_reason(this->call);
+}
+
 Linphone::Core::LinphoneCall::LinphoneCall(::LinphoneCall *call) :
 	call(call)
 {

@@ -11,7 +11,9 @@ using Microsoft.Phone.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
+using System.Resources;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
@@ -48,9 +50,12 @@ namespace Linphone.Model
         #endregion
 
         #region Class properties
+        private ResourceManager ResourceManager;
+
         private LinphoneManager()
         {
             LastKnownState = Linphone.Core.RegistrationState.RegistrationNone;
+            ResourceManager = new ResourceManager("Linphone.Resources.AppResources", typeof(AppResources).Assembly);
         }
 
         private static LinphoneManager singleton;
@@ -771,10 +776,25 @@ namespace Linphone.Model
         public delegate void CallStateChangedEventHandler(LinphoneCall call, LinphoneCallState state);
         public event CallStateChangedEventHandler CallStateChanged;
 
+        private void ShowError(string message)
+        {
+            if (CallErrorNotification != null)
+            {
+                CallErrorNotification.Dismiss();
+            }
+            CallErrorNotification = new CustomMessageBox()
+            {
+                Caption = "Call error",
+                Message = message,
+                RightButtonContent = AppResources.Close
+            };
+            CallErrorNotification.Show();
+        }
+
         /// <summary>
         /// Callback for LinphoneCoreListener
         /// </summary>
-        public void CallState(LinphoneCall call, LinphoneCallState state)
+        public void CallState(LinphoneCall call, LinphoneCallState state, string message)
         {
             if (state == LinphoneCallState.OutgoingProgress)
             {
@@ -787,7 +807,6 @@ namespace Linphone.Model
                     {
                         string sipAddress = call.GetRemoteAddress().AsStringUriOnly();
                         CallListener.NewCallStarted(sipAddress);
-
                     }
                 });
             }
@@ -822,9 +841,37 @@ namespace Linphone.Model
             {
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
-                    Logger.Msg("[LinphoneManager] Call ended\r\n");
+                    Logger.Msg(String.Format("[LinphoneManager] Call ended: {0}\r\n", message));
                     if (CallListener != null)
                         CallListener.CallEnded(call);
+                    string text;
+                    switch (call.Reason)
+                    {
+                        case Reason.LinphoneReasonNone:
+                            break;
+                        case Reason.LinphoneReasonDeclined:
+                            text = ResourceManager.GetString("CallErrorDeclined", CultureInfo.CurrentCulture);
+                            ShowError(text.Replace("#address#", call.GetRemoteAddress().GetUserName()));
+                            break;
+                        case Reason.LinphoneReasonNotFound:
+                            text = ResourceManager.GetString("CallErrorNotFound", CultureInfo.CurrentCulture);
+                            ShowError(text.Replace("#address#", call.GetRemoteAddress().GetUserName()));
+                            break;
+                        case Reason.LinphoneReasonNotAnswered:
+                            text = ResourceManager.GetString("CallErrorNotAnswered", CultureInfo.CurrentCulture);
+                            ShowError(text.Replace("#address#", call.GetRemoteAddress().GetUserName()));
+                            break;
+                        case Reason.LinphoneReasonBusy:
+                            text = ResourceManager.GetString("CallErrorBusy", CultureInfo.CurrentCulture);
+                            ShowError(text.Replace("#address#", call.GetRemoteAddress().GetUserName()));
+                            break;
+                        case Reason.LinphoneReasonNotAcceptable:
+                            ShowError(ResourceManager.GetString("CallErrorNotAcceptable", CultureInfo.CurrentCulture));
+                            break;
+                        default:
+                            ShowError(ResourceManager.GetString("CallErrorUnknown", CultureInfo.CurrentCulture));
+                            break;
+                    }
                 });
             }
             else if (state == LinphoneCallState.Paused || state == LinphoneCallState.PausedByRemote)
@@ -951,6 +998,11 @@ namespace Linphone.Model
         /// Custom message box to display incoming messages when not in chat view
         /// </summary>
         public CustomMessageBox MessageReceivedNotification { get; set; }
+
+        /// <summary>
+        /// Custom message box to display call errors.
+        /// </summary>
+        public CustomMessageBox CallErrorNotification { get; set; }
 
         /// <summary>
         /// Callback for LinphoneCoreListener

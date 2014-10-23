@@ -241,6 +241,60 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;#address#&apos; is busy.
+        /// </summary>
+        public static string CallErrorBusy {
+            get {
+                return ResourceManager.GetString("CallErrorBusy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;#address#&apos; declined the call.
+        /// </summary>
+        public static string CallErrorDeclined {
+            get {
+                return ResourceManager.GetString("CallErrorDeclined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incompatible codecs or encryption mechanisms.
+        /// </summary>
+        public static string CallErrorNotAcceptable {
+            get {
+                return ResourceManager.GetString("CallErrorNotAcceptable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;#address#&apos; did not answer the call.
+        /// </summary>
+        public static string CallErrorNotAnswered {
+            get {
+                return ResourceManager.GetString("CallErrorNotAnswered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;#address#&apos; not found.
+        /// </summary>
+        public static string CallErrorNotFound {
+            get {
+                return ResourceManager.GetString("CallErrorNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown error.
+        /// </summary>
+        public static string CallErrorUnknown {
+            get {
+                return ResourceManager.GetString("CallErrorUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Call.
         /// </summary>
         public static string CallMenu {

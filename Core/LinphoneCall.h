@@ -92,7 +92,7 @@ namespace Linphone
 			/// </summary>
 			/// <returns>The current duration of the call in seconds</returns>
 			int GetDuration();
-			
+
 			/// <summary>
 			/// Obtain real time quality rating of the call.
 			/// Based on local RTP statistics and RTCP feedback, a quality rating is computed and updated during all the duration of the call.
@@ -197,6 +197,11 @@ namespace Linphone
 				Windows::Phone::Networking::Voip::VoipPhoneCall^ get();
 				void set(Windows::Phone::Networking::Voip::VoipPhoneCall^ cc);
             }
+
+			property Linphone::Core::Reason Reason
+			{
+				Linphone::Core::Reason get();
+			}
 
 		private:
 			friend class Linphone::Core::Utils;

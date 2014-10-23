@@ -55,10 +55,10 @@ namespace Linphone
 			/// <summary>
 			/// Changes the reason used when declining an incoming call.
 			/// </summary>
-			property Linphone::Core::DeclineReason DeclineReason
+			property Linphone::Core::Reason DeclineReason
             {
-                Linphone::Core::DeclineReason get();
-				void set(Linphone::Core::DeclineReason cb);
+                Linphone::Core::Reason get();
+				void set(Linphone::Core::Reason cb);
             }
 
 			/// <summary>
@@ -86,7 +86,7 @@ namespace Linphone
 			
             Platform::String^ callInProgressPageUri; 
 
-			Linphone::Core::DeclineReason declineReason;
+			Linphone::Core::Reason declineReason;
 			
             // The URI to the contact image, jpg or png, 1mb max ! 
             Windows::Foundation::Uri^ defaultContactImageUri; 

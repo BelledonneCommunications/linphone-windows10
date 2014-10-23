@@ -159,20 +159,29 @@ namespace Linphone
 			FileTransferDone = 5
 		};
 
-		public enum class DeclineReason : int
+		public enum class Reason : int
 		{
 			LinphoneReasonNone = 0,
 			LinphoneReasonNoResponse = 1, /**<No response received from remote*/
-			LinphoneReasonBadCredentials = 2, /**<Authentication failed due to bad*/
+			LinphoneReasonForbidden = 2, /**<Authentication failed due to bad credentials or resource forbidden*/
 			LinphoneReasonDeclined = 3, /**<The call has been declined*/
-			LinphoneReasonNotFound = 4, /**<Destination of the calls was not found.*/
-			LinphoneReasonNotAnswered = 5, /**<The call was not answered in time*/
+			LinphoneReasonNotFound = 4, /**<Destination of the call was not found.*/
+			LinphoneReasonNotAnswered = 5, /**<The call was not answered in time (request timeout)*/
 			LinphoneReasonBusy = 6, /**<Phone line was busy */
-			LinphoneReasonMedia = 7, /**<Incompatible media */
+			LinphoneReasonUnsupportedContent = 7, /**<Unsupported content */
 			LinphoneReasonIOError = 8, /**<Transport error: connection failures, disconnections etc...*/
 			LinphoneReasonDoNotDisturb = 9, /**<Do not disturb reason*/
 			LinphoneReasonUnauthorized = 10, /**<Operation is unauthorized because missing credential*/
-			LinphoneReasonNotAcceptable = 11 /**<Operation like call update rejected by peer*/
+			LinphoneReasonNotAcceptable = 11, /**<Operation like call update rejected by peer*/
+			LinphoneReasonNoMatch = 12, /**<Operation could not be executed by server or remote client because it didn't have any context for it*/
+			LinphoneReasonMovedPermanently = 13, /**<Resource moved permanently*/
+			LinphoneReasonGone = 14, /**<Resource no longer exists*/
+			LinphoneReasonTemporarilyUnavailable = 15, /**<Temporarily unavailable*/
+			LinphoneReasonAddressIncomplete = 16, /**<Address incomplete*/
+			LinphoneReasonNotImplemented = 17, /**<Not implemented*/
+			LinphoneReasonBadGateway = 18, /**<Bad gateway*/
+			LinphoneReasonServerTimeout = 19, /**<Server timeout*/
+			LinphoneReasonUnknown = 20 /**Unknown reason*/
 		};
 
 		public enum class LinphoneTransport : int

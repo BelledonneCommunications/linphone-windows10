@@ -297,7 +297,7 @@ namespace Linphone
 			/// <summary>
 			/// Declines an incoming call with a specific reason.
 			/// </summary>
-			void DeclineCall(LinphoneCall^ call, DeclineReason reason);
+			void DeclineCall(LinphoneCall^ call, Reason reason);
 
 			/// <summary>
 			/// Gets the current active call.

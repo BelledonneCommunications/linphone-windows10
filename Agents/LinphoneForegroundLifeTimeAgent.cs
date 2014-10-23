@@ -26,7 +26,7 @@ namespace Linphone.Agents
             // Changes the decline reason if needed.
             if (Customs.DeclineCallWithBusyReason)
             {
-                Globals.Instance.CallController.DeclineReason = DeclineReason.LinphoneReasonBusy;
+                Globals.Instance.CallController.DeclineReason = Reason.LinphoneReasonBusy;
             }
         }
 

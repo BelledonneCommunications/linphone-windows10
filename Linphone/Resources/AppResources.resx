@@ -628,4 +628,22 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   <data name="ResetLogs" xml:space="preserve">
     <value>Reset logs</value>
   </data>
+  <data name="CallErrorNotFound" xml:space="preserve">
+    <value>'#address#' not found</value>
+  </data>
+  <data name="CallErrorDeclined" xml:space="preserve">
+    <value>'#address#' declined the call</value>
+  </data>
+  <data name="CallErrorNotAnswered" xml:space="preserve">
+    <value>'#address#' did not answer the call</value>
+  </data>
+  <data name="CallErrorBusy" xml:space="preserve">
+    <value>'#address#' is busy</value>
+  </data>
+  <data name="CallErrorUnknown" xml:space="preserve">
+    <value>Unknown error</value>
+  </data>
+  <data name="CallErrorNotAcceptable" xml:space="preserve">
+    <value>Incompatible codecs or encryption mechanisms</value>
+  </data>
 </root>

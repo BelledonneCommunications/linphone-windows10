@@ -362,7 +362,7 @@ void Linphone::Core::LinphoneCore::TerminateCall(Linphone::Core::LinphoneCall^ c
 	gApiLock.Unlock();
 }
 
-void Linphone::Core::LinphoneCore::DeclineCall(Linphone::Core::LinphoneCall^ call, DeclineReason reason)
+void Linphone::Core::LinphoneCore::DeclineCall(Linphone::Core::LinphoneCall^ call, Linphone::Core::Reason reason)
 {
 	TRACE; gApiLock.Lock();
 	linphone_core_decline_call(this->lc, call->call, (LinphoneReason)reason);
@@ -1545,7 +1545,7 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 	
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr) {
-		listener->CallState(lCall, state);
+		listener->CallState(lCall, state, Linphone::Core::Utils::cctops(msg));
 	}
 	Linphone::Core::gApiLock.LeaveListener();
 }

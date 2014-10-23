@@ -37,7 +37,7 @@ namespace Linphone
 			/// </summary>
 			/// <param name="call">The call whose state has changed</param>
 			/// <param name="state">The new state of the call</param>
-			void CallState(LinphoneCall^ call, LinphoneCallState state);
+			void CallState(LinphoneCall^ call, LinphoneCallState state, Platform::String^ message);
 
 			/// <summary>
 			/// Callback method called when the state of the registration of a proxy config has changed.
