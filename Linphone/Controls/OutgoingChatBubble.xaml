@@ -12,9 +12,9 @@
     d:DesignHeight="100" d:DesignWidth="420">
 
     <UserControl.Resources>
-        <Style TargetType="TextBlock" x:Key="MessageStyle">
+        <Style TargetType="RichTextBox" x:Key="MessageStyle">
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Margin" Value="0,5,5,5"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeSmall}"/>
         </Style>
@@ -38,12 +38,12 @@
             Fill="{StaticResource PhoneAccentBrush}" 
             Grid.RowSpan="2"/>
 
-        <TextBlock 
+        <RichTextBox 
             Grid.Row="0" 
             x:Name="Message" 
+            IsReadOnly="True"
             Style="{StaticResource MessageStyle}"
-            TextAlignment="Left"
-            Padding="5,0,0,0"/>
+            TextAlignment="Left"/>
 
         <Image
             Grid.Row="0" 
@@ -62,7 +62,7 @@
                 Height="25"
                 Stretch="Uniform"/>
             <TextBlock 
-                x:Name="Timestamp" 
+                x:Name="Timestamp"
                 Style="{StaticResource TimestampStyle}"
                 TextAlignment="Right"/>
         </StackPanel>

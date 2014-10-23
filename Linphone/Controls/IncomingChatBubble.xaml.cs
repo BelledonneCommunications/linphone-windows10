@@ -56,7 +56,7 @@ namespace Linphone.Controls
             {
                 Message.Visibility = Visibility.Visible;
                 Image.Visibility = Visibility.Collapsed;
-                Message.Text = message.GetText();
+                Message.Blocks.Add(TextWithLinks);
             }
         }
 
@@ -70,7 +70,7 @@ namespace Linphone.Controls
 
         private void Copy_Click(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetText(Message.Text);
+            Clipboard.SetText(ChatMessage.GetText());
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)

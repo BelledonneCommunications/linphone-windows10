@@ -8,6 +8,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Linphone.Core;
+using System.Windows.Documents;
 
 namespace Linphone.Controls
 {
@@ -34,6 +35,17 @@ namespace Linphone.Controls
         }
 
         /// <summary>
+        /// Returns a formatted text with clickable links if there are any
+        /// </summary>
+        protected Paragraph TextWithLinks
+        {
+            get
+            {
+                return FormatText();
+            }
+        }
+
+        /// <summary>
         /// Human readable timestamp
         /// </summary>
         public string HumanFriendlyTimeStamp
@@ -52,6 +64,40 @@ namespace Linphone.Controls
         {
             InitializeComponent();
             ChatMessage = message;
+        }
+
+        private Paragraph FormatText()
+        {
+            Paragraph paragraph = new Paragraph();
+            if (ChatMessage != null)
+            {
+                string text = ChatMessage.GetText();
+                if (text.Contains("http://") || text.Contains("https://"))
+                {
+                    string[] split = text.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (string word in split)
+                    {
+                        if (word.StartsWith("http://") || word.StartsWith("https://"))
+                        {
+                            Hyperlink link = new Hyperlink();
+                            link.NavigateUri = new Uri(word);
+                            link.Inlines.Add(word);
+                            link.TargetName = "_blank";
+                            paragraph.Inlines.Add(link);
+                        }
+                        else
+                        {
+                            paragraph.Inlines.Add(word);
+                        }
+                        paragraph.Inlines.Add(" ");
+                    }
+                }
+                else
+                {
+                    paragraph.Inlines.Add(text);
+                }
+            }
+            return paragraph;
         }
 
         private string FormatDate(DateTime date)
