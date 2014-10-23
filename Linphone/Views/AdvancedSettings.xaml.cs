@@ -73,6 +73,8 @@ namespace Linphone.Views
             TunnelPanel.Visibility = LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable() && Customs.IsTunnelEnabled ? Visibility.Visible : Visibility.Collapsed; //Hidden properties for now
 
             Debug.IsChecked = _settings.DebugEnabled;
+            SendLogs.IsEnabled = _settings.DebugEnabled;
+            ResetLogs.IsEnabled = _settings.DebugEnabled;
         }
 
         private void Save()
@@ -110,7 +112,6 @@ namespace Linphone.Views
             LinphoneManager.Instance.InitLinphoneCore();
 
             ProgressPopup.Visibility = Visibility.Collapsed;
-            SendLogs.IsEnabled = true;
         }
 
         /// <summary>
@@ -162,11 +163,20 @@ namespace Linphone.Views
         private void Debug_Checked(object sender, RoutedEventArgs e)
         {
             _settings.LogLevel = OutputTraceLevel.Message;
+            SendLogs.IsEnabled = true;
+            ResetLogs.IsEnabled = true;
         }
 
         private void Debug_Unchecked(object sender, RoutedEventArgs e)
         {
             _settings.LogLevel = OutputTraceLevel.None;
+            SendLogs.IsEnabled = false;
+            ResetLogs.IsEnabled = false;
+        }
+
+        private void ResetLogs_Click(object sender, RoutedEventArgs e)
+        {
+            LinphoneManager.Instance.LinphoneCore.ResetLogCollection();
         }
     }
 }

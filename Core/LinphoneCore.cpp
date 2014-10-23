@@ -1429,6 +1429,13 @@ void Linphone::Core::LinphoneCore::UploadLogCollection()
 	gApiLock.Unlock();
 }
 
+void Linphone::Core::LinphoneCore::ResetLogCollection()
+{
+	TRACE; gApiLock.Lock();
+	linphone_core_reset_log_collection(this->lc);
+	gApiLock.Unlock();
+}
+
 void Linphone::Core::LinphoneCore::SetDeviceRotation(int rotation)
 {
 	TRACE; gApiLock.Lock();

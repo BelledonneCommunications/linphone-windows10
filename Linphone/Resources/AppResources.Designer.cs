@@ -1052,6 +1052,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset logs.
+        /// </summary>
+        public static string ResetLogs {
+            get {
+                return ResourceManager.GetString("ResetLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scale down sent pictures.
         /// </summary>
         public static string ResizeSetting {

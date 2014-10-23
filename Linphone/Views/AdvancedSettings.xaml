@@ -131,6 +131,7 @@
                     </toolkit:ToggleSwitch>
 
                     <Button x:Name="SendLogs" Content="{Binding Path=LocalizedResources.SendLogsEmail, Source={StaticResource LocalizedStrings}}" Click="SendLogs_Click"/>
+                    <Button x:Name="ResetLogs" Content="{Binding Path=LocalizedResources.ResetLogs, Source={StaticResource LocalizedStrings}}" Click="ResetLogs_Click"/>
 
                     <Border 
                         x:Name="ProgressPopup"

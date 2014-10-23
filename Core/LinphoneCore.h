@@ -1063,6 +1063,11 @@ namespace Linphone
 			void UploadLogCollection();
 
 			/// <summary>
+			/// Resets the log collection by removing the log files.
+			/// </summary>
+			void ResetLogCollection();
+
+			/// <summary>
 			/// Tells the core the device current orientation. This can be used by capture filters
 			/// on mobile devices to select between portrait / landscape mode and to produce properly
 			///	oriented images.The exact meaning of the value in rotation if left to each device
