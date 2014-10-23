@@ -40,7 +40,7 @@
                 <toolkit:LongListMultiSelector.ItemTemplate>
                     <DataTemplate>
                         <StackPanel
-                            Margin="0,0,0,10"
+                            Margin="0,0,10,10"
                             Tag="{Binding BindsDirectlyToSource=True}" 
                             Tap="conversation_Click_1">
                             <TextBlock Text="{Binding DisplayedName, Converter={StaticResource SipUriToUsernameConverter}}"
