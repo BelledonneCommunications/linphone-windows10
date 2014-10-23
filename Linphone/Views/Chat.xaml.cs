@@ -273,6 +273,11 @@ namespace Linphone.Views
                     }
                     catch { }
                 }
+
+                if (chatRoom != null)
+                {
+                    chatRoom.MarkAsRead();
+                }
             });
         }
 
