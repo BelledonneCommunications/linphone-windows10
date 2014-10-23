@@ -14,16 +14,13 @@ namespace Linphone.Agents
         public const bool IsTunnelEnabled = false;
         public const bool AddPasswordInUriContactsParams = false;
         public const bool UseCustomIncomingCallView = false;
-        public const string PictureUploadScriptURL = "https://linphone.org:444/upload.php";
         public const string UserAgent = "LinphoneWP8";
         public const bool EnableG729 = false;
 
         // Do not enable these for releases !!!
 #if DEBUG
-        public const bool AllowTCPRemote = true;
         public const bool ShowWizardUntilAccountConfigured = false;
 #else
-        public const bool AllowTCPRemote = false;
         public const bool ShowWizardUntilAccountConfigured = false;
 #endif
 
