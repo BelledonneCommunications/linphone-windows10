@@ -12,7 +12,7 @@
     <UserControl.Resources>
         <Style x:Key="ChatTextBox" TargetType="TextBox">
             <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilyNormal}"/>
-            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeNormal}"/>
+            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMedium}"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="{StaticResource PhoneTextBoxForegroundBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource PhoneTextBoxBrush}"/>

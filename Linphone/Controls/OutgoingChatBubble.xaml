@@ -14,15 +14,17 @@
     <UserControl.Resources>
         <Style TargetType="RichTextBox" x:Key="MessageStyle">
             <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Opacity" Value="0.8"/>
             <Setter Property="Margin" Value="0,5,5,5"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeSmall}"/>
+            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMedium}"/>
         </Style>
 
         <Style TargetType="TextBlock" x:Key="TimestampStyle">
-            <Setter Property="Foreground" Value="LightGray"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Opacity" Value="0.5"/>
             <Setter Property="Margin" Value="0,5,5,0"/>
-            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeSmall}"/>
         </Style>
     </UserControl.Resources>
     
