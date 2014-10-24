@@ -15,7 +15,7 @@ namespace Linphone.Agents
         public const bool AddPasswordInUriContactsParams = false;
         public const bool UseCustomIncomingCallView = false;
         public const string UserAgent = "LinphoneWP8";
-        public const bool EnableG729 = false;
+        public const bool EnableG729 = true;
 
         // Do not enable these for releases !!!
 #if DEBUG
