@@ -500,6 +500,11 @@ namespace Linphone.Views
                 bubble.DownloadImage += bubble_DownloadImage;
                 MessagesList.Children.Insert(MessagesList.Children.Count - 1, bubble);
 
+                if (chatRoom != null)
+                {
+                    chatRoom.MarkAsRead();
+                }
+
                 scrollToBottom();
             });
         }
