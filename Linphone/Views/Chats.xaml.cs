@@ -89,8 +89,9 @@ namespace Linphone.Views
                 {
                     _sortedConversations.Add(i);
                 }
-                Conversations.ItemsSource = _sortedConversations;
             }
+            Conversations.ItemsSource = _sortedConversations;
+            //Conversations.InvalidateArrange();
         }
 
         private void BuildLocalizedApplicationBar()
@@ -125,13 +126,17 @@ namespace Linphone.Views
                     ContactManager.Instance.FindContact(address);
                 }
             }
+        }
 
-            _sortedConversations = new ObservableCollection<Conversation>();
-            foreach (var i in _conversations.OrderByDescending(g => g.Messages.Last().GetTime()).ToList())
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem item = (MenuItem)sender;
+            string sipAddress = (string)item.CommandParameter;
+            if (sipAddress != null && sipAddress.Length > 0)
             {
-                _sortedConversations.Add(i);
+                LinphoneManager.Instance.LinphoneCore.GetOrCreateChatRoom(sipAddress).DeleteHistory();
+                GetMessagesAndDisplayConversationsList();
             }
-            Conversations.ItemsSource = _sortedConversations;
         }
 
         private void deleteSelection_Click_1(object sender, EventArgs e)
@@ -141,7 +146,7 @@ namespace Linphone.Views
                 LinphoneManager.Instance.LinphoneCore.GetOrCreateChatRoom(c.SipAddress).DeleteHistory();
             }
 
-            GetMessagesAndDisplayConversationsList();            
+            GetMessagesAndDisplayConversationsList();
 
             ClearApplicationBar();
             SetupAppBarForEmptySelection();

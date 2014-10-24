@@ -55,6 +55,11 @@
                                     TextWrapping="Wrap"
                                     Foreground="{Binding IsLastMessageUnread, Converter={StaticResource BoolToAccentBrushConverter}}"
                                     FontSize="{StaticResource PhoneFontSizeMediumLarge}"/>
+                                <toolkit:ContextMenuService.ContextMenu>
+                                    <toolkit:ContextMenu IsZoomEnabled="False">
+                                        <toolkit:MenuItem x:Name="Delete" Header="{Binding Path=LocalizedResources.ContextMenuDelete, Source={StaticResource LocalizedStrings}}" Click="Delete_Click" CommandParameter="{Binding SipAddress}"/>
+                                    </toolkit:ContextMenu>
+                                </toolkit:ContextMenuService.ContextMenu>
                             </StackPanel>
                         </screenSizeSupport:ZoomBox>
                     </DataTemplate>

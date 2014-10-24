@@ -49,6 +49,9 @@ namespace Linphone.Model
             }
         }
 
+        /// <summary>
+        /// Returns true if the last message hasn't been read yet by the user, otherwise returns false
+        /// </summary>
         public bool IsLastMessageUnread
         {
             get
