@@ -13,14 +13,13 @@
     <UserControl.Resources>
         <Style x:Key="ChatTextBox" TargetType="TextBox">
             <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilyNormal}"/>
-            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMedium}"/>
+            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="{StaticResource PhoneTextBoxForegroundBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource PhoneTextBoxBrush}"/>
             <Setter Property="SelectionBackground" Value="{StaticResource PhoneAccentBrush}"/>
             <Setter Property="SelectionForeground" Value="{StaticResource PhoneTextBoxSelectionForegroundBrush}"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="2"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
@@ -71,7 +70,7 @@
 
     <screenSizeSupport:ZoomBox
         ZoomFactor="{Binding DisplayInformationEx.ViewPixelsPerHostPixel, Source={StaticResource DisplayInformationEmulator}}">
-        <Grid Margin="60,5,5,5">
+        <Grid Margin="60,0,5,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
