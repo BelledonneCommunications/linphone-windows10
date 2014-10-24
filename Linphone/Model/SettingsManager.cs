@@ -478,6 +478,11 @@ namespace Linphone.Model
                             cfg.SetProxy(proxyAddr.AsStringUriOnly());
                         }
                     }
+                    if (outboundProxy)
+                    {
+                        LinphoneAddress proxyAddr = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress(cfg.GetAddr());
+                        cfg.SetRoute(proxyAddr.AsStringUriOnly());
+                    }
                     cfg.SetExpires(28800);
 
                     // Can't set string to null: http://stackoverflow.com/questions/12980915/exception-when-trying-to-read-null-string-in-c-sharp-winrt-component-from-winjs
