@@ -70,7 +70,7 @@
 
     <screenSizeSupport:ZoomBox
         ZoomFactor="{Binding DisplayInformationEx.ViewPixelsPerHostPixel, Source={StaticResource DisplayInformationEmulator}}">
-        <Grid Margin="60,0,5,0">
+        <Grid Margin="60,5,5,5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
