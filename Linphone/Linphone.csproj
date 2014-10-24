@@ -191,6 +191,7 @@
     <Content Include="Assets\AppBar\chat.png" />
     <Content Include="Assets\AppBar\clear.png" />
     <Content Include="Assets\AppBar\empty.png" />
+    <Content Include="Assets\AppBar\linphone.png" />
     <Content Include="Assets\AppBar\stats.png" />
     <Content Include="Assets\AppBar\transfer.png" />
     <Content Include="Assets\Incall_Icons\bluetooth_off.png" />

@@ -880,6 +880,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to linphone values.
+        /// </summary>
+        public static string LinphoneValues {
+            get {
+                return ResourceManager.GetString("LinphoneValues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LockScreen settings.
         /// </summary>
         public static string LockScreenSettings {

@@ -100,6 +100,14 @@ namespace Linphone.Views
             NavigationService.GoBack();
         }
 
+        private void linphone_Click_1(object sender, EventArgs e)
+        {
+            Domain.Text = "sip.linphone.org";
+            Transport.SelectedItem = AppResources.TransportTLS;
+            Proxy.Text = "sip.linphone.org:5223";
+            OutboundProxy.IsChecked = true;
+        }
+
         private void BuildLocalizedApplicationBar()
         {
             ApplicationBar = new ApplicationBar();
@@ -113,6 +121,11 @@ namespace Linphone.Views
             appBarCancel.Text = AppResources.CancelChanges;
             ApplicationBar.Buttons.Add(appBarCancel);
             appBarCancel.Click += cancel_Click_1;
+
+            ApplicationBarIconButton appBarLinphoneValues = new ApplicationBarIconButton(new Uri("/Assets/AppBar/linphone.png", UriKind.Relative));
+            appBarLinphoneValues.Text = AppResources.LinphoneValues;
+            ApplicationBar.Buttons.Add(appBarLinphoneValues);
+            appBarLinphoneValues.Click += linphone_Click_1;
         }
 
         private void Username_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)

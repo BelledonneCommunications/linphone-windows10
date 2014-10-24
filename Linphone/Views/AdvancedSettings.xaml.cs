@@ -137,6 +137,13 @@ namespace Linphone.Views
             NavigationService.GoBack();
         }
 
+        private void linphone_Click_1(object sender, EventArgs e)
+        {
+            MediaEncryption.SelectedItem = AppResources.MediaEncryptionSRTP;
+            FirewallPolicy.SelectedItem = AppResources.FirewallPolicyIce;
+            Stun.Text = "stun.linphone.org";
+        }
+
         private void BuildLocalizedApplicationBar()
         {
             ApplicationBar = new ApplicationBar();
@@ -150,6 +157,11 @@ namespace Linphone.Views
             appBarCancel.Text = AppResources.CancelChanges;
             ApplicationBar.Buttons.Add(appBarCancel);
             appBarCancel.Click += cancel_Click_1;
+
+            ApplicationBarIconButton appBarLinphoneValues = new ApplicationBarIconButton(new Uri("/Assets/AppBar/linphone.png", UriKind.Relative));
+            appBarLinphoneValues.Text = AppResources.LinphoneValues;
+            ApplicationBar.Buttons.Add(appBarLinphoneValues);
+            appBarLinphoneValues.Click += linphone_Click_1;
         }
 
         private void SendLogs_Click(object sender, RoutedEventArgs e)

@@ -91,7 +91,6 @@ namespace Linphone.Views
                 }
             }
             Conversations.ItemsSource = _sortedConversations;
-            //Conversations.InvalidateArrange();
         }
 
         private void BuildLocalizedApplicationBar()

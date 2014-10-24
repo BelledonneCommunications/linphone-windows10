@@ -646,4 +646,7 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   <data name="CallErrorNotAcceptable" xml:space="preserve">
     <value>Incompatible codecs or encryption mechanisms</value>
   </data>
+  <data name="LinphoneValues" xml:space="preserve">
+    <value>linphone values</value>
+  </data>
 </root>
