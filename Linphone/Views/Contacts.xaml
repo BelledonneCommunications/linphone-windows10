@@ -40,7 +40,7 @@
                         <Setter.Value>
                             <DataTemplate>
                                 <Border Background="{Binding Converter={StaticResource BackgroundConverter}}" Width="113" Height="113" Margin="6" >
-                                    <TextBlock Text="{Binding Key}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" FontSize="48" Padding="6" 
+                                    <TextBlock Text="{Binding Key}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" FontSize="{StaticResource PhoneFontSizeExtraLarge}" Padding="6" 
                                         Foreground="{Binding Converter={StaticResource ForegroundConverter}}" VerticalAlignment="Center"/>
                                 </Border>
                             </DataTemplate>
@@ -235,7 +235,7 @@
                                         <TextBlock 
                                             Text="{Binding Key}" 
                                             Foreground="{StaticResource PhoneForegroundBrush}" 
-                                            FontSize="48" 
+                                            FontSize="{StaticResource PhoneFontSizeExtraExtraLarge}"
                                             Padding="6" 
                                             FontFamily="{StaticResource PhoneFontFamilySemiLight}" 
                                             HorizontalAlignment="Left" 
@@ -248,7 +248,7 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
                                     <Image Source="{Binding Converter={StaticResource ContactPictureConverter}}" Width="72" Height="72" Stretch="Fill" />
-                                    <TextBlock Text="{Binding DisplayName}" FontSize="35" Margin="10,0,0,0"></TextBlock>
+                                    <TextBlock Text="{Binding DisplayName}" FontSize="{StaticResource PhoneFontSizeLarge}" Margin="10,0,0,0"></TextBlock>
                                 </StackPanel>
                             </DataTemplate>
                         </phone:LongListSelector.ItemTemplate>

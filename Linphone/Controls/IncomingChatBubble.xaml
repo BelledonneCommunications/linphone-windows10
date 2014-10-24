@@ -4,6 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:screenSizeSupport="clr-namespace:ScreenSizeSupport;assembly=ScreenSizeSupport"
     xmlns:linphone="clr-namespace:Linphone.Controls"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -15,7 +16,7 @@
         <Style TargetType="RichTextBox" x:Key="MessageStyle">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Opacity" Value="0.8"/>
-            <Setter Property="Margin" Value="0,5,5,5"/>
+            <Setter Property="Margin" Value="0,0,5,3"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMedium}"/>
         </Style>
@@ -28,66 +29,69 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid Margin="5,0,100,5">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <screenSizeSupport:ZoomBox
+        ZoomFactor="{Binding DisplayInformationEx.ViewPixelsPerHostPixel, Source={StaticResource DisplayInformationEmulator}}">
+        <Grid Margin="5,0,100,5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <Path 
-            Grid.Row="0"
-            Data="m 0,0 l 0,8 l 16,0 l -16,-16"
-            Fill="{StaticResource PhoneAccentBrush}"
-            Margin="10,10,0,-1"
-            HorizontalAlignment="Left"/>
+            <Path 
+                Grid.Row="0"
+                Data="m 0,0 l 0,8 l 16,0 l -16,-16"
+                Fill="{StaticResource PhoneAccentBrush}"
+                Margin="10,10,0,-1"
+                HorizontalAlignment="Left"/>
 
-        <Rectangle Fill="{StaticResource PhoneAccentBrush}" Grid.RowSpan="2" Grid.Row="1"/>
+            <Rectangle Fill="{StaticResource PhoneAccentBrush}" Grid.RowSpan="2" Grid.Row="1"/>
 
-        <RichTextBox 
-            Grid.Row="1" 
-            x:Name="Message"
-            IsReadOnly="True"
-            Style="{StaticResource MessageStyle}"
-            TextAlignment="Left"/>
+            <RichTextBox 
+                Grid.Row="1"
+                x:Name="Message"
+                IsReadOnly="True"
+                Style="{StaticResource MessageStyle}"
+                TextAlignment="Left"/>
+        
+            <Button
+                Grid.Row="1"
+                x:Name="Download"
+                Visibility="Collapsed"
+                Click="DownloadImage_Click"
+                Foreground="White"
+                BorderBrush="White"
+                Content="{Binding Path=LocalizedResources.DownloadImage, Source={StaticResource LocalizedStrings}}"/>
 
-        <Button
-            Grid.Row="1"
-            x:Name="Download"
-            Visibility="Collapsed"
-            Click="DownloadImage_Click"
-            Foreground="White"
-            BorderBrush="White"
-            Content="{Binding Path=LocalizedResources.DownloadImage, Source={StaticResource LocalizedStrings}}"/>
+            <ProgressBar
+                Grid.Row="1"
+                Height="30"
+                Visibility="Collapsed"
+                x:Name="ProgressBar"
+                Foreground="White"
+                IsIndeterminate="True" />
 
-        <ProgressBar
-            Grid.Row="1"
-            Height="30"
-            Visibility="Collapsed"
-            x:Name="ProgressBar"
-            Foreground="White"
-            IsIndeterminate="True" />
+            <Image
+                Grid.Row="1" 
+                Margin="5"
+                Tap="Image_Tap"
+                Stretch="UniformToFill"
+                Visibility="Collapsed"
+                x:Name="Image" />
 
-        <Image
-            Grid.Row="1" 
-            Margin="5"
-            Tap="Image_Tap"
-            Stretch="UniformToFill"
-            Visibility="Collapsed"
-            x:Name="Image" />
+            <TextBlock 
+                Grid.Row="2" 
+                x:Name="Timestamp" 
+                Style="{StaticResource TimestampStyle}"
+                TextAlignment="Right"/>
 
-        <TextBlock 
-            Grid.Row="2" 
-            x:Name="Timestamp" 
-            Style="{StaticResource TimestampStyle}"
-            TextAlignment="Right"/>
-
-        <toolkit:ContextMenuService.ContextMenu>
-            <toolkit:ContextMenu IsZoomEnabled="False">
-                <toolkit:MenuItem x:Name="Delete" Header="{Binding Path=LocalizedResources.ContextMenuDelete, Source={StaticResource LocalizedStrings}}" Click="Delete_Click"/>
-                <toolkit:MenuItem x:Name="Copy" Header="{Binding Path=LocalizedResources.ContextMenuCopy, Source={StaticResource LocalizedStrings}}" Click="Copy_Click"/>
-                <toolkit:MenuItem x:Name="Save" Header="{Binding Path=LocalizedResources.ContextMenuSave, Source={StaticResource LocalizedStrings}}" Click="Save_Click" Visibility="Collapsed"/>
-            </toolkit:ContextMenu>
-        </toolkit:ContextMenuService.ContextMenu>
-    </Grid>
+            <toolkit:ContextMenuService.ContextMenu>
+                <toolkit:ContextMenu IsZoomEnabled="False">
+                    <toolkit:MenuItem x:Name="Delete" Header="{Binding Path=LocalizedResources.ContextMenuDelete, Source={StaticResource LocalizedStrings}}" Click="Delete_Click"/>
+                    <toolkit:MenuItem x:Name="Copy" Header="{Binding Path=LocalizedResources.ContextMenuCopy, Source={StaticResource LocalizedStrings}}" Click="Copy_Click"/>
+                    <toolkit:MenuItem x:Name="Save" Header="{Binding Path=LocalizedResources.ContextMenuSave, Source={StaticResource LocalizedStrings}}" Click="Save_Click" Visibility="Collapsed"/>
+                </toolkit:ContextMenu>
+            </toolkit:ContextMenuService.ContextMenu>
+        </Grid>
+    </screenSizeSupport:ZoomBox>
 </linphone:ChatBubble>
