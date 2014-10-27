@@ -600,6 +600,10 @@ namespace Linphone.Views
         new private void OrientationChanged(object sender, Microsoft.Phone.Controls.OrientationChangedEventArgs e)
         {
             ((InCallModel)ViewModel).OrientationChanged(sender, e);
+            remoteVideo.Width = LayoutRoot.ActualWidth;
+            remoteVideo.Height = LayoutRoot.ActualHeight;
+            HUD.Width = LayoutRoot.ActualWidth;
+            HUD.Height = LayoutRoot.ActualHeight;
 
             int rotation = 0;
             switch (e.Orientation)

@@ -11,7 +11,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Landscape"
     OrientationChanged="OrientationChanged"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
@@ -25,12 +25,15 @@
             Source="{Binding RemoteVideoUri}"
             Width="{Binding ActualWidth, ElementName=LayoutRoot, Mode=OneWay}"
             Height="{Binding ActualHeight, ElementName=LayoutRoot, Mode=OneWay}"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
             RenderTransformOrigin="0.5,0.5"/>
 
-        <Grid
+        <Grid x:Name="HUD"
             Width="{Binding ActualWidth, ElementName=LayoutRoot, Mode=OneWay}"
             Height="{Binding ActualHeight, ElementName=LayoutRoot, Mode=OneWay}"
-            HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
+            HorizontalAlignment="Stretch" 
+            VerticalAlignment="Bottom">
             <!-- Animations -->
             <Grid.Resources>
                 <Storyboard x:Name="ButtonsFadeOutAnimation">
@@ -158,13 +161,6 @@
                 Visibility="{Binding LandscapeButtonsVisibility}"
                 Grid.Row="3"/>
 
-            <!-- Remote video media element -->
-            <Grid Grid.RowSpan="4" Canvas.ZIndex="-2">
-                <Viewbox Stretch="Uniform">
-                
-                </Viewbox>
-            </Grid>
-
             <!-- Local video media element -->
             <Grid Grid.RowSpan="4" Canvas.ZIndex="-1">
                 <Grid.RowDefinitions>
@@ -178,6 +174,7 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
+                
                 <MediaElement
                     x:Name="localVideo"
                     Grid.Row="3"
