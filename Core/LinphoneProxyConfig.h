@@ -68,6 +68,15 @@ namespace Linphone
 			void SetProxy(Platform::String^ proxyUri);
 
 			/// <summary>
+			/// Get the reason why registration failed when the proxy config state is LinphoneRegistrationFailed.
+			/// <returns>The reason why registration failed for this proxy config.</returns>
+			/// </summary>
+			property Reason Error
+			{
+				Reason get();
+			}
+
+			/// <summary>
 			/// Enables register for this proxy config.
 			/// Register message is issued after call to Done.
 			/// </summary>

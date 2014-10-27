@@ -241,6 +241,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Call error.
+        /// </summary>
+        public static string CallError {
+            get {
+                return ResourceManager.GetString("CallError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &apos;#address#&apos; is busy.
         /// </summary>
         public static string CallErrorBusy {
@@ -264,15 +273,6 @@ namespace Linphone.Resources {
         public static string CallErrorNotAcceptable {
             get {
                 return ResourceManager.GetString("CallErrorNotAcceptable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &apos;#address#&apos; did not answer the call.
-        /// </summary>
-        public static string CallErrorNotAnswered {
-            get {
-                return ResourceManager.GetString("CallErrorNotAnswered", resourceCulture);
             }
         }
         
@@ -1065,6 +1065,24 @@ namespace Linphone.Resources {
         public static string RegistrationFailed {
             get {
                 return ResourceManager.GetString("RegistrationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bad credentials or forbidden.
+        /// </summary>
+        public static string RegistrationFailedForbidden {
+            get {
+                return ResourceManager.GetString("RegistrationFailedForbidden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration failed.
+        /// </summary>
+        public static string RegistrationFailedPopupTitle {
+            get {
+                return ResourceManager.GetString("RegistrationFailedPopupTitle", resourceCulture);
             }
         }
         

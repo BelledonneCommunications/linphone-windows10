@@ -776,7 +776,7 @@ namespace Linphone.Model
         public delegate void CallStateChangedEventHandler(LinphoneCall call, LinphoneCallState state);
         public event CallStateChangedEventHandler CallStateChanged;
 
-        private void ShowError(string message)
+        private void ShowCallError(string message)
         {
             if (CallErrorNotification != null)
             {
@@ -784,7 +784,7 @@ namespace Linphone.Model
             }
             CallErrorNotification = new CustomMessageBox()
             {
-                Caption = "Call error",
+                Caption = ResourceManager.GetString("CallError", CultureInfo.CurrentCulture),
                 Message = message,
                 RightButtonContent = AppResources.Close
             };
@@ -848,28 +848,25 @@ namespace Linphone.Model
                     switch (call.Reason)
                     {
                         case Reason.LinphoneReasonNone:
+                        case Reason.LinphoneReasonNotAnswered:
                             break;
                         case Reason.LinphoneReasonDeclined:
                             text = ResourceManager.GetString("CallErrorDeclined", CultureInfo.CurrentCulture);
-                            ShowError(text.Replace("#address#", call.GetRemoteAddress().GetUserName()));
+                            ShowCallError(text.Replace("#address#", call.GetRemoteAddress().GetUserName()));
                             break;
                         case Reason.LinphoneReasonNotFound:
                             text = ResourceManager.GetString("CallErrorNotFound", CultureInfo.CurrentCulture);
-                            ShowError(text.Replace("#address#", call.GetRemoteAddress().GetUserName()));
-                            break;
-                        case Reason.LinphoneReasonNotAnswered:
-                            text = ResourceManager.GetString("CallErrorNotAnswered", CultureInfo.CurrentCulture);
-                            ShowError(text.Replace("#address#", call.GetRemoteAddress().GetUserName()));
+                            ShowCallError(text.Replace("#address#", call.GetRemoteAddress().GetUserName()));
                             break;
                         case Reason.LinphoneReasonBusy:
                             text = ResourceManager.GetString("CallErrorBusy", CultureInfo.CurrentCulture);
-                            ShowError(text.Replace("#address#", call.GetRemoteAddress().GetUserName()));
+                            ShowCallError(text.Replace("#address#", call.GetRemoteAddress().GetUserName()));
                             break;
                         case Reason.LinphoneReasonNotAcceptable:
-                            ShowError(ResourceManager.GetString("CallErrorNotAcceptable", CultureInfo.CurrentCulture));
+                            ShowCallError(ResourceManager.GetString("CallErrorNotAcceptable", CultureInfo.CurrentCulture));
                             break;
                         default:
-                            ShowError(ResourceManager.GetString("CallErrorUnknown", CultureInfo.CurrentCulture));
+                            ShowCallError(ResourceManager.GetString("CallErrorUnknown", CultureInfo.CurrentCulture));
                             break;
                     }
                 });
@@ -944,6 +941,20 @@ namespace Linphone.Model
                     LastKnownState = state;
                     if (BasePage.StatusBar != null)
                         BasePage.StatusBar.RefreshStatus(state);
+                    if ((state == Core.RegistrationState.RegistrationFailed) && (config.Error == Reason.LinphoneReasonForbidden))
+                    {
+                        if (RegistrationFailedNotification != null)
+                        {
+                            RegistrationFailedNotification.Dismiss();
+                        }
+                        RegistrationFailedNotification = new CustomMessageBox()
+                        {
+                            Caption = ResourceManager.GetString("RegistrationFailedPopupTitle", CultureInfo.CurrentCulture),
+                            Message = ResourceManager.GetString("RegistrationFailedForbidden", CultureInfo.CurrentCulture),
+                            RightButtonContent = AppResources.Close
+                        };
+                        RegistrationFailedNotification.Show();
+                    }
                 }
                 catch { }
             });
@@ -1003,6 +1014,11 @@ namespace Linphone.Model
         /// Custom message box to display call errors.
         /// </summary>
         public CustomMessageBox CallErrorNotification { get; set; }
+
+        /// <summary>
+        /// Custom message box to display registration failures.
+        /// </summary>
+        public CustomMessageBox RegistrationFailedNotification { get; set; }
 
         /// <summary>
         /// Callback for LinphoneCoreListener

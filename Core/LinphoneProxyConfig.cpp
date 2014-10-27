@@ -56,6 +56,14 @@ void Linphone::Core::LinphoneProxyConfig::SetProxy(Platform::String^ proxyUri)
 	gApiLock.Unlock();
 }
 
+Linphone::Core::Reason Linphone::Core::LinphoneProxyConfig::Error::get()
+{
+	TRACE; gApiLock.Lock();
+	Linphone::Core::Reason reason = (Linphone::Core::Reason)linphone_proxy_config_get_error(this->proxy_config);
+	gApiLock.Unlock();
+	return reason;
+}
+
 void Linphone::Core::LinphoneProxyConfig::EnableRegister(Platform::Boolean enable)
 {
 	TRACE; gApiLock.Lock();

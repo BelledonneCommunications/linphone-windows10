@@ -634,9 +634,6 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   <data name="CallErrorDeclined" xml:space="preserve">
     <value>'#address#' declined the call</value>
   </data>
-  <data name="CallErrorNotAnswered" xml:space="preserve">
-    <value>'#address#' did not answer the call</value>
-  </data>
   <data name="CallErrorBusy" xml:space="preserve">
     <value>'#address#' is busy</value>
   </data>
@@ -648,5 +645,14 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   </data>
   <data name="LinphoneValues" xml:space="preserve">
     <value>linphone values</value>
+  </data>
+  <data name="CallError" xml:space="preserve">
+    <value>Call error</value>
+  </data>
+  <data name="RegistrationFailedForbidden" xml:space="preserve">
+    <value>Bad credentials or forbidden</value>
+  </data>
+  <data name="RegistrationFailedPopupTitle" xml:space="preserve">
+    <value>Registration failed</value>
   </data>
 </root>
