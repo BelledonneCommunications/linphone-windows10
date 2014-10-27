@@ -15,178 +15,186 @@
     OrientationChanged="OrientationChanged"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
-    
-    <Grid x:Name="LayoutRoot" Background="Transparent" Tap="LayoutRoot_Tap">
 
-        <!-- Animations -->
-        <Grid.Resources>
-            <Storyboard x:Name="ButtonsFadeOutAnimation">
-                <DoubleAnimation
-                        Storyboard.TargetName="buttons"
-                        Storyboard.TargetProperty="(Opacity)"
-                        Duration="0:0:0.5"
-                        To="0.0"
-                        Completed="ButtonsFadeOutAnimation_Completed"/>
-                <DoubleAnimation
-                        Storyboard.TargetName="buttons_landscape"
-                        Storyboard.TargetProperty="(Opacity)"
-                        Duration="0:0:0.5"
-                        To="0.0"/>
-                <DoubleAnimation
-                        Storyboard.TargetName="Status"
-                        Storyboard.TargetProperty="(Opacity)"
-                        Duration="0:0:0.5"
-                        To="0.0"/>
-                <DoubleAnimation
-                        Storyboard.TargetName="Contact"
-                        Storyboard.TargetProperty="(Opacity)"
-                        Duration="0:0:0.5"
-                        To="0.0"/>
-                <DoubleAnimation
-                        Storyboard.TargetName="Number"
-                        Storyboard.TargetProperty="(Opacity)"
-                        Duration="0:0:0.5"
-                        To="0.0"/>
-            </Storyboard>
-            <Storyboard x:Name="ButtonsFadeInVideoAnimation">
-                <DoubleAnimation
-                        Storyboard.TargetName="buttons"
-                        Storyboard.TargetProperty="(Opacity)"
-                        Duration="0:0:0.5"
-                        To="0.7"/>
-                <DoubleAnimation
-                        Storyboard.TargetName="buttons_landscape"
-                        Storyboard.TargetProperty="(Opacity)"
-                        Duration="0:0:0.5"
-                        To="0.7"/>
-                <DoubleAnimation
-                        Storyboard.TargetName="Status"
-                        Storyboard.TargetProperty="(Opacity)"
-                        Duration="0:0:0.5"
-                        To="1.0"/>
-                <DoubleAnimation
-                        Storyboard.TargetName="Contact"
-                        Storyboard.TargetProperty="(Opacity)"
-                        Duration="0:0:0.5"
-                        To="1.0"/>
-                <DoubleAnimation
-                        Storyboard.TargetName="Number"
-                        Storyboard.TargetProperty="(Opacity)"
-                        Duration="0:0:0.5"
-                        To="1.0"/>
-            </Storyboard>
-            <Storyboard x:Name="ButtonsFadeInAudioAnimation">
-                <DoubleAnimation
-                        Storyboard.TargetName="buttons"
-                        Storyboard.TargetProperty="(Opacity)"
-                        Duration="0:0:0.5"
-                        To="1.0"/>
-                <DoubleAnimation
-                        Storyboard.TargetName="buttons_landscape"
-                        Storyboard.TargetProperty="(Opacity)"
-                        Duration="0:0:0.5"
-                        To="1.0"/>
-                <DoubleAnimation
-                        Storyboard.TargetName="Status"
-                        Storyboard.TargetProperty="(Opacity)"
-                        Duration="0:0:0.5"
-                        To="1.0"/>
-                <DoubleAnimation
-                        Storyboard.TargetName="Contact"
-                        Storyboard.TargetProperty="(Opacity)"
-                        Duration="0:0:0.5"
-                        To="1.0"/>
-                <DoubleAnimation
-                        Storyboard.TargetName="Number"
-                        Storyboard.TargetProperty="(Opacity)"
-                        Duration="0:0:0.5"
-                        To="1.0"/>
-            </Storyboard>
-        </Grid.Resources>
+    <Canvas x:Name="LayoutRoot" Background="Transparent" Tap="LayoutRoot_Tap">
+        <MediaElement
+            x:Name="remoteVideo"
+            Visibility="{Binding RemoteVideoVisibility}"
+            MediaOpened="remoteVideo_MediaOpened_1"
+            MediaFailed="remoteVideo_MediaFailed_1"
+            Source="{Binding RemoteVideoUri}"
+            Width="{Binding ActualWidth, ElementName=LayoutRoot, Mode=OneWay}"
+            Height="{Binding ActualHeight, ElementName=LayoutRoot, Mode=OneWay}"
+            RenderTransformOrigin="0.5,0.5"/>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
-        
-        <!-- Status text -->
-        <TextBlock
-            Grid.Row="0"
-            x:Name="Status"
-            Style="{StaticResource PhoneTextAccentStyle}"
-            Text="{Binding Path=LocalizedResources.Dialing, Source={StaticResource LocalizedStrings}}"
-            Margin="12,0,12,0"
-            FontSize="20" />
+        <Grid
+            Width="{Binding ActualWidth, ElementName=LayoutRoot, Mode=OneWay}"
+            Height="{Binding ActualHeight, ElementName=LayoutRoot, Mode=OneWay}"
+            HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
+            <!-- Animations -->
+            <Grid.Resources>
+                <Storyboard x:Name="ButtonsFadeOutAnimation">
+                    <DoubleAnimation
+                            Storyboard.TargetName="buttons"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="0.0"
+                            Completed="ButtonsFadeOutAnimation_Completed"/>
+                    <DoubleAnimation
+                            Storyboard.TargetName="buttons_landscape"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="0.0"/>
+                    <DoubleAnimation
+                            Storyboard.TargetName="Status"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="0.0"/>
+                    <DoubleAnimation
+                            Storyboard.TargetName="Contact"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="0.0"/>
+                    <DoubleAnimation
+                            Storyboard.TargetName="Number"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="0.0"/>
+                </Storyboard>
+                <Storyboard x:Name="ButtonsFadeInVideoAnimation">
+                    <DoubleAnimation
+                            Storyboard.TargetName="buttons"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="0.7"/>
+                    <DoubleAnimation
+                            Storyboard.TargetName="buttons_landscape"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="0.7"/>
+                    <DoubleAnimation
+                            Storyboard.TargetName="Status"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="1.0"/>
+                    <DoubleAnimation
+                            Storyboard.TargetName="Contact"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="1.0"/>
+                    <DoubleAnimation
+                            Storyboard.TargetName="Number"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="1.0"/>
+                </Storyboard>
+                <Storyboard x:Name="ButtonsFadeInAudioAnimation">
+                    <DoubleAnimation
+                            Storyboard.TargetName="buttons"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="1.0"/>
+                    <DoubleAnimation
+                            Storyboard.TargetName="buttons_landscape"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="1.0"/>
+                    <DoubleAnimation
+                            Storyboard.TargetName="Status"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="1.0"/>
+                    <DoubleAnimation
+                            Storyboard.TargetName="Contact"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="1.0"/>
+                    <DoubleAnimation
+                            Storyboard.TargetName="Number"
+                            Storyboard.TargetProperty="(Opacity)"
+                            Duration="0:0:0.5"
+                            To="1.0"/>
+                </Storyboard>
+            </Grid.Resources>
 
-        <!-- Contact text -->
-        <TextBlock
-            Grid.Row="1"
-            x:Name="Contact"
-            Margin="12,0,12,0"
-            FontSize="60"/>
-
-        <!-- Number text -->
-        <TextBlock
-            Grid.Row="2"
-            x:Name="Number"
-            Margin="12,0,12,0"
-            FontSize="25"/>
-
-        <controls:CallControlsP 
-            x:Name="buttons"
-            VerticalAlignment="Bottom"
-            Visibility="{Binding PortraitButtonsVisibility}"
-            Grid.Row="3"/>
-
-        <controls:CallControlsL
-            x:Name="buttons_landscape"
-            Visibility="{Binding LandscapeButtonsVisibility}"
-            Grid.Row="3"/>
-
-        <!-- Remote video media element -->
-        <Grid Grid.RowSpan="4" Canvas.ZIndex="-2">
-            <Viewbox Stretch="Uniform">
-                <MediaElement
-                    x:Name="remoteVideo"
-                    Visibility="{Binding RemoteVideoVisibility}"
-                    MediaOpened="remoteVideo_MediaOpened_1"
-                    MediaFailed="remoteVideo_MediaFailed_1"
-                    Source="{Binding RemoteVideoUri}"
-                    RenderTransformOrigin="0.5,0.5"/>
-            </Viewbox>
-        </Grid>
-
-        <!-- Local video media element -->
-        <Grid Grid.RowSpan="4" Canvas.ZIndex="-1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <MediaElement
-                x:Name="localVideo"
-                Grid.Row="3"
-                Grid.Column="2"
-                Visibility="{Binding LocalVideoVisibility}"
-                MediaOpened="localVideo_MediaOpened_1"
-                MediaFailed="localVideo_MediaFailed_1"
-                Source="{Binding LocalVideoUri}"
-                RenderTransformOrigin="0.5,0.5"
-                Stretch="Uniform"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch">
-                <MediaElement.RenderTransform>
-                    <CompositeTransform Rotation="{Binding LocalVideoRotation}" ScaleX="{Binding LocalVideoScaleX}"/>
-                </MediaElement.RenderTransform>
-            </MediaElement>
+        
+            <!-- Status text -->
+            <TextBlock
+                Grid.Row="0"
+                x:Name="Status"
+                Style="{StaticResource PhoneTextAccentStyle}"
+                Text="{Binding Path=LocalizedResources.Dialing, Source={StaticResource LocalizedStrings}}"
+                Margin="12,0,12,0"
+                FontSize="20" />
+
+            <!-- Contact text -->
+            <TextBlock
+                Grid.Row="1"
+                x:Name="Contact"
+                Margin="12,0,12,0"
+                FontSize="60"/>
+
+            <!-- Number text -->
+            <TextBlock
+                Grid.Row="2"
+                x:Name="Number"
+                Margin="12,0,12,0"
+                FontSize="25"/>
+
+            <controls:CallControlsP 
+                x:Name="buttons"
+                VerticalAlignment="Bottom"
+                Visibility="{Binding PortraitButtonsVisibility}"
+                Grid.Row="3"/>
+
+            <controls:CallControlsL
+                x:Name="buttons_landscape"
+                Visibility="{Binding LandscapeButtonsVisibility}"
+                Grid.Row="3"/>
+
+            <!-- Remote video media element -->
+            <Grid Grid.RowSpan="4" Canvas.ZIndex="-2">
+                <Viewbox Stretch="Uniform">
+                
+                </Viewbox>
+            </Grid>
+
+            <!-- Local video media element -->
+            <Grid Grid.RowSpan="4" Canvas.ZIndex="-1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <MediaElement
+                    x:Name="localVideo"
+                    Grid.Row="3"
+                    Grid.Column="2"
+                    Visibility="{Binding LocalVideoVisibility}"
+                    MediaOpened="localVideo_MediaOpened_1"
+                    MediaFailed="localVideo_MediaFailed_1"
+                    Source="{Binding LocalVideoUri}"
+                    RenderTransformOrigin="0.5,0.5"
+                    Stretch="Uniform"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+                    <MediaElement.RenderTransform>
+                        <CompositeTransform Rotation="{Binding LocalVideoRotation}" ScaleX="{Binding LocalVideoScaleX}"/>
+                    </MediaElement.RenderTransform>
+                </MediaElement>
+            </Grid>
         </Grid>
-    </Grid>
+    </Canvas>
 </linphone:BasePage>
