@@ -74,6 +74,18 @@ namespace Linphone
 			/// <returns>The payload type currently in use for the video stream</returns>
 			PayloadType^ GetUsedVideoCodec();
 
+			/// <summary>
+			/// Returns the size of the video being sent.
+			/// </summary>
+			/// <returns>The size of the video being sent</returns>
+			Windows::Foundation::Size GetSentVideoSize();
+
+			/// <summary>
+			/// Returns the size of the video being received.
+			/// </summary>
+			/// <returns>The size of the video being received</returns>
+			Windows::Foundation::Size GetReceivedVideoSize();
+
 		private:
 			friend class Linphone::Core::Utils;
 			friend ref class Linphone::Core::LinphoneCore;

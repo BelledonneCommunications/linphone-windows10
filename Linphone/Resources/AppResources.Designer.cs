@@ -1412,6 +1412,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Size.
+        /// </summary>
+        public static string StatVideoSize {
+            get {
+                return ResourceManager.GetString("StatVideoSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stun server.
         /// </summary>
         public static string StunServer {

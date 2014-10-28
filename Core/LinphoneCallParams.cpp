@@ -79,6 +79,28 @@ Linphone::Core::PayloadType^ Linphone::Core::LinphoneCallParams::GetUsedVideoCod
 	return payloadType;
 }
 
+Windows::Foundation::Size Linphone::Core::LinphoneCallParams::GetSentVideoSize()
+{
+	TRACE; gApiLock.Lock();
+	MSVideoSize vs = linphone_call_params_get_sent_video_size(this->params);
+	Windows::Foundation::Size size;
+	size.Width = vs.width;
+	size.Height = vs.height;
+	gApiLock.Unlock();
+	return size;
+}
+
+Windows::Foundation::Size Linphone::Core::LinphoneCallParams::GetReceivedVideoSize()
+{
+	TRACE; gApiLock.Lock();
+	MSVideoSize vs = linphone_call_params_get_received_video_size(this->params);
+	Windows::Foundation::Size size;
+	size.Width = vs.width;
+	size.Height = vs.height;
+	gApiLock.Unlock();
+	return size;
+}
+
 Linphone::Core::LinphoneCallParams::LinphoneCallParams(::LinphoneCallParams *call_params) :
 	params(call_params)
 {

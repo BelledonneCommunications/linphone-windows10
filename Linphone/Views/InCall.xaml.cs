@@ -501,7 +501,10 @@ namespace Linphone.Views
                         {
                             ((InCallModel)ViewModel).VideoPType = AppResources.StatPayload + ": " + videopt.GetMimeType() + "/" + videopt.GetClockRate();
                         }
-
+                        Windows.Foundation.Size sentVideoSize = param.GetSentVideoSize();
+                        Windows.Foundation.Size receivedVideoSize = param.GetReceivedVideoSize();
+                        ((InCallModel)ViewModel).VideoSize = String.Format(AppResources.StatVideoSize +
+                            ": ↑ {0}x{1} / ↓ {2}x{3}", sentVideoSize.Width, sentVideoSize.Height, receivedVideoSize.Width, receivedVideoSize.Height);
                         ((InCallModel)ViewModel).VideoStatsVisibility = Visibility.Visible;
                     }
                     else

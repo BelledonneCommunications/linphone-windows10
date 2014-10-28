@@ -535,6 +535,18 @@ namespace Linphone.Views
                 this.OnPropertyChanged();
             }
         }
+        public string VideoSize
+        {
+            get
+            {
+                return videoSize;
+            }
+            set
+            {
+                videoSize = value;
+                this.OnPropertyChanged();
+            }
+        }
         public Visibility VideoStatsVisibility
         {
             get
@@ -570,6 +582,7 @@ namespace Linphone.Views
         private string videoDownBw = "";
         private string videoPType = "";
         private string videoUpBw = "";
+        private string videoSize = "";
         private string ice = "";
         private Visibility videoStatsVisibility = Visibility.Collapsed;
         #endregion
