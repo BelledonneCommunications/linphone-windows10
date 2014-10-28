@@ -851,8 +851,11 @@ namespace Linphone.Model
                         case Reason.LinphoneReasonNotAnswered:
                             break;
                         case Reason.LinphoneReasonDeclined:
-                            text = ResourceManager.GetString("CallErrorDeclined", CultureInfo.CurrentCulture);
-                            ShowCallError(text.Replace("#address#", call.GetRemoteAddress().GetUserName()));
+                            if (call.GetDirection() == CallDirection.Outgoing)
+                            {
+                                text = ResourceManager.GetString("CallErrorDeclined", CultureInfo.CurrentCulture);
+                                ShowCallError(text.Replace("#address#", call.GetRemoteAddress().GetUserName()));
+                            }
                             break;
                         case Reason.LinphoneReasonNotFound:
                             text = ResourceManager.GetString("CallErrorNotFound", CultureInfo.CurrentCulture);
