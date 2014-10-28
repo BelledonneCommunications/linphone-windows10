@@ -2,6 +2,7 @@
 using Linphone.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -16,7 +17,6 @@ namespace Linphone.Views
     /// </summary>
     public class InCallModel : BaseModel
     {
-        private string currentOrientation = "PortraitUp";
         /// <summary>
         /// Public constructor.
         /// </summary>
@@ -25,7 +25,7 @@ namespace Linphone.Views
         {
             if (CurrentPage != null)
             {
-                currentOrientation = CurrentPage.Orientation.ToString();
+                PageOrientation = CurrentPage.Orientation;
             }
 
             if (LinphoneManager.Instance.isLinphoneRunning)
@@ -41,24 +41,27 @@ namespace Linphone.Views
         /// </summary>
         public void OrientationChanged(object sender, Microsoft.Phone.Controls.OrientationChangedEventArgs e)
         {
-            string orientation = e.Orientation.ToString();
-            if (!orientation.Equals(currentOrientation))
-            {
-                currentOrientation = orientation;
-                AdjustDisplayAccordingToOrientation();
-            }
+            PageOrientation = e.Orientation;
+        }
+
+        public LinphoneCall GetCurrentCall()
+        {
+            LinphoneCall call = LinphoneManager.Instance.LinphoneCore.GetCurrentCall();
+            if (call == null)
+                call = (LinphoneCall)LinphoneManager.Instance.LinphoneCore.GetCalls()[0];
+            return call;
         }
 
         #region Actions
 
         private void AdjustDisplayAccordingToOrientation()
         {
-            if (currentOrientation.StartsWith("Portrait"))
+            if ((PageOrientation & Microsoft.Phone.Controls.PageOrientation.Portrait) == Microsoft.Phone.Controls.PageOrientation.Portrait)
             {
                 PortraitButtonsVisibility = Visibility.Visible;
                 LandscapeButtonsVisibility = Visibility.Collapsed;
             }
-            else if (currentOrientation.StartsWith("Landscape"))
+            else if ((PageOrientation & Microsoft.Phone.Controls.PageOrientation.Landscape) == Microsoft.Phone.Controls.PageOrientation.Landscape)
             {
                 PortraitButtonsVisibility = Visibility.Collapsed;
                 LandscapeButtonsVisibility = Visibility.Visible;
@@ -76,8 +79,29 @@ namespace Linphone.Views
 
         private void ShowRemoteVideo()
         {
+            int rotation = 0;
+            switch (PageOrientation)
+            {
+                case Microsoft.Phone.Controls.PageOrientation.PortraitUp:
+                    rotation = 0;
+                    break;
+                case Microsoft.Phone.Controls.PageOrientation.PortraitDown:
+                    rotation = 180;
+                    break;
+                case Microsoft.Phone.Controls.PageOrientation.LandscapeLeft:
+                    rotation = 270;
+                    break;
+                case Microsoft.Phone.Controls.PageOrientation.LandscapeRight:
+                    rotation = 90;
+                    break;
+            }
+            RemoteVideoRotation = rotation;
             Int32 id = LinphoneManager.Instance.LinphoneCore.GetNativeVideoWindowId();
             RemoteVideoUri = Mediastreamer2.WP8Video.VideoRenderer.StreamUri(id);
+        }
+
+        public void RemoteVideoOpened()
+        {
             RemoteVideoVisibility = Visibility.Visible;
         }
 
@@ -89,57 +113,58 @@ namespace Linphone.Views
 
         private void ShowLocalVideo()
         {
-            int rotation = LinphoneManager.Instance.LinphoneCore.GetCameraSensorRotation();
-            if (rotation < 0)
+            ((InCall)Page).Status.Dispatcher.BeginInvoke(delegate()
             {
-                localVideoTimer = new Timer(new TimerCallback(LocalVideoTimerCallback), null, 200, 15);
+                String device = LinphoneManager.Instance.LinphoneCore.GetVideoDevice();
+                LocalVideoUri = Mediastreamer2.WP8Video.VideoRenderer.CameraUri(device);
+            });
+        }
+
+        public void LocalVideoOpened()
+        {
+            Int32 rotation = LinphoneManager.Instance.LinphoneCore.GetCameraSensorRotation();
+            switch (pageOrientation)
+            {
+                case Microsoft.Phone.Controls.PageOrientation.LandscapeLeft:
+                    rotation += 270;
+                    break;
+                case Microsoft.Phone.Controls.PageOrientation.LandscapeRight:
+                    rotation += 90;
+                    break;
+            }
+            LocalVideoRotation = rotation % 360;
+            String device = LinphoneManager.Instance.LinphoneCore.GetVideoDevice();
+            Boolean mirrored = Mediastreamer2.WP8Video.VideoRenderer.IsCameraMirrored(device);
+            if (mirrored)
+            {
+                LocalVideoScaleX = -1.0;
             }
             else
             {
-                LocalVideoTimerCallback(null);
+                LocalVideoScaleX = 1.0;
             }
-        }
-
-        private void LocalVideoTimerCallback(Object state)
-        {
-            if (LinphoneManager.Instance.LinphoneCore == null)
-            {
-                localVideoTimer.Dispose();
-                localVideoTimer = null;
-                return;
-            }
-
-            int rotation = LinphoneManager.Instance.LinphoneCore.GetCameraSensorRotation();
-            if (rotation >= 0)
-            {
-                if (localVideoTimer != null)
-                {
-                    localVideoTimer.Dispose();
-                    localVideoTimer = null;
-                }
-                ((InCall)Page).Status.Dispatcher.BeginInvoke(delegate()
-                {
-                    String device = LinphoneManager.Instance.LinphoneCore.GetVideoDevice();
-                    Boolean mirrored = Mediastreamer2.WP8Video.VideoRenderer.IsCameraMirrored(device);
-                    LocalVideoUri = Mediastreamer2.WP8Video.VideoRenderer.CameraUri(device);
-                    LocalVideoVisibility = Visibility.Visible;
-                    LocalVideoRotation = rotation;
-                    if (mirrored)
-                    {
-                        LocalVideoScaleX = -1.0;
-                    }
-                    else
-                    {
-                        LocalVideoScaleX = 1.0;
-                    }
-                });
-            }
+            LocalVideoVisibility = Visibility.Visible;
         }
 
         private void HideLocalVideo()
         {
             LocalVideoUri = null;
             LocalVideoVisibility = Visibility.Collapsed;
+        }
+
+        public void ShowVideo()
+        {
+            ShowRemoteVideo();
+            if (LinphoneManager.Instance.LinphoneCore.IsSelfViewEnabled())
+            {
+                ShowLocalVideo();
+            }
+        }
+
+        public void HideVideo()
+        {
+            HideRemoteVideo();
+            HideLocalVideo();
         }
 
         internal void ShowButtonsAndPanel()
@@ -154,6 +179,23 @@ namespace Linphone.Views
         }
 
         #endregion
+
+        public Microsoft.Phone.Controls.PageOrientation PageOrientation
+        {
+            get
+            {
+                return this.pageOrientation;
+            }
+            set
+            {
+                if (this.pageOrientation != value)
+                {
+                    this.pageOrientation = value;
+                    AdjustDisplayAccordingToOrientation();
+                    this.OnPropertyChanged();
+                }
+            }
+        }
 
         #region Button properties
         /// <summary>
@@ -250,11 +292,7 @@ namespace Linphone.Views
                     this.isVideoActive = value;
                     if (this.isVideoActive)
                     {
-                        ShowRemoteVideo();
-                        if (LinphoneManager.Instance.LinphoneCore.IsSelfViewEnabled())
-                        {
-                            ShowLocalVideo();
-                        }
+                        ShowVideo();
                     }
                     else
                     {
@@ -379,6 +417,25 @@ namespace Linphone.Views
             }
         }
 
+        public int RemoteVideoRotation
+        {
+            get
+            {
+                return this.remoteVideoRotation;
+            }
+            set
+            {
+                if (this.remoteVideoRotation != value)
+                {
+                    this.remoteVideoRotation = value;
+                    LinphoneManager.Instance.LinphoneCore.SetDeviceRotation(this.remoteVideoRotation);
+                    LinphoneCall call = GetCurrentCall();
+                    if (call != null) LinphoneManager.Instance.LinphoneCore.UpdateCall(call, null);
+                    this.OnPropertyChanged();
+                }
+            }
+        }
+
         #endregion
 
         #region Stats properties
@@ -491,7 +548,9 @@ namespace Linphone.Views
             }
         }
         #endregion
+
         #region Private variables
+        private Microsoft.Phone.Controls.PageOrientation pageOrientation = Microsoft.Phone.Controls.PageOrientation.Portrait;
         private Visibility videoButtonVisibility = Visibility.Collapsed;
         private Visibility cameraButtonVisibility = Visibility.Collapsed;
         private Visibility portraitButtonsVisibility = Visibility.Visible;
@@ -499,7 +558,7 @@ namespace Linphone.Views
         private Boolean isVideoActive = false;
         private Uri remoteVideoUri = null;
         private Visibility remoteVideoVisibility = Visibility.Collapsed;
-        private Timer localVideoTimer;
+        private int remoteVideoRotation = 0;
         private Uri localVideoUri = null;
         private Visibility localVideoVisibility = Visibility.Collapsed;
         private Double localVideoRotation = 0;
