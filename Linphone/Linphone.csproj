@@ -110,6 +110,7 @@
     <Compile Include="Model\BugCollector.cs" />
     <Compile Include="Model\CallControllerListener.cs" />
     <Compile Include="Model\CallLog.cs" />
+    <Compile Include="Model\ChatsModel.cs" />
     <Compile Include="Model\ContactManager.cs" />
     <Compile Include="Model\ContactPictureConverter.cs" />
     <Compile Include="Model\EchoCalibratorListener.cs" />

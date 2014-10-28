@@ -27,6 +27,7 @@ namespace Linphone.Views
         /// Public constructor.
         /// </summary>
         public Chats()
+            :base(new ChatsModel())
         {
             InitializeComponent();
             BuildLocalizedApplicationBar();
@@ -89,8 +90,8 @@ namespace Linphone.Views
                 {
                     _sortedConversations.Add(i);
                 }
+                ((ChatsModel)ViewModel).Conversations = _sortedConversations;
             }
-            Conversations.ItemsSource = _sortedConversations;
         }
 
         private void BuildLocalizedApplicationBar()
@@ -125,6 +126,13 @@ namespace Linphone.Views
                     ContactManager.Instance.FindContact(address);
                 }
             }
+
+            _sortedConversations = new ObservableCollection<Conversation>();
+            foreach (var i in _conversations.OrderByDescending(g => g.Messages.Last().GetTime()).ToList())
+            {
+                _sortedConversations.Add(i);
+            }
+            ((ChatsModel)ViewModel).Conversations = _sortedConversations;
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)
