@@ -446,11 +446,8 @@ namespace Linphone.Views
                     return;
                 }
 
-                LinphoneCall call = LinphoneManager.Instance.LinphoneCore.GetCurrentCall();
-                if (call == null)
-                    call = (LinphoneCall)LinphoneManager.Instance.LinphoneCore.GetCalls()[0];
-                if (call == null)
-                    return;
+                LinphoneCall call = ((InCallModel)ViewModel).GetCurrentCall();
+                if (call == null) return;
 
                 startTime = (DateTimeOffset)call.GetCallStartTimeFromContext();
                 DateTimeOffset now = DateTimeOffset.Now;
@@ -521,6 +518,7 @@ namespace Linphone.Views
         private void remoteVideo_MediaOpened_1(object sender, System.Windows.RoutedEventArgs e)
         {
             Logger.Msg("RemoteVideo Opened: " + ((MediaElement)sender).Source.AbsoluteUri);
+            ((InCallModel)ViewModel).RemoteVideoOpened();
         }
 
         private void remoteVideo_MediaFailed_1(object sender, System.Windows.ExceptionRoutedEventArgs e)
@@ -531,6 +529,7 @@ namespace Linphone.Views
         private void localVideo_MediaOpened_1(object sender, System.Windows.RoutedEventArgs e)
         {
             Logger.Msg("LocalVideo Opened: " + ((MediaElement)sender).Source.AbsoluteUri);
+            ((InCallModel)ViewModel).LocalVideoOpened();
         }
 
         private void localVideo_MediaFailed_1(object sender, System.Windows.ExceptionRoutedEventArgs e)
@@ -599,31 +598,19 @@ namespace Linphone.Views
 
         new private void OrientationChanged(object sender, Microsoft.Phone.Controls.OrientationChangedEventArgs e)
         {
+            InCallModel model = (InCallModel)ViewModel;
+            model.OrientationChanged(sender, e);
             ((InCallModel)ViewModel).OrientationChanged(sender, e);
             remoteVideo.Width = LayoutRoot.ActualWidth;
             remoteVideo.Height = LayoutRoot.ActualHeight;
             HUD.Width = LayoutRoot.ActualWidth;
             HUD.Height = LayoutRoot.ActualHeight;
 
-            int rotation = 0;
-            switch (e.Orientation)
+            if (model.IsVideoActive)
             {
-                case Microsoft.Phone.Controls.PageOrientation.PortraitUp:
-                    rotation = 90;
-                    break;
-                case Microsoft.Phone.Controls.PageOrientation.PortraitDown:
-                    rotation = 270;
-                    break;
-                case Microsoft.Phone.Controls.PageOrientation.LandscapeLeft:
-                    rotation = 0;
-                    break;
-                case Microsoft.Phone.Controls.PageOrientation.LandscapeRight:
-                    rotation = 180;
-                    break;
+                model.HideVideo();
+                model.ShowVideo();
             }
-            LinphoneManager.Instance.LinphoneCore.SetDeviceRotation(rotation);
-            Logger.Dbg("[InCall] preview rotation = " + rotation);
-            ((InCallModel)ViewModel).LocalVideoRotation = rotation;
         }
     }
 }
