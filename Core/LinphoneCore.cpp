@@ -1507,7 +1507,6 @@ void Linphone::Core::LinphoneCore::CoreListener::set(LinphoneCoreListener^ liste
 
 void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCallState cstate, const char *msg) 
 {	
-	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::LinphoneCallState state = (Linphone::Core::LinphoneCallState) cstate;
 	Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
 	Linphone::Core::LinphoneCall^ lCall = (proxy) ? proxy->Ref() : nullptr;
@@ -1564,12 +1563,10 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 	if (listener != nullptr) {
 		listener->CallState(lCall, state, Linphone::Core::Utils::cctops(msg));
 	}
-	Linphone::Core::gApiLock.LeaveListener();
 }
 
 void registration_state_changed(::LinphoneCore *lc, ::LinphoneProxyConfig *cfg, ::LinphoneRegistrationState cstate, const char *msg)
 {
-	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr) {
 		Linphone::Core::RegistrationState state = (Linphone::Core::RegistrationState) cstate;
@@ -1577,33 +1574,27 @@ void registration_state_changed(::LinphoneCore *lc, ::LinphoneProxyConfig *cfg, 
 		Linphone::Core::LinphoneProxyConfig^ config = (proxy) ? proxy->Ref() : nullptr;
 		listener->RegistrationState(config, state, Linphone::Core::Utils::cctops(msg));
 	}
-	Linphone::Core::gApiLock.LeaveListener();
 }
 
 void global_state_changed(::LinphoneCore *lc, ::LinphoneGlobalState gstate, const char *msg)
 {
-	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr) {
 		Linphone::Core::GlobalState state = (Linphone::Core::GlobalState) gstate;
 		listener->GlobalState(state, Linphone::Core::Utils::cctops(msg));
 	}
-	Linphone::Core::gApiLock.LeaveListener();
 }
 
 void auth_info_requested(LinphoneCore *lc, const char *realm, const char *username, const char *domain) 
 {
-	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr) {
 		listener->AuthInfoRequested(Linphone::Core::Utils::cctops(realm), Linphone::Core::Utils::cctops(username), Linphone::Core::Utils::cctops(domain));
 	}
-	Linphone::Core::gApiLock.LeaveListener();
 }
 
 void dtmf_received(LinphoneCore *lc, LinphoneCall *call, int dtmf)
 {
-	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
 	Linphone::Core::LinphoneCall^ lCall = (proxy) ? proxy->Ref() : nullptr;
 	if (lCall == nullptr) {
@@ -1618,12 +1609,10 @@ void dtmf_received(LinphoneCore *lc, LinphoneCall *call, int dtmf)
 			listener->DTMFReceived(lCall, wdtmf);
 		}
 	}
-	Linphone::Core::gApiLock.LeaveListener();
 }
 
 void call_encryption_changed(LinphoneCore *lc, LinphoneCall *call, bool_t on, const char *authentication_token)
 {
-	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
 	Linphone::Core::LinphoneCall^ lCall = (proxy) ? proxy->Ref() : nullptr;
 	if (lCall == nullptr) {
@@ -1635,12 +1624,10 @@ void call_encryption_changed(LinphoneCore *lc, LinphoneCall *call, bool_t on, co
 			listener->CallEncryptionChanged(lCall, (on == TRUE), Linphone::Core::Utils::cctops(authentication_token));
 		}
 	}
-	Linphone::Core::gApiLock.LeaveListener();
 }
 
 void call_stats_updated(LinphoneCore *lc, LinphoneCall *call, const LinphoneCallStats *stats)
 {
-	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
 	Linphone::Core::LinphoneCall^ lCall = (proxy) ? proxy->Ref() : nullptr;
 	if (lCall == nullptr) {
@@ -1653,12 +1640,10 @@ void call_stats_updated(LinphoneCore *lc, LinphoneCall *call, const LinphoneCall
 			listener->CallStatsUpdated(lCall, lStats);
 		}
 	}
-	Linphone::Core::gApiLock.LeaveListener();
 }
 
 void message_received(LinphoneCore *lc, LinphoneChatRoom* chat_room, LinphoneChatMessage* message) 
 {
-	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr)
 	{
@@ -1670,12 +1655,10 @@ void message_received(LinphoneCore *lc, LinphoneChatRoom* chat_room, LinphoneCha
 
 		listener->MessageReceived(lMessage);
 	}
-	Linphone::Core::gApiLock.LeaveListener();
 }
 
 void composing_received(LinphoneCore *lc, LinphoneChatRoom *room) 
 {
-	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr)
 	{
@@ -1686,11 +1669,9 @@ void composing_received(LinphoneCore *lc, LinphoneChatRoom *room)
 		}
 		listener->ComposingReceived(lRoom);
 	}
-	Linphone::Core::gApiLock.LeaveListener();
 }
 
 void file_transfer_progress_indication(LinphoneCore *lc, LinphoneChatMessage *message, const LinphoneContent *content, size_t offset, size_t total) {
-	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr)
 	{
@@ -1701,27 +1682,22 @@ void file_transfer_progress_indication(LinphoneCore *lc, LinphoneChatMessage *me
 		}
 		listener->FileTransferProgressIndication(lMessage, (int)offset, total);
 	}
-	Linphone::Core::gApiLock.LeaveListener();
 }
 
 void log_collection_upload_progress_indication(LinphoneCore *lc, size_t progress) {
-	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr)
 	{
 		listener->LogUploadProgressChanged((int)progress);
 	}
-	Linphone::Core::gApiLock.LeaveListener();
 }
 
 void log_collection_upload_state_changed(LinphoneCore *lc, ::LinphoneCoreLogCollectionUploadState state, const char *info) {
-	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr)
 	{
 		listener->LogUploadStatusChanged((Linphone::Core::LinphoneCoreLogCollectionUploadState)state, info ? Linphone::Core::Utils::cctops(info) : nullptr);
 	}
-	Linphone::Core::gApiLock.LeaveListener();
 }
 
 Linphone::Core::LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener) :

@@ -95,7 +95,6 @@ void Linphone::Core::LinphoneChatMessage::SetAppData(Platform::String^ appData)
 
 static void status_cb(::LinphoneChatMessage* msg, ::LinphoneChatMessageState state, void* ud)
 {
-	Linphone::Core::gApiLock.EnterListener();
 	Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneChatMessageListener^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneChatMessageListener^> *>(ud);
 	Linphone::Core::LinphoneChatMessageListener^ listener = (proxy) ? proxy->Ref() : nullptr;
 
@@ -108,7 +107,6 @@ static void status_cb(::LinphoneChatMessage* msg, ::LinphoneChatMessageState sta
 
 		listener->MessageStateChanged(lChatMessage, (Linphone::Core::LinphoneChatMessageState) state);
 	}
-	Linphone::Core::gApiLock.LeaveListener();
 }
 
 void Linphone::Core::LinphoneChatMessage::StartFileDownload(Linphone::Core::LinphoneChatMessageListener^ listener, Platform::String^ filepath)
