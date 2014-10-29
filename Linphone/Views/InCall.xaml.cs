@@ -30,6 +30,8 @@ namespace Linphone.Views
         private static double BUTTON_DISABLED_OPACITY = 0.4;
         private static double BUTTON_ENABLED_OPACITY = 1.0;
 
+        private bool statsVisible = false;
+
         /// <summary>
         /// Public constructor.
         /// </summary>
@@ -157,6 +159,7 @@ namespace Linphone.Views
             buttons_landscape.stats.IsChecked = areStatsVisible;
             buttons.statsPanel.Visibility = areStatsVisible ? Visibility.Visible : Visibility.Collapsed;
             buttons_landscape.statsPanel.Visibility = areStatsVisible ? Visibility.Visible : Visibility.Collapsed;
+            statsVisible = areStatsVisible;
         }
 
         private void buttons_HangUpClick(object sender)
@@ -590,7 +593,10 @@ namespace Linphone.Views
             {
                 fadeTimer.Dispose();
             }
-            fadeTimer = new Timer(new TimerCallback(HideButtons), null, 4000, Timeout.Infinite);
+            if (!statsVisible)
+            {
+                fadeTimer = new Timer(new TimerCallback(HideButtons), null, 4000, Timeout.Infinite);
+            }
         }
 
         private void StopFadeTimer()
