@@ -3,6 +3,7 @@ using Linphone.Model;
 using Linphone.Resources;
 using Microsoft.Phone.Shell;
 using System;
+using System.Collections.Generic;
 using System.Windows.Navigation;
 
 namespace Linphone.Views
@@ -29,6 +30,16 @@ namespace Linphone.Views
             AutomaticallyInitiateVideo.IsChecked = _callSettings.AutomaticallyInitiateVideo;
             AutomaticallyAcceptVideo.IsChecked = _callSettings.AutomaticallyAcceptVideo;
             SelfViewEnabled.IsChecked = _callSettings.SelfViewEnabled;
+
+            List<string> videoSizes = new List<string>
+            {
+                "vga",
+                "cif",
+                "qvga",
+                "qcif"
+            };
+            PreferredVideoSize.ItemsSource = videoSizes;
+            PreferredVideoSize.SelectedItem = _callSettings.PreferredVideoSize;
 
             _codecsSettings.Load();
             H264.IsChecked = _codecsSettings.H264;
@@ -65,6 +76,7 @@ namespace Linphone.Views
             _callSettings.AutomaticallyInitiateVideo = ToBool(AutomaticallyInitiateVideo.IsChecked);
             _callSettings.AutomaticallyAcceptVideo = ToBool(AutomaticallyAcceptVideo.IsChecked);
             _callSettings.SelfViewEnabled = ToBool(SelfViewEnabled.IsChecked);
+            _callSettings.PreferredVideoSize = PreferredVideoSize.SelectedItem.ToString();
             _callSettings.Save();
         }
 

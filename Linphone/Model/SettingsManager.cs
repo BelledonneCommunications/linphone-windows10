@@ -950,6 +950,7 @@ namespace Linphone.Model
         private const string AutomaticallyInitiateVideoKeyName = "AutomaticallyInitiateVideo";
         private const string AutomaticallyAcceptVideoKeyName = "AutomaticallyAcceptVideo";
         private const string SelfViewEnabledKeyName = "SelfViewEnabled";
+        private const string PreferredVideoSizeKeyName = "PreferredVideoSize";
         #endregion
 
         #region Implementation of the ISettingsManager interface
@@ -965,6 +966,7 @@ namespace Linphone.Model
             dict[AutomaticallyInitiateVideoKeyName] = policy.AutomaticallyInitiate.ToString();
             dict[AutomaticallyAcceptVideoKeyName] = policy.AutomaticallyAccept.ToString();
             dict[SelfViewEnabledKeyName] = LinphoneManager.Instance.LinphoneCore.IsSelfViewEnabled().ToString();
+            dict[PreferredVideoSizeKeyName] = LinphoneManager.Instance.LinphoneCore.GetPreferredVideoSizeName();
         }
 
         /// <summary>
@@ -995,6 +997,10 @@ namespace Linphone.Model
             if (ValueChanged(SelfViewEnabledKeyName))
             {
                 LinphoneManager.Instance.LinphoneCore.EnableSelfView(Convert.ToBoolean(GetNew(SelfViewEnabledKeyName)));
+            }
+            if (ValueChanged(PreferredVideoSizeKeyName))
+            {
+                LinphoneManager.Instance.LinphoneCore.SetPreferredVideoSizeByName(GetNew(PreferredVideoSizeKeyName));
             }
         }
         #endregion
@@ -1087,6 +1093,21 @@ namespace Linphone.Model
             set
             {
                 Set(SelfViewEnabledKeyName, value.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Preferred video size (String).
+        /// </summary>
+        public string PreferredVideoSize
+        {
+            get
+            {
+                return Get(PreferredVideoSizeKeyName);
+            }
+            set
+            {
+                Set(PreferredVideoSizeKeyName, value);
             }
         }
         #endregion

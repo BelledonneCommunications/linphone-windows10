@@ -1042,6 +1042,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Preferred video size.
+        /// </summary>
+        public static string PreferredVideoSizeSetting {
+            get {
+                return ResourceManager.GetString("PreferredVideoSizeSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Refresh.
         /// </summary>
         public static string Refresh {

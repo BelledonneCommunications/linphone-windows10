@@ -1257,6 +1257,16 @@ Linphone::Core::VideoSize^ Linphone::Core::LinphoneCore::GetPreferredVideoSize()
 	return size;
 }
 
+Platform::String^ Linphone::Core::LinphoneCore::GetPreferredVideoSizeName()
+{
+	TRACE; gApiLock.Lock();
+	char *cSizeName = linphone_core_get_preferred_video_size_name(this->lc);
+	Platform::String^ sizeName = Utils::cctops(cSizeName);
+	ms_free(cSizeName);
+	gApiLock.Unlock();
+	return sizeName;
+}
+
 void Linphone::Core::LinphoneCore::SetPreferredVideoSize(Linphone::Core::VideoSize^ size)
 {
 	if (size->Name != nullptr) {
@@ -1277,6 +1287,13 @@ void Linphone::Core::LinphoneCore::SetPreferredVideoSize(int width, int height)
 	vsize.height = height;
 	TRACE; gApiLock.Lock();
 	linphone_core_set_preferred_video_size(this->lc, vsize);
+	gApiLock.Unlock();
+}
+
+void Linphone::Core::LinphoneCore::SetPreferredVideoSizeByName(Platform::String^ sizeName)
+{
+	TRACE; gApiLock.Lock();
+	linphone_core_set_preferred_video_size_by_name(this->lc, Utils::pstoccs(sizeName));
 	gApiLock.Unlock();
 }
 

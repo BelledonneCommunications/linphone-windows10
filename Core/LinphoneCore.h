@@ -937,6 +937,12 @@ namespace Linphone
 			VideoSize^ GetPreferredVideoSize();
 
 			/// <summary>
+			/// Gets the preferred video size name.
+			/// </summary>
+			/// <returns>The preferred video size name</returns>
+			Platform::String^ GetPreferredVideoSizeName();
+
+			/// <summary>
 			/// Sets the preferred video size.
 			/// This applies only to the stream that is captured and sent to the remote party,
 			/// since we accept all standard video size on the receive path.
@@ -952,6 +958,14 @@ namespace Linphone
 			/// <param name="width">The width of the preferred video size</param>
 			/// <param name="height">The height of the preferred video size</param>
 			void SetPreferredVideoSize(int width, int height);
+
+			/// <summary>
+			/// Sets the preferred video size by telling its name.
+			/// This applies only to the stream that is captured and sent to the remote party,
+			/// since we accept all standard video size on the receive path.
+			/// </summary>
+			/// <param name="sizeName">The name of the preferred video size (eg. "vga")</param>
+			void SetPreferredVideoSizeByName(Platform::String^ sizeName);
 
 			/// <summary>
 			/// Gets the list of video devices.
