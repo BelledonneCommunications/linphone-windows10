@@ -181,18 +181,20 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <TextBlock x:Name="AudioStats" Text="{Binding Path=LocalizedResources.AudioStatsMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="0"/>
-            <TextBlock Text="{Binding AudioDownBw}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="1"/>
-            <TextBlock Text="{Binding AudioUpBw}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="2"/>
-            <TextBlock Text="{Binding AudioPType}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="3"/>
-            <TextBlock x:Name="VideoStats" Visibility="{Binding VideoStatsVisibility}" Text="{Binding Path=LocalizedResources.VideoStatsMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="2" Grid.Row="0"/>
-            <TextBlock Text="{Binding VideoDownBw}" Visibility="{Binding VideoStatsVisibility}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="1"/>
-            <TextBlock Text="{Binding VideoUpBw}" Visibility="{Binding VideoStatsVisibility}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="2"/>
-            <TextBlock Text="{Binding VideoPType}" Visibility="{Binding VideoStatsVisibility}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="3"/>
-            <TextBlock Text="{Binding VideoSize}" Visibility="{Binding VideoStatsVisibility}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="4"/>
-            <TextBlock x:Name="CallStats" Text="--" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2"/>
-            <TextBlock Text="{Binding MediaEncryption}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2"/>
-            <TextBlock Text="{Binding ICE}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2"/>
+            <TextBlock Text="{Binding Path=LocalizedResources.StatPayloadType, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeSmall}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" Margin="5" Grid.Column="0" Grid.Row="1"/>
+            <TextBlock Text="{Binding PayloadType}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="1"/>
+            <TextBlock Text="{Binding Path=LocalizedResources.StatDownloadBandwidth, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeSmall}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" Margin="5" Grid.Column="0" Grid.Row="2"/>
+            <TextBlock Text="{Binding DownBandwidth}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="2"/>
+            <TextBlock Text="{Binding Path=LocalizedResources.StatUploadBandwidth, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeSmall}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" Margin="5" Grid.Column="0" Grid.Row="3"/>
+            <TextBlock Text="{Binding UpBandwidth}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="3"/>
+            <TextBlock Text="{Binding Path=LocalizedResources.StatMediaEncryption, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeSmall}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" Margin="5" Grid.Column="0" Grid.Row="4"/>
+            <TextBlock Text="{Binding MediaEncryption}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="4"/>
+            <TextBlock Text="{Binding Path=LocalizedResources.StatICE, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeSmall}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" Margin="5" Grid.Column="0" Grid.Row="5"/>
+            <TextBlock Text="{Binding ICE}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="5"/>
+            <TextBlock Text="{Binding Path=LocalizedResources.StatReceivedVideoSize, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeSmall}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" Margin="5" Grid.Column="0" Grid.Row="6"/>
+            <TextBlock Text="{Binding ReceivedVideoSize}" Visibility="{Binding VideoStatsVisibility}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="6"/>
+            <TextBlock Text="{Binding Path=LocalizedResources.StatSentVideoSize, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeSmall}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" Margin="5" Grid.Column="0" Grid.Row="7"/>
+            <TextBlock Text="{Binding SentVideoSize}" Visibility="{Binding VideoStatsVisibility}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="7"/>
         </Grid>
 
         <!-- Numeric pad buttons -->

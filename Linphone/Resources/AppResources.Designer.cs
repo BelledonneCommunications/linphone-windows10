@@ -1367,16 +1367,16 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Down.
+        ///   Looks up a localized string similar to Download bandwidth:.
         /// </summary>
-        public static string StatDownloadBW {
+        public static string StatDownloadBandwidth {
             get {
-                return ResourceManager.GetString("StatDownloadBW", resourceCulture);
+                return ResourceManager.GetString("StatDownloadBandwidth", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ICE connectivity.
+        ///   Looks up a localized string similar to ICE connectivity:.
         /// </summary>
         public static string StatICE {
             get {
@@ -1385,7 +1385,7 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Media encryption.
+        ///   Looks up a localized string similar to Media encryption:.
         /// </summary>
         public static string StatMediaEncryption {
             get {
@@ -1394,11 +1394,20 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Codec.
+        ///   Looks up a localized string similar to Codec:.
         /// </summary>
-        public static string StatPayload {
+        public static string StatPayloadType {
             get {
-                return ResourceManager.GetString("StatPayload", resourceCulture);
+                return ResourceManager.GetString("StatPayloadType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Received Video Size:.
+        /// </summary>
+        public static string StatReceivedVideoSize {
+            get {
+                return ResourceManager.GetString("StatReceivedVideoSize", resourceCulture);
             }
         }
         
@@ -1412,20 +1421,20 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Up.
+        ///   Looks up a localized string similar to Sent Video Size:.
         /// </summary>
-        public static string StatUploadBW {
+        public static string StatSentVideoSize {
             get {
-                return ResourceManager.GetString("StatUploadBW", resourceCulture);
+                return ResourceManager.GetString("StatSentVideoSize", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Size.
+        ///   Looks up a localized string similar to Upload bandwidth:.
         /// </summary>
-        public static string StatVideoSize {
+        public static string StatUploadBandwidth {
             get {
-                return ResourceManager.GetString("StatVideoSize", resourceCulture);
+                return ResourceManager.GetString("StatUploadBandwidth", resourceCulture);
             }
         }
         

@@ -335,17 +335,17 @@ and cc-by-nd from https://github.com/Templarian/WindowsIcons</value>
   <data name="Stats" xml:space="preserve">
     <value>stats</value>
   </data>
-  <data name="StatPayload" xml:space="preserve">
-    <value>Codec</value>
+  <data name="StatPayloadType" xml:space="preserve">
+    <value>Codec:</value>
   </data>
-  <data name="StatDownloadBW" xml:space="preserve">
-    <value>Down</value>
+  <data name="StatDownloadBandwidth" xml:space="preserve">
+    <value>Download bandwidth:</value>
   </data>
   <data name="AudioStatsMenu" xml:space="preserve">
     <value>Audio stats</value>
   </data>
-  <data name="StatUploadBW" xml:space="preserve">
-    <value>Up</value>
+  <data name="StatUploadBandwidth" xml:space="preserve">
+    <value>Upload bandwidth:</value>
   </data>
   <data name="SIPInfoSetting" xml:space="preserve">
     <value>Send DTMFs as SIP INFO</value>
@@ -596,10 +596,10 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
     <value>SRTP</value>
   </data>
   <data name="StatMediaEncryption" xml:space="preserve">
-    <value>Media encryption</value>
+    <value>Media encryption:</value>
   </data>
   <data name="StatICE" xml:space="preserve">
-    <value>ICE connectivity</value>
+    <value>ICE connectivity:</value>
   </data>
   <data name="AccountMenuSubtitle" xml:space="preserve">
     <value>account settings</value>
@@ -655,10 +655,13 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   <data name="RegistrationFailedPopupTitle" xml:space="preserve">
     <value>Registration failed</value>
   </data>
-  <data name="StatVideoSize" xml:space="preserve">
-    <value>Size</value>
+  <data name="StatReceivedVideoSize" xml:space="preserve">
+    <value>Received Video Size:</value>
   </data>
   <data name="PreferredVideoSizeSetting" xml:space="preserve">
     <value>Preferred video size</value>
+  </data>
+  <data name="StatSentVideoSize" xml:space="preserve">
+    <value>Sent Video Size:</value>
   </data>
 </root>

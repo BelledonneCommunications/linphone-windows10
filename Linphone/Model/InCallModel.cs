@@ -451,39 +451,39 @@ namespace Linphone.Views
                 this.OnPropertyChanged();
             }
         }
-        public string AudioDownBw
+        public string DownBandwidth
         {
             get
             {
-                return audioDownBw;
+                return downBandwidth;
             }
             set
             {
-                audioDownBw = value;
+                downBandwidth = value;
                 this.OnPropertyChanged();
             }
         }
-        public string AudioPType
+        public string PayloadType
         {
             get
             {
-                return audioPType;
+                return payloadType;
             }
             set
             {
-                audioPType = value;
+                payloadType = value;
                 this.OnPropertyChanged();
             }
         }
-        public string AudioUpBw
+        public string UpBandwidth
         {
             get
             {
-                return audioUpBw;
+                return upBandwidth;
             }
             set
             {
-                audioUpBw = value;
+                upBandwidth = value;
                 this.OnPropertyChanged();
             }
         }
@@ -499,51 +499,27 @@ namespace Linphone.Views
                 this.OnPropertyChanged();
             }
         }
-        public string VideoDownBw
+        public string ReceivedVideoSize
         {
             get
             {
-                return videoDownBw;
+                return receivedVideoSize;
             }
             set
             {
-                videoDownBw = value;
+                receivedVideoSize = value;
                 this.OnPropertyChanged();
             }
         }
-        public string VideoUpBw
+        public string SentVideoSize
         {
             get
             {
-                return videoUpBw;
+                return sentVideoSize;
             }
             set
             {
-                videoUpBw = value;
-                this.OnPropertyChanged();
-            }
-        }
-        public string VideoPType
-        {
-            get
-            {
-                return videoPType;
-            }
-            set
-            {
-                videoPType = value;
-                this.OnPropertyChanged();
-            }
-        }
-        public string VideoSize
-        {
-            get
-            {
-                return videoSize;
-            }
-            set
-            {
-                videoSize = value;
+                sentVideoSize = value;
                 this.OnPropertyChanged();
             }
         }
@@ -576,13 +552,11 @@ namespace Linphone.Views
         private Double localVideoRotation = 0;
         private Double localVideoScaleX = 1.0;
         private string mediaEncryption = "";
-        private string audioDownBw = "";
-        private string audioPType = "";
-        private string audioUpBw = "";
-        private string videoDownBw = "";
-        private string videoPType = "";
-        private string videoUpBw = "";
-        private string videoSize = "";
+        private string downBandwidth = "";
+        private string upBandwidth = "";
+        private string payloadType = "";
+        private string receivedVideoSize = "";
+        private string sentVideoSize = "";
         private string ice = "";
         private Visibility videoStatsVisibility = Visibility.Collapsed;
         #endregion
