@@ -29,6 +29,13 @@
             VerticalAlignment="Center"
             RenderTransformOrigin="0.5,0.5"/>
 
+        <ProgressBar x:Name="RemoteVideoProgressBar"
+            Visibility="{Binding RemoteVideoProgressBarVisibility}"
+            IsIndeterminate="True"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            Width="{Binding ActualWidth, ElementName=LayoutRoot, Mode=OneWay}"
+            Height="{Binding ActualHeight, ElementName=LayoutRoot, Mode=OneWay}"/>
+
         <Grid x:Name="HUD"
             Width="{Binding ActualWidth, ElementName=LayoutRoot, Mode=OneWay}"
             Height="{Binding ActualHeight, ElementName=LayoutRoot, Mode=OneWay}"

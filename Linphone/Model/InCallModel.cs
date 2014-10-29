@@ -98,11 +98,13 @@ namespace Linphone.Views
             RemoteVideoRotation = rotation;
             Int32 id = LinphoneManager.Instance.LinphoneCore.GetNativeVideoWindowId();
             RemoteVideoUri = Mediastreamer2.WP8Video.VideoRenderer.StreamUri(id);
+            RemoteVideoProgressBarVisibility = Visibility.Visible;
         }
 
         public void RemoteVideoOpened()
         {
             RemoteVideoVisibility = Visibility.Visible;
+            RemoteVideoProgressBarVisibility = Visibility.Collapsed;
         }
 
         private void HideRemoteVideo()
@@ -341,6 +343,22 @@ namespace Linphone.Views
             }
         }
 
+        public Visibility RemoteVideoProgressBarVisibility
+        {
+            get
+            {
+                return this.remoteVideoProgressBarVisibility;
+            }
+            set
+            {
+                if (this.RemoteVideoProgressBarVisibility != value)
+                {
+                    this.remoteVideoProgressBarVisibility = value;
+                    this.OnPropertyChanged();
+                }
+            }
+        }
+
         /// <summary>
         /// Uri of the local video stream.
         /// </summary>
@@ -546,6 +564,7 @@ namespace Linphone.Views
         private Boolean isVideoActive = false;
         private Uri remoteVideoUri = null;
         private Visibility remoteVideoVisibility = Visibility.Collapsed;
+        private Visibility remoteVideoProgressBarVisibility = Visibility.Collapsed;
         private int remoteVideoRotation = 0;
         private Uri localVideoUri = null;
         private Visibility localVideoVisibility = Visibility.Collapsed;
