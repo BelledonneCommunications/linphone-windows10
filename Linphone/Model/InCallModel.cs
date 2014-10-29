@@ -156,6 +156,7 @@ namespace Linphone.Views
 
         public void ShowVideo()
         {
+            Logger.Msg("[InCall] ShowVideo");
             ShowRemoteVideo();
             if (LinphoneManager.Instance.LinphoneCore.IsSelfViewEnabled())
             {
@@ -165,6 +166,7 @@ namespace Linphone.Views
 
         public void HideVideo()
         {
+            Logger.Msg("[InCall] HideVideo");
             HideRemoteVideo();
             HideLocalVideo();
         }

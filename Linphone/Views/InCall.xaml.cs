@@ -543,24 +543,24 @@ namespace Linphone.Views
 
         private void remoteVideo_MediaOpened_1(object sender, System.Windows.RoutedEventArgs e)
         {
-            Logger.Msg("RemoteVideo Opened: " + ((MediaElement)sender).Source.AbsoluteUri);
+            Logger.Msg("[InCall] RemoteVideo Opened: " + ((MediaElement)sender).Source.AbsoluteUri);
             ((InCallModel)ViewModel).RemoteVideoOpened();
         }
 
         private void remoteVideo_MediaFailed_1(object sender, System.Windows.ExceptionRoutedEventArgs e)
         {
-            Logger.Err("RemoteVideo Failed: " + e.ErrorException.Message);
+            Logger.Err("[InCall] RemoteVideo Failed: " + e.ErrorException.Message);
         }
 
         private void localVideo_MediaOpened_1(object sender, System.Windows.RoutedEventArgs e)
         {
-            Logger.Msg("LocalVideo Opened: " + ((MediaElement)sender).Source.AbsoluteUri);
+            Logger.Msg("[InCall] LocalVideo Opened: " + ((MediaElement)sender).Source.AbsoluteUri);
             ((InCallModel)ViewModel).LocalVideoOpened();
         }
 
         private void localVideo_MediaFailed_1(object sender, System.Windows.ExceptionRoutedEventArgs e)
         {
-            Logger.Err("LocalVideo Failed: " + e.ErrorException.Message);
+            Logger.Err("[InCall] LocalVideo Failed: " + e.ErrorException.Message);
         }
 
         /// <summary>
