@@ -31,25 +31,25 @@ static void chat_room_callback(::LinphoneChatMessage* msg, ::LinphoneChatMessage
 
 void Linphone::Core::LinphoneChatRoom::SendMessage(Linphone::Core::LinphoneChatMessage^ message, Linphone::Core::LinphoneChatMessageListener^ listener)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	RefToPtrProxy<LinphoneChatMessageListener^> *listenerPtr = new RefToPtrProxy<LinphoneChatMessageListener^>(listener);
 	linphone_chat_room_send_message2(this->room, message->message, chat_room_callback, listenerPtr);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Linphone::Core::LinphoneChatMessage^ Linphone::Core::LinphoneChatRoom::CreateLinphoneChatMessage(Platform::String^ message)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	const char* msg = Linphone::Core::Utils::pstoccs(message);
 	Linphone::Core::LinphoneChatMessage^ chatMessage = (Linphone::Core::LinphoneChatMessage^) Linphone::Core::Utils::CreateLinphoneChatMessage(linphone_chat_room_create_message(this->room, msg));
 	delete(msg);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return chatMessage;
 }
 
 Linphone::Core::LinphoneChatMessage^ Linphone::Core::LinphoneChatRoom::CreateFileTransferMessage(Platform::String^ type, Platform::String^ subtype, Platform::String^ name, int size, Platform::String^ filepath)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	const char *ctype = Linphone::Core::Utils::pstoccs(type);
 	const char *csubtype = Linphone::Core::Utils::pstoccs(subtype);
 	const char *cname = Linphone::Core::Utils::pstoccs(name);
@@ -68,53 +68,53 @@ Linphone::Core::LinphoneChatMessage^ Linphone::Core::LinphoneChatRoom::CreateFil
 	delete(csubtype);
 	delete(cname);
 	delete(cfilepath);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return chatMessage;
 }
 
 Platform::Boolean Linphone::Core::LinphoneChatRoom::IsRemoteComposing()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean isComposing = (linphone_chat_room_is_remote_composing(this->room) == TRUE);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return isComposing;
 }
 
 void Linphone::Core::LinphoneChatRoom::Compose()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_chat_room_compose(this->room);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 int Linphone::Core::LinphoneChatRoom::GetHistorySize()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	int size = linphone_chat_room_get_history_size(this->room);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return size;
 }
 
 void Linphone::Core::LinphoneChatRoom::DeleteHistory()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_chat_room_delete_history(this->room);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 int Linphone::Core::LinphoneChatRoom::GetUnreadMessageCount()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	int unread = linphone_chat_room_get_unread_messages_count(this->room);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return unread;
 }
 
 void Linphone::Core::LinphoneChatRoom::MarkAsRead()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_chat_room_mark_as_read(this->room);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 static void AddChatMessageToVector(void *vMessage, void *vector)
@@ -128,20 +128,20 @@ static void AddChatMessageToVector(void *vMessage, void *vector)
 
 IVector<Object^>^ Linphone::Core::LinphoneChatRoom::GetHistory()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	IVector<Object^>^ history = ref new Vector<Object^>();
 	MSList* messages = linphone_chat_room_get_history(this->room, 0);
 	RefToPtrProxy<IVector<Object^>^> *historyPtr = new RefToPtrProxy<IVector<Object^>^>(history);
 	ms_list_for_each2(messages, AddChatMessageToVector, historyPtr);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return history;
 }
 
 void Linphone::Core::LinphoneChatRoom::DeleteMessageFromHistory(Linphone::Core::LinphoneChatMessage^ message)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_chat_room_delete_message(this->room, message->message);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Linphone::Core::LinphoneChatRoom::LinphoneChatRoom(::LinphoneChatRoom *cr) :

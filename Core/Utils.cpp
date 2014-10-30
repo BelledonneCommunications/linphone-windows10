@@ -121,24 +121,24 @@ Platform::String^ Linphone::Core::Utils::cctops(const char* cc)
 
 void Linphone::Core::Utils::LinphoneCoreSetLogHandler(void* logfunc)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_log_handler(static_cast<OrtpLogFunc>(logfunc));
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::Utils::LinphoneCoreEnableLogCollection(bool enable)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_enable_log_collection(enable);
 	linphone_core_set_log_collection_path(pstoccs(ApplicationData::Current->LocalFolder->Path));
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::Utils::LinphoneCoreSetLogLevel(int loglevel)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_log_level(static_cast<OrtpLogLevel>(loglevel));
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Platform::Object^ Linphone::Core::Utils::CreateLpConfig(void* config)
@@ -246,7 +246,7 @@ Platform::Object^ Linphone::Core::Utils::CreateVideoSize(int width, int height, 
 
 void Linphone::Core::Utils::EchoCalibrationCallback(void *lc, int status, int delay_ms, void *data)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	EchoCalibrationData *ecData = static_cast<EchoCalibrationData *>(data);
 	if (ecData != nullptr) {
 		delete ecData;
@@ -255,7 +255,7 @@ void Linphone::Core::Utils::EchoCalibrationCallback(void *lc, int status, int de
 	Linphone::Core::LinphoneCore^ lCore = (proxy) ? proxy->Ref() : nullptr;
 	Linphone::Core::EcCalibratorStatus ecStatus = (Linphone::Core::EcCalibratorStatus) status;
 	lCore->listener->EcCalibrationStatus(ecStatus, delay_ms);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
  Platform::Object^ Linphone::Core::Utils::CreateLinphoneChatMessage(void* message)

@@ -25,7 +25,7 @@ Globals^ Globals::singleton = nullptr;
 void Globals::StartServer(const Platform::Array<Platform::String^>^ outOfProcServerClassNames)
 {
     // Make sure only one API call is in progress at a time
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 
     std::unique_ptr<PFNGETACTIVATIONFACTORY[]> activationFactoryCallbacks;
     std::unique_ptr<HSTRING[]> hOutOfProcServerClassNames;
@@ -38,7 +38,7 @@ void Globals::StartServer(const Platform::Array<Platform::String^>^ outOfProcSer
 
     if (this->started)
     {
-		gApiLock.Unlock();
+		API_UNLOCK;
         return; // Nothing more to be done
     }
 
@@ -83,7 +83,7 @@ void Globals::StartServer(const Platform::Array<Platform::String^>^ outOfProcSer
     }
 
     this->started = true;
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 unsigned int Globals::GetCurrentProcessId()
@@ -116,7 +116,7 @@ Globals^ Globals::Instance::get()
     if (Globals::singleton == nullptr)
     {
         // Make sure only one API call is in progress at a time
-		TRACE; gApiLock.Lock();
+		API_LOCK;
 
         if (Globals::singleton == nullptr)
         {
@@ -124,7 +124,7 @@ Globals^ Globals::Instance::get()
         }
         // else: some other thread has created an instance of the call controller
 
-		gApiLock.Unlock();
+		API_UNLOCK;
     }
 
     return Globals::singleton;
@@ -135,14 +135,14 @@ LinphoneCoreFactory^ Globals::LinphoneCoreFactory::get()
 	if (this->linphoneCoreFactory == nullptr)
     {
         // Make sure only one API call is in progress at a time
-		TRACE; gApiLock.Lock();
+		API_LOCK;
 
         if (this->linphoneCoreFactory == nullptr)
         {
             this->linphoneCoreFactory = ref new Linphone::Core::LinphoneCoreFactory();
         }
 
-		gApiLock.Unlock();
+		API_UNLOCK;
     }
 
 	return this->linphoneCoreFactory;
@@ -158,7 +158,7 @@ Linphone::Core::CallController^ Globals::CallController::get()
 	if (this->callController == nullptr) 
     { 
         // Make sure only one API call is in progress at a time
-		TRACE; gApiLock.Lock();
+		API_LOCK;
  
         if (this->callController == nullptr) 
         { 
@@ -166,7 +166,7 @@ Linphone::Core::CallController^ Globals::CallController::get()
         } 
         // else: some other thread has created an instance of the call controller 
 
-		gApiLock.Unlock();
+		API_UNLOCK;
     } 
  
     return this->callController; 
@@ -177,14 +177,14 @@ Linphone::Core::BackgroundModeLogger^ Globals::BackgroundModeLogger::get()
 	if (this->backgroundModeLogger == nullptr)
 	{
 		// Make sure only one API call is in progress at a time
-		TRACE; gApiLock.Lock();
+		API_LOCK;
 
 		if (this->backgroundModeLogger == nullptr)
 		{
 			this->backgroundModeLogger = ref new Linphone::Core::BackgroundModeLogger();
 		}
 
-		gApiLock.Unlock();
+		API_UNLOCK;
 	}
 
 	return this->backgroundModeLogger;
@@ -197,9 +197,9 @@ Mediastreamer2::WP8Video::IVideoRenderer^ Globals::VideoRenderer::get()
 
 void Globals::VideoRenderer::set(Mediastreamer2::WP8Video::IVideoRenderer^ value)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	this->videoRenderer = value;
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Globals::Globals() :

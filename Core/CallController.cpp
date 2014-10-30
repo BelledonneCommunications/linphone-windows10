@@ -13,7 +13,7 @@ using namespace Windows::Phone::Networking::Voip;
 
 VoipPhoneCall^ CallController::OnIncomingCallReceived(Linphone::Core::LinphoneCall^ call, Platform::String^ contactName, Platform::String^ contactNumber, IncomingCallViewDismissedCallback^ incomingCallViewDismissedCallback)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 
 	VoipPhoneCall^ incomingCall = nullptr;
 	this->call = call;
@@ -56,7 +56,7 @@ VoipPhoneCall^ CallController::OnIncomingCallReceived(Linphone::Core::LinphoneCa
 				&incomingCall);
 		}
 		catch(...) {
-			gApiLock.Unlock();
+			API_UNLOCK;
 			return nullptr;
 	    }
 
@@ -67,13 +67,13 @@ VoipPhoneCall^ CallController::OnIncomingCallReceived(Linphone::Core::LinphoneCa
 		// StreamsRunning state by calling NewIncomingCallForCustomIncomingCallView()
 	}
 
-	gApiLock.Unlock();
+	API_UNLOCK;
     return incomingCall;
 }
 
 void CallController::OnAcceptCallRequested(VoipPhoneCall^ incomingCall, CallAnswerEventArgs^ args)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 
 	incomingCall->NotifyCallActive();
 
@@ -96,12 +96,12 @@ void CallController::OnAcceptCallRequested(VoipPhoneCall^ incomingCall, CallAnsw
 #endif
 	}
 
-	gApiLock.Unlock();
+	API_UNLOCK;
 } 
  
 void CallController::OnRejectCallRequested(VoipPhoneCall^ incomingCall, CallRejectEventArgs^ args)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 
 	if (this->onIncomingCallViewDismissed != nullptr) {
 		this->onIncomingCallViewDismissed();
@@ -112,12 +112,12 @@ void CallController::OnRejectCallRequested(VoipPhoneCall^ incomingCall, CallReje
 	if (this->call != nullptr)
 		Globals::Instance->LinphoneCore->DeclineCall(this->call, this->declineReason);
 
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 VoipPhoneCall^ CallController::NewOutgoingCall(Platform::String^ number)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 
 	VoipPhoneCall^ outgoingCall = nullptr;
 	this->call = call;
@@ -139,7 +139,7 @@ VoipPhoneCall^ CallController::NewOutgoingCall(Platform::String^ number)
 
 	outgoingCall->NotifyCallActive();
 
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return outgoingCall;
 }
 
@@ -168,47 +168,47 @@ void CallController::NotifyMute(bool isMuted)
 
 IncomingCallViewDismissedCallback^ CallController::IncomingCallViewDismissed::get()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	IncomingCallViewDismissedCallback^ cb = this->onIncomingCallViewDismissed;
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return cb;
 }
 
 void CallController::IncomingCallViewDismissed::set(IncomingCallViewDismissedCallback^ cb)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	this->onIncomingCallViewDismissed = cb;
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Platform::Boolean CallController::CustomIncomingCallView::get()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean value = this->customIncomingCallView;
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return value;
 }
 
 void CallController::CustomIncomingCallView::set(Platform::Boolean value)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	this->customIncomingCallView = value;
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Reason CallController::DeclineReason::get()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::Reason value = this->declineReason;
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return value;
 }
 
 void CallController::DeclineReason::set(Linphone::Core::Reason value)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	this->declineReason = value;
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 CallController::CallController() :

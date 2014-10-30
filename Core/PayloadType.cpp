@@ -4,17 +4,17 @@
 
 Platform::String^ Linphone::Core::PayloadType::GetMimeType()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::String^ mimeType = Utils::cctops(this->payload->mime_type);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return mimeType;
 }
 
 int Linphone::Core::PayloadType::GetClockRate()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	int rate = this->payload->clock_rate;
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return rate;
 }
 

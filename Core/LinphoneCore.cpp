@@ -183,43 +183,43 @@ void Linphone::Core::LinphoneCore::SetLogLevel(OutputTraceLevel logLevel)
 
 void Linphone::Core::LinphoneCore::ClearProxyConfigs()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_clear_proxy_config(this->lc);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::AddProxyConfig(Linphone::Core::LinphoneProxyConfig^ proxyCfg)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_add_proxy_config(this->lc, proxyCfg->proxy_config);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetDefaultProxyConfig(Linphone::Core::LinphoneProxyConfig^ proxyCfg)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_default_proxy(this->lc, proxyCfg->proxy_config);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Linphone::Core::LinphoneProxyConfig^ Linphone::Core::LinphoneCore::GetDefaultProxyConfig()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	LinphoneProxyConfig^ defaultProxy = nullptr;
 	::LinphoneProxyConfig *proxy=NULL;
 	linphone_core_get_default_proxy(this->lc,&proxy);
 	if (proxy != nullptr) {
 		defaultProxy = ref new Linphone::Core::LinphoneProxyConfig(proxy);
 	}
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return defaultProxy;
 }
 
 Linphone::Core::LinphoneProxyConfig^ Linphone::Core::LinphoneCore::CreateEmptyProxyConfig()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::LinphoneProxyConfig^ proxyConfig = ref new Linphone::Core::LinphoneProxyConfig();
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return proxyConfig;
 }
 
@@ -235,34 +235,34 @@ static void AddProxyConfigToVector(void *vProxyConfig, void *vector)
 
 IVector<Object^>^ Linphone::Core::LinphoneCore::GetProxyConfigList() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	IVector<Object^>^ proxyconfigs = ref new Vector<Object^>();
 	const MSList *configList = linphone_core_get_proxy_config_list(this->lc);
 	RefToPtrProxy<IVector<Object^>^> *proxyConfigPtr = new RefToPtrProxy<IVector<Object^>^>(proxyconfigs);
 	ms_list_for_each2(configList, AddProxyConfigToVector, proxyConfigPtr);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return proxyconfigs;
 }
 
 void Linphone::Core::LinphoneCore::ClearAuthInfos() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_clear_all_auth_info(this->lc);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::AddAuthInfo(Linphone::Core::LinphoneAuthInfo^ info) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_add_auth_info(this->lc, info->auth_info);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Linphone::Core::LinphoneAuthInfo^ Linphone::Core::LinphoneCore::CreateAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm, Platform::String^ domain)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::LinphoneAuthInfo^ authInfo = ref new Linphone::Core::LinphoneAuthInfo(username, userid, password, ha1, realm, domain);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return authInfo;
 }
 
@@ -278,36 +278,36 @@ static void AddAuthInfoToVector(void *vAuthInfo, void *vector)
 
 IVector<Object^>^ Linphone::Core::LinphoneCore::GetAuthInfos()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	IVector<Object^>^ authInfos = ref new Vector<Object^>();
 	const MSList *authlist = linphone_core_get_auth_info_list(this->lc);
 	RefToPtrProxy<IVector<Object^>^> *authInfosPtr = new RefToPtrProxy<IVector<Object^>^>(authInfos);
 	ms_list_for_each2(authlist, AddAuthInfoToVector, authInfosPtr);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return authInfos;
 }
 
 void Linphone::Core::LinphoneCore::Destroy() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_destroy(this->lc);
 	IterateEnabled = false;
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCore::InterpretURL(Platform::String^ destination) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	const char* url = Linphone::Core::Utils::pstoccs(destination);
 	Linphone::Core::LinphoneAddress^ addr = (Linphone::Core::LinphoneAddress^) Linphone::Core::Utils::CreateLinphoneAddress(linphone_core_interpret_url(this->lc, url));
 	delete(url);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return addr;
 }
 
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::Invite(Platform::String^ destination) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::LinphoneCall^ lCall = nullptr;
 	const char *cc = Linphone::Core::Utils::pstoccs(destination);
 	::LinphoneCall *call = linphone_core_invite(this->lc, cc);
@@ -319,13 +319,13 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::Invite(Platform::Str
 		if (lCall == nullptr)
 			lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
 	}
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return lCall;
 }
 
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddress(Linphone::Core::LinphoneAddress^ destination) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::LinphoneCall^ lCall = nullptr;
 	::LinphoneCall *call = linphone_core_invite_address(this->lc, destination->address);
 	call = linphone_call_ref(call);
@@ -335,13 +335,13 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddress(Linpho
 		if (lCall == nullptr)
 			lCall = (Linphone::Core::LinphoneCall^) Linphone::Core::Utils::CreateLinphoneCall(call);
 	}
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return lCall;
 }
 
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddressWithParams(Linphone::Core::LinphoneAddress^ destination, LinphoneCallParams^ params) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::LinphoneCall^ lCall = nullptr;
 	::LinphoneCall *call = linphone_core_invite_address_with_params(this->lc, destination->address, params->params);
 	call = linphone_call_ref(call);
@@ -351,97 +351,97 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddressWithPar
 		if (lCall == nullptr)
 			lCall = (Linphone::Core::LinphoneCall^) Linphone::Core::Utils::CreateLinphoneCall(call);
 	}
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return lCall;
 }
 
 void Linphone::Core::LinphoneCore::TerminateCall(Linphone::Core::LinphoneCall^ call) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_terminate_call(this->lc, call->call);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::DeclineCall(Linphone::Core::LinphoneCall^ call, Linphone::Core::Reason reason)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_decline_call(this->lc, call->call, (LinphoneReason)reason);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::GetCurrentCall() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::LinphoneCall^ lCall = nullptr;
 	::LinphoneCall *call = linphone_core_get_current_call(this->lc);
 	if (call != nullptr) {
 		Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
 		lCall = (proxy) ? proxy->Ref() : nullptr;
 	}
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return lCall;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsInCall() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean inCall = (linphone_core_in_call(this->lc) == TRUE);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return inCall;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsIncomingInvitePending() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean invitePending = (linphone_core_inc_invite_pending(this->lc) == TRUE);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return invitePending;
 }
 
 void Linphone::Core::LinphoneCore::AcceptCall(Linphone::Core::LinphoneCall^ call) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_accept_call(this->lc, call->call);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::AcceptCallWithParams(Linphone::Core::LinphoneCall^ call, Linphone::Core::LinphoneCallParams^ params) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_accept_call_with_params(this->lc, call->call, params->params);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::AcceptCallUpdate(Linphone::Core::LinphoneCall^ call, Linphone::Core::LinphoneCallParams^ params) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_accept_call_update(this->lc, call->call, params->params);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::DeferCallUpdate(Linphone::Core::LinphoneCall^ call) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_defer_call_update(this->lc, call->call);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::UpdateCall(Linphone::Core::LinphoneCall^ call, Linphone::Core::LinphoneCallParams^ params) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	if (params != nullptr) {
 		linphone_core_update_call(this->lc, call->call, params->params);
 	} else {
 		linphone_core_update_call(this->lc, call->call, nullptr);
 	}
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Linphone::Core::LinphoneCallParams^ Linphone::Core::LinphoneCore::CreateDefaultCallParameters() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::LinphoneCallParams^ params = (Linphone::Core::LinphoneCallParams^) Linphone::Core::Utils::CreateLinphoneCallParams(linphone_core_create_default_call_parameters(this->lc));
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return params;
 }
 
@@ -457,160 +457,160 @@ void AddLogToVector(void* nLog, void* vector)
 
 IVector<Object^>^ Linphone::Core::LinphoneCore::GetCallLogs() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	IVector<Object^>^ logs = ref new Vector<Object^>();
 	const MSList* logslist = linphone_core_get_call_logs(this->lc);
 	RefToPtrProxy<IVector<Object^>^> *logsptr = new RefToPtrProxy<IVector<Object^>^>(logs);
 	ms_list_for_each2(logslist, AddLogToVector, logsptr);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return logs;
 }
 
 void Linphone::Core::LinphoneCore::ClearCallLogs() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_clear_call_logs(this->lc);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::RemoveCallLog(Linphone::Core::LinphoneCallLog^ log) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_remove_call_log(this->lc, log->callLog);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetNetworkReachable(Platform::Boolean isReachable) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_network_reachable(this->lc, isReachable);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsNetworkReachable() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean networkReachable = (linphone_core_is_network_reachable(this->lc) == TRUE);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return networkReachable;
 }
 
 void Linphone::Core::LinphoneCore::SetMicrophoneGain(float gain) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_mic_gain_db(this->lc, gain);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetPlaybackGain(float gain) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_playback_gain_db(this->lc, gain);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 float Linphone::Core::LinphoneCore::GetPlaybackGain() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	float gain = linphone_core_get_playback_gain_db(this->lc);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return gain;
 }
 
 void Linphone::Core::LinphoneCore::SetPlayLevel(int level) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_play_level(this->lc, level);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 int Linphone::Core::LinphoneCore::GetPlayLevel() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	int level = linphone_core_get_play_level(this->lc);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return level;
 }
 
 void Linphone::Core::LinphoneCore::MuteMic(Platform::Boolean isMuted) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_mute_mic(this->lc, isMuted);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsMicMuted() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean muted = (linphone_core_is_mic_muted(this->lc) == TRUE);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return muted;
 }
 
 void Linphone::Core::LinphoneCore::SendDTMF(char16 number) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	char conv[4];
 	if (wctomb(conv, number) == 1) {
 		linphone_core_send_dtmf(this->lc, conv[0]);
 	}
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::PlayDTMF(char16 number, int duration) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	char conv[4];
 	if (wctomb(conv, number) == 1) {
 		linphone_core_play_dtmf(this->lc, conv[0], duration);
 	}
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::StopDTMF() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_stop_dtmf(this->lc);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Linphone::Core::PayloadType^ Linphone::Core::LinphoneCore::FindPayloadType(Platform::String^ mime, int clockRate, int channels) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	const char* type = Linphone::Core::Utils::pstoccs(mime);
 	::PayloadType* pt = linphone_core_find_payload_type(this->lc, type, clockRate, channels);
 	delete type;
 	Linphone::Core::PayloadType^ payloadType = ref new Linphone::Core::PayloadType(pt);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return payloadType;
 }
 
 Linphone::Core::PayloadType^ Linphone::Core::LinphoneCore::FindPayloadType(Platform::String^ mime, int clockRate) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	const char* type = Linphone::Core::Utils::pstoccs(mime);
 	::PayloadType* pt = linphone_core_find_payload_type(this->lc, type, clockRate, LINPHONE_FIND_PAYLOAD_IGNORE_CHANNELS);
 	delete type;
 	Linphone::Core::PayloadType^ payloadType = ref new Linphone::Core::PayloadType(pt);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return payloadType;
 }
 
 bool Linphone::Core::LinphoneCore::PayloadTypeEnabled(PayloadType^ pt)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	::PayloadType *payload = pt->payload;
 	bool enabled = (linphone_core_payload_type_enabled(this->lc, payload) == TRUE);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return enabled;
 }
 
 void Linphone::Core::LinphoneCore::EnablePayloadType(PayloadType^ pt, Platform::Boolean enable) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	::PayloadType *payload = pt->payload;
 	linphone_core_enable_payload_type(this->lc, payload, enable);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 static void AddCodecToVector(void *vCodec, void *vector)
@@ -625,35 +625,35 @@ static void AddCodecToVector(void *vCodec, void *vector)
 
 IVector<Object^>^ Linphone::Core::LinphoneCore::GetAudioCodecs()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	IVector<Object^>^ codecs = ref new Vector<Object^>();
 	const MSList *codecslist = linphone_core_get_audio_codecs(this->lc);
 	RefToPtrProxy<IVector<Object^>^> *codecsPtr = new RefToPtrProxy<IVector<Object^>^>(codecs);
 	ms_list_for_each2(codecslist, AddCodecToVector, codecsPtr);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return codecs;
 }
 
 void Linphone::Core::LinphoneCore::EnableEchoCancellation(Platform::Boolean enable) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_enable_echo_cancellation(this->lc, enable);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsEchoCancellationEnabled() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean enabled = (linphone_core_echo_cancellation_enabled(this->lc) == TRUE);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return enabled;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsEchoLimiterEnabled() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean enabled = (linphone_core_echo_limiter_enabled(this->lc) == TRUE);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return enabled;
 }
 
@@ -690,238 +690,238 @@ static void EchoCalibrationAudioUninit(void *data)
 
 void Linphone::Core::LinphoneCore::StartEchoCalibration() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::EchoCalibrationData *data = new Linphone::Core::EchoCalibrationData();
 	linphone_core_start_echo_calibration(this->lc, EchoCalibrationCallback, EchoCalibrationAudioInit, EchoCalibrationAudioUninit, data);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::EnableEchoLimiter(Platform::Boolean enable) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_enable_echo_limiter(this->lc, enable);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetSignalingTransportsPorts(Transports^ t) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	::LCSipTransports transports;
 	memset(&transports, 0, sizeof(LCSipTransports));
 	transports.udp_port = t->UDP;
 	transports.tcp_port = t->TCP;
 	transports.tls_port = t->TLS;
 	linphone_core_set_sip_transports(this->lc, &transports);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Linphone::Core::Transports^ Linphone::Core::LinphoneCore::GetSignalingTransportsPorts()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	::LCSipTransports transports;
 	linphone_core_get_sip_transports(this->lc, &transports);
 	Linphone::Core::Transports^ t = ref new Linphone::Core::Transports(transports.udp_port, transports.tcp_port, transports.tls_port);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return t;
 }
 
 void Linphone::Core::LinphoneCore::EnableIPv6(Platform::Boolean enable) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_enable_ipv6(this->lc, enable);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetPresenceInfo(int minuteAway, Platform::String^ alternativeContact, OnlineStatus status) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	const char* ac = Linphone::Core::Utils::pstoccs(alternativeContact);
 	linphone_core_set_presence_info(this->lc, minuteAway, ac, (LinphoneOnlineStatus) status);
 	delete(ac);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetStunServer(Platform::String^ stun) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	const char* stunserver = Linphone::Core::Utils::pstoccs(stun);
 	linphone_core_set_stun_server(this->lc, stunserver);
 	delete(stunserver);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Platform::String^ Linphone::Core::LinphoneCore::GetStunServer() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::String^ server = Linphone::Core::Utils::cctops(linphone_core_get_stun_server(this->lc));
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return server;
 }
 
 void Linphone::Core::LinphoneCore::SetFirewallPolicy(FirewallPolicy policy) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_firewall_policy(this->lc, (LinphoneFirewallPolicy) policy);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Linphone::Core::FirewallPolicy Linphone::Core::LinphoneCore::GetFirewallPolicy() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::FirewallPolicy policy = (Linphone::Core::FirewallPolicy) linphone_core_get_firewall_policy(this->lc);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return policy;
 }
 
 void Linphone::Core::LinphoneCore::SetRootCA(Platform::String^ path) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	const char *ccPath = Utils::pstoccs(path);
 	linphone_core_set_root_ca(this->lc, ccPath);
 	delete ccPath;
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetUploadBandwidth(int bw) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_upload_bandwidth(this->lc, bw);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetDownloadBandwidth(int bw) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_download_bandwidth(this->lc, bw);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetDownloadPTime(int ptime) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_download_ptime(this->lc, ptime);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetUploadPTime(int ptime) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_upload_ptime(this->lc, ptime);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::EnableKeepAlive(Platform::Boolean enable)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_enable_keep_alive(this->lc, enable);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsKeepAliveEnabled() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean enabled = (linphone_core_keep_alive_enabled(this->lc) == TRUE);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return enabled;
 }
 
 void Linphone::Core::LinphoneCore::SetPlayFile(Platform::String^ path) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	const char* file = Linphone::Core::Utils::pstoccs(path);
 	linphone_core_set_play_file(this->lc, file);
 	delete(file);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::PauseCall(LinphoneCall^ call) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean ok = (linphone_core_pause_call(this->lc, call->call) == 0);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return ok;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::ResumeCall(LinphoneCall^ call) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean ok = (linphone_core_resume_call(this->lc, call->call) == 0);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return ok;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::PauseAllCalls() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean ok = (linphone_core_pause_all_calls(this->lc) == 0);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return ok;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsInConference() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean inConference = (linphone_core_is_in_conference(this->lc) == TRUE);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return inConference;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::EnterConference() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean ok = (linphone_core_enter_conference(this->lc) == 0);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return ok;
 }
 
 void Linphone::Core::LinphoneCore::LeaveConference() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_leave_conference(this->lc);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::AddToConference(LinphoneCall^ call) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_add_to_conference(this->lc, call->call);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::AddAllToConference() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_add_all_to_conference(this->lc);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::RemoveFromConference(LinphoneCall^ call) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_remove_from_conference(this->lc, call->call);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::TerminateConference() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_terminate_conference(this->lc);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 int Linphone::Core::LinphoneCore::GetConferenceSize() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	int size = linphone_core_get_conference_size(this->lc);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return size;
 }
 
 void Linphone::Core::LinphoneCore::TerminateAllCalls() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_terminate_all_calls(this->lc);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 static void AddCallToVector(void *vCall, void *vector)
@@ -937,26 +937,26 @@ static void AddCallToVector(void *vCall, void *vector)
 
 IVector<Object^>^ Linphone::Core::LinphoneCore::GetCalls() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Vector<Object^>^ calls = ref new Vector<Object^>();
 	const MSList *callsList = linphone_core_get_calls(this->lc);
 	RefToPtrProxy<IVector<Object^>^> *callsPtr = new RefToPtrProxy<IVector<Object^>^>(calls);
 	ms_list_for_each2(callsList, AddCallToVector, callsPtr);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return calls;
 }
 
 int Linphone::Core::LinphoneCore::GetCallsNb() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	int nb = linphone_core_get_calls_nb(this->lc);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return nb;
 }
 
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::FindCallFromUri(Platform::String^ uri) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	const char *curi = Utils::pstoccs(uri);
 	::LinphoneCall *call = const_cast<::LinphoneCall *>(linphone_core_find_call_from_uri(this->lc, curi));
 	Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
@@ -965,182 +965,182 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::FindCallFromUri(Plat
 		lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
 	}
 	delete curi;
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return lCall;
 }
 
 int Linphone::Core::LinphoneCore::GetMaxCalls() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	int max = linphone_core_get_max_calls(this->lc);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return max;
 }
 
 void Linphone::Core::LinphoneCore::SetMaxCalls(int max) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_max_calls(this->lc, max);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsMyself(Platform::String^ uri) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean myself = false;
 	LinphoneProxyConfig^ lpc = GetDefaultProxyConfig();
 	if (lpc != nullptr) {
 		myself = uri->Equals(lpc->GetIdentity());
 	}
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return myself;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsSoundResourcesLocked() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean locked = (linphone_core_sound_resources_locked(this->lc) == TRUE);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return locked;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsMediaEncryptionSupported(MediaEncryption menc) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean supported = (linphone_core_media_encryption_supported(this->lc, (LinphoneMediaEncryption) menc) == TRUE);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return supported;
 }
 
 void Linphone::Core::LinphoneCore::SetMediaEncryption(MediaEncryption menc) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_media_encryption(this->lc, (LinphoneMediaEncryption) menc);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Linphone::Core::MediaEncryption Linphone::Core::LinphoneCore::GetMediaEncryption() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::MediaEncryption enc = (Linphone::Core::MediaEncryption) linphone_core_get_media_encryption(this->lc);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return enc;
 }
 
 void Linphone::Core::LinphoneCore::SetMediaEncryptionMandatory(Platform::Boolean yesno) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_media_encryption_mandatory(this->lc, yesno);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsMediaEncryptionMandatory() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean mandatory = (linphone_core_is_media_encryption_mandatory(this->lc) == TRUE);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return mandatory;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsTunnelAvailable() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean available = (linphone_core_tunnel_available() == TRUE);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return available;
 }
 
 Linphone::Core::Tunnel^ Linphone::Core::LinphoneCore::GetTunnel()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::Tunnel^ tunnel = nullptr;
 	LinphoneTunnel *lt = linphone_core_get_tunnel(this->lc);
 	if (lt != nullptr) {
 		tunnel = ref new Linphone::Core::Tunnel(lt);
 	}
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return tunnel;
 }
 
 void Linphone::Core::LinphoneCore::SetUserAgent(Platform::String^ name, Platform::String^ version) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	const char* ua = Linphone::Core::Utils::pstoccs(name);
 	const char* v = Linphone::Core::Utils::pstoccs(version);
 	linphone_core_set_user_agent(this->lc, ua, v);
 	delete(v);
 	delete(ua);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetCPUCount(int count) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	ms_set_cpu_count(count);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 int Linphone::Core::LinphoneCore::GetMissedCallsCount() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	int count = linphone_core_get_missed_calls_count(this->lc);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return count;
 }
 
 void Linphone::Core::LinphoneCore::ResetMissedCallsCount() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_reset_missed_calls_count(this->lc);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::RefreshRegisters() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_refresh_registers(this->lc);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Platform::String^ Linphone::Core::LinphoneCore::GetVersion() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::String^ version = Linphone::Core::Utils::cctops(linphone_core_get_version());
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return version;
 }
 
 void Linphone::Core::LinphoneCore::SetAudioPort(int port) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_audio_port(this->lc, port);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetAudioPortRange(int minP, int maxP) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_audio_port_range(this->lc, minP, maxP);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetIncomingTimeout(int timeout) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_inc_timeout(this->lc, timeout);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetInCallTimeout(int timeout) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_in_call_timeout(this->lc, timeout);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetPrimaryContact(Platform::String^ displayName, Platform::String^ userName) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	const char* dn = Linphone::Core::Utils::pstoccs(displayName);
 	const char* un = Linphone::Core::Utils::pstoccs(userName);
 	::LinphoneAddress* addr = linphone_core_get_primary_contact_parsed(this->lc);
@@ -1152,78 +1152,78 @@ void Linphone::Core::LinphoneCore::SetPrimaryContact(Platform::String^ displayNa
 	}
 	delete(un);
 	delete(dn);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::GetUseSipInfoForDTMFs() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean use = (linphone_core_get_use_info_for_dtmf(this->lc) == TRUE);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return use;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::GetUseRFC2833ForDTMFs() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean use = (linphone_core_get_use_rfc2833_for_dtmf(this->lc) == TRUE);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return use;
 }
 
 void Linphone::Core::LinphoneCore::SetUseSipInfoForDTMFs(Platform::Boolean use) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_use_info_for_dtmf(this->lc, use);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetUseRFC2833ForDTMFs(Platform::Boolean use) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_use_rfc2833_for_dtmf(this->lc, use);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Linphone::Core::LpConfig^ Linphone::Core::LinphoneCore::GetConfig()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	::LpConfig *config = linphone_core_get_config(this->lc);
 	Linphone::Core::LpConfig^ lpConfig = (Linphone::Core::LpConfig^)Linphone::Core::Utils::CreateLpConfig(config);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return lpConfig;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsVideoSupported()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean supported = (linphone_core_video_supported(this->lc) == TRUE);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return supported;
 }
 
 Linphone::Core::VideoPolicy^ Linphone::Core::LinphoneCore::GetVideoPolicy()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	const ::LinphoneVideoPolicy *lvp = linphone_core_get_video_policy(this->lc);
 	Linphone::Core::VideoPolicy^ policy = ref new Linphone::Core::VideoPolicy((lvp->automatically_initiate == TRUE), (lvp->automatically_accept == TRUE));
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return policy;
 }
 
 void Linphone::Core::LinphoneCore::SetVideoPolicy(Linphone::Core::VideoPolicy^ policy)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	::LinphoneVideoPolicy lvp;
 	lvp.automatically_initiate = policy->AutomaticallyInitiate;
 	lvp.automatically_accept = policy->AutomaticallyAccept;
 	linphone_core_set_video_policy(this->lc, &lvp);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Windows::Foundation::Collections::IVector<Platform::Object^>^ Linphone::Core::LinphoneCore::GetSupportedVideoSizes()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Vector<Object^>^ sizes = ref new Vector<Object^>();
 	const MSVideoSizeDef *sizesList = linphone_core_get_supported_video_sizes(this->lc);
 	while (sizesList->name != NULL) {
@@ -1232,14 +1232,14 @@ Windows::Foundation::Collections::IVector<Platform::Object^>^ Linphone::Core::Li
 		sizes->Append(size);
 		sizesList++;
 	}
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return sizes;
 }
 
 Linphone::Core::VideoSize^ Linphone::Core::LinphoneCore::GetPreferredVideoSize()
 {
 	Linphone::Core::VideoSize^ size = nullptr;
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	const MSVideoSizeDef *sizesList = linphone_core_get_supported_video_sizes(this->lc);
 	MSVideoSize vsize = linphone_core_get_preferred_video_size(this->lc);
 	while (sizesList->name != NULL) {
@@ -1253,17 +1253,17 @@ Linphone::Core::VideoSize^ Linphone::Core::LinphoneCore::GetPreferredVideoSize()
 	if (size == nullptr) {
 		size = ref new Linphone::Core::VideoSize(vsize.width, vsize.height);
 	}
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return size;
 }
 
 Platform::String^ Linphone::Core::LinphoneCore::GetPreferredVideoSizeName()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	char *cSizeName = linphone_core_get_preferred_video_size_name(this->lc);
 	Platform::String^ sizeName = Utils::cctops(cSizeName);
 	ms_free(cSizeName);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return sizeName;
 }
 
@@ -1271,9 +1271,9 @@ void Linphone::Core::LinphoneCore::SetPreferredVideoSize(Linphone::Core::VideoSi
 {
 	if (size->Name != nullptr) {
 		const char *ccname = Utils::pstoccs(size->Name);
-		TRACE; gApiLock.Lock();
+		API_LOCK;
 		linphone_core_set_preferred_video_size_by_name(this->lc, ccname);
-		gApiLock.Unlock();
+		API_UNLOCK;
 		delete ccname;
 	} else {
 		SetPreferredVideoSize(size->Width, size->Height);
@@ -1285,21 +1285,21 @@ void Linphone::Core::LinphoneCore::SetPreferredVideoSize(int width, int height)
 	MSVideoSize vsize;
 	vsize.width = width;
 	vsize.height = height;
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_preferred_video_size(this->lc, vsize);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetPreferredVideoSizeByName(Platform::String^ sizeName)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_preferred_video_size_by_name(this->lc, Utils::pstoccs(sizeName));
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Windows::Foundation::Collections::IVector<Platform::Object^>^ Linphone::Core::LinphoneCore::GetVideoDevices()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Vector<Object^>^ devices = ref new Vector<Object^>();
 	const char **lvds = linphone_core_get_video_devices(this->lc);
 	while (*lvds != NULL) {
@@ -1307,172 +1307,172 @@ Windows::Foundation::Collections::IVector<Platform::Object^>^ Linphone::Core::Li
 		devices->Append(device);
 		lvds++;
 	}
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return devices;
 }
 
 Platform::String^ Linphone::Core::LinphoneCore::GetVideoDevice()
 {
 	Platform::String^ device = nullptr;
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	const char *ccname = linphone_core_get_video_device(this->lc);
 	if (ccname != NULL) {
 		device = Utils::cctops(ccname);
 	}
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return device;
 }
 
 void Linphone::Core::LinphoneCore::SetVideoDevice(Platform::String^ device)
 {
 	const char *ccname = Utils::pstoccs(device);
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_video_device(this->lc, ccname);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	delete ccname;
 }
 
 IVector<Object^>^ Linphone::Core::LinphoneCore::GetVideoCodecs()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	IVector<Object^>^ codecs = ref new Vector<Object^>();
 	const MSList *codecslist = linphone_core_get_video_codecs(this->lc);
 	RefToPtrProxy<IVector<Object^>^> *codecsPtr = new RefToPtrProxy<IVector<Object^>^>(codecs);
 	ms_list_for_each2(codecslist, AddCodecToVector, codecsPtr);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return codecs;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsVideoEnabled()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean enabled = (linphone_core_video_enabled(this->lc) == TRUE);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return enabled;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsVideoCaptureEnabled()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean enabled = (linphone_core_video_capture_enabled(this->lc) == TRUE);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return enabled;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsVideoDisplayEnabled()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean enabled = (linphone_core_video_display_enabled(this->lc) == TRUE);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return enabled;
 }
 
 void Linphone::Core::LinphoneCore::EnableVideo(Platform::Boolean enableCapture, Platform::Boolean enableDisplay)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_enable_video(this->lc, enableCapture, enableDisplay);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::EnableVideoCapture(Platform::Boolean enable) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_enable_video_capture(this->lc, enable);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::EnableVideoDisplay(Platform::Boolean enable) 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_enable_video_display(this->lc, enable);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 int Linphone::Core::LinphoneCore::GetNativeVideoWindowId()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	int id = Globals::Instance->VideoRenderer->GetNativeWindowId();
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return id;
 }
 
 int Linphone::Core::LinphoneCore::GetCameraSensorRotation()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	int rotation = linphone_core_get_camera_sensor_rotation(this->lc);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return rotation;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsSelfViewEnabled()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::Boolean enabled = (linphone_core_self_view_enabled(this->lc) == TRUE);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return enabled;
 }
 
 void Linphone::Core::LinphoneCore::EnableSelfView(Platform::Boolean enable)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_enable_self_view(this->lc, enable);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Linphone::Core::LinphoneChatRoom^ Linphone::Core::LinphoneCore::GetOrCreateChatRoom(Platform::String^ to)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	const char* address = Linphone::Core::Utils::pstoccs(to);
 	Linphone::Core::LinphoneChatRoom^ chatRoom = (Linphone::Core::LinphoneChatRoom^) Linphone::Core::Utils::CreateLinphoneChatRoom(linphone_core_get_or_create_chat_room(this->lc, address));
 	delete(address);
-	gApiLock.Unlock();
+	API_UNLOCK;
 
 	return chatRoom;
 }
 
 void Linphone::Core::LinphoneCore::SetLogCollectionUploadServerUrl(Platform::String^ url)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	const char *curl = Linphone::Core::Utils::pstoccs(url);
 	linphone_core_set_log_collection_upload_server_url(this->lc, curl);
 	delete(curl);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::UploadLogCollection()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_upload_log_collection(this->lc);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::ResetLogCollection()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_reset_log_collection(this->lc);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetDeviceRotation(int rotation)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_device_rotation(this->lc, rotation);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::NotifyMute(bool isMuted)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Globals::Instance->CallController->NotifyMute(isMuted);
 	MuteMic(isMuted);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetChatDatabasePath(Platform::String^ chatDatabasePath)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_core_set_chat_database_path(this->lc, Linphone::Core::Utils::pstoccs(chatDatabasePath));
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 static void AddChatRoomListToVector(void *vRoom, void *vector)
@@ -1486,12 +1486,12 @@ static void AddChatRoomListToVector(void *vRoom, void *vector)
 
 IVector<Object^>^ Linphone::Core::LinphoneCore::GetChatRooms()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	IVector<Object^>^ rooms = ref new Vector<Object^>();
 	MSList* roomList = linphone_core_get_chat_rooms(this->lc);
 	RefToPtrProxy<IVector<Object^>^> *roomsPtr = new RefToPtrProxy<IVector<Object^>^>(rooms);
 	ms_list_for_each2(roomList, AddChatRoomListToVector, roomsPtr);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return rooms;
 }
 
@@ -1717,7 +1717,7 @@ Linphone::Core::LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener, L
 
 void Linphone::Core::LinphoneCore::IterateEnabled::set(Platform::Boolean value)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	if (isIterateEnabled && !value && IterateTimer)
 	{
 		// Disable the iterate
@@ -1740,7 +1740,7 @@ void Linphone::Core::LinphoneCore::IterateEnabled::set(Platform::Boolean value)
 		}), period);
 	}
 	isIterateEnabled = value;
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IterateEnabled::get()
@@ -1776,8 +1776,8 @@ void Linphone::Core::LinphoneCore::Init()
 
 Linphone::Core::LinphoneCore::~LinphoneCore()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	RefToPtrProxy<LinphoneCore^> *proxy = reinterpret_cast< RefToPtrProxy<LinphoneCore^> *>(linphone_core_get_user_data(this->lc));
 	delete proxy;
-	gApiLock.Unlock();
+	API_UNLOCK;
 }

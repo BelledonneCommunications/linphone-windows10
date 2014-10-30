@@ -19,109 +19,109 @@ void LinphoneCoreFactory::CreateLinphoneCore(Linphone::Core::LinphoneCoreListene
 
 void LinphoneCoreFactory::CreateLinphoneCore(Linphone::Core::LinphoneCoreListener^ listener, Linphone::Core::LpConfig^ config)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Utils::LinphoneCoreEnableLogCollection(true);
 	this->linphoneCore = ref new Linphone::Core::LinphoneCore(listener, config);
 	this->linphoneCore->Init();
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Linphone::Core::LpConfig^ LinphoneCoreFactory::CreateLpConfig(Platform::String^ configPath, Platform::String^ factoryConfigPath)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::LpConfig^ lpConfig = dynamic_cast<Linphone::Core::LpConfig^>(Utils::CreateLpConfig(configPath, factoryConfigPath));
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return lpConfig;
 }
 
 Linphone::Core::LinphoneAuthInfo^ LinphoneCoreFactory::CreateAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm, Platform::String^ domain)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::LinphoneAuthInfo^ authInfo = dynamic_cast<Linphone::Core::LinphoneAuthInfo^>(Utils::CreateLinphoneAuthInfo(username, userid, password, ha1, realm, domain));
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return authInfo;
 }
 
 Linphone::Core::LinphoneAddress^ LinphoneCoreFactory::CreateLinphoneAddress(Platform::String^ username, Platform::String^ domain, Platform::String^ displayName)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::LinphoneAddress^ address = CreateLinphoneAddress("sip:user@domain.com");
 	address->SetUserName(username);
 	address->SetDomain(domain);
 	address->SetDisplayName(displayName);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return address;
 }
 
 Linphone::Core::LinphoneAddress^ LinphoneCoreFactory::CreateLinphoneAddress(Platform::String^ uri)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::LinphoneAddress^ address = dynamic_cast<Linphone::Core::LinphoneAddress^>(Utils::CreateLinphoneAddressFromUri(Utils::pstoccs(uri)));
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return address;
 }
 
 Linphone::Core::Transports^ LinphoneCoreFactory::CreateTransports()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::Transports^ transports = dynamic_cast<Linphone::Core::Transports^>(Utils::CreateTransports());
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return transports;
 }
 
 Linphone::Core::Transports^ LinphoneCoreFactory::CreateTransports(int udp_port, int tcp_port, int tls_port)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::Transports^ transports = dynamic_cast<Linphone::Core::Transports^>(Utils::CreateTransports(udp_port, tcp_port, tls_port));
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return transports;
 }
 
 Linphone::Core::Transports^ LinphoneCoreFactory::CreateTransports(Linphone::Core::Transports^ t)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::Transports^ transports = dynamic_cast<Linphone::Core::Transports^>(Utils::CreateTransports(t));
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return transports;
 }
 
 Linphone::Core::VideoPolicy^ LinphoneCoreFactory::CreateVideoPolicy()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::VideoPolicy^ policy = dynamic_cast<Linphone::Core::VideoPolicy^>(Utils::CreateVideoPolicy());
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return policy;
 }
 
 Linphone::Core::VideoPolicy^ LinphoneCoreFactory::CreateVideoPolicy(Platform::Boolean automaticallyInitiate, Platform::Boolean automaticallyAccept)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::VideoPolicy^ policy = dynamic_cast<Linphone::Core::VideoPolicy^>(Utils::CreateVideoPolicy(automaticallyInitiate, automaticallyAccept));
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return policy;
 }
 
 Linphone::Core::VideoSize^ LinphoneCoreFactory::CreateVideoSize(int width, int height)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::VideoSize^ size = dynamic_cast<Linphone::Core::VideoSize^>(Utils::CreateVideoSize(width, height));
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return size;
 }
 
 Linphone::Core::VideoSize^ LinphoneCoreFactory::CreateVideoSize(int width, int height, Platform::String^ name)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::VideoSize^ size = dynamic_cast<Linphone::Core::VideoSize^>(Utils::CreateVideoSize(width, height, name));
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return size;
 }
 
 void LinphoneCoreFactory::SetLogLevel(OutputTraceLevel logLevel)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Linphone::Core::LinphoneCore::SetLogLevel(logLevel);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Linphone::Core::LinphoneCore^ LinphoneCoreFactory::LinphoneCore::get()

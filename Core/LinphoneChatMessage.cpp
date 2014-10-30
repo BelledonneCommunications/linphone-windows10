@@ -24,11 +24,11 @@ Platform::String^ Linphone::Core::LinphoneChatMessage::GetExternalBodyUrl()
 
 void Linphone::Core::LinphoneChatMessage::SetExternalBodyUrl(Platform::String^ url)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	const char* body = Linphone::Core::Utils::pstoccs(url);
 	linphone_chat_message_set_external_body_url(this->message, body);
 	delete(body);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 int64 Linphone::Core::LinphoneChatMessage::GetTime()
@@ -43,54 +43,54 @@ Linphone::Core::LinphoneChatMessageState  Linphone::Core::LinphoneChatMessage::G
 
 Platform::Boolean Linphone::Core::LinphoneChatMessage::IsOutgoing() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	bool_t is_outgoing = linphone_chat_message_is_outgoing(this->message);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return is_outgoing;
 }
 
 Platform::Boolean Linphone::Core::LinphoneChatMessage::IsRead()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	bool_t is_read = linphone_chat_message_is_read(this->message);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return is_read;
 }
 
 Platform::String^ Linphone::Core::LinphoneChatMessage::GetFileTransferName() 
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::String^ fileName;
 	const LinphoneContent *content = linphone_chat_message_get_file_transfer_information(this->message);
 	if (content) 
 	{
 		fileName = Linphone::Core::Utils::cctops(content->name);
 	}
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return fileName;
 }
 
 Platform::String^ Linphone::Core::LinphoneChatMessage::GetFileTransferFilePath()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::String^ filePath = Linphone::Core::Utils::cctops(linphone_chat_message_get_file_transfer_filepath(this->message));
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return filePath;
 }
 
 Platform::String^ Linphone::Core::LinphoneChatMessage::GetAppData()
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	Platform::String^ appData = Linphone::Core::Utils::cctops(linphone_chat_message_get_appdata(this->message));
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return appData;
 }
 
 void Linphone::Core::LinphoneChatMessage::SetAppData(Platform::String^ appData)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	linphone_chat_message_set_appdata(this->message, Linphone::Core::Utils::pstoccs(appData));
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 static void status_cb(::LinphoneChatMessage* msg, ::LinphoneChatMessageState state, void* ud)
@@ -111,13 +111,13 @@ static void status_cb(::LinphoneChatMessage* msg, ::LinphoneChatMessageState sta
 
 void Linphone::Core::LinphoneChatMessage::StartFileDownload(Linphone::Core::LinphoneChatMessageListener^ listener, Platform::String^ filepath)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	RefToPtrProxy<LinphoneChatMessageListener^> *listenerPtr = new RefToPtrProxy<LinphoneChatMessageListener^>(listener);
 	const char *cfilepath = Utils::pstoccs(filepath);
 	linphone_chat_message_set_file_transfer_filepath(this->message, cfilepath);
 	linphone_chat_message_start_file_download(this->message, status_cb, listenerPtr);
 	delete(cfilepath);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Linphone::Core::LinphoneChatMessage::LinphoneChatMessage(::LinphoneChatMessage *cm) :

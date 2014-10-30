@@ -71,7 +71,7 @@ float Linphone::Core::LinphoneCallStats::GetLocalLateRate()
 Linphone::Core::LinphoneCallStats::LinphoneCallStats(::LinphoneCall *call, Linphone::Core::MediaType mediaType) :
 	call(call)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	const ::LinphoneCallStats *stats = nullptr;
 	if (mediaType == MediaType::Audio) {
 		stats = linphone_call_get_audio_stats(this->call);
@@ -79,14 +79,14 @@ Linphone::Core::LinphoneCallStats::LinphoneCallStats(::LinphoneCall *call, Linph
 		stats = linphone_call_get_video_stats(this->call);
 	}
 	FillStats(stats);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Linphone::Core::LinphoneCallStats::LinphoneCallStats(::LinphoneCallStats *callStats)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	FillStats(callStats);
-	gApiLock.Unlock();
+	API_UNLOCK;
 }
 
 Linphone::Core::LinphoneCallStats::~LinphoneCallStats()
@@ -96,41 +96,41 @@ Linphone::Core::LinphoneCallStats::~LinphoneCallStats()
 
 float Linphone::Core::LinphoneCallStats::GetSenderLossRate(const ::LinphoneCallStats *stats)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	float value = linphone_call_stats_get_sender_loss_rate(stats);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return value;
 }
 
 float Linphone::Core::LinphoneCallStats::GetReceiverLossRate(const ::LinphoneCallStats *stats)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	float value = linphone_call_stats_get_receiver_loss_rate(stats);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return value;
 }
 
 float Linphone::Core::LinphoneCallStats::GetSenderInterarrivalJitter(const ::LinphoneCallStats *stats)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	float value = linphone_call_stats_get_sender_interarrival_jitter(stats, this->call);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return value;
 }
 
 float Linphone::Core::LinphoneCallStats::GetReceiverInterarrivalJitter(const ::LinphoneCallStats *stats)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	float value = linphone_call_stats_get_receiver_interarrival_jitter(stats, this->call);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return value;
 }
 
 int64 Linphone::Core::LinphoneCallStats::GetLatePacketsCumulativeNumber(const ::LinphoneCallStats *stats)
 {
-	TRACE; gApiLock.Lock();
+	API_LOCK;
 	int64 value = linphone_call_stats_get_late_packets_cumulative_number(stats, this->call);
-	gApiLock.Unlock();
+	API_UNLOCK;
 	return value;
 }
 
