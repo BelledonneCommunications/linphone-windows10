@@ -14,6 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Windows.Threading;
 using Windows.Phone.Media.Devices;
 
 namespace Linphone.Views
@@ -23,7 +24,7 @@ namespace Linphone.Views
     /// </summary>
     public partial class InCall : BasePage, MuteChangedListener, PauseChangedListener, CallUpdatedByRemoteListener
     {
-        private Timer oneSecondTimer;
+        private DispatcherTimer oneSecondTimer;
         private Timer fadeTimer;
         private DateTimeOffset startTime;
 
@@ -164,10 +165,7 @@ namespace Linphone.Views
 
         private void buttons_HangUpClick(object sender)
         {
-            if (oneSecondTimer != null)
-            {
-                oneSecondTimer.Dispose();
-            }
+            oneSecondTimer.Stop();
             LinphoneManager.Instance.EndCurrentCall();
         }
 
@@ -214,6 +212,11 @@ namespace Linphone.Views
                     CallStateChanged(call, LinphoneCallState.StreamsRunning);
                 }
             }
+
+            oneSecondTimer = new DispatcherTimer();
+            oneSecondTimer.Interval = TimeSpan.FromSeconds(1);
+            oneSecondTimer.Tick += timerTick;
+            oneSecondTimer.Start();
         }
 
         private const string bluetoothOn = "/Assets/Incall_Icons/bluetooth_on.png";
@@ -313,10 +316,7 @@ namespace Linphone.Views
         /// </summary>
         protected override void OnNavigatedFrom(NavigationEventArgs nee)
         {
-            if (oneSecondTimer != null)
-            {
-                oneSecondTimer.Dispose();
-            }
+            oneSecondTimer.Stop();
             if (fadeTimer != null)
             {
                 fadeTimer.Dispose();
@@ -378,11 +378,6 @@ namespace Linphone.Views
             buttons.pauseImg.Source = new BitmapImage(new Uri(isCallPaused || isCallPausedByRemote ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
             buttons_landscape.pauseImg.Source = new BitmapImage(new Uri(isCallPaused || isCallPausedByRemote ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
 
-            if (oneSecondTimer == null)
-            {
-                oneSecondTimer = new Timer(new TimerCallback(timerTick), null, 0, 1000);
-            }
-
             if (!isCallPaused && !isCallPausedByRemote)
             {
                 if (call.GetCurrentParamsCopy().IsVideoEnabled() && !((InCallModel)ViewModel).IsVideoActive)
@@ -438,107 +433,85 @@ namespace Linphone.Views
             }
         }
 
-        private void timerTick(Object state)
+        private void timerTick(Object sender, EventArgs args)
         {
+            LinphoneCall call = ((InCallModel)ViewModel).GetCurrentCall();
+            if (call == null) return;
+
+            startTime = (DateTimeOffset)call.GetCallStartTimeFromContext();
+            DateTimeOffset now = DateTimeOffset.Now;
+            TimeSpan elapsed = now.Subtract(startTime);
+            var ss = elapsed.Seconds;
+            var mm = elapsed.Minutes;
+            Status.Text = mm.ToString("00") + ":" + ss.ToString("00");
+
+            string audioPayloadType = "";
+            string audioDownloadBandwidth = "";
+            string audioUploadBandwidth = "";
+            string videoPayloadType = "";
+            string videoDownloadBandwidth = "";
+            string videoUploadBandwidth = "";
+
+            LinphoneCallParams param = call.GetCurrentParamsCopy();
+            ((InCallModel)ViewModel).MediaEncryption = param.GetMediaEncryption().ToString();
+
+            LinphoneCallStats audioStats = null;
             try
             {
-                if (LinphoneManager.Instance.LinphoneCore.GetCallsNb() == 0)
+                audioStats = call.GetAudioStats();
+            }
+            catch { }
+
+            if (audioStats != null)
+            {
+                audioDownloadBandwidth = String.Format("{0:0.00}", audioStats.GetDownloadBandwidth());
+                audioUploadBandwidth = String.Format("{0:0.00}", audioStats.GetUploadBandwidth());
+                ((InCallModel)ViewModel).ICE = audioStats.GetIceState().ToString(); 
+            }
+
+            PayloadType audiopt = param.GetUsedAudioCodec();
+            if (audiopt != null) 
+            {
+                audioPayloadType = audiopt.GetMimeType() + "/" + audiopt.GetClockRate();
+            }
+
+            if (param.IsVideoEnabled())
+            {
+                LinphoneCallStats videoStats = call.GetVideoStats();
+                if (videoStats != null)
                 {
-                    oneSecondTimer.Dispose();
-                    oneSecondTimer = null;
-                    return;
+                    videoDownloadBandwidth = String.Format("{0:0.00}", videoStats.GetDownloadBandwidth());
+                    videoUploadBandwidth = String.Format("{0:0.00}", videoStats.GetUploadBandwidth());
                 }
 
-                LinphoneCall call = ((InCallModel)ViewModel).GetCurrentCall();
-                if (call == null) return;
-
-                startTime = (DateTimeOffset)call.GetCallStartTimeFromContext();
-                DateTimeOffset now = DateTimeOffset.Now;
-                TimeSpan elapsed = now.Subtract(startTime);
-                var ss = elapsed.Seconds;
-                var mm = elapsed.Minutes;
-
-                Status.Dispatcher.BeginInvoke(delegate()
+                PayloadType videopt = param.GetUsedVideoCodec();
+                if (videopt != null)
                 {
-                    if (LinphoneManager.Instance.LinphoneCore.GetCallsNb() == 0)
-                    {
-                        return;
-                    }
-
-                    string audioPayloadType = "";
-                    string audioDownloadBandwidth = "";
-                    string audioUploadBandwidth = "";
-                    string videoPayloadType = "";
-                    string videoDownloadBandwidth = "";
-                    string videoUploadBandwidth = "";
-
-                    LinphoneCallParams param = call.GetCurrentParamsCopy();
-                    Status.Text = mm.ToString("00") + ":" + ss.ToString("00");
-
-                    ((InCallModel)ViewModel).MediaEncryption = param.GetMediaEncryption().ToString();
-
-                    LinphoneCallStats audioStats = null;
-                    try
-                    {
-                        audioStats = call.GetAudioStats();
-                    }
-                    catch { }
-
-                    if (audioStats != null)
-                    {
-                        audioDownloadBandwidth = String.Format("{0:0.00}", audioStats.GetDownloadBandwidth());
-                        audioUploadBandwidth = String.Format("{0:0.00}", audioStats.GetUploadBandwidth());
-                        ((InCallModel)ViewModel).ICE = audioStats.GetIceState().ToString(); 
-                    }
-
-                    PayloadType audiopt = param.GetUsedAudioCodec();
-                    if (audiopt != null) 
-                    {
-                        audioPayloadType = audiopt.GetMimeType() + "/" + audiopt.GetClockRate();
-                    }
-
-                    if (param.IsVideoEnabled())
-                    {
-                        LinphoneCallStats videoStats = call.GetVideoStats();
-                        if (videoStats != null)
-                        {
-                            videoDownloadBandwidth = String.Format("{0:0.00}", videoStats.GetDownloadBandwidth());
-                            videoUploadBandwidth = String.Format("{0:0.00}", videoStats.GetUploadBandwidth());
-                        }
-
-                        PayloadType videopt = param.GetUsedVideoCodec();
-                        if (videopt != null)
-                        {
-                            videoPayloadType = videopt.GetMimeType();
-                        }
-                        Windows.Foundation.Size receivedVideoSize = param.GetReceivedVideoSize();
-                        ((InCallModel)ViewModel).ReceivedVideoSize = String.Format("{0}x{1}", receivedVideoSize.Width, receivedVideoSize.Height);
-                        Windows.Foundation.Size sentVideoSize = param.GetSentVideoSize();
-                        ((InCallModel)ViewModel).SentVideoSize = String.Format("{0}x{1}", sentVideoSize.Width, sentVideoSize.Height);
-                        ((InCallModel)ViewModel).VideoStatsVisibility = Visibility.Visible;
-                    }
-                    else
-                    {
-                        ((InCallModel)ViewModel).VideoStatsVisibility = Visibility.Collapsed;
-                    }
-
-                    string downloadBandwidth = audioDownloadBandwidth;
-                    if ((downloadBandwidth != "") && (videoDownloadBandwidth != "")) downloadBandwidth += " - ";
-                    if (videoDownloadBandwidth != "") downloadBandwidth += videoDownloadBandwidth;
-                    ((InCallModel)ViewModel).DownBandwidth = String.Format("{0} kb/s", downloadBandwidth);
-                    string uploadBandwidth = audioUploadBandwidth;
-                    if ((uploadBandwidth != "") && (videoUploadBandwidth != "")) uploadBandwidth += " - ";
-                    if (videoUploadBandwidth != "") uploadBandwidth += videoUploadBandwidth;
-                    ((InCallModel)ViewModel).UpBandwidth = String.Format("{0} kb/s", uploadBandwidth);
-                    string payloadType = audioPayloadType;
-                    if ((payloadType != "") && (videoPayloadType != "")) payloadType += " - ";
-                    if (videoPayloadType != "") payloadType += videoPayloadType;
-                    ((InCallModel)ViewModel).PayloadType = payloadType;
-                });
-            } catch {
-                oneSecondTimer.Dispose();
-                oneSecondTimer = null;
+                    videoPayloadType = videopt.GetMimeType();
+                }
+                Windows.Foundation.Size receivedVideoSize = param.GetReceivedVideoSize();
+                ((InCallModel)ViewModel).ReceivedVideoSize = String.Format("{0}x{1}", receivedVideoSize.Width, receivedVideoSize.Height);
+                Windows.Foundation.Size sentVideoSize = param.GetSentVideoSize();
+                ((InCallModel)ViewModel).SentVideoSize = String.Format("{0}x{1}", sentVideoSize.Width, sentVideoSize.Height);
+                ((InCallModel)ViewModel).VideoStatsVisibility = Visibility.Visible;
             }
+            else
+            {
+                ((InCallModel)ViewModel).VideoStatsVisibility = Visibility.Collapsed;
+            }
+
+            string downloadBandwidth = audioDownloadBandwidth;
+            if ((downloadBandwidth != "") && (videoDownloadBandwidth != "")) downloadBandwidth += " - ";
+            if (videoDownloadBandwidth != "") downloadBandwidth += videoDownloadBandwidth;
+            ((InCallModel)ViewModel).DownBandwidth = String.Format("{0} kb/s", downloadBandwidth);
+            string uploadBandwidth = audioUploadBandwidth;
+            if ((uploadBandwidth != "") && (videoUploadBandwidth != "")) uploadBandwidth += " - ";
+            if (videoUploadBandwidth != "") uploadBandwidth += videoUploadBandwidth;
+            ((InCallModel)ViewModel).UpBandwidth = String.Format("{0} kb/s", uploadBandwidth);
+            string payloadType = audioPayloadType;
+            if ((payloadType != "") && (videoPayloadType != "")) payloadType += " - ";
+            if (videoPayloadType != "") payloadType += videoPayloadType;
+            ((InCallModel)ViewModel).PayloadType = payloadType;
         }
 
         private void remoteVideo_MediaOpened_1(object sender, System.Windows.RoutedEventArgs e)
