@@ -70,8 +70,6 @@ namespace Linphone
 
                     reportIssueDialog.Show();
                 }
-
-                BugCollector.DeleteLinphoneLogFileIfFileTooBig();
             }
 
             StatusBar = status;

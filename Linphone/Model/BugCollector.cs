@@ -75,22 +75,6 @@ namespace Linphone.Model
             return false;
         }
 
-        internal static async Task<bool> HasLinphoneLogFile()
-        {
-            ApplicationSettingsManager appSettings = new ApplicationSettingsManager();
-            appSettings.Load();
-
-            try
-            {
-                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(appSettings.LogOption);
-                return file != null;
-            }
-            catch (FileNotFoundException)
-            {
-                return false;
-            }
-        }
-
         internal static async void ReportExceptions()
         {
             try
@@ -133,7 +117,7 @@ namespace Linphone.Model
 
             byte[] data;
             StorageFolder folder = ApplicationData.Current.LocalFolder;
-            StorageFile file = await folder.GetFileAsync(appSettings.LogOption);
+            StorageFile file = await folder.GetFileAsync("linphone1.log");
 
             using (Stream s = await file.OpenStreamForReadAsync())
             {
@@ -154,52 +138,6 @@ namespace Linphone.Model
                 }
             }
             catch (Exception) { }
-        }
-
-        internal static void DeleteLinphoneLogFileIfFileTooBig()
-        {
-            bool delete = false;
-            try
-            {
-                using (var store = IsolatedStorageFile.GetUserStoreForApplication())
-                {
-                    if (store.FileExists(logFileName))
-                    {
-                        using (var file = store.OpenFile(logFileName, FileMode.Open))
-                        {
-                            Debug.WriteLine("[BugCollector] Log file size is " + file.Length);
-                            if (file.Length > 200000)
-                            {
-                                delete = true;
-                            }
-                        }
-                        if (delete)
-                        {
-                            store.DeleteFile(logFileName);
-                        }
-                    }
-                }
-            }
-            catch (Exception) { }
-        }
-
-        internal static async void DeleteLinphoneLogFile()
-        {
-            ApplicationSettingsManager appSettings = new ApplicationSettingsManager();
-            appSettings.Load();
-
-            StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(appSettings.LogOption);
-            if (file == null)
-                return;
-
-            try
-            {
-                await file.DeleteAsync();
-            }
-            catch (UnauthorizedAccessException)
-            {
-                Debug.WriteLine("Can't delete linphone logs...");
-            }
         }
     }
 }

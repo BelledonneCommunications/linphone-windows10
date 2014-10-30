@@ -148,9 +148,6 @@
     <Compile Include="Views\Chats.xaml.cs">
       <DependentUpon>Chats.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Console.xaml.cs">
-      <DependentUpon>Console.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Contact.xaml.cs">
       <DependentUpon>Contact.xaml</DependentUpon>
     </Compile>
@@ -368,10 +365,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Chats.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Console.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

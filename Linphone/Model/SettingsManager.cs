@@ -175,13 +175,10 @@ namespace Linphone.Model
     /// </summary>
     public class ApplicationSettingsManager : SettingsManager, ISettingsManager
     {
-        internal const String LinphoneLogFileName = "Linphone.log";
         private LpConfig Config;
 
         #region Constants settings names
         private const string LogLevelKeyName = "LogLevel";
-        private const string LogDestinationKeyName = "LogDestination";
-        private const string LogOptionKeyName = "LogOption";
         #endregion
 
         /// <summary>
@@ -206,8 +203,6 @@ namespace Linphone.Model
         public void Load()
         {
             dict[LogLevelKeyName] = Config.GetInt(ApplicationSection, LogLevelKeyName, (int)OutputTraceLevel.Message).ToString();
-            dict[LogDestinationKeyName] = Config.GetString(ApplicationSection, LogDestinationKeyName, OutputTraceDest.File.ToString());
-            dict[LogOptionKeyName] = Config.GetString(ApplicationSection, LogOptionKeyName, LinphoneLogFileName);
         }
 
         /// <summary>
@@ -215,40 +210,12 @@ namespace Linphone.Model
         /// </summary>
         public async void Save()
         {
-            if (ValueChanged(LogDestinationKeyName) || ValueChanged(LogOptionKeyName))
-            {
-                var logsDestination = GetNew(LogDestinationKeyName);
-                Config.SetString(ApplicationSection, LogDestinationKeyName, logsDestination);
-
-                if (OutputTraceDest.File.ToString().Equals(logsDestination))
-                {
-                    Config.SetString(ApplicationSection, LogOptionKeyName, LinphoneLogFileName);
-                }
-                else if (OutputTraceDest.TCPRemote.ToString().Equals(logsDestination))
-                {
-                    Config.SetString(ApplicationSection, LogOptionKeyName, GetNew(LogOptionKeyName));
-                }
-                LinphoneManager.Instance.ConfigureLogger();
-            }
-            else if (ValueChanged(LogLevelKeyName))
+            if (ValueChanged(LogLevelKeyName))
             {
                 try
                 {
                     Config.SetInt(ApplicationSection, LogLevelKeyName, Convert.ToInt32(GetNew(LogLevelKeyName)));
                     LinphoneManager.Instance.ConfigureLogger();
-                    if ((Get(LogDestinationKeyName) == OutputTraceDest.File.ToString())
-                        && (GetNew(LogLevelKeyName) == ((int)OutputTraceLevel.None).ToString()))
-                    {
-                        try
-                        {
-                            StorageFile logfile = await ApplicationData.Current.LocalFolder.GetFileAsync(Get(LogOptionKeyName));
-                            await logfile.DeleteAsync();
-                        }
-                        catch
-                        {
-                            Logger.Warn("Failed deleting log file {0}", Get(LogOptionKeyName));
-                        }
-                    }
                 }
                 catch
                 {
@@ -293,40 +260,6 @@ namespace Linphone.Model
             set
             {
                 Set(LogLevelKeyName, ((int)value).ToString());
-            }
-        }
-
-        /// <summary>
-        /// Log destination.
-        /// </summary>
-        public OutputTraceDest LogDestination
-        {
-            get
-            {
-                String dest = Get(LogDestinationKeyName);
-                if (dest == OutputTraceDest.Debugger.ToString()) return OutputTraceDest.Debugger;
-                else if (dest == OutputTraceDest.File.ToString()) return OutputTraceDest.File;
-                else if (dest == OutputTraceDest.TCPRemote.ToString()) return OutputTraceDest.TCPRemote;
-                return OutputTraceDest.None;
-            }
-            set
-            {
-                Set(LogDestinationKeyName, value.ToString());
-            }
-        }
-
-        /// <summary>
-        /// Log option (filename if LogDestination is OutputTraceDest.File, host:port if LogDestination is OutputTraceDest.TCPRemote).
-        /// </summary>
-        public String LogOption
-        {
-            get
-            {
-                return Get(LogOptionKeyName);
-            }
-            set
-            {
-                Set(LogOptionKeyName, value);
             }
         }
         #endregion
