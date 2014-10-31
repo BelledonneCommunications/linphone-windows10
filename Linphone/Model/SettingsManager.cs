@@ -1056,8 +1056,8 @@ namespace Linphone.Model
         private Dictionary<string, FirewallPolicy> FirewallPolicyToEnum;
         private Dictionary<string, MediaEncryption> MediaEncryptionToEnum;
         private Dictionary<string, string> StringToTunnelMode;
-        private Dictionary<FirewallPolicy, string> EnumToFirewallPolicy;
-        private Dictionary<MediaEncryption, string> EnumToMediaEncryption;
+        public Dictionary<FirewallPolicy, string> EnumToFirewallPolicy;
+        public Dictionary<MediaEncryption, string> EnumToMediaEncryption;
 
         #region Constants settings names
         private const string MediaEncryptionKeyName = "MediaEncryption";

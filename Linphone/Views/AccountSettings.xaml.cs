@@ -1,4 +1,5 @@
-﻿using Linphone.Model;
+﻿using Linphone.Core;
+using Linphone.Model;
 using Linphone.Resources;
 using Microsoft.Phone.Shell;
 using System;
@@ -17,6 +18,7 @@ namespace Linphone.Views
         private SIPAccountSettingsManager _settings = new SIPAccountSettingsManager();
 
         private bool saveSettingsOnLeave = true;
+        private bool linphoneAccount = false;
 
         /// <summary>
         /// Public constructor.
@@ -65,6 +67,15 @@ namespace Linphone.Views
             _settings.DisplayName = DisplayName.Text;
             _settings.Transport = Transport.SelectedItem.ToString();
             _settings.Save();
+
+            if (linphoneAccount)
+            {
+                NetworkSettingsManager networkSettings = new NetworkSettingsManager();
+                networkSettings.Load();
+                networkSettings.FWPolicy = networkSettings.EnumToFirewallPolicy[FirewallPolicy.UseIce];
+                networkSettings.StunServer = "stun.linphone.org";
+                networkSettings.Save();
+            }
         }
 
         /// <summary>
@@ -106,6 +117,7 @@ namespace Linphone.Views
             Transport.SelectedItem = AppResources.TransportTLS;
             Proxy.Text = "sip.linphone.org:5223";
             OutboundProxy.IsChecked = true;
+            linphoneAccount = true;
         }
 
         private void BuildLocalizedApplicationBar()
