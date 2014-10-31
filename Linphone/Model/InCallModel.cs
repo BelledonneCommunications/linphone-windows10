@@ -42,6 +42,16 @@ namespace Linphone.Views
         public void OrientationChanged(object sender, Microsoft.Phone.Controls.OrientationChangedEventArgs e)
         {
             PageOrientation = e.Orientation;
+            if (IsVideoActive)
+            {
+                HideVideo();
+                ShowVideo();
+                LinphoneCall call = GetCurrentCall();
+                if (call != null)
+                {
+                    call.SendVFURequest();
+                }
+            }
         }
 
         public LinphoneCall GetCurrentCall()

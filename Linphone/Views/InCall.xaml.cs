@@ -605,18 +605,11 @@ namespace Linphone.Views
         new private void OrientationChanged(object sender, Microsoft.Phone.Controls.OrientationChangedEventArgs e)
         {
             InCallModel model = (InCallModel)ViewModel;
-            model.OrientationChanged(sender, e);
-            ((InCallModel)ViewModel).OrientationChanged(sender, e);
             remoteVideo.Width = LayoutRoot.ActualWidth;
             remoteVideo.Height = LayoutRoot.ActualHeight;
             HUD.Width = LayoutRoot.ActualWidth;
             HUD.Height = LayoutRoot.ActualHeight;
-
-            if (model.IsVideoActive)
-            {
-                model.HideVideo();
-                model.ShowVideo();
-            }
+            model.OrientationChanged(sender, e);
         }
     }
 }
