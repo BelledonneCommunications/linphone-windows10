@@ -129,7 +129,7 @@ void Linphone::Core::Utils::LinphoneCoreSetLogHandler(void* logfunc)
 void Linphone::Core::Utils::LinphoneCoreEnableLogCollection(bool enable)
 {
 	API_LOCK;
-	linphone_core_enable_log_collection(enable);
+	linphone_core_enable_log_collection(enable ? LinphoneLogCollectionEnabledWithoutPreviousLogHandler : LinphoneLogCollectionDisabled);
 	linphone_core_set_log_collection_path(pstoccs(ApplicationData::Current->LocalFolder->Path));
 	API_UNLOCK;
 }

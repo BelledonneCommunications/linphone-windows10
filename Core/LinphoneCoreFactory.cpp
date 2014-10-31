@@ -20,7 +20,7 @@ void LinphoneCoreFactory::CreateLinphoneCore(Linphone::Core::LinphoneCoreListene
 void LinphoneCoreFactory::CreateLinphoneCore(Linphone::Core::LinphoneCoreListener^ listener, Linphone::Core::LpConfig^ config)
 {
 	API_LOCK;
-	Utils::LinphoneCoreEnableLogCollection(true);
+	Utils::LinphoneCoreEnableLogCollection(LinphoneLogCollectionEnabledWithoutPreviousLogHandler);
 	this->linphoneCore = ref new Linphone::Core::LinphoneCore(listener, config);
 	this->linphoneCore->Init();
 	API_UNLOCK;
