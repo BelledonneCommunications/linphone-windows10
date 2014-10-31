@@ -6,14 +6,14 @@
 #ifdef TRACE_LOCKS
 #define API_LOCK \
 	{ \
-		char *s = ms_strdup_printf("### Locking in %s\r\n", __FUNCTION__); \
+		char *s = ms_strdup_printf("### Locking in %s [%ul] at %ul\r\n", __FUNCTION__, WIN_thread_self(), (unsigned long)ortp_get_cur_time_ms()); \
 		OutputDebugStringA(s); \
 		ms_free(s); \
 	} \
 	Linphone::Core::gApiLock.Lock()
 #define API_UNLOCK \
 	{ \
-		char *s = ms_strdup_printf("### Unlocking in %s\r\n", __FUNCTION__); \
+		char *s = ms_strdup_printf("### Unlocking in %s [%ul] at %ul\r\n", __FUNCTION__, WIN_thread_self(), (unsigned long)ortp_get_cur_time_ms()); \
 		OutputDebugStringA(s); \
 		ms_free(s); \
 	} \
