@@ -89,7 +89,10 @@ namespace Linphone.Views
         public void ToggleCameras()
         {
             LinphoneManager.Instance.ToggleCameras();
-            ShowLocalVideo();
+            if (LinphoneManager.Instance.LinphoneCore.IsSelfViewEnabled())
+            {
+                ShowLocalVideo();
+            }
         }
 
         private void ShowRemoteVideo()
@@ -130,11 +133,8 @@ namespace Linphone.Views
 
         private void ShowLocalVideo()
         {
-            ((InCall)Page).Status.Dispatcher.BeginInvoke(delegate()
-            {
-                String device = LinphoneManager.Instance.LinphoneCore.GetVideoDevice();
-                LocalVideoUri = Mediastreamer2.WP8Video.VideoRenderer.CameraUri(device);
-            });
+            String device = LinphoneManager.Instance.LinphoneCore.GetVideoDevice();
+            LocalVideoUri = Mediastreamer2.WP8Video.VideoRenderer.CameraUri(device);
         }
 
         public void LocalVideoOpened()
