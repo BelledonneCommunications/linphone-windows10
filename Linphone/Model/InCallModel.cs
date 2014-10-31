@@ -58,7 +58,12 @@ namespace Linphone.Views
         {
             LinphoneCall call = LinphoneManager.Instance.LinphoneCore.GetCurrentCall();
             if (call == null)
-                call = (LinphoneCall)LinphoneManager.Instance.LinphoneCore.GetCalls()[0];
+            {
+                if (LinphoneManager.Instance.LinphoneCore.GetCallsNb() > 0)
+                {
+                    call = (LinphoneCall)LinphoneManager.Instance.LinphoneCore.GetCalls()[0];
+                }
+            }
             return call;
         }
 
