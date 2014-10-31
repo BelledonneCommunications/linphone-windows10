@@ -307,6 +307,10 @@ namespace Linphone.Views
                 buttons_landscape.videoImg.Opacity = BUTTON_DISABLED_OPACITY;
                 buttons_landscape.cameraImg.Opacity = BUTTON_DISABLED_OPACITY;
             }
+            else if (state == LinphoneCallState.Error || state == LinphoneCallState.CallEnd)
+            {
+                oneSecondTimer.Stop();
+            }
 
             AudioEndpointChanged(null, null);
         }
