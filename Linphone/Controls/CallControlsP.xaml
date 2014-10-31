@@ -191,9 +191,9 @@
             <TextBlock Text="{Binding MediaEncryption}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="4"/>
             <TextBlock Text="{Binding Path=LocalizedResources.StatICE, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeSmall}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" Margin="5" Grid.Column="0" Grid.Row="5"/>
             <TextBlock Text="{Binding ICE}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="5"/>
-            <TextBlock Text="{Binding Path=LocalizedResources.StatReceivedVideoSize, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeSmall}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" Margin="5" Grid.Column="0" Grid.Row="6"/>
+            <TextBlock Text="{Binding Path=LocalizedResources.StatReceivedVideoSize, Source={StaticResource LocalizedStrings}}" Visibility="{Binding VideoStatsVisibility}" FontSize="{StaticResource PhoneFontSizeSmall}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" Margin="5" Grid.Column="0" Grid.Row="6"/>
             <TextBlock Text="{Binding ReceivedVideoSize}" Visibility="{Binding VideoStatsVisibility}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="6"/>
-            <TextBlock Text="{Binding Path=LocalizedResources.StatSentVideoSize, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeSmall}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" Margin="5" Grid.Column="0" Grid.Row="7"/>
+            <TextBlock Text="{Binding Path=LocalizedResources.StatSentVideoSize, Source={StaticResource LocalizedStrings}}" Visibility="{Binding VideoStatsVisibility}" FontSize="{StaticResource PhoneFontSizeSmall}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" Margin="5" Grid.Column="0" Grid.Row="7"/>
             <TextBlock Text="{Binding SentVideoSize}" Visibility="{Binding VideoStatsVisibility}" Style="{StaticResource PhoneTextSmallStyle}" Grid.Column="1" Grid.Row="7"/>
         </Grid>
 
