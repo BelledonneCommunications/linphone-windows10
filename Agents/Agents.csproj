@@ -71,6 +71,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistrationHelper.cs" />
     <Compile Include="TileManager.cs" />
+    <Compile Include="$(OutDir)\Version.cs" />
     <Compile Include="$(ProjectDir)..\submodules\mswp8vid\VideoRenderer.cs" />
     <Compile Include="$(ProjectDir)..\submodules\mswp8vid\VideoStreamSource.cs" />
   </ItemGroup>
@@ -87,6 +88,9 @@
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <ProjectExtensions />
+  <PropertyGroup>
+    <PreBuildEvent>$(ProjectDir)\version.bat $(ProjectDir)</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

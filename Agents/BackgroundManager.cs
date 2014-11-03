@@ -67,11 +67,7 @@ namespace Linphone.Agents
             OopServer.LinphoneCoreFactory.CreateLinphoneCore(null, config);
             OopServer.LinphoneCore.SetRootCA("Assets/rootca.pem");
             OopServer.LinphoneCore.SetChatDatabasePath(ApplicationData.Current.LocalFolder.Path + "\\chat.db");
-            OopServer.LinphoneCore.SetUserAgent("LinphoneWP8PushNotification", "");
-
-            //Globals.Instance.BackgroundModeLogger.Configure(true, OutputTraceDest.TCPRemote, "192.168.0.217:38954");
-            //Globals.Instance.LinphoneCoreFactory.OutputTraceListener = Globals.Instance.BackgroundModeLogger;
-
+            OopServer.LinphoneCore.SetUserAgent("LinphoneWP8PushNotification", Linphone.Version.Number);
             OopServer.LinphoneCore.SetNetworkReachable(true);
             OopServer.LinphoneCore.IterateEnabled = true;
         }

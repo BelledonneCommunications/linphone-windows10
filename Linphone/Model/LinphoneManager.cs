@@ -285,7 +285,7 @@ namespace Linphone.Model
                 // Set user-agent because it is not set if coming back from background mode
                 try
                 {
-                    server.LinphoneCore.SetUserAgent(Customs.UserAgent, XDocument.Load("WMAppManifest.xml").Root.Element("App").Attribute("Version").Value);
+                    server.LinphoneCore.SetUserAgent(Customs.UserAgent, Linphone.Version.Number);
                     isLinphoneRunning = true;
                     return;
                 } catch {
@@ -311,7 +311,7 @@ namespace Linphone.Model
                 DetectCameras();
             }
 
-            server.LinphoneCore.SetUserAgent(Customs.UserAgent, XDocument.Load("WMAppManifest.xml").Root.Element("App").Attribute("Version").Value);
+            server.LinphoneCore.SetUserAgent(Customs.UserAgent, Linphone.Version.Number);
             AddPushInformationsToContactParams();
 
             lastNetworkState = DeviceNetworkInformation.IsNetworkAvailable;

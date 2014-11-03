@@ -50,7 +50,7 @@ namespace Linphone.Agents
                         server.LinphoneCore.SetRootCA("Assets/rootca.pem");
                         server.LinphoneCore.SetChatDatabasePath(ApplicationData.Current.LocalFolder.Path + "\\chat.db");
                         server.LinphoneCore.SetNetworkReachable(true);
-                        server.LinphoneCore.SetUserAgent("LinphoneWP8KeepAlive", "");
+                        server.LinphoneCore.SetUserAgent("LinphoneWP8KeepAlive", Linphone.Version.Number);
                         server.LinphoneCore.IterateEnabled = true;
                         Debug.WriteLine("[KeepAliveAgent] Linphone Core created");
                     }
