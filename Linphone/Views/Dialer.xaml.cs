@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Navigation;
 using System.Xml.Serialization;
 using Windows.Storage;
@@ -34,6 +35,18 @@ namespace Linphone
             addressBox.FocusListener = this;
 
             ContactManager contactManager = ContactManager.Instance; //Force creation and init of ContactManager
+        }
+
+        private void LogUploadProgressIndication(int offset, int total)
+        {
+            BaseModel.UIDispatcher.BeginInvoke(() =>
+            {
+                BugReportUploadProgressBar.Maximum = total;
+                if (offset <= total)
+                {
+                    BugReportUploadProgressBar.Value = offset;
+                }
+            });
         }
 
         /// <summary>
@@ -62,13 +75,21 @@ namespace Linphone
                         switch (ev.Result)
                         {
                             case CustomMessageBoxResult.LeftButton:
-                                BugCollector.ReportExceptions();
+                                BugReportUploadProgressBar.Minimum = 0;
+                                BugReportUploadProgressBar.Maximum = 100;
+                                BugReportUploadPopup.Visibility = Visibility.Visible;
+                                LinphoneManager.Instance.LogUploadProgressIndicationEH += LogUploadProgressIndication;
+                                LinphoneManager.Instance.LinphoneCore.UploadLogCollection();
                                 break;
                         }
                         BugCollector.DeleteFile();
                     };
 
                     reportIssueDialog.Show();
+                }
+                else
+                {
+                    BugReportUploadPopup.Visibility = Visibility.Collapsed;
                 }
             }
 
@@ -94,6 +115,16 @@ namespace Linphone
                 String uri = call.GetRemoteAddress().AsStringUriOnly();
                 NavigationService.Navigate(new Uri("/Views/InCall.xaml?sip=" + uri, UriKind.RelativeOrAbsolute));
             }
+        }
+
+        /// <summary>
+        /// Method called when the page is hidden.
+        /// </summary>
+        protected override void OnNavigatedFrom(NavigationEventArgs nee)
+        {
+            base.OnNavigatedFrom(nee);
+            LinphoneManager.Instance.LogUploadProgressIndicationEH -= LogUploadProgressIndication;
+            BugReportUploadPopup.Visibility = Visibility.Collapsed;
         }
 
         private void call_Click_1(object sender, EventArgs e)

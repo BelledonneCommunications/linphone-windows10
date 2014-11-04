@@ -1680,15 +1680,15 @@ void file_transfer_progress_indication(LinphoneCore *lc, LinphoneChatMessage *me
 		if (lMessage == nullptr) {
 			lMessage = (Linphone::Core::LinphoneChatMessage^)Linphone::Core::Utils::CreateLinphoneChatMessage(message);
 		}
-		listener->FileTransferProgressIndication(lMessage, (int)offset, total);
+		listener->FileTransferProgressIndication(lMessage, (int)offset, (int)total);
 	}
 }
 
-void log_collection_upload_progress_indication(LinphoneCore *lc, size_t progress) {
+void log_collection_upload_progress_indication(LinphoneCore *lc, size_t offset, size_t total) {
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr)
 	{
-		listener->LogUploadProgressChanged((int)progress);
+		listener->LogUploadProgressIndication((int)offset, (int)total);
 	}
 }
 

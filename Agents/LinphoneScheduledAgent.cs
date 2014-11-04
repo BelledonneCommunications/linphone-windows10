@@ -183,7 +183,7 @@ namespace Linphone.Agents
         /// <summary>
         /// Callback for LinphoneCoreListener
         /// </summary>
-        public void LogUploadProgressChanged(int progress)
+        public void LogUploadProgressIndication(int offset, int total)
         {
         }
         #endregion

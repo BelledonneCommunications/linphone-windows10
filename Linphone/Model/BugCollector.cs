@@ -18,7 +18,6 @@ namespace Linphone.Model
     public class BugCollector
     {
         const string exceptionsFileName = "exceptions.log";
-        const string logFileName = "Linphone.log";
 
         internal static void LogException(Exception e, string extra)
         {
@@ -28,7 +27,8 @@ namespace Linphone.Model
                 {
                     using (TextWriter output = new StreamWriter(store.OpenFile(exceptionsFileName, FileMode.Append)))
                     {
-                        output.WriteLine("-------------------------");
+                        DateTime now = DateTime.Now;
+                        output.WriteLine("Date: {0:dddd, MMMM d, yyyy, HH:mm:ss}", now);
                         output.WriteLine("Type: {0}", extra);
                         output.WriteLine("Message: {0}", e.Message);
                         foreach (KeyValuePair<string, string> kvp in e.Data)
@@ -36,23 +36,7 @@ namespace Linphone.Model
                             output.WriteLine("Data: Key= {0}, Value= {1}", kvp.Key, kvp.Value);
                         }
                         output.WriteLine("Stacktrace: {0}", e.StackTrace);
-                        output.Flush();
-                        output.Close();
-                    }
-                }
-            }
-            catch (Exception) { }
-        }
-
-        internal static void LogMessage(string message)
-        {
-            try
-            {
-                using (var store = IsolatedStorageFile.GetUserStoreForApplication())
-                {
-                    using (TextWriter output = new StreamWriter(store.OpenFile(exceptionsFileName, FileMode.Append)))
-                    {
-                        output.WriteLine("Custom message: {0}", message);
+                        output.WriteLine("-------------------------");
                         output.Flush();
                         output.Close();
                     }
@@ -75,13 +59,14 @@ namespace Linphone.Model
             return false;
         }
 
-        internal static async void ReportExceptions()
+        internal static void ReportExceptions(string url)
         {
             try
             {
+                string subject = "Logs report";
                 string body = "";
-                body += "Version of the app : " + XDocument.Load("WMAppManifest.xml").Root.Element("App").Attribute("Version").Value;
-                body += "--------------------";
+                body += "Version of the app: " + Linphone.Version.Number;
+                body += "\r\n--------------------\r\n";
 
                 using (var store = IsolatedStorageFile.GetUserStoreForApplication())
                 {
@@ -89,43 +74,23 @@ namespace Linphone.Model
                     {
                         using (TextReader input = new StreamReader(store.OpenFile(exceptionsFileName, FileMode.Open)))
                         {
+                            subject = "Exception report";
                             body += input.ReadToEnd();
                             input.Close();
                         }
                     }
-                    if (store.FileExists(logFileName))
-                    {
-                        body += "\r\n"; 
-                        // Limit the amount of linphone logs
-                        string logs = await ReadLogs();
-                        body += logs.Length > 32000 ? logs.Substring(logs.Length - 32000) : logs;
-                    }
+                }
+                if (url != "")
+                {
+                    body += "\r\n" + url;
                 }
                 EmailComposeTask email = new EmailComposeTask();
                 email.To = "linphone-wphone@belledonne-communications.com";
-                email.Subject = "Exception report";
+                email.Subject = subject;
                 email.Body = body;
                 email.Show();
             }
             catch (Exception) { }
-        }
-
-        internal static async Task<string> ReadLogs()
-        {
-            ApplicationSettingsManager appSettings = new ApplicationSettingsManager();
-            appSettings.Load();
-
-            byte[] data;
-            StorageFolder folder = ApplicationData.Current.LocalFolder;
-            StorageFile file = await folder.GetFileAsync("linphone1.log");
-
-            using (Stream s = await file.OpenStreamForReadAsync())
-            {
-                data = new byte[s.Length];
-                await s.ReadAsync(data, 0, (int)s.Length);
-            }
-
-            return Encoding.UTF8.GetString(data, 0, data.Length);
         }
 
         internal static void DeleteFile()

@@ -103,7 +103,7 @@ namespace Linphone
 			/// Callback method called when the progress of the current logs upload has changed.
 			/// </summary>
 			/// <param name="progress"></param>
-			void LogUploadProgressChanged(int progress);
+			void LogUploadProgressIndication(int offset, int total);
 		};
 	}
 }

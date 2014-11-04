@@ -110,8 +110,16 @@ namespace Linphone.Views
             saveSettingsOnLeave = true;
             // Create LinphoneCore if not created yet, otherwise do nothing
             LinphoneManager.Instance.InitLinphoneCore();
+        }
 
-            ProgressPopup.Visibility = Visibility.Collapsed;
+        /// <summary>
+        /// Method called when the page is hidden.
+        /// </summary>
+        protected override void OnNavigatedFrom(NavigationEventArgs nee)
+        {
+            base.OnNavigatedFrom(nee);
+            LinphoneManager.Instance.LogUploadProgressIndicationEH -= LogUploadProgressIndication;
+            BugReportUploadPopup.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
@@ -164,11 +172,23 @@ namespace Linphone.Views
             appBarLinphoneValues.Click += linphone_Click_1;
         }
 
+        private void LogUploadProgressIndication(int offset, int total)
+        {
+            BaseModel.UIDispatcher.BeginInvoke(() =>
+            {
+                BugReportUploadProgressBar.Maximum = total;
+                if (offset <= total)
+                {
+                    BugReportUploadProgressBar.Value = offset;
+                }
+            });
+        }
+        
         private void SendLogs_Click(object sender, RoutedEventArgs e)
         {
-            ProgressPopup.Visibility = Visibility.Visible;
-            SendLogs.IsEnabled = false;
             saveSettingsOnLeave = false;
+            BugReportUploadPopup.Visibility = Visibility.Visible;
+            LinphoneManager.Instance.LogUploadProgressIndicationEH += LogUploadProgressIndication;
             LinphoneManager.Instance.LinphoneCore.UploadLogCollection();
         }
 

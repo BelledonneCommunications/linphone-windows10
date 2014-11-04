@@ -130,25 +130,31 @@
                         Checked="Debug_Checked" Unchecked="Debug_Unchecked">
                     </toolkit:ToggleSwitch>
 
-                    <Button x:Name="SendLogs" Content="{Binding Path=LocalizedResources.SendLogsEmail, Source={StaticResource LocalizedStrings}}" Click="SendLogs_Click"/>
-                    <Button x:Name="ResetLogs" Content="{Binding Path=LocalizedResources.ResetLogs, Source={StaticResource LocalizedStrings}}" Click="ResetLogs_Click"/>
-
-                    <Border 
-                        x:Name="ProgressPopup"
-                        Grid.Row="1"
-                        Padding="5"
-                        Visibility="Collapsed"
-                        BorderThickness="10">
-                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Button x:Name="SendLogs" Grid.Row="0" Content="{Binding Path=LocalizedResources.SendLogsEmail, Source={StaticResource LocalizedStrings}}" Click="SendLogs_Click"/>
+                        <Button x:Name="ResetLogs" Grid.Row="1" Content="{Binding Path=LocalizedResources.ResetLogs, Source={StaticResource LocalizedStrings}}" Click="ResetLogs_Click"/>
+                        <StackPanel
+                            x:Name="BugReportUploadPopup"
+                            Grid.RowSpan="2"
+                            Background="Black"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Visibility="Collapsed">
                             <ProgressBar
-                                IsIndeterminate="True"
-                                Width="300"/>
-                            <TextBlock
-                                Width="300"
-                                TextAlignment="Center"
-                                Text="{Binding LocalizedResources.Uploading, Source={StaticResource LocalizedStrings}}" />
+                                x:Name="BugReportUploadProgressBar"
+                                Grid.Row="0"
+                                Margin="20,0"
+                                IsIndeterminate="False"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                            />
+                            <TextBlock HorizontalAlignment="Center" Margin="20,0" Text="{Binding Path=LocalizedResources.UploadingLogs, Source={StaticResource LocalizedStrings}}" />
                         </StackPanel>
-                    </Border>
+                    </Grid>
                 </StackPanel>
             </phone:PivotItem>
         </phone:Pivot>

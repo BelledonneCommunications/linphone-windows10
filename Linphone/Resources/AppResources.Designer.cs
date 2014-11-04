@@ -1592,6 +1592,15 @@ namespace Linphone.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Uploading logs....
+        /// </summary>
+        public static string UploadingLogs {
+            get {
+                return ResourceManager.GetString("UploadingLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vibrate on incoming message.
         /// </summary>
         public static string VibratorSetting {

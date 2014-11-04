@@ -661,4 +661,7 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   <data name="StatSentVideoSize" xml:space="preserve">
     <value>Sent Video Size:</value>
   </data>
+  <data name="UploadingLogs" xml:space="preserve">
+    <value>Uploading logs...</value>
+  </data>
 </root>

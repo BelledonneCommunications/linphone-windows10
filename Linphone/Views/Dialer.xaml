@@ -246,8 +246,25 @@
                     </Button.Style>
                 </Button>
             </Grid>
+            
+            <Grid x:Name="BugReportUploadPopup"
+                Grid.Row="2" Margin="0,20,0,20" Visibility="Collapsed">
+                <StackPanel
+                Background="Black"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
+                    <ProgressBar
+                        x:Name="BugReportUploadProgressBar"
+                        Grid.Row="0"
+                        Margin="20,0"
+                        IsIndeterminate="False"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                    />
+                    <TextBlock HorizontalAlignment="Center" Margin="20,0" Text="{Binding Path=LocalizedResources.UploadingLogs, Source={StaticResource LocalizedStrings}}" />
+                </StackPanel>
+            </Grid>
         </Grid>
-        
     </Grid>
 
 </linphone:BasePage>

@@ -1132,7 +1132,7 @@ namespace Linphone.Model
             {
                 if (state == LinphoneCoreLogCollectionUploadState.LinphoneCoreLogCollectionUploadStateDelivered)
                 {
-                    SendEmail(info);
+                    BugCollector.ReportExceptions(info);
                 }
                 else if (state == LinphoneCoreLogCollectionUploadState.LinphoneCoreLogCollectionUploadStateNotDelivered) 
                 {
@@ -1148,15 +1148,18 @@ namespace Linphone.Model
             });
         }
 
+        public delegate void LogUploadProgressIndicationEventHandler(int offset, int total);
+        public event LogUploadProgressIndicationEventHandler LogUploadProgressIndicationEH;
+
         /// <summary>
         /// Callback for LinphoneCoreListener
         /// </summary>
-        public void LogUploadProgressChanged(int progress)
+        public void LogUploadProgressIndication(int offset, int total)
         {
-            BaseModel.UIDispatcher.BeginInvoke(() =>
+            if (LogUploadProgressIndicationEH != null)
             {
-                Logger.Msg(String.Format("[LinphoneManager] Logs upload progress is {0}", progress));
-            });
+                LogUploadProgressIndicationEH(offset, total);
+            }
         }
         #endregion
 
@@ -1214,14 +1217,5 @@ namespace Linphone.Model
             }
         }
         #endregion
-
-        private void SendEmail(string body)
-        {
-            EmailComposeTask email = new EmailComposeTask();
-            email.To = "linphone-wphone@belledonne-communications.com";
-            email.Subject = "Logs report";
-            email.Body = body;
-            email.Show();
-        }
     }
 }
