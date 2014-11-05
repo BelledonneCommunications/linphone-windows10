@@ -157,6 +157,11 @@ namespace Linphone
 			void SetLogLevel(OutputTraceLevel logLevel);
 
 			/// <summary>
+			/// Resets the log collection by removing the log files.
+			/// </summary>
+			void ResetLogCollection();
+
+			/// <summary>
 			/// Destroys the LinphoneCore attached to this factory
 			/// </summary>
 			void Destroy();

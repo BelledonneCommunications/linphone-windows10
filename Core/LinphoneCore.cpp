@@ -181,6 +181,13 @@ void Linphone::Core::LinphoneCore::SetLogLevel(OutputTraceLevel logLevel)
 	Utils::LinphoneCoreSetLogLevel(coreLogLevel);
 }
 
+void Linphone::Core::LinphoneCore::ResetLogCollection()
+{
+	API_LOCK;
+	linphone_core_reset_log_collection();
+	API_UNLOCK;
+}
+
 void Linphone::Core::LinphoneCore::ClearProxyConfigs()
 {
 	API_LOCK;
@@ -1443,13 +1450,6 @@ void Linphone::Core::LinphoneCore::UploadLogCollection()
 {
 	API_LOCK;
 	linphone_core_upload_log_collection(this->lc);
-	API_UNLOCK;
-}
-
-void Linphone::Core::LinphoneCore::ResetLogCollection()
-{
-	API_LOCK;
-	linphone_core_reset_log_collection(this->lc);
 	API_UNLOCK;
 }
 

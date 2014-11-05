@@ -124,6 +124,13 @@ void LinphoneCoreFactory::SetLogLevel(OutputTraceLevel logLevel)
 	API_UNLOCK;
 }
 
+void LinphoneCoreFactory::ResetLogCollection()
+{
+	API_LOCK;
+	Linphone::Core::LinphoneCore::ResetLogCollection();
+	API_UNLOCK;
+}
+
 Linphone::Core::LinphoneCore^ LinphoneCoreFactory::LinphoneCore::get()
 {
 	return this->linphoneCore;

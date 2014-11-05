@@ -178,6 +178,11 @@ namespace Linphone
 			static void SetLogLevel(OutputTraceLevel logLevel);
 
 			/// <summary>
+			/// Resets the log collection by removing the log files.
+			/// </summary>
+			static void ResetLogCollection();
+
+			/// <summary>
 			/// Removes all the proxy configs from LinphoneCore.
 			/// </summary>
 			void ClearProxyConfigs();
@@ -1075,11 +1080,6 @@ namespace Linphone
 			/// Starts the upload of the log collection.
 			/// </summary>
 			void UploadLogCollection();
-
-			/// <summary>
-			/// Resets the log collection by removing the log files.
-			/// </summary>
-			void ResetLogCollection();
 
 			/// <summary>
 			/// Tells the core the device current orientation. This can be used by capture filters

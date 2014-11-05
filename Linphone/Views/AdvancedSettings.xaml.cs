@@ -208,7 +208,7 @@ namespace Linphone.Views
 
         private void ResetLogs_Click(object sender, RoutedEventArgs e)
         {
-            LinphoneManager.Instance.LinphoneCore.ResetLogCollection();
+            LinphoneManager.Instance.LinphoneCoreFactory.ResetLogCollection();
         }
     }
 }
