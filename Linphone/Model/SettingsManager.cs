@@ -47,33 +47,19 @@ namespace Linphone.Model
             changesDict = new Dictionary<String, String>();
         }
 
+        private static String GetDefaultConfigPath()
+        {
+            return Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "Assets", "linphonerc");
+        }
+
         /// <summary>
         /// Install the default config file from the package to the Isolated Storage
         /// </summary>
-        public static async Task InstallConfigFile()
+        public static void InstallConfigFile()
         {
-            StorageFile destFile = null;
-            try
+            if (!File.Exists(GetConfigPath()))
             {
-                destFile = await ApplicationData.Current.LocalFolder.GetFileAsync("linphonerc");
-            }
-            catch (System.IO.FileNotFoundException)
-            {
-            }
-
-            if (destFile == null)
-            {
-                StorageFile sourceFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/linphonerc"));
-                try
-                {
-                    destFile = await sourceFile.CopyAsync(ApplicationData.Current.LocalFolder, "linphonerc", NameCollisionOption.FailIfExists);
-                } catch {
-                    System.Diagnostics.Debug.WriteLine("An error occured while installing config file");
-                }
-            }
-            if (destFile != null)
-            {
-                System.Diagnostics.Debug.WriteLine("Config file successfully installed");
+                File.Copy(GetDefaultConfigPath(), GetConfigPath());
             }
         }
 
@@ -416,7 +402,6 @@ namespace Linphone.Model
                         LinphoneAddress proxyAddr = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress(cfg.GetAddr());
                         cfg.SetRoute(proxyAddr.AsStringUriOnly());
                     }
-                    cfg.SetExpires(28800);
 
                     // Can't set string to null: http://stackoverflow.com/questions/12980915/exception-when-trying-to-read-null-string-in-c-sharp-winrt-component-from-winjs
                     if (userid == null)

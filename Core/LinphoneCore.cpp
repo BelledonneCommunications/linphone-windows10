@@ -225,7 +225,11 @@ Linphone::Core::LinphoneProxyConfig^ Linphone::Core::LinphoneCore::GetDefaultPro
 Linphone::Core::LinphoneProxyConfig^ Linphone::Core::LinphoneCore::CreateEmptyProxyConfig()
 {
 	API_LOCK;
-	Linphone::Core::LinphoneProxyConfig^ proxyConfig = ref new Linphone::Core::LinphoneProxyConfig();
+	LinphoneProxyConfig^ proxyConfig = nullptr;
+	::LinphoneProxyConfig *proxy = linphone_core_create_proxy_config(this->lc);
+	if (proxy != nullptr) {
+		proxyConfig = ref new Linphone::Core::LinphoneProxyConfig(proxy);
+	}
 	API_UNLOCK;
 	return proxyConfig;
 }

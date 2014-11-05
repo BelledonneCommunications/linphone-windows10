@@ -55,6 +55,9 @@ namespace Linphone
             // Language display initialization
             InitializeLanguage();
 
+            // Install the default config file if not already done
+            SettingsManager.InstallConfigFile();
+
             // Initialize the push channel 
             InitPushChannel();
 

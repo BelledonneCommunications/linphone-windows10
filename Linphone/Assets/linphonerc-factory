@@ -1,6 +1,4 @@
 [net]
-download_bw=380
-upload_bw=380
 mtu=1300
 
 [sip]
@@ -12,22 +10,17 @@ auto_net_state_mon=0
 keepalive_period=30000
 ping_with_options=0
 store_ha1_passwd=0
-default_proxy=0
 
 [rtp]
 audio_jitt_comp=60
 video_jitt_comp=60
 nortp_timeout=30
-audio_rtp_port=7076
-video_rtp_port=9078
 
 [sound]
 dtmf_player_amp=0.1
 
 [video]
 displaytype=MSWP8Dis
-capture=1
-display=1
 
 [misc]
 history_max_size=30

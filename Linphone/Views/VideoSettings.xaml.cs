@@ -34,9 +34,7 @@ namespace Linphone.Views
             List<string> videoSizes = new List<string>
             {
                 "vga",
-                "cif",
-                "qvga",
-                "qcif"
+                "qvga"
             };
             PreferredVideoSize.ItemsSource = videoSizes;
             PreferredVideoSize.SelectedItem = _callSettings.PreferredVideoSize;

@@ -274,7 +274,7 @@ namespace Linphone.Model
         /// <summary>
         /// Creates a new LinphoneCore (if not created yet) using a LinphoneCoreFactory.
         /// </summary>
-        public async void InitLinphoneCore()
+        public void InitLinphoneCore()
         {
             if (server.LinphoneCoreFactory != null && server.LinphoneCore != null)
             {
