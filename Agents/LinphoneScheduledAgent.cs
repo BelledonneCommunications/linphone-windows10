@@ -43,14 +43,8 @@ namespace Linphone.Agents
                     if (DeviceNetworkInformation.IsNetworkAvailable)
                     {
                         var server = BackgroundManager.Instance.OopServer;
-                        LpConfig config = server.LinphoneCoreFactory.CreateLpConfig(ApplicationData.Current.LocalFolder.Path + "\\linphonerc", "Assets/linphonerc-factory");
-                        OutputTraceLevel level = (OutputTraceLevel)config.GetInt("app", "LogLevel", 1); //1 is Message
-                        server.LinphoneCoreFactory.SetLogLevel(level);
-                        server.LinphoneCoreFactory.CreateLinphoneCore(this, config);
-                        server.LinphoneCore.SetRootCA("Assets/rootca.pem");
-                        server.LinphoneCore.SetChatDatabasePath(ApplicationData.Current.LocalFolder.Path + "\\chat.db");
+                        InitManager.CreateLinphoneCore(server, this, OutputTraceLevel.Message);
                         server.LinphoneCore.SetNetworkReachable(true);
-                        server.LinphoneCore.SetUserAgent("LinphoneWP8KeepAlive", Linphone.Version.Number);
                         server.LinphoneCore.IterateEnabled = true;
                         Debug.WriteLine("[KeepAliveAgent] Linphone Core created");
                     }

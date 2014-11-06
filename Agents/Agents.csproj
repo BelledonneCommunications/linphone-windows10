@@ -65,9 +65,11 @@
     <Compile Include="AgentHost.cs" />
     <Compile Include="BackgroundManager.cs" />
     <Compile Include="Customs.cs" />
+    <Compile Include="InitManager.cs" />
     <Compile Include="LinphoneCallInProgressAgent.cs" />
     <Compile Include="LinphoneForegroundLifeTimeAgent.cs" />
     <Compile Include="LinphoneScheduledAgent.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistrationHelper.cs" />
     <Compile Include="TileManager.cs" />

@@ -61,13 +61,7 @@ namespace Linphone.Agents
         public void InitLinphoneCore()
         {
             // Initiate incoming call processing by creating the Linphone Core
-            LpConfig config = OopServer.LinphoneCoreFactory.CreateLpConfig(ApplicationData.Current.LocalFolder.Path + "\\linphonerc", "Assets/linphonerc-factory");
-            OutputTraceLevel level = (OutputTraceLevel)config.GetInt("app", "LogLevel", 1); //1 is Message
-            OopServer.LinphoneCoreFactory.SetLogLevel(level);
-            OopServer.LinphoneCoreFactory.CreateLinphoneCore(null, config);
-            OopServer.LinphoneCore.SetRootCA("Assets/rootca.pem");
-            OopServer.LinphoneCore.SetChatDatabasePath(ApplicationData.Current.LocalFolder.Path + "\\chat.db");
-            OopServer.LinphoneCore.SetUserAgent("LinphoneWP8PushNotification", Linphone.Version.Number);
+            InitManager.CreateLinphoneCore(OopServer, null, OutputTraceLevel.Message);
             OopServer.LinphoneCore.SetNetworkReachable(true);
             OopServer.LinphoneCore.IterateEnabled = true;
         }

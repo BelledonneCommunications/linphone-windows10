@@ -117,7 +117,6 @@
     <Compile Include="Model\Conversation.cs" />
     <Compile Include="Model\HubTileConverterFix.cs" />
     <Compile Include="Model\LinphoneManager.cs" />
-    <Compile Include="Model\Logger.cs" />
     <Compile Include="Model\SipUriToUsernameConverter.cs" />
     <Compile Include="Model\BoolToAccentBrushConverter.cs" />
     <Compile Include="Model\SettingsManager.cs" />

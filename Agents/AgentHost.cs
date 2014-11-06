@@ -1,14 +1,18 @@
 ﻿using Linphone.Core;
 using Linphone.Core.OutOfProcess;
 using Mediastreamer2.WP8Video;
+using System;
+using System.IO;
+using Windows.Storage;
 
 namespace Linphone.Agents
 {
     public static class AgentHost
     {
+        static VideoRenderer videoRenderer = new VideoRenderer();
+
         static AgentHost()
         {
-            AgentHost.videoRenderer = new VideoRenderer();
             Globals.Instance.VideoRenderer = AgentHost.videoRenderer;
         }
 
@@ -16,7 +20,5 @@ namespace Linphone.Agents
         {
             Globals.Instance.StartServer(RegistrationHelper.OutOfProcServerClassNames);
         }
-
-        static VideoRenderer videoRenderer;
     }
 }

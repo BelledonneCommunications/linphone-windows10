@@ -47,47 +47,15 @@ namespace Linphone.Model
             changesDict = new Dictionary<String, String>();
         }
 
-        private static String GetDefaultConfigPath()
-        {
-            return Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "Assets", "linphonerc");
-        }
-
         /// <summary>
         /// Install the default config file from the package to the Isolated Storage
         /// </summary>
         public static void InstallConfigFile()
         {
-            if (!File.Exists(GetConfigPath()))
+            if (!File.Exists(InitManager.GetConfigPath()))
             {
-                File.Copy(GetDefaultConfigPath(), GetConfigPath());
+                File.Copy(InitManager.GetDefaultConfigPath(), InitManager.GetConfigPath());
             }
-        }
-
-        /// <summary>
-        /// Get the path of the config file stored in the Isolated Storage
-        /// </summary>
-        /// <returns>The path of the config file</returns>
-        public static String GetConfigPath()
-        {
-            return Path.Combine(ApplicationData.Current.LocalFolder.Path, "linphonerc");
-        }
-
-        /// <summary>
-        /// Get the path of the database file used to store chat messages stored in the Isolated Storage
-        /// </summary>
-        /// <returns>The path of the config file</returns>
-        public static String GetChatDatabasePath()
-        {
-            return Path.Combine(ApplicationData.Current.LocalFolder.Path, "chat.db");
-        }
-
-        /// <summary>
-        /// Get the path of the factory config file stored in the package
-        /// </summary>
-        /// <returns>The path of the factory config file</returns>
-        public static String GetFactoryConfigPath()
-        {
-            return "Assets/linphonerc-factory";
         }
 
         /// <summary>
@@ -174,7 +142,7 @@ namespace Linphone.Model
         {
             if (LinphoneManager.Instance.LinphoneCore == null)
             {
-                Config = LinphoneManager.Instance.LinphoneCoreFactory.CreateLpConfig(GetConfigPath(), GetFactoryConfigPath());
+                Config = LinphoneManager.Instance.LinphoneCoreFactory.CreateLpConfig(InitManager.GetConfigPath(), InitManager.GetFactoryConfigPath());
             }
             else
             {
@@ -1060,7 +1028,7 @@ namespace Linphone.Model
         {
             if (LinphoneManager.Instance.LinphoneCore == null)
             {
-                Config = LinphoneManager.Instance.LinphoneCoreFactory.CreateLpConfig(GetConfigPath(), GetFactoryConfigPath());
+                Config = LinphoneManager.Instance.LinphoneCoreFactory.CreateLpConfig(InitManager.GetConfigPath(), InitManager.GetFactoryConfigPath());
             }
             else
             {

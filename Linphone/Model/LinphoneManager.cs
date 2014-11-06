@@ -295,11 +295,7 @@ namespace Linphone.Model
             }
 
             Debug.WriteLine("[LinphoneManager] Creating LinphoneCore");
-            LpConfig config = server.LinphoneCoreFactory.CreateLpConfig(SettingsManager.GetConfigPath(), SettingsManager.GetFactoryConfigPath());
-            ConfigureLogger();
-            server.LinphoneCoreFactory.CreateLinphoneCore(this, config);
-            server.LinphoneCore.SetRootCA("Assets/rootca.pem");
-            server.LinphoneCore.SetChatDatabasePath(SettingsManager.GetChatDatabasePath());
+            InitManager.CreateLinphoneCore(server, this, LogLevel);
             Logger.Dbg("[LinphoneManager] LinphoneCore created");
 
             AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;
@@ -357,15 +353,22 @@ namespace Linphone.Model
             }
         }
 
+        public OutputTraceLevel LogLevel
+        {
+            get
+            {
+                ApplicationSettingsManager appSettings = new ApplicationSettingsManager();
+                appSettings.Load();
+                return appSettings.LogLevel;
+            }
+        }
+
         /// <summary>
         /// Configures the Logger
         /// </summary>
         public void ConfigureLogger()
         {
-            ApplicationSettingsManager appSettings = new ApplicationSettingsManager();
-            appSettings.Load();
-            server.LinphoneCoreFactory.SetLogLevel(appSettings.LogLevel);
-            Logger.Instance.TraceListener = server.BackgroundModeLogger;
+            InitManager.ConfigureLogger(server, LogLevel);
         }
 
         /// <summary>
