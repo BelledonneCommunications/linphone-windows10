@@ -675,10 +675,10 @@ namespace Linphone.Model
             if (LinphoneCore.IsInCall())
             {
                 LinphoneCall call = LinphoneCore.GetCurrentCall();
-                if (enable != call.IsCameraEnabled())
+                LinphoneCallParams parameters = call.GetCurrentParamsCopy();
+                if (enable != parameters.VideoEnabled)
                 {
-                    LinphoneCallParams parameters = call.GetCurrentParamsCopy();
-                    parameters.EnableVideo(enable);
+                    parameters.VideoEnabled = enable;
                     if (enable)
                     {
                         // TODO: Handle bandwidth limitation
@@ -911,7 +911,7 @@ namespace Linphone.Model
                     VideoPolicy policy = LinphoneManager.Instance.LinphoneCore.GetVideoPolicy();
                     LinphoneCallParams remoteParams = call.GetRemoteParams();
                     LinphoneCallParams localParams = call.GetCurrentParamsCopy();
-                    if (!policy.AutomaticallyAccept && remoteParams.IsVideoEnabled() && !localParams.IsVideoEnabled() && !LinphoneManager.Instance.LinphoneCore.IsInConference())
+                    if (!policy.AutomaticallyAccept && remoteParams.VideoEnabled && !localParams.VideoEnabled && !LinphoneManager.Instance.LinphoneCore.IsInConference())
                     {
                         LinphoneManager.Instance.LinphoneCore.DeferCallUpdate(call);
                         videoAdded = true;

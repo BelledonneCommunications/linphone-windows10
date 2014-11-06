@@ -57,16 +57,13 @@ namespace Linphone
 			Platform::Boolean IsLowBandwidthEnabled();
 
 			/// <summary>
-			/// Tells whether video is enabled.
-			/// </summary>
-			/// <returns>A boolean value telling whether video is enabled or not</returns>
-			Platform::Boolean IsVideoEnabled();
-
-			/// <summary>
 			/// Enable or disable video.
 			/// </summary>
-			/// <param name="enable">A boolean value telling whether video should be enabled or disabled</param>
-			void EnableVideo(Platform::Boolean enable);
+			property Platform::Boolean VideoEnabled
+			{
+				Platform::Boolean get();
+				void set(Platform::Boolean value);
+			}
 
 			/// <summary>
 			/// Returns the PayloadType currently in use for the video stream.

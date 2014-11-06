@@ -269,7 +269,7 @@ namespace Linphone.Views
                 buttons.cameraImg.Opacity = isVideoAvailable ? BUTTON_ENABLED_OPACITY : BUTTON_DISABLED_OPACITY;
                 buttons_landscape.cameraImg.Opacity = isVideoAvailable ? BUTTON_ENABLED_OPACITY : BUTTON_DISABLED_OPACITY;
 
-                bool isVideoEnabled = call.GetCurrentParamsCopy().IsVideoEnabled();
+                bool isVideoEnabled = call.GetCurrentParamsCopy().VideoEnabled;
                 buttons.video.IsChecked = isVideoEnabled;
                 buttons_landscape.video.IsChecked = isVideoEnabled;
             }
@@ -384,7 +384,7 @@ namespace Linphone.Views
 
             if (!isCallPaused && !isCallPausedByRemote)
             {
-                if (call.GetCurrentParamsCopy().IsVideoEnabled() && !((InCallModel)ViewModel).IsVideoActive)
+                if (call.GetCurrentParamsCopy().VideoEnabled && !((InCallModel)ViewModel).IsVideoActive)
                 {
                     // Show video if it was not shown yet
                     ((InCallModel)ViewModel).IsVideoActive = true;
@@ -395,7 +395,7 @@ namespace Linphone.Views
                     ButtonsFadeInVideoAnimation.Begin();
                     StartFadeTimer();
                 }
-                else if (!call.GetCurrentParamsCopy().IsVideoEnabled() && ((InCallModel)ViewModel).IsVideoActive)
+                else if (!call.GetCurrentParamsCopy().VideoEnabled && ((InCallModel)ViewModel).IsVideoActive)
                 {
                     // Stop video if it is no longer active
                     ((InCallModel)ViewModel).IsVideoActive = false;
@@ -429,7 +429,7 @@ namespace Linphone.Views
                         LinphoneCallParams parameters = call.GetCurrentParamsCopy();
                         if (res == 0)
                         {
-                            parameters.EnableVideo(true);
+                            parameters.VideoEnabled = true;
                         }
                         LinphoneManager.Instance.LinphoneCore.AcceptCallUpdate(call, parameters);
                     },
@@ -479,7 +479,7 @@ namespace Linphone.Views
                 audioPayloadType = audiopt.GetMimeType() + "/" + audiopt.GetClockRate();
             }
 
-            if (param.IsVideoEnabled())
+            if (param.VideoEnabled)
             {
                 LinphoneCallStats videoStats = call.GetVideoStats();
                 if (videoStats != null)

@@ -52,7 +52,7 @@ Platform::Boolean Linphone::Core::LinphoneCallParams::IsLowBandwidthEnabled()
 	return enabled;
 }
 
-Platform::Boolean Linphone::Core::LinphoneCallParams::IsVideoEnabled()
+Platform::Boolean Linphone::Core::LinphoneCallParams::VideoEnabled::get()
 {
 	API_LOCK;
 	Platform::Boolean enabled = (linphone_call_params_video_enabled(this->params) == TRUE);
@@ -60,7 +60,7 @@ Platform::Boolean Linphone::Core::LinphoneCallParams::IsVideoEnabled()
 	return enabled;
 }
 
-void Linphone::Core::LinphoneCallParams::EnableVideo(Platform::Boolean enable)
+void Linphone::Core::LinphoneCallParams::VideoEnabled::set(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_call_params_enable_video(this->params, enable);
