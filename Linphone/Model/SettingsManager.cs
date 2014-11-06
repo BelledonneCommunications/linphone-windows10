@@ -837,6 +837,8 @@ namespace Linphone.Model
         private const string AutomaticallyAcceptVideoKeyName = "AutomaticallyAcceptVideo";
         private const string SelfViewEnabledKeyName = "SelfViewEnabled";
         private const string PreferredVideoSizeKeyName = "PreferredVideoSize";
+        private const string DownloadBandwidthKeyName = "DownloadBandwidth";
+        private const string UploadBandwidthKeyName = "UploadBandwidth";
         #endregion
 
         #region Implementation of the ISettingsManager interface
@@ -853,6 +855,8 @@ namespace Linphone.Model
             dict[AutomaticallyAcceptVideoKeyName] = policy.AutomaticallyAccept.ToString();
             dict[SelfViewEnabledKeyName] = LinphoneManager.Instance.LinphoneCore.IsSelfViewEnabled().ToString();
             dict[PreferredVideoSizeKeyName] = LinphoneManager.Instance.LinphoneCore.GetPreferredVideoSizeName();
+            dict[DownloadBandwidthKeyName] = LinphoneManager.Instance.LinphoneCore.DownloadBandwidth.ToString();
+            dict[UploadBandwidthKeyName] = LinphoneManager.Instance.LinphoneCore.UploadBandwidth.ToString();
         }
 
         /// <summary>
@@ -887,6 +891,14 @@ namespace Linphone.Model
             if (ValueChanged(PreferredVideoSizeKeyName))
             {
                 LinphoneManager.Instance.LinphoneCore.SetPreferredVideoSizeByName(GetNew(PreferredVideoSizeKeyName));
+            }
+            if (ValueChanged(DownloadBandwidthKeyName))
+            {
+                LinphoneManager.Instance.LinphoneCore.DownloadBandwidth = Convert.ToInt32(GetNew(DownloadBandwidthKeyName));
+            }
+            if (ValueChanged(UploadBandwidthKeyName))
+            {
+                LinphoneManager.Instance.LinphoneCore.UploadBandwidth = Convert.ToInt32(GetNew(UploadBandwidthKeyName));
             }
         }
         #endregion
@@ -994,6 +1006,36 @@ namespace Linphone.Model
             set
             {
                 Set(PreferredVideoSizeKeyName, value);
+            }
+        }
+
+        /// <summary>
+        /// Download bandwidth (int).
+        /// </summary>
+        public int DownloadBandwidth
+        {
+            get
+            {
+                return Convert.ToInt32(Get(DownloadBandwidthKeyName));
+            }
+            set
+            {
+                Set(DownloadBandwidthKeyName, value.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Upload bandwidth (int).
+        /// </summary>
+        public int UploadBandwidth
+        {
+            get
+            {
+                return Convert.ToInt32(Get(UploadBandwidthKeyName));
+            }
+            set
+            {
+                Set(UploadBandwidthKeyName, value.ToString());
             }
         }
         #endregion

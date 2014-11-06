@@ -589,21 +589,27 @@ namespace Linphone
 
 			/// <summary>
 			/// Sets maximum available upload bandwidth.
-			/// This is IP bandwidth, in kbit/s.
+			/// This is IP bandwidth, in kbit/s (0 for infinite).
 			/// This information is used by liblinphone together with remote side available bandwidth signaled in SDP messages
 			/// to properly configure audio and video codec's output bitrate.
 			/// </summary>
-			/// <param name="bw">The bandwidth limitation to set in kbits/s, 0 for infinite</param>
-			void SetUploadBandwidth(int bw);
+			property int UploadBandwidth
+			{
+				int get();
+				void set(int value);
+			}
 
 			/// <summary>
-			/// Sets maximum available download bandwidth.
-			/// This is IP bandwidth, in kbit/s.
+			/// Maximum available download bandwidth.
+			/// This is IP bandwidth, in kbit/s (0 for infinite).
 			/// This information is used signaled to other parties during calls (within SDP messages) so that the remote end
 			/// can have sufficient knowledge to properly configure its audio and video codec output bitrate to not overflow available bandwidth.
 			/// </summary>
-			/// <param name="bw">The bandwidth limitation to set in kbits/s, 0 for infinite</param>
-			void SetDownloadBandwidth(int bw);
+			property int DownloadBandwidth
+			{
+				int get();
+				void set(int value);
+			}
 
 			/// <summary>
 			/// Sets audio packetization interval suggested for remote end (in milliseconds).

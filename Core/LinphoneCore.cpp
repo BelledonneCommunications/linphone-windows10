@@ -793,17 +793,33 @@ void Linphone::Core::LinphoneCore::SetRootCA(Platform::String^ path)
 	API_UNLOCK;
 }
 
-void Linphone::Core::LinphoneCore::SetUploadBandwidth(int bw) 
+int Linphone::Core::LinphoneCore::UploadBandwidth::get()
 {
 	API_LOCK;
-	linphone_core_set_upload_bandwidth(this->lc, bw);
+	int bw = linphone_core_get_upload_bandwidth(this->lc);
+	API_UNLOCK;
+	return bw;
+}
+
+void Linphone::Core::LinphoneCore::UploadBandwidth::set(int value)
+{
+	API_LOCK;
+	linphone_core_set_upload_bandwidth(this->lc, value);
 	API_UNLOCK;
 }
 
-void Linphone::Core::LinphoneCore::SetDownloadBandwidth(int bw) 
+int Linphone::Core::LinphoneCore::DownloadBandwidth::get()
 {
 	API_LOCK;
-	linphone_core_set_download_bandwidth(this->lc, bw);
+	int bw = linphone_core_get_download_bandwidth(this->lc);
+	API_UNLOCK;
+	return bw;
+}
+
+void Linphone::Core::LinphoneCore::DownloadBandwidth::set(int value)
+{
+	API_LOCK;
+	linphone_core_set_download_bandwidth(this->lc, value);
 	API_UNLOCK;
 }
 
