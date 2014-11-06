@@ -89,6 +89,7 @@ namespace Linphone.Model
                 email.Subject = subject;
                 email.Body = body;
                 email.Show();
+                DeleteFile();
             }
             catch (Exception) { }
         }

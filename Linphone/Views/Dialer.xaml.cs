@@ -82,7 +82,6 @@ namespace Linphone
                                 LinphoneManager.Instance.LinphoneCore.UploadLogCollection();
                                 break;
                         }
-                        BugCollector.DeleteFile();
                     };
 
                     reportIssueDialog.Show();
