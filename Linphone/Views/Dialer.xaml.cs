@@ -98,9 +98,6 @@ namespace Linphone
             StatusBar = status;
             BasePage.StatusBar.RefreshStatus(LinphoneManager.Instance.LastKnownState);
 
-            // Create LinphoneCore if not created yet, otherwise do nothing
-            LinphoneManager.Instance.InitLinphoneCore();
-
             BuildLocalizedApplicationBar();
 
             // Check for the navigation direction to avoid going to incall view when coming back from incall view

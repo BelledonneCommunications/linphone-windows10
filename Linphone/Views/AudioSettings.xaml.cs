@@ -48,9 +48,6 @@ namespace Linphone.Views
         {
             base.OnNavigatedTo(e);
             LinphoneManager.Instance.ECListener = this;
-
-            // Create LinphoneCore if not created yet, otherwise do nothing
-            LinphoneManager.Instance.InitLinphoneCore();
         }
 
         /// <summary>

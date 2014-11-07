@@ -221,6 +221,9 @@ namespace Linphone.Model
 
             BackgroundProcessConnected = true;
             Debug.WriteLine("[LinphoneManager] Background process connected to interface");
+
+            // Create LinphoneCore if not created yet, otherwise do nothing
+            InitLinphoneCore();
         }
 
         /// <summary>
@@ -537,6 +540,7 @@ namespace Linphone.Model
         /// </summary>
         public void MuteMic(Boolean isMicMuted)
         {
+            if (BaseModel.UIDispatcher == null) return;
             BaseModel.UIDispatcher.BeginInvoke(() =>
             {
                 if (LinphoneCore.GetCallsNb() > 0)
@@ -799,6 +803,7 @@ namespace Linphone.Model
         /// </summary>
         public void CallState(LinphoneCall call, LinphoneCallState state, string message)
         {
+            if (BaseModel.UIDispatcher == null) return;
             if (state == LinphoneCallState.OutgoingProgress)
             {
                 BaseModel.UIDispatcher.BeginInvoke(() =>
@@ -936,9 +941,7 @@ namespace Linphone.Model
         /// </summary>
         public void RegistrationState(LinphoneProxyConfig config, RegistrationState state, string message)
         {
-            if (config == null)
-                return;
-
+            if ((config == null) || BaseModel.UIDispatcher == null) return;
             BaseModel.UIDispatcher.BeginInvoke(() =>
             {
                 try
@@ -1031,6 +1034,7 @@ namespace Linphone.Model
         /// </summary>
         public void MessageReceived(LinphoneChatMessage message)
         {
+            if (BaseModel.UIDispatcher == null) return;
             BaseModel.UIDispatcher.BeginInvoke(() =>
             {
                 string sipAddress = message.GetFrom().AsStringUriOnly().Replace("sip:", "");
@@ -1105,6 +1109,7 @@ namespace Linphone.Model
         /// </summary>
         public void ComposingReceived(LinphoneChatRoom room)
         {
+            if (BaseModel.UIDispatcher == null) return;
             BaseModel.UIDispatcher.BeginInvoke(() =>
             {
                 if (ComposingListener != null && room != null)
@@ -1131,6 +1136,7 @@ namespace Linphone.Model
         /// </summary>
         public void LogUploadStatusChanged(LinphoneCoreLogCollectionUploadState state, string info)
         {
+            if (BaseModel.UIDispatcher == null) return;
             BaseModel.UIDispatcher.BeginInvoke(() =>
             {
                 if (state == LinphoneCoreLogCollectionUploadState.LinphoneCoreLogCollectionUploadStateDelivered)
@@ -1210,14 +1216,13 @@ namespace Linphone.Model
             if (e.ContactFound != null)
             {
                 Logger.Msg("[LinphoneManager] Contact found: " + e.ContactFound.DisplayName + "\r\n");
-                ContactManager.ContactFound -= OnContactFound;
-
                 // Store the contact name as display name for call logs
                 if (LinphoneManager.Instance.LinphoneCore.GetCurrentCall() != null)
                 {
                     LinphoneManager.Instance.LinphoneCore.GetCurrentCall().GetRemoteAddress().SetDisplayName(e.ContactFound.DisplayName);
                 }
             }
+            ContactManager.ContactFound -= OnContactFound;
         }
         #endregion
     }

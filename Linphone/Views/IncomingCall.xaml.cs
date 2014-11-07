@@ -62,9 +62,6 @@ namespace Linphone.Views
         /// </summary>
         protected override void OnNavigatedTo(NavigationEventArgs nee)
         {
-            // Create LinphoneCore if not created yet, otherwise do nothing
-            LinphoneManager.Instance.InitLinphoneCore();
-
             base.OnNavigatedTo(nee);
 
             if (NavigationContext.QueryString.ContainsKey("sip"))

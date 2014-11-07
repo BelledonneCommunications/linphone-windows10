@@ -44,16 +44,6 @@ namespace Linphone.Views
         }
 
         /// <summary>
-        /// Method called when the page is displayed.
-        /// </summary>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            // Create LinphoneCore if not created yet, otherwise do nothing
-            LinphoneManager.Instance.InitLinphoneCore();
-        }
-
-        /// <summary>
         /// Method called when the user is navigation away from this page
         /// </summary>
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)

@@ -96,9 +96,6 @@ namespace Linphone.Views
             LinphoneManager.Instance.MessageListener = this;
             LinphoneManager.Instance.ComposingListener = this;
 
-            // Create LinphoneCore if not created yet, otherwise do nothing
-            LinphoneManager.Instance.InitLinphoneCore();
-
             ContactManager cm = ContactManager.Instance;
             cm.ContactFound += cm_ContactFound;
 

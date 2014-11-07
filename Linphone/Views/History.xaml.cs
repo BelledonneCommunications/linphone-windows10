@@ -39,9 +39,6 @@ namespace Linphone.Views
         {
             base.OnNavigatedTo(e);
 
-            // Create LinphoneCore if not created yet, otherwise do nothing
-            LinphoneManager.Instance.InitLinphoneCore();
-
             LinphoneManager.Instance.LinphoneCore.ResetMissedCallsCount();
 
             List<CallLog> callsHistory = LinphoneManager.Instance.GetCallsHistory();

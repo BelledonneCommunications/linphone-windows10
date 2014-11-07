@@ -108,8 +108,6 @@ namespace Linphone.Views
         {
             base.OnNavigatedTo(e);
             saveSettingsOnLeave = true;
-            // Create LinphoneCore if not created yet, otherwise do nothing
-            LinphoneManager.Instance.InitLinphoneCore();
         }
 
         /// <summary>

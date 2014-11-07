@@ -34,9 +34,6 @@ namespace Linphone.Views
         {
             base.OnNavigatedTo(e);
 
-            // Create LinphoneCore if not created yet, otherwise do nothing
-            LinphoneManager.Instance.InitLinphoneCore();
-
             if (LinphoneManager.Instance.LinphoneCore.GetProxyConfigList().Count > 0)
             {
                 NavigationService.Navigate(new Uri("/Views/Dialer.xaml", UriKind.RelativeOrAbsolute));
