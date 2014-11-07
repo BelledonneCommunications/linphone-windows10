@@ -166,7 +166,10 @@ namespace Linphone.Model
             }
             else
             {
-                FindContactByNumber(numberOrAddress, numberOrAddress);
+                if (IsDigitsOnly(numberOrAddress))
+                {
+                    FindContactByNumber(numberOrAddress, numberOrAddress);
+                }
                 FindContactByEmail(numberOrAddress + "@sip.linphone.org", numberOrAddress);
             }
         }
