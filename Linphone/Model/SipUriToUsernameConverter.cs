@@ -17,7 +17,7 @@ namespace Linphone.Model
         {
             string sipAddress = (string)value;
             LinphoneAddress addr = LinphoneManager.Instance.LinphoneCore.InterpretURL(sipAddress);
-            return addr.GetUserName();
+            return addr.UserName;
         }
 
         /// <summary>

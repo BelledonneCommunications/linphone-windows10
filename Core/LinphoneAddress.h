@@ -29,68 +29,64 @@ namespace Linphone
 		{
 		public:
 			/// <summary>
-			/// Gets the human display name of the address.
+			/// The human display name of the address.
 			/// For example for the "Alice &lt;sip:alice@example.net&gt;" URI, it will return "Alice".
 			/// </summary>
-			/// <returns>The human display name or an empty string if not set</returns>
-			Platform::String^ GetDisplayName();
+			property Platform::String^ DisplayName
+			{
+				Platform::String^ get();
+				void set(Platform::String^ value);
+			}
 
 			/// <summary>
-			/// Gets the username part of the address.
+			/// The username part of the address.
 			/// For example for the "Alice &lt;sip:alice@example.net&gt;" URI, it will return "alice".
 			/// </summary>
-			/// <returns>The username part of the address or an empty string if not set</returns>
-			Platform::String^ GetUserName();
+			property Platform::String^ UserName
+			{
+				Platform::String^ get();
+				void set(Platform::String^ value);
+			}
 
 			/// <summary>
-			/// Gets the domain part of the address.
+			/// The domain part of the address.
 			/// For example for the "Alice &lt;sip:alice@example.net&gt;" URI, it will return "example.net".
 			/// </summary>
-			/// <returns>The domain part of the address or an empty string if not set</returns>
-			Platform::String^ GetDomain();
+			property Platform::String^ Domain
+			{
+				Platform::String^ get();
+				void set(Platform::String^ value);
+			}
 
 			/// <summary>
-			/// Gets the port part of the address.
+			/// The port part of the address.
 			/// </summary>
-			/// <returns>The port part of the address or 0 if not set</returns>
-			int GetPort();
+			property int Port
+			{
+				int get();
+				void set(int value);
+			}
 
 			/// <summary>
-			/// Gets the transport of the address.
+			/// The transport of the address.
 			/// </summary>
-			/// <returns>The transport if specified. If not set, it will return UDP.</returns>
-			LinphoneTransport GetTransport();
+			property LinphoneTransport Transport
+			{
+				LinphoneTransport get();
+				void set(LinphoneTransport value);
+			}
 
 			/// <summary>
-			/// Sets the human display name of the address.
+			/// The address scheme, normally "sip".
 			/// </summary>
-			/// <param name="name">The human display name to set to the address</param>
-			void SetDisplayName(Platform::String^ name);
+			property Platform::String^ Scheme
+			{
+				Platform::String^ get();
+			}
 
 			/// <summary>
-			/// Sets the username part of the address.
+			/// Removes address's tags and uri headers so that it is displayable to the user.
 			/// </summary>
-			/// <param name="username">The username to set to the address</param>
-			void SetUserName(Platform::String^ username);
-
-			/// <summary>
-			/// Sets the domain part of the address.
-			/// </summary>
-			/// <param name="domain">The domain to set to the address</param>
-			void SetDomain(Platform::String^ domain);
-
-			/// <summary>
-			/// Sets the port part of the address.
-			/// </summary>
-			/// <param name="port">The port to set to the address</param>
-			void SetPort(int port);
-
-			/// <summary>
-			/// Sets the transport in the address.
-			/// </summary>
-			/// <param name="transport">The transport to set.</param>
-			void SetTransport(LinphoneTransport transport);
-
 			void Clean();
 
 			/// <summary>

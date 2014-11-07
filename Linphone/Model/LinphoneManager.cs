@@ -459,18 +459,18 @@ namespace Linphone.Model
             {
                 foreach (LinphoneCallLog log in LinphoneCore.GetCallLogs())
                 {
-                    string from = log.GetFrom().GetDisplayName();
+                    string from = log.GetFrom().DisplayName;
                     if (from.Length == 0)
                     {
                         LinphoneAddress fromAddress = log.GetFrom();
-                        from = String.Format("{0}@{1}", fromAddress.GetUserName(), fromAddress.GetDomain());
+                        from = String.Format("{0}@{1}", fromAddress.UserName, fromAddress.Domain);
                     }
 
-                    string to = log.GetTo().GetDisplayName();
+                    string to = log.GetTo().DisplayName;
                     if (to.Length == 0)
                     {
                         LinphoneAddress toAddress = log.GetTo();
-                        to = String.Format("{0}@{1}", toAddress.GetUserName(), toAddress.GetDomain());
+                        to = String.Format("{0}@{1}", toAddress.UserName, toAddress.Domain);
                     }
 
                     bool isMissed = log.GetStatus() == LinphoneCallStatus.Missed;
@@ -868,16 +868,16 @@ namespace Linphone.Model
                             if (call.GetDirection() == CallDirection.Outgoing)
                             {
                                 text = ResourceManager.GetString("CallErrorDeclined", CultureInfo.CurrentCulture);
-                                ShowCallError(text.Replace("#address#", call.GetRemoteAddress().GetUserName()));
+                                ShowCallError(text.Replace("#address#", call.GetRemoteAddress().UserName));
                             }
                             break;
                         case Reason.LinphoneReasonNotFound:
                             text = ResourceManager.GetString("CallErrorNotFound", CultureInfo.CurrentCulture);
-                            ShowCallError(text.Replace("#address#", call.GetRemoteAddress().GetUserName()));
+                            ShowCallError(text.Replace("#address#", call.GetRemoteAddress().UserName));
                             break;
                         case Reason.LinphoneReasonBusy:
                             text = ResourceManager.GetString("CallErrorBusy", CultureInfo.CurrentCulture);
-                            ShowCallError(text.Replace("#address#", call.GetRemoteAddress().GetUserName()));
+                            ShowCallError(text.Replace("#address#", call.GetRemoteAddress().UserName));
                             break;
                         case Reason.LinphoneReasonNotAcceptable:
                             ShowCallError(ResourceManager.GetString("CallErrorNotAcceptable", CultureInfo.CurrentCulture));
@@ -1044,7 +1044,7 @@ namespace Linphone.Model
             BaseModel.UIDispatcher.BeginInvoke(() =>
             {
                 LinphoneAddress fromAddress = message.GetFrom();
-                string sipAddress = String.Format("{0}@{1}", fromAddress.GetUserName(), fromAddress.GetDomain());
+                string sipAddress = String.Format("{0}@{1}", fromAddress.UserName, fromAddress.Domain);
                 Logger.Msg("[LinphoneManager] Message received from " + sipAddress + ": " + message.GetText() + "\r\n");
 
                 //Vibrate
@@ -1123,7 +1123,7 @@ namespace Linphone.Model
                 {
                     string currentListenerSipAddress = ComposingListener.GetSipAddressAssociatedWithDisplayConversation();
                     LinphoneAddress peerAddress = room.GetPeerAddress();
-                    string roomComposingSipAddress = String.Format("{0}@{1}", peerAddress.GetUserName(), peerAddress.GetDomain());
+                    string roomComposingSipAddress = String.Format("{0}@{1}", peerAddress.UserName, peerAddress.Domain);
 
                     if (currentListenerSipAddress != null && roomComposingSipAddress.Equals(currentListenerSipAddress))
                         ComposingListener.ComposeReceived();
@@ -1194,9 +1194,9 @@ namespace Linphone.Model
             try
             {
                 LinphoneAddress remoteAddress = call.GetRemoteAddress();
-                if (remoteAddress.GetDisplayName().Length == 0)
+                if (remoteAddress.DisplayName.Length == 0)
                 {
-                    string sipAddress = String.Format("{0}@{1}", remoteAddress.GetUserName(), remoteAddress.GetDomain());
+                    string sipAddress = String.Format("{0}@{1}", remoteAddress.UserName, remoteAddress.Domain);
                     Logger.Msg("[LinphoneManager] Display name null, looking for remote address in contact: " + sipAddress + "\r\n");
 
                     ContactManager.ContactFound += OnContactFound;
@@ -1204,7 +1204,7 @@ namespace Linphone.Model
                 }
                 else
                 {
-                    Logger.Msg("[LinphoneManager] Display name found: " + call.GetRemoteAddress().GetDisplayName() + "\r\n");
+                    Logger.Msg("[LinphoneManager] Display name found: " + call.GetRemoteAddress().DisplayName + "\r\n");
                 }
             }
             catch 
@@ -1224,7 +1224,7 @@ namespace Linphone.Model
                 // Store the contact name as display name for call logs
                 if (LinphoneManager.Instance.LinphoneCore.GetCurrentCall() != null)
                 {
-                    LinphoneManager.Instance.LinphoneCore.GetCurrentCall().GetRemoteAddress().SetDisplayName(e.ContactFound.DisplayName);
+                    LinphoneManager.Instance.LinphoneCore.GetCurrentCall().GetRemoteAddress().DisplayName = e.ContactFound.DisplayName;
                 }
             }
             ContactManager.ContactFound -= OnContactFound;

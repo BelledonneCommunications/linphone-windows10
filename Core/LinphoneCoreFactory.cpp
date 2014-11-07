@@ -46,9 +46,9 @@ Linphone::Core::LinphoneAddress^ LinphoneCoreFactory::CreateLinphoneAddress(Plat
 {
 	API_LOCK;
 	Linphone::Core::LinphoneAddress^ address = CreateLinphoneAddress("sip:user@domain.com");
-	address->SetUserName(username);
-	address->SetDomain(domain);
-	address->SetDisplayName(displayName);
+	address->UserName = username;
+	address->Domain = domain;
+	address->DisplayName = displayName;
 	API_UNLOCK;
 	return address;
 }

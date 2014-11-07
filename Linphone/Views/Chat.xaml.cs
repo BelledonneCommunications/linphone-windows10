@@ -276,8 +276,8 @@ namespace Linphone.Views
         private void CreateChatRoom(LinphoneAddress sipAddress)
         {
             this.sipAddress = sipAddress;
-            ContactManager.Instance.FindContact(String.Format("{0}@{1}", sipAddress.GetUserName(), sipAddress.GetDomain()));
-            ContactName.Text = sipAddress.GetUserName();
+            ContactManager.Instance.FindContact(String.Format("{0}@{1}", sipAddress.UserName, sipAddress.Domain));
+            ContactName.Text = sipAddress.UserName;
             ContactName.Visibility = Visibility.Visible;
             NewChat.Visibility = Visibility.Collapsed;
 
@@ -503,9 +503,9 @@ namespace Linphone.Views
             Debug.WriteLine("[Chat] Is remote composing ? " + isRemoteComposing);
             RemoteComposing.Visibility = isRemoteComposing ? Visibility.Visible : Visibility.Collapsed;
 
-            string remoteName = chatRoom.GetPeerAddress().GetDisplayName();
+            string remoteName = chatRoom.GetPeerAddress().DisplayName;
             if (remoteName.Length <= 0)
-                remoteName = chatRoom.GetPeerAddress().GetUserName();
+                remoteName = chatRoom.GetPeerAddress().UserName;
             RemoteComposing.Text = remoteName + AppResources.RemoteComposing;
         }
 
@@ -515,7 +515,7 @@ namespace Linphone.Views
         /// <returns></returns>
         public string GetSipAddressAssociatedWithDisplayConversation()
         {
-            return String.Format("{0}@{1}", sipAddress.GetUserName(), sipAddress.GetDomain());
+            return String.Format("{0}@{1}", sipAddress.UserName, sipAddress.Domain);
         }
 
         private void scrollToBottom()

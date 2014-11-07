@@ -278,9 +278,9 @@ namespace Linphone.Model
                 {
                     LinphoneAddress proxyAddress = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress(cfg.GetAddr());
                     dict[ProxyKeyName] = proxyAddress.AsStringUriOnly();
-                    dict[TransportKeyName] = EnumToTransport[proxyAddress.GetTransport()];
-                    dict[UsernameKeyName] = address.GetUserName();
-                    dict[DomainKeyName] = address.GetDomain();
+                    dict[TransportKeyName] = EnumToTransport[proxyAddress.Transport];
+                    dict[UsernameKeyName] = address.UserName;
+                    dict[DomainKeyName] = address.Domain;
                     dict[OutboundProxyKeyName] = (cfg.GetRoute().Length > 0).ToString();
                     var authInfos = LinphoneManager.Instance.LinphoneCore.GetAuthInfos();
                     if (authInfos.Count > 0)
@@ -289,7 +289,7 @@ namespace Linphone.Model
                         dict[PasswordKeyName] = info.GetPassword();
                         dict[UserIdKeyName] = info.GetUserId();
                     }
-                    dict[DisplayNameKeyName] = address.GetDisplayName();
+                    dict[DisplayNameKeyName] = address.DisplayName;
                 }
             }
         }
@@ -361,7 +361,7 @@ namespace Linphone.Model
                         LinphoneAddress proxyAddr = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress(cfg.GetAddr());
                         if (proxyAddr != null)
                         {
-                            proxyAddr.SetTransport(TransportToEnum[transport]);
+                            proxyAddr.Transport = TransportToEnum[transport];
                             cfg.SetProxy(proxyAddr.AsStringUriOnly());
                         }
                     }

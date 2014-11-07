@@ -156,8 +156,8 @@ namespace Linphone.Model
         public void FindContact(String numberOrAddress)
         {
             LinphoneAddress address = LinphoneManager.Instance.LinphoneCore.InterpretURL(numberOrAddress);
-            string addressWithoutScheme = String.Format("{0}@{1}", address.GetUserName(), address.GetDomain());
-            string username = address.GetUserName();
+            string addressWithoutScheme = String.Format("{0}@{1}", address.UserName, address.Domain);
+            string username = address.UserName;
             if (IsPhoneNumber(username))
             {
                 FindContactByNumber(username, addressWithoutScheme);

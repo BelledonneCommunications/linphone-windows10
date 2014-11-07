@@ -1552,10 +1552,10 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 		
 	Linphone::Core::CallController^ callController = Linphone::Core::Globals::Instance->CallController;
 	if (state == Linphone::Core::LinphoneCallState::IncomingReceived) {
-		Platform::String^ name = lCall->GetRemoteAddress()->GetDisplayName();
+		Platform::String^ name = lCall->GetRemoteAddress()->DisplayName;
 		if (name == nullptr || name->Length() <= 0) 
 		{
-			name = lCall->GetRemoteAddress()->GetUserName();
+			name = lCall->GetRemoteAddress()->UserName;
 		}
 		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = callController->OnIncomingCallReceived(lCall, name, lCall->GetRemoteAddress()->AsStringUriOnly(), callController->IncomingCallViewDismissed);
 		lCall->CallContext = platformCall;
@@ -1583,7 +1583,7 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = (Windows::Phone::Networking::Voip::VoipPhoneCall^) lCall->CallContext;
 		if (platformCall == nullptr) {
 			// If CallContext is null here, it is because we have an incoming call using the custom incoming call view so create the VoipPhoneCall now
-			platformCall = callController->NewIncomingCallForCustomIncomingCallView(lCall->GetRemoteAddress()->GetDisplayName());
+			platformCall = callController->NewIncomingCallForCustomIncomingCallView(lCall->GetRemoteAddress()->DisplayName);
 			lCall->CallContext = platformCall;
 		}
 		if (lCall->IsCameraEnabled()) {

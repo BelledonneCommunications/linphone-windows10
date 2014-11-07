@@ -117,11 +117,11 @@ namespace Linphone.Views
                 if (conversation.GetHistorySize() > 0)
                 {
                     LinphoneAddress peerAddress = conversation.GetPeerAddress();
-                    string address = String.Format("{0}@{1}", peerAddress.GetUserName(), peerAddress.GetDomain());
-                    string name = peerAddress.GetDisplayName();
+                    string address = String.Format("{0}@{1}", peerAddress.UserName, peerAddress.Domain);
+                    string name = peerAddress.DisplayName;
                     if (name == null || name.Length <= 0)
                     {
-                        name = peerAddress.GetUserName();
+                        name = peerAddress.UserName;
                     }
                     _conversations.Add(new Conversation(address, name, conversation.GetHistory()));
                     ContactManager.Instance.FindContact(address);
