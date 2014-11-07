@@ -81,6 +81,9 @@ namespace Linphone
                                 LinphoneManager.Instance.LogUploadProgressIndicationEH += LogUploadProgressIndication;
                                 LinphoneManager.Instance.LinphoneCore.UploadLogCollection();
                                 break;
+                            case CustomMessageBoxResult.RightButton:
+                                BugCollector.DeleteFile();
+                                break;
                         }
                     };
 
