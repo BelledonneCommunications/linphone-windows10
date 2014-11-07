@@ -5,7 +5,7 @@ using System.Windows.Navigation;
 namespace Linphone.Model
 {
     /// <summary>
-    /// Class used to allow the app to be automatically launched when user click on a sip: link.
+    /// Class used to allow the app to be automatically launched when user click on a sip: or sips: link.
     /// </summary>
     class AssociationUriMapper : UriMapperBase
     {
@@ -16,7 +16,7 @@ namespace Linphone.Model
             if (tempUri.StartsWith("/Protocol?encodedLaunchUri="))
             {
                 tempUri = tempUri.Replace("/Protocol?encodedLaunchUri=", "");
-                if (tempUri.Contains("sip:"))
+                if (tempUri.StartsWith("sip:") || tempUri.StartsWith("sips:"))
                 {
                     return new Uri("/Views/Dialer.xaml?sip=" + tempUri, UriKind.RelativeOrAbsolute);
                 }

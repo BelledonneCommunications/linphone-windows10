@@ -116,11 +116,12 @@ namespace Linphone.Views
             {
                 if (conversation.GetHistorySize() > 0)
                 {
-                    string address = conversation.GetPeerAddress().AsStringUriOnly().Replace("sip:", "");
-                    string name = conversation.GetPeerAddress().GetDisplayName();
+                    LinphoneAddress peerAddress = conversation.GetPeerAddress();
+                    string address = String.Format("{0}@{1}", peerAddress.GetUserName(), peerAddress.GetDomain());
+                    string name = peerAddress.GetDisplayName();
                     if (name == null || name.Length <= 0)
                     {
-                        name = conversation.GetPeerAddress().GetUserName();
+                        name = peerAddress.GetUserName();
                     }
                     _conversations.Add(new Conversation(address, name, conversation.GetHistory()));
                     ContactManager.Instance.FindContact(address);
@@ -141,7 +142,7 @@ namespace Linphone.Views
             string sipAddress = (string)item.CommandParameter;
             if (sipAddress != null && sipAddress.Length > 0)
             {
-                LinphoneManager.Instance.LinphoneCore.GetOrCreateChatRoom(sipAddress).DeleteHistory();
+                LinphoneManager.Instance.LinphoneCore.GetChatRoomFromUri(sipAddress).DeleteHistory();
                 GetMessagesAndDisplayConversationsList();
             }
         }
@@ -150,7 +151,7 @@ namespace Linphone.Views
         {
             foreach (var c in _selection)
             {
-                LinphoneManager.Instance.LinphoneCore.GetOrCreateChatRoom(c.SipAddress).DeleteHistory();
+                LinphoneManager.Instance.LinphoneCore.GetChatRoomFromUri(c.SipAddress).DeleteHistory();
             }
 
             GetMessagesAndDisplayConversationsList();

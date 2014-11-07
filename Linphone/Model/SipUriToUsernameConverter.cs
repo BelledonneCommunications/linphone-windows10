@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using Linphone.Core;
 
 namespace Linphone.Model
 {
@@ -15,15 +16,8 @@ namespace Linphone.Model
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             string sipAddress = (string)value;
-            if (sipAddress.StartsWith("sip:"))
-            {
-                sipAddress = sipAddress.Replace("sip:", "");
-            }
-            if (sipAddress.Contains("@"))
-            {
-                sipAddress = sipAddress.Split(new string[] { "@" }, StringSplitOptions.RemoveEmptyEntries)[0];
-            }
-            return sipAddress;
+            LinphoneAddress addr = LinphoneManager.Instance.LinphoneCore.InterpretURL(sipAddress);
+            return addr.GetUserName();
         }
 
         /// <summary>

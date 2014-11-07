@@ -1,4 +1,5 @@
-﻿using Microsoft.Phone.UserData;
+﻿using Linphone.Core;
+using Microsoft.Phone.UserData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -138,7 +139,7 @@ namespace Linphone.Model
             return recent;
         }
 
-        private static bool IsDigitsOnly(string str)
+        private static bool IsPhoneNumber(string str)
         {
             foreach (char c in str)
             {
@@ -154,24 +155,14 @@ namespace Linphone.Model
         /// <param name="numberOrAddress"></param>
         public void FindContact(String numberOrAddress)
         {
-            if (numberOrAddress.Contains('@'))
+            LinphoneAddress address = LinphoneManager.Instance.LinphoneCore.InterpretURL(numberOrAddress);
+            string addressWithoutScheme = String.Format("{0}@{1}", address.GetUserName(), address.GetDomain());
+            string username = address.GetUserName();
+            if (IsPhoneNumber(username))
             {
-                string cleanAddress = numberOrAddress.Replace("sip:", "").Replace("sips:", "");
-                FindContactByEmail(cleanAddress, numberOrAddress);
-                string number = cleanAddress.Split(new string[] { "@" }, StringSplitOptions.RemoveEmptyEntries)[0];
-                if (IsDigitsOnly(number))
-                {
-                    FindContactByNumber(number, numberOrAddress);
-                }
+                FindContactByNumber(username, addressWithoutScheme);
             }
-            else
-            {
-                if (IsDigitsOnly(numberOrAddress))
-                {
-                    FindContactByNumber(numberOrAddress, numberOrAddress);
-                }
-                FindContactByEmail(numberOrAddress + "@sip.linphone.org", numberOrAddress);
-            }
+            FindContactByEmail(addressWithoutScheme, addressWithoutScheme);
         }
 
         /// <summary>

@@ -70,7 +70,7 @@ namespace Linphone.Views
         /// <summary>
         /// SIP address linked to the current displayed chat.
         /// </summary>
-        public string sipAddress;
+        public LinphoneAddress sipAddress;
 
         /// <summary>
         /// ChatRoom used to send and receive messages.
@@ -105,12 +105,7 @@ namespace Linphone.Views
             ContactName.Visibility = Visibility.Visible; 
             if (NavigationContext.QueryString.ContainsKey("sip"))
             {
-                sipAddress = NavigationContext.QueryString["sip"];
-                if (sipAddress.StartsWith("sip:"))
-                {
-                    sipAddress = sipAddress.Replace("sip:", "");
-                }
-
+                sipAddress = LinphoneManager.Instance.LinphoneCore.InterpretURL(NavigationContext.QueryString["sip"]);
                 CreateChatRoom(sipAddress);
                 UpdateComposingMessage();
 
@@ -120,7 +115,7 @@ namespace Linphone.Views
                     DisplayPastMessages(chatRoom.GetHistory());
                 }
             }
-            else if (e.NavigationMode != NavigationMode.Back || sipAddress == null || sipAddress.Length == 0)
+            else if (e.NavigationMode != NavigationMode.Back || sipAddress == null)
             {
                 ContactName.Visibility = Visibility.Collapsed; 
                 NewChat.Visibility = Visibility.Visible;
@@ -278,36 +273,17 @@ namespace Linphone.Views
             });
         }
 
-        private void CreateChatRoom(string sipAddress)
+        private void CreateChatRoom(LinphoneAddress sipAddress)
         {
-            if (!sipAddress.Contains("@"))
-            {
-                if (LinphoneManager.Instance.LinphoneCore.GetProxyConfigList().Count > 0)
-                {
-                    LinphoneProxyConfig config = LinphoneManager.Instance.LinphoneCore.GetProxyConfigList()[0] as LinphoneProxyConfig;
-                    sipAddress += "@" + config.GetDomain();
-                }
-                else
-                {
-                    System.Windows.MessageBox.Show(AppResources.InvalidSipAddressError, AppResources.GenericError, MessageBoxButton.OK);
-                    return;
-                }
-            }
-
             this.sipAddress = sipAddress;
-            ContactManager.Instance.FindContact(sipAddress);
-            string displayedSipAddress = sipAddress;
-            if (displayedSipAddress.Contains("@"))
-            {
-                displayedSipAddress = displayedSipAddress.Split(new string[] { "@" }, StringSplitOptions.RemoveEmptyEntries)[0];
-            }
-            ContactName.Text = displayedSipAddress;
+            ContactManager.Instance.FindContact(String.Format("{0}@{1}", sipAddress.GetUserName(), sipAddress.GetDomain()));
+            ContactName.Text = sipAddress.GetUserName();
             ContactName.Visibility = Visibility.Visible;
             NewChat.Visibility = Visibility.Collapsed;
 
             try
             {
-                chatRoom = LinphoneManager.Instance.LinphoneCore.GetOrCreateChatRoom(sipAddress);
+                chatRoom = LinphoneManager.Instance.LinphoneCore.GetChatRoom(sipAddress);
             }
             catch
             {
@@ -329,7 +305,7 @@ namespace Linphone.Views
             {
                 if (chatRoom == null) //This code will be executed only in case of new conversation
                 {
-                    CreateChatRoom(NewChatSipAddress.Text);
+                    CreateChatRoom(LinphoneManager.Instance.LinphoneCore.InterpretURL(NewChatSipAddress.Text));
                 }
 
                 if (chatRoom != null)
@@ -365,7 +341,7 @@ namespace Linphone.Views
             {
                 if (chatRoom == null) //This code will be executed only in case of new conversation
                 {
-                    CreateChatRoom(NewChatSipAddress.Text);
+                    CreateChatRoom(LinphoneManager.Instance.LinphoneCore.InterpretURL(NewChatSipAddress.Text));
                 }
                 if (chatRoom != null)
                 {
@@ -453,7 +429,7 @@ namespace Linphone.Views
         private bool ShouldSendMessageButtonBeEnabled()
         {
             return ((MessageBox.Text != null && MessageBox.Text.Length > 0) || (MessageBox.ImageName != null && MessageBox.ImageName.Length > 0 && MessageBox.ImageLocalPath != null && MessageBox.ImageLocalPath.Length > 0))
-                && ((sipAddress != null && sipAddress.Length > 0) || (NewChatSipAddress.Text != null && NewChatSipAddress.Text.Length > 0));
+                && ((sipAddress != null) || (NewChatSipAddress.Text != null && NewChatSipAddress.Text.Length > 0));
         }
 
         private void AddSendButtonsToAppBar()
@@ -539,7 +515,7 @@ namespace Linphone.Views
         /// <returns></returns>
         public string GetSipAddressAssociatedWithDisplayConversation()
         {
-            return sipAddress;
+            return String.Format("{0}@{1}", sipAddress.GetUserName(), sipAddress.GetDomain());
         }
 
         private void scrollToBottom()

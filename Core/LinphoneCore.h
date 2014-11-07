@@ -1072,9 +1072,16 @@ namespace Linphone
 			void EnableSelfView(Platform::Boolean enable);
 
 			/// <summary>
-			/// Creates a ChatRoom to send text messages to given addrees.
+			/// Get a chat room whose peer is the supplied address. If it does not exist yet, it will be created.
 			/// </summary>
-			Linphone::Core::LinphoneChatRoom^ GetOrCreateChatRoom(Platform::String^ to);
+			/// <param name="address">A LinphoneAddress</param>
+			Linphone::Core::LinphoneChatRoom^ GetChatRoom(Linphone::Core::LinphoneAddress^ address);
+
+			/// <summary>
+			/// Get a chat room for messaging from a sip uri like sip:joe@sip.linphone.org. If it does not exist yet, it will be created.
+			/// </summary>
+			/// <param name="to">The destination address for messages</param>
+			Linphone::Core::LinphoneChatRoom^ GetChatRoomFromUri(Platform::String^ to);
 
 			/// <summary>
 			/// Sets the log collection upload server URL.

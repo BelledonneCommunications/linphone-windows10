@@ -461,11 +461,17 @@ namespace Linphone.Model
                 {
                     string from = log.GetFrom().GetDisplayName();
                     if (from.Length == 0)
-                        from = log.GetFrom().AsStringUriOnly().Replace("sip:", "");
+                    {
+                        LinphoneAddress fromAddress = log.GetFrom();
+                        from = String.Format("{0}@{1}", fromAddress.GetUserName(), fromAddress.GetDomain());
+                    }
 
                     string to = log.GetTo().GetDisplayName();
                     if (to.Length == 0)
-                        to = log.GetTo().AsStringUriOnly().Replace("sip:", "");
+                    {
+                        LinphoneAddress toAddress = log.GetTo();
+                        to = String.Format("{0}@{1}", toAddress.GetUserName(), toAddress.GetDomain());
+                    }
 
                     bool isMissed = log.GetStatus() == LinphoneCallStatus.Missed;
                     long startDate = log.GetStartDate();
@@ -1037,7 +1043,8 @@ namespace Linphone.Model
             if (BaseModel.UIDispatcher == null) return;
             BaseModel.UIDispatcher.BeginInvoke(() =>
             {
-                string sipAddress = message.GetFrom().AsStringUriOnly().Replace("sip:", "");
+                LinphoneAddress fromAddress = message.GetFrom();
+                string sipAddress = String.Format("{0}@{1}", fromAddress.GetUserName(), fromAddress.GetDomain());
                 Logger.Msg("[LinphoneManager] Message received from " + sipAddress + ": " + message.GetText() + "\r\n");
 
                 //Vibrate
@@ -1115,7 +1122,8 @@ namespace Linphone.Model
                 if (ComposingListener != null && room != null)
                 {
                     string currentListenerSipAddress = ComposingListener.GetSipAddressAssociatedWithDisplayConversation();
-                    string roomComposingSipAddress = room.GetPeerAddress().AsStringUriOnly().Replace("sip:", "");
+                    LinphoneAddress peerAddress = room.GetPeerAddress();
+                    string roomComposingSipAddress = String.Format("{0}@{1}", peerAddress.GetUserName(), peerAddress.GetDomain());
 
                     if (currentListenerSipAddress != null && roomComposingSipAddress.Equals(currentListenerSipAddress))
                         ComposingListener.ComposeReceived();
@@ -1185,13 +1193,10 @@ namespace Linphone.Model
         {
             try
             {
-                string sipAddress = call.GetRemoteAddress().AsStringUriOnly();
-                if (call.GetRemoteAddress().GetDisplayName().Length == 0)
+                LinphoneAddress remoteAddress = call.GetRemoteAddress();
+                if (remoteAddress.GetDisplayName().Length == 0)
                 {
-                    if (sipAddress.StartsWith("sip:"))
-                    {
-                        sipAddress = sipAddress.Substring(4);
-                    }
+                    string sipAddress = String.Format("{0}@{1}", remoteAddress.GetUserName(), remoteAddress.GetDomain());
                     Logger.Msg("[LinphoneManager] Display name null, looking for remote address in contact: " + sipAddress + "\r\n");
 
                     ContactManager.ContactFound += OnContactFound;
@@ -1204,7 +1209,7 @@ namespace Linphone.Model
             }
             catch 
             {
-                Logger.Warn("[LinphoneManager] Execption occured while looking for contact...\r\n");
+                Logger.Warn("[LinphoneManager] Exception occured while looking for contact...\r\n");
             }
         }
 

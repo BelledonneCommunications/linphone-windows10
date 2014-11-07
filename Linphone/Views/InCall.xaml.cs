@@ -185,10 +185,8 @@ namespace Linphone.Views
             if (NavigationContext.QueryString.ContainsKey("sip"))
             {
                 String calledNumber = NavigationContext.QueryString["sip"];
-                if (calledNumber.StartsWith("sip:"))
-                {
-                    calledNumber = calledNumber.Substring(4);
-                }
+                LinphoneAddress address = LinphoneManager.Instance.LinphoneCore.InterpretURL(calledNumber);
+                calledNumber = String.Format("{0}@{1}", address.GetUserName(), address.GetDomain());
                 // While we dunno if the number matches a contact one, we consider it won't and we display the phone number as username
                 Contact.Text = calledNumber;
 
