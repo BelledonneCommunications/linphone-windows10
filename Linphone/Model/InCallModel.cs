@@ -32,7 +32,7 @@ namespace Linphone.Views
             if (LinphoneManager.Instance.isLinphoneRunning)
             {
                 bool isVideoAvailable = LinphoneManager.Instance.IsVideoAvailable;
-                videoButtonVisibility = Visibility.Visible;// isVideoEnabled ? Visibility.Visible : Visibility.Collapsed;
+                videoButtonVisibility = isVideoAvailable ? Visibility.Visible : Visibility.Collapsed;
                 cameraButtonVisibility = isVideoAvailable && LinphoneManager.Instance.NumberOfCameras >= 2 ? Visibility.Visible : Visibility.Collapsed;
             }
         }
