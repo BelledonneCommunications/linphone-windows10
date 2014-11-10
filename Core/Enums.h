@@ -198,5 +198,27 @@ namespace Linphone
 			LinphoneCoreLogCollectionUploadStateDelivered = 1, /**< Log collection upload successfully delivered and acknowledged by remote end point */
 			LinphoneCoreLogCollectionUploadStateNotDelivered = 2
 		};
+
+		/// <summary>
+		/// Media type of the statistics (audio or video).
+		/// </summary>
+		public enum class MediaType : int
+		{
+			Audio = 0,
+			Video = 1
+		};
+
+		/// <summary>
+		/// State of the ICE processing.
+		/// </summary>
+		public enum class IceState : int
+		{
+			NotActivated = 0,
+			Failed = 1,
+			InProgress = 2,
+			HostConnection = 3,
+			ReflexiveConnection = 4,
+			RelayConnection = 5
+		};
 	}
 }

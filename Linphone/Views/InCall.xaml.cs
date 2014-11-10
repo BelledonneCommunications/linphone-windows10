@@ -463,7 +463,7 @@ namespace Linphone.Views
             string videoUploadBandwidth = "";
 
             LinphoneCallParams param = call.GetCurrentParamsCopy();
-            ((InCallModel)ViewModel).MediaEncryption = param.GetMediaEncryption().ToString();
+            ((InCallModel)ViewModel).MediaEncryption = param.MediaEncryption.ToString();
 
             LinphoneCallStats audioStats = null;
             try
@@ -474,12 +474,12 @@ namespace Linphone.Views
 
             if (audioStats != null)
             {
-                audioDownloadBandwidth = String.Format("{0:0.00}", audioStats.GetDownloadBandwidth());
-                audioUploadBandwidth = String.Format("{0:0.00}", audioStats.GetUploadBandwidth());
-                ((InCallModel)ViewModel).ICE = audioStats.GetIceState().ToString(); 
+                audioDownloadBandwidth = String.Format("{0:0.00}", audioStats.DownloadBandwidth);
+                audioUploadBandwidth = String.Format("{0:0.00}", audioStats.UploadBandwidth);
+                ((InCallModel)ViewModel).ICE = audioStats.IceState.ToString(); 
             }
 
-            PayloadType audiopt = param.GetUsedAudioCodec();
+            PayloadType audiopt = param.UsedAudioCodec;
             if (audiopt != null) 
             {
                 audioPayloadType = audiopt.GetMimeType() + "/" + audiopt.GetClockRate();
@@ -490,18 +490,18 @@ namespace Linphone.Views
                 LinphoneCallStats videoStats = call.VideoStats;
                 if (videoStats != null)
                 {
-                    videoDownloadBandwidth = String.Format("{0:0.00}", videoStats.GetDownloadBandwidth());
-                    videoUploadBandwidth = String.Format("{0:0.00}", videoStats.GetUploadBandwidth());
+                    videoDownloadBandwidth = String.Format("{0:0.00}", videoStats.DownloadBandwidth);
+                    videoUploadBandwidth = String.Format("{0:0.00}", videoStats.UploadBandwidth);
                 }
 
-                PayloadType videopt = param.GetUsedVideoCodec();
+                PayloadType videopt = param.UsedVideoCodec;
                 if (videopt != null)
                 {
                     videoPayloadType = videopt.GetMimeType();
                 }
-                Windows.Foundation.Size receivedVideoSize = param.GetReceivedVideoSize();
+                Windows.Foundation.Size receivedVideoSize = param.ReceivedVideoSize;
                 ((InCallModel)ViewModel).ReceivedVideoSize = String.Format("{0}x{1}", receivedVideoSize.Width, receivedVideoSize.Height);
-                Windows.Foundation.Size sentVideoSize = param.GetSentVideoSize();
+                Windows.Foundation.Size sentVideoSize = param.SentVideoSize;
                 ((InCallModel)ViewModel).SentVideoSize = String.Format("{0}x{1}", sentVideoSize.Width, sentVideoSize.Height);
                 ((InCallModel)ViewModel).VideoStatsVisibility = Visibility.Visible;
             }

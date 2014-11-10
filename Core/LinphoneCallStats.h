@@ -7,28 +7,6 @@ namespace Linphone
 	namespace Core
 	{
 		/// <summary>
-		/// Media type of the statistics (audio or video).
-		/// </summary>
-		public enum class MediaType : int
-		{
-			Audio = 0,
-			Video = 1
-		};
-
-		/// <summary>
-		/// State of the ICE processing.
-		/// </summary>
-		public enum class IceState : int
-		{
-			NotActivated = 0,
-			Failed = 1,
-			InProgress = 2,
-			HostConnection = 3,
-			ReflexiveConnection = 4,
-			RelayConnection = 5
-		};
-
-		/// <summary>
 		/// Object representing the statistics of a call.
 		/// To get the statistics of a call use the LinphoneCall::GetAudioStats() method. It gives the call statistics at the specific time it is asked for.
 		/// So to have updated statistics you need to get the statistics from the call again.
@@ -39,70 +17,106 @@ namespace Linphone
 			/// <summary>
 			/// Gets the media type (audio or video).
 			/// </summary>
-			MediaType GetMediaType();
+			property Linphone::Core::MediaType MediaType
+			{
+				Linphone::Core::MediaType get();
+			}
 
 			/// <summary>
 			/// Gets the state of the ICE process.
 			/// </summary>
-			IceState GetIceState();
+			property Linphone::Core::IceState IceState
+			{
+				Linphone::Core::IceState get();
+			}
 
 			/// <summary>
 			/// Gets the download bandwidth in kbits/s.
 			/// </summary>
-			float GetDownloadBandwidth();
+			property float DownloadBandwidth
+			{
+				float get();
+			}
 
 			/// <summary>
 			/// Gets the upload bandwidth in kbits/s.
 			/// </summary>
-			float GetUploadBandwidth();
+			property float UploadBandwidth
+			{
+				float get();
+			}
 
 			/// <summary>
 			/// Gets the local loss rate since last emitted RTCP report.
 			/// </summary>
-			float GetSenderLossRate();
+			property float SenderLossRate
+			{
+				float get();
+			}
 
 			/// <summary>
 			/// Gets the remote loss rate from the last received RTCP report.
 			/// </summary>
-			float GetReceiverLossRate();
+			property float ReceiverLossRate
+			{
+				float get();
+			}
 
 			/// <summary>
 			/// Gets the local interarrival jitter.
 			/// </summary>
-			float GetSenderInterarrivalJitter();
+			property float SenderInterarrivalJitter
+			{
+				float get();
+			}
 
 			/// <summary>
 			/// Gets the remote reported interarrival jitter.
 			/// </summary>
-			float GetReceiverInterarrivalJitter();
+			property float ReceiverInterarrivalJitter
+			{
+				float get();
+			}
 
 			/// <summary>
-			/// Gets the round trip delay in seconds.
+			/// Gets the round trip delay in seconds. -1 if the information is not available.
 			/// </summary>
-			/// <returns>
-			/// -1 if the information is not available.
-			/// </returns>
-			float GetRoundTripDelay();
+			property float RoundTripDelay
+			{
+				float get();
+			}
 
 			/// <summary>
 			/// Gets the cumulative number of late packets.
 			/// </summary>
-			int64 GetLatePacketsCumulativeNumber();
+			property int64 LatePacketsCumulativeNumber
+			{
+				int64 get();
+			}
 
 			/// <summary>
 			/// Gets the jitter buffer size in milliseconds.
 			/// </summary>
-			float GetJitterBufferSize();
+			property float JitterBufferSize
+			{
+				float get();
+			}
 
 			/// <summary>
 			/// Get the local loss rate. Unlike GetSenderLossRate() that returns this loss rate "since last emitted RTCP report", the value returned here is updated every second.
 			/// </summary>
-			float GetLocalLossRate();
+			property float LocalLossRate
+			{
+				float get();
+			}
 
 			/// <summary>
 			/// Get the local late packets rate. The value returned here is updated every second.
 			/// </summary>
-			float GetLocalLateRate();
+			property float LocalLateRate
+			{
+				float get();
+			}
 
 		private:
 			friend class Linphone::Core::Utils;
@@ -120,8 +134,8 @@ namespace Linphone
 			void Linphone::Core::LinphoneCallStats::FillStats(const ::LinphoneCallStats *stats);
 
 			::LinphoneCall *call;
-			MediaType mediaType;
-			IceState iceState;
+			Linphone::Core::MediaType mediaType;
+			Linphone::Core::IceState iceState;
 			float downloadBandwidth;
 			float uploadBandwidth;
 			float senderLossRate;

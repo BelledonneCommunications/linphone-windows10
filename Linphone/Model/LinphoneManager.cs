@@ -439,9 +439,9 @@ namespace Linphone.Model
         {
             foreach (LinphoneCallLog log in LinphoneManager.Instance.LinphoneCore.GetCallLogs())
             {
-                if (log.GetDirection() == CallDirection.Outgoing)
+                if (log.Direction == CallDirection.Outgoing)
                 {
-                    return log.GetTo().AsStringUriOnly();
+                    return log.To.AsStringUriOnly();
                 }
             }
             return null;
@@ -459,23 +459,23 @@ namespace Linphone.Model
             {
                 foreach (LinphoneCallLog log in LinphoneCore.GetCallLogs())
                 {
-                    string from = log.GetFrom().DisplayName;
+                    string from = log.From.DisplayName;
                     if (from.Length == 0)
                     {
-                        LinphoneAddress fromAddress = log.GetFrom();
+                        LinphoneAddress fromAddress = log.From;
                         from = String.Format("{0}@{1}", fromAddress.UserName, fromAddress.Domain);
                     }
 
-                    string to = log.GetTo().DisplayName;
+                    string to = log.To.DisplayName;
                     if (to.Length == 0)
                     {
-                        LinphoneAddress toAddress = log.GetTo();
+                        LinphoneAddress toAddress = log.To;
                         to = String.Format("{0}@{1}", toAddress.UserName, toAddress.Domain);
                     }
 
-                    bool isMissed = log.GetStatus() == LinphoneCallStatus.Missed;
-                    long startDate = log.GetStartDate();
-                    CallLog callLog = new CallLog(log, from, to, log.GetDirection() == CallDirection.Incoming, isMissed, startDate);
+                    bool isMissed = log.Status == LinphoneCallStatus.Missed;
+                    long startDate = log.StartDate;
+                    CallLog callLog = new CallLog(log, from, to, log.Direction == CallDirection.Incoming, isMissed, startDate);
                     _history.Add(callLog);
                 }
             }

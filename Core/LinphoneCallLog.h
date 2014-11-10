@@ -19,49 +19,66 @@ namespace Linphone
 			/// <summary>
 			/// Gets the LinphoneAddress of the caller.
 			/// </summary>
-			/// <returns>The address of the caller</returns>
-			LinphoneAddress^ GetFrom();
+			property LinphoneAddress^ From
+			{
+				LinphoneAddress^ get();
+			}
 
 			/// <summary>
 			/// Gets the LinphoneAddress of the callee.
 			/// </summary>
-			/// <returns>The address of the callee</returns>
-			LinphoneAddress^ GetTo();
+			property LinphoneAddress^ To
+			{
+				LinphoneAddress^ get();
+			}
 
 			/// <summary>
 			/// Gets the CallDirection of the call (Incoming or Outgoing).
 			/// </summary>
-			/// <returns>The direction of the call</returns>
-			CallDirection GetDirection();
+			property CallDirection Direction
+			{
+				CallDirection get();
+			}
 
 			/// <summary>
 			/// Gets the LinphoneCallStatus of the call (Success, Aborted, Missed or Declined).
 			/// </summary>
-			/// <returns>The status of the call</returns>
-			LinphoneCallStatus GetStatus();
+			property LinphoneCallStatus Status
+			{
+				LinphoneCallStatus get();
+			}
 
 			/// <summary>
 			/// Returns the start date/time of the call in seconds elpsed since January first 1970.
 			/// </summary>
-			/// <returns>The start date/time of the call</returns>
-			int64 GetStartDate();
+			property int64 StartDate
+			{
+				int64 get();
+			}
 
 			/// <summary>
 			/// Returns the call duration in seconds.
 			/// </summary>
-			/// <returns>The duration of the call in seconds</returns>
-			int GetCallDuration();
+			property int Duration
+			{
+				int get();
+			}
 
 			/// <summary>
 			/// Returns the call id from signaling.
 			/// </summary>
-			Platform::String^ GetCallId();
+			property Platform::String^ CallId
+			{
+				Platform::String^ get();
+			}
 
 			/// <summary>
 			/// Tells whether video was enabled at the end of the call.
 			/// </summary>
-			/// <returns>true if video was enabled at the end of the call, false otherwise</returns>
-			Platform::Boolean WasVideoEnabled();
+			property Platform::Boolean VideoEnabled
+			{
+				Platform::Boolean get();
+			}
 
 		private:
 			friend class Linphone::Core::Utils;

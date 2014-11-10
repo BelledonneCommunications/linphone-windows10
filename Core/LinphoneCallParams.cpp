@@ -3,26 +3,25 @@
 #include "PayloadType.h"
 #include "Server.h"
 
-void Linphone::Core::LinphoneCallParams::SetAudioBandwidth(int value)
+void Linphone::Core::LinphoneCallParams::AudioBandwidthLimit::set(int value)
 {
 	API_LOCK;
 	linphone_call_params_set_audio_bandwidth_limit(this->params, value);
 }
 
-Linphone::Core::MediaEncryption Linphone::Core::LinphoneCallParams::GetMediaEncryption()
+Linphone::Core::MediaEncryption Linphone::Core::LinphoneCallParams::MediaEncryption::get()
 {
 	API_LOCK;
-	Linphone::Core::MediaEncryption enc = (Linphone::Core::MediaEncryption) linphone_call_params_get_media_encryption(this->params);
-	return enc;
+	return (Linphone::Core::MediaEncryption) linphone_call_params_get_media_encryption(this->params);
 }
 
-void Linphone::Core::LinphoneCallParams::SetMediaEncryption(Linphone::Core::MediaEncryption menc)
+void Linphone::Core::LinphoneCallParams::MediaEncryption::set(Linphone::Core::MediaEncryption menc)
 {
 	API_LOCK;
 	linphone_call_params_set_media_encryption(this->params, (LinphoneMediaEncryption) menc);
 }
 
-Linphone::Core::PayloadType^ Linphone::Core::LinphoneCallParams::GetUsedAudioCodec()
+Linphone::Core::PayloadType^ Linphone::Core::LinphoneCallParams::UsedAudioCodec::get()
 {
 	API_LOCK;
 	Linphone::Core::PayloadType^ payloadType = nullptr;
@@ -33,13 +32,13 @@ Linphone::Core::PayloadType^ Linphone::Core::LinphoneCallParams::GetUsedAudioCod
 	return payloadType;
 }
 
-void Linphone::Core::LinphoneCallParams::EnableLowBandwidth(Platform::Boolean enable)
+void Linphone::Core::LinphoneCallParams::LowBandwidthEnabled::set(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_call_params_enable_low_bandwidth(this->params, enable);
 }
 
-Platform::Boolean Linphone::Core::LinphoneCallParams::IsLowBandwidthEnabled()
+Platform::Boolean Linphone::Core::LinphoneCallParams::LowBandwidthEnabled::get()
 {
 	API_LOCK;
 	return (linphone_call_params_low_bandwidth_enabled(this->params) == TRUE);
@@ -57,7 +56,7 @@ void Linphone::Core::LinphoneCallParams::VideoEnabled::set(Platform::Boolean ena
 	linphone_call_params_enable_video(this->params, enable);
 }
 
-Linphone::Core::PayloadType^ Linphone::Core::LinphoneCallParams::GetUsedVideoCodec()
+Linphone::Core::PayloadType^ Linphone::Core::LinphoneCallParams::UsedVideoCodec::get()
 {
 	API_LOCK;
 	Linphone::Core::PayloadType^ payloadType = nullptr;
@@ -68,33 +67,31 @@ Linphone::Core::PayloadType^ Linphone::Core::LinphoneCallParams::GetUsedVideoCod
 	return payloadType;
 }
 
-Windows::Foundation::Size Linphone::Core::LinphoneCallParams::GetSentVideoSize()
+Windows::Foundation::Size Linphone::Core::LinphoneCallParams::SentVideoSize::get()
 {
 	API_LOCK;
 	MSVideoSize vs = linphone_call_params_get_sent_video_size(this->params);
 	Windows::Foundation::Size size;
-	size.Width = vs.width;
-	size.Height = vs.height;
+	size.Width = (float)vs.width;
+	size.Height = (float)vs.height;
 	return size;
 }
 
-Windows::Foundation::Size Linphone::Core::LinphoneCallParams::GetReceivedVideoSize()
+Windows::Foundation::Size Linphone::Core::LinphoneCallParams::ReceivedVideoSize::get()
 {
 	API_LOCK;
 	MSVideoSize vs = linphone_call_params_get_received_video_size(this->params);
 	Windows::Foundation::Size size;
-	size.Width = vs.width;
-	size.Height = vs.height;
+	size.Width = (float)vs.width;
+	size.Height = (float)vs.height;
 	return size;
 }
 
 Linphone::Core::LinphoneCallParams::LinphoneCallParams(::LinphoneCallParams *call_params) :
 	params(call_params)
 {
-
 }
 
 Linphone::Core::LinphoneCallParams::~LinphoneCallParams()
 {
-	
 }

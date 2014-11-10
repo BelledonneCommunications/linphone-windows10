@@ -3,67 +3,67 @@
 #include "LinphoneCall.h"
 #include "Server.h"
 
-Linphone::Core::MediaType Linphone::Core::LinphoneCallStats::GetMediaType()
+Linphone::Core::MediaType Linphone::Core::LinphoneCallStats::MediaType::get()
 {
 	return this->mediaType;
 }
 
-Linphone::Core::IceState Linphone::Core::LinphoneCallStats::GetIceState()
+Linphone::Core::IceState Linphone::Core::LinphoneCallStats::IceState::get()
 {
 	return this->iceState;
 }
 
-float Linphone::Core::LinphoneCallStats::GetDownloadBandwidth()
+float Linphone::Core::LinphoneCallStats::DownloadBandwidth::get()
 {
 	return this->downloadBandwidth;
 }
 
-float Linphone::Core::LinphoneCallStats::GetUploadBandwidth()
+float Linphone::Core::LinphoneCallStats::UploadBandwidth::get()
 {
 	return this->uploadBandwidth;
 }
 
-float Linphone::Core::LinphoneCallStats::GetSenderLossRate()
+float Linphone::Core::LinphoneCallStats::SenderLossRate::get()
 {
 	return this->senderLossRate;
 }
 
-float Linphone::Core::LinphoneCallStats::GetReceiverLossRate()
+float Linphone::Core::LinphoneCallStats::ReceiverLossRate::get()
 {
 	return this->receiverLossRate;
 }
 
-float Linphone::Core::LinphoneCallStats::GetSenderInterarrivalJitter()
+float Linphone::Core::LinphoneCallStats::SenderInterarrivalJitter::get()
 {
 	return this->senderInterarrivalJitter;
 }
 
-float Linphone::Core::LinphoneCallStats::GetReceiverInterarrivalJitter()
+float Linphone::Core::LinphoneCallStats::ReceiverInterarrivalJitter::get()
 {
 	return this->receiverInterarrivalJitter;
 }
 
-float Linphone::Core::LinphoneCallStats::GetRoundTripDelay()
+float Linphone::Core::LinphoneCallStats::RoundTripDelay::get()
 {
 	return this->roundTripDelay;
 }
 
-int64 Linphone::Core::LinphoneCallStats::GetLatePacketsCumulativeNumber()
+int64 Linphone::Core::LinphoneCallStats::LatePacketsCumulativeNumber::get()
 {
 	return this->cumulativeLatePackets;
 }
 
-float Linphone::Core::LinphoneCallStats::GetJitterBufferSize()
+float Linphone::Core::LinphoneCallStats::JitterBufferSize::get()
 {
 	return this->jitterBufferSize;
 }
 
-float Linphone::Core::LinphoneCallStats::GetLocalLossRate()
+float Linphone::Core::LinphoneCallStats::LocalLossRate::get()
 {
 	return this->localLossRate;
 }
 
-float Linphone::Core::LinphoneCallStats::GetLocalLateRate()
+float Linphone::Core::LinphoneCallStats::LocalLateRate::get()
 {
 	return this->localLateRate;
 }
@@ -73,7 +73,7 @@ Linphone::Core::LinphoneCallStats::LinphoneCallStats(::LinphoneCall *call, Linph
 {
 	API_LOCK;
 	const ::LinphoneCallStats *stats = nullptr;
-	if (mediaType == MediaType::Audio) {
+	if (mediaType == Linphone::Core::MediaType::Audio) {
 		stats = linphone_call_get_audio_stats(this->call);
 	} else {
 		stats = linphone_call_get_video_stats(this->call);

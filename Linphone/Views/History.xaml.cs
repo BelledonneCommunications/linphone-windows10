@@ -131,9 +131,9 @@ namespace Linphone.Views
 
             String address;
             if (log.IsIncoming)
-                address = nativeLog.GetFrom().AsStringUriOnly();
+                address = nativeLog.From.AsStringUriOnly();
             else
-                address = nativeLog.GetTo().AsStringUriOnly();
+                address = nativeLog.To.AsStringUriOnly();
 
             SetAddressGoToDialerAndCall(address);
         }
