@@ -15,14 +15,18 @@ namespace Linphone
 			/// <summary>
 			/// Gets the MIME type of the payload type.
 			/// </summary>
-			/// <returns>The MIME type as a string</returns>
-			Platform::String^ GetMimeType();
+			property Platform::String^ MimeType
+			{
+				Platform::String^ get();
+			}
 
 			/// <summary>
 			/// Gets the clock rate of the payload type.
 			/// </summary>
-			/// <returns>The clock rate</returns>
-			int GetClockRate();
+			property int ClockRate
+			{
+				int get();
+			}
 
 		private:
 			friend class Linphone::Core::Utils;

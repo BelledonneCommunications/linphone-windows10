@@ -567,14 +567,14 @@ namespace Linphone.Model
         {
             foreach (PayloadType pt in ptlist)
             {
-                String keyname = GetKeyNameForCodec(pt.GetMimeType(), pt.GetClockRate());
+                String keyname = GetKeyNameForCodec(pt.MimeType, pt.ClockRate);
                 if (keyname != null)
                 {
                     dict[keyname] = LinphoneManager.Instance.LinphoneCore.PayloadTypeEnabled(pt).ToString();
                 }
                 else
                 {
-                    Logger.Warn("Codec {0}/{1} supported by core is not shown in the settings view, disable it", pt.GetMimeType(), pt.GetClockRate());
+                    Logger.Warn("Codec {0}/{1} supported by core is not shown in the settings view, disable it", pt.MimeType, pt.ClockRate);
                     LinphoneManager.Instance.LinphoneCore.EnablePayloadType(pt, false);
                 }
             }
@@ -593,7 +593,7 @@ namespace Linphone.Model
         {
             foreach (PayloadType pt in ptlist)
             {
-                String keyname = GetKeyNameForCodec(pt.GetMimeType(), pt.GetClockRate());
+                String keyname = GetKeyNameForCodec(pt.MimeType, pt.ClockRate);
                 if ((keyname != null) && ValueChanged(keyname))
                 {
                     LinphoneManager.Instance.LinphoneCore.EnablePayloadType(pt, Convert.ToBoolean(GetNew(keyname)));

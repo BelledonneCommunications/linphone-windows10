@@ -482,7 +482,7 @@ namespace Linphone.Views
             PayloadType audiopt = param.UsedAudioCodec;
             if (audiopt != null) 
             {
-                audioPayloadType = audiopt.GetMimeType() + "/" + audiopt.GetClockRate();
+                audioPayloadType = audiopt.MimeType + "/" + audiopt.ClockRate;
             }
 
             if (param.VideoEnabled)
@@ -497,7 +497,7 @@ namespace Linphone.Views
                 PayloadType videopt = param.UsedVideoCodec;
                 if (videopt != null)
                 {
-                    videoPayloadType = videopt.GetMimeType();
+                    videoPayloadType = videopt.MimeType;
                 }
                 Windows.Foundation.Size receivedVideoSize = param.ReceivedVideoSize;
                 ((InCallModel)ViewModel).ReceivedVideoSize = String.Format("{0}x{1}", receivedVideoSize.Width, receivedVideoSize.Height);
