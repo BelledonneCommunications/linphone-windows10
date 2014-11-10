@@ -533,7 +533,7 @@ namespace Linphone.Model
             {
                 foreach (LinphoneCall lCall in LinphoneCore.GetCalls())
                 {
-                    if (lCall.GetState() == LinphoneCallState.Paused)
+                    if (lCall.State == LinphoneCallState.Paused)
                     {
                         LinphoneCore.TerminateCall(lCall);
                     }
@@ -588,7 +588,7 @@ namespace Linphone.Model
         public void ResumeCurrentCall()
         {
             foreach (LinphoneCall call in LinphoneCore.GetCalls()) {
-                if (call.GetState() == LinphoneCallState.Paused)
+                if (call.State == LinphoneCallState.Paused)
                 {
                     LinphoneCore.ResumeCall(call);
                 }
@@ -819,7 +819,7 @@ namespace Linphone.Model
 
                     if (CallListener != null)
                     {
-                        string sipAddress = call.GetRemoteAddress().AsStringUriOnly();
+                        string sipAddress = call.RemoteAddress.AsStringUriOnly();
                         CallListener.NewCallStarted(sipAddress);
                     }
                 });
@@ -831,7 +831,7 @@ namespace Linphone.Model
                     Logger.Msg("[LinphoneManager] Incoming received\r\n"); 
                     if (false) //TODO: Find a proper way to let the user choose between the two.
                     {
-                        BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/IncomingCall.xaml?sip=" + call.GetRemoteAddress().AsStringUriOnly(), UriKind.RelativeOrAbsolute));
+                        BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/IncomingCall.xaml?sip=" + call.RemoteAddress.AsStringUriOnly(), UriKind.RelativeOrAbsolute));
                         //Remove the current page from the back stack to avoid duplicating him after
                         BaseModel.CurrentPage.NavigationService.RemoveBackEntry();
                     }
@@ -846,7 +846,7 @@ namespace Linphone.Model
                     Logger.Msg("[LinphoneManager] Connected\r\n");
                     if (CallListener != null)
                     {
-                        string sipAddress = call.GetRemoteAddress().AsStringUriOnly();
+                        string sipAddress = call.RemoteAddress.AsStringUriOnly();
                         CallListener.NewCallStarted(sipAddress);
                     }
                 });
@@ -865,19 +865,19 @@ namespace Linphone.Model
                         case Reason.LinphoneReasonNotAnswered:
                             break;
                         case Reason.LinphoneReasonDeclined:
-                            if (call.GetDirection() == CallDirection.Outgoing)
+                            if (call.Direction == CallDirection.Outgoing)
                             {
                                 text = ResourceManager.GetString("CallErrorDeclined", CultureInfo.CurrentCulture);
-                                ShowCallError(text.Replace("#address#", call.GetRemoteAddress().UserName));
+                                ShowCallError(text.Replace("#address#", call.RemoteAddress.UserName));
                             }
                             break;
                         case Reason.LinphoneReasonNotFound:
                             text = ResourceManager.GetString("CallErrorNotFound", CultureInfo.CurrentCulture);
-                            ShowCallError(text.Replace("#address#", call.GetRemoteAddress().UserName));
+                            ShowCallError(text.Replace("#address#", call.RemoteAddress.UserName));
                             break;
                         case Reason.LinphoneReasonBusy:
                             text = ResourceManager.GetString("CallErrorBusy", CultureInfo.CurrentCulture);
-                            ShowCallError(text.Replace("#address#", call.GetRemoteAddress().UserName));
+                            ShowCallError(text.Replace("#address#", call.RemoteAddress.UserName));
                             break;
                         case Reason.LinphoneReasonNotAcceptable:
                             ShowCallError(ResourceManager.GetString("CallErrorNotAcceptable", CultureInfo.CurrentCulture));
@@ -920,7 +920,7 @@ namespace Linphone.Model
                 {
                     Boolean videoAdded = false;
                     VideoPolicy policy = LinphoneManager.Instance.LinphoneCore.GetVideoPolicy();
-                    LinphoneCallParams remoteParams = call.GetRemoteParams();
+                    LinphoneCallParams remoteParams = call.RemoteParams;
                     LinphoneCallParams localParams = call.GetCurrentParamsCopy();
                     if (!policy.AutomaticallyAccept && remoteParams.VideoEnabled && !localParams.VideoEnabled && !LinphoneManager.Instance.LinphoneCore.IsInConference())
                     {
@@ -1193,7 +1193,7 @@ namespace Linphone.Model
         {
             try
             {
-                LinphoneAddress remoteAddress = call.GetRemoteAddress();
+                LinphoneAddress remoteAddress = call.RemoteAddress;
                 if (remoteAddress.DisplayName.Length == 0)
                 {
                     string sipAddress = String.Format("{0}@{1}", remoteAddress.UserName, remoteAddress.Domain);
@@ -1204,7 +1204,7 @@ namespace Linphone.Model
                 }
                 else
                 {
-                    Logger.Msg("[LinphoneManager] Display name found: " + call.GetRemoteAddress().DisplayName + "\r\n");
+                    Logger.Msg("[LinphoneManager] Display name found: " + call.RemoteAddress.DisplayName + "\r\n");
                 }
             }
             catch 
@@ -1224,7 +1224,7 @@ namespace Linphone.Model
                 // Store the contact name as display name for call logs
                 if (LinphoneManager.Instance.LinphoneCore.GetCurrentCall() != null)
                 {
-                    LinphoneManager.Instance.LinphoneCore.GetCurrentCall().GetRemoteAddress().DisplayName = e.ContactFound.DisplayName;
+                    LinphoneManager.Instance.LinphoneCore.GetCurrentCall().RemoteAddress.DisplayName = e.ContactFound.DisplayName;
                 }
             }
             ContactManager.ContactFound -= OnContactFound;

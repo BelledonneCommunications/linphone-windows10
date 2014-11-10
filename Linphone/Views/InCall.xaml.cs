@@ -42,7 +42,7 @@ namespace Linphone.Views
             InitializeComponent();
 
             var call = LinphoneManager.Instance.LinphoneCore.GetCurrentCall();
-            if (call != null && call.GetState() == Core.LinphoneCallState.StreamsRunning)
+            if (call != null && call.State == Core.LinphoneCallState.StreamsRunning)
             {
                 PauseStateChanged(call, false, false);
                 if (LinphoneManager.Instance.SpeakerEnabled)
@@ -202,7 +202,7 @@ namespace Linphone.Views
             if (LinphoneManager.Instance.LinphoneCore.GetCallsNb() > 0)
             {
                 LinphoneCall call = (LinphoneCall)LinphoneManager.Instance.LinphoneCore.GetCalls()[0];
-                if (call.GetState() == LinphoneCallState.StreamsRunning)
+                if (call.State == LinphoneCallState.StreamsRunning)
                 {
                     CallStateChanged(call, LinphoneCallState.StreamsRunning);
                 }
@@ -437,7 +437,7 @@ namespace Linphone.Views
             LinphoneCall call = ((InCallModel)ViewModel).GetCurrentCall();
             if (call == null) return;
 
-            startTime = (DateTimeOffset)call.GetCallStartTimeFromContext();
+            startTime = (DateTimeOffset)call.CallStartTimeFromContext;
             DateTimeOffset now = DateTimeOffset.Now;
             TimeSpan elapsed = now.Subtract(startTime);
             var ss = elapsed.Seconds;
@@ -457,7 +457,7 @@ namespace Linphone.Views
             LinphoneCallStats audioStats = null;
             try
             {
-                audioStats = call.GetAudioStats();
+                audioStats = call.AudioStats;
             }
             catch { }
 
@@ -476,7 +476,7 @@ namespace Linphone.Views
 
             if (param.VideoEnabled)
             {
-                LinphoneCallStats videoStats = call.GetVideoStats();
+                LinphoneCallStats videoStats = call.VideoStats;
                 if (videoStats != null)
                 {
                     videoDownloadBandwidth = String.Format("{0:0.00}", videoStats.GetDownloadBandwidth());

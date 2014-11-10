@@ -286,8 +286,8 @@ namespace Linphone.Model
                     if (authInfos.Count > 0)
                     {
                         LinphoneAuthInfo info = ((LinphoneAuthInfo)authInfos[0]);
-                        dict[PasswordKeyName] = info.GetPassword();
-                        dict[UserIdKeyName] = info.GetUserId();
+                        dict[PasswordKeyName] = info.Password;
+                        dict[UserIdKeyName] = info.UserId;
                     }
                     dict[DisplayNameKeyName] = address.DisplayName;
                 }

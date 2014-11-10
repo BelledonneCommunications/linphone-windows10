@@ -21,64 +21,49 @@ namespace Linphone
 		{
 		public:
 			/// <summary>
-			/// Gets the authentication username.
+			/// The authentication username.
 			/// </summary>
-			/// <returns>The authentication username</returns>
-			Platform::String^ GetUsername();
+			property Platform::String^ Username
+			{
+				Platform::String^ get();
+				void set(Platform::String^ value);
+			}
 
 			/// <summary>
-			/// Sets the authentication username.
+			/// The authentication userid.
 			/// </summary>
-			/// <param name="username">The authentication username</param>
-			void SetUsername(Platform::String^ username);
+			property Platform::String^ UserId
+			{
+				Platform::String^ get();
+				void set(Platform::String^ value);
+			}
 
 			/// <summary>
-			/// Gets the authentication userid.
+			/// The authentication password.
 			/// </summary>
-			/// <returns>The authentication userid</returns>
-			Platform::String^ GetUserId();
+			property Platform::String^ Password
+			{
+				Platform::String^ get();
+				void set(Platform::String^ value);
+			}
 
 			/// <summary>
-			/// Sets the authentication userid.
+			/// The authentication realm.
 			/// </summary>
-			/// <param name="userid">The authentication userid</param>
-			void SetUserId(Platform::String^ userid);
+			property Platform::String^ Realm
+			{
+				Platform::String^ get();
+				void set(Platform::String^ value);
+			}
 
 			/// <summary>
-			/// Gets the authentication password.
+			/// The authentication ha1.
 			/// </summary>
-			/// <returns>The authentication password</returns>
-			Platform::String^ GetPassword();
-
-			/// <summary>
-			/// Sets the authentication password.
-			/// </summary>
-			/// <param name="password">The authentication password</param>
-			void SetPassword(Platform::String^ password);
-
-			/// <summary>
-			/// Gets the authentication realm.
-			/// </summary>
-			/// <returns>The authentication realm</returns>
-			Platform::String^ GetRealm();
-
-			/// <summary>
-			/// Sets the authentication realm.
-			/// </summary>
-			/// <param name="realm">The authentication realm</param>
-			void SetRealm(Platform::String^ realm);
-
-			/// <summary>
-			/// Gets the authentication ha1.
-			/// </summary>
-			/// <returns>The authentication ha1</returns>
-			Platform::String^ GetHa1();
-
-			/// <summary>
-			/// Sets the authentication ha1.
-			/// </summary>
-			/// <param name="ha1">The authentication ha1</param>
-			void SetHa1(Platform::String^ ha1);
+			property Platform::String^ Ha1
+			{
+				Platform::String^ get();
+				void set(Platform::String^ value);
+			}
 
 		private:
 			friend class Linphone::Core::Utils;

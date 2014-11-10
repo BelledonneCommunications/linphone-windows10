@@ -2,13 +2,13 @@
 #include "Server.h"
 #include "Utils.h"
 
-Platform::String^ Linphone::Core::LinphoneAuthInfo::GetUsername()
+Platform::String^ Linphone::Core::LinphoneAuthInfo::Username::get()
 {
 	API_LOCK;
 	return Utils::cctops(linphone_auth_info_get_username(this->auth_info));
 }
 
-void Linphone::Core::LinphoneAuthInfo::SetUsername(Platform::String^ username)
+void Linphone::Core::LinphoneAuthInfo::Username::set(Platform::String^ username)
 {
 	API_LOCK;
 	const char *cc = Linphone::Core::Utils::pstoccs(username);
@@ -16,13 +16,13 @@ void Linphone::Core::LinphoneAuthInfo::SetUsername(Platform::String^ username)
 	delete(cc);
 }
 
-Platform::String^ Linphone::Core::LinphoneAuthInfo::GetUserId()
+Platform::String^ Linphone::Core::LinphoneAuthInfo::UserId::get()
 {
 	API_LOCK;
 	return Utils::cctops(linphone_auth_info_get_userid(this->auth_info));
 }
 
-void Linphone::Core::LinphoneAuthInfo::SetUserId(Platform::String^ userid)
+void Linphone::Core::LinphoneAuthInfo::UserId::set(Platform::String^ userid)
 {
 	API_LOCK;
 	const char *cc = Linphone::Core::Utils::pstoccs(userid);
@@ -30,13 +30,13 @@ void Linphone::Core::LinphoneAuthInfo::SetUserId(Platform::String^ userid)
 	delete(cc);
 }
 
-Platform::String^ Linphone::Core::LinphoneAuthInfo::GetPassword()
+Platform::String^ Linphone::Core::LinphoneAuthInfo::Password::get()
 {
 	API_LOCK;
 	return Utils::cctops(linphone_auth_info_get_passwd(this->auth_info));
 }
 
-void Linphone::Core::LinphoneAuthInfo::SetPassword(Platform::String^ password)
+void Linphone::Core::LinphoneAuthInfo::Password::set(Platform::String^ password)
 {
 	API_LOCK;
 	const char *cc = Linphone::Core::Utils::pstoccs(password);
@@ -44,13 +44,13 @@ void Linphone::Core::LinphoneAuthInfo::SetPassword(Platform::String^ password)
 	delete(cc);
 }
 
-Platform::String^ Linphone::Core::LinphoneAuthInfo::GetRealm()
+Platform::String^ Linphone::Core::LinphoneAuthInfo::Realm::get()
 {
 	API_LOCK;
 	return Utils::cctops(linphone_auth_info_get_realm(this->auth_info));
 }
 
-void Linphone::Core::LinphoneAuthInfo::SetRealm(Platform::String^ realm)
+void Linphone::Core::LinphoneAuthInfo::Realm::set(Platform::String^ realm)
 {
 	API_LOCK;
 	const char *cc = Linphone::Core::Utils::pstoccs(realm);
@@ -58,13 +58,13 @@ void Linphone::Core::LinphoneAuthInfo::SetRealm(Platform::String^ realm)
 	delete(cc);
 }
 
-Platform::String^ Linphone::Core::LinphoneAuthInfo::GetHa1()
+Platform::String^ Linphone::Core::LinphoneAuthInfo::Ha1::get()
 {
 	API_LOCK;
 	return Utils::cctops(linphone_auth_info_get_ha1(this->auth_info));
 }
 
-void Linphone::Core::LinphoneAuthInfo::SetHa1(Platform::String^ ha1)
+void Linphone::Core::LinphoneAuthInfo::Ha1::set(Platform::String^ ha1)
 {
 	API_LOCK;
 	const char *cc = Linphone::Core::Utils::pstoccs(ha1);
