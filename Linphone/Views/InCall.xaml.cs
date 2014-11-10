@@ -401,6 +401,17 @@ namespace Linphone.Views
                     ButtonsFadeInAudioAnimation.Begin();
                     StopFadeTimer();
                 }
+                if (((InCallModel)ViewModel).IsVideoActive)
+                {
+                    ButtonsFadeOutAnimation.Begin();
+                    ((InCallModel)ViewModel).ShowVideo();
+                }
+            }
+            else
+            {
+                ButtonsFadeInAudioAnimation.Begin();
+                StopFadeTimer();
+                ((InCallModel)ViewModel).HideVideo();
             }
         }
 
@@ -586,7 +597,7 @@ namespace Linphone.Views
             Status.Visibility = Visibility.Visible;
             Contact.Visibility = Visibility.Visible;
             Number.Visibility = Visibility.Visible;
-            if (((InCallModel)ViewModel).IsVideoActive)
+            if (((InCallModel)ViewModel).VideoShown)
             {
                 ButtonsFadeInVideoAnimation.Begin();
                 StartFadeTimer();

@@ -316,10 +316,20 @@ namespace Linphone.Views
                     }
                     else
                     {
-                        HideRemoteVideo();
-                        HideLocalVideo();
+                        HideVideo();
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Tells whether the video is shown (Boolean).
+        /// </summary>
+        public Boolean VideoShown
+        {
+            get
+            {
+                return (this.remoteVideoUri != null);
             }
         }
 
