@@ -20,7 +20,6 @@ int Linphone::Core::LpConfig::GetInt(Platform::String^ section, Platform::String
 	int value = lp_config_get_int(this->config, ccSection, ccKey, defaultValue);
 	delete(ccKey);
 	delete(ccSection);
-	API_UNLOCK;
 	return value;
 }
 
@@ -32,7 +31,6 @@ void Linphone::Core::LpConfig::SetInt(Platform::String^ section, Platform::Strin
 	lp_config_set_int(this->config, ccSection, ccKey, value);
 	delete(ccKey);
 	delete(ccSection);
-	API_UNLOCK;
 }
 
 int64 Linphone::Core::LpConfig::GetInt64(Platform::String^ section, Platform::String^ key, int64 defaultValue)
@@ -43,7 +41,6 @@ int64 Linphone::Core::LpConfig::GetInt64(Platform::String^ section, Platform::St
 	int64 value = lp_config_get_int64(this->config, ccSection, ccKey, defaultValue);
 	delete(ccKey);
 	delete(ccSection);
-	API_UNLOCK;
 	return value;
 }
 
@@ -55,7 +52,6 @@ void Linphone::Core::LpConfig::SetInt64(Platform::String^ section, Platform::Str
 	lp_config_set_int64(this->config, ccSection, ccKey, value);
 	delete(ccKey);
 	delete(ccSection);
-	API_UNLOCK;
 }
 
 float Linphone::Core::LpConfig::GetFloat(Platform::String^ section, Platform::String^ key, float defaultValue)
@@ -66,7 +62,6 @@ float Linphone::Core::LpConfig::GetFloat(Platform::String^ section, Platform::St
 	float value = lp_config_get_float(this->config, ccSection, ccKey, defaultValue);
 	delete(ccKey);
 	delete(ccSection);
-	API_UNLOCK;
 	return value;
 }
 
@@ -78,7 +73,6 @@ void Linphone::Core::LpConfig::SetFloat(Platform::String^ section, Platform::Str
 	lp_config_set_float(this->config, ccSection, ccKey, value);
 	delete(ccKey);
 	delete(ccSection);
-	API_UNLOCK;
 }
 
 Platform::String^ Linphone::Core::LpConfig::GetString(Platform::String^ section, Platform::String^ key, Platform::String^ defaultValue)
@@ -92,7 +86,6 @@ Platform::String^ Linphone::Core::LpConfig::GetString(Platform::String^ section,
 	delete(ccDefaultValue);
 	delete(ccKey);
 	delete(ccSection);
-	API_UNLOCK;
 	return value;
 }
 
@@ -106,7 +99,6 @@ void Linphone::Core::LpConfig::SetString(Platform::String^ section, Platform::St
 	delete(ccValue);
 	delete(ccKey);
 	delete(ccSection);
-	API_UNLOCK;
 }
 
 Platform::Array<int>^ Linphone::Core::LpConfig::GetRange(Platform::String^ section, Platform::String^ key, const Platform::Array<int>^ defaultValue)
@@ -118,7 +110,6 @@ Platform::Array<int>^ Linphone::Core::LpConfig::GetRange(Platform::String^ secti
 	lp_config_get_range(this->config, ccSection, ccKey, &range[0], &range[1], defaultValue[0], defaultValue[1]);
 	delete(ccKey);
 	delete(ccSection);
-	API_UNLOCK;
 	return range;
 }
 
@@ -130,7 +121,6 @@ void Linphone::Core::LpConfig::SetRange(Platform::String^ section, Platform::Str
 	lp_config_set_range(this->config, ccSection, ccKey, value[0], value[1]);
 	delete(ccKey);
 	delete(ccSection);
-	API_UNLOCK;
 }
 
 Linphone::Core::LpConfig::LpConfig(::LpConfig *config) :
@@ -147,7 +137,6 @@ Linphone::Core::LpConfig::LpConfig(Platform::String^ configPath, Platform::Strin
 	this->config = lp_config_new_with_factory(ccConfigPath, ccFactoryConfigPath);
 	delete(ccFactoryConfigPath);
 	delete(ccConfigPath);
-	API_UNLOCK;
 }
 
 Linphone::Core::LpConfig::~LpConfig()

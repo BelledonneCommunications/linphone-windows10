@@ -123,7 +123,6 @@ void Linphone::Core::Utils::LinphoneCoreSetLogHandler(void* logfunc)
 {
 	API_LOCK;
 	linphone_core_set_log_handler(static_cast<OrtpLogFunc>(logfunc));
-	API_UNLOCK;
 }
 
 void Linphone::Core::Utils::LinphoneCoreEnableLogCollection(bool enable)
@@ -131,14 +130,12 @@ void Linphone::Core::Utils::LinphoneCoreEnableLogCollection(bool enable)
 	API_LOCK;
 	linphone_core_enable_log_collection(enable ? LinphoneLogCollectionEnabledWithoutPreviousLogHandler : LinphoneLogCollectionDisabled);
 	linphone_core_set_log_collection_path(pstoccs(ApplicationData::Current->LocalFolder->Path));
-	API_UNLOCK;
 }
 
 void Linphone::Core::Utils::LinphoneCoreSetLogLevel(int loglevel)
 {
 	API_LOCK;
 	linphone_core_set_log_level(static_cast<OrtpLogLevel>(loglevel));
-	API_UNLOCK;
 }
 
 Platform::Object^ Linphone::Core::Utils::CreateLpConfig(void* config)
@@ -255,7 +252,6 @@ void Linphone::Core::Utils::EchoCalibrationCallback(void *lc, int status, int de
 	Linphone::Core::LinphoneCore^ lCore = (proxy) ? proxy->Ref() : nullptr;
 	Linphone::Core::EcCalibratorStatus ecStatus = (Linphone::Core::EcCalibratorStatus) status;
 	lCore->listener->EcCalibrationStatus(ecStatus, delay_ms);
-	API_UNLOCK;
 }
 
  Platform::Object^ Linphone::Core::Utils::CreateLinphoneChatMessage(void* message)

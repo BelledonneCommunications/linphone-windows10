@@ -5,17 +5,13 @@
 Platform::String^ Linphone::Core::PayloadType::GetMimeType()
 {
 	API_LOCK;
-	Platform::String^ mimeType = Utils::cctops(this->payload->mime_type);
-	API_UNLOCK;
-	return mimeType;
+	return Utils::cctops(this->payload->mime_type);
 }
 
 int Linphone::Core::PayloadType::GetClockRate()
 {
 	API_LOCK;
-	int rate = this->payload->clock_rate;
-	API_UNLOCK;
-	return rate;
+	return this->payload->clock_rate;
 }
 
 Linphone::Core::PayloadType::PayloadType(::PayloadType *payload) :

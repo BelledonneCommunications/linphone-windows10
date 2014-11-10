@@ -28,7 +28,6 @@ void Linphone::Core::LinphoneChatMessage::SetExternalBodyUrl(Platform::String^ u
 	const char* body = Linphone::Core::Utils::pstoccs(url);
 	linphone_chat_message_set_external_body_url(this->message, body);
 	delete(body);
-	API_UNLOCK;
 }
 
 int64 Linphone::Core::LinphoneChatMessage::GetTime()
@@ -44,17 +43,13 @@ Linphone::Core::LinphoneChatMessageState  Linphone::Core::LinphoneChatMessage::G
 Platform::Boolean Linphone::Core::LinphoneChatMessage::IsOutgoing() 
 {
 	API_LOCK;
-	bool_t is_outgoing = linphone_chat_message_is_outgoing(this->message);
-	API_UNLOCK;
-	return is_outgoing;
+	return (linphone_chat_message_is_outgoing(this->message) == TRUE);
 }
 
 Platform::Boolean Linphone::Core::LinphoneChatMessage::IsRead()
 {
 	API_LOCK;
-	bool_t is_read = linphone_chat_message_is_read(this->message);
-	API_UNLOCK;
-	return is_read;
+	return (linphone_chat_message_is_read(this->message) == TRUE);
 }
 
 Platform::String^ Linphone::Core::LinphoneChatMessage::GetFileTransferName() 
@@ -66,31 +61,25 @@ Platform::String^ Linphone::Core::LinphoneChatMessage::GetFileTransferName()
 	{
 		fileName = Linphone::Core::Utils::cctops(content->name);
 	}
-	API_UNLOCK;
 	return fileName;
 }
 
 Platform::String^ Linphone::Core::LinphoneChatMessage::GetFileTransferFilePath()
 {
 	API_LOCK;
-	Platform::String^ filePath = Linphone::Core::Utils::cctops(linphone_chat_message_get_file_transfer_filepath(this->message));
-	API_UNLOCK;
-	return filePath;
+	return Linphone::Core::Utils::cctops(linphone_chat_message_get_file_transfer_filepath(this->message));
 }
 
 Platform::String^ Linphone::Core::LinphoneChatMessage::GetAppData()
 {
 	API_LOCK;
-	Platform::String^ appData = Linphone::Core::Utils::cctops(linphone_chat_message_get_appdata(this->message));
-	API_UNLOCK;
-	return appData;
+	return Linphone::Core::Utils::cctops(linphone_chat_message_get_appdata(this->message));
 }
 
 void Linphone::Core::LinphoneChatMessage::SetAppData(Platform::String^ appData)
 {
 	API_LOCK;
 	linphone_chat_message_set_appdata(this->message, Linphone::Core::Utils::pstoccs(appData));
-	API_UNLOCK;
 }
 
 static void status_cb(::LinphoneChatMessage* msg, ::LinphoneChatMessageState state, void* ud)
@@ -117,7 +106,6 @@ void Linphone::Core::LinphoneChatMessage::StartFileDownload(Linphone::Core::Linp
 	linphone_chat_message_set_file_transfer_filepath(this->message, cfilepath);
 	linphone_chat_message_start_file_download(this->message, status_cb, listenerPtr);
 	delete(cfilepath);
-	API_UNLOCK;
 }
 
 Linphone::Core::LinphoneChatMessage::LinphoneChatMessage(::LinphoneChatMessage *cm) :

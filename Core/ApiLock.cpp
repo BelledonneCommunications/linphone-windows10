@@ -1,75 +1,82 @@
 #include "ApiLock.h"
-
-// Do not treat doxygen documentation as XML
-#pragma warning(push)
-#pragma warning(disable : 4635)
-#include "belle-sip/object.h"
-#pragma warning(pop)
-
-#include <mutex>
+#include "mediastreamer2/mscommon.h"
 
 namespace Linphone
 {
     namespace Core
     {
-        // The global API lock
-		ApiLock gApiLock;
+		GlobalApiLock *GlobalApiLock::instance = nullptr;
 
+		GlobalApiLock::GlobalApiLock() : count(0), pool(nullptr)
+		{}
 
-		class ApiLockPrivate
+		GlobalApiLock::~GlobalApiLock()
+		{}
+
+		GlobalApiLock * GlobalApiLock::Instance()
 		{
-		public:
-			ApiLockPrivate() : count(0), pool(nullptr)
-			{
+			if (instance == nullptr) {
+				instance = new GlobalApiLock();
 			}
-			~ApiLockPrivate()
-			{
-			}
+			return instance;
+		}
 
-			std::recursive_mutex mut;
-			int count;
-			belle_sip_object_pool_t *pool;
-		};
-
-
-		ApiLock::ApiLock() : d(new ApiLockPrivate())
+		void GlobalApiLock::Lock()
 		{
+			mut.lock();
+			if (count == 0) {
+				pool = belle_sip_object_pool_push();
+			}
+			count++;
+		}
+
+		void GlobalApiLock::Unlock()
+		{
+			count--;
+			if ((count == 0) && (pool != nullptr)) {
+				belle_sip_object_unref(pool);
+				pool = nullptr;
+			}
+			mut.unlock();
+		}
+
+		bool GlobalApiLock::TryLock()
+		{
+			bool ok = mut.try_lock();
+			if (ok) {
+				if (count == 0) {
+					pool = belle_sip_object_pool_push();
+				}
+				count++;
+			}
+			return ok;
+		}
+
+
+		ApiLock::ApiLock(const char *function)
+		{
+#ifdef TRACE_LOCKS
+			if (function != NULL) {
+				this->function = ms_strdup(function);
+			}
+			char *s = ms_strdup_printf("### Locking in %s [%ul] at %ul\r\n", this->function, WIN_thread_self(), (unsigned long)ortp_get_cur_time_ms());
+			OutputDebugStringA(s);
+			ms_free(s);
+#endif
+			GlobalApiLock::Instance()->Lock();
 		}
 
 		ApiLock::~ApiLock()
 		{
-			delete d;
-		}
-
-		void ApiLock::Lock()
-		{
-			d->mut.lock();
-			if (d->count == 0) {
-				d->pool = belle_sip_object_pool_push();
+#ifdef TRACE_LOCKS
+			char *s = ms_strdup_printf("### Unlocking in %s [%ul] at %ul\r\n", this->function, WIN_thread_self(), (unsigned long)ortp_get_cur_time_ms());
+			OutputDebugStringA(s);
+			ms_free(s);
+			if (this->function != NULL) {
+				ms_free(this->function);
 			}
-			d->count++;
-		}
-
-		void ApiLock::Unlock()
-		{
-			d->count--;
-			if ((d->count == 0) && (d->pool != nullptr)) {
-				belle_sip_object_unref(d->pool);
-				d->pool = nullptr;
-			}
-			d->mut.unlock();
-		}
-
-		bool ApiLock::TryLock()
-		{
-			bool ok = d->mut.try_lock();
-			if (ok) {
-				if (d->count == 0) {
-					d->pool = belle_sip_object_pool_push();
-				}
-				d->count++;
-			}
-			return ok;
+#endif
+			GlobalApiLock::Instance()->Unlock();
 		}
     }
 }

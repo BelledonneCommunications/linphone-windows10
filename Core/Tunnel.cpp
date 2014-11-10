@@ -78,23 +78,19 @@ Linphone::Core::Tunnel::~Tunnel()
 Platform::Boolean Linphone::Core::Tunnel::IsEnabled()
 {
 	API_LOCK;
-	Platform::Boolean enabled = (linphone_tunnel_enabled(this->lt) == TRUE);
-	API_UNLOCK;
-	return enabled;
+	return (linphone_tunnel_enabled(this->lt) == TRUE);
 }
 
 void Linphone::Core::Tunnel::Enable(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_tunnel_enable(this->lt, enable);
-	API_UNLOCK;
 }
 
 void Linphone::Core::Tunnel::AutoDetect()
 {
 	API_LOCK;
 	linphone_tunnel_auto_detect(this->lt);
-	API_UNLOCK;
 }
 
 static void AddServerConfigToVector(void *vServerConfig, void *vector)
@@ -118,7 +114,6 @@ IVector<Object^>^ Linphone::Core::Tunnel::GetServers()
 	const MSList *configList = linphone_tunnel_get_servers(this->lt);
 	RefToPtrProxy<IVector<Object^>^> *serverConfigPtr = new RefToPtrProxy<IVector<Object^>^>(serverconfigs);
 	ms_list_for_each2(configList, AddServerConfigToVector, serverConfigPtr);
-	API_UNLOCK;
 	return serverconfigs;
 }
 
@@ -126,7 +121,6 @@ void Linphone::Core::Tunnel::CleanServers()
 {
 	API_LOCK;
 	linphone_tunnel_clean_servers(this->lt);
-	API_UNLOCK;
 }
 
 void Linphone::Core::Tunnel::SetHttpProxy(Platform::String^ host, int port, Platform::String^ username, Platform::String^ password)
@@ -139,7 +133,6 @@ void Linphone::Core::Tunnel::SetHttpProxy(Platform::String^ host, int port, Plat
 	delete(h);
 	delete(u);
 	delete(pwd);
-	API_UNLOCK;
 }
 
 void Linphone::Core::Tunnel::AddServer(Platform::String^ host, int port)
@@ -151,7 +144,6 @@ void Linphone::Core::Tunnel::AddServer(Platform::String^ host, int port)
 	linphone_tunnel_config_set_port(config, port);
 	linphone_tunnel_add_server(this->lt, config);
 	delete(h);
-	API_UNLOCK;
 }
 
 void Linphone::Core::Tunnel::AddServer(Platform::String^ host, int port, int udpMirrorPort, int roundTripDelay)
@@ -165,5 +157,4 @@ void Linphone::Core::Tunnel::AddServer(Platform::String^ host, int port, int udp
 	linphone_tunnel_config_set_remote_udp_mirror_port(config, udpMirrorPort);
 	linphone_tunnel_add_server(this->lt, config);
 	delete(h);
-	API_UNLOCK;
 }

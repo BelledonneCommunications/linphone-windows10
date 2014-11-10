@@ -38,7 +38,6 @@ void Globals::StartServer(const Platform::Array<Platform::String^>^ outOfProcSer
 
     if (this->started)
     {
-		API_UNLOCK;
         return; // Nothing more to be done
     }
 
@@ -83,7 +82,6 @@ void Globals::StartServer(const Platform::Array<Platform::String^>^ outOfProcSer
     }
 
     this->started = true;
-	API_UNLOCK;
 }
 
 unsigned int Globals::GetCurrentProcessId()
@@ -123,8 +121,6 @@ Globals^ Globals::Instance::get()
             Globals::singleton = ref new Globals();
         }
         // else: some other thread has created an instance of the call controller
-
-		API_UNLOCK;
     }
 
     return Globals::singleton;
@@ -141,8 +137,6 @@ LinphoneCoreFactory^ Globals::LinphoneCoreFactory::get()
         {
             this->linphoneCoreFactory = ref new Linphone::Core::LinphoneCoreFactory();
         }
-
-		API_UNLOCK;
     }
 
 	return this->linphoneCoreFactory;
@@ -165,8 +159,6 @@ Linphone::Core::CallController^ Globals::CallController::get()
 			this->callController = ref new Linphone::Core::CallController(); 
         } 
         // else: some other thread has created an instance of the call controller 
-
-		API_UNLOCK;
     } 
  
     return this->callController; 
@@ -183,8 +175,6 @@ Linphone::Core::BackgroundModeLogger^ Globals::BackgroundModeLogger::get()
 		{
 			this->backgroundModeLogger = ref new Linphone::Core::BackgroundModeLogger();
 		}
-
-		API_UNLOCK;
 	}
 
 	return this->backgroundModeLogger;
@@ -199,7 +189,6 @@ void Globals::VideoRenderer::set(Mediastreamer2::WP8Video::IVideoRenderer^ value
 {
 	API_LOCK;
 	this->videoRenderer = value;
-	API_UNLOCK;
 }
 
 Globals::Globals() :

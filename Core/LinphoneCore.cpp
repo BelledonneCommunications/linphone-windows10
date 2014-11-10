@@ -185,28 +185,24 @@ void Linphone::Core::LinphoneCore::ResetLogCollection()
 {
 	API_LOCK;
 	linphone_core_reset_log_collection();
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::ClearProxyConfigs()
 {
 	API_LOCK;
 	linphone_core_clear_proxy_config(this->lc);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::AddProxyConfig(Linphone::Core::LinphoneProxyConfig^ proxyCfg)
 {
 	API_LOCK;
 	linphone_core_add_proxy_config(this->lc, proxyCfg->proxy_config);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetDefaultProxyConfig(Linphone::Core::LinphoneProxyConfig^ proxyCfg)
 {
 	API_LOCK;
 	linphone_core_set_default_proxy(this->lc, proxyCfg->proxy_config);
-	API_UNLOCK;
 }
 
 Linphone::Core::LinphoneProxyConfig^ Linphone::Core::LinphoneCore::GetDefaultProxyConfig()
@@ -218,7 +214,6 @@ Linphone::Core::LinphoneProxyConfig^ Linphone::Core::LinphoneCore::GetDefaultPro
 	if (proxy != nullptr) {
 		defaultProxy = ref new Linphone::Core::LinphoneProxyConfig(proxy);
 	}
-	API_UNLOCK;
 	return defaultProxy;
 }
 
@@ -230,7 +225,6 @@ Linphone::Core::LinphoneProxyConfig^ Linphone::Core::LinphoneCore::CreateEmptyPr
 	if (proxy != nullptr) {
 		proxyConfig = ref new Linphone::Core::LinphoneProxyConfig(proxy);
 	}
-	API_UNLOCK;
 	return proxyConfig;
 }
 
@@ -251,7 +245,6 @@ IVector<Object^>^ Linphone::Core::LinphoneCore::GetProxyConfigList()
 	const MSList *configList = linphone_core_get_proxy_config_list(this->lc);
 	RefToPtrProxy<IVector<Object^>^> *proxyConfigPtr = new RefToPtrProxy<IVector<Object^>^>(proxyconfigs);
 	ms_list_for_each2(configList, AddProxyConfigToVector, proxyConfigPtr);
-	API_UNLOCK;
 	return proxyconfigs;
 }
 
@@ -259,21 +252,18 @@ void Linphone::Core::LinphoneCore::ClearAuthInfos()
 {
 	API_LOCK;
 	linphone_core_clear_all_auth_info(this->lc);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::AddAuthInfo(Linphone::Core::LinphoneAuthInfo^ info) 
 {
 	API_LOCK;
 	linphone_core_add_auth_info(this->lc, info->auth_info);
-	API_UNLOCK;
 }
 
 Linphone::Core::LinphoneAuthInfo^ Linphone::Core::LinphoneCore::CreateAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm, Platform::String^ domain)
 {
 	API_LOCK;
 	Linphone::Core::LinphoneAuthInfo^ authInfo = ref new Linphone::Core::LinphoneAuthInfo(username, userid, password, ha1, realm, domain);
-	API_UNLOCK;
 	return authInfo;
 }
 
@@ -294,7 +284,6 @@ IVector<Object^>^ Linphone::Core::LinphoneCore::GetAuthInfos()
 	const MSList *authlist = linphone_core_get_auth_info_list(this->lc);
 	RefToPtrProxy<IVector<Object^>^> *authInfosPtr = new RefToPtrProxy<IVector<Object^>^>(authInfos);
 	ms_list_for_each2(authlist, AddAuthInfoToVector, authInfosPtr);
-	API_UNLOCK;
 	return authInfos;
 }
 
@@ -303,7 +292,6 @@ void Linphone::Core::LinphoneCore::Destroy()
 	API_LOCK;
 	linphone_core_destroy(this->lc);
 	IterateEnabled = false;
-	API_UNLOCK;
 }
 
 Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCore::InterpretURL(Platform::String^ destination) 
@@ -312,7 +300,6 @@ Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneCore::InterpretURL(Plat
 	const char* url = Linphone::Core::Utils::pstoccs(destination);
 	Linphone::Core::LinphoneAddress^ addr = (Linphone::Core::LinphoneAddress^) Linphone::Core::Utils::CreateLinphoneAddress(linphone_core_interpret_url(this->lc, url));
 	delete(url);
-	API_UNLOCK;
 	return addr;
 }
 
@@ -330,7 +317,6 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::Invite(Platform::Str
 		if (lCall == nullptr)
 			lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
 	}
-	API_UNLOCK;
 	return lCall;
 }
 
@@ -346,7 +332,6 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddress(Linpho
 		if (lCall == nullptr)
 			lCall = (Linphone::Core::LinphoneCall^) Linphone::Core::Utils::CreateLinphoneCall(call);
 	}
-	API_UNLOCK;
 	return lCall;
 }
 
@@ -362,7 +347,6 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::InviteAddressWithPar
 		if (lCall == nullptr)
 			lCall = (Linphone::Core::LinphoneCall^) Linphone::Core::Utils::CreateLinphoneCall(call);
 	}
-	API_UNLOCK;
 	return lCall;
 }
 
@@ -370,14 +354,12 @@ void Linphone::Core::LinphoneCore::TerminateCall(Linphone::Core::LinphoneCall^ c
 {
 	API_LOCK;
 	linphone_core_terminate_call(this->lc, call->call);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::DeclineCall(Linphone::Core::LinphoneCall^ call, Linphone::Core::Reason reason)
 {
 	API_LOCK;
 	linphone_core_decline_call(this->lc, call->call, (LinphoneReason)reason);
-	API_UNLOCK;
 }
 
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::GetCurrentCall() 
@@ -389,52 +371,43 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::GetCurrentCall()
 		Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
 		lCall = (proxy) ? proxy->Ref() : nullptr;
 	}
-	API_UNLOCK;
 	return lCall;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsInCall() 
 {
 	API_LOCK;
-	Platform::Boolean inCall = (linphone_core_in_call(this->lc) == TRUE);
-	API_UNLOCK;
-	return inCall;
+	return (linphone_core_in_call(this->lc) == TRUE);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsIncomingInvitePending() 
 {
 	API_LOCK;
-	Platform::Boolean invitePending = (linphone_core_inc_invite_pending(this->lc) == TRUE);
-	API_UNLOCK;
-	return invitePending;
+	return (linphone_core_inc_invite_pending(this->lc) == TRUE);
 }
 
 void Linphone::Core::LinphoneCore::AcceptCall(Linphone::Core::LinphoneCall^ call) 
 {
 	API_LOCK;
 	linphone_core_accept_call(this->lc, call->call);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::AcceptCallWithParams(Linphone::Core::LinphoneCall^ call, Linphone::Core::LinphoneCallParams^ params) 
 {
 	API_LOCK;
 	linphone_core_accept_call_with_params(this->lc, call->call, params->params);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::AcceptCallUpdate(Linphone::Core::LinphoneCall^ call, Linphone::Core::LinphoneCallParams^ params) 
 {
 	API_LOCK;
 	linphone_core_accept_call_update(this->lc, call->call, params->params);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::DeferCallUpdate(Linphone::Core::LinphoneCall^ call) 
 {
 	API_LOCK;
 	linphone_core_defer_call_update(this->lc, call->call);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::UpdateCall(Linphone::Core::LinphoneCall^ call, Linphone::Core::LinphoneCallParams^ params) 
@@ -445,15 +418,12 @@ void Linphone::Core::LinphoneCore::UpdateCall(Linphone::Core::LinphoneCall^ call
 	} else {
 		linphone_core_update_call(this->lc, call->call, nullptr);
 	}
-	API_UNLOCK;
 }
 
 Linphone::Core::LinphoneCallParams^ Linphone::Core::LinphoneCore::CreateDefaultCallParameters() 
 {
 	API_LOCK;
-	Linphone::Core::LinphoneCallParams^ params = (Linphone::Core::LinphoneCallParams^) Linphone::Core::Utils::CreateLinphoneCallParams(linphone_core_create_default_call_parameters(this->lc));
-	API_UNLOCK;
-	return params;
+	return (Linphone::Core::LinphoneCallParams^) Linphone::Core::Utils::CreateLinphoneCallParams(linphone_core_create_default_call_parameters(this->lc));
 }
 
 void AddLogToVector(void* nLog, void* vector)
@@ -473,7 +443,6 @@ IVector<Object^>^ Linphone::Core::LinphoneCore::GetCallLogs()
 	const MSList* logslist = linphone_core_get_call_logs(this->lc);
 	RefToPtrProxy<IVector<Object^>^> *logsptr = new RefToPtrProxy<IVector<Object^>^>(logs);
 	ms_list_for_each2(logslist, AddLogToVector, logsptr);
-	API_UNLOCK;
 	return logs;
 }
 
@@ -481,81 +450,66 @@ void Linphone::Core::LinphoneCore::ClearCallLogs()
 {
 	API_LOCK;
 	linphone_core_clear_call_logs(this->lc);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::RemoveCallLog(Linphone::Core::LinphoneCallLog^ log) 
 {
 	API_LOCK;
 	linphone_core_remove_call_log(this->lc, log->callLog);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetNetworkReachable(Platform::Boolean isReachable) 
 {
 	API_LOCK;
 	linphone_core_set_network_reachable(this->lc, isReachable);
-	API_UNLOCK;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsNetworkReachable() 
 {
 	API_LOCK;
-	Platform::Boolean networkReachable = (linphone_core_is_network_reachable(this->lc) == TRUE);
-	API_UNLOCK;
-	return networkReachable;
+	return (linphone_core_is_network_reachable(this->lc) == TRUE);
 }
 
 void Linphone::Core::LinphoneCore::SetMicrophoneGain(float gain) 
 {
 	API_LOCK;
 	linphone_core_set_mic_gain_db(this->lc, gain);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetPlaybackGain(float gain) 
 {
 	API_LOCK;
 	linphone_core_set_playback_gain_db(this->lc, gain);
-	API_UNLOCK;
 }
 
 float Linphone::Core::LinphoneCore::GetPlaybackGain() 
 {
 	API_LOCK;
-	float gain = linphone_core_get_playback_gain_db(this->lc);
-	API_UNLOCK;
-	return gain;
+	return linphone_core_get_playback_gain_db(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::SetPlayLevel(int level) 
 {
 	API_LOCK;
 	linphone_core_set_play_level(this->lc, level);
-	API_UNLOCK;
 }
 
 int Linphone::Core::LinphoneCore::GetPlayLevel() 
 {
 	API_LOCK;
-	int level = linphone_core_get_play_level(this->lc);
-	API_UNLOCK;
-	return level;
+	return linphone_core_get_play_level(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::MuteMic(Platform::Boolean isMuted) 
 {
 	API_LOCK;
 	linphone_core_mute_mic(this->lc, isMuted);
-	API_UNLOCK;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsMicMuted() 
 {
 	API_LOCK;
-	Platform::Boolean muted = (linphone_core_is_mic_muted(this->lc) == TRUE);
-	API_UNLOCK;
-	return muted;
+	return (linphone_core_is_mic_muted(this->lc) == TRUE);
 }
 
 void Linphone::Core::LinphoneCore::SendDTMF(char16 number) 
@@ -565,7 +519,6 @@ void Linphone::Core::LinphoneCore::SendDTMF(char16 number)
 	if (wctomb(conv, number) == 1) {
 		linphone_core_send_dtmf(this->lc, conv[0]);
 	}
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::PlayDTMF(char16 number, int duration) 
@@ -575,14 +528,12 @@ void Linphone::Core::LinphoneCore::PlayDTMF(char16 number, int duration)
 	if (wctomb(conv, number) == 1) {
 		linphone_core_play_dtmf(this->lc, conv[0], duration);
 	}
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::StopDTMF() 
 {
 	API_LOCK;
 	linphone_core_stop_dtmf(this->lc);
-	API_UNLOCK;
 }
 
 Linphone::Core::PayloadType^ Linphone::Core::LinphoneCore::FindPayloadType(Platform::String^ mime, int clockRate, int channels) 
@@ -591,9 +542,7 @@ Linphone::Core::PayloadType^ Linphone::Core::LinphoneCore::FindPayloadType(Platf
 	const char* type = Linphone::Core::Utils::pstoccs(mime);
 	::PayloadType* pt = linphone_core_find_payload_type(this->lc, type, clockRate, channels);
 	delete type;
-	Linphone::Core::PayloadType^ payloadType = ref new Linphone::Core::PayloadType(pt);
-	API_UNLOCK;
-	return payloadType;
+	return ref new Linphone::Core::PayloadType(pt);
 }
 
 Linphone::Core::PayloadType^ Linphone::Core::LinphoneCore::FindPayloadType(Platform::String^ mime, int clockRate) 
@@ -602,18 +551,14 @@ Linphone::Core::PayloadType^ Linphone::Core::LinphoneCore::FindPayloadType(Platf
 	const char* type = Linphone::Core::Utils::pstoccs(mime);
 	::PayloadType* pt = linphone_core_find_payload_type(this->lc, type, clockRate, LINPHONE_FIND_PAYLOAD_IGNORE_CHANNELS);
 	delete type;
-	Linphone::Core::PayloadType^ payloadType = ref new Linphone::Core::PayloadType(pt);
-	API_UNLOCK;
-	return payloadType;
+	return ref new Linphone::Core::PayloadType(pt);
 }
 
 bool Linphone::Core::LinphoneCore::PayloadTypeEnabled(PayloadType^ pt)
 {
 	API_LOCK;
 	::PayloadType *payload = pt->payload;
-	bool enabled = (linphone_core_payload_type_enabled(this->lc, payload) == TRUE);
-	API_UNLOCK;
-	return enabled;
+	return (linphone_core_payload_type_enabled(this->lc, payload) == TRUE);
 }
 
 void Linphone::Core::LinphoneCore::EnablePayloadType(PayloadType^ pt, Platform::Boolean enable) 
@@ -621,7 +566,6 @@ void Linphone::Core::LinphoneCore::EnablePayloadType(PayloadType^ pt, Platform::
 	API_LOCK;
 	::PayloadType *payload = pt->payload;
 	linphone_core_enable_payload_type(this->lc, payload, enable);
-	API_UNLOCK;
 }
 
 static void AddCodecToVector(void *vCodec, void *vector)
@@ -641,7 +585,6 @@ IVector<Object^>^ Linphone::Core::LinphoneCore::GetAudioCodecs()
 	const MSList *codecslist = linphone_core_get_audio_codecs(this->lc);
 	RefToPtrProxy<IVector<Object^>^> *codecsPtr = new RefToPtrProxy<IVector<Object^>^>(codecs);
 	ms_list_for_each2(codecslist, AddCodecToVector, codecsPtr);
-	API_UNLOCK;
 	return codecs;
 }
 
@@ -649,23 +592,18 @@ void Linphone::Core::LinphoneCore::EnableEchoCancellation(Platform::Boolean enab
 {
 	API_LOCK;
 	linphone_core_enable_echo_cancellation(this->lc, enable);
-	API_UNLOCK;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsEchoCancellationEnabled() 
 {
 	API_LOCK;
-	Platform::Boolean enabled = (linphone_core_echo_cancellation_enabled(this->lc) == TRUE);
-	API_UNLOCK;
-	return enabled;
+	return (linphone_core_echo_cancellation_enabled(this->lc) == TRUE);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsEchoLimiterEnabled() 
 {
 	API_LOCK;
-	Platform::Boolean enabled = (linphone_core_echo_limiter_enabled(this->lc) == TRUE);
-	API_UNLOCK;
-	return enabled;
+	return (linphone_core_echo_limiter_enabled(this->lc) == TRUE);
 }
 
 static void EchoCalibrationCallback(LinphoneCore *lc, LinphoneEcCalibratorStatus status, int delay_ms, void *data)
@@ -704,14 +642,12 @@ void Linphone::Core::LinphoneCore::StartEchoCalibration()
 	API_LOCK;
 	Linphone::Core::EchoCalibrationData *data = new Linphone::Core::EchoCalibrationData();
 	linphone_core_start_echo_calibration(this->lc, EchoCalibrationCallback, EchoCalibrationAudioInit, EchoCalibrationAudioUninit, data);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::EnableEchoLimiter(Platform::Boolean enable) 
 {
 	API_LOCK;
 	linphone_core_enable_echo_limiter(this->lc, enable);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetSignalingTransportsPorts(Transports^ t) 
@@ -723,7 +659,6 @@ void Linphone::Core::LinphoneCore::SetSignalingTransportsPorts(Transports^ t)
 	transports.tcp_port = t->TCP;
 	transports.tls_port = t->TLS;
 	linphone_core_set_sip_transports(this->lc, &transports);
-	API_UNLOCK;
 }
 
 Linphone::Core::Transports^ Linphone::Core::LinphoneCore::GetSignalingTransportsPorts()
@@ -731,16 +666,13 @@ Linphone::Core::Transports^ Linphone::Core::LinphoneCore::GetSignalingTransports
 	API_LOCK;
 	::LCSipTransports transports;
 	linphone_core_get_sip_transports(this->lc, &transports);
-	Linphone::Core::Transports^ t = ref new Linphone::Core::Transports(transports.udp_port, transports.tcp_port, transports.tls_port);
-	API_UNLOCK;
-	return t;
+	return ref new Linphone::Core::Transports(transports.udp_port, transports.tcp_port, transports.tls_port);
 }
 
 void Linphone::Core::LinphoneCore::EnableIPv6(Platform::Boolean enable) 
 {
 	API_LOCK;
 	linphone_core_enable_ipv6(this->lc, enable);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetPresenceInfo(int minuteAway, Platform::String^ alternativeContact, OnlineStatus status) 
@@ -749,7 +681,6 @@ void Linphone::Core::LinphoneCore::SetPresenceInfo(int minuteAway, Platform::Str
 	const char* ac = Linphone::Core::Utils::pstoccs(alternativeContact);
 	linphone_core_set_presence_info(this->lc, minuteAway, ac, (LinphoneOnlineStatus) status);
 	delete(ac);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetStunServer(Platform::String^ stun) 
@@ -758,30 +689,24 @@ void Linphone::Core::LinphoneCore::SetStunServer(Platform::String^ stun)
 	const char* stunserver = Linphone::Core::Utils::pstoccs(stun);
 	linphone_core_set_stun_server(this->lc, stunserver);
 	delete(stunserver);
-	API_UNLOCK;
 }
 
 Platform::String^ Linphone::Core::LinphoneCore::GetStunServer() 
 {
 	API_LOCK;
-	Platform::String^ server = Linphone::Core::Utils::cctops(linphone_core_get_stun_server(this->lc));
-	API_UNLOCK;
-	return server;
+	return Linphone::Core::Utils::cctops(linphone_core_get_stun_server(this->lc));
 }
 
 void Linphone::Core::LinphoneCore::SetFirewallPolicy(FirewallPolicy policy) 
 {
 	API_LOCK;
 	linphone_core_set_firewall_policy(this->lc, (LinphoneFirewallPolicy) policy);
-	API_UNLOCK;
 }
 
 Linphone::Core::FirewallPolicy Linphone::Core::LinphoneCore::GetFirewallPolicy() 
 {
 	API_LOCK;
-	Linphone::Core::FirewallPolicy policy = (Linphone::Core::FirewallPolicy) linphone_core_get_firewall_policy(this->lc);
-	API_UNLOCK;
-	return policy;
+	return (Linphone::Core::FirewallPolicy) linphone_core_get_firewall_policy(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::SetRootCA(Platform::String^ path) 
@@ -790,66 +715,54 @@ void Linphone::Core::LinphoneCore::SetRootCA(Platform::String^ path)
 	const char *ccPath = Utils::pstoccs(path);
 	linphone_core_set_root_ca(this->lc, ccPath);
 	delete ccPath;
-	API_UNLOCK;
 }
 
 int Linphone::Core::LinphoneCore::UploadBandwidth::get()
 {
 	API_LOCK;
-	int bw = linphone_core_get_upload_bandwidth(this->lc);
-	API_UNLOCK;
-	return bw;
+	return linphone_core_get_upload_bandwidth(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::UploadBandwidth::set(int value)
 {
 	API_LOCK;
 	linphone_core_set_upload_bandwidth(this->lc, value);
-	API_UNLOCK;
 }
 
 int Linphone::Core::LinphoneCore::DownloadBandwidth::get()
 {
 	API_LOCK;
-	int bw = linphone_core_get_download_bandwidth(this->lc);
-	API_UNLOCK;
-	return bw;
+	return linphone_core_get_download_bandwidth(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::DownloadBandwidth::set(int value)
 {
 	API_LOCK;
 	linphone_core_set_download_bandwidth(this->lc, value);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetDownloadPTime(int ptime) 
 {
 	API_LOCK;
 	linphone_core_set_download_ptime(this->lc, ptime);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetUploadPTime(int ptime) 
 {
 	API_LOCK;
 	linphone_core_set_upload_ptime(this->lc, ptime);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::EnableKeepAlive(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_core_enable_keep_alive(this->lc, enable);
-	API_UNLOCK;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsKeepAliveEnabled() 
 {
 	API_LOCK;
-	Platform::Boolean enabled = (linphone_core_keep_alive_enabled(this->lc) == TRUE);
-	API_UNLOCK;
-	return enabled;
+	return (linphone_core_keep_alive_enabled(this->lc) == TRUE);
 }
 
 void Linphone::Core::LinphoneCore::SetPlayFile(Platform::String^ path) 
@@ -858,97 +771,78 @@ void Linphone::Core::LinphoneCore::SetPlayFile(Platform::String^ path)
 	const char* file = Linphone::Core::Utils::pstoccs(path);
 	linphone_core_set_play_file(this->lc, file);
 	delete(file);
-	API_UNLOCK;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::PauseCall(LinphoneCall^ call) 
 {
 	API_LOCK;
-	Platform::Boolean ok = (linphone_core_pause_call(this->lc, call->call) == 0);
-	API_UNLOCK;
-	return ok;
+	return (linphone_core_pause_call(this->lc, call->call) == 0);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::ResumeCall(LinphoneCall^ call) 
 {
 	API_LOCK;
-	Platform::Boolean ok = (linphone_core_resume_call(this->lc, call->call) == 0);
-	API_UNLOCK;
-	return ok;
+	return (linphone_core_resume_call(this->lc, call->call) == 0);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::PauseAllCalls() 
 {
 	API_LOCK;
-	Platform::Boolean ok = (linphone_core_pause_all_calls(this->lc) == 0);
-	API_UNLOCK;
-	return ok;
+	return (linphone_core_pause_all_calls(this->lc) == 0);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsInConference() 
 {
 	API_LOCK;
-	Platform::Boolean inConference = (linphone_core_is_in_conference(this->lc) == TRUE);
-	API_UNLOCK;
-	return inConference;
+	return (linphone_core_is_in_conference(this->lc) == TRUE);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::EnterConference() 
 {
 	API_LOCK;
-	Platform::Boolean ok = (linphone_core_enter_conference(this->lc) == 0);
-	API_UNLOCK;
-	return ok;
+	return (linphone_core_enter_conference(this->lc) == 0);
 }
 
 void Linphone::Core::LinphoneCore::LeaveConference() 
 {
 	API_LOCK;
 	linphone_core_leave_conference(this->lc);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::AddToConference(LinphoneCall^ call) 
 {
 	API_LOCK;
 	linphone_core_add_to_conference(this->lc, call->call);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::AddAllToConference() 
 {
 	API_LOCK;
 	linphone_core_add_all_to_conference(this->lc);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::RemoveFromConference(LinphoneCall^ call) 
 {
 	API_LOCK;
 	linphone_core_remove_from_conference(this->lc, call->call);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::TerminateConference() 
 {
 	API_LOCK;
 	linphone_core_terminate_conference(this->lc);
-	API_UNLOCK;
 }
 
 int Linphone::Core::LinphoneCore::GetConferenceSize() 
 {
 	API_LOCK;
-	int size = linphone_core_get_conference_size(this->lc);
-	API_UNLOCK;
-	return size;
+	return linphone_core_get_conference_size(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::TerminateAllCalls() 
 {
 	API_LOCK;
 	linphone_core_terminate_all_calls(this->lc);
-	API_UNLOCK;
 }
 
 static void AddCallToVector(void *vCall, void *vector)
@@ -969,16 +863,13 @@ IVector<Object^>^ Linphone::Core::LinphoneCore::GetCalls()
 	const MSList *callsList = linphone_core_get_calls(this->lc);
 	RefToPtrProxy<IVector<Object^>^> *callsPtr = new RefToPtrProxy<IVector<Object^>^>(calls);
 	ms_list_for_each2(callsList, AddCallToVector, callsPtr);
-	API_UNLOCK;
 	return calls;
 }
 
 int Linphone::Core::LinphoneCore::GetCallsNb() 
 {
 	API_LOCK;
-	int nb = linphone_core_get_calls_nb(this->lc);
-	API_UNLOCK;
-	return nb;
+	return linphone_core_get_calls_nb(this->lc);
 }
 
 Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::FindCallFromUri(Platform::String^ uri) 
@@ -992,23 +883,19 @@ Linphone::Core::LinphoneCall^ Linphone::Core::LinphoneCore::FindCallFromUri(Plat
 		lCall = (Linphone::Core::LinphoneCall^)Linphone::Core::Utils::CreateLinphoneCall(call);
 	}
 	delete curi;
-	API_UNLOCK;
 	return lCall;
 }
 
 int Linphone::Core::LinphoneCore::GetMaxCalls() 
 {
 	API_LOCK;
-	int max = linphone_core_get_max_calls(this->lc);
-	API_UNLOCK;
-	return max;
+	return linphone_core_get_max_calls(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::SetMaxCalls(int max) 
 {
 	API_LOCK;
 	linphone_core_set_max_calls(this->lc, max);
-	API_UNLOCK;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsMyself(Platform::String^ uri) 
@@ -1019,62 +906,49 @@ Platform::Boolean Linphone::Core::LinphoneCore::IsMyself(Platform::String^ uri)
 	if (lpc != nullptr) {
 		myself = uri->Equals(lpc->GetIdentity());
 	}
-	API_UNLOCK;
 	return myself;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsSoundResourcesLocked() 
 {
 	API_LOCK;
-	Platform::Boolean locked = (linphone_core_sound_resources_locked(this->lc) == TRUE);
-	API_UNLOCK;
-	return locked;
+	return (linphone_core_sound_resources_locked(this->lc) == TRUE);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsMediaEncryptionSupported(MediaEncryption menc) 
 {
 	API_LOCK;
-	Platform::Boolean supported = (linphone_core_media_encryption_supported(this->lc, (LinphoneMediaEncryption) menc) == TRUE);
-	API_UNLOCK;
-	return supported;
+	return (linphone_core_media_encryption_supported(this->lc, (LinphoneMediaEncryption) menc) == TRUE);
 }
 
 void Linphone::Core::LinphoneCore::SetMediaEncryption(MediaEncryption menc) 
 {
 	API_LOCK;
 	linphone_core_set_media_encryption(this->lc, (LinphoneMediaEncryption) menc);
-	API_UNLOCK;
 }
 
 Linphone::Core::MediaEncryption Linphone::Core::LinphoneCore::GetMediaEncryption() 
 {
 	API_LOCK;
-	Linphone::Core::MediaEncryption enc = (Linphone::Core::MediaEncryption) linphone_core_get_media_encryption(this->lc);
-	API_UNLOCK;
-	return enc;
+	return (Linphone::Core::MediaEncryption) linphone_core_get_media_encryption(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::SetMediaEncryptionMandatory(Platform::Boolean yesno) 
 {
 	API_LOCK;
 	linphone_core_set_media_encryption_mandatory(this->lc, yesno);
-	API_UNLOCK;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsMediaEncryptionMandatory() 
 {
 	API_LOCK;
-	Platform::Boolean mandatory = (linphone_core_is_media_encryption_mandatory(this->lc) == TRUE);
-	API_UNLOCK;
-	return mandatory;
+	return (linphone_core_is_media_encryption_mandatory(this->lc) == TRUE);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsTunnelAvailable() 
 {
 	API_LOCK;
-	Platform::Boolean available = (linphone_core_tunnel_available() == TRUE);
-	API_UNLOCK;
-	return available;
+	return (linphone_core_tunnel_available() == TRUE);
 }
 
 Linphone::Core::Tunnel^ Linphone::Core::LinphoneCore::GetTunnel()
@@ -1085,7 +959,6 @@ Linphone::Core::Tunnel^ Linphone::Core::LinphoneCore::GetTunnel()
 	if (lt != nullptr) {
 		tunnel = ref new Linphone::Core::Tunnel(lt);
 	}
-	API_UNLOCK;
 	return tunnel;
 }
 
@@ -1097,72 +970,60 @@ void Linphone::Core::LinphoneCore::SetUserAgent(Platform::String^ name, Platform
 	linphone_core_set_user_agent(this->lc, ua, v);
 	delete(v);
 	delete(ua);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetCPUCount(int count) 
 {
 	API_LOCK;
 	ms_set_cpu_count(count);
-	API_UNLOCK;
 }
 
 int Linphone::Core::LinphoneCore::GetMissedCallsCount() 
 {
 	API_LOCK;
-	int count = linphone_core_get_missed_calls_count(this->lc);
-	API_UNLOCK;
-	return count;
+	return linphone_core_get_missed_calls_count(this->lc);
 }
 
 void Linphone::Core::LinphoneCore::ResetMissedCallsCount() 
 {
 	API_LOCK;
 	linphone_core_reset_missed_calls_count(this->lc);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::RefreshRegisters() 
 {
 	API_LOCK;
 	linphone_core_refresh_registers(this->lc);
-	API_UNLOCK;
 }
 
 Platform::String^ Linphone::Core::LinphoneCore::GetVersion() 
 {
 	API_LOCK;
-	Platform::String^ version = Linphone::Core::Utils::cctops(linphone_core_get_version());
-	API_UNLOCK;
-	return version;
+	return Linphone::Core::Utils::cctops(linphone_core_get_version());
 }
 
 void Linphone::Core::LinphoneCore::SetAudioPort(int port) 
 {
 	API_LOCK;
 	linphone_core_set_audio_port(this->lc, port);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetAudioPortRange(int minP, int maxP) 
 {
 	API_LOCK;
 	linphone_core_set_audio_port_range(this->lc, minP, maxP);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetIncomingTimeout(int timeout) 
 {
 	API_LOCK;
 	linphone_core_set_inc_timeout(this->lc, timeout);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetInCallTimeout(int timeout) 
 {
 	API_LOCK;
 	linphone_core_set_in_call_timeout(this->lc, timeout);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetPrimaryContact(Platform::String^ displayName, Platform::String^ userName) 
@@ -1179,63 +1040,50 @@ void Linphone::Core::LinphoneCore::SetPrimaryContact(Platform::String^ displayNa
 	}
 	delete(un);
 	delete(dn);
-	API_UNLOCK;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::GetUseSipInfoForDTMFs() 
 {
 	API_LOCK;
-	Platform::Boolean use = (linphone_core_get_use_info_for_dtmf(this->lc) == TRUE);
-	API_UNLOCK;
-	return use;
+	return (linphone_core_get_use_info_for_dtmf(this->lc) == TRUE);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::GetUseRFC2833ForDTMFs() 
 {
 	API_LOCK;
-	Platform::Boolean use = (linphone_core_get_use_rfc2833_for_dtmf(this->lc) == TRUE);
-	API_UNLOCK;
-	return use;
+	return (linphone_core_get_use_rfc2833_for_dtmf(this->lc) == TRUE);
 }
 
 void Linphone::Core::LinphoneCore::SetUseSipInfoForDTMFs(Platform::Boolean use) 
 {
 	API_LOCK;
 	linphone_core_set_use_info_for_dtmf(this->lc, use);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetUseRFC2833ForDTMFs(Platform::Boolean use) 
 {
 	API_LOCK;
 	linphone_core_set_use_rfc2833_for_dtmf(this->lc, use);
-	API_UNLOCK;
 }
 
 Linphone::Core::LpConfig^ Linphone::Core::LinphoneCore::GetConfig()
 {
 	API_LOCK;
 	::LpConfig *config = linphone_core_get_config(this->lc);
-	Linphone::Core::LpConfig^ lpConfig = (Linphone::Core::LpConfig^)Linphone::Core::Utils::CreateLpConfig(config);
-	API_UNLOCK;
-	return lpConfig;
+	return (Linphone::Core::LpConfig^)Linphone::Core::Utils::CreateLpConfig(config);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsVideoSupported()
 {
 	API_LOCK;
-	Platform::Boolean supported = (linphone_core_video_supported(this->lc) == TRUE);
-	API_UNLOCK;
-	return supported;
+	return (linphone_core_video_supported(this->lc) == TRUE);
 }
 
 Linphone::Core::VideoPolicy^ Linphone::Core::LinphoneCore::GetVideoPolicy()
 {
 	API_LOCK;
 	const ::LinphoneVideoPolicy *lvp = linphone_core_get_video_policy(this->lc);
-	Linphone::Core::VideoPolicy^ policy = ref new Linphone::Core::VideoPolicy((lvp->automatically_initiate == TRUE), (lvp->automatically_accept == TRUE));
-	API_UNLOCK;
-	return policy;
+	return ref new Linphone::Core::VideoPolicy((lvp->automatically_initiate == TRUE), (lvp->automatically_accept == TRUE));
 }
 
 void Linphone::Core::LinphoneCore::SetVideoPolicy(Linphone::Core::VideoPolicy^ policy)
@@ -1245,7 +1093,6 @@ void Linphone::Core::LinphoneCore::SetVideoPolicy(Linphone::Core::VideoPolicy^ p
 	lvp.automatically_initiate = policy->AutomaticallyInitiate;
 	lvp.automatically_accept = policy->AutomaticallyAccept;
 	linphone_core_set_video_policy(this->lc, &lvp);
-	API_UNLOCK;
 }
 
 Windows::Foundation::Collections::IVector<Platform::Object^>^ Linphone::Core::LinphoneCore::GetSupportedVideoSizes()
@@ -1259,7 +1106,6 @@ Windows::Foundation::Collections::IVector<Platform::Object^>^ Linphone::Core::Li
 		sizes->Append(size);
 		sizesList++;
 	}
-	API_UNLOCK;
 	return sizes;
 }
 
@@ -1280,7 +1126,6 @@ Linphone::Core::VideoSize^ Linphone::Core::LinphoneCore::GetPreferredVideoSize()
 	if (size == nullptr) {
 		size = ref new Linphone::Core::VideoSize(vsize.width, vsize.height);
 	}
-	API_UNLOCK;
 	return size;
 }
 
@@ -1290,7 +1135,6 @@ Platform::String^ Linphone::Core::LinphoneCore::GetPreferredVideoSizeName()
 	char *cSizeName = linphone_core_get_preferred_video_size_name(this->lc);
 	Platform::String^ sizeName = Utils::cctops(cSizeName);
 	ms_free(cSizeName);
-	API_UNLOCK;
 	return sizeName;
 }
 
@@ -1300,7 +1144,6 @@ void Linphone::Core::LinphoneCore::SetPreferredVideoSize(Linphone::Core::VideoSi
 		const char *ccname = Utils::pstoccs(size->Name);
 		API_LOCK;
 		linphone_core_set_preferred_video_size_by_name(this->lc, ccname);
-		API_UNLOCK;
 		delete ccname;
 	} else {
 		SetPreferredVideoSize(size->Width, size->Height);
@@ -1314,14 +1157,12 @@ void Linphone::Core::LinphoneCore::SetPreferredVideoSize(int width, int height)
 	vsize.height = height;
 	API_LOCK;
 	linphone_core_set_preferred_video_size(this->lc, vsize);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetPreferredVideoSizeByName(Platform::String^ sizeName)
 {
 	API_LOCK;
 	linphone_core_set_preferred_video_size_by_name(this->lc, Utils::pstoccs(sizeName));
-	API_UNLOCK;
 }
 
 Windows::Foundation::Collections::IVector<Platform::Object^>^ Linphone::Core::LinphoneCore::GetVideoDevices()
@@ -1334,7 +1175,6 @@ Windows::Foundation::Collections::IVector<Platform::Object^>^ Linphone::Core::Li
 		devices->Append(device);
 		lvds++;
 	}
-	API_UNLOCK;
 	return devices;
 }
 
@@ -1346,7 +1186,6 @@ Platform::String^ Linphone::Core::LinphoneCore::GetVideoDevice()
 	if (ccname != NULL) {
 		device = Utils::cctops(ccname);
 	}
-	API_UNLOCK;
 	return device;
 }
 
@@ -1355,7 +1194,6 @@ void Linphone::Core::LinphoneCore::SetVideoDevice(Platform::String^ device)
 	const char *ccname = Utils::pstoccs(device);
 	API_LOCK;
 	linphone_core_set_video_device(this->lc, ccname);
-	API_UNLOCK;
 	delete ccname;
 }
 
@@ -1366,84 +1204,67 @@ IVector<Object^>^ Linphone::Core::LinphoneCore::GetVideoCodecs()
 	const MSList *codecslist = linphone_core_get_video_codecs(this->lc);
 	RefToPtrProxy<IVector<Object^>^> *codecsPtr = new RefToPtrProxy<IVector<Object^>^>(codecs);
 	ms_list_for_each2(codecslist, AddCodecToVector, codecsPtr);
-	API_UNLOCK;
 	return codecs;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsVideoEnabled()
 {
 	API_LOCK;
-	Platform::Boolean enabled = (linphone_core_video_enabled(this->lc) == TRUE);
-	API_UNLOCK;
-	return enabled;
+	return (linphone_core_video_enabled(this->lc) == TRUE);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsVideoCaptureEnabled()
 {
 	API_LOCK;
-	Platform::Boolean enabled = (linphone_core_video_capture_enabled(this->lc) == TRUE);
-	API_UNLOCK;
-	return enabled;
+	return (linphone_core_video_capture_enabled(this->lc) == TRUE);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsVideoDisplayEnabled()
 {
 	API_LOCK;
-	Platform::Boolean enabled = (linphone_core_video_display_enabled(this->lc) == TRUE);
-	API_UNLOCK;
-	return enabled;
+	return (linphone_core_video_display_enabled(this->lc) == TRUE);
 }
 
 void Linphone::Core::LinphoneCore::EnableVideo(Platform::Boolean enableCapture, Platform::Boolean enableDisplay)
 {
 	API_LOCK;
 	linphone_core_enable_video(this->lc, enableCapture, enableDisplay);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::EnableVideoCapture(Platform::Boolean enable) 
 {
 	API_LOCK;
 	linphone_core_enable_video_capture(this->lc, enable);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::EnableVideoDisplay(Platform::Boolean enable) 
 {
 	API_LOCK;
 	linphone_core_enable_video_display(this->lc, enable);
-	API_UNLOCK;
 }
 
 int Linphone::Core::LinphoneCore::GetNativeVideoWindowId()
 {
 	API_LOCK;
-	int id = Globals::Instance->VideoRenderer->GetNativeWindowId();
-	API_UNLOCK;
-	return id;
+	return Globals::Instance->VideoRenderer->GetNativeWindowId();
 }
 
 int Linphone::Core::LinphoneCore::GetCameraSensorRotation()
 {
 	API_LOCK;
-	int rotation = linphone_core_get_camera_sensor_rotation(this->lc);
-	API_UNLOCK;
-	return rotation;
+	return linphone_core_get_camera_sensor_rotation(this->lc);
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IsSelfViewEnabled()
 {
 	API_LOCK;
-	Platform::Boolean enabled = (linphone_core_self_view_enabled(this->lc) == TRUE);
-	API_UNLOCK;
-	return enabled;
+	return (linphone_core_self_view_enabled(this->lc) == TRUE);
 }
 
 void Linphone::Core::LinphoneCore::EnableSelfView(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_core_enable_self_view(this->lc, enable);
-	API_UNLOCK;
 }
 
 Linphone::Core::LinphoneChatRoom^ Linphone::Core::LinphoneCore::GetChatRoom(Linphone::Core::LinphoneAddress^ address)
@@ -1455,7 +1276,6 @@ Linphone::Core::LinphoneChatRoom^ Linphone::Core::LinphoneCore::GetChatRoom(Linp
 	if (lChatRoom == nullptr) {
 		lChatRoom = (Linphone::Core::LinphoneChatRoom^) Linphone::Core::Utils::CreateLinphoneChatRoom(chatRoom);
 	}
-	API_UNLOCK;
 	return lChatRoom;
 }
 
@@ -1468,7 +1288,6 @@ Linphone::Core::LinphoneChatRoom^ Linphone::Core::LinphoneCore::GetChatRoomFromU
 	if (lChatRoom == nullptr) {
 		lChatRoom = (Linphone::Core::LinphoneChatRoom^) Linphone::Core::Utils::CreateLinphoneChatRoom(chatRoom);
 	}
-	API_UNLOCK;
 	return lChatRoom;
 }
 
@@ -1478,21 +1297,18 @@ void Linphone::Core::LinphoneCore::SetLogCollectionUploadServerUrl(Platform::Str
 	const char *curl = Linphone::Core::Utils::pstoccs(url);
 	linphone_core_set_log_collection_upload_server_url(this->lc, curl);
 	delete(curl);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::UploadLogCollection()
 {
 	API_LOCK;
 	linphone_core_upload_log_collection(this->lc);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetDeviceRotation(int rotation)
 {
 	API_LOCK;
 	linphone_core_set_device_rotation(this->lc, rotation);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::NotifyMute(bool isMuted)
@@ -1500,14 +1316,12 @@ void Linphone::Core::LinphoneCore::NotifyMute(bool isMuted)
 	API_LOCK;
 	Globals::Instance->CallController->NotifyMute(isMuted);
 	MuteMic(isMuted);
-	API_UNLOCK;
 }
 
 void Linphone::Core::LinphoneCore::SetChatDatabasePath(Platform::String^ chatDatabasePath)
 {
 	API_LOCK;
 	linphone_core_set_chat_database_path(this->lc, Linphone::Core::Utils::pstoccs(chatDatabasePath));
-	API_UNLOCK;
 }
 
 static void AddChatRoomListToVector(void *vRoom, void *vector)
@@ -1526,7 +1340,6 @@ IVector<Object^>^ Linphone::Core::LinphoneCore::GetChatRooms()
 	MSList* roomList = linphone_core_get_chat_rooms(this->lc);
 	RefToPtrProxy<IVector<Object^>^> *roomsPtr = new RefToPtrProxy<IVector<Object^>^>(rooms);
 	ms_list_for_each2(roomList, AddChatRoomListToVector, roomsPtr);
-	API_UNLOCK;
 	return rooms;
 }
 
@@ -1767,15 +1580,14 @@ void Linphone::Core::LinphoneCore::IterateEnabled::set(Platform::Boolean value)
 			ref new TimerElapsedHandler([this](ThreadPoolTimer^ source)
 		{
 			if (source == IterateTimer) {
-				if (gApiLock.TryLock()) {
+				if (GlobalApiLock::Instance()->TryLock()) {
 					linphone_core_iterate(this->lc);
-					gApiLock.Unlock();
+					GlobalApiLock::Instance()->Unlock();
 				}
 			}
 		}), period);
 	}
 	isIterateEnabled = value;
-	API_UNLOCK;
 }
 
 Platform::Boolean Linphone::Core::LinphoneCore::IterateEnabled::get()
@@ -1814,5 +1626,4 @@ Linphone::Core::LinphoneCore::~LinphoneCore()
 	API_LOCK;
 	RefToPtrProxy<LinphoneCore^> *proxy = reinterpret_cast< RefToPtrProxy<LinphoneCore^> *>(linphone_core_get_user_data(this->lc));
 	delete proxy;
-	API_UNLOCK;
 }

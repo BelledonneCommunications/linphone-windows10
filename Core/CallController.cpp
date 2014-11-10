@@ -56,7 +56,6 @@ VoipPhoneCall^ CallController::OnIncomingCallReceived(Linphone::Core::LinphoneCa
 				&incomingCall);
 		}
 		catch(...) {
-			API_UNLOCK;
 			return nullptr;
 	    }
 
@@ -67,7 +66,6 @@ VoipPhoneCall^ CallController::OnIncomingCallReceived(Linphone::Core::LinphoneCa
 		// StreamsRunning state by calling NewIncomingCallForCustomIncomingCallView()
 	}
 
-	API_UNLOCK;
     return incomingCall;
 }
 
@@ -95,8 +93,6 @@ void CallController::OnAcceptCallRequested(VoipPhoneCall^ incomingCall, CallAnsw
 		Globals::Instance->LinphoneCore->AcceptCall(this->call);
 #endif
 	}
-
-	API_UNLOCK;
 } 
  
 void CallController::OnRejectCallRequested(VoipPhoneCall^ incomingCall, CallRejectEventArgs^ args)
@@ -111,8 +107,6 @@ void CallController::OnRejectCallRequested(VoipPhoneCall^ incomingCall, CallReje
 	//This will call notifyCallEnded on the call state changed callback
 	if (this->call != nullptr)
 		Globals::Instance->LinphoneCore->DeclineCall(this->call, this->declineReason);
-
-	API_UNLOCK;
 }
 
 VoipPhoneCall^ CallController::NewOutgoingCall(Platform::String^ number)
@@ -138,8 +132,6 @@ VoipPhoneCall^ CallController::NewOutgoingCall(Platform::String^ number)
 		&outgoingCall);
 
 	outgoingCall->NotifyCallActive();
-
-	API_UNLOCK;
 	return outgoingCall;
 }
 
@@ -169,46 +161,37 @@ void CallController::NotifyMute(bool isMuted)
 IncomingCallViewDismissedCallback^ CallController::IncomingCallViewDismissed::get()
 {
 	API_LOCK;
-	IncomingCallViewDismissedCallback^ cb = this->onIncomingCallViewDismissed;
-	API_UNLOCK;
-	return cb;
+	return this->onIncomingCallViewDismissed;
 }
 
 void CallController::IncomingCallViewDismissed::set(IncomingCallViewDismissedCallback^ cb)
 {
 	API_LOCK;
 	this->onIncomingCallViewDismissed = cb;
-	API_UNLOCK;
 }
 
 Platform::Boolean CallController::CustomIncomingCallView::get()
 {
 	API_LOCK;
-	Platform::Boolean value = this->customIncomingCallView;
-	API_UNLOCK;
-	return value;
+	return this->customIncomingCallView;
 }
 
 void CallController::CustomIncomingCallView::set(Platform::Boolean value)
 {
 	API_LOCK;
 	this->customIncomingCallView = value;
-	API_UNLOCK;
 }
 
 Reason CallController::DeclineReason::get()
 {
 	API_LOCK;
-	Linphone::Core::Reason value = this->declineReason;
-	API_UNLOCK;
-	return value;
+	return this->declineReason;
 }
 
 void CallController::DeclineReason::set(Linphone::Core::Reason value)
 {
 	API_LOCK;
 	this->declineReason = value;
-	API_UNLOCK;
 }
 
 CallController::CallController() :
