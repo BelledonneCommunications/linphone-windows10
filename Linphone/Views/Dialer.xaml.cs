@@ -267,7 +267,7 @@ namespace Linphone
             LinphoneProxyConfig cfg = lc.GetDefaultProxyConfig();
             if (cfg != null)
             {
-                return cfg.IsRegisterEnabled();
+                return cfg.RegisterEnabled;
             }
             return true;
         }
@@ -286,7 +286,7 @@ namespace Linphone
             if (cfg != null)
             {
                 cfg.Edit();
-                cfg.EnableRegister(enable);
+                cfg.RegisterEnabled = enable;
                 cfg.Done();
             }
         }

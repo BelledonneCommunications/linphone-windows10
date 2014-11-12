@@ -112,7 +112,7 @@ namespace Linphone.Views
                 if (e.NavigationMode != NavigationMode.Back)
                 {
                     chatRoom.MarkAsRead();
-                    DisplayPastMessages(chatRoom.GetHistory());
+                    DisplayPastMessages(chatRoom.History);
                 }
             }
             else if (e.NavigationMode != NavigationMode.Back || sipAddress == null)
@@ -155,7 +155,7 @@ namespace Linphone.Views
         {
             foreach (LinphoneChatMessage message in messages)
             {
-                if (!message.IsOutgoing())
+                if (!message.IsOutgoing)
                 {
                     IncomingChatBubble bubble = new IncomingChatBubble(message);
                     bubble.MessageDeleted += bubble_MessageDeleted;
@@ -166,7 +166,7 @@ namespace Linphone.Views
                 {
                     OutgoingChatBubble bubble = new OutgoingChatBubble(message);
                     bubble.MessageDeleted += bubble_MessageDeleted;
-                    bubble.UpdateStatus(message.GetState());
+                    bubble.UpdateStatus(message.State);
                     MessagesList.Children.Insert(MessagesList.Children.Count - 1, bubble);
                 }
             }
@@ -238,11 +238,11 @@ namespace Linphone.Views
                     MessagesList.Children.Insert(MessagesList.Children.Count - 1, bubble);
                     scrollToBottom();
                 }
-                else if (state == LinphoneChatMessageState.FileTransferDone && !message.IsOutgoing())
+                else if (state == LinphoneChatMessageState.FileTransferDone && !message.IsOutgoing)
                 {
                     try
                     {
-                        message.SetAppData(message.GetFileTransferFilePath());
+                        message.AppData = message.FileTransferFilePath;
                         ChatBubble bubble = (ChatBubble)MessagesList.Children.Where(b => message.Equals(((ChatBubble)b).ChatMessage)).Last();
                         if (bubble != null)
                         {
@@ -351,7 +351,7 @@ namespace Linphone.Views
 
                     FileInfo fileInfo = new FileInfo(filePath);
                     LinphoneChatMessage msg = chatRoom.CreateFileTransferMessage("application", "octet-stream", fileName, (int)fileInfo.Length, filePath);
-                    msg.SetAppData(filePath);
+                    msg.AppData = filePath;
                     chatRoom.SendMessage(msg, this);
                 }
                 else
@@ -499,13 +499,13 @@ namespace Linphone.Views
             if (chatRoom == null)
                 return;
 
-            bool isRemoteComposing = chatRoom.IsRemoteComposing();
+            bool isRemoteComposing = chatRoom.IsRemoteComposing;
             Debug.WriteLine("[Chat] Is remote composing ? " + isRemoteComposing);
             RemoteComposing.Visibility = isRemoteComposing ? Visibility.Visible : Visibility.Collapsed;
 
-            string remoteName = chatRoom.GetPeerAddress().DisplayName;
+            string remoteName = chatRoom.PeerAddress.DisplayName;
             if (remoteName.Length <= 0)
-                remoteName = chatRoom.GetPeerAddress().UserName;
+                remoteName = chatRoom.PeerAddress.UserName;
             RemoteComposing.Text = remoteName + AppResources.RemoteComposing;
         }
 

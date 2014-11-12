@@ -2,27 +2,27 @@
 #include "LinphoneAddress.h"
 #include "ApiLock.h"
 
-Platform::String^ Linphone::Core::LinphoneChatMessage::GetText()
+Platform::String^ Linphone::Core::LinphoneChatMessage::Text::get()
 {
 	return Linphone::Core::Utils::cctops(linphone_chat_message_get_text(this->message));
 }
 
-Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneChatMessage::GetPeerAddress()
+Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneChatMessage::PeerAddress::get()
 {
 	return (Linphone::Core::LinphoneAddress^) Linphone::Core::Utils::CreateLinphoneAddress((void*)linphone_chat_message_get_peer_address(this->message));
 }
 
-Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneChatMessage::GetFrom()
+Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneChatMessage::From::get()
 {
 	return (Linphone::Core::LinphoneAddress^) Linphone::Core::Utils::CreateLinphoneAddress((void*)linphone_chat_message_get_from(this->message));
 }
 
-Platform::String^ Linphone::Core::LinphoneChatMessage::GetExternalBodyUrl()
+Platform::String^ Linphone::Core::LinphoneChatMessage::ExternalBodyUrl::get()
 {
 	return Linphone::Core::Utils::cctops(linphone_chat_message_get_external_body_url(this->message));
 }
 
-void Linphone::Core::LinphoneChatMessage::SetExternalBodyUrl(Platform::String^ url)
+void Linphone::Core::LinphoneChatMessage::ExternalBodyUrl::set(Platform::String^ url)
 {
 	API_LOCK;
 	const char* body = Linphone::Core::Utils::pstoccs(url);
@@ -30,29 +30,29 @@ void Linphone::Core::LinphoneChatMessage::SetExternalBodyUrl(Platform::String^ u
 	delete(body);
 }
 
-int64 Linphone::Core::LinphoneChatMessage::GetTime()
+int64 Linphone::Core::LinphoneChatMessage::Time::get()
 {
 	return linphone_chat_message_get_time(this->message);
 }
 
-Linphone::Core::LinphoneChatMessageState  Linphone::Core::LinphoneChatMessage::GetState()
+Linphone::Core::LinphoneChatMessageState Linphone::Core::LinphoneChatMessage::State::get()
 {
 	return (Linphone::Core::LinphoneChatMessageState) linphone_chat_message_get_state(this->message);
 }
 
-Platform::Boolean Linphone::Core::LinphoneChatMessage::IsOutgoing() 
+Platform::Boolean Linphone::Core::LinphoneChatMessage::IsOutgoing::get()
 {
 	API_LOCK;
 	return (linphone_chat_message_is_outgoing(this->message) == TRUE);
 }
 
-Platform::Boolean Linphone::Core::LinphoneChatMessage::IsRead()
+Platform::Boolean Linphone::Core::LinphoneChatMessage::IsRead::get()
 {
 	API_LOCK;
 	return (linphone_chat_message_is_read(this->message) == TRUE);
 }
 
-Platform::String^ Linphone::Core::LinphoneChatMessage::GetFileTransferName() 
+Platform::String^ Linphone::Core::LinphoneChatMessage::FileTransferName::get()
 {
 	API_LOCK;
 	Platform::String^ fileName;
@@ -64,19 +64,19 @@ Platform::String^ Linphone::Core::LinphoneChatMessage::GetFileTransferName()
 	return fileName;
 }
 
-Platform::String^ Linphone::Core::LinphoneChatMessage::GetFileTransferFilePath()
+Platform::String^ Linphone::Core::LinphoneChatMessage::FileTransferFilePath::get()
 {
 	API_LOCK;
 	return Linphone::Core::Utils::cctops(linphone_chat_message_get_file_transfer_filepath(this->message));
 }
 
-Platform::String^ Linphone::Core::LinphoneChatMessage::GetAppData()
+Platform::String^ Linphone::Core::LinphoneChatMessage::AppData::get()
 {
 	API_LOCK;
 	return Linphone::Core::Utils::cctops(linphone_chat_message_get_appdata(this->message));
 }
 
-void Linphone::Core::LinphoneChatMessage::SetAppData(Platform::String^ appData)
+void Linphone::Core::LinphoneChatMessage::AppData::set(Platform::String^ appData)
 {
 	API_LOCK;
 	linphone_chat_message_set_appdata(this->message, Linphone::Core::Utils::pstoccs(appData));

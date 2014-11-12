@@ -276,12 +276,12 @@ namespace Linphone.Model
                 LinphoneAddress address = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress(cfg.GetIdentity());
                 if (address != null)
                 {
-                    LinphoneAddress proxyAddress = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress(cfg.GetAddr());
+                    LinphoneAddress proxyAddress = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress(cfg.Addr);
                     dict[ProxyKeyName] = proxyAddress.AsStringUriOnly();
                     dict[TransportKeyName] = EnumToTransport[proxyAddress.Transport];
                     dict[UsernameKeyName] = address.UserName;
                     dict[DomainKeyName] = address.Domain;
-                    dict[OutboundProxyKeyName] = (cfg.GetRoute().Length > 0).ToString();
+                    dict[OutboundProxyKeyName] = (cfg.Route.Length > 0).ToString();
                     var authInfos = LinphoneManager.Instance.LinphoneCore.GetAuthInfos();
                     if (authInfos.Count > 0)
                     {
@@ -309,7 +309,7 @@ namespace Linphone.Model
                 if (cfg != null)
                 {
                     cfg.Edit();
-                    cfg.EnableRegister(false);
+                    cfg.RegisterEnabled = false;
                     cfg.Done();
 
                     //Wait for unregister to complete
@@ -317,7 +317,7 @@ namespace Linphone.Model
                     Stopwatch stopwatch = Stopwatch.StartNew();
                     while (true)
                     {
-                        if (stopwatch.ElapsedMilliseconds >= timeout || cfg.GetState() == RegistrationState.RegistrationCleared || cfg.GetState() == RegistrationState.RegistrationNone)
+                        if (stopwatch.ElapsedMilliseconds >= timeout || cfg.State == RegistrationState.RegistrationCleared || cfg.State == RegistrationState.RegistrationNone)
                         {
                             break;
                         }
@@ -354,21 +354,21 @@ namespace Linphone.Model
                     {
                         proxy = "sip:" + domain;
                     }
-                    cfg.SetProxy(proxy);
+                    cfg.ServerAddr = proxy;
 
                     if (transport != null)
                     {
-                        LinphoneAddress proxyAddr = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress(cfg.GetAddr());
+                        LinphoneAddress proxyAddr = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress(cfg.Addr);
                         if (proxyAddr != null)
                         {
                             proxyAddr.Transport = TransportToEnum[transport];
-                            cfg.SetProxy(proxyAddr.AsStringUriOnly());
+                            cfg.ServerAddr = proxyAddr.AsStringUriOnly();
                         }
                     }
                     if (outboundProxy)
                     {
-                        LinphoneAddress proxyAddr = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress(cfg.GetAddr());
-                        cfg.SetRoute(proxyAddr.AsStringUriOnly());
+                        LinphoneAddress proxyAddr = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress(cfg.Addr);
+                        cfg.Route = proxyAddr.AsStringUriOnly();
                     }
 
                     // Can't set string to null: http://stackoverflow.com/questions/12980915/exception-when-trying-to-read-null-string-in-c-sharp-winrt-component-from-winjs
@@ -382,7 +382,7 @@ namespace Linphone.Model
                     lc.AddProxyConfig(cfg);
                     lc.SetDefaultProxyConfig(cfg);
                     LinphoneManager.Instance.AddPushInformationsToContactParams();
-                    cfg.EnableRegister(true);
+                    cfg.RegisterEnabled = true;
                     cfg.Done();
                 }
             }

@@ -64,8 +64,11 @@ namespace Linphone
 			/// </list>
 			/// </example>
 			/// </summary>
-			/// <param name="proxyUri">The URI to use as proxy address</param>
-			void SetProxy(Platform::String^ proxyUri);
+			property Platform::String^ ServerAddr
+			{
+				Platform::String^ get();
+				void set(Platform::String^ value);
+			}
 
 			/// <summary>
 			/// Get the reason why registration failed when the proxy config state is LinphoneRegistrationFailed.
@@ -80,14 +83,11 @@ namespace Linphone
 			/// Enables register for this proxy config.
 			/// Register message is issued after call to Done.
 			/// </summary>
-			/// <param name="enable">A boolean value telling whether register is enabled for the proxy config</param>
-			void EnableRegister(Platform::Boolean enable);
-
-			/// <summary>
-			/// Returns true if the register is enabled for this proxy config, else returns false.
-			/// </summary>
-			/// <returns>A boolean value telling whether register is enabled for the proxy config</returns>
-			Platform::Boolean IsRegisterEnabled();
+			property Platform::Boolean RegisterEnabled
+			{
+				Platform::Boolean get();
+				void set(Platform::Boolean value);
+			}
 
 			/// <summary>
 			/// Normalizes a human readable phone number into a basic string.
@@ -102,75 +102,89 @@ namespace Linphone
 			/// <summary>
 			/// Automatically add international prefix to e164 phone numbers
 			/// </summary>
-			/// <param name="prefix">The dial prefix to be automatically added to phone numbers</param>
-			void SetDialPrefix(Platform::String^ prefix);
+			property Platform::String^ DialPrefix
+			{
+				Platform::String^ get();
+				void set(Platform::String^ value);
+			}
 
 			/// <summary>
 			/// Sets whether Linphone should replace "+" by "00" in dialed numbers passed to LinphoneCore::Invite.
 			/// </summary>
-			/// <param name="value">A boolean value telling whether to replace "+" by "00" in dialed numbers</param>
-			void SetDialEscapePlus(Platform::Boolean value);
+			property Platform::Boolean DialEscapePlus
+			{
+				Platform::Boolean get();
+				void set(Platform::Boolean value);
+			}
 
 			/// <summary>
 			/// Gets the address.
 			/// </summary>
-			/// <returns>The address of the proxy config as a string</returns>
-			Platform::String^ GetAddr();
+			property Platform::String^ Addr
+			{
+				Platform::String^ get();
+			}
 
 			/// <summary>
 			/// Gets the domain of the address.
 			/// </summary>
-			/// <returns>The domain part of the address of the proxy config</returns>
-			Platform::String^ GetDomain();
+			property Platform::String^ Domain
+			{
+				Platform::String^ get();
+			}
 
 			/// <summary>
 			/// Returns true if this proxy config is currently registered, else returns false.
 			/// </summary>
-			/// <returns>A boolean value telling whether the proxy config is registered</returns>
-			Platform::Boolean IsRegistered();
+			property Platform::Boolean IsRegistered
+			{
+				Platform::Boolean get();
+			}
 
 			/// <summary>
 			/// Sets a SIP route.
 			/// When a route is set, all outgoing calls will go the the route's destination if this proxy is the default one (see LinphoneCore::GetDefaultProxyConfig).
 			/// </summary>
-			/// <param name="routeUri">The SIP route to set</param>
-			void SetRoute(Platform::String^ routeUri);
-
-			/// <summary>
-			/// Returns the SIP route is any.
-			/// </summary>
-			/// <returns>The SIP route</returns>
-			Platform::String^ GetRoute();
+			property Platform::String^ Route
+			{
+				Platform::String^ get();
+				void set(Platform::String^ value);
+			}
 
 			/// <summary>
 			/// Indicates either or not PUBLISH must be issued for this LinphoneProxyConfig.
 			/// </summary>
-			/// <param name="enable">A boolean value telling whether publish is enabled for the proxy config</param>
-			void EnablePublish(Platform::Boolean enable);
-
-			/// <summary>
-			/// Returns true if PUBLISH must be issued, else returns false.
-			/// </summary>
-			/// <returns>A boolean value telling whether publish is enabled for the proxy config</returns>
-			Platform::Boolean IsPublishEnabled();
+			property Platform::Boolean PublishEnabled
+			{
+				Platform::Boolean get();
+				void set(Platform::Boolean value);
+			}
 
 			/// <summary>
 			/// Returns the current RegistrationState for this proxy config.
 			/// </summary>
-			/// <returns>The current registration state of the proxy config</returns>
-			RegistrationState GetState();
+			property RegistrationState State
+			{
+				RegistrationState get();
+			}
 
 			/// <summary>
 			/// Sets the registration expiration time in seconds.
 			/// </summary>
-			/// <param name="delay">The registration expiration time in seconds</param>
-			void SetExpires(int delay);
+			property int Expires
+			{
+				int get();
+				void set(int value);
+			}
 
 			/// <summary>
 			/// Sets the contact params to be sent along with the REGISTERs.
 			/// </summary>
-			/// <param name="params">The contact parameters to be sent along with the REGISTERs</param>
-			void SetContactParameters(Platform::String^ params);
+			property Platform::String^ ContactParameters
+			{
+				Platform::String^ get();
+				void set(Platform::String^ value);
+			}
 
 			/// <summary>
 			/// Returns the international prefix for the given country.
@@ -191,8 +205,11 @@ namespace Linphone
 			/// The main use case for this function is provide the proxy additional information regarding the user agent, like for example unique identifier or apple push id.
 			/// As an example, the contact address in the SIP register sent will look like &lt;sip:joe@15.128.128.93:50421;apple-push-id=43143-DFE23F-2323-FA2232&gt;.
 			/// </summary>
-			/// <param name="params">a string contaning the additional parameters in text form, like "myparam=something;myparam2=something_else"</param>
-			void SetContactUriParameters(Platform::String^ params);
+			property Platform::String^ ContactUriParameters
+			{
+				Platform::String^ get();
+				void set(Platform::String^ value);
+			}
 
 		private:
 			friend ref class Linphone::Core::LinphoneCore;

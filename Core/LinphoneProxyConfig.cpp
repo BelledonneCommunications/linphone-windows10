@@ -41,12 +41,18 @@ Platform::String^ Linphone::Core::LinphoneProxyConfig::GetIdentity()
 	return Utils::cctops(linphone_proxy_config_get_identity(this->proxy_config));
 }
 
-void Linphone::Core::LinphoneProxyConfig::SetProxy(Platform::String^ proxyUri)
+void Linphone::Core::LinphoneProxyConfig::ServerAddr::set(Platform::String^ proxyUri)
 {
 	API_LOCK;
 	const char* cc = Utils::pstoccs(proxyUri);
 	linphone_proxy_config_set_server_addr(this->proxy_config, cc);
 	delete(cc);
+}
+
+Platform::String^ Linphone::Core::LinphoneProxyConfig::ServerAddr::get()
+{
+	API_LOCK;
+	return Utils::cctops(linphone_proxy_config_get_server_addr(this->proxy_config));
 }
 
 Linphone::Core::Reason Linphone::Core::LinphoneProxyConfig::Error::get()
@@ -55,13 +61,13 @@ Linphone::Core::Reason Linphone::Core::LinphoneProxyConfig::Error::get()
 	return (Linphone::Core::Reason)linphone_proxy_config_get_error(this->proxy_config);
 }
 
-void Linphone::Core::LinphoneProxyConfig::EnableRegister(Platform::Boolean enable)
+void Linphone::Core::LinphoneProxyConfig::RegisterEnabled::set(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_proxy_config_enable_register(this->proxy_config, enable);
 }
 
-Platform::Boolean Linphone::Core::LinphoneProxyConfig::IsRegisterEnabled()
+Platform::Boolean Linphone::Core::LinphoneProxyConfig::RegisterEnabled::get()
 {
 	API_LOCK;
 	return (linphone_proxy_config_register_enabled(this->proxy_config) == TRUE);
@@ -80,7 +86,7 @@ Platform::String^ Linphone::Core::LinphoneProxyConfig::NormalizePhoneNumber(Plat
 	return val;
 }
 
-void Linphone::Core::LinphoneProxyConfig::SetDialPrefix(Platform::String^ prefix)
+void Linphone::Core::LinphoneProxyConfig::DialPrefix::set(Platform::String^ prefix)
 {
 	API_LOCK;
 	const char* cc = Utils::pstoccs(prefix);
@@ -88,31 +94,43 @@ void Linphone::Core::LinphoneProxyConfig::SetDialPrefix(Platform::String^ prefix
 	delete(cc);
 }
 
-void Linphone::Core::LinphoneProxyConfig::SetDialEscapePlus(Platform::Boolean value)
+Platform::String^ Linphone::Core::LinphoneProxyConfig::DialPrefix::get()
+{
+	API_LOCK;
+	return Utils::cctops(linphone_proxy_config_get_dial_prefix(this->proxy_config));
+}
+
+void Linphone::Core::LinphoneProxyConfig::DialEscapePlus::set(Platform::Boolean value)
 {
 	API_LOCK;
 	linphone_proxy_config_set_dial_escape_plus(this->proxy_config, value);
 }
 
-Platform::String^ Linphone::Core::LinphoneProxyConfig::GetAddr()
+Platform::Boolean Linphone::Core::LinphoneProxyConfig::DialEscapePlus::get()
+{
+	API_LOCK;
+	return (linphone_proxy_config_get_dial_escape_plus(this->proxy_config) == TRUE);
+}
+
+Platform::String^ Linphone::Core::LinphoneProxyConfig::Addr::get()
 {
 	API_LOCK;
 	return Utils::cctops(linphone_proxy_config_get_addr(this->proxy_config));
 }
 
-Platform::String^ Linphone::Core::LinphoneProxyConfig::GetDomain()
+Platform::String^ Linphone::Core::LinphoneProxyConfig::Domain::get()
 {
 	API_LOCK;
 	return Utils::cctops(linphone_proxy_config_get_domain(this->proxy_config));
 }
 
-Platform::Boolean Linphone::Core::LinphoneProxyConfig::IsRegistered()
+Platform::Boolean Linphone::Core::LinphoneProxyConfig::IsRegistered::get()
 {
 	API_LOCK;
 	return (linphone_proxy_config_is_registered(this->proxy_config) == TRUE);
 }
 
-void Linphone::Core::LinphoneProxyConfig::SetRoute(Platform::String^ routeUri)
+void Linphone::Core::LinphoneProxyConfig::Route::set(Platform::String^ routeUri)
 {
 	API_LOCK;
 	const char* cc = Utils::pstoccs(routeUri);
@@ -120,42 +138,54 @@ void Linphone::Core::LinphoneProxyConfig::SetRoute(Platform::String^ routeUri)
 	delete(cc);
 }
 
-Platform::String^ Linphone::Core::LinphoneProxyConfig::GetRoute()
+Platform::String^ Linphone::Core::LinphoneProxyConfig::Route::get()
 {
 	API_LOCK;
 	return Utils::cctops(linphone_proxy_config_get_route(this->proxy_config));
 }
 
-void Linphone::Core::LinphoneProxyConfig::EnablePublish(Platform::Boolean enable)
+void Linphone::Core::LinphoneProxyConfig::PublishEnabled::set(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_proxy_config_enable_publish(this->proxy_config, enable);
 }
 
-Platform::Boolean Linphone::Core::LinphoneProxyConfig::IsPublishEnabled()
+Platform::Boolean Linphone::Core::LinphoneProxyConfig::PublishEnabled::get()
 {
 	API_LOCK;
 	return (linphone_proxy_config_publish_enabled(this->proxy_config) == TRUE);
 }
 
-Linphone::Core::RegistrationState Linphone::Core::LinphoneProxyConfig::GetState()
+Linphone::Core::RegistrationState Linphone::Core::LinphoneProxyConfig::State::get()
 {
 	API_LOCK;
 	return (Linphone::Core::RegistrationState)linphone_proxy_config_get_state(this->proxy_config);
 }
 
-void Linphone::Core::LinphoneProxyConfig::SetExpires(int delay)
+void Linphone::Core::LinphoneProxyConfig::Expires::set(int delay)
 {
 	API_LOCK;
-	linphone_proxy_config_expires(this->proxy_config, delay);
+	linphone_proxy_config_set_expires(this->proxy_config, delay);
 }
 
-void Linphone::Core::LinphoneProxyConfig::SetContactParameters(Platform::String^ params)
+int Linphone::Core::LinphoneProxyConfig::Expires::get()
+{
+	API_LOCK;
+	return linphone_proxy_config_get_expires(this->proxy_config);
+}
+
+void Linphone::Core::LinphoneProxyConfig::ContactParameters::set(Platform::String^ params)
 {
 	API_LOCK;
 	const char* cc = Utils::pstoccs(params);
 	linphone_proxy_config_set_contact_parameters(this->proxy_config, cc);
 	delete(cc);
+}
+
+Platform::String^ Linphone::Core::LinphoneProxyConfig::ContactParameters::get()
+{
+	API_LOCK;
+	return Utils::cctops(linphone_proxy_config_get_contact_parameters(this->proxy_config));
 }
 
 int Linphone::Core::LinphoneProxyConfig::LookupCCCFromIso(Platform::String^ iso)
@@ -176,12 +206,18 @@ int Linphone::Core::LinphoneProxyConfig::LookupCCCFromE164(Platform::String^ e16
 	return ccc;
 }
 
-void Linphone::Core::LinphoneProxyConfig::SetContactUriParameters(Platform::String^ params)
+void Linphone::Core::LinphoneProxyConfig::ContactUriParameters::set(Platform::String^ params)
 {
 	API_LOCK;
 	const char* cc = Utils::pstoccs(params);
 	linphone_proxy_config_set_contact_uri_parameters(this->proxy_config, cc);
 	delete(cc);
+}
+
+Platform::String^ Linphone::Core::LinphoneProxyConfig::ContactUriParameters::get()
+{
+	API_LOCK;
+	return Utils::cctops(linphone_proxy_config_get_contact_uri_parameters(this->proxy_config));
 }
 
 Linphone::Core::LinphoneProxyConfig::LinphoneProxyConfig()

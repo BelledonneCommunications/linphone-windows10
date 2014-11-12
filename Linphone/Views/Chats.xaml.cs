@@ -86,7 +86,7 @@ namespace Linphone.Views
                 }
 
                 _sortedConversations = new ObservableCollection<Conversation>();
-                foreach (var i in _conversations.OrderByDescending(g => g.Messages.Last().GetTime()).ToList())
+                foreach (var i in _conversations.OrderByDescending(g => g.Messages.Last().Time).ToList())
                 {
                     _sortedConversations.Add(i);
                 }
@@ -114,22 +114,22 @@ namespace Linphone.Views
             _sortedConversations = new ObservableCollection<Conversation>();
             foreach (LinphoneChatRoom conversation in LinphoneManager.Instance.LinphoneCore.GetChatRooms())
             {
-                if (conversation.GetHistorySize() > 0)
+                if (conversation.HistorySize > 0)
                 {
-                    LinphoneAddress peerAddress = conversation.GetPeerAddress();
+                    LinphoneAddress peerAddress = conversation.PeerAddress;
                     string address = String.Format("{0}@{1}", peerAddress.UserName, peerAddress.Domain);
                     string name = peerAddress.DisplayName;
                     if (name == null || name.Length <= 0)
                     {
                         name = peerAddress.UserName;
                     }
-                    _conversations.Add(new Conversation(address, name, conversation.GetHistory()));
+                    _conversations.Add(new Conversation(address, name, conversation.History));
                     ContactManager.Instance.FindContact(address);
                 }
             }
 
             _sortedConversations = new ObservableCollection<Conversation>();
-            foreach (var i in _conversations.OrderByDescending(g => g.Messages.Last().GetTime()).ToList())
+            foreach (var i in _conversations.OrderByDescending(g => g.Messages.Last().Time).ToList())
             {
                 _sortedConversations.Add(i);
             }

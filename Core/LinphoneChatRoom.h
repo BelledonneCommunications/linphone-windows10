@@ -21,7 +21,10 @@ namespace Linphone
 			/// <summary>
 			/// Returns the LinphoneAddress associated with this ChatRoom.
 			/// </summary>
-			Linphone::Core::LinphoneAddress^ GetPeerAddress();
+			property Linphone::Core::LinphoneAddress^ PeerAddress
+			{
+				Linphone::Core::LinphoneAddress^ get();
+			}
 			
 			/// <summary>
 			/// Sends a LinphoneChatMessage using the current ChatRoom, and sets the listener to be called when the massge state changes.
@@ -31,7 +34,10 @@ namespace Linphone
 			/// <summary>
 			/// Tells whether the remote is currently composing a message.
 			/// </summary>
-			Platform::Boolean IsRemoteComposing();
+			property Platform::Boolean IsRemoteComposing
+			{
+				Platform::Boolean get();
+			}
 
 			/// <summary>
 			/// Notify the destination of the chat message being composed that the user is typing a new message.
@@ -46,7 +52,10 @@ namespace Linphone
 			/// <summary>
 			/// Returns the amount of messages associated with the peer of this chatRoom.
 			/// </summary>
-			int GetHistorySize();
+			property int HistorySize
+			{
+				int get();
+			}
 
 			/// <summary>
 			/// Deletes all the messages associated with the peer of this chat room
@@ -56,7 +65,10 @@ namespace Linphone
 			/// <summary>
 			/// Returns the amount of unread messages associated with the peer of this chatRoom.
 			/// </summary>
-			int GetUnreadMessageCount();
+			property int UnreadMessageCount
+			{
+				int get();
+			}
 
 			/// <summary>
 			/// Marks all the messages in this conversation as read
@@ -66,7 +78,10 @@ namespace Linphone
 			/// <summary>
 			/// Gets the list of the messages in the history of this chatroom
 			/// </summary>
-			Windows::Foundation::Collections::IVector<Platform::Object^>^ GetHistory();
+			property Windows::Foundation::Collections::IVector<Platform::Object^>^ History
+			{
+				Windows::Foundation::Collections::IVector<Platform::Object^>^ get();
+			}
 
 			/// <summary>
 			/// Deletes a message from the history of the chatroom

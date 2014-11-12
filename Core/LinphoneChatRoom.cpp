@@ -8,7 +8,7 @@ using namespace Platform::Collections;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
 
-Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneChatRoom::GetPeerAddress()
+Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneChatRoom::PeerAddress::get()
 {
 	return (Linphone::Core::LinphoneAddress^) Linphone::Core::Utils::CreateLinphoneAddress((void*)linphone_chat_room_get_peer_address(this->room));
 }
@@ -69,7 +69,7 @@ Linphone::Core::LinphoneChatMessage^ Linphone::Core::LinphoneChatRoom::CreateFil
 	return chatMessage;
 }
 
-Platform::Boolean Linphone::Core::LinphoneChatRoom::IsRemoteComposing()
+Platform::Boolean Linphone::Core::LinphoneChatRoom::IsRemoteComposing::get()
 {
 	API_LOCK;
 	return (linphone_chat_room_is_remote_composing(this->room) == TRUE);
@@ -81,7 +81,7 @@ void Linphone::Core::LinphoneChatRoom::Compose()
 	linphone_chat_room_compose(this->room);
 }
 
-int Linphone::Core::LinphoneChatRoom::GetHistorySize()
+int Linphone::Core::LinphoneChatRoom::HistorySize::get()
 {
 	API_LOCK;
 	return linphone_chat_room_get_history_size(this->room);
@@ -93,7 +93,7 @@ void Linphone::Core::LinphoneChatRoom::DeleteHistory()
 	linphone_chat_room_delete_history(this->room);
 }
 
-int Linphone::Core::LinphoneChatRoom::GetUnreadMessageCount()
+int Linphone::Core::LinphoneChatRoom::UnreadMessageCount::get()
 {
 	API_LOCK;
 	return linphone_chat_room_get_unread_messages_count(this->room);
@@ -114,7 +114,7 @@ static void AddChatMessageToVector(void *vMessage, void *vector)
 	messages->Append(message);
 }
 
-IVector<Object^>^ Linphone::Core::LinphoneChatRoom::GetHistory()
+IVector<Object^>^ Linphone::Core::LinphoneChatRoom::History::get()
 {
 	API_LOCK;
 	IVector<Object^>^ history = ref new Vector<Object^>();

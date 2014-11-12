@@ -52,7 +52,7 @@ namespace Linphone.Controls
         {
             get
             {
-                DateTime date = new DateTime(ChatMessage.GetTime() * TimeSpan.TicksPerSecond, DateTimeKind.Utc).AddYears(1969).ToLocalTime();
+                DateTime date = new DateTime(ChatMessage.Time * TimeSpan.TicksPerSecond, DateTimeKind.Utc).AddYears(1969).ToLocalTime();
                 return FormatDate(date);
             }
         }
@@ -71,7 +71,7 @@ namespace Linphone.Controls
             Paragraph paragraph = new Paragraph();
             if (ChatMessage != null)
             {
-                string text = ChatMessage.GetText();
+                string text = ChatMessage.Text;
                 if (text.Contains("http://") || text.Contains("https://"))
                 {
                     string[] split = text.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);

@@ -21,67 +21,92 @@ namespace Linphone
 			/// <summary>
 			/// Returns the text associated to this message.
 			/// </summary>
-			Platform::String^ GetText();
+			property Platform::String^ Text
+			{
+				Platform::String^ get();
+			}
 			
 			/// <summary>
 			/// Get peer address as LinphoneAddress associated to this message.
 			/// </summary>
-			Linphone::Core::LinphoneAddress^ GetPeerAddress();
+			property Linphone::Core::LinphoneAddress^ PeerAddress
+			{
+				Linphone::Core::LinphoneAddress^ get();
+			}
 			
 			/// <summary>
 			/// Get from address as LinphoneAddress associated to this message.
 			/// </summary>
-			Linphone::Core::LinphoneAddress^ GetFrom();
+			property Linphone::Core::LinphoneAddress^ From
+			{
+				Linphone::Core::LinphoneAddress^ get();
+			}
 			
 			/// <summary>
 			/// Linphone message can carry external body as defined by rfc2017.
 			/// </summary>
-			Platform::String^ GetExternalBodyUrl();
-			
-			/// <summary>
-			/// Linphone message can carry external body as defined by rfc2017.
-			/// </summary>
-			void SetExternalBodyUrl(Platform::String^ url);
+			property Platform::String^ ExternalBodyUrl
+			{
+				Platform::String^ get();
+				void set(Platform::String^ value);
+			}
 			
 			/// <summary>
 			/// Gets the time at which the message was sent (in seconds since 01/01/1970).
 			/// </summary>
-			int64 GetTime();
+			property int64 Time
+			{
+				int64 get();
+			}
 
 			/// <summary>
 			/// Gets the state of the message (Idle, InProgress, Delivered or NotDelivered).
 			/// </summary>
-			Linphone::Core::LinphoneChatMessageState GetState();
+			property Linphone::Core::LinphoneChatMessageState State
+			{
+				Linphone::Core::LinphoneChatMessageState get();
+			}
 
 			/// <summary>
 			/// Returns true if the message was outgoing, otherwise return false.
 			/// </summary>
-			Platform::Boolean IsOutgoing();
+			property Platform::Boolean IsOutgoing
+			{
+				Platform::Boolean get();
+			}
 
 			/// <summary>
 			/// Returns true if the message has been read, otherwise return false.
 			/// </summary>
-			Platform::Boolean IsRead();
+			property Platform::Boolean IsRead
+			{
+				Platform::Boolean get();
+			}
 
 			/// <summary>
 			/// Returns the name of the file used in the file transfer if it exists
 			/// </summary>
-			Platform::String^ GetFileTransferName();
+			property Platform::String^ FileTransferName
+			{
+				Platform::String^ get();
+			}
 
 			/// <summary>
 			/// Gets the path to the file to read from or write to during the file transfer.
 			/// </summary>
-			Platform::String^ Linphone::Core::LinphoneChatMessage::GetFileTransferFilePath();
+			property Platform::String^ FileTransferFilePath
+			{
+				Platform::String^ get();
+			}
 
 			/// <summary>
 			/// Returns the content of the appData
 			/// </summary>
-			Platform::String^ GetAppData();
-
-			/// <summary>
-			/// Sets the content of the appData
-			/// </summary>
-			void SetAppData(Platform::String^ appData);
+			property Platform::String^ AppData
+			{
+				Platform::String^ get();
+				void set(Platform::String^ value);
+			}
 
 			/// <summary>
 			/// Starts the download of the image in the message if exists

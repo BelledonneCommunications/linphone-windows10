@@ -117,7 +117,7 @@ namespace Linphone.Model
                 {
                     if (isLinphoneRunning && LinphoneCore.GetDefaultProxyConfig() != null)
                     {
-                        _lastKnownState = LinphoneCore.GetDefaultProxyConfig().GetState();
+                        _lastKnownState = LinphoneCore.GetDefaultProxyConfig().State;
                     }
                 }
                 catch { }
@@ -347,11 +347,11 @@ namespace Linphone.Model
                 {
                     SIPAccountSettingsManager sip = new SIPAccountSettingsManager();
                     sip.Load();
-                    server.LinphoneCore.GetDefaultProxyConfig().SetContactUriParameters("pwd=" + sip.Password + ";app-id=" + host + ";pn-type=wp;pn-tok=" + token);
+                    server.LinphoneCore.GetDefaultProxyConfig().ContactUriParameters = "pwd=" + sip.Password + ";app-id=" + host + ";pn-type=wp;pn-tok=" + token;
                 }
                 else
                 {
-                    server.LinphoneCore.GetDefaultProxyConfig().SetContactUriParameters("app-id=" + host + ";pn-type=wp;pn-tok=" + token);
+                    server.LinphoneCore.GetDefaultProxyConfig().ContactUriParameters = "app-id=" + host + ";pn-type=wp;pn-tok=" + token;
                 }
             }
         }
@@ -1043,9 +1043,9 @@ namespace Linphone.Model
             if (BaseModel.UIDispatcher == null) return;
             BaseModel.UIDispatcher.BeginInvoke(() =>
             {
-                LinphoneAddress fromAddress = message.GetFrom();
+                LinphoneAddress fromAddress = message.From;
                 string sipAddress = String.Format("{0}@{1}", fromAddress.UserName, fromAddress.Domain);
-                Logger.Msg("[LinphoneManager] Message received from " + sipAddress + ": " + message.GetText() + "\r\n");
+                Logger.Msg("[LinphoneManager] Message received from " + sipAddress + ": " + message.Text + "\r\n");
 
                 //Vibrate
                 ChatSettingsManager settings = new ChatSettingsManager();
@@ -1062,7 +1062,7 @@ namespace Linphone.Model
                 }
                 else
                 {
-                    DateTime date = new DateTime(message.GetTime() * TimeSpan.TicksPerSecond, DateTimeKind.Utc).AddYears(1969).ToLocalTime();
+                    DateTime date = new DateTime(message.Time * TimeSpan.TicksPerSecond, DateTimeKind.Utc).AddYears(1969).ToLocalTime();
                     DateTime now = DateTime.Now;
                     string dateStr;
                     if (now.Year == date.Year && now.Month == date.Month && now.Day == date.Day)
@@ -1073,7 +1073,7 @@ namespace Linphone.Model
                         dateStr = String.Format("{0:ddd d MMM yyyy, HH:mm}", date);
 
                     //TODO: Temp hack to remove
-                    string url = message.GetExternalBodyUrl();
+                    string url = message.ExternalBodyUrl;
                     url = url.Replace("\"", "");
 
                     //Displays the message as a popup
@@ -1086,7 +1086,7 @@ namespace Linphone.Model
                     {
                         Title = dateStr,
                         Caption = url.Length > 0 ? AppResources.ImageMessageReceived : AppResources.MessageReceived,
-                        Message = url.Length > 0 ? "" : message.GetText(),
+                        Message = url.Length > 0 ? "" : message.Text,
                         LeftButtonContent = AppResources.Close,
                         RightButtonContent = AppResources.Show
                     };
@@ -1096,7 +1096,7 @@ namespace Linphone.Model
                         switch (e.Result)
                         {
                             case CustomMessageBoxResult.RightButton:
-                                BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/Chat.xaml?sip=" + message.GetPeerAddress().AsStringUriOnly(), UriKind.RelativeOrAbsolute));
+                                BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/Chat.xaml?sip=" + message.PeerAddress.AsStringUriOnly(), UriKind.RelativeOrAbsolute));
                                 break;
                         }
                     };
@@ -1122,7 +1122,7 @@ namespace Linphone.Model
                 if (ComposingListener != null && room != null)
                 {
                     string currentListenerSipAddress = ComposingListener.GetSipAddressAssociatedWithDisplayConversation();
-                    LinphoneAddress peerAddress = room.GetPeerAddress();
+                    LinphoneAddress peerAddress = room.PeerAddress;
                     string roomComposingSipAddress = String.Format("{0}@{1}", peerAddress.UserName, peerAddress.Domain);
 
                     if (currentListenerSipAddress != null && roomComposingSipAddress.Equals(currentListenerSipAddress))

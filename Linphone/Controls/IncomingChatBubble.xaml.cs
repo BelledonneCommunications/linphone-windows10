@@ -30,8 +30,8 @@ namespace Linphone.Controls
             InitializeComponent();
             Timestamp.Text = HumanFriendlyTimeStamp;
 
-            string fileName = message.GetFileTransferName();
-            string filePath = message.GetAppData();
+            string fileName = message.FileTransferName;
+            string filePath = message.AppData;
             bool isImageMessage = fileName != null && fileName.Length > 0;
             if (isImageMessage)
             {
@@ -70,12 +70,12 @@ namespace Linphone.Controls
 
         private void Copy_Click(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetText(ChatMessage.GetText());
+            Clipboard.SetText(ChatMessage.Text);
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            bool result = Utils.SavePictureInMediaLibrary(ChatMessage.GetAppData());
+            bool result = Utils.SavePictureInMediaLibrary(ChatMessage.AppData);
             MessageBox.Show(result ? AppResources.FileSavingSuccess : AppResources.FileSavingFailure, AppResources.FileSaving, MessageBoxButton.OK);
         }
 
@@ -114,7 +114,7 @@ namespace Linphone.Controls
         /// </summary>
         public void RefreshImage()
         {
-            string filePath = ChatMessage.GetAppData();
+            string filePath = ChatMessage.AppData;
             ProgressBar.Visibility = Visibility.Collapsed;
             if (filePath != null && filePath.Length > 0)
             {
@@ -133,7 +133,7 @@ namespace Linphone.Controls
 
         private void Image_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/FullScreenPicture.xaml?uri=" + ChatMessage.GetAppData(), UriKind.RelativeOrAbsolute));
+            BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/FullScreenPicture.xaml?uri=" + ChatMessage.AppData, UriKind.RelativeOrAbsolute));
         }
     }
 }
