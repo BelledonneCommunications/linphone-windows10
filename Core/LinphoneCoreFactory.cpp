@@ -5,6 +5,9 @@
 #include "LinphoneAddress.h"
 #include "LpConfig.h"
 #include "Server.h"
+#include "Transports.h"
+#include "VideoPolicy.h"
+#include "VideoSize.h"
 
 using namespace Linphone::Core;
 using namespace Platform;

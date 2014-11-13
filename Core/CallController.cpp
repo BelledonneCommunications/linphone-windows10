@@ -3,6 +3,7 @@
 #include "LinphoneCallParams.h"
 #include "LinphoneCore.h"
 #include "Server.h"
+#include "VideoPolicy.h"
 
 using namespace Linphone::Core;
 using namespace Platform;

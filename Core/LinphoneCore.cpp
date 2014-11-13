@@ -12,6 +12,9 @@
 #include "CallController.h"
 #include "Tunnel.h"
 #include "Server.h"
+#include "Transports.h"
+#include "VideoPolicy.h"
+#include "VideoSize.h"
 #include "Enums.h"
 #include "ApiLock.h"
 #include <collection.h>
@@ -24,143 +27,6 @@ using namespace Windows::Foundation::Collections;
 using namespace Windows::Phone::Media::Devices;
 using namespace Windows::Phone::Networking::Voip;
 using namespace Windows::System::Threading;
-
-Linphone::Core::Transports::Transports() :
-	udp(5060),
-	tcp(0),
-	tls(0)
-{
-}
-
-Linphone::Core::Transports::Transports(int udp_port, int tcp_port, int tls_port) :
-	udp(udp_port),
-	tcp(tcp_port),
-	tls(tls_port)
-{
-}
-
-Linphone::Core::Transports::Transports(Linphone::Core::Transports^ t) :
-	udp(t->UDP),
-	tcp(t->TCP),
-	tls(t->TLS)
-{
-}
-
-int Linphone::Core::Transports::UDP::get()
-{
-	return udp;
-}
-
-void Linphone::Core::Transports::UDP::set(int value)
-{
-	this->udp = value;
-	this->tcp = 0;
-	this->tls = 0;
-}
-
-int Linphone::Core::Transports::TCP::get()
-{
-	return tcp;
-}
-
-void Linphone::Core::Transports::TCP::set(int value)
-{
-	this->udp = 0;
-	this->tcp = value;
-	this->tls = 0;
-}
-
-int Linphone::Core::Transports::TLS::get()
-{
-	return tls;
-}
-
-void Linphone::Core::Transports::TLS::set(int value)
-{
-	this->udp = 0;
-	this->tcp = 0;
-	this->tls = value;
-}
-
-Platform::String^ Linphone::Core::Transports::ToString()
-{
-	return "udp[" + udp + "] tcp[" + tcp + "] tls[" + tls + "]";
-}
-
-
-
-Linphone::Core::VideoPolicy::VideoPolicy() :
-	automaticallyInitiate(true), automaticallyAccept(true)
-{
-}
-
-Linphone::Core::VideoPolicy::VideoPolicy(bool automaticallyInitiate, bool automaticallyAccept) :
-	automaticallyInitiate(automaticallyInitiate), automaticallyAccept(automaticallyAccept)
-{
-}
-
-bool Linphone::Core::VideoPolicy::AutomaticallyInitiate::get()
-{
-	return automaticallyInitiate;
-}
-
-void Linphone::Core::VideoPolicy::AutomaticallyInitiate::set(bool value)
-{
-	automaticallyInitiate = value;
-}
-
-bool Linphone::Core::VideoPolicy::AutomaticallyAccept::get()
-{
-	return automaticallyAccept;
-}
-
-void Linphone::Core::VideoPolicy::AutomaticallyAccept::set(bool value)
-{
-	automaticallyAccept = value;
-}
-
-
-
-Linphone::Core::VideoSize::VideoSize(int width, int height) :
-	width(width), height(height), name("")
-{
-}
-
-Linphone::Core::VideoSize::VideoSize(int width, int height, Platform::String^ name) :
-	width(width), height(height), name(name)
-{
-}
-
-int Linphone::Core::VideoSize::Width::get()
-{
-	return width;
-}
-
-void Linphone::Core::VideoSize::Width::set(int value)
-{
-	width = value;
-}
-
-int Linphone::Core::VideoSize::Height::get()
-{
-	return height;
-}
-
-void Linphone::Core::VideoSize::Height::set(int value)
-{
-	height = value;
-}
-
-Platform::String^ Linphone::Core::VideoSize::Name::get()
-{
-	return name;
-}
-
-void Linphone::Core::VideoSize::Name::set(Platform::String^ value)
-{
-	name = value;
-}
-
 
 
 void Linphone::Core::LinphoneCore::SetLogLevel(OutputTraceLevel logLevel)

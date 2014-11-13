@@ -10,6 +10,9 @@
 #include "LinphoneChatRoom.h"
 #include "LpConfig.h"
 #include "PayloadType.h"
+#include "Transports.h"
+#include "VideoPolicy.h"
+#include "VideoSize.h"
 #include <Stringapiset.h>
 #include <time.h>
 

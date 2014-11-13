@@ -153,8 +153,11 @@
     <ClInclude Include="Enums.h" />
     <ClInclude Include="PayloadType.h" />
     <ClInclude Include="Server.h" />
+    <ClInclude Include="Transports.h" />
     <ClInclude Include="Tunnel.h" />
     <ClInclude Include="Utils.h" />
+    <ClInclude Include="VideoPolicy.h" />
+    <ClInclude Include="VideoSize.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ApiLock.cpp" />
@@ -174,8 +177,11 @@
     <ClCompile Include="LinphoneProxyConfig.cpp" />
     <ClCompile Include="LpConfig.cpp" />
     <ClCompile Include="PayloadType.cpp" />
+    <ClCompile Include="Transports.cpp" />
     <ClCompile Include="Tunnel.cpp" />
     <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="VideoPolicy.cpp" />
+    <ClCompile Include="VideoSize.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OopServerRegistrationHelper.exe">
