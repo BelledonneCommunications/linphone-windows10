@@ -26,7 +26,7 @@ namespace Linphone.Views
         {
             InitializeComponent();
 
-            if (!LinphoneManager.Instance.LinphoneCore.IsVideoSupported() || !LinphoneManager.Instance.LinphoneCore.IsVideoEnabled())
+            if (!LinphoneManager.Instance.LinphoneCore.VideoSupported || !LinphoneManager.Instance.LinphoneCore.VideoEnabled)
             {
                 AnswerVideo.Visibility = Visibility.Collapsed;
             }
@@ -104,7 +104,7 @@ namespace Linphone.Views
 
         private void Answer_Click(object sender, RoutedEventArgs e)
         {
-            LinphoneManager.Instance.LinphoneCore.AcceptCall(LinphoneManager.Instance.LinphoneCore.GetCurrentCall());
+            LinphoneManager.Instance.LinphoneCore.AcceptCall(LinphoneManager.Instance.LinphoneCore.CurrentCall);
             NavigationService.Navigate(new Uri("/Views/InCall.xaml?sip=" + _callingNumber, UriKind.RelativeOrAbsolute));
         }
 

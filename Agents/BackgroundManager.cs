@@ -62,7 +62,7 @@ namespace Linphone.Agents
         {
             // Initiate incoming call processing by creating the Linphone Core
             InitManager.CreateLinphoneCore(OopServer, null, OutputTraceLevel.Message);
-            OopServer.LinphoneCore.SetNetworkReachable(true);
+            OopServer.LinphoneCore.NetworkReachable = true;
             OopServer.LinphoneCore.IterateEnabled = true;
         }
     }

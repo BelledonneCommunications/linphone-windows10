@@ -41,7 +41,7 @@ namespace Linphone.Views
         {
             InitializeComponent();
 
-            var call = LinphoneManager.Instance.LinphoneCore.GetCurrentCall();
+            var call = LinphoneManager.Instance.LinphoneCore.CurrentCall;
             if (call != null && call.State == Core.LinphoneCallState.StreamsRunning)
             {
                 PauseStateChanged(call, false, false);
@@ -50,7 +50,7 @@ namespace Linphone.Views
                     buttons.speaker.IsChecked = true;
                     buttons_landscape.speaker.IsChecked = true;
                 }
-                if (LinphoneManager.Instance.LinphoneCore.IsMicMuted())
+                if (LinphoneManager.Instance.LinphoneCore.MicMuted)
                 {
                     buttons.microphone.IsChecked = true;
                     buttons_landscape.microphone.IsChecked = true;
@@ -199,9 +199,9 @@ namespace Linphone.Views
             }
 
             // Callback CallStateChanged set too late when call is incoming, so trigger it manually
-            if (LinphoneManager.Instance.LinphoneCore.GetCallsNb() > 0)
+            if (LinphoneManager.Instance.LinphoneCore.CallsNb > 0)
             {
-                LinphoneCall call = (LinphoneCall)LinphoneManager.Instance.LinphoneCore.GetCalls()[0];
+                LinphoneCall call = (LinphoneCall)LinphoneManager.Instance.LinphoneCore.Calls[0];
                 if (call.State == LinphoneCallState.StreamsRunning)
                 {
                     CallStateChanged(call, LinphoneCallState.StreamsRunning);

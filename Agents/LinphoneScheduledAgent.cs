@@ -44,7 +44,7 @@ namespace Linphone.Agents
                     {
                         var server = BackgroundManager.Instance.OopServer;
                         InitManager.CreateLinphoneCore(server, this, OutputTraceLevel.Message);
-                        server.LinphoneCore.SetNetworkReachable(true);
+                        server.LinphoneCore.NetworkReachable = true;
                         server.LinphoneCore.IterateEnabled = true;
                         Debug.WriteLine("[KeepAliveAgent] Linphone Core created");
                     }
@@ -67,11 +67,11 @@ namespace Linphone.Agents
             Debug.WriteLine("[IncomingCallAgent] Incoming call processing is now complete.");
             BackgroundManager.Instance.OopServer.CallController.IncomingCallViewDismissed = null;
 
-            TileManager.Instance.UpdateCount(BackgroundManager.Instance.OopServer.LinphoneCore.GetMissedCallsCount());
+            TileManager.Instance.UpdateCount(BackgroundManager.Instance.OopServer.LinphoneCore.MissedCallsCount);
 
-            if (BackgroundManager.Instance.OopServer.LinphoneCore.GetCallsNb() == 0)
+            if (BackgroundManager.Instance.OopServer.LinphoneCore.CallsNb == 0)
             {
-                BackgroundManager.Instance.OopServer.LinphoneCore.SetNetworkReachable(false); // To prevent the core from unregister
+                BackgroundManager.Instance.OopServer.LinphoneCore.NetworkReachable = false; // To prevent the core from unregister
                 BackgroundManager.Instance.OopServer.LinphoneCoreFactory.Destroy();
             }
             base.NotifyComplete();

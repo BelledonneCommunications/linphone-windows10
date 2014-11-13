@@ -27,10 +27,10 @@ namespace Linphone.Controls
         public void RefreshStatus()
         {
             RegistrationState state;
-            if (LinphoneManager.Instance.LinphoneCore.GetDefaultProxyConfig() == null)
+            if (LinphoneManager.Instance.LinphoneCore.DefaultProxyConfig == null)
                 state = RegistrationState.RegistrationNone;
             else
-                state = LinphoneManager.Instance.LinphoneCore.GetDefaultProxyConfig().State;
+                state = LinphoneManager.Instance.LinphoneCore.DefaultProxyConfig.State;
 
             RefreshStatus(state);
         }

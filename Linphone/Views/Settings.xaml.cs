@@ -28,7 +28,7 @@ namespace Linphone.Views
         {
             base.OnNavigatedTo(e);
 
-            bool isVideoEnabled = LinphoneManager.Instance.LinphoneCore.IsVideoSupported() && (LinphoneManager.Instance.LinphoneCore.IsVideoDisplayEnabled() || LinphoneManager.Instance.LinphoneCore.IsVideoCaptureEnabled());
+            bool isVideoEnabled = LinphoneManager.Instance.LinphoneCore.VideoSupported && (LinphoneManager.Instance.LinphoneCore.VideoDisplayEnabled || LinphoneManager.Instance.LinphoneCore.VideoCaptureEnabled);
             Video.Visibility = isVideoEnabled ? Visibility.Visible : Visibility.Collapsed;
         }
 

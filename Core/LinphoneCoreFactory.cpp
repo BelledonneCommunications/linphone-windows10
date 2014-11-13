@@ -101,7 +101,7 @@ Linphone::Core::VideoSize^ LinphoneCoreFactory::CreateVideoSize(int width, int h
 void LinphoneCoreFactory::SetLogLevel(OutputTraceLevel logLevel)
 {
 	API_LOCK;
-	Linphone::Core::LinphoneCore::SetLogLevel(logLevel);
+	Linphone::Core::LinphoneCore::LogLevel = logLevel;
 }
 
 void LinphoneCoreFactory::ResetLogCollection()

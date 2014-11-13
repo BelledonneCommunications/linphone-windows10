@@ -70,7 +70,7 @@ namespace Linphone.Views
             tunnelPort.Text = _networkSettings.TunnelPort;
             tunnelServer.Text = _networkSettings.TunnelServer;
 
-            TunnelPanel.Visibility = LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable() && Customs.IsTunnelEnabled ? Visibility.Visible : Visibility.Collapsed; //Hidden properties for now
+            TunnelPanel.Visibility = LinphoneManager.Instance.LinphoneCore.TunnelAvailable && Customs.IsTunnelEnabled ? Visibility.Visible : Visibility.Collapsed; //Hidden properties for now
 
             Debug.IsChecked = _settings.DebugEnabled;
             SendLogs.IsEnabled = _settings.DebugEnabled;

@@ -112,7 +112,7 @@ namespace Linphone.Views
         {
             _conversations = new ObservableCollection<Conversation>();
             _sortedConversations = new ObservableCollection<Conversation>();
-            foreach (LinphoneChatRoom conversation in LinphoneManager.Instance.LinphoneCore.GetChatRooms())
+            foreach (LinphoneChatRoom conversation in LinphoneManager.Instance.LinphoneCore.ChatRooms)
             {
                 if (conversation.HistorySize > 0)
                 {

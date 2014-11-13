@@ -118,8 +118,8 @@ VoipPhoneCall^ CallController::NewOutgoingCall(Platform::String^ number)
 	this->call = call;
 
 	VoipCallMedia media = VoipCallMedia::Audio;
-	if (Globals::Instance->LinphoneCore->IsVideoSupported() && Globals::Instance->LinphoneCore->IsVideoEnabled()) {
-		VideoPolicy^ policy = Globals::Instance->LinphoneCore->GetVideoPolicy();
+	if (Globals::Instance->LinphoneCore->VideoSupported && Globals::Instance->LinphoneCore->VideoEnabled) {
+		VideoPolicy^ policy = Globals::Instance->LinphoneCore->VideoPolicy;
 		if ((policy != nullptr) && policy->AutomaticallyInitiate) {
 			media = VoipCallMedia::Audio | VoipCallMedia::Video;
 		}

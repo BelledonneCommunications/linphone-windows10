@@ -57,12 +57,12 @@ namespace Linphone.Views
 
         public LinphoneCall GetCurrentCall()
         {
-            LinphoneCall call = LinphoneManager.Instance.LinphoneCore.GetCurrentCall();
+            LinphoneCall call = LinphoneManager.Instance.LinphoneCore.CurrentCall;
             if (call == null)
             {
-                if (LinphoneManager.Instance.LinphoneCore.GetCallsNb() > 0)
+                if (LinphoneManager.Instance.LinphoneCore.CallsNb > 0)
                 {
-                    call = (LinphoneCall)LinphoneManager.Instance.LinphoneCore.GetCalls()[0];
+                    call = (LinphoneCall)LinphoneManager.Instance.LinphoneCore.Calls[0];
                 }
             }
             return call;
@@ -90,7 +90,7 @@ namespace Linphone.Views
         public void ToggleCameras()
         {
             LinphoneManager.Instance.ToggleCameras();
-            if (LinphoneManager.Instance.LinphoneCore.IsSelfViewEnabled())
+            if (LinphoneManager.Instance.LinphoneCore.SelfViewEnabled)
             {
                 ShowLocalVideo();
             }
@@ -115,7 +115,7 @@ namespace Linphone.Views
                     break;
             }
             RemoteVideoRotation = rotation;
-            Int32 id = LinphoneManager.Instance.LinphoneCore.GetNativeVideoWindowId();
+            Int32 id = LinphoneManager.Instance.LinphoneCore.NativeVideoWindowId;
             RemoteVideoUri = Mediastreamer2.WP8Video.VideoRenderer.StreamUri(id);
             RemoteVideoProgressBarVisibility = Visibility.Visible;
         }
@@ -134,13 +134,13 @@ namespace Linphone.Views
 
         private void ShowLocalVideo()
         {
-            String device = LinphoneManager.Instance.LinphoneCore.GetVideoDevice();
+            String device = LinphoneManager.Instance.LinphoneCore.VideoDevice;
             LocalVideoUri = Mediastreamer2.WP8Video.VideoRenderer.CameraUri(device);
         }
 
         public void LocalVideoOpened()
         {
-            Int32 rotation = LinphoneManager.Instance.LinphoneCore.GetCameraSensorRotation();
+            Int32 rotation = LinphoneManager.Instance.LinphoneCore.CameraSensorRotation;
             switch (pageOrientation)
             {
                 case Microsoft.Phone.Controls.PageOrientation.LandscapeLeft:
@@ -151,7 +151,7 @@ namespace Linphone.Views
                     break;
             }
             LocalVideoRotation = rotation % 360;
-            String device = LinphoneManager.Instance.LinphoneCore.GetVideoDevice();
+            String device = LinphoneManager.Instance.LinphoneCore.VideoDevice;
             Boolean mirrored = Mediastreamer2.WP8Video.VideoRenderer.IsCameraMirrored(device);
             if (mirrored)
             {
@@ -174,7 +174,7 @@ namespace Linphone.Views
         {
             Logger.Msg("[InCall] ShowVideo");
             ShowRemoteVideo();
-            if (LinphoneManager.Instance.LinphoneCore.IsSelfViewEnabled())
+            if (LinphoneManager.Instance.LinphoneCore.SelfViewEnabled)
             {
                 ShowLocalVideo();
             }
@@ -474,7 +474,7 @@ namespace Linphone.Views
                 if (this.remoteVideoRotation != value)
                 {
                     this.remoteVideoRotation = value;
-                    LinphoneManager.Instance.LinphoneCore.SetDeviceRotation(this.remoteVideoRotation);
+                    LinphoneManager.Instance.LinphoneCore.DeviceRotation = this.remoteVideoRotation;
                     LinphoneCall call = GetCurrentCall();
                     if (call != null) LinphoneManager.Instance.LinphoneCore.UpdateCall(call, null);
                     this.OnPropertyChanged();

@@ -146,7 +146,7 @@ namespace Linphone.Model
             }
             else
             {
-                Config = LinphoneManager.Instance.LinphoneCore.GetConfig();
+                Config = LinphoneManager.Instance.LinphoneCore.Config;
             }
         }
 
@@ -270,7 +270,7 @@ namespace Linphone.Model
             dict[OutboundProxyKeyName] = false.ToString();
             dict[TransportKeyName] = AppResources.TransportUDP;
 
-            LinphoneProxyConfig cfg = LinphoneManager.Instance.LinphoneCore.GetDefaultProxyConfig();
+            LinphoneProxyConfig cfg = LinphoneManager.Instance.LinphoneCore.DefaultProxyConfig;
             if (cfg != null)
             {
                 LinphoneAddress address = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress(cfg.GetIdentity());
@@ -282,7 +282,7 @@ namespace Linphone.Model
                     dict[UsernameKeyName] = address.UserName;
                     dict[DomainKeyName] = address.Domain;
                     dict[OutboundProxyKeyName] = (cfg.Route.Length > 0).ToString();
-                    var authInfos = LinphoneManager.Instance.LinphoneCore.GetAuthInfos();
+                    var authInfos = LinphoneManager.Instance.LinphoneCore.AuthInfos;
                     if (authInfos.Count > 0)
                     {
                         LinphoneAuthInfo info = ((LinphoneAuthInfo)authInfos[0]);
@@ -305,7 +305,7 @@ namespace Linphone.Model
             if (AccountChanged)
             {
                 LinphoneCore lc = LinphoneManager.Instance.LinphoneCore;
-                LinphoneProxyConfig cfg = lc.GetDefaultProxyConfig();
+                LinphoneProxyConfig cfg = lc.DefaultProxyConfig;
                 if (cfg != null)
                 {
                     cfg.Edit();
@@ -339,7 +339,7 @@ namespace Linphone.Model
                 {
                     
 
-                    cfg = lc.CreateEmptyProxyConfig();
+                    cfg = lc.CreateProxyConfig();
                     cfg.Edit();
                     if (displayname != null && displayname.Length > 0)
                     {
@@ -380,7 +380,7 @@ namespace Linphone.Model
                     lc.AddAuthInfo(auth);
 
                     lc.AddProxyConfig(cfg);
-                    lc.SetDefaultProxyConfig(cfg);
+                    lc.DefaultProxyConfig = cfg;
                     LinphoneManager.Instance.AddPushInformationsToContactParams();
                     cfg.RegisterEnabled = true;
                     cfg.Done();
@@ -585,8 +585,8 @@ namespace Linphone.Model
         /// </summary>
         public void Load()
         {
-            LoadCodecs(LinphoneManager.Instance.LinphoneCore.GetAudioCodecs());
-            LoadCodecs(LinphoneManager.Instance.LinphoneCore.GetVideoCodecs());
+            LoadCodecs(LinphoneManager.Instance.LinphoneCore.AudioCodecs);
+            LoadCodecs(LinphoneManager.Instance.LinphoneCore.VideoCodecs);
         }
 
         private void SaveCodecs(IList<Object> ptlist)
@@ -606,8 +606,8 @@ namespace Linphone.Model
         /// </summary>
         public void Save()
         {
-            SaveCodecs(LinphoneManager.Instance.LinphoneCore.GetAudioCodecs());
-            SaveCodecs(LinphoneManager.Instance.LinphoneCore.GetVideoCodecs());
+            SaveCodecs(LinphoneManager.Instance.LinphoneCore.AudioCodecs);
+            SaveCodecs(LinphoneManager.Instance.LinphoneCore.VideoCodecs);
         }
         #endregion
 
@@ -847,13 +847,13 @@ namespace Linphone.Model
         /// </summary>
         public void Load()
         {
-            dict[SendDTMFsRFC2833KeyName] = LinphoneManager.Instance.LinphoneCore.GetUseRFC2833ForDTMFs().ToString();
-            dict[SendDTMFsSIPInfoKeyName] = LinphoneManager.Instance.LinphoneCore.GetUseSipInfoForDTMFs().ToString();
-            dict[VideoEnabledKeyName] = LinphoneManager.Instance.LinphoneCore.IsVideoEnabled().ToString();
-            VideoPolicy policy = LinphoneManager.Instance.LinphoneCore.GetVideoPolicy();
+            dict[SendDTMFsRFC2833KeyName] = LinphoneManager.Instance.LinphoneCore.UseRfc2833ForDtmf.ToString();
+            dict[SendDTMFsSIPInfoKeyName] = LinphoneManager.Instance.LinphoneCore.UseInfoForDtmf.ToString();
+            dict[VideoEnabledKeyName] = LinphoneManager.Instance.LinphoneCore.VideoEnabled.ToString();
+            VideoPolicy policy = LinphoneManager.Instance.LinphoneCore.VideoPolicy;
             dict[AutomaticallyInitiateVideoKeyName] = policy.AutomaticallyInitiate.ToString();
             dict[AutomaticallyAcceptVideoKeyName] = policy.AutomaticallyAccept.ToString();
-            dict[SelfViewEnabledKeyName] = LinphoneManager.Instance.LinphoneCore.IsSelfViewEnabled().ToString();
+            dict[SelfViewEnabledKeyName] = LinphoneManager.Instance.LinphoneCore.SelfViewEnabled.ToString();
             dict[PreferredVideoSizeKeyName] = LinphoneManager.Instance.LinphoneCore.GetPreferredVideoSizeName();
             dict[DownloadBandwidthKeyName] = LinphoneManager.Instance.LinphoneCore.DownloadBandwidth.ToString();
             dict[UploadBandwidthKeyName] = LinphoneManager.Instance.LinphoneCore.UploadBandwidth.ToString();
@@ -866,11 +866,11 @@ namespace Linphone.Model
         {
             if (ValueChanged(SendDTMFsRFC2833KeyName))
             {
-                LinphoneManager.Instance.LinphoneCore.SetUseRFC2833ForDTMFs(Convert.ToBoolean(GetNew(SendDTMFsRFC2833KeyName)));
+                LinphoneManager.Instance.LinphoneCore.UseRfc2833ForDtmf = Convert.ToBoolean(GetNew(SendDTMFsRFC2833KeyName));
             }
             if (ValueChanged(SendDTMFsSIPInfoKeyName))
             {
-                LinphoneManager.Instance.LinphoneCore.SetUseSipInfoForDTMFs(Convert.ToBoolean(GetNew(SendDTMFsSIPInfoKeyName)));
+                LinphoneManager.Instance.LinphoneCore.UseInfoForDtmf = Convert.ToBoolean(GetNew(SendDTMFsSIPInfoKeyName));
             }
             if (ValueChanged(VideoEnabledKeyName))
             {
@@ -882,11 +882,11 @@ namespace Linphone.Model
                 VideoPolicy policy = LinphoneManager.Instance.LinphoneCoreFactory.CreateVideoPolicy(
                     Convert.ToBoolean(GetNew(AutomaticallyInitiateVideoKeyName)),
                     Convert.ToBoolean(GetNew(AutomaticallyAcceptVideoKeyName)));
-                LinphoneManager.Instance.LinphoneCore.SetVideoPolicy(policy);
+                LinphoneManager.Instance.LinphoneCore.VideoPolicy = policy;
             }
             if (ValueChanged(SelfViewEnabledKeyName))
             {
-                LinphoneManager.Instance.LinphoneCore.EnableSelfView(Convert.ToBoolean(GetNew(SelfViewEnabledKeyName)));
+                LinphoneManager.Instance.LinphoneCore.SelfViewEnabled = Convert.ToBoolean(GetNew(SelfViewEnabledKeyName));
             }
             if (ValueChanged(PreferredVideoSizeKeyName))
             {
@@ -1074,7 +1074,7 @@ namespace Linphone.Model
             }
             else
             {
-                Config = LinphoneManager.Instance.LinphoneCore.GetConfig();
+                Config = LinphoneManager.Instance.LinphoneCore.Config;
             }
             TunnelModeToString = new Dictionary<string, string>()
             {
@@ -1122,19 +1122,19 @@ namespace Linphone.Model
         /// </summary>
         public void Load()
         {
-            dict[StunServerKeyName] = LinphoneManager.Instance.LinphoneCore.GetStunServer();
-            dict[FirewallPolicyKeyName] = EnumToFirewallPolicy[LinphoneManager.Instance.LinphoneCore.GetFirewallPolicy()];
-            dict[MediaEncryptionKeyName] = EnumToMediaEncryption[LinphoneManager.Instance.LinphoneCore.GetMediaEncryption()];
+            dict[StunServerKeyName] = LinphoneManager.Instance.LinphoneCore.StunServer;
+            dict[FirewallPolicyKeyName] = EnumToFirewallPolicy[LinphoneManager.Instance.LinphoneCore.FirewallPolicy];
+            dict[MediaEncryptionKeyName] = EnumToMediaEncryption[LinphoneManager.Instance.LinphoneCore.MediaEncryption];
 
             // Load tunnel configuration
             dict[TunnelModeKeyName] = AppResources.TunnelModeDisabled;
             dict[TunnelServerKeyName] = "";
             dict[TunnelPortKeyName] = "";
-            if (LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable())
+            if (LinphoneManager.Instance.LinphoneCore.TunnelAvailable)
             {
                 String mode = Config.GetString(ApplicationSection, TunnelModeKeyName, TunnelModeToString[AppResources.TunnelModeDisabled]);
                 dict[TunnelModeKeyName] = StringToTunnelMode[mode];
-                Tunnel tunnel = LinphoneManager.Instance.LinphoneCore.GetTunnel();
+                Tunnel tunnel = LinphoneManager.Instance.LinphoneCore.Tunnel;
                 if (tunnel != null)
                 {
                     IList<Object> servers = tunnel.GetServers();
@@ -1154,27 +1154,27 @@ namespace Linphone.Model
         public void Save()
         {
             if (ValueChanged(StunServerKeyName))
-                LinphoneManager.Instance.LinphoneCore.SetStunServer(GetNew(StunServerKeyName));
+                LinphoneManager.Instance.LinphoneCore.StunServer = GetNew(StunServerKeyName);
 
             if (ValueChanged(FirewallPolicyKeyName))
             {
                 string firewallPolicy = GetNew(FirewallPolicyKeyName);
-                LinphoneManager.Instance.LinphoneCore.SetFirewallPolicy(FirewallPolicyToEnum[firewallPolicy]);
+                LinphoneManager.Instance.LinphoneCore.FirewallPolicy = FirewallPolicyToEnum[firewallPolicy];
             }
 
             if (ValueChanged(MediaEncryptionKeyName))
             {
                 string mediaEncryption = GetNew(MediaEncryptionKeyName);
-                LinphoneManager.Instance.LinphoneCore.SetMediaEncryption(MediaEncryptionToEnum[mediaEncryption]);
+                LinphoneManager.Instance.LinphoneCore.MediaEncryption = MediaEncryptionToEnum[mediaEncryption];
             }
 
             // Save tunnel configuration
-            if (LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable() && Customs.IsTunnelEnabled)
+            if (LinphoneManager.Instance.LinphoneCore.TunnelAvailable && Customs.IsTunnelEnabled)
             {
                 Boolean needTunnelReconfigure = false;
                 if (ValueChanged(TunnelServerKeyName) || ValueChanged(TunnelPortKeyName))
                 {
-                    Tunnel tunnel = LinphoneManager.Instance.LinphoneCore.GetTunnel();
+                    Tunnel tunnel = LinphoneManager.Instance.LinphoneCore.Tunnel;
                     if (tunnel != null)
                     {
                         tunnel.CleanServers();

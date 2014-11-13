@@ -44,7 +44,7 @@ namespace Linphone.Model
                 {
                     ConfigureTunnel();
                 }
-                LinphoneCore.SetNetworkReachable(lastNetworkState);
+                LinphoneCore.NetworkReachable = lastNetworkState;
             }
         }
         #endregion
@@ -115,9 +115,9 @@ namespace Linphone.Model
             {
                 try
                 {
-                    if (isLinphoneRunning && LinphoneCore.GetDefaultProxyConfig() != null)
+                    if (isLinphoneRunning && LinphoneCore.DefaultProxyConfig != null)
                     {
-                        _lastKnownState = LinphoneCore.GetDefaultProxyConfig().State;
+                        _lastKnownState = LinphoneCore.DefaultProxyConfig.State;
                     }
                 }
                 catch { }
@@ -240,9 +240,9 @@ namespace Linphone.Model
             try
             {
                 LinphoneCore.CoreListener = null;
-                if (LinphoneCore.GetCallsNb() == 0)
+                if (LinphoneCore.CallsNb == 0)
                 {
-                    LinphoneCore.SetNetworkReachable(false); // To prevent the app from sending an unregister to the server
+                    LinphoneCore.NetworkReachable = false; // To prevent the app from sending an unregister to the server
                     LinphoneCoreFactory.Destroy();
                     Debug.WriteLine("[LinphoneManager] LinphoneCore has been destroyed");
                 }
@@ -305,7 +305,7 @@ namespace Linphone.Model
             CallController.MuteRequested += MuteRequested;
             CallController.UnmuteRequested += UnmuteRequested;
 
-            if (server.LinphoneCore.IsVideoSupported())
+            if (server.LinphoneCore.VideoSupported)
             {
                 DetectCameras();
             }
@@ -314,7 +314,7 @@ namespace Linphone.Model
             AddPushInformationsToContactParams();
 
             lastNetworkState = DeviceNetworkInformation.IsNetworkAvailable;
-            server.LinphoneCore.SetNetworkReachable(lastNetworkState);
+            server.LinphoneCore.NetworkReachable = lastNetworkState;
             DeviceNetworkInformation.NetworkAvailabilityChanged += new EventHandler<NetworkNotificationEventArgs>(OnNetworkStatusChanged);
             ConfigureTunnel();
 
@@ -327,7 +327,7 @@ namespace Linphone.Model
         /// </summary>
         public void AddPushInformationsToContactParams()
         {
-            if (server.LinphoneCore.GetDefaultProxyConfig() != null)
+            if (server.LinphoneCore.DefaultProxyConfig != null)
             {
                 string host = null, token = null;
                 try
@@ -347,11 +347,11 @@ namespace Linphone.Model
                 {
                     SIPAccountSettingsManager sip = new SIPAccountSettingsManager();
                     sip.Load();
-                    server.LinphoneCore.GetDefaultProxyConfig().ContactUriParameters = "pwd=" + sip.Password + ";app-id=" + host + ";pn-type=wp;pn-tok=" + token;
+                    server.LinphoneCore.DefaultProxyConfig.ContactUriParameters = "pwd=" + sip.Password + ";app-id=" + host + ";pn-type=wp;pn-tok=" + token;
                 }
                 else
                 {
-                    server.LinphoneCore.GetDefaultProxyConfig().ContactUriParameters = "app-id=" + host + ";pn-type=wp;pn-tok=" + token;
+                    server.LinphoneCore.DefaultProxyConfig.ContactUriParameters = "app-id=" + host + ";pn-type=wp;pn-tok=" + token;
                 }
             }
         }
@@ -380,9 +380,9 @@ namespace Linphone.Model
         /// <param name="mode">mode to apply</param>
         public static void ConfigureTunnel(String mode)
         {
-            if (LinphoneManager.Instance.LinphoneCore.IsTunnelAvailable())
+            if (LinphoneManager.Instance.LinphoneCore.TunnelAvailable)
             {
-                Tunnel tunnel = LinphoneManager.Instance.LinphoneCore.GetTunnel();
+                Tunnel tunnel = LinphoneManager.Instance.LinphoneCore.Tunnel;
                 if (tunnel != null)
                 {
                     if (mode == AppResources.TunnelModeDisabled)
@@ -437,7 +437,7 @@ namespace Linphone.Model
         /// <returns>null if there isn't any</returns>
         public string GetLastCalledNumber()
         {
-            foreach (LinphoneCallLog log in LinphoneManager.Instance.LinphoneCore.GetCallLogs())
+            foreach (LinphoneCallLog log in LinphoneManager.Instance.LinphoneCore.CallLogs)
             {
                 if (log.Direction == CallDirection.Outgoing)
                 {
@@ -455,9 +455,9 @@ namespace Linphone.Model
         {
             _history = new List<CallLog>();
 
-            if (LinphoneCore.GetCallLogs() != null)
+            if (LinphoneCore.CallLogs != null)
             {
-                foreach (LinphoneCallLog log in LinphoneCore.GetCallLogs())
+                foreach (LinphoneCallLog log in LinphoneCore.CallLogs)
                 {
                     string from = log.From.DisplayName;
                     if (from.Length == 0)
@@ -524,14 +524,14 @@ namespace Linphone.Model
         /// </summary>
         public void EndCurrentCall()
         {
-            LinphoneCall call = LinphoneCore.GetCurrentCall();
+            LinphoneCall call = LinphoneCore.CurrentCall;
             if (call != null)
             {
                 LinphoneCore.TerminateCall(call);
             }
             else
             {
-                foreach (LinphoneCall lCall in LinphoneCore.GetCalls())
+                foreach (LinphoneCall lCall in LinphoneCore.Calls)
                 {
                     if (lCall.State == LinphoneCallState.Paused)
                     {
@@ -549,9 +549,9 @@ namespace Linphone.Model
             if (BaseModel.UIDispatcher == null) return;
             BaseModel.UIDispatcher.BeginInvoke(() =>
             {
-                if (LinphoneCore.GetCallsNb() > 0)
+                if (LinphoneCore.CallsNb > 0)
                 {
-                    LinphoneCore.MuteMic(isMicMuted);
+                    LinphoneCore.MicMuted = isMicMuted;
                     if (CallListener != null)
                         CallListener.MuteStateChanged(isMicMuted);
                 }
@@ -575,9 +575,9 @@ namespace Linphone.Model
         /// </summary>
         public void PauseCurrentCall()
         {
-            if (LinphoneCore.GetCallsNb() > 0)
+            if (LinphoneCore.CallsNb > 0)
             {
-                LinphoneCall call = LinphoneCore.GetCurrentCall();
+                LinphoneCall call = LinphoneCore.CurrentCall;
                 LinphoneCore.PauseCall(call);
             }
         }
@@ -587,7 +587,7 @@ namespace Linphone.Model
         /// </summary>
         public void ResumeCurrentCall()
         {
-            foreach (LinphoneCall call in LinphoneCore.GetCalls()) {
+            foreach (LinphoneCall call in LinphoneCore.Calls) {
                 if (call.State == LinphoneCallState.Paused)
                 {
                     LinphoneCore.ResumeCall(call);
@@ -671,7 +671,7 @@ namespace Linphone.Model
         {
             get
             {
-                return LinphoneCore.IsVideoSupported() && (LinphoneCore.IsVideoDisplayEnabled() || LinphoneCore.IsVideoCaptureEnabled());
+                return LinphoneCore.VideoSupported && (LinphoneCore.VideoDisplayEnabled || LinphoneCore.VideoCaptureEnabled);
             }
         }
 
@@ -682,9 +682,9 @@ namespace Linphone.Model
         /// <returns>true if the operation has been successful, false otherwise</returns>
         public bool EnableVideo(bool enable)
         {
-            if (LinphoneCore.IsInCall())
+            if (LinphoneCore.InCall)
             {
-                LinphoneCall call = LinphoneCore.GetCurrentCall();
+                LinphoneCall call = LinphoneCore.CurrentCall;
                 LinphoneCallParams parameters = call.GetCurrentParamsCopy();
                 if (enable != parameters.VideoEnabled)
                 {
@@ -706,7 +706,7 @@ namespace Linphone.Model
         private void DetectCameras()
         {
             int nbCameras = 0;
-            foreach (String device in LinphoneCore.GetVideoDevices())
+            foreach (String device in LinphoneCore.VideoDevices)
             {
                 if (device.EndsWith(CameraSensorLocation.Front.ToString()))
                 {
@@ -719,16 +719,16 @@ namespace Linphone.Model
                     nbCameras++;
                 }
             }
-            String currentDevice = LinphoneCore.GetVideoDevice();
+            String currentDevice = LinphoneCore.VideoDevice;
             if ((currentDevice != frontCamera) && (currentDevice != backCamera))
             {
                 if (frontCamera != null)
                 {
-                    LinphoneCore.SetVideoDevice(frontCamera);
+                    LinphoneCore.VideoDevice = frontCamera;
                 }
                 else if (backCamera != null)
                 {
-                    LinphoneCore.SetVideoDevice(backCamera);
+                    LinphoneCore.VideoDevice = backCamera;
                 }
             }
         }
@@ -740,7 +740,7 @@ namespace Linphone.Model
         {
             get
             {
-                return LinphoneCore.GetVideoDevices().Count;
+                return LinphoneCore.VideoDevices.Count;
             }
         }
 
@@ -751,18 +751,18 @@ namespace Linphone.Model
         {
             if (NumberOfCameras >= 2)
             {
-                String currentDevice = LinphoneCore.GetVideoDevice();
+                String currentDevice = LinphoneCore.VideoDevice;
                 if (currentDevice == frontCamera)
                 {
-                    LinphoneCore.SetVideoDevice(backCamera);
+                    LinphoneCore.VideoDevice = backCamera;
                 }
                 else if (currentDevice == backCamera)
                 {
-                    LinphoneCore.SetVideoDevice(frontCamera);
+                    LinphoneCore.VideoDevice = frontCamera;
                 }
-                if (LinphoneCore.IsInCall())
+                if (LinphoneCore.InCall)
                 {
-                    LinphoneCall call = LinphoneCore.GetCurrentCall();
+                    LinphoneCall call = LinphoneCore.CurrentCall;
                     LinphoneCore.UpdateCall(call, null);
                 }
             }
@@ -919,10 +919,10 @@ namespace Linphone.Model
                 BaseModel.UIDispatcher.BeginInvoke(() =>
                 {
                     Boolean videoAdded = false;
-                    VideoPolicy policy = LinphoneManager.Instance.LinphoneCore.GetVideoPolicy();
+                    VideoPolicy policy = LinphoneManager.Instance.LinphoneCore.VideoPolicy;
                     LinphoneCallParams remoteParams = call.RemoteParams;
                     LinphoneCallParams localParams = call.GetCurrentParamsCopy();
-                    if (!policy.AutomaticallyAccept && remoteParams.VideoEnabled && !localParams.VideoEnabled && !LinphoneManager.Instance.LinphoneCore.IsInConference())
+                    if (!policy.AutomaticallyAccept && remoteParams.VideoEnabled && !localParams.VideoEnabled && !LinphoneManager.Instance.LinphoneCore.InConference)
                     {
                         LinphoneManager.Instance.LinphoneCore.DeferCallUpdate(call);
                         videoAdded = true;
@@ -1222,9 +1222,9 @@ namespace Linphone.Model
             {
                 Logger.Msg("[LinphoneManager] Contact found: " + e.ContactFound.DisplayName + "\r\n");
                 // Store the contact name as display name for call logs
-                if (LinphoneManager.Instance.LinphoneCore.GetCurrentCall() != null)
+                if (LinphoneManager.Instance.LinphoneCore.CurrentCall != null)
                 {
-                    LinphoneManager.Instance.LinphoneCore.GetCurrentCall().RemoteAddress.DisplayName = e.ContactFound.DisplayName;
+                    LinphoneManager.Instance.LinphoneCore.CurrentCall.RemoteAddress.DisplayName = e.ContactFound.DisplayName;
                 }
             }
             ContactManager.ContactFound -= OnContactFound;

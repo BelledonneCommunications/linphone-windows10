@@ -69,8 +69,8 @@ namespace Linphone.Agents
             LpConfig config = server.LinphoneCoreFactory.CreateLpConfig(GetConfigPath(), GetFactoryConfigPath());
             ConfigureLogger(server, level);
             server.LinphoneCoreFactory.CreateLinphoneCore(listener, config);
-            server.LinphoneCore.SetRootCA("Assets/rootca.pem");
-            server.LinphoneCore.SetChatDatabasePath(GetChatDatabasePath());
+            server.LinphoneCore.RootCA = "Assets/rootca.pem";
+            server.LinphoneCore.ChatDatabasePath = GetChatDatabasePath();
             server.LinphoneCore.SetUserAgent(Customs.UserAgent, Linphone.Version.Number);
         }
     }

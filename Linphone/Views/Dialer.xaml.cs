@@ -108,9 +108,9 @@ namespace Linphone
             }
 
             // Navigate to the current call (if existing) when using the app launcher to restart the app while call is in background
-            if (LinphoneManager.Instance.LinphoneCore.GetCallsNb() > 0)
+            if (LinphoneManager.Instance.LinphoneCore.CallsNb > 0)
             {
-                LinphoneCall call = LinphoneManager.Instance.LinphoneCore.GetCurrentCall();
+                LinphoneCall call = LinphoneManager.Instance.LinphoneCore.CurrentCall;
                 String uri = call.RemoteAddress.AsStringUriOnly();
                 NavigationService.Navigate(new Uri("/Views/InCall.xaml?sip=" + uri, UriKind.RelativeOrAbsolute));
             }
@@ -264,7 +264,7 @@ namespace Linphone
         private bool IsRegisterEnabled()
         {
             LinphoneCore lc = LinphoneManager.Instance.LinphoneCore;
-            LinphoneProxyConfig cfg = lc.GetDefaultProxyConfig();
+            LinphoneProxyConfig cfg = lc.DefaultProxyConfig;
             if (cfg != null)
             {
                 return cfg.RegisterEnabled;
@@ -275,14 +275,14 @@ namespace Linphone
         private bool IsAccountConfigured()
         {
             LinphoneCore lc = LinphoneManager.Instance.LinphoneCore;
-            LinphoneProxyConfig cfg = lc.GetDefaultProxyConfig();
+            LinphoneProxyConfig cfg = lc.DefaultProxyConfig;
             return cfg != null;
         }
 
         private void EnableRegister(bool enable)
         {
             LinphoneCore lc = LinphoneManager.Instance.LinphoneCore;
-            LinphoneProxyConfig cfg = lc.GetDefaultProxyConfig();
+            LinphoneProxyConfig cfg = lc.DefaultProxyConfig;
             if (cfg != null)
             {
                 cfg.Edit();
