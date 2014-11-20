@@ -14,9 +14,8 @@ video_rtp_port=9078
 hold_music=Assets/Sounds/toy-mono.wav
 
 [video]
-capture=1
-display=1
-enabled=1
+capture=0
+display=0
 size=qvga
 
 [proxy_default_values]

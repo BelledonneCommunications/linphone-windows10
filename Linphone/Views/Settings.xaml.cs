@@ -27,9 +27,6 @@ namespace Linphone.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-
-            bool isVideoEnabled = LinphoneManager.Instance.LinphoneCore.VideoSupported && (LinphoneManager.Instance.LinphoneCore.VideoDisplayEnabled || LinphoneManager.Instance.LinphoneCore.VideoCaptureEnabled);
-            Video.Visibility = isVideoEnabled ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void account_Click_1(object sender, RoutedEventArgs e)
