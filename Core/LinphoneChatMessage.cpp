@@ -59,7 +59,7 @@ Platform::String^ Linphone::Core::LinphoneChatMessage::FileTransferName::get()
 	const LinphoneContent *content = linphone_chat_message_get_file_transfer_information(this->message);
 	if (content) 
 	{
-		fileName = Linphone::Core::Utils::cctops(content->name);
+		fileName = Linphone::Core::Utils::cctops(linphone_content_get_name(content));
 	}
 	return fileName;
 }
