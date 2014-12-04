@@ -1671,5 +1671,18 @@ namespace Linphone.Resources {
                 return ResourceManager.GetString("VideoStatsMenu", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Over the last couple of months, Belledonne Communications was contacted by a large number of users and clients requesting Linphone&apos;s Windows Phone 8 (and 8.1) support. After months of development and hard work, Belledonne Communications is happy to announce that is is launching today Linphone for this promising mobile operating system.
+        ///
+        ///Like the audio versions of Linphone on Android and iOS, the first release of Linphone for Windows Phone 8 is also based on the Liblinphone VoIP engine SDK.
+        ///
+        ///The current  [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string WindowsPhoneStoreAppDescription {
+            get {
+                return ResourceManager.GetString("WindowsPhoneStoreAppDescription", resourceCulture);
+            }
+        }
     }
 }

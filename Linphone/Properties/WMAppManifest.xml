@@ -1,6 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
-  <DefaultLanguage xmlns="" code="en-US" />
+  <DefaultLanguage xmlns="" code="en" />
+  <Languages xmlns="">
+    <Language code="en" />
+    <Language code="fr" />
+    <Language code="ja" />
+  </Languages>
   <AppExtra AppPlatformVersion="8.0" xmlns="">
     <Extra Name="SDOptOut" />
   </AppExtra>
@@ -34,17 +39,12 @@
           <Count>0</Count>
           <IconImageURI IsRelative="true" IsResource="false">Assets\tile_logo_large.png</IconImageURI>
           <Title>Linphone</Title>
-          <Message>
-          </Message>
-          <BackgroundColor>
-          </BackgroundColor>
+          <Message></Message>
+          <BackgroundColor></BackgroundColor>
           <HasLarge>True</HasLarge>
-          <LargeContent1>
-          </LargeContent1>
-          <LargeContent2>
-          </LargeContent2>
-          <LargeContent3>
-          </LargeContent3>
+          <LargeContent1></LargeContent1>
+          <LargeContent2></LargeContent2>
+          <LargeContent3></LargeContent3>
           <DeviceLockImageURI IsRelative="true" IsResource="false">Assets\lockscreen_logo.png</DeviceLockImageURI>
         </TemplateIconic>
       </PrimaryToken>

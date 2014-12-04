@@ -119,7 +119,7 @@
   </resheader>
   <data name="ResourceFlowDirection" xml:space="preserve">
     <value>LeftToRight</value>
-    <comment>Controls the FlowDirection for all elements in the RootFrame. Set to the traditional direction of this resource file's language</comment>
+    <comment>Controls the FlowDirection for all elements in the RootFrame. Set to the traditional direction of this resource file's language. Possible values are LeftToRight and RightToLeft. Do not translate!</comment>
   </data>
   <data name="ResourceLanguage" xml:space="preserve">
     <value>en-US</value>
@@ -172,6 +172,7 @@ http://www.linphone.org/user-guide.html
 
 Icons under licence cc-by-sa from https://github.com/google/material-design-icons 
 and cc-by-nd from https://github.com/Templarian/WindowsIcons</value>
+    <comment>Leave the #version# as it is, it will be replaced dynamically at runtime.</comment>
   </data>
   <data name="AMRNBCodec" xml:space="preserve">
     <value>AMR-NB</value>
@@ -627,12 +628,15 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   </data>
   <data name="CallErrorNotFound" xml:space="preserve">
     <value>'#address#' not found</value>
+    <comment>Leave the #address# as it is, it will be replaced at runtime.</comment>
   </data>
   <data name="CallErrorDeclined" xml:space="preserve">
     <value>'#address#' declined the call</value>
+    <comment>Leave the #address# as it is, it will be replaced at runtime.</comment>
   </data>
   <data name="CallErrorBusy" xml:space="preserve">
     <value>'#address#' is busy</value>
+    <comment>Leave the #address# as it is, it will be replaced at runtime.</comment>
   </data>
   <data name="CallErrorUnknown" xml:space="preserve">
     <value>Unknown error</value>
@@ -663,5 +667,25 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   </data>
   <data name="UploadingLogs" xml:space="preserve">
     <value>Uploading logs...</value>
+  </data>
+  <data name="WindowsPhoneStoreAppDescription" xml:space="preserve">
+    <value>Over the last couple of months, Belledonne Communications was contacted by a large number of users and clients requesting Linphone's Windows Phone 8 (and 8.1) support. After months of development and hard work, Belledonne Communications is happy to announce that is is launching today Linphone for this promising mobile operating system.
+
+Like the audio versions of Linphone on Android and iOS, the first release of Linphone for Windows Phone 8 is also based on the Liblinphone VoIP engine SDK.
+
+The current release of Linphone for Windows Phone 8 includes the following features:
+    Audio incoming calls in background mode using push notifications (only for sip.linphone.org accounts!)
+    Audio outgoing calls
+    SIP transports: UDP, TCP, TLS
+    Call history and statistics
+    Pause, resume, mute, speaker
+    Echo cancellation
+    Chat (text and images)
+    Phone contacts integration
+    ICE and STUN firewall policies available
+    SRTP encryption available
+
+To enjoy the best experience with Linphone WP8, we recommend that you use the SIP service available for free at www.linphone.org/eng/linphone/register-a-linphone-account.html. This service, provided by Belledonne Communications, supports many exciting features including push-notified incoming calls.</value>
+    <comment>Description of the app on the Windows Phone Store. It is mandatory for the description to be translated in all the languages the app supports, otherwise the publication is denied.</comment>
   </data>
 </root>
