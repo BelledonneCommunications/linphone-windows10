@@ -1,0 +1,693 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ResourceFlowDirection" xml:space="preserve">
+    <value>RightToLeft</value>
+    <comment>Controls the FlowDirection for all elements in the RootFrame. Set to the traditional direction of this resource file's language. Possible values are LeftToRight and RightToLeft. Do not translate!</comment>
+  </data>
+  <data name="ResourceLanguage" xml:space="preserve">
+    <value>ar</value>
+    <comment>Controls the Language and ensures that the font for all elements in the RootFrame aligns with the app's language. Set to the language code of this resource file's language.</comment>
+  </data>
+  <data name="ApplicationTitle" xml:space="preserve">
+    <value>لِنْفُونْ</value>
+  </data>
+  <data name="AboutMenu" xml:space="preserve">
+    <value>حول</value>
+  </data>
+  <data name="CancelChanges" xml:space="preserve">
+    <value>إلغاء</value>
+  </data>
+  <data name="DebugSetting" xml:space="preserve">
+    <value>تشغيل سجلات التنقيح</value>
+  </data>
+  <data name="DeleteAllMenu" xml:space="preserve">
+    <value>حذف الكل</value>
+  </data>
+  <data name="HistoryMenu" xml:space="preserve">
+    <value>التاريخ</value>
+  </data>
+  <data name="SaveSettings" xml:space="preserve">
+    <value>حفظ</value>
+  </data>
+  <data name="SettingsMenu" xml:space="preserve">
+    <value>الإعدادات</value>
+  </data>
+  <data name="DeleteSelectionMenu" xml:space="preserve">
+    <value>حفظ التحديد</value>
+  </data>
+  <data name="AddressHint" xml:space="preserve">
+    <value>الرقم أو العنوان</value>
+  </data>
+  <data name="ContactsMenu" xml:space="preserve">
+    <value>الأسماء</value>
+  </data>
+  <data name="DialerMenu" xml:space="preserve">
+    <value>لوحة المفاتيح</value>
+  </data>
+  <data name="AboutText" xml:space="preserve">
+    <value>لِنْفُونْ #version# هاتف  موافق لـ SIP(rfc 3261)  برخصة جْنُو العمومية الإصدار 2
+http://www.linphone.org
+
+التعليمات
+http://www.linphone.org/user-guide.html
+
+©2013 Belledonne Communications
+
+الأيقونات المرخصة بـ CC-BY-SA من https://github.com/google/material-design-icons
+والمرخصة بـ CC-BY-ND من https://github.com/Templarian/WindowsIcons</value>
+    <comment>Leave the #version# as it is, it will be replaced dynamically at runtime.</comment>
+  </data>
+  <data name="AMRNBCodec" xml:space="preserve">
+    <value>AMR-NB</value>
+  </data>
+  <data name="AMRWBCodec" xml:space="preserve">
+    <value>AMR-WB</value>
+  </data>
+  <data name="AudioSettingsMenu" xml:space="preserve">
+    <value>إعدادات الصوت</value>
+  </data>
+  <data name="G722Codec" xml:space="preserve">
+    <value>G722</value>
+  </data>
+  <data name="GSMCodec" xml:space="preserve">
+    <value>GSM</value>
+  </data>
+  <data name="ILBCCodec" xml:space="preserve">
+    <value>ILBC</value>
+  </data>
+  <data name="PCMACodec" xml:space="preserve">
+    <value>PCMA</value>
+  </data>
+  <data name="PCMUCodec" xml:space="preserve">
+    <value>PCMU</value>
+  </data>
+  <data name="SILK16Codec" xml:space="preserve">
+    <value>SILK 16</value>
+  </data>
+  <data name="Speex16Codec" xml:space="preserve">
+    <value>Speex 16</value>
+  </data>
+  <data name="Speex8Codec" xml:space="preserve">
+    <value>Speex 8</value>
+  </data>
+  <data name="TransportSetting" xml:space="preserve">
+    <value>النقل</value>
+  </data>
+  <data name="TransportTCP" xml:space="preserve">
+    <value>TCP</value>
+  </data>
+  <data name="TransportUDP" xml:space="preserve">
+    <value>UDP</value>
+  </data>
+  <data name="LockScreenSettings" xml:space="preserve">
+    <value>إعدادات قفل الشاشة</value>
+  </data>
+  <data name="HangUp" xml:space="preserve">
+    <value>ضع السماعة</value>
+  </data>
+  <data name="Hold" xml:space="preserve">
+    <value>إبقاء</value>
+  </data>
+  <data name="Mute" xml:space="preserve">
+    <value>كتم</value>
+  </data>
+  <data name="Speaker" xml:space="preserve">
+    <value>مكبر الصوت</value>
+  </data>
+  <data name="ContactMenu" xml:space="preserve">
+    <value>جهة الاتصال</value>
+  </data>
+  <data name="AdvancedSettingsMenu" xml:space="preserve">
+    <value>الإعدادات المتقدمة</value>
+  </data>
+  <data name="CallMenu" xml:space="preserve">
+    <value>مكالمة</value>
+  </data>
+  <data name="RFC2833Setting" xml:space="preserve">
+    <value>إرسال DTMF كما في RFC2833</value>
+  </data>
+  <data name="TunnelMenu" xml:space="preserve">
+    <value>النفق</value>
+  </data>
+  <data name="TunnelMode" xml:space="preserve">
+    <value>وضع النفق</value>
+  </data>
+  <data name="TunnelMode3GOnly" xml:space="preserve">
+    <value>3G فقط</value>
+  </data>
+  <data name="TunnelModeAlways" xml:space="preserve">
+    <value>دائما</value>
+  </data>
+  <data name="TunnelModeAuto" xml:space="preserve">
+    <value>تلقائي</value>
+  </data>
+  <data name="TunnelModeDisabled" xml:space="preserve">
+    <value>غير مُشغَّل</value>
+  </data>
+  <data name="TunnelPort" xml:space="preserve">
+    <value>منفذ النفق</value>
+  </data>
+  <data name="TunnelServer" xml:space="preserve">
+    <value>خادم النفق</value>
+  </data>
+  <data name="NetworkMenu" xml:space="preserve">
+    <value>الشبكة</value>
+  </data>
+  <data name="AccountMenu" xml:space="preserve">
+    <value>حساب SIP</value>
+  </data>
+  <data name="SIPDomain" xml:space="preserve">
+    <value>النطاق</value>
+  </data>
+  <data name="SIPOutboundProxy" xml:space="preserve">
+    <value>وسيط خارج النطاق</value>
+  </data>
+  <data name="SIPPassword" xml:space="preserve">
+    <value>كلمة السر</value>
+  </data>
+  <data name="SIPProxy" xml:space="preserve">
+    <value>الوسيط (ليس إجباريا)</value>
+  </data>
+  <data name="SIPUsername" xml:space="preserve">
+    <value>إسم المستخدم</value>
+  </data>
+  <data name="TransportTLS" xml:space="preserve">
+    <value>TLS</value>
+  </data>
+  <data name="Call" xml:space="preserve">
+    <value>اتصل</value>
+  </data>
+  <data name="Dialing" xml:space="preserve">
+    <value>يتصل...</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>إنعاش</value>
+  </data>
+  <data name="Disconnected" xml:space="preserve">
+    <value>قُطع الاتصال</value>
+  </data>
+  <data name="Registered" xml:space="preserve">
+    <value>مُسجَّل</value>
+  </data>
+  <data name="RegistrationFailed" xml:space="preserve">
+    <value>فشِل</value>
+  </data>
+  <data name="RegistrationInProgress" xml:space="preserve">
+    <value>في تقدم</value>
+  </data>
+  <data name="HistoryIncoming" xml:space="preserve">
+    <value>الواردة</value>
+  </data>
+  <data name="HistoryMissed" xml:space="preserve">
+    <value>الفائتة</value>
+  </data>
+  <data name="HistoryOutgoing" xml:space="preserve">
+    <value>الصادرة</value>
+  </data>
+  <data name="ContactsAll" xml:space="preserve">
+    <value>الكل</value>
+  </data>
+  <data name="ContactsRecents" xml:space="preserve">
+    <value>الأخيرة</value>
+  </data>
+  <data name="HistoryAll" xml:space="preserve">
+    <value>الكل</value>
+  </data>
+  <data name="Stats" xml:space="preserve">
+    <value>الإحصاءات</value>
+  </data>
+  <data name="StatPayloadType" xml:space="preserve">
+    <value>المراميز :</value>
+  </data>
+  <data name="StatDownloadBandwidth" xml:space="preserve">
+    <value>صبيب التنزيل :</value>
+  </data>
+  <data name="AudioStatsMenu" xml:space="preserve">
+    <value>إحصاءات الصوت</value>
+  </data>
+  <data name="StatUploadBandwidth" xml:space="preserve">
+    <value>صبيب الرفع :</value>
+  </data>
+  <data name="SIPInfoSetting" xml:space="preserve">
+    <value>إرسال DTMF على أنها SIP INFO</value>
+  </data>
+  <data name="EchoCancellerCalibration" xml:space="preserve">
+    <value>معايرة مزيل الصدى</value>
+  </data>
+  <data name="CodecsMenu" xml:space="preserve">
+    <value>المراميز</value>
+  </data>
+  <data name="OptionsMenu" xml:space="preserve">
+    <value>الخيارات</value>
+  </data>
+  <data name="ECCalibrationDone" xml:space="preserve">
+    <value>اكتشف صدى : {0} ميلي.ث</value>
+  </data>
+  <data name="ECCalibrationDoneNoEcho" xml:space="preserve">
+    <value>لم يكتشف صدى</value>
+  </data>
+  <data name="ECCalibrationFailed" xml:space="preserve">
+    <value>فشلت المعايرة</value>
+  </data>
+  <data name="ECCalibrationInProgress" xml:space="preserve">
+    <value>تجري المعايرة</value>
+  </data>
+  <data name="ECCalibrationNotRun" xml:space="preserve">
+    <value>اضغط على الزر للمعايرة</value>
+  </data>
+  <data name="H264Codec" xml:space="preserve">
+    <value>H.264</value>
+  </data>
+  <data name="VideoSettingsMenu" xml:space="preserve">
+    <value>إعدادات الفيديو</value>
+  </data>
+  <data name="VideoEnabledSetting" xml:space="preserve">
+    <value>الفيديو مُشغَّل</value>
+  </data>
+  <data name="AutomaticallyAcceptVideoSetting" xml:space="preserve">
+    <value>قبول تلقائي</value>
+  </data>
+  <data name="AutomaticallyInitiateVideoSetting" xml:space="preserve">
+    <value>بدء تلقائي</value>
+  </data>
+  <data name="VideoStatsMenu" xml:space="preserve">
+    <value>إحصاءات الفيديو</value>
+  </data>
+  <data name="SelfViewEnabledSetting" xml:space="preserve">
+    <value>تشغيل رؤية الذات</value>
+  </data>
+  <data name="Video" xml:space="preserve">
+    <value>فيديو</value>
+  </data>
+  <data name="VideoActivationPopupCaption" xml:space="preserve">
+    <value>تنشيط الفيديو</value>
+  </data>
+  <data name="VideoActivationPopupContent" xml:space="preserve">
+    <value>اقتُرِح عليك الفيديو، هل تقبل بذلك ؟</value>
+  </data>
+  <data name="ChatMenu" xml:space="preserve">
+    <value>المحادثة</value>
+  </data>
+  <data name="ConversationsMenu" xml:space="preserve">
+    <value>المحادثات</value>
+  </data>
+  <data name="SendMessage" xml:space="preserve">
+    <value>إرسال</value>
+  </data>
+  <data name="NewChatMenu" xml:space="preserve">
+    <value>جديد</value>
+  </data>
+  <data name="NewChatDest" xml:space="preserve">
+    <value>إلى :</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>إلى :</value>
+  </data>
+  <data name="ContextMenuDelete" xml:space="preserve">
+    <value>حذف</value>
+  </data>
+  <data name="ContextMenuCopy" xml:space="preserve">
+    <value>نسخ</value>
+  </data>
+  <data name="SendPicture" xml:space="preserve">
+    <value>إرسال صورة</value>
+  </data>
+  <data name="ShowImage" xml:space="preserve">
+    <value>إظهار</value>
+  </data>
+  <data name="DownloadImage" xml:space="preserve">
+    <value>تنزيل</value>
+  </data>
+  <data name="Uploading" xml:space="preserve">
+    <value>يجري الرفع...</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>إغلاق</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>إظهار</value>
+  </data>
+  <data name="CancelUpload" xml:space="preserve">
+    <value>إلغاء الرفع</value>
+  </data>
+  <data name="ImageMessageReceived" xml:space="preserve">
+    <value>وصلت الصورة</value>
+  </data>
+  <data name="ContextMenuSave" xml:space="preserve">
+    <value>حفظ في الألبوم</value>
+  </data>
+  <data name="Answer" xml:space="preserve">
+    <value>الإجابة</value>
+  </data>
+  <data name="AnswerVideo" xml:space="preserve">
+    <value>اﻹجابة بالفيديو</value>
+  </data>
+  <data name="Decline" xml:space="preserve">
+    <value>رفض</value>
+  </data>
+  <data name="IncomingCall" xml:space="preserve">
+    <value>المكالمة الواردة</value>
+  </data>
+  <data name="EditPassword" xml:space="preserve">
+    <value>تحرير كلمة السر</value>
+  </data>
+  <data name="DisplayName" xml:space="preserve">
+    <value>الإسم المعروض (ليس إجباريا)</value>
+  </data>
+  <data name="VibratorSetting" xml:space="preserve">
+    <value>الارتجاج عند وصول رسالة</value>
+  </data>
+  <data name="FileSaving" xml:space="preserve">
+    <value>يحفظ الصورة</value>
+  </data>
+  <data name="FileSavingFailure" xml:space="preserve">
+    <value>فشلت العملية</value>
+  </data>
+  <data name="FileSavingSuccess" xml:space="preserve">
+    <value>نجحت العملية</value>
+  </data>
+  <data name="MessageReceived" xml:space="preserve">
+    <value>وصلت الرسالة</value>
+  </data>
+  <data name="CreateAccount" xml:space="preserve">
+    <value>إنشاء حساب في linphone.org</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>الولوج</value>
+  </data>
+  <data name="LoginIn" xml:space="preserve">
+    <value>يجري الولوج...</value>
+  </data>
+  <data name="LoginMenu" xml:space="preserve">
+    <value>الاتصال</value>
+  </data>
+  <data name="ErrorLogin" xml:space="preserve">
+    <value>لا يمكن لإسم المستخدم أو النطاق أن يكون فارغا</value>
+  </data>
+  <data name="LinphoneLogin" xml:space="preserve">
+    <value>استخدم حسابا في linphone.org</value>
+  </data>
+  <data name="ResizeSetting" xml:space="preserve">
+    <value>تصغير الصور المرسلة</value>
+  </data>
+  <data name="ReportCrash" xml:space="preserve">
+    <value>التقرير</value>
+  </data>
+  <data name="ReportCrashDialogCaption" xml:space="preserve">
+    <value>اكتشف انهيارا</value>
+  </data>
+  <data name="ReportCrashDialogMessage" xml:space="preserve">
+    <value>اكتشف التطبيق انهيارا.
+هل تريد الإبلاغ عنه للمطورين ؟ سيساعد ذلك في إصلاحه سريعا.</value>
+  </data>
+  <data name="G729Codec" xml:space="preserve">
+    <value>G729</value>
+  </data>
+  <data name="DeleteLogs" xml:space="preserve">
+    <value>حذف ملف السجلات</value>
+  </data>
+  <data name="ChatRoomCreationError" xml:space="preserve">
+    <value>تعذر إنشاء غرفة المحادثة لعنوان SIP هذا، تحقق من صحته.</value>
+  </data>
+  <data name="GenericError" xml:space="preserve">
+    <value>خطأ</value>
+  </data>
+  <data name="InvalidSipAddressError" xml:space="preserve">
+    <value>إن عنوان SIP الذي أدخلت غير صحيح. يُرجى التأكد من مطابقته للنسق username@domain</value>
+  </data>
+  <data name="SendLogsEmail" xml:space="preserve">
+    <value>إرسال السجلات عبر البريد الإلكتروني</value>
+  </data>
+  <data name="SIPUserId" xml:space="preserve">
+    <value>مُعرِّف استيثاق المستخدم (ليس واجبا)</value>
+  </data>
+  <data name="FirewallPolicyIce" xml:space="preserve">
+    <value>ICE</value>
+  </data>
+  <data name="FirewallPolicyNat" xml:space="preserve">
+    <value>NAT</value>
+  </data>
+  <data name="FirewallPolicyNone" xml:space="preserve">
+    <value>بدون</value>
+  </data>
+  <data name="FirewallPolicySetting" xml:space="preserve">
+    <value>سياسات الجدار الناري</value>
+  </data>
+  <data name="FirewallPolicyStun" xml:space="preserve">
+    <value>STUN</value>
+  </data>
+  <data name="StunServer" xml:space="preserve">
+    <value>خادم STUN</value>
+  </data>
+  <data name="OpusCodec" xml:space="preserve">
+    <value>OPUS</value>
+  </data>
+  <data name="ISACCodec" xml:space="preserve">
+    <value>iSAC</value>
+  </data>
+  <data name="ConnectMenu" xml:space="preserve">
+    <value>تشغيل التسجيل</value>
+  </data>
+  <data name="DisconnectMenu" xml:space="preserve">
+    <value>ايقاف التسجيل</value>
+  </data>
+  <data name="DebugMenu" xml:space="preserve">
+    <value>التنقيح</value>
+  </data>
+  <data name="TCPRemote" xml:space="preserve">
+    <value>TCPRemote ip:port</value>
+  </data>
+  <data name="Skip" xml:space="preserve">
+    <value>تخطي</value>
+  </data>
+  <data name="RemoteComposing" xml:space="preserve">
+    <value>يكتب...</value>
+    <comment>Must start by a blank space</comment>
+  </data>
+  <data name="CallStatsMenu" xml:space="preserve">
+    <value>مكالمة</value>
+  </data>
+  <data name="MediaEncryptionNone" xml:space="preserve">
+    <value>بدون</value>
+  </data>
+  <data name="MediaEncryptionSetting" xml:space="preserve">
+    <value>وسيط التعمية</value>
+  </data>
+  <data name="MediaEncryptionSRTP" xml:space="preserve">
+    <value>SRTP</value>
+  </data>
+  <data name="StatMediaEncryption" xml:space="preserve">
+    <value>وسيط التعمية</value>
+  </data>
+  <data name="StatICE" xml:space="preserve">
+    <value>توصيل ICE</value>
+  </data>
+  <data name="AccountMenuSubtitle" xml:space="preserve">
+    <value>إعدادات الحساب</value>
+  </data>
+  <data name="AdvancedSettingsMenuSubtitle" xml:space="preserve">
+    <value>وضع التنقيح، وسيط التعمية، سياسة الجدار الناري</value>
+  </data>
+  <data name="AudioSettingsMenuSubtitle" xml:space="preserve">
+    <value>مراميز الصوت ومزيل الصدى</value>
+  </data>
+  <data name="LockScreenSettingsSubtitle" xml:space="preserve">
+    <value>اذهب إلى صفحة إعدادات قفل الشاشة</value>
+  </data>
+  <data name="VideoSettingsMenuSubtitle" xml:space="preserve">
+    <value>سياسات الفيديو والمراميز</value>
+  </data>
+  <data name="Bluetooth" xml:space="preserve">
+    <value>البلوتوث</value>
+  </data>
+  <data name="Transfer" xml:space="preserve">
+    <value>تحويل</value>
+  </data>
+  <data name="ToggleCamera" xml:space="preserve">
+    <value>الكاميرا</value>
+  </data>
+  <data name="ResetLogs" xml:space="preserve">
+    <value>إعادة تعيين السجلات</value>
+  </data>
+  <data name="CallErrorNotFound" xml:space="preserve">
+    <value>'#address#' غير موجود</value>
+    <comment>Leave the #address# as it is, it will be replaced at runtime.</comment>
+  </data>
+  <data name="CallErrorDeclined" xml:space="preserve">
+    <value>'#address#' رفض المكالمة</value>
+    <comment>Leave the #address# as it is, it will be replaced at runtime.</comment>
+  </data>
+  <data name="CallErrorBusy" xml:space="preserve">
+    <value>'#address#' مشغول</value>
+    <comment>Leave the #address# as it is, it will be replaced at runtime.</comment>
+  </data>
+  <data name="CallErrorUnknown" xml:space="preserve">
+    <value>خطأ مجهول</value>
+  </data>
+  <data name="CallErrorNotAcceptable" xml:space="preserve">
+    <value>مراميز أو آليات التعمية غير متوافقة</value>
+  </data>
+  <data name="LinphoneValues" xml:space="preserve">
+    <value>قيم لِنْفُونْ</value>
+  </data>
+  <data name="CallError" xml:space="preserve">
+    <value>خطأ في المكالمة</value>
+  </data>
+  <data name="RegistrationFailedForbidden" xml:space="preserve">
+    <value>اعتمادات سيئة أو ممنوعة</value>
+  </data>
+  <data name="RegistrationFailedPopupTitle" xml:space="preserve">
+    <value>فشِل التسجيل</value>
+  </data>
+  <data name="StatReceivedVideoSize" xml:space="preserve">
+    <value>حجم الفيديو المُتلقَّى :</value>
+  </data>
+  <data name="PreferredVideoSizeSetting" xml:space="preserve">
+    <value>حجم الفيديو المفضل :</value>
+  </data>
+  <data name="StatSentVideoSize" xml:space="preserve">
+    <value>حجم الفيديو المُرسَل :</value>
+  </data>
+  <data name="UploadingLogs" xml:space="preserve">
+    <value>يجري تنزيل السجلات</value>
+  </data>
+  <data name="WindowsPhoneStoreAppDescription" xml:space="preserve">
+    <value>خلال الشهور الأخيرة، طلب العديد من المستخدمين والزبناء من شركة  Belledonne Communications إصدار برنامج لِنْفُونْ في ويندوز فون 8 (وكذا 8.1). بعد شهور من التطوير والعمل الشاق، فإن شركة Belledonne Communications سعيدة بالإعلان عن قيامها اليوم بإصدار لِنْفُونْ لأجل نظام تشغيل المحمول الذي وعدت به.
+
+كما هو الحال بالنسبة لإصداري لِنْفُونْ الصوتيَيْن في أندرويد وiOS، فإن إصدار لِنْفُونْ في ويندوز فون 8 يرتكز كذلك على حقيبة Liblinphone لتطوير محرك الصوت عبر الإنترنت.
+
+كما هو الحال بالنسبة لإصداري لِنْفُونْ الصوتيَيْن في أندرويد وiOS، فإن إصدار لِنْفُونْ في ويندوز فون 8 يرتكز كذلك على حقيبة Liblinphone لتطوير محرك الصوت عبر الإنترنت.
+
+إن إصدارة لِنْفُونْ الحالية في ويندوز فون 8 تتضمن الخصائص التالية :
+المكالمات الصوتية الواردة في وضع الخلفية بواسطة إشعارات التنبيه (ممكنة فقط بالنسبة للحسابات في sip.linphone.org !)
+المكالمات الصوتية الصادرة
+مواثيق نقل SIP الآتية : UDP، TCP، TLS
+تاريخ المكالمات والإحصاءات
+التوقيف مؤقت للمكالمة واستئنافها، كتم الصوت، تشغيل مكبر الصوت
+إلغاء الصدى
+المحادثات (بالنص والصور)
+إدماج جهات الاتصال الهاتفية
+إتاحة سياسات ICE و STUN الجدار الناري
+إتاحة التعمية بواسطة SRTP
+
+لمتعة أفضل مع لِنْفُونْ في ويندوز فون 8، فإننا نوصيك باستخدام خدمة SIP المجانية في  www.linphone.org/eng/linphone/register-a-linphone-account.html. هذه الخدمة، التي توفرها شركة  Belledonne Communications تدعم الكثير من الخصائص الرائعة بما في ذلك إشعار التنبيه بالمكالمات الواردة.</value>
+    <comment>Description of the app on the Windows Phone Store. It is mandatory for the description to be translated in all the languages the app supports, otherwise the publication is denied.</comment>
+  </data>
+</root>

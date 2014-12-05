@@ -5,6 +5,7 @@
     <Language code="en" />
     <Language code="fr" />
     <Language code="ja" />
+    <Language code="ar" />
   </Languages>
   <AppExtra AppPlatformVersion="8.0" xmlns="">
     <Extra Name="SDOptOut" />
