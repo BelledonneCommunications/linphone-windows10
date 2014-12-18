@@ -36,6 +36,7 @@ namespace Linphone.Views
             Proxy.Text = _settings.Proxy;
             OutboundProxy.IsChecked = _settings.OutboundProxy;
             DisplayName.Text = _settings.DisplayName;
+            Expires.Text = _settings.Expires;
 
             List<string> transports = new List<string>
             {
@@ -66,6 +67,7 @@ namespace Linphone.Views
             _settings.OutboundProxy = OutboundProxy.IsChecked;
             _settings.DisplayName = DisplayName.Text;
             _settings.Transport = Transport.SelectedItem.ToString();
+            _settings.Expires = Expires.Text;
             _settings.Save();
 
             if (linphoneAccount)
@@ -108,6 +110,7 @@ namespace Linphone.Views
             Transport.SelectedItem = AppResources.TransportTLS;
             Proxy.Text = "sip.linphone.org:5223";
             OutboundProxy.IsChecked = true;
+            Expires.Text = "28800";
             linphoneAccount = true;
         }
 
@@ -149,6 +152,12 @@ namespace Linphone.Views
                 Domain.Focus();
         }
 
+        private void Expires_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                DisplayName.Focus();
+        }
+
         private void Domain_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -158,7 +167,7 @@ namespace Linphone.Views
         private void Proxy_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-                DisplayName.Focus();
+                Expires.Focus();
         }
     }
 }

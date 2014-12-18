@@ -40,6 +40,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 
                 <StackPanel Orientation="Vertical" Grid.Row="0" Margin="0,10,0,0">
@@ -127,6 +128,22 @@
                 </StackPanel>
 
                 <StackPanel Orientation="Vertical" Grid.Row="7" Margin="0,10,0,0">
+                    <TextBlock
+                        Style="{StaticResource PhoneTextSubtleStyle}"
+                        Text="{Binding Path=LocalizedResources.Expires, Source={StaticResource LocalizedStrings}}">
+                    </TextBlock>
+                    <TextBox
+                        x:Name="Expires"
+                        KeyDown="Expires_KeyDown">
+                        <TextBox.InputScope>
+                            <InputScope>
+                                <InputScopeName NameValue="Number" />
+                            </InputScope>
+                        </TextBox.InputScope>
+                    </TextBox>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Grid.Row="8" Margin="0,10,0,0">
                     <TextBlock
                         Style="{StaticResource PhoneTextSubtleStyle}"
                         Text="{Binding Path=LocalizedResources.DisplayName, Source={StaticResource LocalizedStrings}}">

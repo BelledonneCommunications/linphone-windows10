@@ -233,6 +233,7 @@ namespace Linphone.Model
         private const string OutboundProxyKeyName = "OutboundProxy";
         private const string DisplayNameKeyName = "DisplayName";
         private const string TransportKeyName = "Transport";
+        private const string ExpireKeyName = "Expire";
 
         private Dictionary<LinphoneTransport, string> EnumToTransport;
         private Dictionary<string, LinphoneTransport> TransportToEnum;
@@ -269,6 +270,7 @@ namespace Linphone.Model
             dict[ProxyKeyName] = "";
             dict[OutboundProxyKeyName] = false.ToString();
             dict[TransportKeyName] = AppResources.TransportUDP;
+            dict[ExpireKeyName] = "";
 
             LinphoneProxyConfig cfg = LinphoneManager.Instance.LinphoneCore.DefaultProxyConfig;
             if (cfg != null)
@@ -282,6 +284,7 @@ namespace Linphone.Model
                     dict[UsernameKeyName] = address.UserName;
                     dict[DomainKeyName] = address.Domain;
                     dict[OutboundProxyKeyName] = (cfg.Route.Length > 0).ToString();
+                    dict[ExpireKeyName] = String.Format("{0}", cfg.Expires);
                     var authInfos = LinphoneManager.Instance.LinphoneCore.AuthInfos;
                     if (authInfos.Count > 0)
                     {
@@ -300,7 +303,7 @@ namespace Linphone.Model
         public void Save()
         {
             bool AccountChanged = ValueChanged(UsernameKeyName) || ValueChanged(UserIdKeyName) || ValueChanged(PasswordKeyName) || ValueChanged(DomainKeyName)
-                || ValueChanged(ProxyKeyName) || ValueChanged(OutboundProxyKeyName) || ValueChanged(DisplayNameKeyName) || ValueChanged(TransportKeyName);
+                || ValueChanged(ProxyKeyName) || ValueChanged(OutboundProxyKeyName) || ValueChanged(DisplayNameKeyName) || ValueChanged(TransportKeyName) || ValueChanged(ExpireKeyName);
 
             if (AccountChanged)
             {
@@ -332,13 +335,13 @@ namespace Linphone.Model
                 String proxy = GetNew(ProxyKeyName);
                 String displayname = GetNew(DisplayNameKeyName);
                 String transport = GetNew(TransportKeyName);
+                String expires = GetNew(ExpireKeyName);
+
                 bool outboundProxy = Convert.ToBoolean(GetNew(OutboundProxyKeyName));
                 lc.ClearAuthInfos();
                 lc.ClearProxyConfigs();
                 if ((username != null) && (username.Length > 0) && (domain != null) && (domain.Length > 0))
                 {
-                    
-
                     cfg = lc.CreateProxyConfig();
                     cfg.Edit();
                     if (displayname != null && displayname.Length > 0)
@@ -369,6 +372,13 @@ namespace Linphone.Model
                     {
                         LinphoneAddress proxyAddr = LinphoneManager.Instance.LinphoneCoreFactory.CreateLinphoneAddress(cfg.Addr);
                         cfg.Route = proxyAddr.AsStringUriOnly();
+                    }
+
+                    int result = 0;
+                    int.TryParse(expires, out result);
+                    if (result != 0)
+                    {
+                        cfg.Expires = result;
                     }
 
                     // Can't set string to null: http://stackoverflow.com/questions/12980915/exception-when-trying-to-read-null-string-in-c-sharp-winrt-component-from-winjs
@@ -507,6 +517,21 @@ namespace Linphone.Model
             set
             {
                 Set(TransportKeyName, value);
+            }
+        }
+
+        /// <summary>
+        /// SIP account expires setting (String).
+        /// </summary>
+        public string Expires
+        {
+            get
+            {
+                return Get(ExpireKeyName);
+            }
+            set
+            {
+                Set(ExpireKeyName, value);
             }
         }
         #endregion
