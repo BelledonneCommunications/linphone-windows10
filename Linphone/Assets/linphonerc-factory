@@ -10,6 +10,9 @@ auto_net_state_mon=0
 keepalive_period=30000
 ping_with_options=0
 store_ha1_passwd=0
+sip_port=-1
+sip_tcp_port=-1
+sip_tls_port=-1
 
 [rtp]
 audio_jitt_comp=60
