@@ -36,6 +36,9 @@ To compile and run it, plug a windows phone 8 device or choose an emulator
 and run the build/install (using F5 or the green triangle). The app will start
 automatically once built.
 
+If you have an issue with the build of the speexdsp project when compiling on a Visual Studio 2013, retarget the project to WP8.1 Silverlight.
+When using WP8 projects with a recent VS, it tries to use old tools which are no longer working (in this case the armasm.exe from the previous VS which will fail because it misses some dll).
+
 /!\ Please check the Linphone project in the solution is set as startup project.
 (The startup project is in bold in the project list)
 If not, right click on Linphone project and choose the menu "Set as StartUp project".
