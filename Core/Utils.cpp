@@ -18,37 +18,6 @@
 
 using namespace Windows::Storage;
 
-Platform::String^ Linphone::Core::Utils::formatLogMessage(OutputTraceLevel level, Platform::String^ msg) {
-	const char * cmsg = pstoccs(msg);
-	char * clevel;
-	char * cmsg_with_level;
-	struct timeval tp;
-	struct tm *lt;
-	time_t tt;
-	ortp_gettimeofday(&tp, NULL);
-	tt = tp.tv_sec;
-	lt = localtime(&tt);
-
-	switch (level) {
-	case OutputTraceLevel::Error:
-		clevel = "error";
-		break;
-	case OutputTraceLevel::Warning:
-		clevel = "warn";
-		break;
-	case OutputTraceLevel::Message:
-		clevel = "message";
-		break;
-	case OutputTraceLevel::Debug:
-	case OutputTraceLevel::None:
-	default:
-		clevel = "debug";
-		break;
-	}
-	cmsg_with_level = ms_strdup_printf("[%i-%.2i-%.2i %.2i:%.2i:%.2i:%.3i] [%s] %s", 1900 + lt->tm_year, lt->tm_mon+1, lt->tm_mday, lt->tm_hour, lt->tm_min, lt->tm_sec, (int)(tp.tv_usec / 1000), clevel, cmsg);
-	return cctops(cmsg_with_level);
-}
-
 std::wstring Linphone::Core::Utils::UTF8ToUTF16(const char *utf8)
 {
 	if ((utf8 == nullptr) || (*utf8 == '\0'))

@@ -15,11 +15,6 @@ namespace Linphone
 		{
 		public:
 			/// <summary>
-			/// Formats a message with log level and time
-			/// </summary>
-			static Platform::String^ Linphone::Core::Utils::formatLogMessage(OutputTraceLevel level, Platform::String^ msg);
-
-			/// <summary>
 			/// Converts a Platform::String into a C char*.
 			/// Required to send strings from C# to C.
 			/// WARNING: The return C char* is dynamically allocated and must be freed by calling delete on it.
