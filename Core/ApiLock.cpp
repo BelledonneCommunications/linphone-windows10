@@ -6,6 +6,7 @@ namespace Linphone
     namespace Core
     {
 		GlobalApiLock *GlobalApiLock::instance = nullptr;
+		std::mutex GlobalApiLock::instance_mutex;
 
 		GlobalApiLock::GlobalApiLock() : count(0), pool(nullptr)
 		{}
@@ -16,14 +17,18 @@ namespace Linphone
 		GlobalApiLock * GlobalApiLock::Instance()
 		{
 			if (instance == nullptr) {
-				instance = new GlobalApiLock();
+				instance_mutex.lock();
+				if (instance == nullptr) {
+					instance = new GlobalApiLock();
+				}
+				instance_mutex.unlock();
 			}
 			return instance;
 		}
 
 		void GlobalApiLock::Lock()
 		{
-			mut.lock();
+			mutex.lock();
 			if (count == 0) {
 				pool = belle_sip_object_pool_push();
 			}
@@ -37,41 +42,28 @@ namespace Linphone
 				belle_sip_object_unref(pool);
 				pool = nullptr;
 			}
-			mut.unlock();
+			mutex.unlock();
 		}
 
-		bool GlobalApiLock::TryLock()
-		{
-			bool ok = mut.try_lock();
-			if (ok) {
-				if (count == 0) {
-					pool = belle_sip_object_pool_push();
-				}
-				count++;
-			}
-			return ok;
-		}
-
-
+//#define TRACE_LOCKS
 		ApiLock::ApiLock(const char *function)
 		{
 #ifdef TRACE_LOCKS
 			if (function != NULL) {
 				this->function = ms_strdup(function);
 			}
-			char *s = ms_strdup_printf("### Locking in %s [%ul] at %ul\r\n", this->function, WIN_thread_self(), (unsigned long)ortp_get_cur_time_ms());
-			OutputDebugStringA(s);
-			ms_free(s);
+			ms_error("### Locking in %s [%ul]", this->function, WIN_thread_self());
 #endif
 			GlobalApiLock::Instance()->Lock();
+#ifdef TRACE_LOCKS
+			ms_error("### Locked in %s [%ul]", this->function, WIN_thread_self());
+#endif
 		}
 
 		ApiLock::~ApiLock()
 		{
 #ifdef TRACE_LOCKS
-			char *s = ms_strdup_printf("### Unlocking in %s [%ul] at %ul\r\n", this->function, WIN_thread_self(), (unsigned long)ortp_get_cur_time_ms());
-			OutputDebugStringA(s);
-			ms_free(s);
+			ms_error("### Unlocking in %s [%ul]", this->function, WIN_thread_self());
 			if (this->function != NULL) {
 				ms_free(this->function);
 			}

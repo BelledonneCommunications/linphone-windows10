@@ -126,12 +126,12 @@ namespace Linphone
 			LinphoneCallStats(::LinphoneCallStats *callStats);
 			~LinphoneCallStats();
 
-			float Linphone::Core::LinphoneCallStats::GetSenderLossRate(const ::LinphoneCallStats *stats);
-			float Linphone::Core::LinphoneCallStats::GetReceiverLossRate(const ::LinphoneCallStats *stats);
-			float Linphone::Core::LinphoneCallStats::GetSenderInterarrivalJitter(const ::LinphoneCallStats *stats);
-			float Linphone::Core::LinphoneCallStats::GetReceiverInterarrivalJitter(const ::LinphoneCallStats *stats);
-			int64 Linphone::Core::LinphoneCallStats::GetLatePacketsCumulativeNumber(const ::LinphoneCallStats *stats);
-			void Linphone::Core::LinphoneCallStats::FillStats(const ::LinphoneCallStats *stats);
+			float GetSenderLossRate(const ::LinphoneCallStats *stats);
+			float GetReceiverLossRate(const ::LinphoneCallStats *stats);
+			float GetSenderInterarrivalJitter(const ::LinphoneCallStats *stats);
+			float GetReceiverInterarrivalJitter(const ::LinphoneCallStats *stats);
+			int64 GetLatePacketsCumulativeNumber(const ::LinphoneCallStats *stats);
+			void FillStats(const ::LinphoneCallStats *stats);
 
 			::LinphoneCall *call;
 			Linphone::Core::MediaType mediaType;

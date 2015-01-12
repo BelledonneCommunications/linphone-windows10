@@ -4,21 +4,25 @@
 
 Platform::String^ Linphone::Core::LinphoneChatMessage::Text::get()
 {
+	API_LOCK;
 	return Linphone::Core::Utils::cctops(linphone_chat_message_get_text(this->message));
 }
 
 Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneChatMessage::PeerAddress::get()
 {
+	API_LOCK;
 	return (Linphone::Core::LinphoneAddress^) Linphone::Core::Utils::CreateLinphoneAddress((void*)linphone_chat_message_get_peer_address(this->message));
 }
 
 Linphone::Core::LinphoneAddress^ Linphone::Core::LinphoneChatMessage::From::get()
 {
+	API_LOCK;
 	return (Linphone::Core::LinphoneAddress^) Linphone::Core::Utils::CreateLinphoneAddress((void*)linphone_chat_message_get_from(this->message));
 }
 
 Platform::String^ Linphone::Core::LinphoneChatMessage::ExternalBodyUrl::get()
 {
+	API_LOCK;
 	return Linphone::Core::Utils::cctops(linphone_chat_message_get_external_body_url(this->message));
 }
 
@@ -32,11 +36,13 @@ void Linphone::Core::LinphoneChatMessage::ExternalBodyUrl::set(Platform::String^
 
 int64 Linphone::Core::LinphoneChatMessage::Time::get()
 {
+	API_LOCK;
 	return linphone_chat_message_get_time(this->message);
 }
 
 Linphone::Core::LinphoneChatMessageState Linphone::Core::LinphoneChatMessage::State::get()
 {
+	API_LOCK;
 	return (Linphone::Core::LinphoneChatMessageState) linphone_chat_message_get_state(this->message);
 }
 
@@ -111,6 +117,7 @@ void Linphone::Core::LinphoneChatMessage::StartFileDownload(Linphone::Core::Linp
 Linphone::Core::LinphoneChatMessage::LinphoneChatMessage(::LinphoneChatMessage *cm) :
 	message(cm)
 {
+	API_LOCK;
 	message = linphone_chat_message_ref(message);
 	RefToPtrProxy<LinphoneChatMessage^> *chat_message = new RefToPtrProxy<LinphoneChatMessage^>(this);
 	linphone_chat_message_set_user_data(this->message, chat_message);
@@ -118,6 +125,7 @@ Linphone::Core::LinphoneChatMessage::LinphoneChatMessage(::LinphoneChatMessage *
 
 Linphone::Core::LinphoneChatMessage::~LinphoneChatMessage()
 {
+	API_LOCK;
 	linphone_chat_message_unref(message);
 	RefToPtrProxy<LinphoneChatMessage^> *chat_message = reinterpret_cast< RefToPtrProxy<LinphoneChatMessage^> *>(linphone_chat_message_get_user_data(this->message));
 	delete chat_message;

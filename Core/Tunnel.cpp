@@ -25,6 +25,7 @@ Platform::String^ Linphone::Core::TunnelConfig::Host::get()
 
 void Linphone::Core::TunnelConfig::Host::set(Platform::String^ value)
 {
+	API_LOCK;
 	this->host = value;
 }
 
@@ -35,6 +36,7 @@ int Linphone::Core::TunnelConfig::Port::get()
 
 void Linphone::Core::TunnelConfig::Port::set(int value)
 {
+	API_LOCK;
 	this->port = value;
 }
 
@@ -45,6 +47,7 @@ int Linphone::Core::TunnelConfig::UdpMirrorPort::get()
 
 void Linphone::Core::TunnelConfig::UdpMirrorPort::set(int value)
 {
+	API_LOCK;
 	this->udpMirrorPort = value;
 }
 
@@ -55,6 +58,7 @@ int Linphone::Core::TunnelConfig::RoundTripDelay::get()
 
 void Linphone::Core::TunnelConfig::RoundTripDelay::set(int value)
 {
+	API_LOCK;
 	this->roundTripDelay = value;
 }
 

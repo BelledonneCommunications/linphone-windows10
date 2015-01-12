@@ -1,3 +1,4 @@
+#include "ApiLock.h"
 #include "VideoPolicy.h"
 
 Linphone::Core::VideoPolicy::VideoPolicy() :
@@ -17,6 +18,7 @@ bool Linphone::Core::VideoPolicy::AutomaticallyInitiate::get()
 
 void Linphone::Core::VideoPolicy::AutomaticallyInitiate::set(bool value)
 {
+	API_LOCK;
 	automaticallyInitiate = value;
 }
 
@@ -27,5 +29,6 @@ bool Linphone::Core::VideoPolicy::AutomaticallyAccept::get()
 
 void Linphone::Core::VideoPolicy::AutomaticallyAccept::set(bool value)
 {
+	API_LOCK;
 	automaticallyAccept = value;
 }

@@ -143,11 +143,13 @@ Platform::String^ Linphone::Core::LinphoneCall::RemoteContact::get()
 
 void Linphone::Core::LinphoneCall::CallContext::set(Windows::Phone::Networking::Voip::VoipPhoneCall^ cc)
 {
+	API_LOCK;
 	this->callContext = cc;
 }
 
 Platform::Object^ Linphone::Core::LinphoneCall::CallStartTimeFromContext::get()
 {
+	API_LOCK;
 	Platform::Object^ result = nullptr;
 	try {
 		if (this->callContext != nullptr) {
@@ -155,7 +157,6 @@ Platform::Object^ Linphone::Core::LinphoneCall::CallStartTimeFromContext::get()
 		}
 	}
 	catch (Platform::COMException^ ex) {
-
 	}
 	return result;
 }
@@ -191,6 +192,7 @@ Windows::Phone::Networking::Voip::VoipPhoneCall^ Linphone::Core::LinphoneCall::C
 
 Linphone::Core::Reason Linphone::Core::LinphoneCall::Reason::get()
 {
+	API_LOCK;
 	return (Linphone::Core::Reason)linphone_call_get_reason(this->call);
 }
 

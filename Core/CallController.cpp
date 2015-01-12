@@ -14,8 +14,6 @@ using namespace Windows::Phone::Networking::Voip;
 
 VoipPhoneCall^ CallController::OnIncomingCallReceived(Linphone::Core::LinphoneCall^ call, Platform::String^ contactName, Platform::String^ contactNumber, IncomingCallViewDismissedCallback^ incomingCallViewDismissedCallback)
 {
-	API_LOCK;
-
 	VoipPhoneCall^ incomingCall = nullptr;
 	this->call = call;
 
@@ -72,8 +70,6 @@ VoipPhoneCall^ CallController::OnIncomingCallReceived(Linphone::Core::LinphoneCa
 
 void CallController::OnAcceptCallRequested(VoipPhoneCall^ incomingCall, CallAnswerEventArgs^ args)
 {
-	API_LOCK;
-
 	incomingCall->NotifyCallActive();
 
 	if (this->onIncomingCallViewDismissed != nullptr) {
@@ -98,8 +94,6 @@ void CallController::OnAcceptCallRequested(VoipPhoneCall^ incomingCall, CallAnsw
  
 void CallController::OnRejectCallRequested(VoipPhoneCall^ incomingCall, CallRejectEventArgs^ args)
 {
-	API_LOCK;
-
 	if (this->onIncomingCallViewDismissed != nullptr) {
 		this->onIncomingCallViewDismissed();
 		this->onIncomingCallViewDismissed = nullptr;
@@ -112,8 +106,6 @@ void CallController::OnRejectCallRequested(VoipPhoneCall^ incomingCall, CallReje
 
 VoipPhoneCall^ CallController::NewOutgoingCall(Platform::String^ number)
 {
-	API_LOCK;
-
 	VoipPhoneCall^ outgoingCall = nullptr;
 	this->call = call;
 
@@ -161,7 +153,6 @@ void CallController::NotifyMute(bool isMuted)
 
 IncomingCallViewDismissedCallback^ CallController::IncomingCallViewDismissed::get()
 {
-	API_LOCK;
 	return this->onIncomingCallViewDismissed;
 }
 
@@ -173,7 +164,6 @@ void CallController::IncomingCallViewDismissed::set(IncomingCallViewDismissedCal
 
 Platform::Boolean CallController::CustomIncomingCallView::get()
 {
-	API_LOCK;
 	return this->customIncomingCallView;
 }
 
@@ -185,7 +175,6 @@ void CallController::CustomIncomingCallView::set(Platform::Boolean value)
 
 Reason CallController::DeclineReason::get()
 {
-	API_LOCK;
 	return this->declineReason;
 }
 
@@ -217,5 +206,4 @@ CallController::CallController() :
 
 CallController::~CallController()
 {
-
 }

@@ -94,31 +94,26 @@ Linphone::Core::LinphoneCallStats::~LinphoneCallStats()
 
 float Linphone::Core::LinphoneCallStats::GetSenderLossRate(const ::LinphoneCallStats *stats)
 {
-	API_LOCK;
 	return linphone_call_stats_get_sender_loss_rate(stats);
 }
 
 float Linphone::Core::LinphoneCallStats::GetReceiverLossRate(const ::LinphoneCallStats *stats)
 {
-	API_LOCK;
 	return linphone_call_stats_get_receiver_loss_rate(stats);
 }
 
 float Linphone::Core::LinphoneCallStats::GetSenderInterarrivalJitter(const ::LinphoneCallStats *stats)
 {
-	API_LOCK;
 	return linphone_call_stats_get_sender_interarrival_jitter(stats, this->call);
 }
 
 float Linphone::Core::LinphoneCallStats::GetReceiverInterarrivalJitter(const ::LinphoneCallStats *stats)
 {
-	API_LOCK;
 	return linphone_call_stats_get_receiver_interarrival_jitter(stats, this->call);
 }
 
 int64 Linphone::Core::LinphoneCallStats::GetLatePacketsCumulativeNumber(const ::LinphoneCallStats *stats)
 {
-	API_LOCK;
 	return linphone_call_stats_get_late_packets_cumulative_number(stats, this->call);
 }
 

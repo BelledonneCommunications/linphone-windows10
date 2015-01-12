@@ -22,10 +22,14 @@ void LinphoneCoreFactory::CreateLinphoneCore(Linphone::Core::LinphoneCoreListene
 
 void LinphoneCoreFactory::CreateLinphoneCore(Linphone::Core::LinphoneCoreListener^ listener, Linphone::Core::LpConfig^ config)
 {
-	API_LOCK;
-	Utils::LinphoneCoreEnableLogCollection(true);
-	this->linphoneCore = ref new Linphone::Core::LinphoneCore(listener, config);
-	this->linphoneCore->Init();
+	if (this->linphoneCore == nullptr) {
+		API_LOCK;
+		if (this->linphoneCore == nullptr) {
+			Utils::LinphoneCoreEnableLogCollection(true);
+			this->linphoneCore = ref new Linphone::Core::LinphoneCore(listener, config);
+			this->linphoneCore->Init();
+		}
+	}
 }
 
 Linphone::Core::LpConfig^ LinphoneCoreFactory::CreateLpConfig(Platform::String^ configPath, Platform::String^ factoryConfigPath)
@@ -117,6 +121,7 @@ Linphone::Core::LinphoneCore^ LinphoneCoreFactory::LinphoneCore::get()
 
 void LinphoneCoreFactory::Destroy()
 {
+	API_LOCK;
 	this->linphoneCore->Destroy();
 	delete this->linphoneCore;
 	this->linphoneCore = nullptr;
@@ -125,10 +130,8 @@ void LinphoneCoreFactory::Destroy()
 LinphoneCoreFactory::LinphoneCoreFactory() :
 	linphoneCore(nullptr)
 {
-
 }
 
 LinphoneCoreFactory::~LinphoneCoreFactory()
 {
-	
 }

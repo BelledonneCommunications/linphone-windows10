@@ -38,6 +38,7 @@ Linphone::Core::OutputTraceLevel Linphone::Core::LinphoneCore::LogLevel::get()
 
 void Linphone::Core::LinphoneCore::LogLevel::set(OutputTraceLevel logLevel)
 {
+	API_LOCK;
 	int coreLogLevel = 0;
 	if (logLevel == OutputTraceLevel::Error) {
 		coreLogLevel = ORTP_ERROR | ORTP_FATAL;
@@ -87,7 +88,7 @@ void Linphone::Core::LinphoneCore::AddProxyConfig(Linphone::Core::LinphoneProxyC
 void Linphone::Core::LinphoneCore::DefaultProxyConfig::set(Linphone::Core::LinphoneProxyConfig^ proxyCfg)
 {
 	API_LOCK;
-	linphone_core_set_default_proxy(this->lc, proxyCfg->proxy_config);
+	linphone_core_set_default_proxy_config(this->lc, proxyCfg->proxy_config);
 }
 
 Linphone::Core::LinphoneProxyConfig^ Linphone::Core::LinphoneCore::DefaultProxyConfig::get()
@@ -1038,8 +1039,8 @@ Windows::Foundation::Collections::IVector<Platform::Object^>^ Linphone::Core::Li
 
 Linphone::Core::VideoSize^ Linphone::Core::LinphoneCore::PreferredVideoSize::get()
 {
-	Linphone::Core::VideoSize^ size = nullptr;
 	API_LOCK;
+	Linphone::Core::VideoSize^ size = nullptr;
 	const MSVideoSizeDef *sizesList = linphone_core_get_supported_video_sizes(this->lc);
 	MSVideoSize vsize = linphone_core_get_preferred_video_size(this->lc);
 	while (sizesList->name != NULL) {
@@ -1067,9 +1068,9 @@ Platform::String^ Linphone::Core::LinphoneCore::GetPreferredVideoSizeName()
 
 void Linphone::Core::LinphoneCore::PreferredVideoSize::set(Linphone::Core::VideoSize^ size)
 {
+	API_LOCK;
 	if (size->Name != nullptr) {
 		const char *ccname = Utils::pstoccs(size->Name);
-		API_LOCK;
 		linphone_core_set_preferred_video_size_by_name(this->lc, ccname);
 		delete ccname;
 	} else {
@@ -1079,10 +1080,10 @@ void Linphone::Core::LinphoneCore::PreferredVideoSize::set(Linphone::Core::Video
 
 void Linphone::Core::LinphoneCore::SetPreferredVideoSize(int width, int height)
 {
+	API_LOCK;
 	MSVideoSize vsize;
 	vsize.width = width;
 	vsize.height = height;
-	API_LOCK;
 	linphone_core_set_preferred_video_size(this->lc, vsize);
 }
 
@@ -1107,8 +1108,8 @@ Windows::Foundation::Collections::IVector<Platform::Object^>^ Linphone::Core::Li
 
 Platform::String^ Linphone::Core::LinphoneCore::VideoDevice::get()
 {
-	Platform::String^ device = nullptr;
 	API_LOCK;
+	Platform::String^ device = nullptr;
 	const char *ccname = linphone_core_get_video_device(this->lc);
 	if (ccname != NULL) {
 		device = Utils::cctops(ccname);
@@ -1118,8 +1119,8 @@ Platform::String^ Linphone::Core::LinphoneCore::VideoDevice::get()
 
 void Linphone::Core::LinphoneCore::VideoDevice::set(Platform::String^ device)
 {
-	const char *ccname = Utils::pstoccs(device);
 	API_LOCK;
+	const char *ccname = Utils::pstoccs(device);
 	linphone_core_set_video_device(this->lc, ccname);
 	delete ccname;
 }
@@ -1283,11 +1284,12 @@ Linphone::Core::LinphoneCoreListener^ Linphone::Core::LinphoneCore::CoreListener
 
 void Linphone::Core::LinphoneCore::CoreListener::set(LinphoneCoreListener^ listener)
 {
+	API_LOCK;
 	this->listener = listener;
 }
 
 void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCallState cstate, const char *msg) 
-{	
+{
 	Linphone::Core::LinphoneCallState state = (Linphone::Core::LinphoneCallState) cstate;
 	Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *proxy = reinterpret_cast< Linphone::Core::RefToPtrProxy<Linphone::Core::LinphoneCall^> *>(linphone_call_get_user_pointer(call));
 	Linphone::Core::LinphoneCall^ lCall = (proxy) ? proxy->Ref() : nullptr;
@@ -1452,7 +1454,8 @@ void composing_received(LinphoneCore *lc, LinphoneChatRoom *room)
 	}
 }
 
-void file_transfer_progress_indication(LinphoneCore *lc, LinphoneChatMessage *message, const LinphoneContent *content, size_t offset, size_t total) {
+void file_transfer_progress_indication(LinphoneCore *lc, LinphoneChatMessage *message, const LinphoneContent *content, size_t offset, size_t total)
+{
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr)
 	{
@@ -1465,7 +1468,8 @@ void file_transfer_progress_indication(LinphoneCore *lc, LinphoneChatMessage *me
 	}
 }
 
-void log_collection_upload_progress_indication(LinphoneCore *lc, size_t offset, size_t total) {
+void log_collection_upload_progress_indication(LinphoneCore *lc, size_t offset, size_t total)
+{
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr)
 	{
@@ -1473,7 +1477,8 @@ void log_collection_upload_progress_indication(LinphoneCore *lc, size_t offset, 
 	}
 }
 
-void log_collection_upload_state_changed(LinphoneCore *lc, ::LinphoneCoreLogCollectionUploadState state, const char *info) {
+void log_collection_upload_state_changed(LinphoneCore *lc, ::LinphoneCoreLogCollectionUploadState state, const char *info)
+{
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
 	if (listener != nullptr)
 	{
@@ -1485,7 +1490,6 @@ Linphone::Core::LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener) :
 	lc(nullptr),
 	listener(coreListener)
 {
-
 }
 
 Linphone::Core::LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener, LpConfig^ config) :
@@ -1499,26 +1503,22 @@ Linphone::Core::LinphoneCore::LinphoneCore(LinphoneCoreListener^ coreListener, L
 void Linphone::Core::LinphoneCore::IterateEnabled::set(Platform::Boolean value)
 {
 	API_LOCK;
-	if (isIterateEnabled && !value && IterateTimer)
+	if (isIterateEnabled && !value && IterateWorkItem)
 	{
-		// Disable the iterate
-		IterateTimer->Cancel();
+		IterateWorkItem->Cancel();
+		IterateWorkItem = nullptr;
 	}
 	else if (!isIterateEnabled && value) 
 	{
-		// Enable the iterate
-		TimeSpan period;
-		period.Duration = 20 * 10000;
-		IterateTimer = ThreadPoolTimer::CreatePeriodicTimer(
-			ref new TimerElapsedHandler([this](ThreadPoolTimer^ source)
+		IAsyncAction^ IterateWorkItem = ThreadPool::RunAsync(ref new WorkItemHandler([this](IAsyncAction^ action)
 		{
-			if (source == IterateTimer) {
-				if (GlobalApiLock::Instance()->TryLock()) {
-					linphone_core_iterate(this->lc);
-					GlobalApiLock::Instance()->Unlock();
-				}
+			while (true) {
+				GlobalApiLock::Instance()->Lock();
+				linphone_core_iterate(this->lc);
+				GlobalApiLock::Instance()->Unlock();
+				ms_usleep(20000);
 			}
-		}), period);
+		}), WorkItemPriority::Low);
 	}
 	isIterateEnabled = value;
 }

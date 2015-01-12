@@ -11,7 +11,7 @@
 #include "Utils.h"
 
 
-#define API_LOCK ApiLock apiLock(__FUNCTION__)
+#define API_LOCK Linphone::Core::ApiLock apiLock(__FUNCTION__)
 
 
 namespace Linphone
@@ -24,14 +24,14 @@ namespace Linphone
 			static GlobalApiLock * Instance();
 			void Lock();
 			void Unlock();
-			bool TryLock();
 
 		private:
 			GlobalApiLock();
 			~GlobalApiLock();
 
 			static GlobalApiLock *instance;
-			std::recursive_mutex mut;
+			static std::mutex instance_mutex;
+			std::recursive_mutex mutex;
 			int count;
 			belle_sip_object_pool_t *pool;
 		};

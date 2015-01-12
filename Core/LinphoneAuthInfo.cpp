@@ -74,7 +74,6 @@ void Linphone::Core::LinphoneAuthInfo::Ha1::set(Platform::String^ ha1)
 
 Linphone::Core::LinphoneAuthInfo::LinphoneAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm, Platform::String^ domain)
 {
-	API_LOCK;
 	const char* cc_username = Utils::pstoccs(username);
 	const char* cc_password = Utils::pstoccs(password);
 	const char* cc_realm = Utils::pstoccs(realm);

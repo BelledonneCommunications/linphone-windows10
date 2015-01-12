@@ -1048,7 +1048,7 @@ namespace Linphone
 			::LinphoneCore *lc;
 			LinphoneCoreListener^ listener;
 			LpConfig^ config;
-			Windows::System::Threading::ThreadPoolTimer ^IterateTimer;
+			Windows::Foundation::IAsyncAction^ IterateWorkItem;
 			Platform::Boolean isIterateEnabled;
 			static OutputTraceLevel logLevel;
 		};

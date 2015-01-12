@@ -1,28 +1,34 @@
+#include "ApiLock.h"
 #include "LinphoneAddress.h"
 #include "Server.h"
 
 Platform::String^ Linphone::Core::LinphoneAddress::DisplayName::get()
 {
+	API_LOCK;
 	return Linphone::Core::Utils::cctops(linphone_address_get_display_name(this->address));
 }
 
 Platform::String^ Linphone::Core::LinphoneAddress::UserName::get()
 {
+	API_LOCK;
 	return Linphone::Core::Utils::cctops(linphone_address_get_username(this->address));
 }
 
 Platform::String^ Linphone::Core::LinphoneAddress::Domain::get()
 {
+	API_LOCK;
 	return Linphone::Core::Utils::cctops(linphone_address_get_domain(this->address));
 }
 
 int Linphone::Core::LinphoneAddress::Port::get()
 {
+	API_LOCK;
 	return linphone_address_get_port(this->address);
 }
 
 Linphone::Core::LinphoneTransport Linphone::Core::LinphoneAddress::Transport::get()
 {
+	API_LOCK;
 	LinphoneTransportType transport = linphone_address_get_transport(this->address);
 	switch (transport)
 	{
@@ -41,11 +47,13 @@ Linphone::Core::LinphoneTransport Linphone::Core::LinphoneAddress::Transport::ge
 
 Platform::String^ Linphone::Core::LinphoneAddress::Scheme::get()
 {
+	API_LOCK;
 	return Linphone::Core::Utils::cctops(linphone_address_get_scheme(this->address));
 }
 
 void Linphone::Core::LinphoneAddress::DisplayName::set(Platform::String^ name)
 {
+	API_LOCK;
 	const char *cc = Linphone::Core::Utils::pstoccs(name);
 	linphone_address_set_display_name(this->address, cc);
 	delete(cc);
@@ -53,6 +61,7 @@ void Linphone::Core::LinphoneAddress::DisplayName::set(Platform::String^ name)
 
 void Linphone::Core::LinphoneAddress::UserName::set(Platform::String^ username)
 {
+	API_LOCK;
 	const char *cc = Linphone::Core::Utils::pstoccs(username);
 	linphone_address_set_username(this->address, cc);
 	delete(cc);
@@ -60,6 +69,7 @@ void Linphone::Core::LinphoneAddress::UserName::set(Platform::String^ username)
 
 void Linphone::Core::LinphoneAddress::Domain::set(Platform::String^ domain)
 {
+	API_LOCK;
 	const char *cc = Linphone::Core::Utils::pstoccs(domain);
 	linphone_address_set_domain(this->address, cc);
 	delete(cc);
@@ -67,11 +77,13 @@ void Linphone::Core::LinphoneAddress::Domain::set(Platform::String^ domain)
 
 void Linphone::Core::LinphoneAddress::Port::set(int port)
 {
+	API_LOCK;
 	linphone_address_set_port(this->address, port);
 }
 
 void Linphone::Core::LinphoneAddress::Transport::set(Linphone::Core::LinphoneTransport transport)
 {
+	API_LOCK;
 	LinphoneTransportType transportType = LinphoneTransportUdp;
 	if (transport == LinphoneTransport::LinphoneTransportTCP)
 	{
@@ -91,16 +103,19 @@ void Linphone::Core::LinphoneAddress::Transport::set(Linphone::Core::LinphoneTra
 
 void Linphone::Core::LinphoneAddress::Clean()
 {
+	API_LOCK;
 	linphone_address_clean(this->address);
 }
 
 Platform::String^ Linphone::Core::LinphoneAddress::AsString()
 {
+	API_LOCK;
 	return Linphone::Core::Utils::cctops(linphone_address_as_string(this->address));
 }
 
 Platform::String^ Linphone::Core::LinphoneAddress::AsStringUriOnly()
 {
+	API_LOCK;
 	return Linphone::Core::Utils::cctops(linphone_address_as_string_uri_only(this->address));
 }
 
@@ -112,7 +127,6 @@ Platform::String^ Linphone::Core::LinphoneAddress::ToString()
 Linphone::Core::LinphoneAddress::LinphoneAddress(::LinphoneAddress *addr) :
 	address(addr)
 {
-
 }
 
 Linphone::Core::LinphoneAddress::LinphoneAddress(const char *uri)
@@ -122,5 +136,4 @@ Linphone::Core::LinphoneAddress::LinphoneAddress(const char *uri)
 
 Linphone::Core::LinphoneAddress::~LinphoneAddress()
 {
-
 }
