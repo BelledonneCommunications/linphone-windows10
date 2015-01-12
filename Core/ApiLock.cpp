@@ -7,6 +7,9 @@ namespace Linphone
     {
 		GlobalApiLock *GlobalApiLock::instance = nullptr;
 		std::mutex GlobalApiLock::instance_mutex;
+#ifdef API_LOCK_DEBUG
+		std::list<LockInfo> GlobalApiLock::lock_info_list;
+#endif
 
 		GlobalApiLock::GlobalApiLock() : count(0), pool(nullptr)
 		{}
@@ -26,49 +29,78 @@ namespace Linphone
 			return instance;
 		}
 
-		void GlobalApiLock::Lock()
+		void GlobalApiLock::Lock(std::string func)
 		{
+#ifdef API_LOCK_DEBUG
+			RegisterLocking(func);
+#endif
 			mutex.lock();
+#ifdef API_LOCK_DEBUG
+			RegisterLocked(func);
+#endif
 			if (count == 0) {
 				pool = belle_sip_object_pool_push();
 			}
 			count++;
 		}
 
-		void GlobalApiLock::Unlock()
+		void GlobalApiLock::Unlock(std::string func)
 		{
 			count--;
 			if ((count == 0) && (pool != nullptr)) {
 				belle_sip_object_unref(pool);
 				pool = nullptr;
 			}
+#ifdef API_LOCK_DEBUG
+			UnregisterLocked(func);
+#endif
 			mutex.unlock();
 		}
 
-//#define TRACE_LOCKS
-		ApiLock::ApiLock(const char *function)
+#ifdef API_LOCK_DEBUG
+		void GlobalApiLock::RegisterLocking(std::string func)
 		{
-#ifdef TRACE_LOCKS
-			if (function != NULL) {
-				this->function = ms_strdup(function);
+			instance_mutex.lock();
+			LockInfo li = { WIN_thread_self(), func, false };
+			lock_info_list.push_back(li);
+			instance_mutex.unlock();
+		}
+
+		void GlobalApiLock::RegisterLocked(std::string func)
+		{
+			instance_mutex.lock();
+			unsigned long current_thread = WIN_thread_self();
+			for (std::list<LockInfo>::reverse_iterator it = lock_info_list.rbegin(); it != lock_info_list.rend(); it++) {
+				if ((it->func == func) && (it->thread = current_thread) && !it->locked) {
+					it->locked = true;
+					break;
+				}
 			}
-			ms_error("### Locking in %s [%ul]", this->function, WIN_thread_self());
+			instance_mutex.unlock();
+		}
+
+		void GlobalApiLock::UnregisterLocked(std::string func)
+		{
+			instance_mutex.lock();
+			unsigned long current_thread = WIN_thread_self();
+			for (std::list<LockInfo>::reverse_iterator it = lock_info_list.rbegin(); it != lock_info_list.rend(); it++) {
+				if ((it->func == func) && (it->thread = current_thread) && it->locked) {
+					lock_info_list.erase(--(it.base()));
+					break;
+				}
+			}
+			instance_mutex.unlock();
+		}
 #endif
-			GlobalApiLock::Instance()->Lock();
-#ifdef TRACE_LOCKS
-			ms_error("### Locked in %s [%ul]", this->function, WIN_thread_self());
-#endif
+
+		ApiLock::ApiLock(std::string func) : func(func)
+		{
+			GlobalApiLock::Instance()->Lock(func);
 		}
 
 		ApiLock::~ApiLock()
 		{
-#ifdef TRACE_LOCKS
-			ms_error("### Unlocking in %s [%ul]", this->function, WIN_thread_self());
-			if (this->function != NULL) {
-				ms_free(this->function);
-			}
-#endif
-			GlobalApiLock::Instance()->Unlock();
+			GlobalApiLock::Instance()->Unlock(func);
 		}
     }
 }

@@ -1513,9 +1513,9 @@ void Linphone::Core::LinphoneCore::IterateEnabled::set(Platform::Boolean value)
 		IAsyncAction^ IterateWorkItem = ThreadPool::RunAsync(ref new WorkItemHandler([this](IAsyncAction^ action)
 		{
 			while (true) {
-				GlobalApiLock::Instance()->Lock();
+				GlobalApiLock::Instance()->Lock(__FUNCTION__);
 				linphone_core_iterate(this->lc);
-				GlobalApiLock::Instance()->Unlock();
+				GlobalApiLock::Instance()->Unlock(__FUNCTION__);
 				ms_usleep(20000);
 			}
 		}), WorkItemPriority::Low);
