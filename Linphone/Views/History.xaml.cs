@@ -119,7 +119,7 @@ namespace Linphone.Views
 
         private void SetAddressGoToDialerAndCall(String address)
         {
-            NavigationService.Navigate(new Uri("/Views/Dialer.xaml?sip=" + address, UriKind.RelativeOrAbsolute));
+            NavigationService.Navigate(new Uri("/Views/Dialer.xaml?sip=" + Utils.ReplacePlusInUri(address), UriKind.RelativeOrAbsolute));
             NavigationService.RemoveBackEntry(); // Prevent a back to this screen
             NavigationService.RemoveBackEntry(); // Prevent a back to the dialer from the dialer
         }

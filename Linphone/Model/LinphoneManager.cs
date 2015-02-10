@@ -831,7 +831,7 @@ namespace Linphone.Model
                     Logger.Msg("[LinphoneManager] Incoming received\r\n"); 
                     if (false) //TODO: Find a proper way to let the user choose between the two.
                     {
-                        BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/IncomingCall.xaml?sip=" + call.RemoteAddress.AsStringUriOnly(), UriKind.RelativeOrAbsolute));
+                        BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/IncomingCall.xaml?sip=" + Utils.ReplacePlusInUri(call.RemoteAddress.AsStringUriOnly()), UriKind.RelativeOrAbsolute));
                         //Remove the current page from the back stack to avoid duplicating him after
                         BaseModel.CurrentPage.NavigationService.RemoveBackEntry();
                     }
@@ -1099,7 +1099,7 @@ namespace Linphone.Model
                         switch (e.Result)
                         {
                             case CustomMessageBoxResult.RightButton:
-                                BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/Chat.xaml?sip=" + message.PeerAddress.AsStringUriOnly(), UriKind.RelativeOrAbsolute));
+                                BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/Chat.xaml?sip=" + Utils.ReplacePlusInUri(message.PeerAddress.AsStringUriOnly()), UriKind.RelativeOrAbsolute));
                                 break;
                         }
                     };

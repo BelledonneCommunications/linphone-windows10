@@ -79,7 +79,7 @@ namespace Linphone.Views
 
         private void SetAddressGoToDialerAndCall(String address)
         {
-            NavigationService.Navigate(new Uri("/Views/Dialer.xaml?sip=" + address, UriKind.RelativeOrAbsolute));
+            NavigationService.Navigate(new Uri("/Views/Dialer.xaml?sip=" + Utils.ReplacePlusInUri(address), UriKind.RelativeOrAbsolute));
         }
 
         private void action_Click_1(object sender, EventArgs e)
@@ -91,7 +91,7 @@ namespace Linphone.Views
         private void action_Click_2(object sender, EventArgs e)
         {
             String numberOrAddress = (sender as Button).Tag.ToString();
-            NavigationService.Navigate(new Uri("/Views/Chat.xaml?sip=" + numberOrAddress, UriKind.RelativeOrAbsolute));
+            NavigationService.Navigate(new Uri("/Views/Chat.xaml?sip=" + Utils.ReplacePlusInUri(numberOrAddress), UriKind.RelativeOrAbsolute));
         }
     }
 }

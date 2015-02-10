@@ -94,7 +94,7 @@ namespace Linphone
         /// <param name="callerNumber"></param>
         public void NewCallStarted(string callerNumber)
         {
-            this.Page.NavigationService.Navigate(new Uri("/Views/InCall.xaml?sip=" + callerNumber, UriKind.RelativeOrAbsolute));
+            this.Page.NavigationService.Navigate(new Uri("/Views/InCall.xaml?sip=" + Utils.ReplacePlusInUri(callerNumber), UriKind.RelativeOrAbsolute));
         }
 
         /// <summary>

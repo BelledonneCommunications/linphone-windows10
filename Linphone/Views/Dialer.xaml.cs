@@ -112,7 +112,7 @@ namespace Linphone
             {
                 LinphoneCall call = LinphoneManager.Instance.LinphoneCore.CurrentCall;
                 String uri = call.RemoteAddress.AsStringUriOnly();
-                NavigationService.Navigate(new Uri("/Views/InCall.xaml?sip=" + uri, UriKind.RelativeOrAbsolute));
+                NavigationService.Navigate(new Uri("/Views/InCall.xaml?sip=" + Utils.ReplacePlusInUri(uri), UriKind.RelativeOrAbsolute));
             }
         }
 

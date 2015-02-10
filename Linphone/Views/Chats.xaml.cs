@@ -204,7 +204,7 @@ namespace Linphone.Views
         private void conversation_Click_1(object sender, RoutedEventArgs e)
         {
             Conversation chat = ((sender as StackPanel).Tag as Conversation);
-            NavigationService.Navigate(new Uri("/Views/Chat.xaml?sip=" + chat.SipAddress, UriKind.RelativeOrAbsolute));
+            NavigationService.Navigate(new Uri("/Views/Chat.xaml?sip=" + Utils.ReplacePlusInUri(chat.SipAddress), UriKind.RelativeOrAbsolute));
         }
 
         /// <summary>

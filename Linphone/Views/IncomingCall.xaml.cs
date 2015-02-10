@@ -105,7 +105,7 @@ namespace Linphone.Views
         private void Answer_Click(object sender, RoutedEventArgs e)
         {
             LinphoneManager.Instance.LinphoneCore.AcceptCall(LinphoneManager.Instance.LinphoneCore.CurrentCall);
-            NavigationService.Navigate(new Uri("/Views/InCall.xaml?sip=" + _callingNumber, UriKind.RelativeOrAbsolute));
+            NavigationService.Navigate(new Uri("/Views/InCall.xaml?sip=" + Utils.ReplacePlusInUri(_callingNumber), UriKind.RelativeOrAbsolute));
         }
 
         private void AnswerVideo_Click(object sender, RoutedEventArgs e)

@@ -154,5 +154,14 @@ namespace Linphone.Model
             byte[] hashBytes = s.ComputeHash(bytes);
             return BitConverter.ToString(hashBytes).Replace("-", "");
         }
+
+        public static string ReplacePlusInUri(string uri)
+        {
+            if (uri != null && uri.Contains("+"))
+            {
+                uri = uri.Replace("+", "%2B");
+            }
+            return uri;
+        }
     }
 }
