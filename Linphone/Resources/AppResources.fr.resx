@@ -688,4 +688,7 @@ The current release of Linphone for Windows Phone 8 includes the following featu
 To enjoy the best experience with Linphone WP8, we recommend that you use the SIP service available for free at www.linphone.org/eng/linphone/register-a-linphone-account.html. This service, provided by Belledonne Communications, supports many exciting features including push-notified incoming calls.</value>
     <comment>Description of the app on the Windows Phone Store. It is mandatory for the description to be translated in all the languages the app supports, otherwise the publication is denied.</comment>
   </data>
+  <data name="CallErrorIOError" xml:space="preserve">
+    <value>Merci de vérifier que vous êtes bien enregistré et connecté à Internet</value>
+  </data>
 </root>

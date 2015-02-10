@@ -817,7 +817,7 @@ namespace Linphone.Model
                     Logger.Msg("[LinphoneManager] Outgoing progress\r\n");
                     LookupForContact(call);
 
-                    if (CallListener != null)
+                    if (CallListener != null && LinphoneCore.CallsNb > 0)
                     {
                         string sipAddress = call.RemoteAddress.AsStringUriOnly();
                         CallListener.NewCallStarted(sipAddress);
@@ -881,6 +881,9 @@ namespace Linphone.Model
                             break;
                         case Reason.LinphoneReasonNotAcceptable:
                             ShowCallError(ResourceManager.GetString("CallErrorNotAcceptable", CultureInfo.CurrentCulture));
+                            break;
+                        case Reason.LinphoneReasonIOError:
+                            ShowCallError(ResourceManager.GetString("CallErrorIOError", CultureInfo.CurrentCulture));
                             break;
                         default:
                             ShowCallError(ResourceManager.GetString("CallErrorUnknown", CultureInfo.CurrentCulture));

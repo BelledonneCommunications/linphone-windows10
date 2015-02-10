@@ -691,4 +691,7 @@ To enjoy the best experience with Linphone WP8, we recommend that you use the SI
   <data name="Expires" xml:space="preserve">
     <value>Expires</value>
   </data>
+  <data name="CallErrorIOError" xml:space="preserve">
+    <value>Please ensure you are registered and/or you have an Internet access</value>
+  </data>
 </root>
