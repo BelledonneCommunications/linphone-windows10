@@ -117,7 +117,11 @@ namespace Linphone.Views
             RemoteVideoRotation = rotation;
             Int32 id = LinphoneManager.Instance.LinphoneCore.NativeVideoWindowId;
             RemoteVideoUri = Mediastreamer2.WP8Video.VideoRenderer.StreamUri(id);
-            RemoteVideoProgressBarVisibility = Visibility.Visible;
+            
+            if (RemoteVideoVisibility == Visibility.Collapsed)
+            {
+                RemoteVideoProgressBarVisibility = Visibility.Visible;
+            }
         }
 
         public void RemoteVideoOpened()
