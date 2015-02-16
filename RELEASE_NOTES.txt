@@ -1,5 +1,43 @@
 See README.txt file for an explanation about how the project is working and how to compile it.
 
+02-2015:
+* Video added
+* French, Arabic et Japanese translation
+* Stability improved, bugs fixes
+
+10-2014:
+* Stability improved, bugs fixes
+* Reworked incall/chat views
+* Bluetooth audio route available
+
+09-2014:
+* Opus and ISAC audio codecs added
+* SRTP encryption added
+* Improved settings
+* Remote typing notification in chat
+* Bug fixes
+
+11-2013:
+* STUN added
+* ICE added
+* Bug fixes
+
+08-2013:
+* Audio incoming calls in background mode using push notifications
+* Audio outgoing calls
+* SIP transports: UDP, TCP, TLS
+* Call history and statistics
+* Pause, resume, mute, speaker
+* Echo cancellation
+* Chat (text and images)
+* Phone contacts integration
+* Bug fixes
+
+07-2013:
+* Chat messages added
+* G729 audio codec added
+* Bug fixes
+
 04-25-2013:
 * Incoming calls are working in background mode but need push notifications to be notified
 * Audio codecs available: ARM-NB, ARM-WB, Speex/16000, Speex/8000, PCMU/8000, PCMA/8000, G722, iLBC, SILK/16000, GSM
