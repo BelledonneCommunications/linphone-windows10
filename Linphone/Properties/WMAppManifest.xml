@@ -3,14 +3,14 @@
   <DefaultLanguage xmlns="" code="en" />
   <Languages xmlns="">
     <Language code="en" />
+    <Language code="ar" />
     <Language code="fr" />
     <Language code="ja" />
-    <Language code="ar" />
   </Languages>
   <AppExtra AppPlatformVersion="8.0" xmlns="">
     <Extra Name="SDOptOut" />
   </AppExtra>
-  <App xmlns="" ProductID="{bb0b8f3f-8638-49cf-b968-e097a2e6cbbe}" Title="Linphone" RuntimeType="Silverlight" Version="1.0.4" Genre="apps.normal" Author="Belledonne Communications" Description="VoIP SIP client" Publisher="Linphone" PublisherID="{c333a626-bb9d-4f5c-bbe9-09b7448be4e0}">
+  <App xmlns="" ProductID="{bb0b8f3f-8638-49cf-b968-e097a2e6cbbe}" Title="Linphone" RuntimeType="Silverlight" Version="1.0.5" Genre="apps.normal" Author="Belledonne Communications" Description="VoIP SIP client" Publisher="Linphone" PublisherID="{c333a626-bb9d-4f5c-bbe9-09b7448be4e0}">
     <IconPath IsRelative="true" IsResource="false">Assets\AppIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
@@ -40,12 +40,17 @@
           <Count>0</Count>
           <IconImageURI IsRelative="true" IsResource="false">Assets\tile_logo_large.png</IconImageURI>
           <Title>Linphone</Title>
-          <Message></Message>
-          <BackgroundColor></BackgroundColor>
+          <Message>
+          </Message>
+          <BackgroundColor>
+          </BackgroundColor>
           <HasLarge>True</HasLarge>
-          <LargeContent1></LargeContent1>
-          <LargeContent2></LargeContent2>
-          <LargeContent3></LargeContent3>
+          <LargeContent1>
+          </LargeContent1>
+          <LargeContent2>
+          </LargeContent2>
+          <LargeContent3>
+          </LargeContent3>
           <DeviceLockImageURI IsRelative="true" IsResource="false">Assets\lockscreen_logo.png</DeviceLockImageURI>
         </TemplateIconic>
       </PrimaryToken>
