@@ -84,7 +84,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <AdditionalDependencies>windowsphonecore.lib;runtimeobject.lib;PhoneAudioSes.lib;liblinphone.lib;belle-sip.lib;mediastreamer2.lib;ws2_32.lib;ortp.lib;gsm.lib;speex.lib;speexdsp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>windowsphonecore.lib;runtimeobject.lib;PhoneAudioSes.lib;liblinphone_no_tunnel.lib;belle-sip_no_tunnel.lib;mediastreamer2.lib;ws2_32.lib;ortp.lib;gsm.lib;speex.lib;speexdsp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>ole32.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateWindowsMetadata>true</GenerateWindowsMetadata>
       <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -116,6 +116,9 @@
     <ClCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <ProjectReference>
+      <LinkLibraryDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">false</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
     <ClCompile>
@@ -190,10 +193,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\submodules\belle-sip\build\wp8\belle-sip\belle-sip.vcxproj">
+    <ProjectReference Include="..\submodules\belle-sip\build\wp8\belle-sip\belle-sip_no_tunnel.vcxproj">
       <Project>{4c225a82-800b-427b-ba7b-61686a9b347f}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\submodules\linphone\build\wp8\LibLinphone.vcxproj">
+    <ProjectReference Include="..\submodules\linphone\build\wp8\LibLinphone_no_tunnel.vcxproj">
       <Project>{08dd0d38-d9b5-4626-b60d-b4d76b571142}</Project>
     </ProjectReference>
     <ProjectReference Include="..\submodules\mswp8vid\mswp8vid\mswp8vid.vcxproj">

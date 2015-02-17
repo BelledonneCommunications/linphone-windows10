@@ -18,7 +18,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libantlr3c", "submodules\an
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cunit", "submodules\cunit\build\wp8\cunit\cunit.vcxproj", "{902DAF1D-EBF1-4D03-B598-143500A50AB4}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "belle-sip", "submodules\belle-sip\build\wp8\belle-sip\belle-sip_no_tunnel.vcxproj", "{4C225A82-800B-427B-BA7B-61686A9B347F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "belle-sip_no_tunnel", "submodules\belle-sip\build\wp8\belle-sip\belle-sip_no_tunnel.vcxproj", "{4C225A82-800B-427B-BA7B-61686A9B347F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opencore_amrnb", "submodules\msamr\build\wp8\msamr\opencore_amrnb.vcxproj", "{88191E75-2993-48D7-AA76-652F274EF0FE}"
 EndProject
@@ -66,7 +66,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libmswp8vid", "submodules\m
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libxml2", "submodules\linphone\build\wp8\libxml2\libxml2.vcxproj", "{5DFA07B4-0BE9-46A9-BA32-FDF5A55C580B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibLinphone", "submodules\linphone\build\wp8\LibLinphone_no_tunnel.vcxproj", "{08DD0D38-D9B5-4626-B60D-B4D76B571142}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibLinphone_no_tunnel", "submodules\linphone\build\wp8\LibLinphone_no_tunnel.vcxproj", "{08DD0D38-D9B5-4626-B60D-B4D76B571142}"
 	ProjectSection(ProjectDependencies) = postProject
 		{B16B81A9-BEF2-44C9-B603-1065183AE844} = {B16B81A9-BEF2-44C9-B603-1065183AE844}
 		{7AFAC3BB-D97B-4578-B9FE-5E1D2B94EA2F} = {7AFAC3BB-D97B-4578-B9FE-5E1D2B94EA2F}
