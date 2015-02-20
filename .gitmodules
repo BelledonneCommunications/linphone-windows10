@@ -1,6 +1,6 @@
 [submodule "submodules/antlr3"]
 	path = submodules/antlr3
-	url = gitosis@git.linphone.org:antlr3.git
+	url = git://git.linphone.org/antlr3.git
 [submodule "submodules/belle-sip"]
 	path = submodules/belle-sip
 	url = git://git.linphone.org/belle-sip.git
@@ -15,10 +15,10 @@
 	url = git://git.linphone.org/linphone.git
 [submodule "submodules/cunit"]
 	path = submodules/cunit
-	url = gitosis@git.linphone.org:cunit.git
+	url = git://git.linphone.org/cunit.git
 [submodule "submodules/mswasapi"]
 	path = submodules/mswasapi
-	url = gitosis@git.linphone.org:mswasapi.git
+	url = git://git.linphone.org/mswasapi.git
 [submodule "submodules/libilbc-rfc3951"]
 	path = submodules/libilbc-rfc3951
 	url = git://git.linphone.org/libilbc-rfc3951.git
@@ -42,7 +42,7 @@
 	url = git://git.linphone.org/msamr.git
 [submodule "submodules/mswp8vid"]
 	path = submodules/mswp8vid
-	url = gitosis@git.linphone.org:mswp8vid.git
+	url = git://git.linphone.org/mswp8vid.git
 [submodule "submodules/libxml2"]
 	path = submodules/libxml2
 	url = git://git.gnome.org/libxml2
