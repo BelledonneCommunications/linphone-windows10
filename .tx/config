@@ -1,0 +1,8 @@
+[main]
+host = https://www.transifex.com
+minimum_perc = 1
+
+[linphone-wp8.appresourcesresx-1]
+file_filter = Linphone/Resources/AppResources.<lang>.resx
+source_file = Linphone/Resources/AppResources.resx
+source_lang = en
