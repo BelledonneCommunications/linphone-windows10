@@ -28,6 +28,12 @@
                             Header="{Binding Path=LocalizedResources.VideoEnabledSetting, Source={StaticResource LocalizedStrings}}">
                             </toolkit:ToggleSwitch>
 
+                            <toolkit:ListPicker
+                            x:Name="PreferredVideoSize"
+                            SelectionMode="Single"
+                            Header="{Binding Path=LocalizedResources.PreferredVideoSizeSetting, Source={StaticResource LocalizedStrings}}">
+                            </toolkit:ListPicker>
+
                             <toolkit:ToggleSwitch
                             x:Name="AutomaticallyInitiateVideo"
                             Header="{Binding Path=LocalizedResources.AutomaticallyInitiateVideoSetting, Source={StaticResource LocalizedStrings}}">
@@ -42,12 +48,6 @@
                             x:Name="SelfViewEnabled"
                             Header="{Binding Path=LocalizedResources.SelfViewEnabledSetting, Source={StaticResource LocalizedStrings}}">
                             </toolkit:ToggleSwitch>
-
-                            <toolkit:ListPicker
-                            x:Name="PreferredVideoSize"
-                            SelectionMode="Single"
-                            Header="{Binding Path=LocalizedResources.PreferredVideoSizeSetting, Source={StaticResource LocalizedStrings}}">
-                            </toolkit:ListPicker>
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>
