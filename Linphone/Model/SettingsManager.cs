@@ -250,6 +250,7 @@ namespace Linphone.Model
         private const string DisplayNameKeyName = "DisplayName";
         private const string TransportKeyName = "Transport";
         private const string ExpireKeyName = "Expire";
+        private const string AVPFKeyName = "AVPF";
 
         private Dictionary<LinphoneTransport, string> EnumToTransport;
         private Dictionary<string, LinphoneTransport> TransportToEnum;
@@ -287,6 +288,7 @@ namespace Linphone.Model
             dict[OutboundProxyKeyName] = false.ToString();
             dict[TransportKeyName] = AppResources.TransportUDP;
             dict[ExpireKeyName] = "";
+            dict[AVPFKeyName] = false.ToString();
 
             LinphoneProxyConfig cfg = LinphoneManager.Instance.LinphoneCore.DefaultProxyConfig;
             if (cfg != null)
@@ -309,6 +311,7 @@ namespace Linphone.Model
                         dict[UserIdKeyName] = info.UserId;
                     }
                     dict[DisplayNameKeyName] = address.DisplayName;
+                    dict[AVPFKeyName] = cfg.AVPFEnabled.ToString();
                 }
             }
         }
@@ -352,6 +355,7 @@ namespace Linphone.Model
                 String displayname = GetNew(DisplayNameKeyName);
                 String transport = GetNew(TransportKeyName);
                 String expires = GetNew(ExpireKeyName);
+                bool avpf = Convert.ToBoolean(GetNew(AVPFKeyName));
 
                 bool outboundProxy = Convert.ToBoolean(GetNew(OutboundProxyKeyName));
                 lc.ClearAuthInfos();
@@ -408,6 +412,7 @@ namespace Linphone.Model
                     lc.AddProxyConfig(cfg);
                     lc.DefaultProxyConfig = cfg;
                     LinphoneManager.Instance.AddPushInformationsToContactParams();
+                    cfg.AVPFEnabled = avpf;
                     cfg.RegisterEnabled = true;
                     cfg.Done();
                 }
@@ -550,6 +555,21 @@ namespace Linphone.Model
                 Set(ExpireKeyName, value);
             }
         }
+
+        /// <summary>
+        /// AVPF activated for SIP account (Boolean).
+        /// </summary>
+        public bool? AVPF
+        {
+            get
+            {
+                return Convert.ToBoolean(Get(AVPFKeyName));
+            }
+            set
+            {
+                Set(AVPFKeyName, value.ToString());
+            }
+        }
         #endregion
     }
 
@@ -573,6 +593,7 @@ namespace Linphone.Model
         private const string OpusSettingKeyName = "CodecOpus";
         private const string IsacSettingKeyName = "CodecIsac";
         private const string H264SettingKeyName = "CodecH264";
+        private const string VP8SettingKeyName = "CodecVP8";
         #endregion
 
         private String GetKeyNameForCodec(String mimeType, int clockRate)
@@ -593,6 +614,7 @@ namespace Linphone.Model
                 { new Tuple<String, int>("opus", 48000), OpusSettingKeyName },
                 { new Tuple<String, int>("isac", 16000), IsacSettingKeyName },
                 { new Tuple<String, int>("h264", 90000), H264SettingKeyName },
+                { new Tuple<String, int>("vp8", 90000), VP8SettingKeyName },
             };
 
             Tuple<String, int> key = new Tuple<String, int>(mimeType.ToLower(), clockRate);
@@ -860,6 +882,21 @@ namespace Linphone.Model
             set
             {
                 Set(H264SettingKeyName, value.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Is VP8 video codec enabled or disabled ? (Boolean)
+        /// </summary>
+        public bool VP8
+        {
+            get
+            {
+                return Convert.ToBoolean(Get(VP8SettingKeyName));
+            }
+            set
+            {
+                Set(VP8SettingKeyName, value.ToString());
             }
         }
         #endregion

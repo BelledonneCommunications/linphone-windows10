@@ -57,6 +57,7 @@ namespace Linphone.Views
 
             _codecsSettings.Load();
             H264.IsChecked = _codecsSettings.H264;
+            VP8.IsChecked = _codecsSettings.VP8;
         }
 
         /// <summary>
@@ -74,6 +75,7 @@ namespace Linphone.Views
         private void Save()
         {
             _codecsSettings.H264 = ToBool(H264.IsChecked);
+            _codecsSettings.VP8 = ToBool(VP8.IsChecked);
             _codecsSettings.Save();
 
             _callSettings.VideoEnabled = ToBool(VideoEnabled.IsChecked);

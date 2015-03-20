@@ -227,6 +227,15 @@ namespace Linphone
 				void set(Platform::String^ value);
 			}
 
+			/// <summary>
+			/// Indicates whether AVPF/SAVPF is being used for calls using this proxy config.
+			/// </summary>
+			property Platform::Boolean AVPFEnabled
+			{
+				Platform::Boolean get();
+				void set(Platform::Boolean value);
+			}
+
 		private:
 			friend ref class Linphone::Core::LinphoneCore;
 			friend class Linphone::Core::Utils;

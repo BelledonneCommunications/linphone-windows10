@@ -62,6 +62,8 @@ namespace Linphone.Views
             };
             Transport.ItemsSource = transports;
             Transport.SelectedItem = _settings.Transport;
+
+            AVPF.IsChecked = _settings.AVPF;
         }
 
         private void Save()
@@ -84,6 +86,7 @@ namespace Linphone.Views
             _settings.DisplayName = DisplayName.Text;
             _settings.Transport = Transport.SelectedItem.ToString();
             _settings.Expires = Expires.Text;
+            _settings.AVPF = AVPF.IsChecked;
             _settings.Save();
 
             if (linphoneAccount)
@@ -127,6 +130,7 @@ namespace Linphone.Views
             Proxy.Text = "sip.linphone.org:5223";
             OutboundProxy.IsChecked = true;
             Expires.Text = "28800";
+            AVPF.IsChecked = true;
             linphoneAccount = true;
         }
 

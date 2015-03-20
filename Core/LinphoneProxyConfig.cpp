@@ -236,6 +236,18 @@ Platform::String^ Linphone::Core::LinphoneProxyConfig::ContactUriParameters::get
 	return Utils::cctops(linphone_proxy_config_get_contact_uri_parameters(this->proxy_config));
 }
 
+void Linphone::Core::LinphoneProxyConfig::AVPFEnabled::set(Platform::Boolean enable)
+{
+	API_LOCK;
+	linphone_proxy_config_enable_avpf(this->proxy_config, enable);
+}
+
+Platform::Boolean Linphone::Core::LinphoneProxyConfig::AVPFEnabled::get()
+{
+	API_LOCK;
+	return (linphone_proxy_config_avpf_enabled(this->proxy_config) == TRUE);
+}
+
 Linphone::Core::LinphoneProxyConfig::LinphoneProxyConfig()
 {
 	API_LOCK;

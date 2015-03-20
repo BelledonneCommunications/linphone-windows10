@@ -60,12 +60,18 @@
                         <Grid x:Name="CodecsContentPanel">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
                             </Grid.RowDefinitions>
 
                             <toolkit:ToggleSwitch
                                 Grid.Row="0"
                                 x:Name="H264"
                                 Header="{Binding Path=LocalizedResources.H264Codec, Source={StaticResource LocalizedStrings}}">
+                            </toolkit:ToggleSwitch>
+                            <toolkit:ToggleSwitch
+                                Grid.Row="1"
+                                x:Name="VP8"
+                                Header="{Binding Path=LocalizedResources.VP8Codec, Source={StaticResource LocalizedStrings}}">
                             </toolkit:ToggleSwitch>
 
                         </Grid>

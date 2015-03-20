@@ -694,4 +694,10 @@ To enjoy the best experience with Linphone WP8, we recommend that you use the SI
   <data name="CallErrorIOError" xml:space="preserve">
     <value>Please ensure you are registered and/or you have an Internet access</value>
   </data>
+  <data name="VP8Codec" xml:space="preserve">
+    <value>VP8</value>
+  </data>
+  <data name="AVPF" xml:space="preserve">
+    <value>AVPF</value>
+  </data>
 </root>

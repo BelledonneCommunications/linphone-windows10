@@ -41,6 +41,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 
                 <StackPanel Orientation="Vertical" Grid.Row="0" Margin="0,10,0,0">
@@ -128,6 +129,13 @@
                 </StackPanel>
 
                 <StackPanel Orientation="Vertical" Grid.Row="7" Margin="0,10,0,0">
+                    <toolkit:ToggleSwitch
+                        x:Name="AVPF"
+                        Header="{Binding Path=LocalizedResources.AVPF, Source={StaticResource LocalizedStrings}}">
+                    </toolkit:ToggleSwitch>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Grid.Row="8" Margin="0,10,0,0">
                     <TextBlock
                         Style="{StaticResource PhoneTextSubtleStyle}"
                         Text="{Binding Path=LocalizedResources.Expires, Source={StaticResource LocalizedStrings}}">
@@ -143,7 +151,7 @@
                     </TextBox>
                 </StackPanel>
 
-                <StackPanel Orientation="Vertical" Grid.Row="8" Margin="0,10,0,0">
+                <StackPanel Orientation="Vertical" Grid.Row="9" Margin="0,10,0,0">
                     <TextBlock
                         Style="{StaticResource PhoneTextSubtleStyle}"
                         Text="{Binding Path=LocalizedResources.DisplayName, Source={StaticResource LocalizedStrings}}">
