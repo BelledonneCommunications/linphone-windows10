@@ -370,7 +370,7 @@ namespace Linphone.Model
                     }
                     else
                     {
-                        cfg.SetIdentity(username, username, domain);
+                        cfg.SetIdentity("", username, domain);
                     }
 
                     if ((proxy == null) || (proxy.Length <= 0))
