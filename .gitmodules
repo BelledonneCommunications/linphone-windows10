@@ -61,3 +61,6 @@
 [submodule "submodules/zlib"]
 	path = submodules/zlib
 	url = git://git.linphone.org/zlib.git
+[submodule "submodules/libvpx"]
+	path = submodules/libvpx
+	url = https://chromium.googlesource.com/webm/libvpx
