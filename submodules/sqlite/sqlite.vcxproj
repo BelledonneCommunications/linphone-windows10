@@ -88,7 +88,7 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Platform)'=='ARM'">
+  <ItemDefinitionGroup>
     <ClCompile>
       <PreprocessorDefinitions>SQLITE_OS_WINRT;SQLITE_WIN32_FILEMAPPING_API;SQLITE_OMIT_LOAD_EXTENSION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
