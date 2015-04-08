@@ -59,6 +59,7 @@ namespace Linphone.Views
         public void OrientationChanged(object sender, Microsoft.Phone.Controls.OrientationChangedEventArgs e)
         {
             PageOrientation = e.Orientation;
+            Logger.Msg("[InCall] OrientationChanged");
             if (IsVideoActive)
             {
                 HideVideo();
@@ -105,11 +106,10 @@ namespace Linphone.Views
         /// </summary>
         public void ToggleCameras()
         {
+            Logger.Msg("[InCall] ToggleCameras");
+            HideVideo();
             LinphoneManager.Instance.ToggleCameras();
-            if (LinphoneManager.Instance.LinphoneCore.SelfViewEnabled)
-            {
-                ShowLocalVideo();
-            }
+            ShowVideo();
         }
 
         private void ShowRemoteVideo()
