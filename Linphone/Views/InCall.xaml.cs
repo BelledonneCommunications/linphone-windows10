@@ -425,6 +425,7 @@ namespace Linphone.Views
             }
             else
             {
+                ((InCallModel)ViewModel).ShowButtonsAndPanel();
                 ButtonsFadeInAudioAnimation.Begin();
                 StopFadeTimer();
                 ((InCallModel)ViewModel).HideVideo();
