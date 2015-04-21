@@ -149,6 +149,8 @@ namespace Linphone.Model
 
         #region Constants settings names
         private const string LogLevelKeyName = "LogLevel";
+        private const string VideoActiveWhenGoingToBackgroundKeyName = "VideoActiveWhenGoingToBackground";
+        private const string VideoAutoAcceptWhenGoingToBackgroundKeyName = "VideoAutoAcceptWhenGoingToBackground";
         #endregion
 
         /// <summary>
@@ -173,6 +175,8 @@ namespace Linphone.Model
         public void Load()
         {
             dict[LogLevelKeyName] = Config.GetInt(ApplicationSection, LogLevelKeyName, (int)OutputTraceLevel.Message).ToString();
+            dict[VideoActiveWhenGoingToBackgroundKeyName] = Config.GetBool(ApplicationSection, VideoActiveWhenGoingToBackgroundKeyName, false).ToString();
+            dict[VideoAutoAcceptWhenGoingToBackgroundKeyName] = Config.GetBool(ApplicationSection, VideoAutoAcceptWhenGoingToBackgroundKeyName, true).ToString();
         }
 
         /// <summary>
@@ -191,6 +195,14 @@ namespace Linphone.Model
                 {
                     Logger.Warn("Failed setting the log level name {0}", Get(LogLevelKeyName));
                 }
+            }
+            if (ValueChanged(VideoActiveWhenGoingToBackgroundKeyName))
+            {
+                Config.SetBool(ApplicationSection, VideoActiveWhenGoingToBackgroundKeyName, Convert.ToBoolean(GetNew(VideoActiveWhenGoingToBackgroundKeyName)));
+            }
+            if (ValueChanged(VideoAutoAcceptWhenGoingToBackgroundKeyName))
+            {
+                Config.SetBool(ApplicationSection, VideoAutoAcceptWhenGoingToBackgroundKeyName, Convert.ToBoolean(GetNew(VideoAutoAcceptWhenGoingToBackgroundKeyName)));
             }
         }
         #endregion
@@ -230,6 +242,36 @@ namespace Linphone.Model
             set
             {
                 Set(LogLevelKeyName, ((int)value).ToString());
+            }
+        }
+
+        /// <summary>
+        /// Save if the video was active when going to background.
+        /// </summary>
+        public Boolean VideoActiveWhenGoingToBackground
+        {
+            get
+            {
+                return Convert.ToBoolean(Get(VideoActiveWhenGoingToBackgroundKeyName));
+            }
+            set
+            {
+                Set(VideoActiveWhenGoingToBackgroundKeyName, value.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Save the video auto accept policy when going to background.
+        /// </summary>
+        public Boolean VideoAutoAcceptWhenGoingToBackground
+        {
+            get
+            {
+                return Convert.ToBoolean(Get(VideoAutoAcceptWhenGoingToBackgroundKeyName));
+            }
+            set
+            {
+                Set(VideoAutoAcceptWhenGoingToBackgroundKeyName, value.ToString());
             }
         }
         #endregion

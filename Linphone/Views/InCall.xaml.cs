@@ -214,6 +214,9 @@ namespace Linphone.Views
                 }
             }
 
+            ApplicationSettingsManager settings = new ApplicationSettingsManager();
+            settings.Load();
+
             // Callback CallStateChanged set too late when call is incoming, so trigger it manually
             if (LinphoneManager.Instance.LinphoneCore.CallsNb > 0)
             {
@@ -221,8 +224,23 @@ namespace Linphone.Views
                 if (call.State == LinphoneCallState.StreamsRunning)
                 {
                     CallStateChanged(call, LinphoneCallState.StreamsRunning);
+                    if (settings.VideoActiveWhenGoingToBackground)
+                    {
+                        LinphoneManager.Instance.LinphoneCore.VideoPolicy.AutomaticallyAccept = settings.VideoAutoAcceptWhenGoingToBackground;
+                        LinphoneCallParams callParams = call.GetCurrentParamsCopy();
+                        callParams.VideoEnabled = true;
+                        LinphoneManager.Instance.LinphoneCore.UpdateCall(call, callParams);
+                    }
+                }
+                else if (call.State == LinphoneCallState.UpdatedByRemote)
+                {
+                    // The call was updated by the remote party while we were in background
+                    LinphoneManager.Instance.CallState(call, call.State, "call updated while in background");
                 }
             }
+
+            settings.VideoActiveWhenGoingToBackground = false;
+            settings.Save();
 
             oneSecondTimer = new DispatcherTimer();
             oneSecondTimer.Interval = TimeSpan.FromSeconds(1);
@@ -331,6 +349,28 @@ namespace Linphone.Views
         /// </summary>
         protected override void OnNavigatedFrom(NavigationEventArgs nee)
         {
+            if (((InCallModel)ViewModel).IsVideoActive)
+            {
+                LinphoneCall call = null;
+                try
+                {
+                    call = (LinphoneCall)LinphoneManager.Instance.LinphoneCore.Calls[0];
+                }
+                catch (System.ArgumentOutOfRangeException) { }
+                if (call != null)
+                {
+                    ApplicationSettingsManager settings = new ApplicationSettingsManager();
+                    settings.Load();
+                    settings.VideoActiveWhenGoingToBackground = true;
+                    settings.VideoAutoAcceptWhenGoingToBackground = LinphoneManager.Instance.LinphoneCore.VideoPolicy.AutomaticallyAccept;
+                    settings.Save();
+                    LinphoneManager.Instance.LinphoneCore.VideoPolicy.AutomaticallyAccept = false;
+                    LinphoneCallParams callParams = call.GetCurrentParamsCopy();
+                    callParams.VideoEnabled = false;
+                    LinphoneManager.Instance.LinphoneCore.UpdateCall(call, callParams);
+                }
+            }
+
             oneSecondTimer.Stop();
             if (fadeTimer != null)
             {

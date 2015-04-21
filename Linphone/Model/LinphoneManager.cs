@@ -941,10 +941,21 @@ namespace Linphone.Model
                     VideoPolicy policy = LinphoneManager.Instance.LinphoneCore.VideoPolicy;
                     LinphoneCallParams remoteParams = call.RemoteParams;
                     LinphoneCallParams localParams = call.GetCurrentParamsCopy();
-                    if (!policy.AutomaticallyAccept && remoteParams.VideoEnabled && !localParams.VideoEnabled && !LinphoneManager.Instance.LinphoneCore.InConference)
+                    if (remoteParams.VideoEnabled && !localParams.VideoEnabled && !LinphoneManager.Instance.LinphoneCore.InConference)
                     {
-                        LinphoneManager.Instance.LinphoneCore.DeferCallUpdate(call);
-                        videoAdded = true;
+                        if (policy.AutomaticallyAccept)
+                        {
+                            localParams.VideoEnabled = true;
+                            LinphoneManager.Instance.LinphoneCore.AcceptCallUpdate(call, localParams);
+                        }
+                        else
+                        {
+                            videoAdded = true;
+                        }
+                    }
+                    else
+                    {
+                        LinphoneManager.Instance.LinphoneCore.AcceptCallUpdate(call, localParams);
                     }
 
                     if (CallListener != null)

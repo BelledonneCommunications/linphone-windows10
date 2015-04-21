@@ -14,6 +14,7 @@ sip_port=-1
 sip_tcp_port=-1
 sip_tls_port=-1
 inactive_video_on_pause=1
+defer_update_default=1
 
 [rtp]
 audio_jitt_comp=60
