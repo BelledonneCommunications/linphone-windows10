@@ -103,6 +103,30 @@ Windows::Foundation::Size Linphone::Core::LinphoneCallParams::ReceivedVideoSize:
 	return size;
 }
 
+Linphone::Core::MediaDirection Linphone::Core::LinphoneCallParams::AudioDirection::get()
+{
+	API_LOCK;
+	return (Linphone::Core::MediaDirection) linphone_call_params_get_audio_direction(this->params);
+}
+
+void Linphone::Core::LinphoneCallParams::AudioDirection::set(Linphone::Core::MediaDirection value)
+{
+	API_LOCK;
+	linphone_call_params_set_audio_direction(this->params, (LinphoneMediaDirection)value);
+}
+
+Linphone::Core::MediaDirection Linphone::Core::LinphoneCallParams::VideoDirection::get()
+{
+	API_LOCK;
+	return (Linphone::Core::MediaDirection) linphone_call_params_get_video_direction(this->params);
+}
+
+void Linphone::Core::LinphoneCallParams::VideoDirection::set(Linphone::Core::MediaDirection value)
+{
+	API_LOCK;
+	linphone_call_params_set_video_direction(this->params, (LinphoneMediaDirection)value);
+}
+
 Linphone::Core::LinphoneCallParams::LinphoneCallParams(::LinphoneCallParams *call_params) :
 	params(call_params)
 {

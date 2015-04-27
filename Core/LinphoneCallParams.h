@@ -102,6 +102,24 @@ namespace Linphone
 				Windows::Foundation::Size get();
 			}
 
+			/// <summary>
+			/// Set the audio stream direction.
+			/// </summary>
+			property MediaDirection AudioDirection
+			{
+				MediaDirection get();
+				void set(MediaDirection value);
+			}
+
+			/// <summary>
+			/// Set the video stream direction.
+			/// </summary>
+			property MediaDirection VideoDirection
+			{
+				MediaDirection get();
+				void set(MediaDirection value);
+			}
+
 		private:
 			friend class Linphone::Core::Utils;
 			friend ref class Linphone::Core::LinphoneCore;

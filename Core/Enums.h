@@ -236,5 +236,16 @@ namespace Linphone
 			ReflexiveConnection = 4,
 			RelayConnection = 5
 		};
+
+		/// <summary>
+		/// Indicates for a given media the stream direction.
+		/// </summary>
+		public enum class MediaDirection : int
+		{
+			Inactive = 0,
+			SendOnly = 1,
+			RecvOnly = 2,
+			SendRecv = 3
+		};
 	}
 }
