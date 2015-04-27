@@ -508,9 +508,10 @@ namespace Linphone.Views
             startTime = (DateTimeOffset)call.CallStartTimeFromContext;
             DateTimeOffset now = DateTimeOffset.Now;
             TimeSpan elapsed = now.Subtract(startTime);
+            var hh = elapsed.Hours;
             var ss = elapsed.Seconds;
             var mm = elapsed.Minutes;
-            Status.Text = mm.ToString("00") + ":" + ss.ToString("00");
+            Status.Text = hh.ToString("00") + ":" + mm.ToString("00") + ":" + ss.ToString("00");
 
             string audioPayloadType = "";
             string audioDownloadBandwidth = "";
