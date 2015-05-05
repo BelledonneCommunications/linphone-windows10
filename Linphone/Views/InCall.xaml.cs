@@ -460,15 +460,14 @@ namespace Linphone.Views
                 if (((InCallModel)ViewModel).IsVideoActive)
                 {
                     ButtonsFadeOutAnimation.Begin();
-                    ((InCallModel)ViewModel).ShowVideo();
                 }
             }
             else
             {
+                ((InCallModel)ViewModel).IsVideoActive = false;
                 ((InCallModel)ViewModel).ShowButtonsAndPanel();
                 ButtonsFadeInAudioAnimation.Begin();
                 StopFadeTimer();
-                ((InCallModel)ViewModel).HideVideo();
             }
         }
 
@@ -559,11 +558,15 @@ namespace Linphone.Views
                 }
                 Windows.Foundation.Size receivedVideoSize = param.ReceivedVideoSize;
                 String NewReceivedVideoSize = String.Format("{0}x{1}", receivedVideoSize.Width, receivedVideoSize.Height);
-                if (((InCallModel)ViewModel).ReceivedVideoSize != NewReceivedVideoSize)
+                String OldReceivedVideoSize = ((InCallModel)ViewModel).ReceivedVideoSize;
+                if (OldReceivedVideoSize != NewReceivedVideoSize)
                 {
                     ((InCallModel)ViewModel).ReceivedVideoSize = String.Format("{0}x{1}", receivedVideoSize.Width, receivedVideoSize.Height);
-                    ((InCallModel)ViewModel).HideVideo();
-                    ((InCallModel)ViewModel).ShowVideo();
+                    ((InCallModel)ViewModel).IsVideoActive = false;
+                    if (NewReceivedVideoSize != "0x0")
+                    {
+                        ((InCallModel)ViewModel).IsVideoActive = true;
+                    }
                 }
                 Windows.Foundation.Size sentVideoSize = param.SentVideoSize;
                 ((InCallModel)ViewModel).SentVideoSize = String.Format("{0}x{1}", sentVideoSize.Width, sentVideoSize.Height);
