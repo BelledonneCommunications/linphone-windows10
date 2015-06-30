@@ -64,3 +64,6 @@
 [submodule "submodules/libvpx"]
 	path = submodules/libvpx
 	url = https://chromium.googlesource.com/webm/libvpx
+[submodule "submodules/bzrtp"]
+	path = submodules/bzrtp
+	url = git://git.linphone.org/bzrtp.git
