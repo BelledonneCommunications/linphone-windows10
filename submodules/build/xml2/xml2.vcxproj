@@ -27,54 +27,54 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\libxml2\c14n.c" />
-    <ClCompile Include="..\..\..\..\libxml2\catalog.c" />
-    <ClCompile Include="..\..\..\..\libxml2\chvalid.c" />
-    <ClCompile Include="..\..\..\..\libxml2\debugXML.c" />
-    <ClCompile Include="..\..\..\..\libxml2\dict.c" />
-    <ClCompile Include="..\..\..\..\libxml2\DOCBparser.c" />
-    <ClCompile Include="..\..\..\..\libxml2\encoding.c" />
-    <ClCompile Include="..\..\..\..\libxml2\entities.c" />
-    <ClCompile Include="..\..\..\..\libxml2\error.c" />
-    <ClCompile Include="..\..\..\..\libxml2\globals.c" />
-    <ClCompile Include="..\..\..\..\libxml2\hash.c" />
-    <ClCompile Include="..\..\..\..\libxml2\HTMLparser.c" />
-    <ClCompile Include="..\..\..\..\libxml2\HTMLtree.c" />
-    <ClCompile Include="..\..\..\..\libxml2\legacy.c" />
-    <ClCompile Include="..\..\..\..\libxml2\list.c" />
-    <ClCompile Include="..\..\..\..\libxml2\nanoftp.c" />
-    <ClCompile Include="..\..\..\..\libxml2\nanohttp.c" />
-    <ClCompile Include="..\..\..\..\libxml2\parser.c" />
-    <ClCompile Include="..\..\..\..\libxml2\parserInternals.c" />
-    <ClCompile Include="..\..\..\..\libxml2\pattern.c" />
-    <ClCompile Include="..\..\..\..\libxml2\relaxng.c" />
-    <ClCompile Include="..\..\..\..\libxml2\SAX.c" />
-    <ClCompile Include="..\..\..\..\libxml2\SAX2.c" />
-    <ClCompile Include="..\..\..\..\libxml2\schematron.c" />
-    <ClCompile Include="..\..\..\..\libxml2\threads.c" />
-    <ClCompile Include="..\..\..\..\libxml2\tree.c" />
-    <ClCompile Include="..\..\..\..\libxml2\uri.c" />
-    <ClCompile Include="..\..\..\..\libxml2\valid.c" />
-    <ClCompile Include="..\..\..\..\libxml2\xinclude.c" />
-    <ClCompile Include="..\..\..\..\libxml2\xlink.c" />
-    <ClCompile Include="..\..\..\..\libxml2\xmlcatalog.c" />
-    <ClCompile Include="..\..\..\..\libxml2\xmlIO.c" />
-    <ClCompile Include="..\..\..\..\libxml2\xmlmemory.c" />
-    <ClCompile Include="..\..\..\..\libxml2\xmlmodule.c" />
-    <ClCompile Include="..\..\..\..\libxml2\xmlreader.c" />
-    <ClCompile Include="..\..\..\..\libxml2\xmlregexp.c" />
-    <ClCompile Include="..\..\..\..\libxml2\xmlsave.c" />
-    <ClCompile Include="..\..\..\..\libxml2\xmlschemas.c" />
-    <ClCompile Include="..\..\..\..\libxml2\xmlschemastypes.c" />
-    <ClCompile Include="..\..\..\..\libxml2\xmlstring.c" />
-    <ClCompile Include="..\..\..\..\libxml2\xmlunicode.c" />
-    <ClCompile Include="..\..\..\..\libxml2\xmlwriter.c" />
-    <ClCompile Include="..\..\..\..\libxml2\xpath.c" />
-    <ClCompile Include="..\..\..\..\libxml2\xpointer.c" />
+    <ClCompile Include="..\..\libxml2\c14n.c" />
+    <ClCompile Include="..\..\libxml2\catalog.c" />
+    <ClCompile Include="..\..\libxml2\chvalid.c" />
+    <ClCompile Include="..\..\libxml2\debugXML.c" />
+    <ClCompile Include="..\..\libxml2\dict.c" />
+    <ClCompile Include="..\..\libxml2\DOCBparser.c" />
+    <ClCompile Include="..\..\libxml2\encoding.c" />
+    <ClCompile Include="..\..\libxml2\entities.c" />
+    <ClCompile Include="..\..\libxml2\error.c" />
+    <ClCompile Include="..\..\libxml2\globals.c" />
+    <ClCompile Include="..\..\libxml2\hash.c" />
+    <ClCompile Include="..\..\libxml2\HTMLparser.c" />
+    <ClCompile Include="..\..\libxml2\HTMLtree.c" />
+    <ClCompile Include="..\..\libxml2\legacy.c" />
+    <ClCompile Include="..\..\libxml2\list.c" />
+    <ClCompile Include="..\..\libxml2\nanoftp.c" />
+    <ClCompile Include="..\..\libxml2\nanohttp.c" />
+    <ClCompile Include="..\..\libxml2\parser.c" />
+    <ClCompile Include="..\..\libxml2\parserInternals.c" />
+    <ClCompile Include="..\..\libxml2\pattern.c" />
+    <ClCompile Include="..\..\libxml2\relaxng.c" />
+    <ClCompile Include="..\..\libxml2\SAX.c" />
+    <ClCompile Include="..\..\libxml2\SAX2.c" />
+    <ClCompile Include="..\..\libxml2\schematron.c" />
+    <ClCompile Include="..\..\libxml2\threads.c" />
+    <ClCompile Include="..\..\libxml2\tree.c" />
+    <ClCompile Include="..\..\libxml2\uri.c" />
+    <ClCompile Include="..\..\libxml2\valid.c" />
+    <ClCompile Include="..\..\libxml2\xinclude.c" />
+    <ClCompile Include="..\..\libxml2\xlink.c" />
+    <ClCompile Include="..\..\libxml2\xmlcatalog.c" />
+    <ClCompile Include="..\..\libxml2\xmlIO.c" />
+    <ClCompile Include="..\..\libxml2\xmlmemory.c" />
+    <ClCompile Include="..\..\libxml2\xmlmodule.c" />
+    <ClCompile Include="..\..\libxml2\xmlreader.c" />
+    <ClCompile Include="..\..\libxml2\xmlregexp.c" />
+    <ClCompile Include="..\..\libxml2\xmlsave.c" />
+    <ClCompile Include="..\..\libxml2\xmlschemas.c" />
+    <ClCompile Include="..\..\libxml2\xmlschemastypes.c" />
+    <ClCompile Include="..\..\libxml2\xmlstring.c" />
+    <ClCompile Include="..\..\libxml2\xmlunicode.c" />
+    <ClCompile Include="..\..\libxml2\xmlwriter.c" />
+    <ClCompile Include="..\..\libxml2\xpath.c" />
+    <ClCompile Include="..\..\libxml2\xpointer.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\libxml2\elfgcchack.h" />
-    <ClInclude Include="..\..\..\..\libxml2\libxml.h" />
+    <ClInclude Include="..\..\libxml2\elfgcchack.h" />
+    <ClInclude Include="..\..\libxml2\libxml.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="libxml2_port.h" />
     <ClInclude Include="xmlversion.h" />
@@ -120,7 +120,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>false</CompileAsWinRT>
       <ForcedIncludeFiles>$(ProjectDir)libxml2_port.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(SolutionDir)$(Platform)\$(Configuration)\include;$(ProjectDir)..\..\..\..\libxml2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)$(Platform)\$(Configuration)\include;$(ProjectDir)..\..\libxml2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>HAVE_WIN32_THREADS;HAVE_COMPILER_TLS;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
