@@ -198,6 +198,7 @@ namespace Linphone
 				Platform::String^ get();
 			}
 
+#if 0
 			/// <summary>
 			/// Uses the CallContext object (native VoipPhoneCall) to get the DateTimeOffset at which the call started
 			/// </summary>
@@ -205,6 +206,7 @@ namespace Linphone
 			{
 				Platform::Object^ get();
 			}
+#endif
 
 			/// <summary>
 			/// Tells whether video captured from the camera is sent to the remote party.
@@ -228,6 +230,7 @@ namespace Linphone
 			/// </summary>
 			void SendVFURequest();
 
+#if 0
 			/// <summary>
 			/// Gets the CallContext object (native VoipPhoneCall)
 			/// </summary>
@@ -236,6 +239,7 @@ namespace Linphone
 				Windows::Phone::Networking::Voip::VoipPhoneCall^ get();
 				void set(Windows::Phone::Networking::Voip::VoipPhoneCall^ cc);
             }
+#endif
 
 			/// <summary>
 			/// Gets the reason for a call termination (either error or normal termination)
@@ -253,7 +257,7 @@ namespace Linphone
 			LinphoneCall(::LinphoneCall *call);
 			~LinphoneCall();
 			
-			Windows::Phone::Networking::Voip::VoipPhoneCall^ callContext;
+			//Windows::Phone::Networking::Voip::VoipPhoneCall^ callContext;
 			::LinphoneCall *call;
 		};
 	}

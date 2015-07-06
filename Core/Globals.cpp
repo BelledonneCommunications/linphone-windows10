@@ -28,7 +28,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using namespace Linphone::Core;
 using namespace Windows::Foundation;
-using namespace Windows::Phone::Media::Capture;
+//using namespace Windows::Phone::Media::Capture;
 
 // Maximum number of characters required to contain the string version of an unsigned integer
 #define MAX_CHARS_IN_UINT_AS_STRING ((sizeof(unsigned int) * 4) + 1)
@@ -196,6 +196,7 @@ Linphone::Core::BackgroundModeLogger^ Globals::BackgroundModeLogger::get()
 	return this->backgroundModeLogger;
 }
 
+#if 0
 Mediastreamer2::WP8Video::IVideoRenderer^ Globals::VideoRenderer::get()
 {
 	return this->videoRenderer;
@@ -206,6 +207,7 @@ void Globals::VideoRenderer::set(Mediastreamer2::WP8Video::IVideoRenderer^ value
 	API_LOCK;
 	this->videoRenderer = value;
 }
+#endif
 
 Globals::Globals() :
     started(false),

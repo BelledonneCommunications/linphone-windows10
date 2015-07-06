@@ -40,8 +40,8 @@ using namespace Platform;
 using namespace Platform::Collections;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
-using namespace Windows::Phone::Media::Devices;
-using namespace Windows::Phone::Networking::Voip;
+//using namespace Windows::Phone::Media::Devices;
+//using namespace Windows::Phone::Networking::Voip;
 using namespace Windows::System::Threading;
 
 
@@ -515,6 +515,7 @@ static void EchoCalibrationCallback(LinphoneCore *lc, LinphoneEcCalibratorStatus
 
 static void EchoCalibrationAudioInit(void *data)
 {
+#if 0
 	Linphone::Core::EchoCalibrationData *ecData = static_cast<Linphone::Core::EchoCalibrationData *>(data);
 	if (ecData != nullptr) {
 		ecData->endpoint = AudioRoutingManager::GetDefault()->GetAudioEndpoint();
@@ -528,22 +529,27 @@ static void EchoCalibrationAudioInit(void *data)
 		ecData->call->NotifyCallActive();
 	}
 	AudioRoutingManager::GetDefault()->SetAudioEndpoint(AudioRoutingEndpoint::Speakerphone);
+#endif
 }
 
 static void EchoCalibrationAudioUninit(void *data)
 {
+#if 0
 	Linphone::Core::EchoCalibrationData *ecData = static_cast<Linphone::Core::EchoCalibrationData *>(data);
 	if (ecData != nullptr) {
 		ecData->call->NotifyCallEnded();
 		AudioRoutingManager::GetDefault()->SetAudioEndpoint(AudioRoutingEndpoint::Default);
 	}
+#endif
 }
 
 void Linphone::Core::LinphoneCore::StartEchoCalibration() 
 {
+#if 0
 	API_LOCK;
 	Linphone::Core::EchoCalibrationData *data = new Linphone::Core::EchoCalibrationData();
 	linphone_core_start_echo_calibration(this->lc, EchoCalibrationCallback, EchoCalibrationAudioInit, EchoCalibrationAudioUninit, data);
+#endif
 }
 
 void Linphone::Core::LinphoneCore::EchoLimiterEnabled::set(Platform::Boolean enable)
@@ -695,6 +701,12 @@ Platform::Boolean Linphone::Core::LinphoneCore::KeepAliveEnabled::get()
 {
 	API_LOCK;
 	return (linphone_core_keep_alive_enabled(this->lc) == TRUE);
+}
+
+Platform::String^ Linphone::Core::LinphoneCore::PlayFile::get()
+{
+	API_LOCK;
+	return Linphone::Core::Utils::cctops(linphone_core_get_play_file(this->lc));
 }
 
 void Linphone::Core::LinphoneCore::PlayFile::set(Platform::String^ path)
@@ -1189,8 +1201,12 @@ void Linphone::Core::LinphoneCore::VideoDisplayEnabled::set(Platform::Boolean en
 
 int Linphone::Core::LinphoneCore::NativeVideoWindowId::get()
 {
+#if 0
 	API_LOCK;
 	return Globals::Instance->VideoRenderer->GetNativeWindowId();
+#else
+	return 0;
+#endif
 }
 
 int Linphone::Core::LinphoneCore::CameraSensorRotation::get()
@@ -1235,6 +1251,12 @@ Linphone::Core::LinphoneChatRoom^ Linphone::Core::LinphoneCore::GetChatRoomFromU
 	return lChatRoom;
 }
 
+Platform::String^ Linphone::Core::LinphoneCore::LogCollectionUploadServerUrl::get()
+{
+	API_LOCK;
+	return nullptr; // TODO
+}
+
 void Linphone::Core::LinphoneCore::LogCollectionUploadServerUrl::set(Platform::String^ url)
 {
 	API_LOCK;
@@ -1266,6 +1288,12 @@ void Linphone::Core::LinphoneCore::NotifyMute(bool isMuted)
 	API_LOCK;
 	Globals::Instance->CallController->NotifyMute(isMuted);
 	MicMuted = isMuted;
+}
+
+Platform::String^ Linphone::Core::LinphoneCore::ChatDatabasePath::get()
+{
+	API_LOCK;
+	return nullptr; // TODO
 }
 
 void Linphone::Core::LinphoneCore::ChatDatabasePath::set(Platform::String^ chatDatabasePath)
@@ -1321,17 +1349,23 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 		{
 			name = lCall->RemoteAddress->UserName;
 		}
+#if 0
 		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = callController->OnIncomingCallReceived(lCall, name, lCall->RemoteAddress->AsStringUriOnly(), callController->IncomingCallViewDismissed);
 		lCall->CallContext = platformCall;
+#endif
 	} 
 	else if (state == Linphone::Core::LinphoneCallState::OutgoingProgress) {
+#if 0
 		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = callController->NewOutgoingCall(lCall->RemoteAddress->AsStringUriOnly());
 		lCall->CallContext = platformCall;
+#endif
 	}
 	else if (state == Linphone::Core::LinphoneCallState::CallEnd || state == Linphone::Core::LinphoneCallState::Error) {
+#if 0
 		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = (Windows::Phone::Networking::Voip::VoipPhoneCall^) lCall->CallContext;
 		if (platformCall != nullptr)
 			platformCall->NotifyCallEnded();
+#endif
 
 		if (callController->IncomingCallViewDismissed != nullptr) {
 			// When we receive a call with PN, call the callback to kill the agent process in case the caller stops the call before user accepts/denies it
@@ -1339,11 +1373,14 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 		}
 	}
 	else if (state == Linphone::Core::LinphoneCallState::Paused || state == Linphone::Core::LinphoneCallState::PausedByRemote) {
+#if 0
 		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = (Windows::Phone::Networking::Voip::VoipPhoneCall^) lCall->CallContext;
 		if (platformCall != nullptr)
 			platformCall->NotifyCallHeld();
+#endif
 	}
 	else if (state == Linphone::Core::LinphoneCallState::StreamsRunning) {
+#if 0
 		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = (Windows::Phone::Networking::Voip::VoipPhoneCall^) lCall->CallContext;
 		if (platformCall == nullptr) {
 			// If CallContext is null here, it is because we have an incoming call using the custom incoming call view so create the VoipPhoneCall now
@@ -1356,6 +1393,7 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 			platformCall->CallMedia = VoipCallMedia::Audio;
 		}
 		platformCall->NotifyCallActive();
+#endif
 	}
 	
 	Linphone::Core::LinphoneCoreListener^ listener = Linphone::Core::Globals::Instance->LinphoneCore->CoreListener;
@@ -1566,8 +1604,10 @@ void Linphone::Core::LinphoneCore::Init()
 	linphone_core_set_user_data(this->lc, proxy);
 
 	linphone_core_set_ring(this->lc, nullptr);
+#if 0
 	RefToPtrProxy<Mediastreamer2::WP8Video::IVideoRenderer^> *renderer = new RefToPtrProxy<Mediastreamer2::WP8Video::IVideoRenderer^>(Globals::Instance->VideoRenderer);
 	linphone_core_set_native_video_window_id(this->lc, (unsigned long)renderer);
+#endif
 }
 
 Linphone::Core::LinphoneCore::~LinphoneCore()

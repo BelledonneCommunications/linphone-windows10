@@ -121,7 +121,7 @@ namespace Linphone
 			/// Same as AsString.
 			/// </summary>
 			/// <seealso cref="AsString()" />
-			Platform::String^ ToString();
+			virtual Platform::String^ ToString() override;
 
 		private:
 			friend class Linphone::Core::Utils;

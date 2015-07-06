@@ -50,7 +50,7 @@ namespace Linphone
 			/// Gets a string representation of the TunnelConfig.
 			/// </summary>
 			/// <returns>The string representation of the tunnel config</returns>
-			Platform::String^ ToString();
+			virtual Platform::String^ ToString() override;
 
 			/// <summary>
 			/// The tunnel server host.

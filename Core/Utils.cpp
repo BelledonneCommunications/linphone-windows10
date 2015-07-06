@@ -231,6 +231,7 @@ Platform::Object^ Linphone::Core::Utils::CreateVideoSize(int width, int height, 
 
 void Linphone::Core::Utils::EchoCalibrationCallback(void *lc, int status, int delay_ms, void *data)
 {
+#if 0
 	API_LOCK;
 	EchoCalibrationData *ecData = static_cast<EchoCalibrationData *>(data);
 	if (ecData != nullptr) {
@@ -240,6 +241,7 @@ void Linphone::Core::Utils::EchoCalibrationCallback(void *lc, int status, int de
 	Linphone::Core::LinphoneCore^ lCore = (proxy) ? proxy->Ref() : nullptr;
 	Linphone::Core::EcCalibratorStatus ecStatus = (Linphone::Core::EcCalibratorStatus) status;
 	lCore->listener->EcCalibrationStatus(ecStatus, delay_ms);
+#endif
 }
 
  Platform::Object^ Linphone::Core::Utils::CreateLinphoneChatMessage(void* message)

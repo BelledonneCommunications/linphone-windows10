@@ -88,6 +88,7 @@ namespace Linphone
                 Linphone::Core::CallController^ get(); 
             }
 
+#if 0
 			/// <summary>
 			/// Access the video renderer instance
 			/// </summary>
@@ -96,6 +97,7 @@ namespace Linphone
 				Mediastreamer2::WP8Video::IVideoRenderer^ get();
 				void set(Mediastreamer2::WP8Video::IVideoRenderer^ value);
 			}
+#endif
 
         private:
             Globals();
@@ -124,7 +126,7 @@ namespace Linphone
 
             Linphone::Core::CallController^ callController; 
 
-			Mediastreamer2::WP8Video::IVideoRenderer^ videoRenderer;
+			//Mediastreamer2::WP8Video::IVideoRenderer^ videoRenderer;
         };
     }
 }

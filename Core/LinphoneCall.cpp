@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "LinphoneCoreFactory.h"
 #include "Globals.h"
 
-using namespace Windows::Phone::Networking::Voip;
+//using namespace Windows::Phone::Networking::Voip;
 
 Linphone::Core::LinphoneCallState Linphone::Core::LinphoneCall::State::get()
 {
@@ -157,6 +157,7 @@ Platform::String^ Linphone::Core::LinphoneCall::RemoteContact::get()
 	return Linphone::Core::Utils::cctops(linphone_call_get_remote_contact(this->call));
 }
 
+#if 0
 void Linphone::Core::LinphoneCall::CallContext::set(Windows::Phone::Networking::Voip::VoipPhoneCall^ cc)
 {
 	API_LOCK;
@@ -176,6 +177,7 @@ Platform::Object^ Linphone::Core::LinphoneCall::CallStartTimeFromContext::get()
 	}
 	return result;
 }
+#endif
 
 Platform::Boolean Linphone::Core::LinphoneCall::CameraEnabled::get()
 {
@@ -201,10 +203,12 @@ void Linphone::Core::LinphoneCall::SendVFURequest()
 	linphone_call_send_vfu_request(this->call);
 }
 
+#if 0
 Windows::Phone::Networking::Voip::VoipPhoneCall^ Linphone::Core::LinphoneCall::CallContext::get()
 {
 	return this->callContext;
 }
+#endif
 
 Linphone::Core::Reason Linphone::Core::LinphoneCall::Reason::get()
 {

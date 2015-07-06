@@ -16,7 +16,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #pragma once
 
-#include <windows.phone.networking.voip.h>
+//#include <windows.phone.networking.voip.h>
 #include "Enums.h"
 #include "ApiLock.h"
 
@@ -46,21 +46,21 @@ namespace Linphone
 			/// <param name="contactNumber">The number or SIP URI of the caller</param>
 			/// <param name="incomingCallViewDismissedCallback">The callback to be called if the notified incoming call is dismissed by the user</param>
 			/// <returns>The system VoipPhoneCall that has been notified</returns>
-            Windows::Phone::Networking::Voip::VoipPhoneCall^ OnIncomingCallReceived(LinphoneCall^ call, Platform::String^ contactName, Platform::String^ contactNumber, IncomingCallViewDismissedCallback^ incomingCallViewDismissedCallback); 
+            //Windows::Phone::Networking::Voip::VoipPhoneCall^ OnIncomingCallReceived(LinphoneCall^ call, Platform::String^ contactName, Platform::String^ contactNumber, IncomingCallViewDismissedCallback^ incomingCallViewDismissedCallback); 
 
 			/// <summary>
 			/// Starts an outgoing call using native VoipPhoneCall.
 			/// </summary>
 			/// <param name="number">The number of SIP URI to call</param>
 			/// <returns>The system VoipPhoneCall that has been initiated</returns>
-			Windows::Phone::Networking::Voip::VoipPhoneCall^ NewOutgoingCall(Platform::String^ number);
+			//Windows::Phone::Networking::Voip::VoipPhoneCall^ NewOutgoingCall(Platform::String^ number);
 
 			/// <summary>
 			/// Starts an incoming call for custom incoming call view.
 			/// </summary>
 			/// <param name="contactNumber">The number or SIP URI of the caller</param>
 			/// <returns>The system VoipPhoneCall that has been created</returns>
-			Windows::Phone::Networking::Voip::VoipPhoneCall^ NewIncomingCallForCustomIncomingCallView(Platform::String^ contactNumber);
+			//Windows::Phone::Networking::Voip::VoipPhoneCall^ NewIncomingCallForCustomIncomingCallView(Platform::String^ contactNumber);
 
 			/// <summary>
 			/// Notifies the system that the call needs to be muted/unmuted.
@@ -112,7 +112,7 @@ namespace Linphone
 
             Windows::Foundation::Uri^ ringtoneUri; 
 
-            Windows::Phone::Networking::Voip::VoipCallCoordinator^ callCoordinator; 
+            //Windows::Phone::Networking::Voip::VoipCallCoordinator^ callCoordinator; 
 
 			Linphone::Core::LinphoneCall^ call;
 
@@ -120,12 +120,12 @@ namespace Linphone
 
 			Platform::Boolean customIncomingCallView;
 
-            void OnAcceptCallRequested(Windows::Phone::Networking::Voip::VoipPhoneCall^ sender, Windows::Phone::Networking::Voip::CallAnswerEventArgs^ args); 
+            //void OnAcceptCallRequested(Windows::Phone::Networking::Voip::VoipPhoneCall^ sender, Windows::Phone::Networking::Voip::CallAnswerEventArgs^ args); 
  
-            void OnRejectCallRequested(Windows::Phone::Networking::Voip::VoipPhoneCall^ sender, Windows::Phone::Networking::Voip::CallRejectEventArgs^ args); 
+            //void OnRejectCallRequested(Windows::Phone::Networking::Voip::VoipPhoneCall^ sender, Windows::Phone::Networking::Voip::CallRejectEventArgs^ args); 
  
-            Windows::Foundation::TypedEventHandler<Windows::Phone::Networking::Voip::VoipPhoneCall^, Windows::Phone::Networking::Voip::CallAnswerEventArgs^>^ acceptCallRequestedHandler; 
-            Windows::Foundation::TypedEventHandler<Windows::Phone::Networking::Voip::VoipPhoneCall^, Windows::Phone::Networking::Voip::CallRejectEventArgs^>^ rejectCallRequestedHandler; 
+            //Windows::Foundation::TypedEventHandler<Windows::Phone::Networking::Voip::VoipPhoneCall^, Windows::Phone::Networking::Voip::CallAnswerEventArgs^>^ acceptCallRequestedHandler; 
+            //Windows::Foundation::TypedEventHandler<Windows::Phone::Networking::Voip::VoipPhoneCall^, Windows::Phone::Networking::Voip::CallRejectEventArgs^>^ rejectCallRequestedHandler; 
             
             CallController();
             ~CallController();

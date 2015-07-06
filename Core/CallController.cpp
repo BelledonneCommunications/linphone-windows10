@@ -24,10 +24,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using namespace Linphone::Core;
 using namespace Platform;
 using namespace Windows::Foundation;
-using namespace Windows::Phone::Networking::Voip;
+//using namespace Windows::Phone::Networking::Voip;
 
 //#define ACCEPT_WITH_VIDEO_OR_WITH_AUDIO_ONLY
 
+#if 0
 VoipPhoneCall^ CallController::OnIncomingCallReceived(Linphone::Core::LinphoneCall^ call, Platform::String^ contactName, Platform::String^ contactNumber, IncomingCallViewDismissedCallback^ incomingCallViewDismissedCallback)
 {
 	VoipPhoneCall^ incomingCall = nullptr;
@@ -158,13 +159,16 @@ VoipPhoneCall^ CallController::NewIncomingCallForCustomIncomingCallView(Platform
 
 	return incomingCall;
 }
+#endif
 
 void CallController::NotifyMute(bool isMuted)
 {
+#if 0
 	if (isMuted)
 		this->callCoordinator->NotifyMuted();
 	else
 		this->callCoordinator->NotifyUnmuted();
+#endif
 }
 
 IncomingCallViewDismissedCallback^ CallController::IncomingCallViewDismissed::get()
@@ -206,8 +210,8 @@ CallController::CallController() :
 		defaultContactImageUri(nullptr),
 		linphoneImageUri(nullptr),
 		ringtoneUri(nullptr),
-		declineReason(Linphone::Core::Reason::LinphoneReasonDeclined),
-		callCoordinator(VoipCallCoordinator::GetDefault())
+		declineReason(Linphone::Core::Reason::LinphoneReasonDeclined) //,
+		//callCoordinator(VoipCallCoordinator::GetDefault())
 {
 	// URIs required for interactions with the VoipCallCoordinator
     String^ installFolder = String::Concat(Windows::ApplicationModel::Package::Current->InstalledLocation->Path, "\\");
@@ -216,8 +220,8 @@ CallController::CallController() :
 	this->linphoneImageUri = ref new Uri(installFolder, "Assets\\pnicon.png");
 	this->ringtoneUri = ref new Uri(installFolder, "Assets\\Sounds\\oldphone.wma");
 
-	this->acceptCallRequestedHandler = ref new TypedEventHandler<VoipPhoneCall^, CallAnswerEventArgs^>(this, &CallController::OnAcceptCallRequested);
-    this->rejectCallRequestedHandler = ref new TypedEventHandler<VoipPhoneCall^, CallRejectEventArgs^>(this, &CallController::OnRejectCallRequested);
+	//this->acceptCallRequestedHandler = ref new TypedEventHandler<VoipPhoneCall^, CallAnswerEventArgs^>(this, &CallController::OnAcceptCallRequested);
+    //this->rejectCallRequestedHandler = ref new TypedEventHandler<VoipPhoneCall^, CallRejectEventArgs^>(this, &CallController::OnRejectCallRequested);
 }
 
 CallController::~CallController()

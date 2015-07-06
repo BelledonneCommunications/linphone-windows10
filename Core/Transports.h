@@ -35,7 +35,7 @@ namespace Linphone
 			/// Gets a string representation of the Transports object.
 			/// </summary>
 			/// <returns>A string representation of the Transports object</returns>
-			Platform::String^ ToString();
+			virtual Platform::String^ ToString() override;
 
 			/// <summary>
 			/// UDP port of the Transports object.

@@ -37,6 +37,7 @@ namespace Linphone
 			/// </summary>
 			property int AudioBandwidthLimit
 			{
+				int get();
 				void set(int value);
 			}
 

@@ -243,10 +243,12 @@ namespace Linphone
 			static std::string UTF16ToUTF8(const wchar_t *utf16);
 		};
 
+#if 0
 		struct EchoCalibrationData {
 			Windows::Phone::Media::Devices::AudioRoutingEndpoint endpoint;
 			Windows::Phone::Networking::Voip::VoipPhoneCall^ call;
 		};
+#endif
 
 		template <class T>
 		class RefToPtrProxy

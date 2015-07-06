@@ -539,6 +539,7 @@ namespace Linphone
 			/// </summary>
 			property Platform::String^ PlayFile
 			{
+				Platform::String^ get();
 				void set(Platform::String^ value);
 			}
 
@@ -991,6 +992,7 @@ namespace Linphone
 			/// </summary>
 			property Platform::String^ LogCollectionUploadServerUrl
 			{
+				Platform::String^ get();
 				void set(Platform::String^ value);
 			}
 
@@ -1022,6 +1024,7 @@ namespace Linphone
 			/// </summary>
 			property Platform::String^ ChatDatabasePath
 			{
+				Platform::String^ get();
 				void set(Platform::String^ value);
 			}
 
