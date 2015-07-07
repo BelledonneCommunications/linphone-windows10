@@ -1,0 +1,210 @@
+/*
+Utils.cpp
+Copyright (C) 2015  Belledonne Communications, Grenoble, France
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+*/
+
+#include "Address.h"
+#include "AuthInfo.h"
+#include "Call.h"
+#include "CallLog.h"
+#include "CallParams.h"
+#include "CallStats.h"
+#include "ChatMessage.h"
+#include "ChatRoom.h"
+#include "LpConfig.h"
+#include "PayloadType.h"
+#include "ProxyConfig.h"
+#include "Transports.h"
+#include "Utils.h"
+#include "VideoPolicy.h"
+#include "VideoSize.h"
+
+#include <Stringapiset.h>
+#include <time.h>
+
+
+using namespace Windows::Storage;
+
+
+std::wstring Linphone::Native::Utils::UTF8ToUTF16(const char *utf8)
+{
+	if ((utf8 == nullptr) || (*utf8 == '\0'))
+		return std::wstring();
+
+	int utf8len = static_cast<int>(strlen(utf8));
+
+	// Get the size to alloc for utf-16 string
+	int utf16len = MultiByteToWideChar(CP_UTF8, 0, utf8, utf8len, nullptr, 0);
+	if (utf16len == 0) {
+		DWORD error = GetLastError();
+		ms_error("Invalid UTF-8 character, can't convert to UTF-16: %d", error);
+		return std::wstring();
+	}
+
+	// Do the conversion
+	std::wstring utf16;
+	utf16.resize(utf16len);
+	if (MultiByteToWideChar(CP_UTF8, 0, utf8, utf8len, &utf16[0], (int)utf16.length()) == 0) {
+		DWORD error = GetLastError();
+		ms_error("Error during string conversion from UTF-8 to UTF-16: %d", error);
+		return std::wstring();
+	}
+	return utf16;
+}
+
+std::string Linphone::Native::Utils::UTF16ToUTF8(const wchar_t *utf16)
+{
+	if ((utf16 == nullptr) || (*utf16 == L'\0'))
+		return std::string();
+
+	// Get the size to alloc for utf-8 string
+	int utf16len = static_cast<int>(wcslen(utf16));
+	int utf8len = WideCharToMultiByte(CP_UTF8, 0, utf16, utf16len, NULL, 0, NULL, NULL);
+	if (utf8len == 0) {
+		DWORD error = GetLastError();
+		ms_error("Invalid UTF-16 character, can't convert to UTF-8: %d", error);
+		return std::string();
+	}
+
+	// Do the conversion
+	std::string utf8;
+	utf8.resize(utf8len);
+	if (WideCharToMultiByte(CP_UTF8, 0, utf16, utf16len, &utf8[0], (int)utf8.length(), NULL, NULL) == 0) {
+		DWORD error = GetLastError();
+		ms_error("Error during string conversion from UTF-16 to UTF-8: %d", error);
+		return std::string();
+	}
+	return utf8;
+}
+
+const char* Linphone::Native::Utils::pstoccs(Platform::String^ ps)
+{
+	if (ps == nullptr || ps->Length() == 0)
+		return NULL;
+
+	std::string s = Linphone::Native::Utils::UTF16ToUTF8(ps->Data());
+	char* cc = (char*) malloc(s.length()+1);
+	memcpy(cc, s.c_str(), s.length());
+	cc[s.length()] = '\0';
+	return cc;
+}
+
+Platform::String^ Linphone::Native::Utils::cctops(const char* cc)
+{
+	if (cc == NULL)
+		return nullptr;
+
+	std::wstring wid_str = Linphone::Native::Utils::UTF8ToUTF16(cc);
+	const wchar_t* w_char = wid_str.c_str();
+	return ref new Platform::String(w_char);
+}
+
+
+
+Platform::Object^ Linphone::Native::Utils::CreateAddress(const char *address)
+{
+	Address^ addr = ref new Linphone::Native::Address(address);
+	if (addr->address == nullptr) return nullptr;
+	return addr;
+}
+
+Platform::Object^ Linphone::Native::Utils::CreateAddress(void* address)
+{
+	return ref new Linphone::Native::Address((::LinphoneAddress *)address);
+}
+
+Platform::Object^ Linphone::Native::Utils::CreateAuthInfo(void* auth_info)
+{
+	return ref new Linphone::Native::AuthInfo((::LinphoneAuthInfo *)auth_info);
+}
+
+Platform::Object^ Linphone::Native::Utils::CreateLpConfig(void* config)
+{
+	return ref new Linphone::Native::LpConfig((::LpConfig *)config);
+}
+
+Platform::Object^ Linphone::Native::Utils::CreateLpConfig(Platform::String^ configPath, Platform::String^ factoryConfigPath)
+{
+	return ref new Linphone::Native::LpConfig(configPath, factoryConfigPath);
+}
+
+Platform::Object^ Linphone::Native::Utils::CreatePayloadType(void* pt)
+{
+	return ref new Linphone::Native::PayloadType((::PayloadType *)pt);
+}
+
+Platform::Object^ Linphone::Native::Utils::CreateProxyConfig(void* proxy_config)
+{
+	return ref new Linphone::Native::ProxyConfig((::LinphoneProxyConfig *)proxy_config);
+}
+
+void Linphone::Native::Utils::SetLogLevel(int loglevel)
+{
+	API_LOCK;
+	linphone_core_set_log_level(static_cast<OrtpLogLevel>(loglevel));
+}
+
+
+
+
+
+Platform::Object^ Linphone::Native::Utils::CreateLinphoneCall(void* call)
+{
+	return ref new Linphone::Native::Call((::LinphoneCall *)call);
+}
+
+Platform::Object^ Linphone::Native::Utils::CreateLinphoneCallLog(void* callLog)
+{
+	return ref new Linphone::Native::CallLog((::LinphoneCallLog *)callLog);
+}
+
+Platform::Object^ Linphone::Native::Utils::CreateLinphoneCallParams(void* callParams)
+{
+	return ref new Linphone::Native::CallParams((::LinphoneCallParams *)callParams);
+}
+
+Platform::Object^ Linphone::Native::Utils::CreateLinphoneCallStats(void* call, int mediaType)
+{
+	return ref new Linphone::Native::CallStats((::LinphoneCall *)call, (Linphone::Native::MediaType)mediaType);
+}
+
+Platform::Object^ Linphone::Native::Utils::CreateLinphoneCallStats(void *callStats)
+{
+	return ref new Linphone::Native::CallStats((::LinphoneCallStats *)callStats);
+}
+
+void Linphone::Native::Utils::EchoCalibrationCallback(void *lc, int status, int delay_ms, void *data)
+{
+#if 0
+	API_LOCK;
+	EchoCalibrationData *ecData = static_cast<EchoCalibrationData *>(data);
+	if (ecData != nullptr) {
+		delete ecData;
+	}
+	Linphone::Native::RefToPtrProxy<Linphone::Native::LinphoneCore^> *proxy = reinterpret_cast< Linphone::Native::RefToPtrProxy<Linphone::Native::LinphoneCore^> *>(linphone_core_get_user_data(static_cast<::LinphoneCore *>(lc)));
+	Linphone::Native::LinphoneCore^ lCore = (proxy) ? proxy->Ref() : nullptr;
+	Linphone::Native::EcCalibratorStatus ecStatus = (Linphone::Native::EcCalibratorStatus) status;
+	lCore->listener->EcCalibrationStatus(ecStatus, delay_ms);
+#endif
+}
+
+ Platform::Object^ Linphone::Native::Utils::CreateLinphoneChatMessage(void* message)
+ {
+	 return ref new Linphone::Native::ChatMessage((::LinphoneChatMessage *)message);
+ }
+
+ Platform::Object^ Linphone::Native::Utils::CreateLinphoneChatRoom(void* room)
+ {
+	 return ref new Linphone::Native::ChatRoom((::LinphoneChatRoom *)room);
+ }

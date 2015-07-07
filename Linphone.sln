@@ -59,7 +59,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "webrtc", "submodules\mswebr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libmsbcg729", "submodules\bcg729\build\windows10\libmsbcg729\libmsbcg729.vcxproj", "{ACF5EA95-D647-4D0C-8F97-2CD9AAE8A2E0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Core", "Core\Core.vcxproj", "{D30CBFE0-BEFF-4925-9BAD-9380F9BFCF90}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Native", "Native\Native.vcxproj", "{D30CBFE0-BEFF-4925-9BAD-9380F9BFCF90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
