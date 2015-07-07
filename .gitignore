@@ -20,3 +20,4 @@ Agents/RegistrationHelper.cs
 Linphone/Linphone.csproj.user
 *.vcxproj.filters
 *.sdf
+**/packages/*
