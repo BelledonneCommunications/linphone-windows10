@@ -30,11 +30,11 @@ Linphone::Native::PayloadType::~PayloadType()
 Platform::String^ Linphone::Native::PayloadType::MimeType::get()
 {
 	API_LOCK;
-	return Utils::cctops(this->payload->mime_type);
+	return Utils::cctops(payload_type_get_mime(this->payload));
 }
 
 int Linphone::Native::PayloadType::ClockRate::get()
 {
 	API_LOCK;
-	return this->payload->clock_rate;
+	return payload_type_get_rate(this->payload);
 }

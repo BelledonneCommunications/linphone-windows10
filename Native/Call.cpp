@@ -28,7 +28,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 Linphone::Native::CallStats^ Linphone::Native::Call::AudioStats::get()
 {
 	API_LOCK;
-	return (Linphone::Native::CallStats^) Linphone::Native::Utils::CreateLinphoneCallStats(this->call, (int)Linphone::Native::MediaType::Audio);
+	return (Linphone::Native::CallStats^) Linphone::Native::Utils::CreateCallStats(this->call, (int)Linphone::Native::MediaType::Audio);
 }
 
 Platform::String^ Linphone::Native::Call::AuthenticationToken::get()
@@ -58,7 +58,7 @@ float Linphone::Native::Call::AverageQuality::get()
 Linphone::Native::CallLog^ Linphone::Native::Call::CallLog::get()
 {
 	API_LOCK;
-	return (Linphone::Native::CallLog^) Linphone::Native::Utils::CreateLinphoneCallLog(linphone_call_get_call_log(this->call));
+	return (Linphone::Native::CallLog^) Linphone::Native::Utils::GetCallLog(linphone_call_get_call_log(this->call));
 }
 
 Platform::Boolean Linphone::Native::Call::CameraEnabled::get()
@@ -71,6 +71,12 @@ void Linphone::Native::Call::CameraEnabled::set(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_call_enable_camera(this->call, enable);
+}
+
+Linphone::Native::CallParams^ Linphone::Native::Call::CurrentParams::get()
+{
+	API_LOCK;
+	return (Linphone::Native::CallParams^) Linphone::Native::Utils::GetCallParams((void *)linphone_call_get_current_params(this->call));
 }
 
 float Linphone::Native::Call::CurrentQuality::get()
@@ -115,7 +121,7 @@ void Linphone::Native::Call::EchoLimiterEnabled::set(Platform::Boolean enable)
 	linphone_call_enable_echo_limiter(this->call, enable);
 }
 
-Platform::Boolean Linphone::Native::Call::InConference::get()
+Platform::Boolean Linphone::Native::Call::IsInConference::get()
 {
 	API_LOCK;
 	return (linphone_call_is_in_conference(this->call) == TRUE);
@@ -149,11 +155,7 @@ Linphone::Native::Address^ Linphone::Native::Call::RemoteAddress::get()
 Linphone::Native::CallParams^ Linphone::Native::Call::RemoteParams::get()
 {
 	API_LOCK;
-	Linphone::Native::CallParams^ params = nullptr;
-	if (linphone_call_get_remote_params(this->call) != nullptr) {
-		params = (Linphone::Native::CallParams^) Linphone::Native::Utils::CreateLinphoneCallParams(linphone_call_params_copy(linphone_call_get_remote_params(this->call)));
-	}
-	return params;
+	return (Linphone::Native::CallParams^) Linphone::Native::Utils::GetCallParams((void *)linphone_call_get_remote_params(this->call));
 }
 
 Platform::String^ Linphone::Native::Call::RemoteUserAgent::get()
@@ -171,13 +173,7 @@ Linphone::Native::CallState Linphone::Native::Call::State::get()
 Linphone::Native::CallStats^ Linphone::Native::Call::VideoStats::get()
 {
 	API_LOCK;
-	return (Linphone::Native::CallStats^) Linphone::Native::Utils::CreateLinphoneCallStats(this->call, (int)Linphone::Native::MediaType::Video);
-}
-
-Linphone::Native::CallParams^ Linphone::Native::Call::GetCurrentParamsCopy()
-{
-	API_LOCK;
-	return (Linphone::Native::CallParams^) Linphone::Native::Utils::CreateLinphoneCallParams(linphone_call_params_copy(linphone_call_get_current_params(this->call)));
+	return (Linphone::Native::CallStats^) Linphone::Native::Utils::CreateCallStats(this->call, (int)Linphone::Native::MediaType::Video);
 }
 
 void Linphone::Native::Call::SendVFURequest()

@@ -95,7 +95,7 @@ namespace Linphone
 			/// <summary>
 			/// Creates a ChatMessage from a String.
 			/// </summary>
-			Linphone::Native::ChatMessage^ CreateLinphoneChatMessage(Platform::String^ message);
+			Linphone::Native::ChatMessage^ CreateMessage(Platform::String^ message);
 
 			/// <summary>
 			/// Deletes all the messages associated with the peer of this chat room
@@ -105,7 +105,7 @@ namespace Linphone
 			/// <summary>
 			/// Deletes a message from the history of the chatroom
 			/// </summary>
-			void DeleteMessageFromHistory(Linphone::Native::ChatMessage^ message);
+			void DeleteMessage(Linphone::Native::ChatMessage^ message);
 
 			/// <summary>
 			/// Marks all the messages in this conversation as read

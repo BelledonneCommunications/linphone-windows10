@@ -106,7 +106,7 @@ namespace Linphone
 			/// <summary>
 			/// Enables the tunnel.
 			/// </summary>
-			property bool Enabled
+			property bool IsEnabled
 			{
 				bool get();
 				void set(bool value);

@@ -141,6 +141,7 @@ void Linphone::Native::LpConfig::SetRange(Platform::String^ section, Platform::S
 Linphone::Native::LpConfig::LpConfig(::LpConfig *config) :
 	config(config)
 {
+	lp_config_ref(config);
 }
 
 Linphone::Native::LpConfig::LpConfig(Platform::String^ configPath, Platform::String^ factoryConfigPath)
@@ -155,4 +156,7 @@ Linphone::Native::LpConfig::LpConfig(Platform::String^ configPath, Platform::Str
 
 Linphone::Native::LpConfig::~LpConfig()
 {
+	if (this->config != nullptr) {
+		lp_config_unref(this->config);
+	}
 }

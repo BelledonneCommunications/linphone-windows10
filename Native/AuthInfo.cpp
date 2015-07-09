@@ -32,13 +32,13 @@ void Linphone::Native::AuthInfo::Ha1::set(Platform::String^ ha1)
 	delete(cc);
 }
 
-Platform::String^ Linphone::Native::AuthInfo::Password::get()
+Platform::String^ Linphone::Native::AuthInfo::Passwd::get()
 {
 	API_LOCK;
 	return Utils::cctops(linphone_auth_info_get_passwd(this->auth_info));
 }
 
-void Linphone::Native::AuthInfo::Password::set(Platform::String^ password)
+void Linphone::Native::AuthInfo::Passwd::set(Platform::String^ password)
 {
 	API_LOCK;
 	const char *cc = Linphone::Native::Utils::pstoccs(password);

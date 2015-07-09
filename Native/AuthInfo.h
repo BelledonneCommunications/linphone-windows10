@@ -48,7 +48,7 @@ namespace Linphone
 			/// <summary>
 			/// The authentication password.
 			/// </summary>
-			property Platform::String^ Password
+			property Platform::String^ Passwd
 			{
 				Platform::String^ get();
 				void set(Platform::String^ value);

@@ -57,7 +57,16 @@ namespace Linphone
 			/// Tyically, ptime (packetization time) will be increased, audio codecs's output bitrate will be targetted to 20kbits/s provided that it is achievable by the codec selected after SDP handshake.
 			/// Video is automatically disabled.
 			/// </summary>
-			property Platform::Boolean LowBandwidthEnabled
+			property Platform::Boolean IsLowBandwidthEnabled
+			{
+				Platform::Boolean get();
+				void set(Platform::Boolean value);
+			}
+
+			/// <summary>
+			/// Enable or disable video.
+			/// </summary>
+			property Platform::Boolean IsVideoEnabled
 			{
 				Platform::Boolean get();
 				void set(Platform::Boolean value);
@@ -75,17 +84,17 @@ namespace Linphone
 			/// <summary>
 			/// Returns the size of the video being received.
 			/// </summary>
-			property Windows::Foundation::Size ReceivedVideoSize
+			property Linphone::Native::VideoSize^ ReceivedVideoSize
 			{
-				Windows::Foundation::Size get();
+				Linphone::Native::VideoSize^ get();
 			}
 
 			/// <summary>
 			/// Returns the size of the video being sent.
 			/// </summary>
-			property Windows::Foundation::Size SentVideoSize
+			property Linphone::Native::VideoSize^ SentVideoSize
 			{
-				Windows::Foundation::Size get();
+				Linphone::Native::VideoSize^ get();
 			}
 
 			/// <summary>
@@ -114,13 +123,9 @@ namespace Linphone
 			}
 
 			/// <summary>
-			/// Enable or disable video.
+			/// Copy an existing CallParams object to a new CallParams object.
 			/// </summary>
-			property Platform::Boolean VideoEnabled
-			{
-				Platform::Boolean get();
-				void set(Platform::Boolean value);
-			}
+			Linphone::Native::CallParams^ Copy();
 
 		private:
 			friend class Linphone::Native::Utils;

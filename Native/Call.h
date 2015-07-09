@@ -90,6 +90,16 @@ namespace Linphone
 			}
 
 			/// <summary>
+			/// Gets the current local call parameters.
+			/// Do not change this params directly, make a copy with CallParams::Copy to do that.
+			/// </summary>
+			/// <returns>The current local call parameters</returns>
+			property CallParams^ CurrentParams
+			{
+				CallParams^ get();
+			}
+
+			/// <summary>
 			/// Obtain real time quality rating of the call.
 			/// Based on local RTP statistics and RTCP feedback, a quality rating is computed and updated during all the duration of the call.
 			/// This function returns its value at the time of the function call.
@@ -146,7 +156,7 @@ namespace Linphone
 			/// <summary>
 			/// Tells whether the call is in conference or not.
 			/// </summary>
-			property Platform::Boolean InConference
+			property Platform::Boolean IsInConference
 			{
 				Platform::Boolean get();
 			}
@@ -187,6 +197,7 @@ namespace Linphone
 			/// <summary>
 			/// Gets the call parameters given by the remote peer.
 			/// This is useful for example to know if far end supports video or encryption.
+			/// Do not change this params directly, make a copy with CallParams::Copy to do that.
 			/// </summary>
 			property CallParams^ RemoteParams
 			{
@@ -216,12 +227,6 @@ namespace Linphone
 			{
 				CallStats^ get();
 			}
-
-			/// <summary>
-			/// Gets a copy of the current local call parameters.
-			/// </summary>
-			/// <returns>A copy of the current local call parameters</returns>
-			CallParams^ GetCurrentParamsCopy();
 
 			/// <summary>
 			/// Requests remote side to send us a Video Fast Update.

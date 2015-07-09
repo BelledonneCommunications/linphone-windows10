@@ -104,13 +104,13 @@ Linphone::Native::Tunnel::~Tunnel()
 {
 }
 
-Platform::Boolean Linphone::Native::Tunnel::Enabled::get()
+Platform::Boolean Linphone::Native::Tunnel::IsEnabled::get()
 {
 	API_LOCK;
 	return (linphone_tunnel_enabled(this->lt) == TRUE);
 }
 
-void Linphone::Native::Tunnel::Enabled::set(Platform::Boolean enable)
+void Linphone::Native::Tunnel::IsEnabled::set(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_tunnel_enable(this->lt, enable);

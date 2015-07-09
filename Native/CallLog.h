@@ -60,9 +60,17 @@ namespace Linphone
 			/// <summary>
 			/// Gets the Address of the caller.
 			/// </summary>
-			property Address^ From
+			property Address^ FromAddress
 			{
 				Address^ get();
+			}
+
+			/// <summary>
+			/// Tells whether video was enabled at the end of the call.
+			/// </summary>
+			property Platform::Boolean IsVideoEnabled
+			{
+				Platform::Boolean get();
 			}
 
 			/// <summary>
@@ -84,17 +92,9 @@ namespace Linphone
 			/// <summary>
 			/// Gets the Address of the callee.
 			/// </summary>
-			property Address^ To
+			property Address^ ToAddress
 			{
 				Address^ get();
-			}
-
-			/// <summary>
-			/// Tells whether video was enabled at the end of the call.
-			/// </summary>
-			property Platform::Boolean VideoEnabled
-			{
-				Platform::Boolean get();
 			}
 
 		private:

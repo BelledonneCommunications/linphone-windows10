@@ -38,10 +38,16 @@ int Linphone::Native::CallLog::Duration::get()
 	return linphone_call_log_get_duration(this->callLog);
 }
 
-Linphone::Native::Address^ Linphone::Native::CallLog::From::get()
+Linphone::Native::Address^ Linphone::Native::CallLog::FromAddress::get()
 {
 	API_LOCK;
-	return (Linphone::Native::Address^)Linphone::Native::Utils::CreateAddress((void*)linphone_call_log_get_from(this->callLog));
+	return (Linphone::Native::Address^)Linphone::Native::Utils::CreateAddress((void*)linphone_call_log_get_from_address(this->callLog));
+}
+
+Platform::Boolean Linphone::Native::CallLog::IsVideoEnabled::get()
+{
+	API_LOCK;
+	return (linphone_call_log_video_enabled(this->callLog) == TRUE);
 }
 
 int64 Linphone::Native::CallLog::StartDate::get()
@@ -56,16 +62,10 @@ Linphone::Native::CallStatus Linphone::Native::CallLog::Status::get()
 	return (Linphone::Native::CallStatus)linphone_call_log_get_status(this->callLog);
 }
 
-Linphone::Native::Address^ Linphone::Native::CallLog::To::get()
+Linphone::Native::Address^ Linphone::Native::CallLog::ToAddress::get()
 {
 	API_LOCK;
-	return (Linphone::Native::Address^)Linphone::Native::Utils::CreateAddress((void*)linphone_call_log_get_to(this->callLog));
-}
-
-Platform::Boolean Linphone::Native::CallLog::VideoEnabled::get()
-{
-	API_LOCK;
-	return (linphone_call_log_video_enabled(this->callLog) == TRUE);
+	return (Linphone::Native::Address^)Linphone::Native::Utils::CreateAddress((void*)linphone_call_log_get_to_address(this->callLog));
 }
 
 Linphone::Native::CallLog::CallLog(::LinphoneCallLog *cl)
@@ -73,12 +73,16 @@ Linphone::Native::CallLog::CallLog(::LinphoneCallLog *cl)
 {
 	API_LOCK;
 	RefToPtrProxy<CallLog^> *log = new RefToPtrProxy<CallLog^>(this);
-	linphone_call_log_set_user_pointer(this->callLog, log);
+	linphone_call_log_ref(this->callLog);
+	linphone_call_log_set_user_data(this->callLog, log);
 }
 
 Linphone::Native::CallLog::~CallLog()
 {
 	API_LOCK;
-	RefToPtrProxy<CallLog^> *log = reinterpret_cast<RefToPtrProxy<CallLog^> *>(linphone_call_log_get_user_pointer(this->callLog));
+	if (this->callLog != nullptr) {
+		linphone_call_log_unref(this->callLog);
+	}
+	RefToPtrProxy<CallLog^> *log = reinterpret_cast<RefToPtrProxy<CallLog^> *>(linphone_call_log_get_user_data(this->callLog));
 	delete log;
 }

@@ -36,15 +36,6 @@ namespace Linphone
 		{
 		public:
 			/// <summary>
-			/// Indicates whether AVPF/SAVPF is being used for calls using this proxy config.
-			/// </summary>
-			property Platform::Boolean AvpfEnabled
-			{
-				Platform::Boolean get();
-				void set(Platform::Boolean value);
-			}
-
-			/// <summary>
 			/// Sets the contact params to be sent along with the REGISTERs.
 			/// </summary>
 			property Platform::String^ ContactParameters
@@ -118,6 +109,24 @@ namespace Linphone
 			}
 
 			/// <summary>
+			/// Indicates whether AVPF/SAVPF is being used for calls using this proxy config.
+			/// </summary>
+			property Platform::Boolean IsAvpfEnabled
+			{
+				Platform::Boolean get();
+				void set(Platform::Boolean value);
+			}
+
+			/// <summary>
+			/// Indicates either or not PUBLISH must be issued for this ProxyConfig.
+			/// </summary>
+			property Platform::Boolean IsPublishEnabled
+			{
+				Platform::Boolean get();
+				void set(Platform::Boolean value);
+			}
+
+			/// <summary>
 			/// Returns true if this proxy config is currently registered, else returns false.
 			/// </summary>
 			property Platform::Boolean IsRegistered
@@ -126,19 +135,10 @@ namespace Linphone
 			}
 
 			/// <summary>
-			/// Indicates either or not PUBLISH must be issued for this ProxyConfig.
-			/// </summary>
-			property Platform::Boolean PublishEnabled
-			{
-				Platform::Boolean get();
-				void set(Platform::Boolean value);
-			}
-
-			/// <summary>
 			/// Enables register for this proxy config.
 			/// Register message is issued after call to Done.
 			/// </summary>
-			property Platform::Boolean RegisterEnabled
+			property Platform::Boolean IsRegisterEnabled
 			{
 				Platform::Boolean get();
 				void set(Platform::Boolean value);

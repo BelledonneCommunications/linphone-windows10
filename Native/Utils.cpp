@@ -119,17 +119,27 @@ Platform::Object^ Linphone::Native::Utils::CreateAddress(const char *address)
 	return addr;
 }
 
-Platform::Object^ Linphone::Native::Utils::CreateAddress(void* address)
+Platform::Object^ Linphone::Native::Utils::CreateAddress(void *address)
 {
 	return ref new Linphone::Native::Address((::LinphoneAddress *)address);
 }
 
-Platform::Object^ Linphone::Native::Utils::CreateAuthInfo(void* auth_info)
+Platform::Object^ Linphone::Native::Utils::CreateAuthInfo(void *auth_info)
 {
 	return ref new Linphone::Native::AuthInfo((::LinphoneAuthInfo *)auth_info);
 }
 
-Platform::Object^ Linphone::Native::Utils::CreateLpConfig(void* config)
+Platform::Object^ Linphone::Native::Utils::CreateCallStats(void *callStats)
+{
+	return ref new Linphone::Native::CallStats((::LinphoneCallStats *)callStats);
+}
+
+Platform::Object^ Linphone::Native::Utils::CreateCallStats(void *call, int mediaType)
+{
+	return ref new Linphone::Native::CallStats((::LinphoneCall *)call, (Linphone::Native::MediaType)mediaType);
+}
+
+Platform::Object^ Linphone::Native::Utils::CreateLpConfig(void *config)
 {
 	return ref new Linphone::Native::LpConfig((::LpConfig *)config);
 }
@@ -139,14 +149,97 @@ Platform::Object^ Linphone::Native::Utils::CreateLpConfig(Platform::String^ conf
 	return ref new Linphone::Native::LpConfig(configPath, factoryConfigPath);
 }
 
-Platform::Object^ Linphone::Native::Utils::CreatePayloadType(void* pt)
+Platform::Object^ Linphone::Native::Utils::CreatePayloadType(void *pt)
 {
 	return ref new Linphone::Native::PayloadType((::PayloadType *)pt);
 }
 
-Platform::Object^ Linphone::Native::Utils::CreateProxyConfig(void* proxy_config)
+Platform::Object^ Linphone::Native::Utils::GetCall(void *call)
 {
-	return ref new Linphone::Native::ProxyConfig((::LinphoneProxyConfig *)proxy_config);
+	::LinphoneCall *lCall = (::LinphoneCall *)call;
+	if (lCall == nullptr) {
+		return nullptr;
+	}
+	if (linphone_call_get_user_data(lCall) == nullptr) {
+		return ref new Linphone::Native::Call(lCall);
+	}
+	RefToPtrProxy<Linphone::Native::Call^> *proxy = reinterpret_cast<RefToPtrProxy<Linphone::Native::Call^> *>(linphone_call_get_user_data(lCall));
+	return proxy->Ref();
+}
+
+Platform::Object^ Linphone::Native::Utils::GetCallLog(void *callLog)
+{
+	::LinphoneCallLog *lCallLog = (::LinphoneCallLog *)callLog;
+	if (lCallLog == nullptr) {
+		return nullptr;
+	}
+	if (linphone_call_log_get_user_data(lCallLog) == nullptr) {
+		return ref new Linphone::Native::CallLog(lCallLog);
+	}
+	RefToPtrProxy<Linphone::Native::CallLog^> *proxy = reinterpret_cast<RefToPtrProxy<Linphone::Native::CallLog^> *>(linphone_call_log_get_user_data(lCallLog));
+	return proxy->Ref();
+}
+
+Platform::Object^ Linphone::Native::Utils::GetCallParams(void *callParams)
+{
+	::LinphoneCallParams *lCallParams = (::LinphoneCallParams *)callParams;
+	if (lCallParams == nullptr) {
+		return nullptr;
+	}
+	if (linphone_call_params_get_user_data(lCallParams) == nullptr) {
+		return ref new Linphone::Native::CallParams(lCallParams);
+	}
+	RefToPtrProxy<Linphone::Native::CallParams^> *proxy = reinterpret_cast<RefToPtrProxy<Linphone::Native::CallParams^> *>(linphone_call_params_get_user_data(lCallParams));
+	return proxy->Ref();
+}
+
+Platform::Object^ Linphone::Native::Utils::GetChatMessage(void *message)
+{
+	::LinphoneChatMessage *lChatMessage = (::LinphoneChatMessage *)message;
+	if (lChatMessage == nullptr) {
+		return nullptr;
+	}
+	if (linphone_chat_message_get_user_data(lChatMessage) == nullptr) {
+		return ref new Linphone::Native::ChatMessage(lChatMessage);
+	}
+	RefToPtrProxy<Linphone::Native::ChatMessage^> *proxy = reinterpret_cast<RefToPtrProxy<Linphone::Native::ChatMessage^> *>(linphone_chat_message_get_user_data(lChatMessage));
+	return proxy->Ref();
+}
+
+Platform::Object^ Linphone::Native::Utils::GetChatRoom(void *room)
+{
+	::LinphoneChatRoom *lChatRoom = (::LinphoneChatRoom *)room;
+	if (lChatRoom == nullptr) {
+		return nullptr;
+	}
+	if (linphone_chat_room_get_user_data(lChatRoom) == nullptr) {
+		return ref new Linphone::Native::ChatRoom(lChatRoom);
+	}
+	RefToPtrProxy<Linphone::Native::ChatRoom^> *proxy = reinterpret_cast<RefToPtrProxy<Linphone::Native::ChatRoom^> *>(linphone_chat_room_get_user_data(lChatRoom));
+	return proxy->Ref();
+}
+
+Platform::Object^ Linphone::Native::Utils::GetCore(void *core)
+{
+	::LinphoneCore *lCore = (::LinphoneCore *)core;
+	if (linphone_core_get_user_data(lCore) == nullptr) {
+		return nullptr;
+	}
+	RefToPtrProxy<Linphone::Native::Core^> *proxy = reinterpret_cast<RefToPtrProxy<Linphone::Native::Core^> *>(linphone_core_get_user_data(lCore));
+	return proxy->Ref();
+}
+
+Platform::Object^ Linphone::Native::Utils::GetProxyConfig(void *proxy_config)
+{
+	::LinphoneProxyConfig *lProxyConfig = (::LinphoneProxyConfig *)proxy_config;
+	if (lProxyConfig == nullptr) {
+		return nullptr;
+	}
+	if (linphone_proxy_config_get_user_data(lProxyConfig) == nullptr) {
+		return ref new Linphone::Native::ProxyConfig(lProxyConfig);
+	}
+	RefToPtrProxy<Linphone::Native::ProxyConfig^> *proxy = reinterpret_cast<RefToPtrProxy<Linphone::Native::ProxyConfig^> *>(linphone_proxy_config_get_user_data(lProxyConfig));
+	return proxy->Ref();
 }
 
 void Linphone::Native::Utils::SetLogLevel(int loglevel)
@@ -155,38 +248,9 @@ void Linphone::Native::Utils::SetLogLevel(int loglevel)
 	linphone_core_set_log_level(static_cast<OrtpLogLevel>(loglevel));
 }
 
-
-
-
-
-Platform::Object^ Linphone::Native::Utils::CreateLinphoneCall(void* call)
-{
-	return ref new Linphone::Native::Call((::LinphoneCall *)call);
-}
-
-Platform::Object^ Linphone::Native::Utils::CreateLinphoneCallLog(void* callLog)
-{
-	return ref new Linphone::Native::CallLog((::LinphoneCallLog *)callLog);
-}
-
-Platform::Object^ Linphone::Native::Utils::CreateLinphoneCallParams(void* callParams)
-{
-	return ref new Linphone::Native::CallParams((::LinphoneCallParams *)callParams);
-}
-
-Platform::Object^ Linphone::Native::Utils::CreateLinphoneCallStats(void* call, int mediaType)
-{
-	return ref new Linphone::Native::CallStats((::LinphoneCall *)call, (Linphone::Native::MediaType)mediaType);
-}
-
-Platform::Object^ Linphone::Native::Utils::CreateLinphoneCallStats(void *callStats)
-{
-	return ref new Linphone::Native::CallStats((::LinphoneCallStats *)callStats);
-}
-
+#if 0
 void Linphone::Native::Utils::EchoCalibrationCallback(void *lc, int status, int delay_ms, void *data)
 {
-#if 0
 	API_LOCK;
 	EchoCalibrationData *ecData = static_cast<EchoCalibrationData *>(data);
 	if (ecData != nullptr) {
@@ -196,15 +260,5 @@ void Linphone::Native::Utils::EchoCalibrationCallback(void *lc, int status, int 
 	Linphone::Native::LinphoneCore^ lCore = (proxy) ? proxy->Ref() : nullptr;
 	Linphone::Native::EcCalibratorStatus ecStatus = (Linphone::Native::EcCalibratorStatus) status;
 	lCore->listener->EcCalibrationStatus(ecStatus, delay_ms);
-#endif
 }
-
- Platform::Object^ Linphone::Native::Utils::CreateLinphoneChatMessage(void* message)
- {
-	 return ref new Linphone::Native::ChatMessage((::LinphoneChatMessage *)message);
- }
-
- Platform::Object^ Linphone::Native::Utils::CreateLinphoneChatRoom(void* room)
- {
-	 return ref new Linphone::Native::ChatRoom((::LinphoneChatRoom *)room);
- }
+#endif

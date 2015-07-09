@@ -71,6 +71,21 @@ namespace Linphone
 			static Platform::Object^ CreateAuthInfo(void* auth_info);
 
 			/// <summary>
+			/// Creates a C++/CX CallStats object using pointer to C structure.
+			/// </summary>
+			/// <param name="callstats">The ::LinphoneCallStats* to create the Linphone::Native::CallStats from</param>
+			/// <returns>The created Linphone::Native::CallStats as a Platform::Object</returns>
+			static Platform::Object^ CreateCallStats(void *callStats);
+
+			/// <summary>
+			/// Creates a C++/CX CallStats object using pointer to call C structure and media type.
+			/// </summary>
+			/// <param name="call">The ::LinphoneCall* from which to get the call statistics</param>
+			/// <param name="mediaType">The media type for which we want the statistics</param>
+			/// <returns>The created Linphone::Native::CallStats as a Platform::Object</returns>
+			static Platform::Object^ CreateCallStats(void* call, int mediaType);
+
+			/// <summary>
 			/// Creates a C++/CX LpConfig object using pointer to C structure.
 			/// </summary>
 			/// <param name="config">The ::LpConfig* to create the Linphone::Native::LpConfig from</param>
@@ -93,11 +108,53 @@ namespace Linphone
 			static Platform::Object^ CreatePayloadType(void* pt);
 
 			/// <summary>
-			/// Creates a C++/CX ProxyConfig object using pointer to C structure.
+			/// Gets a C++/CX Call object using pointer to C structure.
 			/// </summary>
-			/// <param name="proxy_config">The ::LinphoneProxyConfig* to create the Linphone::Native::ProxyConfig from</param>
-			/// <returns>The created Linphone::Native::ProxyConfig as a Platform::Object</returns>
-			static Platform::Object^ CreateProxyConfig(void* proxy_config);
+			/// <param name="call">The ::LinphoneCall* to get the Linphone::Native::Call from</param>
+			/// <returns>The created Linphone::Native::Call as a Platform::Object</returns>
+			static Platform::Object^ GetCall(void* call);
+
+			/// <summary>
+			/// Gets a C++/CX CallLog object using pointer to C structure.
+			/// </summary>
+			/// <param name="calllog">The ::LinphoneCallLog* to get the Linphone::Native::CallLog from</param>
+			/// <returns>A Linphone::Native::CallLog as a Platform::Object</returns>
+			static Platform::Object^ GetCallLog(void* calllog);
+
+			/// <summary>
+			/// Gets a C++/CX CallParams object using pointer to C structure.
+			/// </summary>
+			/// <param name="callParams">The ::LinphoneCallParams* to get the Linphone::Native::CallParams from</param>
+			/// <returns>A Linphone::Native::CallParams as a Platform::Object</returns>
+			static Platform::Object^ GetCallParams(void* callParams);
+
+			/// <summary>
+			/// Gets a C++/CX ChatMessage object using pointer to C structure.
+			/// </summary>
+			/// <param name="message">The ::LinphoneChatMessage* to get the Linphone::Native::ChatMessage from</param>
+			/// <returns>A Linphone::Native::ChatMessage as a Platform::Object</returns>
+			static Platform::Object^ GetChatMessage(void *message);
+
+			/// <summary>
+			/// Gets a C++/CX ChatRoom object using pointer to C structure.
+			/// </summary>
+			/// <param name="room">The ::LinphoneChatRoom* to get the Linphone::Native::ChatRoom from</param>
+			/// <returns>A Linphone::Native::ChatRoom as a Platform::Object</returns>
+			static Platform::Object^ GetChatRoom(void* room);
+
+			/// <summary>
+			/// Gets a C++/CX Core object using pointer to C structure.
+			/// </summary>
+			/// <param name="room">The ::LinphoneCore* to get the Linphone::Native::Core from</param>
+			/// <returns>A Linphone::Native::Core as a Platform::Object</returns>
+			static Platform::Object^ GetCore(void *core);
+
+			/// <summary>
+			/// Gets a C++/CX ProxyConfig object using pointer to C structure.
+			/// </summary>
+			/// <param name="proxy_config">The ::LinphoneProxyConfig* to get the Linphone::Native::ProxyConfig from</param>
+			/// <returns>A Linphone::Native::ProxyConfig as a Platform::Object</returns>
+			static Platform::Object^ GetProxyConfig(void* proxy_config);
 
 			/// <summary>
 			/// Define the log level.
@@ -107,45 +164,7 @@ namespace Linphone
 			/// <param name="loglevel">A bitmask of the log levels to set.</param>
 			static void SetLogLevel(int loglevel);
 
-
-
-
-			/// <summary>
-			/// Creates a C++/CX LinphoneCall object using pointer to C structure.
-			/// </summary>
-			/// <param name="call">The ::LinphoneCall* to create the Linphone::Native::LinphoneCall from</param>
-			/// <returns>The created Linphone::Native::LinphoneCall as a Platform::Object</returns>
-			static Platform::Object^ CreateLinphoneCall(void* call);
-
-			/// <summary>
-			/// Creates a C++/CX CallLog object using pointer to C structure.
-			/// </summary>
-			/// <param name="calllog">The ::LinphoneCallLog* to create the Linphone::Native::CallLog from</param>
-			/// <returns>The created Linphone::Native::CallLog as a Platform::Object</returns>
-			static Platform::Object^ CreateLinphoneCallLog(void* calllog);
-			
-			/// <summary>
-			/// Creates a C++/CX LinphoneCallParams object using pointer to C structure.
-			/// </summary>
-			/// <param name="callParams">The ::LinphoneCallParams* to create the Linphone::Native::LinphoneCallParams from</param>
-			/// <returns>The created Linphone::Native::LinphoneCallParams as a Platform::Object</returns>
-			static Platform::Object^ CreateLinphoneCallParams(void* callParams);
-			
-			/// <summary>
-			/// Creates a C++/CX LinphoneCallStats object using pointer to call C structure and media type.
-			/// </summary>
-			/// <param name="call">The ::LinphoneCall* from which to get the call statistics</param>
-			/// <param name="mediaType">The media type for which we want the statistics</param>
-			/// <returns>The created Linphone::Native::LinphoneCallStats as a Platform::Object</returns>
-			static Platform::Object^ CreateLinphoneCallStats(void* call, int mediaType);
-			
-			/// <summary>
-			/// Creates a C++/CX LinphoneCallStats object using pointer to C structure.
-			/// </summary>
-			/// <param name="callstats">The ::LinphoneCallStats* to create the Linphone::Native::LinphoneCallStats from</param>
-			/// <returns>The created Linphone::Native::LinphoneCallStats as a Platform::Object</returns>
-			static Platform::Object^ CreateLinphoneCallStats(void* callStats);
-
+#if 0
 			/// <summary>
 			/// A callback called when the echo canceller calibration finishes.
 			/// </summary>
@@ -154,17 +173,8 @@ namespace Linphone
 			/// <param name="delay_ms">The echo delay if the status is "done", 0 otherwise</param>
 			/// <param name="data">Some user data given when starting the echo canceller calibration process</param>
 			static void EchoCalibrationCallback(void *lc, int status, int delay_ms, void *data);
+#endif
 			
-			/// <summary>
-			/// Creates a C++/CX LinphoneChatMessage object using pointer to C structure.
-			/// </summary>
-			static Platform::Object^ CreateLinphoneChatMessage(void* message);
-			
-			/// <summary>
-			/// Creates a C++/CX LinphoneChatRoom object using pointer to C structure.
-			/// </summary>
-			static Platform::Object^ CreateLinphoneChatRoom(void* room);
-
 		private:
 			static std::wstring UTF8ToUTF16(const char *utf8);
 			static std::string UTF16ToUTF8(const wchar_t *utf16);

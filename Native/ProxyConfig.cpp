@@ -19,18 +19,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Utils.h"
 
 
-Platform::Boolean Linphone::Native::ProxyConfig::AvpfEnabled::get()
-{
-	API_LOCK;
-	return (linphone_proxy_config_avpf_enabled(this->proxyConfig) == TRUE);
-}
-
-void Linphone::Native::ProxyConfig::AvpfEnabled::set(Platform::Boolean enable)
-{
-	API_LOCK;
-	linphone_proxy_config_enable_avpf(this->proxyConfig, enable);
-}
-
 Platform::String^ Linphone::Native::ProxyConfig::ContactParameters::get()
 {
 	API_LOCK;
@@ -123,31 +111,43 @@ void Linphone::Native::ProxyConfig::Identity::set(Platform::String^ identity)
 	delete(cidentity);
 }
 
+Platform::Boolean Linphone::Native::ProxyConfig::IsAvpfEnabled::get()
+{
+	API_LOCK;
+	return (linphone_proxy_config_avpf_enabled(this->proxyConfig) == TRUE);
+}
+
+void Linphone::Native::ProxyConfig::IsAvpfEnabled::set(Platform::Boolean enable)
+{
+	API_LOCK;
+	linphone_proxy_config_enable_avpf(this->proxyConfig, enable);
+}
+
+Platform::Boolean Linphone::Native::ProxyConfig::IsPublishEnabled::get()
+{
+	API_LOCK;
+	return (linphone_proxy_config_publish_enabled(this->proxyConfig) == TRUE);
+}
+
+void Linphone::Native::ProxyConfig::IsPublishEnabled::set(Platform::Boolean enable)
+{
+	API_LOCK;
+	linphone_proxy_config_enable_publish(this->proxyConfig, enable);
+}
+
 Platform::Boolean Linphone::Native::ProxyConfig::IsRegistered::get()
 {
 	API_LOCK;
 	return (linphone_proxy_config_is_registered(this->proxyConfig) == TRUE);
 }
 
-Platform::Boolean Linphone::Native::ProxyConfig::PublishEnabled::get()
-{
-	API_LOCK;
-	return (linphone_proxy_config_publish_enabled(this->proxyConfig) == TRUE);
-}
-
-void Linphone::Native::ProxyConfig::PublishEnabled::set(Platform::Boolean enable)
-{
-	API_LOCK;
-	linphone_proxy_config_enable_publish(this->proxyConfig, enable);
-}
-
-Platform::Boolean Linphone::Native::ProxyConfig::RegisterEnabled::get()
+Platform::Boolean Linphone::Native::ProxyConfig::IsRegisterEnabled::get()
 {
 	API_LOCK;
 	return (linphone_proxy_config_register_enabled(this->proxyConfig) == TRUE);
 }
 
-void Linphone::Native::ProxyConfig::RegisterEnabled::set(Platform::Boolean enable)
+void Linphone::Native::ProxyConfig::IsRegisterEnabled::set(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_proxy_config_enable_register(this->proxyConfig, enable);

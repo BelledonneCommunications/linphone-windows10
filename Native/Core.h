@@ -105,19 +105,117 @@ namespace Linphone
 			}
 
 			/// <summary>
+			/// Gets liblinphone's version as a string.
+			/// </summary>
+			static property Platform::String^ Version
+			{
+				Platform::String^ get();
+			}
+
+
+
+
+			/// <summary>
 			/// Resets the log collection by removing the log files.
 			/// </summary>
 			static void ResetLogCollection();
 
 
 
+
+			/// <summary>
+			/// Gets the currently supported audio codecs, as PayloadType elements.
+			/// </summary>
+			/// <returns>A list of PayloadType objects</returns>
+			property Windows::Foundation::Collections::IVector<Linphone::Native::PayloadType^>^ AudioCodecs
+			{
+				Windows::Foundation::Collections::IVector<Linphone::Native::PayloadType^>^ get();
+			}
+
+			/// <summary>
+			/// Sets the UDP port used for audio streaming.
+			/// </summary>
+			property int AudioPort
+			{
+				int get();
+				void set(int value);
+			}
+
 			/// <summary>
 			/// Gets the current auth infos.
 			/// </summary>
 			/// <returns>The list of authentication informations</returns>
-			property Windows::Foundation::Collections::IVector<Linphone::Native::AuthInfo^>^ AuthInfos
+			property Windows::Foundation::Collections::IVector<Linphone::Native::AuthInfo^>^ AuthInfoList
 			{
 				Windows::Foundation::Collections::IVector<Linphone::Native::AuthInfo^>^ get();
+			}
+
+			/// <summary>
+			/// Gets the list of call logs of the Core.
+			/// </summary>
+			/// <returns>A list of CallLog objects</returns>
+			property Windows::Foundation::Collections::IVector<Linphone::Native::CallLog^>^ CallLogs
+			{
+				Windows::Foundation::Collections::IVector<Linphone::Native::CallLog^>^ get();
+			}
+
+			/// <summary>
+			/// Gets the current list of calls.
+			/// </summary>
+			property Windows::Foundation::Collections::IVector<Linphone::Native::Call^>^ Calls
+			{
+				Windows::Foundation::Collections::IVector<Linphone::Native::Call^>^ get();
+			}
+
+			/// <summary>
+			/// Gets the number of calls.
+			/// </summary>
+			property int CallsNb
+			{
+				int get();
+			}
+
+			/// <summary>
+			/// Gets the camera sensor rotation in degrees.
+			/// </summary>
+			property int CameraSensorRotation
+			{
+				int get();
+			}
+
+			/// <summary>
+			/// Sets the path to the database file used to store chat messages
+			/// </summary>
+			property Platform::String^ ChatDatabasePath
+			{
+				Platform::String^ get();
+				void set(Platform::String^ value);
+			}
+
+			/// <summary>
+			/// Gets the list of the created chatrooms
+			/// </summary>
+			property Windows::Foundation::Collections::IVector<Linphone::Native::ChatRoom^>^ ChatRooms
+			{
+				Windows::Foundation::Collections::IVector<Linphone::Native::ChatRoom^>^ get();
+			}
+
+			/// <summary>
+			/// Returns the number of participants to the conference, including the local participant.
+			/// Typically, after merging two calls into the conference, there is total of 3 participants:
+			/// the local participant (or local user), and two remote participants that were the destinations of the two previously establised calls.
+			/// </summary>
+			property int ConferenceSize
+			{
+				int get();
+			}
+
+			/// <summary>
+			/// Gets the LpConfig object to read/write to the config file: useful if you wish to extend the config file with your own sections.
+			/// </summary>
+			property Linphone::Native::LpConfig^ Config
+			{
+				Linphone::Native::LpConfig^ get();
 			}
 
 			/// <summary>
@@ -127,6 +225,15 @@ namespace Linphone
 			{
 				Linphone::Native::CoreListener^ get();
 				void set(Linphone::Native::CoreListener^ listener);
+			}
+
+			/// <summary>
+			/// Gets the current active call.
+			/// If there is only one ongoing call that is in the paused state, then there is no current call.
+			/// </summary>
+			property Call^ CurrentCall
+			{
+				Call^ get();
 			}
 
 			/// <summary>
@@ -141,13 +248,304 @@ namespace Linphone
 			}
 
 			/// <summary>
-			/// Set it to true to start the iterate, set it to false to stop it. 
-			/// Is disabled by default.
+			/// Tells the core the device current orientation. This can be used by capture filters
+			/// on mobile devices to select between portrait / landscape mode and to produce properly
+			///	oriented images.The exact meaning of the value in rotation if left to each device
+			///	specific implementations.
 			/// </summary>
-			property Platform::Boolean IterateEnabled
+			property int DeviceRotation
+			{
+				int get();
+				void set(int value);
+			}
+
+			/// <summary>
+			/// Maximum available download bandwidth.
+			/// This is IP bandwidth, in kbit/s (0 for infinite).
+			/// This information is used signaled to other parties during calls (within SDP messages) so that the remote end
+			/// can have sufficient knowledge to properly configure its audio and video codec output bitrate to not overflow available bandwidth.
+			/// </summary>
+			property int DownloadBandwidth
+			{
+				int get();
+				void set(int value);
+			}
+
+			/// <summary>
+			/// Sets audio packetization interval suggested for remote end (in milliseconds).
+			/// A value of zero means that ptime is not specified.
+			/// </summary>
+			property int DownloadPtime
+			{
+				int get();
+				void set(int value);
+			}
+
+			/// <summary>
+			/// Sets policy regarding workarounding NATs.
+			/// </summary>
+			property Linphone::Native::FirewallPolicy FirewallPolicy
+			{
+				Linphone::Native::FirewallPolicy get();
+				void set(Linphone::Native::FirewallPolicy value);
+			}
+
+			/// <summary>
+			/// Sets the call timeout in seconds.
+			/// Once this time is elapsed (ringing included), the call is automatically hung up.
+			/// </summary>
+			property int InCallTimeout
+			{
+				int get();
+				void set(int value);
+			}
+
+			/// <summary>
+			/// Sets the incoming call timeout in seconds.
+			/// If an incoming call isn't answered for this timeout period, it is automatically declined.
+			/// </summary>
+			property int IncTimeout
+			{
+				int get();
+				void set(int value);
+			}
+
+			/// <summary>
+			/// Enables or disables the echo cancellation.
+			/// </summary>
+			property Platform::Boolean IsEchoCancellationEnabled
 			{
 				Platform::Boolean get();
 				void set(Platform::Boolean value);
+			}
+
+			/// <summary>
+			/// Enables or disables the echo limiter.
+			/// </summary>
+			property Platform::Boolean IsEchoLimiterEnabled
+			{
+				Platform::Boolean get();
+				void set(Platform::Boolean value);
+			}
+
+			/// <summary>
+			/// Tells whether there is at least one call running.
+			/// </summary>
+			property Platform::Boolean IsInCall
+			{
+				Platform::Boolean get();
+			}
+
+			/// <summary>
+			/// Tells whether there is an incoming call invite pending.
+			/// </summary>
+			/// <returns>true if there is an incoming call invite pending, else returns false</returns>
+			property Platform::Boolean IsIncomingInvitePending
+			{
+				Platform::Boolean get();
+			}
+
+			/// <summary>
+			/// Tells whether a conference is currently ongoing.
+			/// </summary>
+			property Platform::Boolean IsInConference
+			{
+				Platform::Boolean get();
+			}
+
+			/// <summary>
+			/// Enables signaling keep alive. Small UDP packet sent periodically to keep UDP NAT association.
+			/// </summary>
+			property Platform::Boolean IsKeepAliveEnabled
+			{
+				Platform::Boolean get();
+				void set(Platform::Boolean value);
+			}
+
+			/// <summary>
+			/// Enables or disables IPv6 support.
+			/// </summary>
+			property Platform::Boolean IsIpv6Enabled
+			{
+				Platform::Boolean get();
+				void set(Platform::Boolean value);
+			}
+
+			/// <summary>
+			/// Set it to true to start the iterate, set it to false to stop it. 
+			/// Is disabled by default.
+			/// </summary>
+			property Platform::Boolean IsIterateEnabled
+			{
+				Platform::Boolean get();
+				void set(Platform::Boolean value);
+			}
+
+			/// <summary>
+			/// Defines Linphone behaviour when encryption parameters negociation fails on outgoing call.
+			/// </summary>
+			property Platform::Boolean IsMediaEncryptionMandatory
+			{
+				Platform::Boolean get();
+				void set(Platform::Boolean value);
+			}
+
+			/// <summary>
+			/// Enables or disables the local microphone.
+			/// </summary>
+			property Platform::Boolean IsMicEnabled
+			{
+				Platform::Boolean get();
+				void set(Platform::Boolean value);
+			}
+
+			/// <summary>
+			/// This method is called by the application to notify the Linphone.Core library when network is reachable.
+			/// Calling this method with true triggers Linphone to initiate a registration process for all proxy configs with parameter register set to enable.
+			/// This method disables the automatic registration mode. It means you must call this method after each network state changes.
+			/// </summary>
+			property Platform::Boolean IsNetworkReachable
+			{
+				Platform::Boolean get();
+				void set(Platform::Boolean value);
+			}
+
+			/// <summary>
+			/// Enables or disables self view during calls.
+			/// Self-view refers to having local webcam image inserted in corner of the video window during calls.
+			/// </summary>
+			property Platform::Boolean IsSelfViewEnabled
+			{
+				Platform::Boolean get();
+				void set(Platform::Boolean value);
+			}
+
+			/// <summary>
+			/// Use this method to check calls state and forbid proposing actions which could result in an active call.
+			/// Eg: don't start a new call if one is in outgoing ringing.
+			/// Eg: don't merge to conference either as it could result in two active calls (conference and accepted call).
+			/// </summary>
+			property Platform::Boolean IsSoundResourcesLocked
+			{
+				Platform::Boolean get();
+			}
+
+			/// <summary>
+			/// Enable or disable video capture.
+			///This function does not have any effect during calls. It just indicates the Core to initiate future calls with video capture or not.
+			/// </summary>
+			property Platform::Boolean IsVideoCaptureEnabled
+			{
+				Platform::Boolean get();
+				void set(Platform::Boolean value);
+			}
+
+			/// <summary>
+			/// Enable or disable video display.
+			/// This function does not have any effect during calls. It just indicates the Core to initiate future calls with video display or not.
+			/// </summary>
+			property Platform::Boolean IsVideoDisplayEnabled
+			{
+				Platform::Boolean get();
+				void set(Platform::Boolean value);
+			}
+
+			/// <summary>
+			/// Tells whether video support has been compiled.
+			/// </summary>
+			property Platform::Boolean IsVideoSupported
+			{
+				Platform::Boolean get();
+			}
+
+			/// <summary>
+			/// Sets the log collection upload server URL.
+			/// </summary>
+			property Platform::String^ LogCollectionUploadServerUrl
+			{
+				Platform::String^ get();
+				void set(Platform::String^ value);
+			}
+
+			/// <summary>
+			/// Sets the maximum number of simultaneous calls the Core can manage at a time. All new call above this limit are declined with a busy answer.
+			/// </summary>
+			property int MaxCalls
+			{
+				int get();
+				void set(int value);
+			}
+
+			/// <summary>
+			/// Chooses the media encryption policy to be used for RTP packets.
+			/// </summary>
+			property Linphone::Native::MediaEncryption MediaEncryption
+			{
+				Linphone::Native::MediaEncryption get();
+				void set(Linphone::Native::MediaEncryption value);
+			}
+
+			/// <summary>
+			/// Sets the microphone gain in dB.
+			/// </summary>
+			property float MicGainDb
+			{
+				float get();
+				void set(float value);
+			}
+
+			/// <summary>
+			/// Gets the number of missed calls since last reset.
+			/// </summary>
+			property int MissedCallsCount
+			{
+				int get();
+			}
+
+			/// <summary>
+			/// Allow to control play level before entering the sound card in dB.
+			/// </summary>
+			property float PlaybackGainDb
+			{
+				float get();
+				void set(float value);
+			}
+
+			/// <summary>
+			/// Sets the file to be played when putting a call on hold.
+			/// </summary>
+			property Platform::String^ PlayFile
+			{
+				Platform::String^ get();
+				void set(Platform::String^ value);
+			}
+
+			/// <summary>
+			/// Sets the playback level in a scale from 0 to 100.
+			/// </summary>
+			property int PlayLevel
+			{
+				int get();
+				void set(int value);
+			}
+
+			/// <summary>
+			/// Sets the preferred video size.
+			/// This applies only to the stream that is captured and sent to the remote party,
+			/// since we accept all standard video size on the receive path.
+			/// </summary>
+			property Linphone::Native::VideoSize^ PreferredVideoSize
+			{
+				Linphone::Native::VideoSize^ get();
+				void set(Linphone::Native::VideoSize^ value);
+			}
+
+			/// <summary>
+			/// Gets the preferred video size name.
+			/// </summary>
+			property Platform::String^ PreferredVideoSizeName
+			{
+				Platform::String^ get();
 			}
 
 			/// <summary>
@@ -159,6 +557,41 @@ namespace Linphone
 			}
 
 			/// <summary>
+			/// Sets the file or folder containing trusted root CAs.
+			/// </summary>
+			property Platform::String^ RootCa
+			{
+				Platform::String^ get();
+				void set(Platform::String^ value);
+			}
+
+			/// <summary>
+			/// Sets the ports to be used for each transport (UDP, TCP, TLS).
+			/// </summary>
+			property Transports^ SipTransports
+			{
+				Transports^ get();
+				void set(Transports^ value);
+			}
+
+			/// <summary>
+			/// Specifies a STUN server to help firewall traversal, such as stun.linphone.org or stun.linphone.org:3478
+			/// </summary>
+			property Platform::String^ StunServer
+			{
+				Platform::String^ get();
+				void set(Platform::String^ value);
+			}
+
+			/// <summary>
+			/// Gets the list of video sizes that are supported.
+			/// </summary>
+			property Windows::Foundation::Collections::IVector<Linphone::Native::VideoSize^>^ SupportedVideoSizes
+			{
+				Windows::Foundation::Collections::IVector<Linphone::Native::VideoSize^>^ get();
+			}
+
+			/// <summary>
 			/// Gets the tunnel instance if available.
 			/// </summary>
 			property Linphone::Native::Tunnel^ Tunnel
@@ -166,8 +599,114 @@ namespace Linphone
 				Linphone::Native::Tunnel^ get();
 			}
 
+			/// <summary>
+			/// Sets maximum available upload bandwidth.
+			/// This is IP bandwidth, in kbit/s (0 for infinite).
+			/// This information is used by liblinphone together with remote side available bandwidth signaled in SDP messages
+			/// to properly configure audio and video codec's output bitrate.
+			/// </summary>
+			property int UploadBandwidth
+			{
+				int get();
+				void set(int value);
+			}
+
+			/// <summary>
+			/// Sets audio packetization interval sent to remote end (in milliseconds).
+			/// A value of zero means that ptime is not specified.
+			/// </summary>
+			property int UploadPtime
+			{
+				int get();
+				void set(int value);
+			}
+
+			/// <summary>
+			/// Enables/Disables the use of SIP INFO to send DTMFs.
+			/// </summary>
+			property Platform::Boolean UseInfoForDtmf
+			{
+				Platform::Boolean get();
+				void set(Platform::Boolean value);
+			}
+
+			/// <summary>
+			/// Enables/Disables the use of RFC2833 to send DTMFs.
+			/// </summary>
+			property Platform::Boolean UseRfc2833ForDtmf
+			{
+				Platform::Boolean get();
+				void set(Platform::Boolean value);
+			}
+
+			/// <summary>
+			/// Gets the currently supported video codecs, as PayloadType elements.
+			/// </summary>
+			property Windows::Foundation::Collections::IVector<Linphone::Native::PayloadType^>^ VideoCodecs
+			{
+				Windows::Foundation::Collections::IVector<Linphone::Native::PayloadType^>^ get();
+			}
+
+			/// <summary>
+			/// Sets the active video device.
+			/// </summary>
+			property Platform::String^ VideoDevice
+			{
+				Platform::String^ get();
+				void set(Platform::String^ value);
+			}
+
+			/// <summary>
+			/// Gets the list of video devices.
+			/// </summary>
+			property Windows::Foundation::Collections::IVector<Platform::String^>^ VideoDevices
+			{
+				Windows::Foundation::Collections::IVector<Platform::String^>^ get();
+			}
+
+			/// <summary>
+			/// Sets the policy for video.
+			/// </summary>
+			property Linphone::Native::VideoPolicy^ VideoPolicy
+			{
+				Linphone::Native::VideoPolicy^ get();
+				void set(Linphone::Native::VideoPolicy^ value);
+			}
 
 
+
+
+			/// <summary>
+			/// Accepts an incoming call.
+			/// Basically the app is notified of incoming calls within the CoreListener::CallState listener method.
+			/// The application can later respond positively to the call using this method.
+			/// </summary>
+			/// <param name="call">The incoming call to accept</param>
+			/// <seealso cref="AcceptCallWithParams(Call^, CallParams^)"/>
+			void AcceptCall(Call^ call);
+
+			/// <summary>
+			/// Accepts call modifications initiated by other end.
+			/// </summary>
+			/// <param name="call">The incoming call to accept</param>
+			/// <param name="params">The new local CallParams to use</param>
+			void AcceptCallUpdate(Call^ call, CallParams^ params);
+
+			/// <summary>
+			/// Accepts an incoming call.
+			/// Basically the app is notified of incoming calls within the CoreListener::CallState listener method.
+			/// The application can later respond positively to the call using this method.
+			/// </summary>
+			/// <param name="call">The incoming call to accept</param>
+			/// <param name="params">The CallParams to use for the accepted call</param>
+			/// <seealso cref="AcceptCall(Call^)"/>
+			void AcceptCallWithParams(Call^ call, CallParams^ params);
+
+			/// <summary>
+			/// Adds all calls into a conference.
+			/// Merge all established calls (either in StreamsRunning or Paused) into a conference.
+			/// </summary>
+			void AddAllToConference();
 
 			/// <summary>
 			/// Adds authentication information to the Core.
@@ -184,14 +723,28 @@ namespace Linphone
 			void AddProxyConfig(ProxyConfig^ proxyCfg);
 
 			/// <summary>
+			/// Merges a call into a conference.
+			/// If this is the first call that enters the conference, the virtual conference will be created automatically.
+			/// If the local user was actively part of the call (ie not in paused state), then the local user is automatically entered into the conference.
+			/// If the call was in paused state, then it is automatically resumed when entering into the conference.
+			/// </summary>
+			/// <param name="call">An established call, either in StreamsRunning or Paused state</param>
+			void AddToConference(Call^ call);
+
+			/// <summary>
 			/// Removes all the auth infos from Core.
 			/// </summary>
-			void ClearAuthInfos();
+			void ClearAllAuthInfo();
+
+			/// <summary>
+			/// Removes all call logs from the Core.
+			/// </summary>
+			void ClearCallLogs();
 
 			/// <summary>
 			/// Removes all the proxy configs from Core.
 			/// </summary>
-			void ClearProxyConfigs();
+			void ClearProxyConfig();
 
 			/// <summary>
 			/// Creates an Address object using an URI.
@@ -212,19 +765,72 @@ namespace Linphone
 			AuthInfo^ CreateAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm, Platform::String^ domain);
 
 			/// <summary>
+			/// Gets a default set of CallParams.
+			/// </summary>
+			/// <returns>The default set of CallParams</returns>
+			CallParams^ CreateDefaultCallParameters();
+
+			/// <summary>
 			/// Creates an empty proxy config.
 			/// </summary>
 			/// <returns>An empty proxy config</returns>
 			ProxyConfig^ CreateProxyConfig();
 
-
-
-
+			/// <summary>
+			/// Declines an incoming call with a specific reason.
+			/// </summary>
+			void DeclineCall(Call^ call, Reason reason);
 
 			/// <summary>
-			/// Destroys Core and free all underlying resources.
+			/// Prevent Core from performing an automatic answer when receiving call modifications from the other end of the call.
 			/// </summary>
-			void Destroy();
+			/// <param name="call">The call for which a modification from the other end has been notified</param>
+			void DeferCallUpdate(Call^ call);
+
+			/// <summary>
+			/// Enables or disables a payload type.
+			/// The payload type to enable/disable can be retrieved using FindPayloadType(String, int, int).
+			/// </summary>
+			/// <param name="pt">The PayloadType to enable/disable</param>
+			/// <param name="enable">A boolean value telling whether to enable or disable the PayloadType</param>
+			void EnablePayloadType(PayloadType^ pt, Platform::Boolean enable);
+
+			/// <summary>
+			/// Makes the local participant to join the conference. 
+			/// Typically, the local participant is by default always part of the conference when joining an active call into a conference.
+			/// However, by calling LeaveConference() and EnterConference() the application can decide to temporarily
+			/// move out and in the local participant from the conference.
+			/// </summary>
+			/// <returns>A boolean value telling whether the conference has successfully been entered</returns>
+			Platform::Boolean EnterConference();
+
+			/// <summary>
+			/// Searches from the list of current calls if a remote address match uri.
+			/// </summary>
+			/// <param name="uri">URI to search for in the list of current calls</param>
+			/// <returns>The matching Call if found, null otherwise</returns>
+			Call^ FindCallFromUri(Platform::String^ uri);
+
+			/// <summary>
+			/// Tries to return the PayloadType matching the given MIME type, clock rate and number of channels.
+			/// </summary>
+			/// <param name="mime">The MIME type to search a payload type for</param>
+			/// <param name="clockRate">The clock rate to search a payload type for</param>
+			/// <param name="channels">The number of channels to search a payload type for (can be -1 to ignore the number of channels in the search)</param>
+			/// <returns>The PayloadType matching the parameters or null if not found</returns>
+			PayloadType^ FindPayloadType(Platform::String^ mime, int clockRate, int channels);
+
+			/// <summary>
+			/// Get a chat room whose peer is the supplied address. If it does not exist yet, it will be created.
+			/// </summary>
+			/// <param name="address">An Address</param>
+			Linphone::Native::ChatRoom^ GetChatRoom(Linphone::Native::Address^ address);
+
+			/// <summary>
+			/// Get a chat room for messaging from a sip uri like sip:joe@sip.linphone.org. If it does not exist yet, it will be created.
+			/// </summary>
+			/// <param name="to">The destination address for messages</param>
+			Linphone::Native::ChatRoom^ GetChatRoomFromUri(Platform::String^ to);
 
 			/// <summary>
 			/// Builds an address according to the current proxy config.
@@ -266,355 +872,23 @@ namespace Linphone
 			Call^ InviteAddressWithParams(Address^ destination, CallParams^ params);
 
 			/// <summary>
-			/// Terminates the given call if running.
+			/// Tells whether a media encryption scheme is supported by the Core engine.
 			/// </summary>
-			/// <param name="call">The call to be terminated</param>
-			void TerminateCall(Call^ call);
+			/// <param name="menc">The media encryption to check</param>
+			/// <returns>true if supported, false otherwise</returns>
+			Platform::Boolean IsMediaEncryptionSupported(Linphone::Native::MediaEncryption menc);
 
 			/// <summary>
-			/// Declines an incoming call with a specific reason.
+			/// Moves the local participant out of the conference.
+			/// When the local participant is out of the conference, the remote participants can continue to talk normally.
 			/// </summary>
-			void DeclineCall(Call^ call, Reason reason);
+			void LeaveConference();
 
 			/// <summary>
-			/// Gets the current active call.
-			/// If there is only one ongoing call that is in the paused state, then there is no current call.
+			/// Pauses all the calls.
 			/// </summary>
-			property Call^ CurrentCall
-			{
-				Call^ get();
-			}
-
-			/// <summary>
-			/// Tells whether there is at least one call running.
-			/// </summary>
-			property Platform::Boolean InCall
-			{
-				Platform::Boolean get();
-			}
-
-			/// <summary>
-			/// Tells whether there is an incoming call invite pending.
-			/// </summary>
-			/// <returns>true if there is an incoming call invite pending, else returns false</returns>
-			property Platform::Boolean IncomingInvitePending
-			{
-				Platform::Boolean get();
-			}
-
-			/// <summary>
-			/// Accepts an incoming call.
-			/// Basically the app is notified of incoming calls within the CoreListener::CallState listener method.
-			/// The application can later respond positively to the call using this method.
-			/// </summary>
-			/// <param name="call">The incoming call to accept</param>
-			/// <seealso cref="AcceptCallWithParams(Call^, CallParams^)"/>
-			void AcceptCall(Call^ call);
-
-			/// <summary>
-			/// Accepts an incoming call.
-			/// Basically the app is notified of incoming calls within the CoreListener::CallState listener method.
-			/// The application can later respond positively to the call using this method.
-			/// </summary>
-			/// <param name="call">The incoming call to accept</param>
-			/// <param name="params">The CallParams to use for the accepted call</param>
-			/// <seealso cref="AcceptCall(Call^)"/>
-			void AcceptCallWithParams(Call^ call, CallParams^ params);
-
-			/// <summary>
-			/// Accepts call modifications initiated by other end.
-			/// </summary>
-			/// <param name="call">The incoming call to accept</param>
-			/// <param name="params">The new local CallParams to use</param>
-			void AcceptCallUpdate(Call^ call, CallParams^ params);
-
-			/// <summary>
-			/// Prevent Core from performing an automatic answer when receiving call modifications from the other end of the call.
-			/// </summary>
-			/// <param name="call">The call for which a modification from the other end has been notified</param>
-			void DeferCallUpdate(Call^ call);
-
-			/// <summary>
-			/// Updates the given call with the given params if the remote agrees.
-			/// </summary>
-			/// <param name="call">The call to update</param>
-			/// <param name="params">The new CallParams to propose to the remote peer</param>
-			void UpdateCall(Call^ call, CallParams^ params);
-
-			/// <summary>
-			/// Gets a default set of CallParams.
-			/// </summary>
-			/// <returns>The default set of CallParams</returns>
-			CallParams^ CreateDefaultCallParameters();
-
-			/// <summary>
-			/// Gets the list of call logs of the Core.
-			/// </summary>
-			/// <returns>A list of CallLog objects as Platform::Object</returns>
-			property Windows::Foundation::Collections::IVector<Platform::Object^>^ CallLogs
-			{
-				Windows::Foundation::Collections::IVector<Platform::Object^>^ get();
-			}
-
-			/// <summary>
-			/// Removes all call logs from the Core.
-			/// </summary>
-			void ClearCallLogs();
-
-			/// <summary>
-			/// Removes a specific log from the Core.
-			/// </summary>
-			/// <param name="log">The call log to be removed</param>
-			void RemoveCallLog(CallLog^ log);
-
-			/// <summary>
-			/// This method is called by the application to notify the Linphone.Core library when network is reachable.
-			/// Calling this method with true triggers Linphone to initiate a registration process for all proxy configs with parameter register set to enable.
-			/// This method disables the automatic registration mode. It means you must call this method after each network state changes.
-			/// </summary>
-			property Platform::Boolean NetworkReachable
-			{
-				Platform::Boolean get();
-				void set(Platform::Boolean value);
-			}
-
-			/// <summary>
-			/// Sets the microphone gain in dB.
-			/// </summary>
-			property float MicGainDb
-			{
-				float get();
-				void set(float value);
-			}
-
-			/// <summary>
-			/// Allow to control play level before entering the sound card in dB.
-			/// </summary>
-			property float PlaybackGainDb
-			{
-				float get();
-				void set(float value);
-			}
-
-			/// <summary>
-			/// Sets the playback level in a scale from 0 to 100.
-			/// </summary>
-			property int PlayLevel
-			{
-				int get();
-				void set(int value);
-			}
-
-			/// <summary>
-			/// Mutes or unmutes the local microphone.
-			/// </summary>
-			property Platform::Boolean MicMuted
-			{
-				Platform::Boolean get();
-				void set(Platform::Boolean value);
-			}
-
-			/// <summary>
-			/// Sends a DTMF signal to the remote party if in call.
-			/// Playing the DTMF locally is done with PlayDTMF(char16, int).
-			/// </summary>
-			/// <param name="number">The DTMF digit to be sent</param>
-			/// <seealso cref="PlayDTMF(char16, int)"/>
-			void SendDTMF(char16 number);
-
-			/// <summary>
-			/// Plays a DTMF signal to the speaker if not in call.
-			/// Sending of the DTMF is done with SendDTMF(char16).
-			/// </summary>
-			/// <param name="number">The DTMF digit to be played</param>
-			/// <param name="duration">The duration of the DTMF digit in ms, -1 for unlimited</param>
-			/// <seealso cref="SendDTMF(char16)"/>
-			void PlayDTMF(char16 number, int duration);
-
-			/// <summary>
-			/// Stops the current playing DTMF.
-			/// </summary>
-			void StopDTMF();
-
-			/// <summary>
-			/// Tries to return the PayloadType matching the given MIME type, clock rate and number of channels.
-			/// </summary>
-			/// <param name="mime">The MIME type to search a payload type for</param>
-			/// <param name="clockRate">The clock rate to search a payload type for</param>
-			/// <param name="channels">The number of channels to search a payload type for</param>
-			/// <returns>The PayloadType matching the parameters or null if not found</returns>
-			PayloadType^ FindPayloadType(Platform::String^ mime, int clockRate, int channels);
-
-			/// <summary>
-			/// Tries to return the PayloadType matching the given MIME type and clock rate.
-			/// </summary>
-			/// <param name="mime">The MIME type to search a payload type for</param>
-			/// <param name="clockRate">The clock rate to search a payload type for</param>
-			/// <returns>The PayloadType matching the parameters or null if not found</returns>
-			PayloadType^ FindPayloadType(Platform::String^ mime, int clockRate);
-
-			/// <summary>
-			/// Tells whether a payload type is enabled or not.
-			/// </summary>
-			/// <param name="pt">The PayloadType that is to be checked</param>
-			/// <returns>A boolean value telling whether the PayloadType is enabled</returns>
-			bool PayloadTypeEnabled(PayloadType^ pt);
-
-			/// <summary>
-			/// Enables or disables a payload type.
-			/// The payload type to enable/disable can be retrieved using FindPayloadType(String, int, int).
-			/// </summary>
-			/// <param name="pt">The PayloadType to enable/disable</param>
-			/// <param name="enable">A boolean value telling whether to enable or disable the PayloadType</param>
-			void EnablePayloadType(PayloadType^ pt, Platform::Boolean enable);
-
-			/// <summary>
-			/// Gets the currently supported audio codecs, as PayloadType elements.
-			/// </summary>
-			/// <returns>A list of PayloadType objects as Platform::Object</returns>
-			property Windows::Foundation::Collections::IVector<Platform::Object^>^ AudioCodecs
-			{
-				Windows::Foundation::Collections::IVector<Platform::Object^>^ get();
-			}
-
-			/// <summary>
-			/// Enables or disables the echo cancellation.
-			/// </summary>
-			property Platform::Boolean EchoCancellationEnabled
-			{
-				Platform::Boolean get();
-				void set(Platform::Boolean value);
-			}
-
-			/// <summary>
-			/// Starts an echo calibration of the sound devices, in order to find adequate settings for the echo canceller automatically.
-			/// Status is notified to CoreListener::EcCalibrationStatus.
-			/// </summary>
-			void StartEchoCalibration();
-
-			/// <summary>
-			/// Enables or disables the echo limiter.
-			/// </summary>
-			property Platform::Boolean EchoLimiterEnabled
-			{
-				Platform::Boolean get();
-				void set(Platform::Boolean value);
-			}
-
-			/// <summary>
-			/// Sets the ports to be used for each transport (UDP, TCP, TLS).
-			/// </summary>
-			property Transports^ SipTransports
-			{
-				Transports^ get();
-				void set(Transports^ value);
-			}
-
-			/// <summary>
-			/// Enables or disables IPv6 support.
-			/// </summary>
-			property Platform::Boolean IPv6Enabled
-			{
-				Platform::Boolean get();
-				void set(Platform::Boolean value);
-			}
-
-			/// <summary>
-			/// Sets the user presence status.
-			/// </summary>
-			/// <param name="minuteAway">How long in away</param>
-			/// <param name="alternativeContact">SIP URI to redirect call if the status is OnlineStatus.StatusMoved</param>
-			/// <param name="status">The new presence status</param>
-			void SetPresenceInfo(int minuteAway, Platform::String^ alternativeContact, OnlineStatus status);
-
-			/// <summary>
-			/// Specifies a STUN server to help firewall traversal, such as stun.linphone.org or stun.linphone.org:3478
-			/// </summary>
-			property Platform::String^ StunServer
-			{
-				Platform::String^ get();
-				void set(Platform::String^ value);
-			}
-
-			/// <summary>
-			/// Sets policy regarding workarounding NATs.
-			/// </summary>
-			property Linphone::Native::FirewallPolicy FirewallPolicy
-			{
-				Linphone::Native::FirewallPolicy get();
-				void set(Linphone::Native::FirewallPolicy value);
-			}
-
-			/// <summary>
-			/// Sets the file or folder containing trusted root CAs.
-			/// </summary>
-			property Platform::String^ RootCA
-			{
-				Platform::String^ get();
-				void set(Platform::String^ value);
-			}
-
-			/// <summary>
-			/// Sets maximum available upload bandwidth.
-			/// This is IP bandwidth, in kbit/s (0 for infinite).
-			/// This information is used by liblinphone together with remote side available bandwidth signaled in SDP messages
-			/// to properly configure audio and video codec's output bitrate.
-			/// </summary>
-			property int UploadBandwidth
-			{
-				int get();
-				void set(int value);
-			}
-
-			/// <summary>
-			/// Maximum available download bandwidth.
-			/// This is IP bandwidth, in kbit/s (0 for infinite).
-			/// This information is used signaled to other parties during calls (within SDP messages) so that the remote end
-			/// can have sufficient knowledge to properly configure its audio and video codec output bitrate to not overflow available bandwidth.
-			/// </summary>
-			property int DownloadBandwidth
-			{
-				int get();
-				void set(int value);
-			}
-
-			/// <summary>
-			/// Sets audio packetization interval suggested for remote end (in milliseconds).
-			/// A value of zero means that ptime is not specified.
-			/// </summary>
-			property int DownloadPTime
-			{
-				int get();
-				void set(int value);
-			}
-
-			/// <summary>
-			/// Sets audio packetization interval sent to remote end (in milliseconds).
-			/// A value of zero means that ptime is not specified.
-			/// </summary>
-			property int UploadPTime
-			{
-				int get();
-				void set(int value);
-			}
-
-			/// <summary>
-			/// Enables signaling keep alive. Small UDP packet sent periodically to keep UDP NAT association.
-			/// </summary>
-			property Platform::Boolean KeepAliveEnabled
-			{
-				Platform::Boolean get();
-				void set(Platform::Boolean value);
-			}
-
-			/// <summary>
-			/// Sets the file to be played when putting a call on hold.
-			/// </summary>
-			property Platform::String^ PlayFile
-			{
-				Platform::String^ get();
-				void set(Platform::String^ value);
-			}
+			/// <returns>A boolean value telling whether the calls have successfully been paused</returns>
+			Platform::Boolean PauseAllCalls();
 
 			/// <summary>
 			/// Pauses a currently active call.
@@ -624,55 +898,31 @@ namespace Linphone
 			Platform::Boolean PauseCall(Call^ call);
 
 			/// <summary>
-			/// Resumes a currently paused call.
+			/// Tells whether a payload type is enabled or not.
 			/// </summary>
-			/// <param name="call">The call to bbe resumed</param>
-			/// <returns>A boolean value telling whether the call has successfully been resumed</returns>
-			Platform::Boolean ResumeCall(Call^ call);
+			/// <param name="pt">The PayloadType that is to be checked</param>
+			/// <returns>A boolean value telling whether the PayloadType is enabled</returns>
+			bool PayloadTypeEnabled(PayloadType^ pt);
 
 			/// <summary>
-			/// Pauses all the calls.
+			/// Plays a DTMF signal to the speaker if not in call.
+			/// Sending of the DTMF is done with SendDTMF(char16).
 			/// </summary>
-			/// <returns>A boolean value telling whether the calls have successfully been paused</returns>
-			Platform::Boolean PauseAllCalls();
+			/// <param name="number">The DTMF digit to be played</param>
+			/// <param name="duration">The duration of the DTMF digit in ms, -1 for unlimited</param>
+			/// <seealso cref="SendDTMF(char16)"/>
+			void PlayDtmf(char16 number, int duration);
 
 			/// <summary>
-			/// Tells whether a conference is currently ongoing.
+			/// Re-initiates registration if network is up.
 			/// </summary>
-			property Platform::Boolean InConference
-			{
-				Platform::Boolean get();
-			}
+			void RefreshRegisters();
 
 			/// <summary>
-			/// Makes the local participant to join the conference. 
-			/// Typically, the local participant is by default always part of the conference when joining an active call into a conference.
-			/// However, by calling LeaveConference() and EnterConference() the application can decide to temporarily
-			/// move out and in the local participant from the conference.
+			/// Removes a specific log from the Core.
 			/// </summary>
-			/// <returns>A boolean value telling whether the conference has successfully been entered</returns>
-			Platform::Boolean EnterConference();
-
-			/// <summary>
-			/// Moves the local participant out of the conference.
-			/// When the local participant is out of the conference, the remote participants can continue to talk normally.
-			/// </summary>
-			void LeaveConference();
-
-			/// <summary>
-			/// Merges a call into a conference.
-			/// If this is the first call that enters the conference, the virtual conference will be created automatically.
-			/// If the local user was actively part of the call (ie not in paused state), then the local user is automatically entered into the conference.
-			/// If the call was in paused state, then it is automatically resumed when entering into the conference.
-			/// </summary>
-			/// <param name="call">An established call, either in StreamsRunning or Paused state</param>
-			void AddToConference(Call^ call);
-
-			/// <summary>
-			/// Adds all calls into a conference.
-			/// Merge all established calls (either in StreamsRunning or Paused) into a conference.
-			/// </summary>
-			void AddAllToConference();
+			/// <param name="log">The call log to be removed</param>
+			void RemoveCallLog(CallLog^ log);
 
 			/// <summary>
 			/// Removes a call from the conference.
@@ -687,140 +937,24 @@ namespace Linphone
 			void RemoveFromConference(Call^ call);
 
 			/// <summary>
-			/// Terminates the conference and the calls associated with it.
-			/// All the calls that were merged to the conference are terminated, and the conference resources are destroyed.
-			/// </summary>
-			void TerminateConference();
-
-			/// <summary>
-			/// Returns the number of participants to the conference, including the local participant.
-			/// Typically, after merging two calls into the conference, there is total of 3 participants:
-			/// the local participant (or local user), and two remote participants that were the destinations of the two previously establised calls.
-			/// </summary>
-			property int ConferenceSize
-			{
-				int get();
-			}
-
-			/// <summary>
-			/// Terminates all the calls.
-			/// </summary>
-			void TerminateAllCalls();
-
-			/// <summary>
-			/// Gets the current list of calls.
-			/// </summary>
-			property Windows::Foundation::Collections::IVector<Platform::Object^>^ Calls
-			{
-				Windows::Foundation::Collections::IVector<Platform::Object^>^ get();
-			}
-
-			/// <summary>
-			/// Gets the number of calls.
-			/// </summary>
-			property int CallsNb
-			{
-				int get();
-			}
-
-			/// <summary>
-			/// Searches from the list of current calls if a remote address match uri.
-			/// </summary>
-			/// <param name="uri">URI to search for in the list of current calls</param>
-			/// <returns>The matching Call if found, null otherwise</returns>
-			Call^ FindCallFromUri(Platform::String^ uri);
-
-			/// <summary>
-			/// Sets the maximum number of simultaneous calls the Core can manage at a time. All new call above this limit are declined with a busy answer.
-			/// </summary>
-			property int MaxCalls
-			{
-				int get();
-				void set(int value);
-			}
-
-			/// <summary>
-			/// Tells whether a URI corresponds to my identity.
-			/// </summary>
-			/// <returns>true if the URI corresponds to my identity, false otherwise</returns>
-			Platform::Boolean IsMyself(Platform::String^ uri);
-
-			/// <summary>
-			/// Use this method to check calls state and forbid proposing actions which could result in an active call.
-			/// Eg: don't start a new call if one is in outgoing ringing.
-			/// Eg: don't merge to conference either as it could result in two active calls (conference and accepted call).
-			/// </summary>
-			property Platform::Boolean SoundResourcesLocked
-			{
-				Platform::Boolean get();
-			}
-
-			/// <summary>
-			/// Tells whether a media encryption scheme is supported by the Core engine.
-			/// </summary>
-			/// <param name="menc">The media encryption to check</param>
-			/// <returns>true if supported, false otherwise</returns>
-			Platform::Boolean IsMediaEncryptionSupported(MediaEncryption menc);
-
-			/// <summary>
-			/// Chooses the media encryption policy to be used for RTP packets.
-			/// </summary>
-			property Linphone::Native::MediaEncryption MediaEncryption
-			{
-				Linphone::Native::MediaEncryption get();
-				void set(Linphone::Native::MediaEncryption value);
-			}
-
-			/// <summary>
-			/// Defines Linphone behaviour when encryption parameters negociation fails on outgoing call.
-			/// </summary>
-			property Platform::Boolean MediaEncryptionMandatory
-			{
-				Platform::Boolean get();
-				void set(Platform::Boolean value);
-			}
-
-			/// <summary>
-			/// Sets the user agent string used in SIP messages.
-			/// </summary>
-			/// <param name="name">The user agent name to set</param>
-			/// <param name="version">The user agent version to set</param>
-			void SetUserAgent(Platform::String^ name, Platform::String^ version);
-
-			/// <summary>
-			/// Gets the number of missed calls since last reset.
-			/// </summary>
-			property int MissedCallsCount
-			{
-				int get();
-			}
-
-			/// <summary>
 			/// Reset the count of missed calls.
 			/// </summary>
 			void ResetMissedCallsCount();
 
 			/// <summary>
-			/// Re-initiates registration if network is up.
+			/// Resumes a currently paused call.
 			/// </summary>
-			void RefreshRegisters();
+			/// <param name="call">The call to bbe resumed</param>
+			/// <returns>A boolean value telling whether the call has successfully been resumed</returns>
+			Platform::Boolean ResumeCall(Call^ call);
 
 			/// <summary>
-			/// Gets liblinphone's version as a string.
+			/// Sends a DTMF signal to the remote party if in call.
+			/// Playing the DTMF locally is done with PlayDTMF(char16, int).
 			/// </summary>
-			property Platform::String^ Version
-			{
-				Platform::String^ get();
-			}
-
-			/// <summary>
-			/// Sets the UDP port used for audio streaming.
-			/// </summary>
-			property int AudioPort
-			{
-				int get();
-				void set(int value);
-			}
+			/// <param name="number">The DTMF digit to be sent</param>
+			/// <seealso cref="PlayDTMF(char16, int)"/>
+			void SendDtmf(char16 number);
 
 			/// <summary>
 			/// Sets the UDP port range from which to randomly select the port used for audio streaming.
@@ -828,110 +962,6 @@ namespace Linphone
 			/// <param name="minP">The lower value of the UDP port range</param>
 			/// <param name="maxP">The upper value of the UDP port range</param>
 			void SetAudioPortRange(int minP, int maxP);
-
-			/// <summary>
-			/// Sets the incoming call timeout in seconds.
-			/// If an incoming call isn't answered for this timeout period, it is automatically declined.
-			/// </summary>
-			property int IncTimeout
-			{
-				int get();
-				void set(int value);
-			}
-
-			/// <summary>
-			/// Sets the call timeout in seconds.
-			/// Once this time is elapsed (ringing included), the call is automatically hung up.
-			/// </summary>
-			property int InCallTimeout
-			{
-				int get();
-				void set(int value);
-			}
-
-			/// <summary>
-			/// Set username and display name to use if no ProxyConfig is configured.
-			/// </summary>
-			/// <param name="displayName">The display name to use</param>
-			/// <param name="userName">The username to use</param>
-			void SetPrimaryContact(Platform::String^ displayName, Platform::String^ userName);
-
-			/// <summary>
-			/// Enables/Disables the use of SIP INFO to send DTMFs.
-			/// </summary>
-			property Platform::Boolean UseInfoForDtmf
-			{
-				Platform::Boolean get();
-				void set(Platform::Boolean value);
-			}
-
-			/// <summary>
-			/// Enables/Disables the use of RFC2833 to send DTMFs.
-			/// </summary>
-			property Platform::Boolean UseRfc2833ForDtmf
-			{
-				Platform::Boolean get();
-				void set(Platform::Boolean value);
-			}
-
-			/// <summary>
-			/// Gets the LpConfig object to read/write to the config file: useful if you wish to extend the config file with your own sections.
-			/// </summary>
-			property Linphone::Native::LpConfig^ Config
-			{
-				Linphone::Native::LpConfig^ get();
-			}
-
-			/// <summary>
-			/// Tells whether video support has been compiled.
-			/// </summary>
-			property Platform::Boolean VideoSupported
-			{
-				Platform::Boolean get();
-			}
-
-			/// <summary>
-			/// Sets the policy for video.
-			/// </summary>
-			property Linphone::Native::VideoPolicy^ VideoPolicy
-			{
-				Linphone::Native::VideoPolicy^ get();
-				void set(Linphone::Native::VideoPolicy^ value);
-			}
-
-			/// <summary>
-			/// Gets the list of video sizes that are supported.
-			/// </summary>
-			property Windows::Foundation::Collections::IVector<Platform::Object^>^ SupportedVideoSizes
-			{
-				Windows::Foundation::Collections::IVector<Platform::Object^>^ get();
-			}
-
-			/// <summary>
-			/// Gets the preferred video size name.
-			/// </summary>
-			/// <returns>The preferred video size name</returns>
-			Platform::String^ GetPreferredVideoSizeName();
-
-			/// <summary>
-			/// Sets the preferred video size.
-			/// This applies only to the stream that is captured and sent to the remote party,
-			/// since we accept all standard video size on the receive path.
-			/// </summary>
-			property Linphone::Native::VideoSize^ PreferredVideoSize
-			{
-				Linphone::Native::VideoSize^ get();
-				void set(Linphone::Native::VideoSize^ value);
-			}
-
-			/// <summary>
-			/// Sets the preferred video size.
-			/// This applies only to the stream that is captured and sent to the remote party,
-			/// since we accept all standard video size on the receive path.
-			/// </summary>
-			/// <param name="width">The width of the preferred video size</param>
-			/// <param name="height">The height of the preferred video size</param>
-			void SetPreferredVideoSize(int width, int height);
 
 			/// <summary>
 			/// Sets the preferred video size by telling its name.
@@ -942,69 +972,66 @@ namespace Linphone
 			void SetPreferredVideoSizeByName(Platform::String^ sizeName);
 
 			/// <summary>
-			/// Gets the list of video devices.
+			/// Sets the user presence status.
 			/// </summary>
-			property Windows::Foundation::Collections::IVector<Platform::Object^>^ VideoDevices
-			{
-				Windows::Foundation::Collections::IVector<Platform::Object^>^ get();
-			}
+			/// <param name="minuteAway">How long in away</param>
+			/// <param name="alternativeContact">SIP URI to redirect call if the status is OnlineStatus.StatusMoved</param>
+			/// <param name="status">The new presence status</param>
+			void SetPresenceInfo(int minuteAway, Platform::String^ alternativeContact, OnlineStatus status);
 
 			/// <summary>
-			/// Sets the active video device.
+			/// Set the contact to use if no ProxyConfig is configured.
 			/// </summary>
-			property Platform::String^ VideoDevice
-			{
-				Platform::String^ get();
-				void set(Platform::String^ value);
-			}
+			/// <param name="contact">The contact to use (a valid SIP uri)</param>
+			void SetPrimaryContact(Platform::String^ contact);
 
 			/// <summary>
-			/// Gets the currently supported video codecs, as PayloadType elements.
+			/// Sets the user agent string used in SIP messages.
 			/// </summary>
-			property Windows::Foundation::Collections::IVector<Platform::Object^>^ VideoCodecs
-			{
-				Windows::Foundation::Collections::IVector<Platform::Object^>^ get();
-			}
+			/// <param name="name">The user agent name to set</param>
+			/// <param name="version">The user agent version to set</param>
+			void SetUserAgent(Platform::String^ name, Platform::String^ version);
 
 			/// <summary>
-			/// Deprecated! 
-			/// Tells whether video is enabled or not.
+			/// Stops the current playing DTMF.
 			/// </summary>
-			property Platform::Boolean VideoEnabled
-			{
-				Platform::Boolean get();
-			}
+			void StopDtmf();
 
 			/// <summary>
-			/// Deprecated!
-			/// Enables video.
-			/// This method does not have any effect during calls. It just indicates Core to
-			/// initiate future calls with video or not. The two boolean parameters indicate in which
-			/// direction video is enabled. Setting both to false disables video entirely.
+			/// Terminates all the calls.
 			/// </summary>
-			/// <param name="enableCapture">Indicates whether video capture is enabled</param>
-			/// <param name="enableDisplay">Indicates whether video display should be shown</param>
-			void EnableVideo(Platform::Boolean enableCapture, Platform::Boolean enableDisplay);
+			void TerminateAllCalls();
 
 			/// <summary>
-			/// Enable or disable video capture.
-			///This function does not have any effect during calls. It just indicates the Core to initiate future calls with video capture or not.
+			/// Terminates the given call if running.
 			/// </summary>
-			property Platform::Boolean VideoCaptureEnabled
-			{
-				Platform::Boolean get();
-				void set(Platform::Boolean value);
-			}
+			/// <param name="call">The call to be terminated</param>
+			void TerminateCall(Call^ call);
 
 			/// <summary>
-			/// Enable or disable video display.
-			/// This function does not have any effect during calls. It just indicates the Core to initiate future calls with video display or not.
+			/// Terminates the conference and the calls associated with it.
+			/// All the calls that were merged to the conference are terminated, and the conference resources are destroyed.
 			/// </summary>
-			property Platform::Boolean VideoDisplayEnabled
-			{
-				Platform::Boolean get();
-				void set(Platform::Boolean value);
-			}
+			void TerminateConference();
+
+			/// <summary>
+			/// Updates the given call with the given params if the remote agrees.
+			/// </summary>
+			/// <param name="call">The call to update</param>
+			/// <param name="params">The new CallParams to propose to the remote peer</param>
+			void UpdateCall(Call^ call, CallParams^ params);
+
+			/// <summary>
+			/// Starts the upload of the log collection.
+			/// </summary>
+			void UploadLogCollection();
+
+#if 0
+			/// <summary>
+			/// Starts an echo calibration of the sound devices, in order to find adequate settings for the echo canceller automatically.
+			/// Status is notified to CoreListener::EcCalibrationStatus.
+			/// </summary>
+			void StartEchoCalibration();
 
 			/// <summary>
 			/// Gets the native video window id.
@@ -1013,85 +1040,7 @@ namespace Linphone
 			{
 				int get();
 			}
-
-			/// <summary>
-			/// Gets the camera sensor rotation in degrees.
-			/// </summary>
-			property int CameraSensorRotation
-			{
-				int get();
-			}
-
-			/// <summary>
-			/// Enables or disables self view during calls.
-			/// Self-view refers to having local webcam image inserted in corner of the video window during calls.
-			/// </summary>
-			property Platform::Boolean SelfViewEnabled
-			{
-				Platform::Boolean get();
-				void set(Platform::Boolean value);
-			}
-
-			/// <summary>
-			/// Get a chat room whose peer is the supplied address. If it does not exist yet, it will be created.
-			/// </summary>
-			/// <param name="address">An Address</param>
-			Linphone::Native::ChatRoom^ GetChatRoom(Linphone::Native::Address^ address);
-
-			/// <summary>
-			/// Get a chat room for messaging from a sip uri like sip:joe@sip.linphone.org. If it does not exist yet, it will be created.
-			/// </summary>
-			/// <param name="to">The destination address for messages</param>
-			Linphone::Native::ChatRoom^ GetChatRoomFromUri(Platform::String^ to);
-
-			/// <summary>
-			/// Sets the log collection upload server URL.
-			/// </summary>
-			property Platform::String^ LogCollectionUploadServerUrl
-			{
-				Platform::String^ get();
-				void set(Platform::String^ value);
-			}
-
-			/// <summary>
-			/// Starts the upload of the log collection.
-			/// </summary>
-			void UploadLogCollection();
-
-			/// <summary>
-			/// Tells the core the device current orientation. This can be used by capture filters
-			/// on mobile devices to select between portrait / landscape mode and to produce properly
-			///	oriented images.The exact meaning of the value in rotation if left to each device
-			///	specific implementations.
-			/// </summary>
-			property int DeviceRotation
-			{
-				int get();
-				void set(int value);
-			}
-
-			/// <summary>
-			/// Notifies the system that the call needs to be muted/unmuted.
-			/// </summary>
-			/// <param name="isMuted">The new mute state</param>
-			void NotifyMute(bool isMuted);
-
-			/// <summary>
-			/// Sets the path to the database file used to store chat messages
-			/// </summary>
-			property Platform::String^ ChatDatabasePath
-			{
-				Platform::String^ get();
-				void set(Platform::String^ value);
-			}
-
-			/// <summary>
-			/// Gets the list of the created chatrooms
-			/// </summary>
-			property Windows::Foundation::Collections::IVector<Platform::Object^>^ ChatRooms
-			{
-				Windows::Foundation::Collections::IVector<Platform::Object^>^ get();
-			}
+#endif
 
 		private:
 			friend ref class Linphone::Native::Address;

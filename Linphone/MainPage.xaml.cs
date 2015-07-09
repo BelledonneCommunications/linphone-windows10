@@ -21,7 +21,7 @@ namespace Linphone
         {
             base.OnNavigatedTo(e);
             LinphoneManager.Instance.Dispatcher = Dispatcher;
-            LinphoneManager.Instance.Core.IterateEnabled = true;
+            LinphoneManager.Instance.Core.IsIterateEnabled = true;
         }
 
         private void CallButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -52,7 +52,7 @@ namespace Linphone
                 core.AddAuthInfo(authInfo);
                 proxy.Identity = string.Format("sip:{0}@{1}", UsernameTextBox.Text, ServerTextBox.Text);
                 proxy.ServerAddr = ServerTextBox.Text;
-                proxy.RegisterEnabled = true;
+                proxy.IsRegisterEnabled = true;
                 core.AddProxyConfig(proxy);
                 core.DefaultProxyConfig = proxy;
             }

@@ -31,7 +31,7 @@ static void AddChatMessageToVector(void *vMessage, void *vector)
 	::LinphoneChatMessage *chatMessage = (::LinphoneChatMessage*)vMessage;
 	Linphone::Native::RefToPtrProxy<IVector<Linphone::Native::ChatMessage^>^> *list = reinterpret_cast< Linphone::Native::RefToPtrProxy<IVector<Linphone::Native::ChatMessage^>^> *>(vector);
 	IVector<Linphone::Native::ChatMessage^>^ messages = (list) ? list->Ref() : nullptr;
-	Linphone::Native::ChatMessage^ message = (Linphone::Native::ChatMessage^) Linphone::Native::Utils::CreateLinphoneChatMessage(chatMessage);
+	Linphone::Native::ChatMessage^ message = (Linphone::Native::ChatMessage^) Linphone::Native::Utils::GetChatMessage(chatMessage);
 	messages->Append(message);
 }
 
@@ -90,7 +90,7 @@ Linphone::Native::ChatMessage^ Linphone::Native::ChatRoom::CreateFileTransferMes
 	linphone_content_set_name(content, cname);
 	msg = linphone_chat_room_create_file_transfer_message(this->room, content);
 	linphone_chat_message_set_file_transfer_filepath(msg, cfilepath);
-	Linphone::Native::ChatMessage^ chatMessage = (Linphone::Native::ChatMessage^) Linphone::Native::Utils::CreateLinphoneChatMessage(msg);
+	Linphone::Native::ChatMessage^ chatMessage = (Linphone::Native::ChatMessage^) Linphone::Native::Utils::GetChatMessage(msg);
 	delete(ctype);
 	delete(csubtype);
 	delete(cname);
@@ -98,11 +98,12 @@ Linphone::Native::ChatMessage^ Linphone::Native::ChatRoom::CreateFileTransferMes
 	return chatMessage;
 }
 
-Linphone::Native::ChatMessage^ Linphone::Native::ChatRoom::CreateLinphoneChatMessage(Platform::String^ message)
+Linphone::Native::ChatMessage^ Linphone::Native::ChatRoom::CreateMessage(Platform::String^ message)
 {
 	API_LOCK;
 	const char* msg = Linphone::Native::Utils::pstoccs(message);
-	Linphone::Native::ChatMessage^ chatMessage = (Linphone::Native::ChatMessage^) Linphone::Native::Utils::CreateLinphoneChatMessage(linphone_chat_room_create_message(this->room, msg));
+	::LinphoneChatMessage *cm = linphone_chat_room_create_message(this->room, msg);
+	Linphone::Native::ChatMessage^ chatMessage = (Linphone::Native::ChatMessage^) Linphone::Native::Utils::GetChatMessage(cm);
 	delete(msg);
 	return chatMessage;
 }
@@ -113,7 +114,7 @@ void Linphone::Native::ChatRoom::DeleteHistory()
 	linphone_chat_room_delete_history(this->room);
 }
 
-void Linphone::Native::ChatRoom::DeleteMessageFromHistory(Linphone::Native::ChatMessage^ message)
+void Linphone::Native::ChatRoom::DeleteMessage(Linphone::Native::ChatMessage^ message)
 {
 	API_LOCK;
 	linphone_chat_room_delete_message(this->room, message->message);
@@ -131,12 +132,7 @@ static void chat_room_callback(::LinphoneChatMessage* msg, ::LinphoneChatMessage
 	Linphone::Native::ChatMessageListener^ listener = (proxy) ? proxy->Ref() : nullptr;
 
 	if (listener != nullptr) {
-		Linphone::Native::RefToPtrProxy<Linphone::Native::ChatMessage^> *proxy = reinterpret_cast< Linphone::Native::RefToPtrProxy<Linphone::Native::ChatMessage^> *>(linphone_chat_message_get_user_data(msg));
-		Linphone::Native::ChatMessage^ lChatMessage = (proxy) ? proxy->Ref() : nullptr;
-		if (lChatMessage == nullptr) {
-			lChatMessage = (Linphone::Native::ChatMessage^)Linphone::Native::Utils::CreateLinphoneChatMessage(msg);
-		}
-
+		Linphone::Native::ChatMessage^ lChatMessage = (Linphone::Native::ChatMessage^)Linphone::Native::Utils::GetChatMessage(msg);
 		listener->MessageStateChanged(lChatMessage, (Linphone::Native::ChatMessageState) state);
 	}
 }
@@ -153,12 +149,16 @@ Linphone::Native::ChatRoom::ChatRoom(::LinphoneChatRoom *cr)
 {
 	API_LOCK;
 	RefToPtrProxy<ChatRoom^> *chat_room = new RefToPtrProxy<ChatRoom^>(this);
+	linphone_chat_room_ref(this->room);
 	linphone_chat_room_set_user_data(this->room, chat_room);
 }
 
 Linphone::Native::ChatRoom::~ChatRoom()
 {
 	API_LOCK;
+	if (this->room != nullptr) {
+		linphone_chat_room_unref(this->room);
+	}
 	RefToPtrProxy<ChatRoom^> *chat_room = reinterpret_cast< RefToPtrProxy<ChatRoom^> *>(linphone_chat_room_get_user_data(this->room));
 	delete chat_room;
 }

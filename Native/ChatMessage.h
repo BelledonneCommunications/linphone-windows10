@@ -64,7 +64,7 @@ namespace Linphone
 			/// <summary>
 			/// Gets the path to the file to read from or write to during the file transfer.
 			/// </summary>
-			property Platform::String^ FileTransferFilePath
+			property Platform::String^ FileTransferFilepath
 			{
 				Platform::String^ get();
 			}
@@ -72,7 +72,7 @@ namespace Linphone
 			/// <summary>
 			/// Get from address as Address associated to this message.
 			/// </summary>
-			property Linphone::Native::Address^ From
+			property Linphone::Native::Address^ FromAddress
 			{
 				Linphone::Native::Address^ get();
 			}

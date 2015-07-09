@@ -31,7 +31,6 @@
     <ClCompile Include="ApiLock.cpp" />
     <ClCompile Include="AuthInfo.cpp" />
     <ClCompile Include="Call.cpp" />
-    <ClCompile Include="CallController.cpp" />
     <ClCompile Include="CallLog.cpp" />
     <ClCompile Include="CallParams.cpp" />
     <ClCompile Include="CallStats.cpp" />
@@ -52,7 +51,6 @@
     <ClInclude Include="ApiLock.h" />
     <ClInclude Include="AuthInfo.h" />
     <ClInclude Include="Call.h" />
-    <ClInclude Include="CallController.h" />
     <ClInclude Include="CallLog.h" />
     <ClInclude Include="CallParams.h" />
     <ClInclude Include="CallStats.h" />

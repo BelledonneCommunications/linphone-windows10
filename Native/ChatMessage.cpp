@@ -45,7 +45,7 @@ void Linphone::Native::ChatMessage::ExternalBodyUrl::set(Platform::String^ url)
 	delete(body);
 }
 
-Platform::String^ Linphone::Native::ChatMessage::FileTransferFilePath::get()
+Platform::String^ Linphone::Native::ChatMessage::FileTransferFilepath::get()
 {
 	API_LOCK;
 	return Linphone::Native::Utils::cctops(linphone_chat_message_get_file_transfer_filepath(this->message));
@@ -63,10 +63,10 @@ Platform::String^ Linphone::Native::ChatMessage::FileTransferName::get()
 	return fileName;
 }
 
-Linphone::Native::Address^ Linphone::Native::ChatMessage::From::get()
+Linphone::Native::Address^ Linphone::Native::ChatMessage::FromAddress::get()
 {
 	API_LOCK;
-	return (Linphone::Native::Address^) Linphone::Native::Utils::CreateAddress((void*)linphone_chat_message_get_from(this->message));
+	return (Linphone::Native::Address^) Linphone::Native::Utils::CreateAddress((void*)linphone_chat_message_get_from_address(this->message));
 }
 
 Platform::Boolean Linphone::Native::ChatMessage::IsOutgoing::get()
@@ -111,12 +111,7 @@ static void status_cb(::LinphoneChatMessage* msg, ::LinphoneChatMessageState sta
 	Linphone::Native::ChatMessageListener^ listener = (proxy) ? proxy->Ref() : nullptr;
 
 	if (listener != nullptr) {
-		Linphone::Native::RefToPtrProxy<Linphone::Native::ChatMessage^> *proxy = reinterpret_cast< Linphone::Native::RefToPtrProxy<Linphone::Native::ChatMessage^> *>(linphone_chat_message_get_user_data(msg));
-		Linphone::Native::ChatMessage^ lChatMessage = (proxy) ? proxy->Ref() : nullptr;
-		if (lChatMessage == nullptr) {
-			lChatMessage = (Linphone::Native::ChatMessage^)Linphone::Native::Utils::CreateLinphoneChatMessage(msg);
-		}
-
+		Linphone::Native::ChatMessage^ lChatMessage = (Linphone::Native::ChatMessage^)Linphone::Native::Utils::GetChatMessage(msg);
 		listener->MessageStateChanged(lChatMessage, (Linphone::Native::ChatMessageState) state);
 	}
 }
@@ -135,8 +130,8 @@ Linphone::Native::ChatMessage::ChatMessage(::LinphoneChatMessage *cm)
 	: message(cm)
 {
 	API_LOCK;
-	message = linphone_chat_message_ref(message);
 	RefToPtrProxy<ChatMessage^> *chat_message = new RefToPtrProxy<ChatMessage^>(this);
+	linphone_chat_message_ref(message);
 	linphone_chat_message_set_user_data(this->message, chat_message);
 }
 

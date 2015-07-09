@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "CallParams.h"
 #include "Core.h"
 #include "PayloadType.h"
+#include "VideoSize.h"
 
 using namespace Platform;
 
@@ -46,16 +47,28 @@ void Linphone::Native::CallParams::AudioDirection::set(Linphone::Native::MediaDi
 	linphone_call_params_set_audio_direction(this->params, (LinphoneMediaDirection)value);
 }
 
-Platform::Boolean Linphone::Native::CallParams::LowBandwidthEnabled::get()
+Platform::Boolean Linphone::Native::CallParams::IsLowBandwidthEnabled::get()
 {
 	API_LOCK;
 	return (linphone_call_params_low_bandwidth_enabled(this->params) == TRUE);
 }
 
-void Linphone::Native::CallParams::LowBandwidthEnabled::set(Platform::Boolean enable)
+void Linphone::Native::CallParams::IsLowBandwidthEnabled::set(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_call_params_enable_low_bandwidth(this->params, enable);
+}
+
+Platform::Boolean Linphone::Native::CallParams::IsVideoEnabled::get()
+{
+	API_LOCK;
+	return (linphone_call_params_video_enabled(this->params) == TRUE);
+}
+
+void Linphone::Native::CallParams::IsVideoEnabled::set(Platform::Boolean enable)
+{
+	API_LOCK;
+	linphone_call_params_enable_video(this->params, enable);
 }
 
 Linphone::Native::MediaEncryption Linphone::Native::CallParams::MediaEncryption::get()
@@ -70,24 +83,18 @@ void Linphone::Native::CallParams::MediaEncryption::set(Linphone::Native::MediaE
 	linphone_call_params_set_media_encryption(this->params, (LinphoneMediaEncryption) menc);
 }
 
-Windows::Foundation::Size Linphone::Native::CallParams::ReceivedVideoSize::get()
+Linphone::Native::VideoSize^ Linphone::Native::CallParams::ReceivedVideoSize::get()
 {
 	API_LOCK;
 	MSVideoSize vs = linphone_call_params_get_received_video_size(this->params);
-	Windows::Foundation::Size size;
-	size.Width = (float)vs.width;
-	size.Height = (float)vs.height;
-	return size;
+	return ref new Linphone::Native::VideoSize(vs.width, vs.height);
 }
 
-Windows::Foundation::Size Linphone::Native::CallParams::SentVideoSize::get()
+Linphone::Native::VideoSize^ Linphone::Native::CallParams::SentVideoSize::get()
 {
 	API_LOCK;
 	MSVideoSize vs = linphone_call_params_get_sent_video_size(this->params);
-	Windows::Foundation::Size size;
-	size.Width = (float)vs.width;
-	size.Height = (float)vs.height;
-	return size;
+	return ref new Linphone::Native::VideoSize(vs.width, vs.height);
 }
 
 Linphone::Native::PayloadType^ Linphone::Native::CallParams::UsedAudioCodec::get()
@@ -124,23 +131,26 @@ void Linphone::Native::CallParams::VideoDirection::set(Linphone::Native::MediaDi
 	linphone_call_params_set_video_direction(this->params, (LinphoneMediaDirection)value);
 }
 
-Platform::Boolean Linphone::Native::CallParams::VideoEnabled::get()
+Linphone::Native::CallParams^ Linphone::Native::CallParams::Copy()
 {
-	API_LOCK;
-	return (linphone_call_params_video_enabled(this->params) == TRUE);
-}
-
-void Linphone::Native::CallParams::VideoEnabled::set(Platform::Boolean enable)
-{
-	API_LOCK;
-	linphone_call_params_enable_video(this->params, enable);
+	::LinphoneCallParams *newParams = linphone_call_params_copy(this->params);
+	return ref new Linphone::Native::CallParams(newParams);
 }
 
 Linphone::Native::CallParams::CallParams(::LinphoneCallParams *call_params)
 	: params(call_params)
 {
+	API_LOCK;
+	RefToPtrProxy<CallParams^> *proxy = new RefToPtrProxy<CallParams^>(this);
+	linphone_call_params_ref(this->params);
+	linphone_call_params_set_user_data(this->params, proxy);
 }
 
 Linphone::Native::CallParams::~CallParams()
 {
+	if (this->params != nullptr) {
+		linphone_call_params_unref(this->params);
+	}
+	RefToPtrProxy<CallParams^> *proxy = reinterpret_cast< RefToPtrProxy<CallParams^> *>(linphone_call_params_get_user_data(this->params));
+	delete proxy;
 }
