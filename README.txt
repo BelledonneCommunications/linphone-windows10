@@ -2,29 +2,18 @@ The documentation is directly included in the code using Intellisense,
 but a .xml file with the C++ API documentation is also generated at the 
 compilation as Linphone.Core.xml.
 
-The solution is composed of four projects:
-* Agents: contains the background agents for the VoIP application
-* Core: contains the C++ API wrapper for Linphone Core
-* CoreProxyStub: contains only generated files allowing 
-the Linphone project to make calls to the C++ API
-/!\ Do not touch anything in this project!
+The solution is composed of two projects:
+* Linphone.Native: contains the C++ API wrapper for Linphone Core
 * Linphone: the interface project
-
-If you have a FileNotFoundException is mscorlib during debug phase, 
-open DEBUG->Exceptions and uncheck Common Language Runtime Exceptions->System.IO.FileNotFoundException
 
 YOU CAN'T PASS A NULL STRING FROM C# TO C++/CX (it has to be empty) AND YOU CAN'T RECEIVE A NULL STRING FROM C++/CX (It will always be an empty string).
 See http://stackoverflow.com/questions/12980915/exception-when-trying-to-read-null-string-in-c-sharp-winrt-component-from-winjs
 
-The logs are stored in a file in the application isolated storage. To retrieve it, you need to install this tool on your computer : http://wptools.codeplex.com/
-
-If the application crashes during a call, you may loose the sound in linphone for a while. A device reboot fix this issue.
-
 
 
 In order to compile Linphone, you need:
-* A computer with Windows 8 (Pro if you want to use the emulator)
-* Visual Studio 11 (2012)
+* A computer with Windows 10
+* Visual Studio 14 (2015)
 * The Windows Phone 8 SDK
 * wget, gawk, unzip, grep and sed from the GnuWin32 project and put them in your PATH (http://gnuwin32.sourceforge.net/) for belle-sip and some mediastreamer2 codecs
 * The Java Runtime Environment (JRE). The 'java' command must be in the PATH.
@@ -32,11 +21,8 @@ In order to compile Linphone, you need:
 
 To import the solution, open the Linphone.sln file at the root of the project.
 
-To compile and run it, plug a windows phone 8 device or choose an emulator 
-and run the build/install (using F5 or the green triangle). The app will start
-automatically once built.
-
-If you have an issue with the build of the speexdsp project when compiling on a Visual Studio 2013, install the WP8 SDK (even if VS2013 says it installed it).
+To build, choose the architecture you want to build for (ARM, x64 or x86) and click "Build > Build Solution" (or use Ctrl+Shift+B).
+To run the built app, press the green triangle button. It will default to run on the computer for the x64 and x86 architecture and on the plugged in Windows Phone 10 for the ARM architecture.
 
 /!\ Please check the Linphone project in the solution is set as startup project.
 (The startup project is in bold in the project list)
