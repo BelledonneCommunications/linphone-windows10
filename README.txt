@@ -14,9 +14,9 @@ See http://stackoverflow.com/questions/12980915/exception-when-trying-to-read-nu
 In order to compile Linphone, you need:
 * A computer with Windows 10
 * Visual Studio 14 (2015)
-* The Windows Phone 8 SDK
-* wget, gawk, unzip, grep and sed from the GnuWin32 project and put them in your PATH (http://gnuwin32.sourceforge.net/) for belle-sip and some mediastreamer2 codecs
-* The Java Runtime Environment (JRE). The 'java' command must be in the PATH.
+* gawk and wget from the GnuWin32 project and put them in your PATH environment variable (http://gnuwin32.sourceforge.net/)
+* The Java Runtime Environment (JRE). The 'java' command must be in your PATH environment variable.
+* The 'git' command must also be in your PATH environment variable.
 * The sources of the project. /!\ You can't have a folder that contains a space character in the path of the sources. /!\
 
 To import the solution, open the Linphone.sln file at the root of the project.
