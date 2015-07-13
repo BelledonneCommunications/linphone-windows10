@@ -208,7 +208,7 @@ Platform::String^ Linphone::Native::ProxyConfig::NormalizeNumber(Platform::Strin
 	linphone_proxy_config_normalize_number(this->proxyConfig, cc, result, result_size);
 	Platform::String^ val = Utils::cctops(result);
 	delete(cc);
-	delete(result);
+	free(result);
 	return val;
 }
 
