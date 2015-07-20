@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "CoreListener.h"
 #include "Utils.h"
 
+
 // Do not treat doxygen documentation as XML
 #pragma warning(push)
 #pragma warning(disable : 4635)
@@ -500,6 +501,24 @@ namespace Linphone
 			property int MissedCallsCount
 			{
 				int get();
+			}
+
+			/// <summary>
+			/// Sets the native preview window id (a Windows::UI::Xaml::Controls::CaptureElement as a Platform::Object).
+			/// </summary>
+			property Platform::Object^ NativePreviewWindowId
+			{
+				Platform::Object^ get();
+				void set(Platform::Object^ value);
+			}
+
+			/// <summary>
+			/// Sets the native video window id (a Windows::UI::Xaml::Controls::MediaElement as a Platform::Object).
+			/// </summary>
+			property Platform::Object^ NativeVideoWindowId
+			{
+				Platform::Object^ get();
+				void set(Platform::Object^ value);
 			}
 
 			/// <summary>
@@ -1032,14 +1051,6 @@ namespace Linphone
 			/// Status is notified to CoreListener::EcCalibrationStatus.
 			/// </summary>
 			void StartEchoCalibration();
-
-			/// <summary>
-			/// Gets the native video window id.
-			/// </summary>
-			property int NativeVideoWindowId
-			{
-				int get();
-			}
 #endif
 
 		private:

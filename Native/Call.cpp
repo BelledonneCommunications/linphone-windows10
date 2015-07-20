@@ -127,6 +127,23 @@ Platform::Boolean Linphone::Native::Call::IsInConference::get()
 	return (linphone_call_is_in_conference(this->call) == TRUE);
 }
 
+Platform::Object^ Linphone::Native::Call::NativeVideoWindowId::get()
+{
+	API_LOCK;
+	void *id = linphone_call_get_native_video_window_id(this->call);
+	if (id == NULL) return nullptr;
+	Linphone::Native::RefToPtrProxy<Platform::Object^> *proxy = reinterpret_cast<Linphone::Native::RefToPtrProxy<Platform::Object^>*>(id);
+	Platform::Object^ nativeWindowId = (proxy) ? proxy->Ref() : nullptr;
+	return nativeWindowId;
+}
+
+void Linphone::Native::Call::NativeVideoWindowId::set(Platform::Object^ value)
+{
+	API_LOCK;
+	Linphone::Native::RefToPtrProxy<Platform::Object^> *nativeWindowId = new Linphone::Native::RefToPtrProxy<Platform::Object^>(value);
+	linphone_call_set_native_video_window_id(this->call, nativeWindowId);
+}
+
 float Linphone::Native::Call::PlayVolume::get()
 {
 	API_LOCK;

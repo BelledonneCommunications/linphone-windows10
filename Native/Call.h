@@ -162,6 +162,15 @@ namespace Linphone
 			}
 
 			/// <summary>
+			/// Sets the native video window id (a Windows::UI::Xaml::Controls::MediaElement as a Platform::Object).
+			/// </summary>
+			property Platform::Object^ NativeVideoWindowId
+			{
+				Platform::Object^ get();
+				void set(Platform::Object^ value);
+			}
+
+			/// <summary>
 			/// Gets the measured sound volume played locally (received from remote).
 			/// It is expressed in dbm0.
 			/// </summary>

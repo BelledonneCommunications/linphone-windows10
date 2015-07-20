@@ -100,6 +100,9 @@
     <ProjectReference Include="..\submodules\mswebrtc\build\windows10\libmswebrtc\libmswebrtc.vcxproj">
       <Project>{878cf9d3-9761-479e-a715-a1de9f99cb78}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\submodules\mswinrtvid\windows10\libmswinrtvid\libmswinrtvid.vcxproj">
+      <Project>{2d0e44c4-e51d-4911-b876-345d1e5e5209}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{d30cbfe0-beff-4925-9bad-9380f9bfcf90}</ProjectGuid>
