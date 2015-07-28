@@ -1,4 +1,5 @@
 Here is how the libvpx prebuilt libraries have been generated.
+The patch 0001-Support-build-with-Visual-Studio-14.patch needs to be applied to revision commit f8b869f573cd2503847f80043bfd4751a78a091b of libvpx for these instructions to be successful.
 
 The commands are to be executed in a msys shell.
 
