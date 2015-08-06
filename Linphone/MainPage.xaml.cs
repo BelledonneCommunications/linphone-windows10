@@ -36,24 +36,35 @@ namespace Linphone
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            Core.LogLevel = OutputTraceLevel.Message;
             LinphoneManager.Instance.Dispatcher = Dispatcher;
             LinphoneManager.Instance.Core.IsIterateEnabled = true;
         }
 
         private void CallButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            string contact = ContactTextBox.Text;
-            if (contact.Length > 0)
+            Core core = LinphoneManager.Instance.Core;
+            if (core.CallsNb == 0)
             {
-                if (!contact.StartsWith("sip:"))
+                string contact = ContactTextBox.Text;
+                if (contact.Length > 0)
                 {
-                    contact = string.Format("sip:{0}", contact);
+                    if (!contact.StartsWith("sip:"))
+                    {
+                        contact = string.Format("sip:{0}", contact);
+                    }
+                    Address address = core.CreateAddress(contact);
+                    if (address != null)
+                    {
+                        core.InviteAddress(address);
+                    }
                 }
-                Core core = LinphoneManager.Instance.Core;
-                Address address = core.CreateAddress(contact);
-                if (address != null)
+            }
+            else
+            {
+                foreach (Call c in core.Calls)
                 {
-                    core.InviteAddress(address);
+                    core.TerminateCall(c);
                 }
             }
         }
@@ -68,9 +79,14 @@ namespace Linphone
                 core.AddAuthInfo(authInfo);
                 proxy.Identity = string.Format("sip:{0}@{1}", UsernameTextBox.Text, ServerTextBox.Text);
                 proxy.ServerAddr = ServerTextBox.Text;
+                Address addr = core.CreateAddress(proxy.ServerAddr);
+                addr.Transport = Transport.TCP;
+                proxy.ServerAddr = addr.AsString();
+                proxy.Route = addr.AsString();
                 proxy.IsRegisterEnabled = true;
                 core.AddProxyConfig(proxy);
                 core.DefaultProxyConfig = proxy;
+                core.VideoPolicy = new VideoPolicy(false, false);
             }
         }
     }
