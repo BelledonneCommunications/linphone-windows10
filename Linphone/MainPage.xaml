@@ -46,7 +46,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock x:Name="ContactTextBlock" HorizontalAlignment="Left" Margin="8,0" TextWrapping="Wrap" VerticalAlignment="Center" Text="Contact:"/>
                 <TextBox x:Name="ContactTextBox" Margin="8" TextWrapping="Wrap" VerticalAlignment="Center" d:LayoutOverrides="Width" Grid.Column="1"/>
-                <Button x:Name="CallButton" Content="Call" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="8,0" Grid.Row="1" d:LayoutOverrides="Height, TopPosition, BottomPosition" Click="CallButton_Click"/>
+                <Button x:Name="CallButton" Content="Call / Hangup" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="8,0" Grid.Row="1" d:LayoutOverrides="Height, TopPosition, BottomPosition" Click="CallButton_Click"/>
                 <TextBlock x:Name="CallStateTextBlock" Margin="8,8,5,8" TextWrapping="Wrap" Grid.Row="1" Grid.Column="1" Text="{Binding Instance.CallStateText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
         </StackPanel>
