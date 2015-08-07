@@ -33,10 +33,10 @@
 	url = git://git.linphone.org/polarssl.git
 [submodule "submodules/opencore-amr"]
 	path = submodules/opencore-amr
-	url = git://git.code.sf.net/p/opencore-amr/code
+	url = git://git.linphone.org/opencore-amr.git
 [submodule "submodules/vo-amrwbenc"]
 	path = submodules/vo-amrwbenc
-	url = git://git.code.sf.net/p/opencore-amr/vo-amrwbenc
+	url = git://git.linphone.org/vo-amrwbenc.git
 [submodule "submodules/msamr"]
 	path = submodules/msamr
 	url = git://git.linphone.org/msamr.git
