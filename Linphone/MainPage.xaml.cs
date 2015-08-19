@@ -49,11 +49,7 @@ namespace Linphone
                 string contact = ContactTextBox.Text;
                 if (contact.Length > 0)
                 {
-                    if (!contact.StartsWith("sip:"))
-                    {
-                        contact = string.Format("sip:{0}", contact);
-                    }
-                    Address address = core.CreateAddress(contact);
+                    Address address = core.InterpretURL(contact);
                     if (address != null)
                     {
                         core.InviteAddress(address);
