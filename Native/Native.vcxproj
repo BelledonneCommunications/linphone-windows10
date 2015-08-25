@@ -82,6 +82,9 @@
     <ProjectReference Include="..\submodules\linphone\mediastreamer2\build\windows10\mediastreamer2\mediastreamer2.vcxproj">
       <Project>{88e3c241-eb6f-4c84-80dc-89b8961daf80}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\submodules\linphone\mediastreamer2\build\windows10\mswinrtjpeg2yuv\mswinrtjpeg2yuv.vcxproj">
+      <Project>{545f846d-7f19-4d6d-a50b-172a7c9b61e7}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\submodules\linphone\oRTP\build\windows10\ortp\ortp.vcxproj">
       <Project>{2e56b851-9d8d-40e5-84bb-e4ee63b71d25}</Project>
     </ProjectReference>

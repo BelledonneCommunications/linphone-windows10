@@ -67,3 +67,9 @@
 [submodule "submodules/mswinrtvid"]
 	path = submodules/mswinrtvid
 	url = git://git.linphone.org/mswinrtvid.git
+[submodule "submodules/msopenh264"]
+	path = submodules/msopenh264
+	url = git://git.linphone.org/msopenh264.git
+[submodule "submodules/openh264"]
+	path = submodules/openh264
+	url = git://github.com/cisco/openh264.git
