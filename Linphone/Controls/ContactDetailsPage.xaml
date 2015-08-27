@@ -1,0 +1,51 @@
+﻿<!--
+ContactDetailsPage.xaml
+Copyright(C) 2015  Belledonne Communications, Grenoble, France
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+-->
+
+<UserControl
+    x:Class="Linphone.Controls.ContactDetailsPage"
+    x:Name="ContactDetails"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Linphone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="500"
+    d:DesignWidth="400">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <local:ContactDetailsHeader x:Name="ContactDetailsHeader" Grid.Row="0" ContactDetailsBackButtonClick="ContactDetailsHeader_ContactDetailsBackButtonClick"/>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollMode="Auto">
+            <StackPanel Orientation="Vertical">
+                <local:Avatar x:Name="Avatar" MaxWidth="250"/>
+                <TextBlock x:Name="DisplayName" Style="{StaticResource Linphone05TextBlockStyle}" Text="{Binding ContactName, ElementName=ContactDetails}" HorizontalAlignment="Center" Margin="8,8,8,16"/>
+                <!--<TextBlock x:Name="SIPAddress" Style="{StaticResource Linphone02TextBlockStyle}" Text="{Binding ContactSipAddress, ElementName=ContactDetails}" HorizontalAlignment="Center" Margin="8,0,8,16"/>-->
+                <local:DetailsSection Title="Phone numbers"/>
+                <TextBlock Style="{StaticResource Linphone06TextBlockStyle}" Text="{Binding ContactPhoneNumber, ElementName=ContactDetails}" HorizontalAlignment="Center"/>
+                <local:DetailsActions x:Name="PhoneActions" MaxHeight="60" HorizontalAlignment="Center" Margin="12,4,12,12"/>
+                <local:DetailsSection Title="SIP Addresses"/>
+                <TextBlock Style="{StaticResource Linphone06TextBlockStyle}" Text="{Binding ContactSipAddress, ElementName=ContactDetails}" HorizontalAlignment="Center"/>
+                <local:DetailsActions x:Name="SIPActions" MaxHeight="60" HorizontalAlignment="Center" Margin="12,4,12,12"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

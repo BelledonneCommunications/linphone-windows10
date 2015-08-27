@@ -1,0 +1,90 @@
+﻿<!--
+AssistantPage.xaml
+Copyright(C) 2015  Belledonne Communications, Grenoble, France
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+-->
+
+<Page
+    x:Class="Linphone.AssistantPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Linphone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:lc="using:Linphone.Controls"
+    mc:Ignorable="d">
+
+    <Grid Background="{StaticResource LinphoneColorH}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="PageStateGroup">
+                <VisualState x:Name="WelcomeState">
+                    <VisualState.Setters>
+                        <Setter Target="AssistantBackButton.Visibility" Value="Collapsed"/>
+                        <Setter Target="WelcomePage.Visibility" Value="Visible"/>
+                        <Setter Target="CreateLinphoneAccountPage.Visibility" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="CreateLinphoneAccountState">
+                    <VisualState.Setters>
+                        <Setter Target="WelcomePage.Visibility" Value="Collapsed"/>
+                        <Setter Target="CreateLinphoneAccountPage.Visibility" Value="Visible"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <lc:MainHeader x:Name="MainHeader" Grid.Row="0" MenuClick="MainHeader_MenuClick"/>
+        <SplitView x:Name="MenuSplitView" Grid.Row="1" d:LayoutOverrides="Width">
+            <SplitView.Pane>
+                <Grid>
+                    <lc:Menu HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                </Grid>
+            </SplitView.Pane>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid x:Name="AssistantHeader" Background="{StaticResource LinphoneColorF}" Grid.Row="0" MaxHeight="63">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="{StaticResource PageHeaderHeight}"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="{StaticResource PageHeaderHeight}"/>
+                    </Grid.ColumnDefinitions>
+
+                    <lc:LinphoneMenuButton x:Name="AssistantBackButton" Grid.Column="0"
+                                           d:LayoutOverrides="Width, Height"
+                                           Image="ms-appx:///Assets/Images/back.png"
+                                           Click="AssistantBackButton_Click"/>
+                    <TextBlock Grid.Column="1" Text="ASSISTANT" Style="{StaticResource Linphone01TextBlockStyle}"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <lc:LinphoneMenuButton x:Name="AssistantDialerButton" Grid.Column="2"
+                                           d:LayoutOverrides="Width, Height"
+                                           Image="ms-appx:///Assets/Images/dialer_back.png"
+                                           Click="AssistantDialerButton_Click"/>
+                </Grid>
+
+                <lc:AssistantWelcomePage x:Name="WelcomePage" Grid.Row="1"/>
+                <lc:AssistantCreateLinphoneAccountPage x:Name="CreateLinphoneAccountPage" Grid.Row="1"/>
+
+                <Rectangle x:Name="OpenedMenuRectangle" Grid.RowSpan="2" Fill="{StaticResource LinphoneColorC}" Opacity="0.9" Visibility="{Binding IsPaneOpen, Converter={StaticResource BooleanToVisibility}, ElementName=MenuSplitView}"/>
+            </Grid>
+        </SplitView>
+    </Grid>
+</Page>

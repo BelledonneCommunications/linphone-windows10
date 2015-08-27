@@ -1,0 +1,115 @@
+﻿<!--
+Dialer.xaml
+Copyright(C) 2015  Belledonne Communications, Grenoble, France
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+-->
+
+<UserControl
+    x:Class="Linphone.Controls.Dialer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Linphone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <Style x:Key="DialerButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource LinphoneColorH}"/>
+            <Setter Property="Foreground" Value="{StaticResource LinphoneColorC}"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="UseSystemFocusVisuals" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid x:Name="RootGrid">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="PointerOver"/>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootGrid">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LinphoneColorA}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity" Storyboard.TargetName="RootGrid">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0.15"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled"/>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MaxWidth="390" MaxHeight="520">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="Digit1Button" d:LayoutOverrides="Width, Height" Style="{StaticResource DialerButtonStyle}" Click="DigitButton_Click">
+            <Image Source="ms-appx:///Assets/Images/numpad_1.png"/>
+        </Button>
+        <Button x:Name="Digit2Button" d:LayoutOverrides="Width, Height" Style="{StaticResource DialerButtonStyle}" Click="DigitButton_Click" Grid.Column="1">
+            <Image Source="ms-appx:///Assets/Images/numpad_2.png"/>
+        </Button>
+        <Button x:Name="Digit3Button" d:LayoutOverrides="Width, Height" Style="{StaticResource DialerButtonStyle}" Click="DigitButton_Click" Grid.Column="2" >
+            <Image Source="ms-appx:///Assets/Images/numpad_3.png"/>
+        </Button>
+        <Button x:Name="Digit4Button" d:LayoutOverrides="Width, Height" Style="{StaticResource DialerButtonStyle}" Click="DigitButton_Click" Grid.Row="1">
+            <Image Source="ms-appx:///Assets/Images/numpad_4.png"/>
+        </Button>
+        <Button x:Name="Digit5Button" d:LayoutOverrides="Width, Height" Style="{StaticResource DialerButtonStyle}" Click="DigitButton_Click" Grid.Row="1" Grid.Column="1">
+            <Image Source="ms-appx:///Assets/Images/numpad_5.png"/>
+        </Button>
+        <Button x:Name="Digit6Button" d:LayoutOverrides="Width, Height" Style="{StaticResource DialerButtonStyle}" Click="DigitButton_Click" Grid.Row="1" Grid.Column="2">
+            <Image Source="ms-appx:///Assets/Images/numpad_6.png"/>
+        </Button>
+        <Button x:Name="Digit7Button" d:LayoutOverrides="Width, Height" Style="{StaticResource DialerButtonStyle}" Click="DigitButton_Click" Grid.Row="2">
+            <Image Source="ms-appx:///Assets/Images/numpad_7.png"/>
+        </Button>
+        <Button x:Name="Digit8Button" d:LayoutOverrides="Width, Height" Style="{StaticResource DialerButtonStyle}" Click="DigitButton_Click" Grid.Row="2" Grid.Column="1">
+            <Image Source="ms-appx:///Assets/Images/numpad_8.png"/>
+        </Button>
+        <Button x:Name="Digit9Button" d:LayoutOverrides="Width, Height" Style="{StaticResource DialerButtonStyle}" Click="DigitButton_Click" Grid.Row="2" Grid.Column="2">
+            <Image Source="ms-appx:///Assets/Images/numpad_9.png"/>
+        </Button>
+        <Button x:Name="DigitSButton" d:LayoutOverrides="Width, Height" Style="{StaticResource DialerButtonStyle}" Click="DigitButton_Click" Grid.Row="3">
+            <Image Source="ms-appx:///Assets/Images/numpad_star.png"/>
+        </Button>
+        <Button x:Name="Digit0Button" d:LayoutOverrides="Width, Height" Style="{StaticResource DialerButtonStyle}" Click="DigitButton_Click" Grid.Row="3" Grid.Column="1">
+            <Image Source="ms-appx:///Assets/Images/numpad_0.png"/>
+        </Button>
+        <Button x:Name="DigitHButton" d:LayoutOverrides="Width, Height" Style="{StaticResource DialerButtonStyle}" Click="DigitButton_Click" Grid.Row="3" Grid.Column="2">
+            <Image Source="ms-appx:///Assets/Images/numpad_sharp.png"/>
+        </Button>
+
+    </Grid>
+</UserControl>

@@ -1,0 +1,146 @@
+﻿<!--
+ResourceDictionary.xaml
+Copyright(C) 2015  Belledonne Communications, Grenoble, France
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+-->
+
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Linphone.Controls">
+    
+    <!-- Colors definition -->
+    <SolidColorBrush x:Key="LinphoneColorA" Color="#ff5e00"/> <!-- Orange -->
+    <SolidColorBrush x:Key="LinphoneColorB" Color="#000000"/> <!-- Black -->
+    <SolidColorBrush x:Key="LinphoneColorC" Color="#444444"/> <!-- Dark Gray -->
+    <SolidColorBrush x:Key="LinphoneColorD" Color="#808080"/> <!-- Medium Dark Gray -->
+    <SolidColorBrush x:Key="LinphoneColorE" Color="#c4c4c4"/> <!-- Medium Gray -->
+    <SolidColorBrush x:Key="LinphoneColorF" Color="#e1e1e1"/> <!-- Medium Light Gray -->
+    <SolidColorBrush x:Key="LinphoneColorG" Color="#f3f3f3"/> <!-- Light Gray -->
+    <SolidColorBrush x:Key="LinphoneColorH" Color="#ffffff"/> <!-- White -->
+    <SolidColorBrush x:Key="LinphoneColorI" Color="#ff0000"/> <!-- Red -->
+    <SolidColorBrush x:Key="LinphoneColorJ" Color="#ffa645"/> <!-- Light Orange -->
+    <SolidColorBrush x:Key="LinphoneColorK" Color="#3eb5c0"/> <!-- Cyan -->
+    <SolidColorBrush x:Key="LinphoneColorL" Color="#96c11f"/> <!-- Green -->
+
+    <!-- Text styles definition -->
+    <Style x:Key="Linphone01TextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/Fonts/TitilliumWeb-Bold.ttf"/>
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="Foreground" Value="{StaticResource LinphoneColorA}"/>
+    </Style>
+    <Style x:Key="Linphone02TextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/Fonts/TitilliumWeb-Regular.ttf"/>
+        <Setter Property="FontSize" Value="17"/>
+        <Setter Property="Foreground" Value="{StaticResource LinphoneColorA}"/>
+    </Style>
+    <Style x:Key="Linphone03TextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/Fonts/TitilliumWeb-Regular.ttf"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{StaticResource LinphoneColorA}"/>
+    </Style>
+    <Style x:Key="Linphone04TextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/Fonts/TitilliumWeb-Bold.ttf"/>
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="Foreground" Value="{StaticResource LinphoneColorB}"/>
+    </Style>
+    <Style x:Key="Linphone05TextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/Fonts/TitilliumWeb-Regular.ttf"/>
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="Foreground" Value="{StaticResource LinphoneColorC}"/>
+    </Style>
+    <Style x:Key="Linphone06TextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/Fonts/TitilliumWeb-Light.ttf"/>
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="Foreground" Value="{StaticResource LinphoneColorC}"/>
+    </Style>
+    <Style x:Key="Linphone07TextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/Fonts/TitilliumWeb-Bold.ttf"/>
+        <Setter Property="FontSize" Value="28"/>
+        <Setter Property="Foreground" Value="{StaticResource LinphoneColorC}"/>
+    </Style>
+    <Style x:Key="Linphone08TextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/Fonts/TitilliumWeb-Light.ttf"/>
+        <Setter Property="FontSize" Value="17"/>
+        <Setter Property="Foreground" Value="{StaticResource LinphoneColorC}"/>
+    </Style>
+    <Style x:Key="Linphone09TextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/Fonts/TitilliumWeb-Regular.ttf"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{StaticResource LinphoneColorC}"/>
+    </Style>
+    <Style x:Key="Linphone10TextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/Fonts/TitilliumWeb-Regular.ttf"/>
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="Foreground" Value="{StaticResource LinphoneColorD}"/>
+    </Style>
+    <Style x:Key="Linphone11TextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/Fonts/TitilliumWeb-Light.ttf"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Foreground" Value="{StaticResource LinphoneColorD}"/>
+    </Style>
+    <Style x:Key="Linphone12TextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/Fonts/TitilliumWeb-Regular.ttf"/>
+        <Setter Property="FontSize" Value="17"/>
+        <Setter Property="Foreground" Value="{StaticResource LinphoneColorE}"/>
+    </Style>
+    <Style x:Key="Linphone13TextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/Fonts/TitilliumWeb-Regular.ttf"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{StaticResource LinphoneColorE}"/>
+    </Style>
+    <Style x:Key="Linphone14TextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/Fonts/TitilliumWeb-Regular.ttf"/>
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="Foreground" Value="{StaticResource LinphoneColorH}"/>
+    </Style>
+    <Style x:Key="Linphone15TextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/Fonts/TitilliumWeb-Light.ttf"/>
+        <Setter Property="FontSize" Value="17"/>
+        <Setter Property="Foreground" Value="{StaticResource LinphoneColorH}"/>
+    </Style>
+    <Style x:Key="Linphone16TextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/Fonts/TitilliumWeb-Regular.ttf"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Foreground" Value="{StaticResource LinphoneColorH}"/>
+    </Style>
+    <Style x:Key="Linphone17TextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/Fonts/TitilliumWeb-Bold.ttf"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{StaticResource LinphoneColorH}"/>
+    </Style>
+    <Style x:Key="Linphone18TextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/Fonts/TitilliumWeb-Regular.ttf"/>
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="Foreground" Value="{StaticResource LinphoneColorH}"/>
+    </Style>
+    <Style x:Key="Linphone19TextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/Fonts/TitilliumWeb-Bold.ttf"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Foreground" Value="{StaticResource LinphoneColorD}"/>
+    </Style>
+    
+    <Style x:Key="Linphone06TextBoxStyle" TargetType="TextBox">
+        <Setter Property="BorderBrush" Value="{StaticResource LinphoneColorE}"/>
+        <Setter Property="Background" Value="{StaticResource LinphoneColorG}"/>
+        <Setter Property="HeaderTemplate" Value="{StaticResource AssistantTextBoxHeader}"/>
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/Fonts/TitilliumWeb-Light.ttf"/>
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="Foreground" Value="{StaticResource LinphoneColorC}"/>
+    </Style>
+
+    <GridLength x:Key="MainHeaderHeight">40</GridLength>
+    <GridLength x:Key="MainFooterHeight">63</GridLength>
+    <GridLength x:Key="PageHeaderHeight">63</GridLength>
+    <GridLength x:Key="PageFooterHeight">63</GridLength>
+</ResourceDictionary>

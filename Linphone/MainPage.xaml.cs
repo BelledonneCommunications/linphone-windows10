@@ -1,22 +1,33 @@
 ﻿/*
 MainPage.xaml.cs
-Copyright (C) 2015  Belledonne Communications, Grenoble, France
+Copyright(C) 2015  Belledonne Communications, Grenoble, France
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
 as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+of the License, or(at your option) any later version.
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-using Windows.UI.Xaml.Controls;
-using Linphone.Native;
 using Linphone.Model;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -31,59 +42,61 @@ namespace Linphone
         public MainPage()
         {
             this.InitializeComponent();
+            this.Loaded += OnLoaded;
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            base.OnNavigatedTo(e);
-            Core.LogLevel = OutputTraceLevel.Message;
-            LinphoneManager.Instance.Dispatcher = Dispatcher;
-            LinphoneManager.Instance.Core.IsIterateEnabled = true;
+            VisualStateManager.GoToState(this, DialerState.Name, true);
         }
 
-        private void CallButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void MainHeader_MenuClick(object sender, RoutedEventArgs e)
         {
-            Core core = LinphoneManager.Instance.Core;
-            if (core.CallsNb == 0)
+            MenuSplitView.IsPaneOpen = !MenuSplitView.IsPaneOpen;
+        }
+
+        private void MainFooter_PageChanged(object sender, RoutedEventArgs e)
+        {
+            Controls.LinphonePageRadioButton rb = sender as Controls.LinphonePageRadioButton;
+            if (rb.Name.StartsWith("History"))
             {
-                string contact = ContactTextBox.Text;
-                if (contact.Length > 0)
-                {
-                    Address address = core.InterpretURL(contact);
-                    if (address != null)
-                    {
-                        core.InviteAddress(address);
-                    }
-                }
+                VisualStateManager.GoToState(this, HistoryState.Name, true);
+            }
+            else if (rb.Name.StartsWith("Contact"))
+            {
+                VisualStateManager.GoToState(this, ContactState.Name, true);
+            }
+            else if (rb.Name.StartsWith("Chat"))
+            {
+                VisualStateManager.GoToState(this, ChatState.Name, true);
             }
             else
             {
-                foreach (Call c in core.Calls)
-                {
-                    core.TerminateCall(c);
-                }
+                VisualStateManager.GoToState(this, DialerState.Name, true);
             }
         }
 
-        private void RegisterButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void HistoryPage_HistoryEntryClick(object sender, ItemClickEventArgs e)
         {
-            if ((UsernameTextBox.Text.Length > 0) && (ServerTextBox.Text.Length > 0))
-            {
-                Core core = LinphoneManager.Instance.Core;
-                ProxyConfig proxy = core.CreateProxyConfig();
-                AuthInfo authInfo = core.CreateAuthInfo(UsernameTextBox.Text, "", PasswordBox.Password, "", "", "");
-                core.AddAuthInfo(authInfo);
-                proxy.Identity = string.Format("sip:{0}@{1}", UsernameTextBox.Text, ServerTextBox.Text);
-                proxy.ServerAddr = ServerTextBox.Text;
-                Address addr = core.CreateAddress(proxy.ServerAddr);
-                addr.Transport = Transport.TCP;
-                proxy.ServerAddr = addr.AsString();
-                proxy.Route = addr.AsString();
-                proxy.IsRegisterEnabled = true;
-                core.AddProxyConfig(proxy);
-                core.DefaultProxyConfig = proxy;
-                core.VideoPolicy = new VideoPolicy(false, false);
-            }
+            HistoryEntry historyEntry = (e.ClickedItem as HistoryEntry);
+            VisualStateManager.GoToState(this, HistoryDetailsState.Name, true);
+        }
+
+        private void HistoryDetailsPage_HistoryDetailsBackButtonClick(object sender, RoutedEventArgs e)
+        {
+            VisualStateManager.GoToState(this, HistoryState.Name, true);
+        }
+
+        private void ContactPage_ContactEntryClick(object sender, ItemClickEventArgs e)
+        {
+            ContactEntry contactEntry = (e.ClickedItem as ContactEntry);
+            ContactDetailsPage.Contact = contactEntry;
+            VisualStateManager.GoToState(this, ContactDetailsState.Name, true);
+        }
+
+        private void ContactDetailsPage_ContactDetailsBackButtonClick(object sender, RoutedEventArgs e)
+        {
+            VisualStateManager.GoToState(this, ContactState.Name, true);
         }
     }
 }

@@ -1,0 +1,91 @@
+﻿<!--
+HistoryPage.xaml
+Copyright(C) 2015  Belledonne Communications, Grenoble, France
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+-->
+
+<UserControl
+    x:Class="Linphone.Controls.HistoryPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Linphone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:Linphone.Model"
+    xmlns:uixdata="using:Windows.UI.Xaml.Data"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <CollectionViewSource x:Name="HistoryCVS"
+                              Source="{x:Bind History}"
+                              ItemsPath="Entries"
+                              IsSourceGrouped="True"/>
+
+        <DataTemplate x:Key="HistoryZoomedInTemplate" x:DataType="model:HistoryEntry" >
+            <Grid MaxHeight="60">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <!--<ColumnDefinition Width="Auto"/>-->
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Source="ms-appx:///Assets/Images/avatar.png" Margin="4,8,4,8"/>
+                <Image Grid.Column="0" Source="ms-appx:///Assets/Images/status_available.png" Margin="36,40,4,8"/>
+                <Image Grid.Column="1" Source="{x:Bind State, Converter={StaticResource HistoryEntryStateToImage}}" Margin="4,16,4,16"/>
+                <TextBlock Grid.Column="2" Text="{x:Bind Name}" Style="{StaticResource Linphone06TextBlockStyle}" VerticalAlignment="Center" Margin="12"/>
+                <!--<Image Grid.Column="3" Source="ms-appx:///Assets/Images/list_details_default.png" Margin="4,28,4,28"/>-->
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="HistoryZoomedInGroupHeaderTemplate" x:DataType="model:HistoryGroup">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{x:Bind Name}" Style="{StaticResource Linphone01TextBlockStyle}" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="HistoryZoomedOutTemplate" x:DataType="uixdata:ICollectionViewGroup">
+            <TextBlock Text="{x:Bind Group.(model:HistoryGroup.Name)}" Style="{StaticResource Linphone01TextBlockStyle}"/>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <local:HistoryHeader x:Name="HistoryHeader" Grid.Row="0"/>
+        <SemanticZoom x:Name="HistorySemanticZoom" Grid.Row="1">
+            <SemanticZoom.ZoomedInView>
+                <ListView ItemsSource="{x:Bind HistoryCVS.View}"
+                          ItemTemplate="{StaticResource HistoryZoomedInTemplate}"
+                          ScrollViewer.IsHorizontalScrollChainingEnabled="False"
+                          SelectionMode="None"
+                          IsItemClickEnabled="True"
+                          ItemClick="History_Click">
+                    <ListView.GroupStyle>
+                        <GroupStyle HeaderTemplate="{StaticResource HistoryZoomedInGroupHeaderTemplate}" />
+                    </ListView.GroupStyle>
+                </ListView>
+            </SemanticZoom.ZoomedInView>
+            <SemanticZoom.ZoomedOutView>
+                <ListView ItemsSource="{x:Bind HistoryCVS.View.CollectionGroups}"
+                              SelectionMode="None"
+                              ItemTemplate="{StaticResource HistoryZoomedOutTemplate}">
+                </ListView>
+            </SemanticZoom.ZoomedOutView>
+        </SemanticZoom>
+    </Grid>
+</UserControl>

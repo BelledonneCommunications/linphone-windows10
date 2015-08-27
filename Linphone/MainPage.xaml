@@ -1,55 +1,124 @@
-﻿<Page
+﻿<!--
+MainPage.xaml
+Copyright(C) 2015  Belledonne Communications, Grenoble, France
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+-->
+
+<Page
+    x:Class="Linphone.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Linphone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Model="using:Linphone.Model"
-    x:Class="Linphone.MainPage"
+    xmlns:lc="using:Linphone.Controls"
     mc:Ignorable="d">
-    <Page.DataContext>
-        <Model:LinphoneManager/>
-    </Page.DataContext>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <StackPanel x:Name="stackPanel" Margin="8">
-            <TextBlock x:Name="RegistrationTitle" TextWrapping="Wrap" Style="{StaticResource HeaderTextBlockStyle}" VerticalAlignment="Center" Text="Register" Margin="0,8"/>
+    <Grid Background="{StaticResource LinphoneColorH}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="PageStateGroup">
+                <VisualState x:Name="HistoryState">
+                    <VisualState.Setters>
+                        <Setter Target="HistoryPage.Visibility" Value="Visible"/>
+                        <Setter Target="HistoryDetailsPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="ContactPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="ContactDetailsPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="DialerPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="ChatPage.Visibility" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="HistoryDetailsState">
+                    <VisualState.Setters>
+                        <Setter Target="HistoryPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="HistoryDetailsPage.Visibility" Value="Visible"/>
+                        <Setter Target="ContactPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="ContactDetailsPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="DialerPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="ChatPage.Visibility" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="ContactState">
+                    <VisualState.Setters>
+                        <Setter Target="HistoryPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="HistoryDetailsPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="ContactPage.Visibility" Value="Visible"/>
+                        <Setter Target="ContactDetailsPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="DialerPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="ChatPage.Visibility" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="ContactDetailsState">
+                    <VisualState.Setters>
+                        <Setter Target="HistoryPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="HistoryDetailsPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="ContactPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="ContactDetailsPage.Visibility" Value="Visible"/>
+                        <Setter Target="DialerPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="ChatPage.Visibility" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="DialerState">
+                    <VisualState.Setters>
+                        <Setter Target="HistoryPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="HistoryDetailsPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="ContactPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="ContactDetailsPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="DialerPage.Visibility" Value="Visible"/>
+                        <Setter Target="ChatPage.Visibility" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="ChatState">
+                    <VisualState.Setters>
+                        <Setter Target="HistoryPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="HistoryDetailsPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="ContactPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="ContactDetailsPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="DialerPage.Visibility" Value="Collapsed"/>
+                        <Setter Target="ChatPage.Visibility" Value="Visible"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <lc:MainHeader x:Name="MainHeader" Grid.Row="0" MenuClick="MainHeader_MenuClick"/>
+        <SplitView x:Name="MenuSplitView" Grid.Row="1" d:LayoutOverrides="Width">
+            <SplitView.Pane>
+                <Grid>
+                    <lc:Menu HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                </Grid>
+            </SplitView.Pane>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <TextBlock x:Name="UsernameTextBlock" HorizontalAlignment="Left" Margin="8,0" TextWrapping="Wrap" VerticalAlignment="Center" Text="Username:"/>
-                <TextBox x:Name="UsernameTextBox" Margin="8" TextWrapping="Wrap" VerticalAlignment="Center" d:LayoutOverrides="Width" Grid.Column="1"/>
-                <TextBlock x:Name="PasswordTextBlock" Margin="8,0" Grid.Row="1" TextWrapping="Wrap" Text="Password:" VerticalAlignment="Center" d:LayoutOverrides="Width"/>
-                <PasswordBox x:Name="PasswordBox" Margin="8" d:LayoutOverrides="Width, Height" Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Stretch"/>
-                <TextBlock x:Name="ServerTextBlock" HorizontalAlignment="Left" Margin="8,0" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="2" Text="Server:"/>
-                <TextBox x:Name="ServerTextBox" Margin="8" TextWrapping="Wrap" VerticalAlignment="Center" d:LayoutOverrides="Width" Grid.Row="2" Grid.Column="1" Text="sip.linphone.org"/>
-                <Button x:Name="RegisterButton" Content="Register" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="8,0" Grid.Row="3" d:LayoutOverrides="Height, TopPosition, BottomPosition" Click="RegisterButton_Click"/>
-                <TextBlock x:Name="RegistrationStateTextBlock" Margin="8" TextWrapping="Wrap" Grid.Row="3" Grid.Column="1" Text="{Binding Instance.RegistrationStateText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </Grid>
-            <TextBlock x:Name="CallTitle" TextWrapping="Wrap" Style="{StaticResource HeaderTextBlockStyle}" VerticalAlignment="Center" Text="Call" Margin="0,8"/>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
+                    <!--<RowDefinition Height="Auto"/>-->
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <TextBlock x:Name="ContactTextBlock" HorizontalAlignment="Left" Margin="8,0" TextWrapping="Wrap" VerticalAlignment="Center" Text="Contact:"/>
-                <TextBox x:Name="ContactTextBox" Margin="8" TextWrapping="Wrap" VerticalAlignment="Center" d:LayoutOverrides="Width" Grid.Column="1"/>
-                <Button x:Name="CallButton" Content="Call / Hangup" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="8,0" Grid.Row="1" d:LayoutOverrides="Height, TopPosition, BottomPosition" Click="CallButton_Click"/>
-                <TextBlock x:Name="CallStateTextBlock" Margin="8,8,5,8" TextWrapping="Wrap" Grid.Row="1" Grid.Column="1" Text="{Binding Instance.CallStateText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </Grid>
-        </StackPanel>
 
+                <lc:HistoryPage x:Name="HistoryPage" Grid.Row="0" HistoryEntryClick="HistoryPage_HistoryEntryClick"/>
+                <lc:HistoryDetailsPage x:Name="HistoryDetailsPage" Grid.Row="0" HistoryDetailsBackButtonClick="HistoryDetailsPage_HistoryDetailsBackButtonClick"/>
+                <lc:ContactPage x:Name="ContactPage" Grid.Row="0" ContactEntryClick="ContactPage_ContactEntryClick"/>
+                <lc:ContactDetailsPage x:Name="ContactDetailsPage" Grid.Row="0" ContactDetailsBackButtonClick="ContactDetailsPage_ContactDetailsBackButtonClick"/>
+                <lc:DialerPage x:Name="DialerPage" Grid.Row="0"/>
+                <lc:ChatPage x:Name="ChatPage" Grid.Row="0"/>
+                <lc:MainFooter x:Name="MainFooter" Grid.Row="1" PageChanged="MainFooter_PageChanged"/>
+
+                <Rectangle x:Name="OpenedMenuRectangle" Grid.RowSpan="2" Fill="{StaticResource LinphoneColorC}" Opacity="0.9" Visibility="{Binding IsPaneOpen, Converter={StaticResource BooleanToVisibility}, ElementName=MenuSplitView}"/>
+            </Grid>
+        </SplitView>
     </Grid>
 </Page>

@@ -1,0 +1,47 @@
+﻿<!--
+HistoryDetailsPage.xaml
+Copyright(C) 2015  Belledonne Communications, Grenoble, France
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+-->
+
+<UserControl
+    x:Class="Linphone.Controls.HistoryDetailsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Linphone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="500"
+    d:DesignWidth="400">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <local:HistoryDetailsHeader x:Name="HistoryDetailsHeader" Grid.Row="0" HistoryDetailsBackButtonClick="HistoryDetailsHeader_HistoryDetailsBackButtonClick"/>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollMode="Auto">
+            <StackPanel Orientation="Vertical">
+                <local:Avatar x:Name="Avatar" MaxWidth="250"/>
+                <TextBlock x:Name="DisplayName" Style="{StaticResource Linphone05TextBlockStyle}" Text="NOMFAM Prenom" HorizontalAlignment="Center" Margin="8,8,8,0"/>
+                <TextBlock x:Name="SIPAddress" Style="{StaticResource Linphone02TextBlockStyle}" Text="nomprenom@sip.linphone.org" HorizontalAlignment="Center" Margin="8,0,8,8"/>
+                <local:DetailsActions x:Name="Actions" MaxHeight="60" HorizontalAlignment="Center" Margin="12,4,12,12"/>
+                <!--<local:DetailsSection Title="Received calls"/>-->
+                <TextBlock Style="{StaticResource Linphone10TextBlockStyle}" Text="17/04/2015 - 17h21 - 00:08:43" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

@@ -99,10 +99,101 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AssistantPage.xaml.cs">
+      <DependentUpon>AssistantPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AssistantButton.cs" />
+    <Compile Include="Controls\AssistantCreateLinphoneAccountPage.xaml.cs">
+      <DependentUpon>AssistantCreateLinphoneAccountPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AssistantTextBox.xaml.cs">
+      <DependentUpon>AssistantTextBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AssistantWelcomePage.xaml.cs">
+      <DependentUpon>AssistantWelcomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ContactDetailsHeader.xaml.cs">
+      <DependentUpon>ContactDetailsHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ContactDetailsPage.xaml.cs">
+      <DependentUpon>ContactDetailsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DetailsActionButton.cs" />
+    <Compile Include="Controls\Avatar.xaml.cs">
+      <DependentUpon>Avatar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ChatHeader.xaml.cs">
+      <DependentUpon>ChatHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ChatPage.xaml.cs">
+      <DependentUpon>ChatPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ContactHeader.xaml.cs">
+      <DependentUpon>ContactHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ContactPage.xaml.cs">
+      <DependentUpon>ContactPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DetailsActions.xaml.cs">
+      <DependentUpon>DetailsActions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DetailsSection.xaml.cs">
+      <DependentUpon>DetailsSection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialer.xaml.cs">
+      <DependentUpon>Dialer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DialerPage.xaml.cs">
+      <DependentUpon>DialerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\HistoryDetailsHeader.xaml.cs">
+      <DependentUpon>HistoryDetailsHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\HistoryDetailsPage.xaml.cs">
+      <DependentUpon>HistoryDetailsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\HistoryPage.xaml.cs">
+      <DependentUpon>HistoryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\HistoryHeader.xaml.cs">
+      <DependentUpon>HistoryHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LinphoneMenuButton.cs" />
+    <Compile Include="Controls\LinphoneMenuRadioButton.cs" />
+    <Compile Include="Controls\LinphonePageRadioButton.cs" />
+    <Compile Include="Controls\MainFooter.xaml.cs">
+      <DependentUpon>MainFooter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DialerFooter.xaml.cs">
+      <DependentUpon>DialerFooter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MainHeader.xaml.cs">
+      <DependentUpon>MainHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DialerHeader.xaml.cs">
+      <DependentUpon>DialerHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Menu.xaml.cs">
+      <DependentUpon>Menu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MenuFooter.xaml.cs">
+      <DependentUpon>MenuFooter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MenuHeader.xaml.cs">
+      <DependentUpon>MenuHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MenuList.xaml.cs">
+      <DependentUpon>MenuList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\AssistantModel.cs" />
+    <Compile Include="Model\Converters.cs" />
+    <Compile Include="Model\ContactDataModel.cs" />
+    <Compile Include="Model\HistoryDataModel.cs" />
     <Compile Include="Model\LinphoneManager.cs" />
+    <Compile Include="Model\MenuDataModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -110,12 +201,88 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="Linphone_TemporaryKey.pfx" />
+    <Content Include="Assets\Fonts\TitilliumWeb-Bold.ttf" />
+    <Content Include="Assets\Fonts\TitilliumWeb-Light.ttf" />
+    <Content Include="Assets\Fonts\TitilliumWeb-Regular.ttf" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Default.rd.xml" />
+    <Content Include="Assets\Images\avatar.png" />
+    <Content Include="Assets\Images\back.png" />
+    <Content Include="Assets\Images\backspace_default.png" />
+    <Content Include="Assets\Images\backspace_over.png" />
+    <Content Include="Assets\Images\call_audio_start.png" />
+    <Content Include="Assets\Images\call_quality_indicator_0.png" />
+    <Content Include="Assets\Images\call_quality_indicator_1.png" />
+    <Content Include="Assets\Images\call_quality_indicator_2.png" />
+    <Content Include="Assets\Images\call_quality_indicator_3.png" />
+    <Content Include="Assets\Images\call_quality_indicator_4.png" />
+    <Content Include="Assets\Images\call_start_body_default.png" />
+    <Content Include="Assets\Images\call_start_body_disabled.png" />
+    <Content Include="Assets\Images\call_start_body_over.png" />
+    <Content Include="Assets\Images\call_status_incoming.png" />
+    <Content Include="Assets\Images\call_status_missed.png" />
+    <Content Include="Assets\Images\call_status_outgoing.png" />
+    <Content Include="Assets\Images\chat_add.png" />
+    <Content Include="Assets\Images\chat_start_body_default.png" />
+    <Content Include="Assets\Images\chat_start_body_disabled.png" />
+    <Content Include="Assets\Images\chat_start_body_over.png" />
+    <Content Include="Assets\Images\contacts_all_default.png" />
+    <Content Include="Assets\Images\contacts_all_selected.png" />
+    <Content Include="Assets\Images\contacts_sip_default.png" />
+    <Content Include="Assets\Images\contacts_sip_selected.png" />
+    <Content Include="Assets\Images\contact_add.png" />
+    <Content Include="Assets\Images\dialer_back.png" />
+    <Content Include="Assets\Images\edit.png" />
+    <Content Include="Assets\Images\edit_list.png" />
+    <Content Include="Assets\Images\footer_chat.png" />
+    <Content Include="Assets\Images\footer_contacts.png" />
+    <Content Include="Assets\Images\footer_dialer.png" />
+    <Content Include="Assets\Images\footer_history.png" />
+    <Content Include="Assets\Images\history_all_default.png" />
+    <Content Include="Assets\Images\history_all_selected.png" />
+    <Content Include="Assets\Images\history_missed_default.png" />
+    <Content Include="Assets\Images\history_missed_selected.png" />
+    <Content Include="Assets\Images\led_connected.png" />
+    <Content Include="Assets\Images\led_disconnected.png" />
+    <Content Include="Assets\Images\led_error.png" />
+    <Content Include="Assets\Images\led_inprogress.png" />
+    <Content Include="Assets\Images\linphone_user.png" />
+    <Content Include="Assets\Images\list_details_default.png" />
+    <Content Include="Assets\Images\menu.png" />
+    <Content Include="Assets\Images\numpad_0.png" />
+    <Content Include="Assets\Images\numpad_1.png" />
+    <Content Include="Assets\Images\numpad_2.png" />
+    <Content Include="Assets\Images\numpad_3.png" />
+    <Content Include="Assets\Images\numpad_4.png" />
+    <Content Include="Assets\Images\numpad_5.png" />
+    <Content Include="Assets\Images\numpad_6.png" />
+    <Content Include="Assets\Images\numpad_7.png" />
+    <Content Include="Assets\Images\numpad_8.png" />
+    <Content Include="Assets\Images\numpad_9.png" />
+    <Content Include="Assets\Images\numpad_sharp.png" />
+    <Content Include="Assets\Images\numpad_star.png" />
+    <Content Include="Assets\Images\quit_default.png" />
+    <Content Include="Assets\Images\quit_over.png" />
+    <Content Include="Assets\Images\status_available.png" />
+    <Content Include="Assets\Images\status_available_desktop.png" />
+    <Content Include="Assets\Images\status_available_phone.png" />
+    <Content Include="Assets\Images\status_away.png" />
+    <Content Include="Assets\Images\status_away_desktop.png" />
+    <Content Include="Assets\Images\status_away_phone.png" />
+    <Content Include="Assets\Images\status_busy.png" />
+    <Content Include="Assets\Images\status_busy_desktop.png" />
+    <Content Include="Assets\Images\status_busy_phone.png" />
+    <Content Include="Assets\Images\status_disconnected.png" />
+    <Content Include="Assets\Images\status_disconnected_desktop.png" />
+    <Content Include="Assets\Images\status_disconnected_phone.png" />
+    <Content Include="Assets\Images\voicemail.png" />
+    <Content Include="Assets\SplashScreen.scale-100.png" />
+    <Content Include="Assets\SplashScreen.scale-140.png" />
+    <Content Include="Assets\SplashScreen.scale-180.png" />
     <Content Include="Assets\Logo.scale-100.png" />
     <Content Include="Assets\SmallLogo.scale-100.png" />
-    <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\StoreLogo.scale-100.png" />
     <Content Include="Assets\WideLogo.scale-100.png" />
   </ItemGroup>
@@ -124,7 +291,124 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="AssistantPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\AssistantCreateLinphoneAccountPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\AssistantTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\AssistantWelcomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Avatar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ChatHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ChatPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ContactDetailsHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ContactDetailsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ContactHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ContactPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DetailsActions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DetailsSection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DialerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\HistoryDetailsHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\HistoryDetailsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\HistoryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\HistoryHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MainFooter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DialerFooter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Menu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MenuFooter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MenuHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MenuList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Controls\MainHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DialerHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -135,6 +419,7 @@
       <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
