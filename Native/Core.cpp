@@ -262,7 +262,7 @@ IVector<Linphone::Native::ChatRoom^>^ Linphone::Native::Core::ChatRooms::get()
 {
 	API_LOCK;
 	IVector<Linphone::Native::ChatRoom^>^ rooms = ref new Vector<Linphone::Native::ChatRoom^>();
-	MSList* roomList = linphone_core_get_chat_rooms(this->lc);
+	const MSList* roomList = linphone_core_get_chat_rooms(this->lc);
 	RefToPtrProxy<IVector<Linphone::Native::ChatRoom^>^> *roomsPtr = new RefToPtrProxy<IVector<Linphone::Native::ChatRoom^>^>(rooms);
 	ms_list_for_each2(roomList, AddChatRoomListToVector, roomsPtr);
 	return rooms;
