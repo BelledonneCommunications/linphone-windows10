@@ -1017,10 +1017,10 @@ Linphone::Native::AuthInfo^ Linphone::Native::Core::CreateAuthInfo(Platform::Str
 	return authInfo;
 }
 
-Linphone::Native::CallParams^ Linphone::Native::Core::CreateDefaultCallParameters()
+Linphone::Native::CallParams^ Linphone::Native::Core::CreateCallParams(Linphone::Native::Call^ call)
 {
 	API_LOCK;
-	return (Linphone::Native::CallParams^) Linphone::Native::Utils::GetCallParams(linphone_core_create_default_call_parameters(this->lc));
+	return (Linphone::Native::CallParams^) Linphone::Native::Utils::GetCallParams(linphone_core_create_call_params(this->lc, call->call));
 }
 
 Linphone::Native::ProxyConfig^ Linphone::Native::Core::CreateProxyConfig()

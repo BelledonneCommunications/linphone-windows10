@@ -154,7 +154,7 @@
       <PreprocessorDefinitions>IN_LINPHONE;_WINRT_DLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
-      <DisableSpecificWarnings>28204</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4996;28204</DisableSpecificWarnings>
       <AdditionalIncludeDirectories>$(ProjectDir)..\submodules\linphone;$(ProjectDir)..\submodules\linphone\mediastreamer2\include;$(ProjectDir)..\submodules\linphone\oRTP\include;$(ProjectDir)..\submodules\belle-sip\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -168,7 +168,7 @@
       <PreprocessorDefinitions>IN_LINPHONE;_WINRT_DLL;NDEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
-      <DisableSpecificWarnings>28204</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4996;28204</DisableSpecificWarnings>
       <AdditionalIncludeDirectories>$(ProjectDir)..\submodules\linphone;$(ProjectDir)..\submodules\linphone\mediastreamer2\include;$(ProjectDir)..\submodules\linphone\oRTP\include;$(ProjectDir)..\submodules\belle-sip\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>

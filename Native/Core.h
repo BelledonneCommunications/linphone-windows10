@@ -784,10 +784,10 @@ namespace Linphone
 			AuthInfo^ CreateAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm, Platform::String^ domain);
 
 			/// <summary>
-			/// Gets a default set of CallParams.
+			/// Gets a set of CallParams.
 			/// </summary>
-			/// <returns>The default set of CallParams</returns>
-			CallParams^ CreateDefaultCallParameters();
+			/// <returns>The set of CallParams for the specified call</returns>
+			CallParams^ CreateCallParams(Call^ call);
 
 			/// <summary>
 			/// Creates an empty proxy config.
