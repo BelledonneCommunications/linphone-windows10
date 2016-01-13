@@ -73,3 +73,6 @@
 [submodule "submodules/openh264"]
 	path = submodules/openh264
 	url = git://github.com/cisco/openh264.git
+[submodule "submodules/cmake-builder"]
+	path = submodules/cmake-builder
+	url = git://git.linphone.org/linphone-cmake-builder.git
