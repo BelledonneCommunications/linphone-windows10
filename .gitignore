@@ -21,3 +21,6 @@ Linphone/Linphone.csproj.user
 *.vcxproj.filters
 *.sdf
 **/packages/*
+OUTPUT/
+WORK/
+SDK.sln
