@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibLinphoneTester", "LibLinphoneTester.csproj", "{188034A2-FF8A-4285-AB99-8BEC448EECDC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|ARM = Release|ARM
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{188034A2-FF8A-4285-AB99-8BEC448EECDC}.Debug|ARM.ActiveCfg = Debug|ARM
+		{188034A2-FF8A-4285-AB99-8BEC448EECDC}.Debug|ARM.Build.0 = Debug|ARM
+		{188034A2-FF8A-4285-AB99-8BEC448EECDC}.Debug|ARM.Deploy.0 = Debug|ARM
+		{188034A2-FF8A-4285-AB99-8BEC448EECDC}.Debug|x64.ActiveCfg = Debug|x64
+		{188034A2-FF8A-4285-AB99-8BEC448EECDC}.Debug|x64.Build.0 = Debug|x64
+		{188034A2-FF8A-4285-AB99-8BEC448EECDC}.Debug|x64.Deploy.0 = Debug|x64
+		{188034A2-FF8A-4285-AB99-8BEC448EECDC}.Debug|x86.ActiveCfg = Debug|x86
+		{188034A2-FF8A-4285-AB99-8BEC448EECDC}.Debug|x86.Build.0 = Debug|x86
+		{188034A2-FF8A-4285-AB99-8BEC448EECDC}.Debug|x86.Deploy.0 = Debug|x86
+		{188034A2-FF8A-4285-AB99-8BEC448EECDC}.Release|ARM.ActiveCfg = Release|ARM
+		{188034A2-FF8A-4285-AB99-8BEC448EECDC}.Release|ARM.Build.0 = Release|ARM
+		{188034A2-FF8A-4285-AB99-8BEC448EECDC}.Release|ARM.Deploy.0 = Release|ARM
+		{188034A2-FF8A-4285-AB99-8BEC448EECDC}.Release|x64.ActiveCfg = Release|x64
+		{188034A2-FF8A-4285-AB99-8BEC448EECDC}.Release|x64.Build.0 = Release|x64
+		{188034A2-FF8A-4285-AB99-8BEC448EECDC}.Release|x64.Deploy.0 = Release|x64
+		{188034A2-FF8A-4285-AB99-8BEC448EECDC}.Release|x86.ActiveCfg = Release|x86
+		{188034A2-FF8A-4285-AB99-8BEC448EECDC}.Release|x86.Build.0 = Release|x86
+		{188034A2-FF8A-4285-AB99-8BEC448EECDC}.Release|x86.Deploy.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
