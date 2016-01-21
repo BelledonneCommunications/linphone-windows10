@@ -76,3 +76,6 @@
 [submodule "submodules/cmake-builder"]
 	path = submodules/cmake-builder
 	url = git://git.linphone.org/linphone-cmake-builder.git
+[submodule "submodules/matroska"]
+	path = submodules/matroska
+	url = git://git.linphone.org/libmatroska-c.git
