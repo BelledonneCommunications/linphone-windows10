@@ -27,6 +27,7 @@ import os
 import re
 import shutil
 import tempfile
+import subprocess
 import sys
 import urllib
 import uuid
@@ -151,15 +152,22 @@ missing_dependencies = {}
 def check_is_installed(binary, prog=None, warn=True):
     if not find_executable(binary):
         if warn:
-            missing_dependencies[binary] = prog
-            # error("Could not find {}. Please install {}.".format(binary, prog))
+            error("Could not find {}. Please install {}.".format(binary, prog))
         return False
     return True
 
 
 def check_tools():
-    # TODO
-    return 0
+    ret = 0
+
+    ret |= not check_is_installed('cmake')
+    ret |= not check_is_installed('git')
+
+    if not os.path.isdir("submodules/linphone/mediastreamer2/src") or not os.path.isdir("submodules/linphone/oRTP/src"):
+        error("Missing some git submodules. Did you run:\n\tgit submodule update --init --recursive")
+        ret = 1
+
+    return ret
 
 
 def download_nuget():
@@ -221,18 +229,35 @@ def list_features(debug, args):
     info("Similarly, to disable some feature, please use -DENABLE_SOMEOPTION=OFF (example: -DENABLE_OPUS=OFF)")
 
 
-def generate_solution(selected_platforms, builder_target):
+def git_version(path):
+    proc = subprocess.Popen(["git", "describe", "--always"], cwd=path, shell=False, stdout=subprocess.PIPE)
+    out, err = proc.communicate()
+    out = out.strip()
+    pos = out.find('-g')
+    if pos == -1:
+        return out
+    else:
+        return out[:out.find('-g')].replace('-', '.')
+
+
+def generate_solution(debug, selected_platforms, builder_target):
     current_path = os.path.dirname(os.path.realpath(__file__))
     current_path = current_path.replace('\\', '/')
     guids = {}
     sln_projects = ""
     sln_confs = ""
+    other_sdks = []
+    build_type = 'Debug' if debug else 'Release'
+    version = '1.0.0'
     if builder_target == 'linphone':
-        builder_target = 'LibLinphoneTester'
+        builder_target = ['LinphoneTester', 'Linphone']
+        version = git_version('submodules/linphone')
     elif builder_target == 'ms2-plugins':
-        builder_target = 'MS2Tester'
+        builder_target = ['MS2Tester']
+        version = git_version('submodules/linphone/mediastreamer2')
     elif builder_target == 'belle-sip':
-        builder_target = 'BelleSipTester'
+        builder_target = ['BelleSipTester']
+        version = git_version('submodules/belle-sip')
 
     vcxproj_platforms = {}
     for platform in selected_platforms:
@@ -248,8 +273,8 @@ def generate_solution(selected_platforms, builder_target):
         vcxproj = """<?xml version="1.0" encoding="UTF-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|{vcxproj_platform}">
-      <Configuration>Debug</Configuration>
+    <ProjectConfiguration Include="{build_type}|{vcxproj_platform}">
+      <Configuration>{build_type}</Configuration>
       <Platform>{vcxproj_platform}</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -307,7 +332,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
 </Project>
-""".format(platform=platform, vcxproj_platform=vcxproj_platforms[platform], current_path=current_path, guid=guid)
+""".format(platform=platform, build_type=build_type, vcxproj_platform=vcxproj_platforms[platform], current_path=current_path, guid=guid)
         f = open("WORK/win10-{0}/SDK_{0}.vcxproj".format(platform), 'w')
         f.write(vcxproj)
         f.close()
@@ -317,17 +342,18 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
 """Project("{{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}}") = "SDK_{platform}", "WORK\win10-{platform}\SDK_{platform}.vcxproj", "{project_guid}"
 EndProject
 """.format(platform=platform, project_guid=guids[platform])
-        sln_confs += """\t\t{project_guid}.Debug|Win32.ActiveCfg = Debug|{vcxproj_platform}
-\t\t{project_guid}.Debug|Win32.Build.0 = Debug|{vcxproj_platform}
-""".format(project_guid=guids[platform], platform=platform, vcxproj_platform=vcxproj_platforms[platform])
+        sln_confs += """\t\t{project_guid}.{build_type}|Win32.ActiveCfg = {build_type}|{vcxproj_platform}
+\t\t{project_guid}.{build_type}|Win32.Build.0 = {build_type}|{vcxproj_platform}
+""".format(project_guid=guids[platform], platform=platform, build_type=build_type, vcxproj_platform=vcxproj_platforms[platform])
 
-    # Generate Visual Studio project to create a nuget package of the SDK
-    guid = '{' + str(uuid.uuid4()).upper() + '}'
-    vcxproj = """<?xml version="1.0" encoding="UTF-8"?>
+    # Generate Visual Studio projects to create a nuget packages of the SDKs
+    for target in builder_target:
+        guid = '{' + str(uuid.uuid4()).upper() + '}'
+        vcxproj = """<?xml version="1.0" encoding="UTF-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
+    <ProjectConfiguration Include="{build_type}|Win32">
+      <Configuration>{build_type}</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -368,7 +394,7 @@ cd {current_path}
 if %errorlevel% neq 0 goto :cmEnd
 C:
 if %errorlevel% neq 0 goto :cmEnd
-python.exe submodules/build/nuget.py -s OUTPUT -w WORK/NuGet{target}SDK -t {target} {platforms}
+python.exe submodules/build/nuget.py -s OUTPUT -w WORK/NuGet{target}SDK -v {version} -t {target} {platforms}
 if %errorlevel% neq 0 goto :cmEnd
 cd {current_path}/OUTPUT
 if %errorlevel% neq 0 goto :cmEnd
@@ -388,26 +414,31 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
 </Project>
-""".format(platforms=' '.join(selected_platforms), target=builder_target, current_path=current_path, guid=guid)
-    f = open("WORK/NuGet{target}SDK.vcxproj".format(target=builder_target), 'w')
-    f.write(vcxproj)
-    f.close()
-    f = open("WORK/NuGet{target}SDK.rule".format(target=builder_target), 'w')
-    f.close()
-    project_dependencies = ""
-    for platform in selected_platforms:
-        project_dependencies += """\t\t{project_guid} = {project_guid}
+""".format(platforms=' '.join(selected_platforms), target=target, build_type=build_type, version=version, current_path=current_path, guid=guid)
+        f = open("WORK/NuGet{target}SDK.vcxproj".format(target=target), 'w')
+        f.write(vcxproj)
+        f.close()
+        f = open("WORK/NuGet{target}SDK.rule".format(target=target), 'w')
+        f.close()
+        project_dependencies = ""
+        for platform in selected_platforms:
+            project_dependencies += """\t\t{project_guid} = {project_guid}
 """.format(project_guid=guids[platform])
-    sln_projects += \
+        for sdk in other_sdks:
+            project_dependencies += """\t\t{project_guid} = {project_guid}
+""".format(project_guid=guids[sdk])
+        other_sdks += [target]
+        guids[target] = guid
+        sln_projects += \
 """Project("{{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}}") = "Nuget{target}SDK", "WORK\Nuget{target}SDK.vcxproj", "{project_guid}"
 \tProjectSection(ProjectDependencies) = postProject
 {project_dependencies}\tEndProjectSection
 EndProject
-""".format(target=builder_target, project_guid=guid, project_dependencies=project_dependencies)
-    sln_confs += \
-"""\t\t{project_guid}.Debug|Win32.ActiveCfg = Debug|Win32
-\t\t{project_guid}.Debug|Win32.Build.0 = Debug|Win32
-""".format(project_guid=guid)
+""".format(target=target, project_guid=guid, project_dependencies=project_dependencies)
+        sln_confs += \
+"""\t\t{project_guid}.{build_type}|Win32.ActiveCfg = {build_type}|Win32
+\t\t{project_guid}.{build_type}|Win32.Build.0 = {build_type}|Win32
+""".format(project_guid=guid, build_type=build_type)
 
     # Generate Visual Studio solution to build the SDK
     sln = """Microsoft Visual Studio Solution File, Format Version 12.00
@@ -416,7 +447,7 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 {sln_projects}Global
 \tGlobalSection(SolutionConfigurationPlatforms) = preSolution
-\t\tDebug|Win32 = Debug|Win32
+\t\t{build_type}|Win32 = {build_type}|Win32
 \tEndGlobalSection
 \tGlobalSection(ProjectConfigurationPlatforms) = postSolution
 {sln_confs}\tEndGlobalSection
@@ -424,7 +455,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 \t\tHideSolutionNode = FALSE
 \tEndGlobalSection
 EndGlobal
-""".format(sln_projects=sln_projects, sln_confs=sln_confs)
+""".format(sln_projects=sln_projects, sln_confs=sln_confs, build_type=build_type)
     f = open('SDK.sln', 'w')
     f.write(sln)
     f.close()
@@ -554,7 +585,7 @@ def main(argv=None):
         if os.path.isfile('SDK.sdf'):
             os.remove('SDK.sdf')
     elif selected_platforms:
-        generate_solution(selected_platforms, args.target)
+        generate_solution(args.debug, selected_platforms, args.target)
         gpl_disclaimer(selected_platforms)
         info("You can now build the SDK.sln Visual Studio Solution.")
 

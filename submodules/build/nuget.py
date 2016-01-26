@@ -63,19 +63,21 @@ def main(argv=None):
     argparser.add_argument(
         '-t', '--target', default="Linphone", help="The target to package (the windows runtime whose metadata will be exported)", dest='target')
     argparser.add_argument(
+        '-v', '--version', default='1.0.0', help="The version of the nuget package to generate", dest='version')
+    argparser.add_argument(
         '-w', '--work_dir', default="WORK/nuget", help="The path where the work will be done to generate the nuget package", dest='work_dir')
     argparser.add_argument(
         'platform', nargs='*', action=PlatformListAction, default=['ARM', 'x64', 'x86'], help="The platform to build for (default is 'all'). Space separated architectures in list: {0}.".format(', '.join([repr(platform) for platform in platforms])))
 
     args, additional_args2 = argparser.parse_known_args()
 
-    target_winmd = "Linphone.Native"
-    if args.target == "LibLinphoneTester":
-        target_winmd = "linphone_tester_runtime"
+    target_winmd = "BelledonneCommunications.Linphone.Native"
+    if args.target == "LinphoneTester":
+        target_winmd = "BelledonneCommunications.Linphone.Tester"
     elif args.target == "MS2Tester":
-        target_winmd = "mediastreamer2_tester_runtime"
+        target_winmd = "BelledonneCommunications.Mediastreamer2.Tester"
     elif args.target == "BelleSipTester":
-        target_winmd = "belle_sip_tester_runtime"
+        target_winmd = "BelledonneCommunications.BelleSip.Tester"
 
     # Create work dir structure
     work_dir = os.path.abspath(args.work_dir)
@@ -95,8 +97,9 @@ def main(argv=None):
         dlls = glob.glob(os.path.join(sdk_dir, platform_dir, 'bin', '*.dll'))
         dlls += glob.glob(os.path.join(sdk_dir, platform_dir, 'lib', '*.dll'))
         dlls += glob.glob(os.path.join(sdk_dir, platform_dir, 'lib', 'mediastreamer', 'plugins', '*.dll'))
-        winmds = glob.glob(os.path.join(sdk_dir, platform_dir, 'bin', '*.winmd'))
+        winmds = glob.glob(os.path.join(sdk_dir, platform_dir, 'lib', '*.winmd'))
         pdbs = glob.glob(os.path.join(sdk_dir, platform_dir, 'bin', '*.pdb'))
+        pdbs += glob.glob(os.path.join(sdk_dir, platform_dir, 'lib', '*.pdb'))
         pdbs += glob.glob(os.path.join(sdk_dir, platform_dir, 'lib', 'mediastreamer', 'plugins', '*.pdb'))
 
         if not winmds_installed:
@@ -105,6 +108,9 @@ def main(argv=None):
                 basename_noext = os.path.splitext(basename)[0]
                 if basename_noext == target_winmd:
                     shutil.copy(winmd, os.path.join(work_dir, 'lib', 'uap10.0'))
+                    xmldoc = os.path.join(os.path.dirname(winmd), basename_noext + '.xml')
+                    if os.path.exists(xmldoc):
+                        shutil.copy(xmldoc, os.path.join(work_dir, 'lib', 'uap10.0'))
                 else:
                     ignored_winmds += [basename_noext]
             winmds_installed = True
@@ -117,7 +123,13 @@ def main(argv=None):
             elif not basename_noext in ignored_winmds:
                 shutil.copy(dll, os.path.join(work_dir, 'build', 'uap10.0', platform))
         for pdb in pdbs:
-            shutil.copy(pdb, os.path.join(work_dir, 'build', 'uap10.0', platform))
+            basename = os.path.basename(pdb)
+            basename_noext = os.path.splitext(basename)[0]
+            winmd = basename_noext + '.winmd'
+            if os.path.exists(os.path.join(work_dir, 'lib', 'uap10.0', winmd)):
+                shutil.copy(pdb, os.path.join(work_dir, 'runtimes', platform_dir, 'native'))
+            elif not basename_noext in ignored_winmds:
+                shutil.copy(pdb, os.path.join(work_dir, 'build', 'uap10.0', platform))
 
     # Write targets file
     targets = """<?xml version="1.0" encoding="utf-8"?>
@@ -141,7 +153,7 @@ def main(argv=None):
 <package >
   <metadata>
     <id>{target}SDK</id>
-    <version>1.0.0</version>
+    <version>{version}</version>
     <authors>Belledonne Communications</authors>
     <owners>Belledonne Communications</owners>
     <licenseUrl>http://www.gnu.org/licenses/old-licenses/gpl-2.0.html</licenseUrl>
@@ -155,7 +167,7 @@ def main(argv=None):
     <dependencies>
     </dependencies>
   </metadata>
-</package>""".format(target=args.target)
+</package>""".format(version=args.version, target=args.target)
     f = open(os.path.join(work_dir, args.target + 'SDK.nuspec'), 'w')
     f.write(nuspec)
     f.close()
