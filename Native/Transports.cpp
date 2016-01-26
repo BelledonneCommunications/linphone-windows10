@@ -16,58 +16,60 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "Transports.h"
 
-Linphone::Native::Transports::Transports()
+using namespace BelledonneCommunications::Linphone::Native;
+
+Transports::Transports()
 	: udp(5060), tcp(0), tls(0)
 {
 }
 
-Linphone::Native::Transports::Transports(int udp_port, int tcp_port, int tls_port)
+Transports::Transports(int udp_port, int tcp_port, int tls_port)
 	: udp(udp_port), tcp(tcp_port), tls(tls_port)
 {
 }
 
-Linphone::Native::Transports::Transports(Linphone::Native::Transports^ t)
+Transports::Transports(Transports^ t)
 	: udp(t->UDP), tcp(t->TCP), tls(t->TLS)
 {
 }
 
-int Linphone::Native::Transports::UDP::get()
+int Transports::UDP::get()
 {
 	return udp;
 }
 
-void Linphone::Native::Transports::UDP::set(int value)
+void Transports::UDP::set(int value)
 {
 	this->udp = value;
 	this->tcp = 0;
 	this->tls = 0;
 }
 
-int Linphone::Native::Transports::TCP::get()
+int Transports::TCP::get()
 {
 	return tcp;
 }
 
-void Linphone::Native::Transports::TCP::set(int value)
+void Transports::TCP::set(int value)
 {
 	this->udp = 0;
 	this->tcp = value;
 	this->tls = 0;
 }
 
-int Linphone::Native::Transports::TLS::get()
+int Transports::TLS::get()
 {
 	return tls;
 }
 
-void Linphone::Native::Transports::TLS::set(int value)
+void Transports::TLS::set(int value)
 {
 	this->udp = 0;
 	this->tcp = 0;
 	this->tls = value;
 }
 
-Platform::String^ Linphone::Native::Transports::ToString()
+Platform::String^ Transports::ToString()
 {
 	return "udp[" + udp + "] tcp[" + tcp + "] tls[" + tls + "]";
 }

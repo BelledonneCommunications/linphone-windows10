@@ -19,62 +19,63 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "ApiLock.h"
 #include <collection.h>
 
+using namespace BelledonneCommunications::Linphone::Native;
 using namespace Platform;
 using namespace Platform::Collections;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
 
 
-Linphone::Native::TunnelConfig::TunnelConfig(Platform::String^ host, int port, int udpMirrorPort, int roundTripDelay)
+TunnelConfig::TunnelConfig(Platform::String^ host, int port, int udpMirrorPort, int roundTripDelay)
 	: host(host), port(port), udpMirrorPort(udpMirrorPort), roundTripDelay(roundTripDelay)
 {
 }
 
-Platform::String^ Linphone::Native::TunnelConfig::Host::get()
+Platform::String^ TunnelConfig::Host::get()
 {
 	return this->host;
 }
 
-void Linphone::Native::TunnelConfig::Host::set(Platform::String^ value)
+void TunnelConfig::Host::set(Platform::String^ value)
 {
 	API_LOCK;
 	this->host = value;
 }
 
-int Linphone::Native::TunnelConfig::Port::get()
+int TunnelConfig::Port::get()
 {
 	return this->port;
 }
 
-void Linphone::Native::TunnelConfig::Port::set(int value)
+void TunnelConfig::Port::set(int value)
 {
 	API_LOCK;
 	this->port = value;
 }
 
-int Linphone::Native::TunnelConfig::RoundTripDelay::get()
+int TunnelConfig::RoundTripDelay::get()
 {
 	return this->roundTripDelay;
 }
 
-void Linphone::Native::TunnelConfig::RoundTripDelay::set(int value)
+void TunnelConfig::RoundTripDelay::set(int value)
 {
 	API_LOCK;
 	this->roundTripDelay = value;
 }
 
-int Linphone::Native::TunnelConfig::UdpMirrorPort::get()
+int TunnelConfig::UdpMirrorPort::get()
 {
 	return this->udpMirrorPort;
 }
 
-void Linphone::Native::TunnelConfig::UdpMirrorPort::set(int value)
+void TunnelConfig::UdpMirrorPort::set(int value)
 {
 	API_LOCK;
 	this->udpMirrorPort = value;
 }
 
-Platform::String^ Linphone::Native::TunnelConfig::ToString()
+Platform::String^ TunnelConfig::ToString()
 {
 	return "host[" + this->host + "] port[" + this->port + "] udpMirrorPort[" + this->udpMirrorPort + "] roundTripDelay[" + this->roundTripDelay + "]";
 }
@@ -84,42 +85,42 @@ Platform::String^ Linphone::Native::TunnelConfig::ToString()
 static void AddServerConfigToVector(void *vServerConfig, void *vector)
 {
 	::LinphoneTunnelConfig *pc = (LinphoneTunnelConfig *)vServerConfig;
-	Linphone::Native::RefToPtrProxy<IVector<Object^>^> *list = reinterpret_cast< Linphone::Native::RefToPtrProxy<IVector<Object^>^> *>(vector);
+	RefToPtrProxy<IVector<Object^>^> *list = reinterpret_cast< RefToPtrProxy<IVector<Object^>^> *>(vector);
 	IVector<Object^>^ serverconfigs = (list) ? list->Ref() : nullptr;
 
 	const char *chost = linphone_tunnel_config_get_host(pc);
 	int port = linphone_tunnel_config_get_port(pc);
 	int udpMirrorPort = linphone_tunnel_config_get_remote_udp_mirror_port(pc);
 	int roundTripDelay = linphone_tunnel_config_get_delay(pc);
-	Linphone::Native::TunnelConfig^ serverConfig = ref new Linphone::Native::TunnelConfig(Linphone::Native::Utils::cctops(chost), port, udpMirrorPort, roundTripDelay);
+	TunnelConfig^ serverConfig = ref new TunnelConfig(Utils::cctops(chost), port, udpMirrorPort, roundTripDelay);
 	serverconfigs->Append(serverConfig);
 }
 
-Linphone::Native::Tunnel::Tunnel(::LinphoneTunnel *tunnel)
+Tunnel::Tunnel(::LinphoneTunnel *tunnel)
 	: lt(tunnel)
 {
 }
 
-Linphone::Native::Tunnel::~Tunnel()
+Tunnel::~Tunnel()
 {
 }
 
-Platform::Boolean Linphone::Native::Tunnel::IsEnabled::get()
+Platform::Boolean Tunnel::IsEnabled::get()
 {
 	API_LOCK;
 	return (linphone_tunnel_enabled(this->lt) == TRUE);
 }
 
-void Linphone::Native::Tunnel::IsEnabled::set(Platform::Boolean enable)
+void Tunnel::IsEnabled::set(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_tunnel_enable(this->lt, enable);
 }
 
-void Linphone::Native::Tunnel::AddServer(Platform::String^ host, int port)
+void Tunnel::AddServer(Platform::String^ host, int port)
 {
 	API_LOCK;
-	const char* h = Linphone::Native::Utils::pstoccs(host);
+	const char* h = Utils::pstoccs(host);
 	LinphoneTunnelConfig* config = linphone_tunnel_config_new();
 	linphone_tunnel_config_set_host(config, h);
 	linphone_tunnel_config_set_port(config, port);
@@ -127,10 +128,10 @@ void Linphone::Native::Tunnel::AddServer(Platform::String^ host, int port)
 	delete(h);
 }
 
-void Linphone::Native::Tunnel::AddServer(Platform::String^ host, int port, int udpMirrorPort, int roundTripDelay)
+void Tunnel::AddServer(Platform::String^ host, int port, int udpMirrorPort, int roundTripDelay)
 {
 	API_LOCK;
-	const char* h = Linphone::Native::Utils::pstoccs(host);
+	const char* h = Utils::pstoccs(host);
 	LinphoneTunnelConfig* config = linphone_tunnel_config_new();
 	linphone_tunnel_config_set_host(config, h);
 	linphone_tunnel_config_set_port(config, port);
@@ -140,19 +141,19 @@ void Linphone::Native::Tunnel::AddServer(Platform::String^ host, int port, int u
 	delete(h);
 }
 
-void Linphone::Native::Tunnel::AutoDetect()
+void Tunnel::AutoDetect()
 {
 	API_LOCK;
 	linphone_tunnel_auto_detect(this->lt);
 }
 
-void Linphone::Native::Tunnel::CleanServers()
+void Tunnel::CleanServers()
 {
 	API_LOCK;
 	linphone_tunnel_clean_servers(this->lt);
 }
 
-IVector<Object^>^ Linphone::Native::Tunnel::GetServers()
+IVector<Object^>^ Tunnel::GetServers()
 {
 	API_LOCK;
 	IVector<Object^>^ serverconfigs = ref new Vector<Object^>();
@@ -162,12 +163,12 @@ IVector<Object^>^ Linphone::Native::Tunnel::GetServers()
 	return serverconfigs;
 }
 
-void Linphone::Native::Tunnel::SetHttpProxy(Platform::String^ host, int port, Platform::String^ username, Platform::String^ password)
+void Tunnel::SetHttpProxy(Platform::String^ host, int port, Platform::String^ username, Platform::String^ password)
 {
 	API_LOCK;
-	const char* h = Linphone::Native::Utils::pstoccs(host);
-	const char* u = Linphone::Native::Utils::pstoccs(username);
-	const char* pwd = Linphone::Native::Utils::pstoccs(password);
+	const char* h = Utils::pstoccs(host);
+	const char* u = Utils::pstoccs(username);
+	const char* pwd = Utils::pstoccs(password);
 	linphone_tunnel_set_http_proxy(this->lt, h, port, u, pwd);
 	delete(h);
 	delete(u);

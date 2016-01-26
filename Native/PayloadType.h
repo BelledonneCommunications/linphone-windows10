@@ -19,40 +19,43 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Core.h"
 
 
-namespace Linphone
+namespace BelledonneCommunications
 {
-	namespace Native
+	namespace Linphone
 	{
-		/// <summary>
-		/// Object representing a media payload type.
-		/// </summary>
-		public ref class PayloadType sealed
+		namespace Native
 		{
-		public:
 			/// <summary>
-			/// Gets the MIME type of the payload type.
+			/// Object representing a media payload type.
 			/// </summary>
-			property Platform::String^ MimeType
+			public ref class PayloadType sealed
 			{
-				Platform::String^ get();
-			}
+			public:
+				/// <summary>
+				/// Gets the MIME type of the payload type.
+				/// </summary>
+				property Platform::String^ MimeType
+				{
+					Platform::String^ get();
+				}
 
-			/// <summary>
-			/// Gets the clock rate of the payload type.
-			/// </summary>
-			property int ClockRate
-			{
-				int get();
-			}
+				/// <summary>
+				/// Gets the clock rate of the payload type.
+				/// </summary>
+				property int ClockRate
+				{
+					int get();
+				}
 
-		private:
-			friend class Linphone::Native::Utils;
-			friend ref class Linphone::Native::Core;
+			private:
+				friend class Utils;
+				friend ref class Core;
 
-			PayloadType(::PayloadType *payload);
-			~PayloadType();
+				PayloadType(::PayloadType *payload);
+				~PayloadType();
 
-			::PayloadType *payload;
-		};
+				::PayloadType *payload;
+			};
+		}
 	}
 }

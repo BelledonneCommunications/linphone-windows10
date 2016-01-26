@@ -20,91 +20,94 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Enums.h"
 
 
-namespace Linphone
+namespace BelledonneCommunications
 {
-	namespace Native
+	namespace Linphone
 	{
-		ref class Address;
-		ref class Core;
-
-		/// <summary>
-		/// Call data records object
-		/// </summary>
-		public ref class CallLog sealed
+		namespace Native
 		{
-		public:
-			/// <summary>
-			/// Returns the call id from signaling.
-			/// </summary>
-			property Platform::String^ CallId
-			{
-				Platform::String^ get();
-			}
+			ref class Address;
+			ref class Core;
 
 			/// <summary>
-			/// Gets the CallDirection of the call (Incoming or Outgoing).
+			/// Call data records object
 			/// </summary>
-			property CallDirection Direction
+			public ref class CallLog sealed
 			{
-				CallDirection get();
-			}
+			public:
+				/// <summary>
+				/// Returns the call id from signaling.
+				/// </summary>
+				property Platform::String^ CallId
+				{
+					Platform::String^ get();
+				}
 
-			/// <summary>
-			/// Returns the call duration in seconds.
-			/// </summary>
-			property int Duration
-			{
-				int get();
-			}
+				/// <summary>
+				/// Gets the CallDirection of the call (Incoming or Outgoing).
+				/// </summary>
+				property CallDirection Direction
+				{
+					CallDirection get();
+				}
 
-			/// <summary>
-			/// Gets the Address of the caller.
-			/// </summary>
-			property Address^ FromAddress
-			{
-				Address^ get();
-			}
+				/// <summary>
+				/// Returns the call duration in seconds.
+				/// </summary>
+				property int Duration
+				{
+					int get();
+				}
 
-			/// <summary>
-			/// Tells whether video was enabled at the end of the call.
-			/// </summary>
-			property Platform::Boolean IsVideoEnabled
-			{
-				Platform::Boolean get();
-			}
+				/// <summary>
+				/// Gets the Address of the caller.
+				/// </summary>
+				property Address^ FromAddress
+				{
+					Address^ get();
+				}
 
-			/// <summary>
-			/// Returns the start date/time of the call in seconds elpsed since January first 1970.
-			/// </summary>
-			property int64 StartDate
-			{
-				int64 get();
-			}
+				/// <summary>
+				/// Tells whether video was enabled at the end of the call.
+				/// </summary>
+				property Platform::Boolean IsVideoEnabled
+				{
+					Platform::Boolean get();
+				}
 
-			/// <summary>
-			/// Gets the CallStatus of the call (Success, Aborted, Missed or Declined).
-			/// </summary>
-			property CallStatus Status
-			{
-				CallStatus get();
-			}
+				/// <summary>
+				/// Returns the start date/time of the call in seconds elpsed since January first 1970.
+				/// </summary>
+				property int64 StartDate
+				{
+					int64 get();
+				}
 
-			/// <summary>
-			/// Gets the Address of the callee.
-			/// </summary>
-			property Address^ ToAddress
-			{
-				Address^ get();
-			}
+				/// <summary>
+				/// Gets the CallStatus of the call (Success, Aborted, Missed or Declined).
+				/// </summary>
+				property CallStatus Status
+				{
+					CallStatus get();
+				}
 
-		private:
-			friend class Linphone::Native::Utils;
-			friend ref class Linphone::Native::Core;
+				/// <summary>
+				/// Gets the Address of the callee.
+				/// </summary>
+				property Address^ ToAddress
+				{
+					Address^ get();
+				}
 
-			CallLog(::LinphoneCallLog *cl);
-			~CallLog();
+			private:
+				friend class Utils;
+				friend ref class Core;
 
-			::LinphoneCallLog *callLog;
-		};
+				CallLog(::LinphoneCallLog *cl);
+				~CallLog();
+
+				::LinphoneCallLog *callLog;
+			};
+		}
 	}
 }

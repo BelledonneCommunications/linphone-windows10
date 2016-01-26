@@ -20,121 +20,124 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Core.h"
 
 
-namespace Linphone
+namespace BelledonneCommunications
 {
-	namespace Native
+	namespace Linphone
 	{
-		ref class PayloadType;
-
-		/// <summary>
-		/// This object contains various call related parameters.
-		/// It can be used to retrieve parameters from a currently running call or modify the call's caracteristics dynamically.
-		/// </summary>
-		public ref class CallParams sealed
+		namespace Native
 		{
-		public:
+			ref class PayloadType;
+
 			/// <summary>
-			/// Sets the audio bandwidth in kbits/s (0 to disable limitation).
+			/// This object contains various call related parameters.
+			/// It can be used to retrieve parameters from a currently running call or modify the call's caracteristics dynamically.
 			/// </summary>
-			property int AudioBandwidthLimit
+			public ref class CallParams sealed
 			{
-				int get();
-				void set(int value);
-			}
+			public:
+				/// <summary>
+				/// Sets the audio bandwidth in kbits/s (0 to disable limitation).
+				/// </summary>
+				property int AudioBandwidthLimit
+				{
+					int get();
+					void set(int value);
+				}
 
-			/// <summary>
-			/// Set the audio stream direction.
-			/// </summary>
-			property MediaDirection AudioDirection
-			{
-				MediaDirection get();
-				void set(MediaDirection value);
-			}
+				/// <summary>
+				/// Set the audio stream direction.
+				/// </summary>
+				property MediaDirection AudioDirection
+				{
+					MediaDirection get();
+					void set(MediaDirection value);
+				}
 
-			/// <summary>
-			/// Indicates low bandwidth mode.
-			/// Configuring a call to low bandwidth mode will result in the core to activate several settings for the call in order to ensure that bitrate usage is lowered to the minimum possible.
-			/// Tyically, ptime (packetization time) will be increased, audio codecs's output bitrate will be targetted to 20kbits/s provided that it is achievable by the codec selected after SDP handshake.
-			/// Video is automatically disabled.
-			/// </summary>
-			property Platform::Boolean IsLowBandwidthEnabled
-			{
-				Platform::Boolean get();
-				void set(Platform::Boolean value);
-			}
+				/// <summary>
+				/// Indicates low bandwidth mode.
+				/// Configuring a call to low bandwidth mode will result in the core to activate several settings for the call in order to ensure that bitrate usage is lowered to the minimum possible.
+				/// Tyically, ptime (packetization time) will be increased, audio codecs's output bitrate will be targetted to 20kbits/s provided that it is achievable by the codec selected after SDP handshake.
+				/// Video is automatically disabled.
+				/// </summary>
+				property Platform::Boolean IsLowBandwidthEnabled
+				{
+					Platform::Boolean get();
+					void set(Platform::Boolean value);
+				}
 
-			/// <summary>
-			/// Enable or disable video.
-			/// </summary>
-			property Platform::Boolean IsVideoEnabled
-			{
-				Platform::Boolean get();
-				void set(Platform::Boolean value);
-			}
+				/// <summary>
+				/// Enable or disable video.
+				/// </summary>
+				property Platform::Boolean IsVideoEnabled
+				{
+					Platform::Boolean get();
+					void set(Platform::Boolean value);
+				}
 
-			/// <summary>
-			/// Returns the MediaEncryption of the call (None, SRTP or ZRTP).
-			/// </summary>
-			property Linphone::Native::MediaEncryption MediaEncryption
-			{
-				Linphone::Native::MediaEncryption get();
-				void set(Linphone::Native::MediaEncryption value);
-			}
+				/// <summary>
+				/// Returns the MediaEncryption of the call (None, SRTP or ZRTP).
+				/// </summary>
+				property MediaEncryption MediaEncryption
+				{
+					BelledonneCommunications::Linphone::Native::MediaEncryption get();
+					void set(BelledonneCommunications::Linphone::Native::MediaEncryption value);
+				}
 
-			/// <summary>
-			/// Returns the size of the video being received.
-			/// </summary>
-			property Linphone::Native::VideoSize^ ReceivedVideoSize
-			{
-				Linphone::Native::VideoSize^ get();
-			}
+				/// <summary>
+				/// Returns the size of the video being received.
+				/// </summary>
+				property VideoSize^ ReceivedVideoSize
+				{
+					VideoSize^ get();
+				}
 
-			/// <summary>
-			/// Returns the size of the video being sent.
-			/// </summary>
-			property Linphone::Native::VideoSize^ SentVideoSize
-			{
-				Linphone::Native::VideoSize^ get();
-			}
+				/// <summary>
+				/// Returns the size of the video being sent.
+				/// </summary>
+				property VideoSize^ SentVideoSize
+				{
+					VideoSize^ get();
+				}
 
-			/// <summary>
-			/// Returns the PayloadType currently in use for the audio stream.
-			/// </summary>
-			property PayloadType^ UsedAudioCodec
-			{
-				PayloadType^ get();
-			}
+				/// <summary>
+				/// Returns the PayloadType currently in use for the audio stream.
+				/// </summary>
+				property PayloadType^ UsedAudioCodec
+				{
+					PayloadType^ get();
+				}
 
-			/// <summary>
-			/// Returns the PayloadType currently in use for the video stream.
-			/// </summary>
-			property PayloadType^ UsedVideoCodec
-			{
-				PayloadType^ get();
-			}
+				/// <summary>
+				/// Returns the PayloadType currently in use for the video stream.
+				/// </summary>
+				property PayloadType^ UsedVideoCodec
+				{
+					PayloadType^ get();
+				}
 
-			/// <summary>
-			/// Set the video stream direction.
-			/// </summary>
-			property MediaDirection VideoDirection
-			{
-				MediaDirection get();
-				void set(MediaDirection value);
-			}
+				/// <summary>
+				/// Set the video stream direction.
+				/// </summary>
+				property MediaDirection VideoDirection
+				{
+					MediaDirection get();
+					void set(MediaDirection value);
+				}
 
-			/// <summary>
-			/// Copy an existing CallParams object to a new CallParams object.
-			/// </summary>
-			Linphone::Native::CallParams^ Copy();
+				/// <summary>
+				/// Copy an existing CallParams object to a new CallParams object.
+				/// </summary>
+				CallParams^ Copy();
 
-		private:
-			friend class Linphone::Native::Utils;
-			friend ref class Linphone::Native::Core;
+			private:
+				friend class Utils;
+				friend ref class Core;
 
-			CallParams(::LinphoneCallParams* params);
-			~CallParams();
+				CallParams(::LinphoneCallParams* params);
+				~CallParams();
 
-			::LinphoneCallParams *params;
-		};
+				::LinphoneCallParams *params;
+			};
+		}
 	}
 }

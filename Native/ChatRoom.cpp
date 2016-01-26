@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <collection.h>
 
+using namespace BelledonneCommunications::Linphone::Native;
 using namespace Platform;
 using namespace Platform::Collections;
 using namespace Windows::Foundation;
@@ -29,59 +30,59 @@ using namespace Windows::Foundation::Collections;
 static void AddChatMessageToVector(void *vMessage, void *vector)
 {
 	::LinphoneChatMessage *chatMessage = (::LinphoneChatMessage*)vMessage;
-	Linphone::Native::RefToPtrProxy<IVector<Linphone::Native::ChatMessage^>^> *list = reinterpret_cast< Linphone::Native::RefToPtrProxy<IVector<Linphone::Native::ChatMessage^>^> *>(vector);
-	IVector<Linphone::Native::ChatMessage^>^ messages = (list) ? list->Ref() : nullptr;
-	Linphone::Native::ChatMessage^ message = (Linphone::Native::ChatMessage^) Linphone::Native::Utils::GetChatMessage(chatMessage);
+	RefToPtrProxy<IVector<ChatMessage^>^> *list = reinterpret_cast< RefToPtrProxy<IVector<ChatMessage^>^> *>(vector);
+	IVector<ChatMessage^>^ messages = (list) ? list->Ref() : nullptr;
+	ChatMessage^ message = (ChatMessage^) Utils::GetChatMessage(chatMessage);
 	messages->Append(message);
 }
 
-IVector<Linphone::Native::ChatMessage^>^ Linphone::Native::ChatRoom::History::get()
+IVector<ChatMessage^>^ ChatRoom::History::get()
 {
 	API_LOCK;
-	IVector<Linphone::Native::ChatMessage^>^ history = ref new Vector<Linphone::Native::ChatMessage^>();
+	IVector<ChatMessage^>^ history = ref new Vector<ChatMessage^>();
 	MSList* messages = linphone_chat_room_get_history(this->room, 0);
-	RefToPtrProxy<IVector<Linphone::Native::ChatMessage^>^> *historyPtr = new RefToPtrProxy<IVector<Linphone::Native::ChatMessage^>^>(history);
+	RefToPtrProxy<IVector<ChatMessage^>^> *historyPtr = new RefToPtrProxy<IVector<ChatMessage^>^>(history);
 	ms_list_for_each2(messages, AddChatMessageToVector, historyPtr);
 	return history;
 }
 
-int Linphone::Native::ChatRoom::HistorySize::get()
+int ChatRoom::HistorySize::get()
 {
 	API_LOCK;
 	return linphone_chat_room_get_history_size(this->room);
 }
 
-Platform::Boolean Linphone::Native::ChatRoom::IsRemoteComposing::get()
+Platform::Boolean ChatRoom::IsRemoteComposing::get()
 {
 	API_LOCK;
 	return (linphone_chat_room_is_remote_composing(this->room) == TRUE);
 }
 
-Linphone::Native::Address^ Linphone::Native::ChatRoom::PeerAddress::get()
+Address^ ChatRoom::PeerAddress::get()
 {
 	API_LOCK;
-	return (Linphone::Native::Address^) Linphone::Native::Utils::CreateAddress((void*)linphone_chat_room_get_peer_address(this->room));
+	return (Address^) Utils::CreateAddress((void*)linphone_chat_room_get_peer_address(this->room));
 }
 	
-int Linphone::Native::ChatRoom::UnreadMessageCount::get()
+int ChatRoom::UnreadMessageCount::get()
 {
 	API_LOCK;
 	return linphone_chat_room_get_unread_messages_count(this->room);
 }
 
-void Linphone::Native::ChatRoom::Compose()
+void ChatRoom::Compose()
 {
 	API_LOCK;
 	linphone_chat_room_compose(this->room);
 }
 
-Linphone::Native::ChatMessage^ Linphone::Native::ChatRoom::CreateFileTransferMessage(Platform::String^ type, Platform::String^ subtype, Platform::String^ name, int size, Platform::String^ filepath)
+ChatMessage^ ChatRoom::CreateFileTransferMessage(Platform::String^ type, Platform::String^ subtype, Platform::String^ name, int size, Platform::String^ filepath)
 {
 	API_LOCK;
-	const char *ctype = Linphone::Native::Utils::pstoccs(type);
-	const char *csubtype = Linphone::Native::Utils::pstoccs(subtype);
-	const char *cname = Linphone::Native::Utils::pstoccs(name);
-	const char *cfilepath = Linphone::Native::Utils::pstoccs(filepath);
+	const char *ctype = Utils::pstoccs(type);
+	const char *csubtype = Utils::pstoccs(subtype);
+	const char *cname = Utils::pstoccs(name);
+	const char *cfilepath = Utils::pstoccs(filepath);
 	LinphoneContent *content = linphone_core_create_content(linphone_chat_room_get_core(this->room));
 	::LinphoneChatMessage *msg;
 	linphone_content_set_type(content, ctype);
@@ -90,7 +91,7 @@ Linphone::Native::ChatMessage^ Linphone::Native::ChatRoom::CreateFileTransferMes
 	linphone_content_set_name(content, cname);
 	msg = linphone_chat_room_create_file_transfer_message(this->room, content);
 	linphone_chat_message_set_file_transfer_filepath(msg, cfilepath);
-	Linphone::Native::ChatMessage^ chatMessage = (Linphone::Native::ChatMessage^) Linphone::Native::Utils::GetChatMessage(msg);
+	ChatMessage^ chatMessage = (ChatMessage^) Utils::GetChatMessage(msg);
 	delete(ctype);
 	delete(csubtype);
 	delete(cname);
@@ -98,29 +99,29 @@ Linphone::Native::ChatMessage^ Linphone::Native::ChatRoom::CreateFileTransferMes
 	return chatMessage;
 }
 
-Linphone::Native::ChatMessage^ Linphone::Native::ChatRoom::CreateMessage(Platform::String^ message)
+ChatMessage^ ChatRoom::CreateMessage(Platform::String^ message)
 {
 	API_LOCK;
-	const char* msg = Linphone::Native::Utils::pstoccs(message);
+	const char* msg = Utils::pstoccs(message);
 	::LinphoneChatMessage *cm = linphone_chat_room_create_message(this->room, msg);
-	Linphone::Native::ChatMessage^ chatMessage = (Linphone::Native::ChatMessage^) Linphone::Native::Utils::GetChatMessage(cm);
+	ChatMessage^ chatMessage = (ChatMessage^) Utils::GetChatMessage(cm);
 	delete(msg);
 	return chatMessage;
 }
 
-void Linphone::Native::ChatRoom::DeleteHistory()
+void ChatRoom::DeleteHistory()
 {
 	API_LOCK;
 	linphone_chat_room_delete_history(this->room);
 }
 
-void Linphone::Native::ChatRoom::DeleteMessage(Linphone::Native::ChatMessage^ message)
+void ChatRoom::DeleteMessage(ChatMessage^ message)
 {
 	API_LOCK;
 	linphone_chat_room_delete_message(this->room, message->message);
 }
 
-void Linphone::Native::ChatRoom::MarkAsRead()
+void ChatRoom::MarkAsRead()
 {
 	API_LOCK;
 	linphone_chat_room_mark_as_read(this->room);
@@ -128,23 +129,23 @@ void Linphone::Native::ChatRoom::MarkAsRead()
 
 static void chat_room_callback(::LinphoneChatMessage* msg, ::LinphoneChatMessageState state, void* ud)
 {
-	Linphone::Native::RefToPtrProxy<Linphone::Native::ChatMessageListener^> *proxy = reinterpret_cast< Linphone::Native::RefToPtrProxy<Linphone::Native::ChatMessageListener^> *>(ud);
-	Linphone::Native::ChatMessageListener^ listener = (proxy) ? proxy->Ref() : nullptr;
+	RefToPtrProxy<ChatMessageListener^> *proxy = reinterpret_cast< RefToPtrProxy<ChatMessageListener^> *>(ud);
+	ChatMessageListener^ listener = (proxy) ? proxy->Ref() : nullptr;
 
 	if (listener != nullptr) {
-		Linphone::Native::ChatMessage^ lChatMessage = (Linphone::Native::ChatMessage^)Linphone::Native::Utils::GetChatMessage(msg);
-		listener->MessageStateChanged(lChatMessage, (Linphone::Native::ChatMessageState) state);
+		ChatMessage^ lChatMessage = (ChatMessage^)Utils::GetChatMessage(msg);
+		listener->MessageStateChanged(lChatMessage, (ChatMessageState) state);
 	}
 }
 
-void Linphone::Native::ChatRoom::SendMessage(Linphone::Native::ChatMessage^ message, Linphone::Native::ChatMessageListener^ listener)
+void ChatRoom::SendMessage(ChatMessage^ message, ChatMessageListener^ listener)
 {
 	API_LOCK;
 	RefToPtrProxy<ChatMessageListener^> *listenerPtr = new RefToPtrProxy<ChatMessageListener^>(listener);
 	linphone_chat_room_send_message2(this->room, message->message, chat_room_callback, listenerPtr);
 }
 
-Linphone::Native::ChatRoom::ChatRoom(::LinphoneChatRoom *cr)
+ChatRoom::ChatRoom(::LinphoneChatRoom *cr)
 	: room(cr)
 {
 	API_LOCK;
@@ -153,7 +154,7 @@ Linphone::Native::ChatRoom::ChatRoom(::LinphoneChatRoom *cr)
 	linphone_chat_room_set_user_data(this->room, chat_room);
 }
 
-Linphone::Native::ChatRoom::~ChatRoom()
+ChatRoom::~ChatRoom()
 {
 	API_LOCK;
 	if (this->room != nullptr) {

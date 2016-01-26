@@ -20,124 +20,125 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "VideoSize.h"
 
 using namespace Platform;
+using namespace BelledonneCommunications::Linphone::Native;
 
 
-int Linphone::Native::CallParams::AudioBandwidthLimit::get()
+int CallParams::AudioBandwidthLimit::get()
 {
 	// TODO
 	throw ref new NotImplementedException();
 	return 0;
 }
 
-void Linphone::Native::CallParams::AudioBandwidthLimit::set(int value)
+void CallParams::AudioBandwidthLimit::set(int value)
 {
 	API_LOCK;
 	linphone_call_params_set_audio_bandwidth_limit(this->params, value);
 }
 
-Linphone::Native::MediaDirection Linphone::Native::CallParams::AudioDirection::get()
+MediaDirection CallParams::AudioDirection::get()
 {
 	API_LOCK;
-	return (Linphone::Native::MediaDirection) linphone_call_params_get_audio_direction(this->params);
+	return (MediaDirection) linphone_call_params_get_audio_direction(this->params);
 }
 
-void Linphone::Native::CallParams::AudioDirection::set(Linphone::Native::MediaDirection value)
+void CallParams::AudioDirection::set(MediaDirection value)
 {
 	API_LOCK;
 	linphone_call_params_set_audio_direction(this->params, (LinphoneMediaDirection)value);
 }
 
-Platform::Boolean Linphone::Native::CallParams::IsLowBandwidthEnabled::get()
+Platform::Boolean CallParams::IsLowBandwidthEnabled::get()
 {
 	API_LOCK;
 	return (linphone_call_params_low_bandwidth_enabled(this->params) == TRUE);
 }
 
-void Linphone::Native::CallParams::IsLowBandwidthEnabled::set(Platform::Boolean enable)
+void CallParams::IsLowBandwidthEnabled::set(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_call_params_enable_low_bandwidth(this->params, enable);
 }
 
-Platform::Boolean Linphone::Native::CallParams::IsVideoEnabled::get()
+Platform::Boolean CallParams::IsVideoEnabled::get()
 {
 	API_LOCK;
 	return (linphone_call_params_video_enabled(this->params) == TRUE);
 }
 
-void Linphone::Native::CallParams::IsVideoEnabled::set(Platform::Boolean enable)
+void CallParams::IsVideoEnabled::set(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_call_params_enable_video(this->params, enable);
 }
 
-Linphone::Native::MediaEncryption Linphone::Native::CallParams::MediaEncryption::get()
+MediaEncryption CallParams::MediaEncryption::get()
 {
 	API_LOCK;
-	return (Linphone::Native::MediaEncryption) linphone_call_params_get_media_encryption(this->params);
+	return (BelledonneCommunications::Linphone::Native::MediaEncryption) linphone_call_params_get_media_encryption(this->params);
 }
 
-void Linphone::Native::CallParams::MediaEncryption::set(Linphone::Native::MediaEncryption menc)
+void CallParams::MediaEncryption::set(BelledonneCommunications::Linphone::Native::MediaEncryption menc)
 {
 	API_LOCK;
 	linphone_call_params_set_media_encryption(this->params, (LinphoneMediaEncryption) menc);
 }
 
-Linphone::Native::VideoSize^ Linphone::Native::CallParams::ReceivedVideoSize::get()
+VideoSize^ CallParams::ReceivedVideoSize::get()
 {
 	API_LOCK;
 	MSVideoSize vs = linphone_call_params_get_received_video_size(this->params);
-	return ref new Linphone::Native::VideoSize(vs.width, vs.height);
+	return ref new VideoSize(vs.width, vs.height);
 }
 
-Linphone::Native::VideoSize^ Linphone::Native::CallParams::SentVideoSize::get()
+VideoSize^ CallParams::SentVideoSize::get()
 {
 	API_LOCK;
 	MSVideoSize vs = linphone_call_params_get_sent_video_size(this->params);
-	return ref new Linphone::Native::VideoSize(vs.width, vs.height);
+	return ref new VideoSize(vs.width, vs.height);
 }
 
-Linphone::Native::PayloadType^ Linphone::Native::CallParams::UsedAudioCodec::get()
+BelledonneCommunications::Linphone::Native::PayloadType^ CallParams::UsedAudioCodec::get()
 {
 	API_LOCK;
-	Linphone::Native::PayloadType^ payloadType = nullptr;
+	PayloadType^ payloadType = nullptr;
 	const ::PayloadType *pt = linphone_call_params_get_used_audio_codec(this->params);
 	if (pt != nullptr) {
-		payloadType = (Linphone::Native::PayloadType^) Linphone::Native::Utils::CreatePayloadType((void*)pt);
+		payloadType = (PayloadType^) Utils::CreatePayloadType((void*)pt);
 	}
 	return payloadType;
 }
 
-Linphone::Native::PayloadType^ Linphone::Native::CallParams::UsedVideoCodec::get()
+BelledonneCommunications::Linphone::Native::PayloadType^ CallParams::UsedVideoCodec::get()
 {
 	API_LOCK;
-	Linphone::Native::PayloadType^ payloadType = nullptr;
+	PayloadType^ payloadType = nullptr;
 	const ::PayloadType *pt = linphone_call_params_get_used_video_codec(this->params);
 	if (pt != nullptr) {
-		payloadType = (Linphone::Native::PayloadType^) Linphone::Native::Utils::CreatePayloadType((void*)pt);
+		payloadType = (PayloadType^) Utils::CreatePayloadType((void*)pt);
 	}
 	return payloadType;
 }
 
-Linphone::Native::MediaDirection Linphone::Native::CallParams::VideoDirection::get()
+MediaDirection CallParams::VideoDirection::get()
 {
 	API_LOCK;
-	return (Linphone::Native::MediaDirection) linphone_call_params_get_video_direction(this->params);
+	return (MediaDirection) linphone_call_params_get_video_direction(this->params);
 }
 
-void Linphone::Native::CallParams::VideoDirection::set(Linphone::Native::MediaDirection value)
+void CallParams::VideoDirection::set(MediaDirection value)
 {
 	API_LOCK;
 	linphone_call_params_set_video_direction(this->params, (LinphoneMediaDirection)value);
 }
 
-Linphone::Native::CallParams^ Linphone::Native::CallParams::Copy()
+CallParams^ CallParams::Copy()
 {
 	::LinphoneCallParams *newParams = linphone_call_params_copy(this->params);
-	return ref new Linphone::Native::CallParams(newParams);
+	return ref new CallParams(newParams);
 }
 
-Linphone::Native::CallParams::CallParams(::LinphoneCallParams *call_params)
+CallParams::CallParams(::LinphoneCallParams *call_params)
 	: params(call_params)
 {
 	API_LOCK;
@@ -146,7 +147,7 @@ Linphone::Native::CallParams::CallParams(::LinphoneCallParams *call_params)
 	linphone_call_params_set_user_data(this->params, proxy);
 }
 
-Linphone::Native::CallParams::~CallParams()
+CallParams::~CallParams()
 {
 	if (this->params != nullptr) {
 		linphone_call_params_unref(this->params);

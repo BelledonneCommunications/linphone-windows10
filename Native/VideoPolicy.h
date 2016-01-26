@@ -18,56 +18,59 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "Utils.h"
 
-namespace Linphone
+namespace BelledonneCommunications
 {
-    namespace Native
+	namespace Linphone
 	{
-		ref class LinphoneCore;
-
-		/// <summary>
-		/// Class describing policy regarding video streams establishments.
-		/// </summary>
-		public ref class VideoPolicy sealed
+		namespace Native
 		{
-		public:
-			/// <summary>
-			/// Creates a default VideoPolicy object (automatically initiate and accept).
-			/// </summary>
-			/// <returns>The created Linphone::Native::VideoPolicy</returns>
-			VideoPolicy();
+			ref class LinphoneCore;
 
 			/// <summary>
-			/// Creates a VideoPolicy object.
+			/// Class describing policy regarding video streams establishments.
 			/// </summary>
-			/// <param name="automaticallyInitiate">Whether to activate video for outgoing calls</param>
-			/// <param name="automaticallyAccept">Whether to accept video for incoming calls</param>
-			/// <returns>The created Linphone::Native::VideoPolicy</returns>
-			VideoPolicy(bool automaticallyInitiate, bool automaticallyAccept);
-
-			/// <summary>
-			/// Whether video shall be automatically proposed for outgoing calls.
-			/// </summary>
-			property bool AutomaticallyInitiate
+			public ref class VideoPolicy sealed
 			{
-				bool get();
-				void set(bool value);
-			}
+			public:
+				/// <summary>
+				/// Creates a default VideoPolicy object (automatically initiate and accept).
+				/// </summary>
+				/// <returns>The created VideoPolicy</returns>
+				VideoPolicy();
 
-			/// <summary>
-			/// Whether video shall be automatically accepted for incoming calls.
-			/// </summary>
-			property bool AutomaticallyAccept
-			{
-				bool get();
-				void set(bool value);
-			}
+				/// <summary>
+				/// Creates a VideoPolicy object.
+				/// </summary>
+				/// <param name="automaticallyInitiate">Whether to activate video for outgoing calls</param>
+				/// <param name="automaticallyAccept">Whether to accept video for incoming calls</param>
+				/// <returns>The created VideoPolicy</returns>
+				VideoPolicy(bool automaticallyInitiate, bool automaticallyAccept);
 
-		private:
-			friend class Linphone::Native::Utils;
-			friend ref class Linphone::Native::LinphoneCore;
+				/// <summary>
+				/// Whether video shall be automatically proposed for outgoing calls.
+				/// </summary>
+				property bool AutomaticallyInitiate
+				{
+					bool get();
+					void set(bool value);
+				}
 
-			bool automaticallyInitiate;
-			bool automaticallyAccept;
-		};
+				/// <summary>
+				/// Whether video shall be automatically accepted for incoming calls.
+				/// </summary>
+				property bool AutomaticallyAccept
+				{
+					bool get();
+					void set(bool value);
+				}
+
+			private:
+				friend class Utils;
+				friend ref class LinphoneCore;
+
+				bool automaticallyInitiate;
+				bool automaticallyAccept;
+			};
+		}
 	}
 }

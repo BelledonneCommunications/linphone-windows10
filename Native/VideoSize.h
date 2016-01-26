@@ -18,69 +18,72 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "Utils.h"
 
-namespace Linphone
+namespace BelledonneCommunications
 {
-    namespace Native
+	namespace Linphone
 	{
-		ref class LinphoneCore;
-
-		/// <summary>
-		/// Class describing a video size.
-		/// </summary>
-		public ref class VideoSize sealed
+		namespace Native
 		{
-		public:
-			/// <summary>
-			/// Creates a VideoSize object.
-			/// </summary>
-			/// <param name="width">The video width</param>
-			/// <param name="height">The video height</param>
-			/// <returns>The created Linphone::Native::VideoSize</returns>
-			VideoSize(int width, int height);
+			ref class LinphoneCore;
 
 			/// <summary>
-			/// Creates a named VideoSize object.
+			/// Class describing a video size.
 			/// </summary>
-			/// <param name="width">The video width</param>
-			/// <param name="height">The video height</param>
-			/// <param name="name">The video size name</param>
-			/// <returns>The created Linphone::Native::VideoSize</returns>
-			VideoSize(int width, int height, Platform::String^ name);
-
-			/// <summary>
-			/// The video size width (eg. 640).
-			/// </summary>
-			property int Width
+			public ref class VideoSize sealed
 			{
-				int get();
-				void set(int value);
-			}
+			public:
+				/// <summary>
+				/// Creates a VideoSize object.
+				/// </summary>
+				/// <param name="width">The video width</param>
+				/// <param name="height">The video height</param>
+				/// <returns>The created VideoSize</returns>
+				VideoSize(int width, int height);
 
-			/// <summary>
-			/// The video size height (eg. 480).
-			/// </summary>
-			property int Height
-			{
-				int get();
-				void set(int value);
-			}
+				/// <summary>
+				/// Creates a named VideoSize object.
+				/// </summary>
+				/// <param name="width">The video width</param>
+				/// <param name="height">The video height</param>
+				/// <param name="name">The video size name</param>
+				/// <returns>The created VideoSize</returns>
+				VideoSize(int width, int height, Platform::String^ name);
 
-			/// <summary>
-			/// The video size name (eg. vga).
-			/// </summary>
-			property Platform::String^ Name
-			{
-				Platform::String^ get();
-				void set(Platform::String^ value);
-			}
+				/// <summary>
+				/// The video size width (eg. 640).
+				/// </summary>
+				property int Width
+				{
+					int get();
+					void set(int value);
+				}
 
-		private:
-			friend class Linphone::Native::Utils;
-			friend ref class Linphone::Native::LinphoneCore;
+				/// <summary>
+				/// The video size height (eg. 480).
+				/// </summary>
+				property int Height
+				{
+					int get();
+					void set(int value);
+				}
 
-			int width;
-			int height;
-			Platform::String^ name;
-		};
+				/// <summary>
+				/// The video size name (eg. vga).
+				/// </summary>
+				property Platform::String^ Name
+				{
+					Platform::String^ get();
+					void set(Platform::String^ value);
+				}
+
+			private:
+				friend class Utils;
+				friend ref class LinphoneCore;
+
+				int width;
+				int height;
+				Platform::String^ name;
+			};
+		}
 	}
 }

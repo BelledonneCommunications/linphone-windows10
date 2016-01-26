@@ -34,6 +34,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <collection.h>
 
+using namespace BelledonneCommunications::Linphone::Native;
 using namespace Microsoft::WRL;
 using namespace Platform;
 using namespace Platform::Collections;
@@ -41,58 +42,57 @@ using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
 //using namespace Windows::Phone::Media::Devices;
 //using namespace Windows::Phone::Networking::Voip;
-using namespace Windows::System::Threading;
 
 
 
-Linphone::Native::OutputTraceLevel Linphone::Native::Core::logLevel = OutputTraceLevel::Error;
+OutputTraceLevel Core::logLevel = OutputTraceLevel::Error;
 
 
 
-void Linphone::Native::Core::CPUCount::set(int count)
+void Core::CPUCount::set(int count)
 {
 	API_LOCK;
 	ms_set_cpu_count(count);
 }
 
-int Linphone::Native::Core::CPUCount::get()
+int Core::CPUCount::get()
 {
 	API_LOCK;
 	return ms_get_cpu_count();
 }
 
-Linphone::Native::LogCollectionState Linphone::Native::Core::LogCollectionEnabled::get()
+LogCollectionState Core::LogCollectionEnabled::get()
 {
 	API_LOCK;
-	return (Linphone::Native::LogCollectionState) linphone_core_log_collection_enabled();
+	return (LogCollectionState) linphone_core_log_collection_enabled();
 }
 
-void Linphone::Native::Core::LogCollectionEnabled::set(Linphone::Native::LogCollectionState value)
+void Core::LogCollectionEnabled::set(LogCollectionState value)
 {
 	API_LOCK;
 	linphone_core_enable_log_collection((LinphoneLogCollectionState)value);
 }
 
-Platform::String^ Linphone::Native::Core::LogCollectionPath::get()
+Platform::String^ Core::LogCollectionPath::get()
 {
 	API_LOCK;
-	return Linphone::Native::Utils::cctops(linphone_core_get_log_collection_path());
+	return Utils::cctops(linphone_core_get_log_collection_path());
 }
 
-void Linphone::Native::Core::LogCollectionPath::set(Platform::String^ value)
+void Core::LogCollectionPath::set(Platform::String^ value)
 {
 	API_LOCK;
-	const char *cvalue = Linphone::Native::Utils::pstoccs(value);
+	const char *cvalue = Utils::pstoccs(value);
 	linphone_core_set_log_collection_path(cvalue);
 	delete(cvalue);
 }
 
-Linphone::Native::OutputTraceLevel Linphone::Native::Core::LogLevel::get()
+OutputTraceLevel Core::LogLevel::get()
 {
-	return Linphone::Native::Core::logLevel;
+	return Core::logLevel;
 }
 
-void Linphone::Native::Core::LogLevel::set(OutputTraceLevel logLevel)
+void Core::LogLevel::set(OutputTraceLevel logLevel)
 {
 	API_LOCK;
 	int coreLogLevel = 0;
@@ -111,22 +111,22 @@ void Linphone::Native::Core::LogLevel::set(OutputTraceLevel logLevel)
 	Utils::SetLogLevel(coreLogLevel);
 }
 
-Platform::Boolean Linphone::Native::Core::TunnelAvailable::get()
+Platform::Boolean Core::TunnelAvailable::get()
 {
 	API_LOCK;
 	return (linphone_core_tunnel_available() == TRUE);
 }
 
-Platform::String^ Linphone::Native::Core::Version::get()
+Platform::String^ Core::Version::get()
 {
 	API_LOCK;
-	return Linphone::Native::Utils::cctops(linphone_core_get_version());
+	return Utils::cctops(linphone_core_get_version());
 }
 
 
 
 
-void Linphone::Native::Core::ResetLogCollection()
+void Core::ResetLogCollection()
 {
 	API_LOCK;
 	linphone_core_reset_log_collection();
@@ -137,30 +137,30 @@ void Linphone::Native::Core::ResetLogCollection()
 
 static void AddPayloadTypeToVector(void *vCodec, void *vector)
 {
-	::PayloadType *pt = (PayloadType *)vCodec;
-	Linphone::Native::RefToPtrProxy<IVector<Linphone::Native::PayloadType^>^> *list = reinterpret_cast<Linphone::Native::RefToPtrProxy<IVector<Linphone::Native::PayloadType^>^> *>(vector);
-	IVector<Linphone::Native::PayloadType^>^ codecs = (list) ? list->Ref() : nullptr;
-	Linphone::Native::PayloadType^ codec = (Linphone::Native::PayloadType^)Linphone::Native::Utils::CreatePayloadType(pt);
+	::PayloadType *pt = (::PayloadType *)vCodec;
+	RefToPtrProxy<IVector<BelledonneCommunications::Linphone::Native::PayloadType^>^> *list = reinterpret_cast<RefToPtrProxy<IVector<BelledonneCommunications::Linphone::Native::PayloadType^>^> *>(vector);
+	IVector<BelledonneCommunications::Linphone::Native::PayloadType^>^ codecs = (list) ? list->Ref() : nullptr;
+	BelledonneCommunications::Linphone::Native::PayloadType^ codec = (BelledonneCommunications::Linphone::Native::PayloadType^)Utils::CreatePayloadType(pt);
 	codecs->Append(codec);
 }
 
-IVector<Linphone::Native::PayloadType^>^ Linphone::Native::Core::AudioCodecs::get()
+IVector<BelledonneCommunications::Linphone::Native::PayloadType^>^ Core::AudioCodecs::get()
 {
 	API_LOCK;
-	IVector<Linphone::Native::PayloadType^>^ codecs = ref new Vector<Linphone::Native::PayloadType^>();
+	IVector<PayloadType^>^ codecs = ref new Vector<PayloadType^>();
 	const MSList *codecslist = linphone_core_get_audio_codecs(this->lc);
-	RefToPtrProxy<IVector<Linphone::Native::PayloadType^>^> *codecsPtr = new RefToPtrProxy<IVector<Linphone::Native::PayloadType^>^>(codecs);
+	RefToPtrProxy<IVector<PayloadType^>^> *codecsPtr = new RefToPtrProxy<IVector<PayloadType^>^>(codecs);
 	ms_list_for_each2(codecslist, AddPayloadTypeToVector, codecsPtr);
 	return codecs;
 }
 
-int Linphone::Native::Core::AudioPort::get()
+int Core::AudioPort::get()
 {
 	API_LOCK;
 	return linphone_core_get_audio_port(this->lc);
 }
 
-void Linphone::Native::Core::AudioPort::set(int port)
+void Core::AudioPort::set(int port)
 {
 	API_LOCK;
 	linphone_core_set_audio_port(this->lc, port);
@@ -169,19 +169,19 @@ void Linphone::Native::Core::AudioPort::set(int port)
 static void AddAuthInfoToVector(void *vAuthInfo, void *vector)
 {
 	::LinphoneAuthInfo *ai = (::LinphoneAuthInfo *)vAuthInfo;
-	Linphone::Native::RefToPtrProxy<IVector<Linphone::Native::AuthInfo^>^> *list = reinterpret_cast< Linphone::Native::RefToPtrProxy<IVector<Linphone::Native::AuthInfo^>^> *>(vector);
-	IVector<Linphone::Native::AuthInfo^>^ authInfos = (list) ? list->Ref() : nullptr;
+	RefToPtrProxy<IVector<AuthInfo^>^> *list = reinterpret_cast< RefToPtrProxy<IVector<AuthInfo^>^> *>(vector);
+	IVector<AuthInfo^>^ authInfos = (list) ? list->Ref() : nullptr;
 
-	Linphone::Native::AuthInfo^ authInfo = (Linphone::Native::AuthInfo^)Linphone::Native::Utils::CreateAuthInfo(ai);
+	AuthInfo^ authInfo = (AuthInfo^)Utils::CreateAuthInfo(ai);
 	authInfos->Append(authInfo);
 }
 
-IVector<Linphone::Native::AuthInfo^>^ Linphone::Native::Core::AuthInfoList::get()
+IVector<AuthInfo^>^ Core::AuthInfoList::get()
 {
 	API_LOCK;
-	IVector<Linphone::Native::AuthInfo^>^ authInfos = ref new Vector<Linphone::Native::AuthInfo^>();
+	IVector<AuthInfo^>^ authInfos = ref new Vector<AuthInfo^>();
 	const MSList *authlist = linphone_core_get_auth_info_list(this->lc);
-	RefToPtrProxy<IVector<Linphone::Native::AuthInfo^>^> *authInfosPtr = new RefToPtrProxy<IVector<Linphone::Native::AuthInfo^>^>(authInfos);
+	RefToPtrProxy<IVector<AuthInfo^>^> *authInfosPtr = new RefToPtrProxy<IVector<AuthInfo^>^>(authInfos);
 	ms_list_for_each2(authlist, AddAuthInfoToVector, authInfosPtr);
 	return authInfos;
 }
@@ -189,18 +189,18 @@ IVector<Linphone::Native::AuthInfo^>^ Linphone::Native::Core::AuthInfoList::get(
 static void AddCallLogToVector(void* nLog, void* vector)
 {
 	::LinphoneCallLog *cl = (::LinphoneCallLog*)nLog;
-	Linphone::Native::RefToPtrProxy<IVector<Linphone::Native::CallLog^>^> *list = reinterpret_cast<Linphone::Native::RefToPtrProxy<IVector<Linphone::Native::CallLog^>^> *>(vector);
-	IVector<Linphone::Native::CallLog^>^ logs = (list) ? list->Ref() : nullptr;
-	Linphone::Native::CallLog^ log = (Linphone::Native::CallLog^)Linphone::Native::Utils::GetCallLog(cl);
+	RefToPtrProxy<IVector<CallLog^>^> *list = reinterpret_cast<RefToPtrProxy<IVector<CallLog^>^> *>(vector);
+	IVector<CallLog^>^ logs = (list) ? list->Ref() : nullptr;
+	CallLog^ log = (CallLog^)Utils::GetCallLog(cl);
 	logs->Append(log);
 }
 
-IVector<Linphone::Native::CallLog^>^ Linphone::Native::Core::CallLogs::get()
+IVector<CallLog^>^ Core::CallLogs::get()
 {
 	API_LOCK;
-	IVector<Linphone::Native::CallLog^>^ logs = ref new Vector<Linphone::Native::CallLog^>();
+	IVector<CallLog^>^ logs = ref new Vector<CallLog^>();
 	const MSList* logslist = linphone_core_get_call_logs(this->lc);
-	RefToPtrProxy<IVector<Linphone::Native::CallLog^>^> *logsptr = new RefToPtrProxy<IVector<Linphone::Native::CallLog^>^>(logs);
+	RefToPtrProxy<IVector<CallLog^>^> *logsptr = new RefToPtrProxy<IVector<CallLog^>^>(logs);
 	ms_list_for_each2(logslist, AddCallLogToVector, logsptr);
 	return logs;
 }
@@ -208,246 +208,246 @@ IVector<Linphone::Native::CallLog^>^ Linphone::Native::Core::CallLogs::get()
 static void AddCallToVector(void *vCall, void *vector)
 {
 	::LinphoneCall* c = (::LinphoneCall *)vCall;
-	Linphone::Native::RefToPtrProxy<IVector<Linphone::Native::Call^>^> *list = reinterpret_cast< Linphone::Native::RefToPtrProxy<IVector<Linphone::Native::Call^>^> *>(vector);
-	IVector<Linphone::Native::Call^>^ calls = (list) ? list->Ref() : nullptr;
-	Linphone::Native::Call^ lCall = (Linphone::Native::Call^)Linphone::Native::Utils::GetCall(vCall);
+	RefToPtrProxy<IVector<Call^>^> *list = reinterpret_cast< RefToPtrProxy<IVector<Call^>^> *>(vector);
+	IVector<Call^>^ calls = (list) ? list->Ref() : nullptr;
+	Call^ lCall = (Call^)Utils::GetCall(vCall);
 	calls->Append(lCall);
 }
 
-IVector<Linphone::Native::Call^>^ Linphone::Native::Core::Calls::get()
+IVector<Call^>^ Core::Calls::get()
 {
 	API_LOCK;
-	Vector<Linphone::Native::Call^>^ calls = ref new Vector<Linphone::Native::Call^>();
+	Vector<Call^>^ calls = ref new Vector<Call^>();
 	const MSList *callsList = linphone_core_get_calls(this->lc);
-	RefToPtrProxy<IVector<Linphone::Native::Call^>^> *callsPtr = new RefToPtrProxy<IVector<Linphone::Native::Call^>^>(calls);
+	RefToPtrProxy<IVector<Call^>^> *callsPtr = new RefToPtrProxy<IVector<Call^>^>(calls);
 	ms_list_for_each2(callsList, AddCallToVector, callsPtr);
 	return calls;
 }
 
-int Linphone::Native::Core::CallsNb::get()
+int Core::CallsNb::get()
 {
 	API_LOCK;
 	return linphone_core_get_calls_nb(this->lc);
 }
 
-int Linphone::Native::Core::CameraSensorRotation::get()
+int Core::CameraSensorRotation::get()
 {
 	API_LOCK;
 	return linphone_core_get_camera_sensor_rotation(this->lc);
 }
 
-Platform::String^ Linphone::Native::Core::ChatDatabasePath::get()
+Platform::String^ Core::ChatDatabasePath::get()
 {
 	// TODO
 	throw ref new NotImplementedException();
 	return nullptr;
 }
 
-void Linphone::Native::Core::ChatDatabasePath::set(Platform::String^ chatDatabasePath)
+void Core::ChatDatabasePath::set(Platform::String^ chatDatabasePath)
 {
 	API_LOCK;
-	linphone_core_set_chat_database_path(this->lc, Linphone::Native::Utils::pstoccs(chatDatabasePath));
+	linphone_core_set_chat_database_path(this->lc, Utils::pstoccs(chatDatabasePath));
 }
 
 static void AddChatRoomListToVector(void *vRoom, void *vector)
 {
 	::LinphoneChatRoom *chatRoom = (LinphoneChatRoom*)vRoom;
-	Linphone::Native::RefToPtrProxy<IVector<Linphone::Native::ChatRoom^>^> *list = reinterpret_cast<Linphone::Native::RefToPtrProxy<IVector<Linphone::Native::ChatRoom^>^> *>(vector);
-	IVector<Linphone::Native::ChatRoom^>^ rooms = (list) ? list->Ref() : nullptr;
-	Linphone::Native::ChatRoom^ room = (Linphone::Native::ChatRoom^) Linphone::Native::Utils::GetChatRoom(chatRoom);
+	RefToPtrProxy<IVector<ChatRoom^>^> *list = reinterpret_cast<RefToPtrProxy<IVector<ChatRoom^>^> *>(vector);
+	IVector<ChatRoom^>^ rooms = (list) ? list->Ref() : nullptr;
+	ChatRoom^ room = (ChatRoom^) Utils::GetChatRoom(chatRoom);
 	rooms->Append(room);
 }
 
-IVector<Linphone::Native::ChatRoom^>^ Linphone::Native::Core::ChatRooms::get()
+IVector<ChatRoom^>^ Core::ChatRooms::get()
 {
 	API_LOCK;
-	IVector<Linphone::Native::ChatRoom^>^ rooms = ref new Vector<Linphone::Native::ChatRoom^>();
+	IVector<ChatRoom^>^ rooms = ref new Vector<ChatRoom^>();
 	const MSList* roomList = linphone_core_get_chat_rooms(this->lc);
-	RefToPtrProxy<IVector<Linphone::Native::ChatRoom^>^> *roomsPtr = new RefToPtrProxy<IVector<Linphone::Native::ChatRoom^>^>(rooms);
+	RefToPtrProxy<IVector<ChatRoom^>^> *roomsPtr = new RefToPtrProxy<IVector<ChatRoom^>^>(rooms);
 	ms_list_for_each2(roomList, AddChatRoomListToVector, roomsPtr);
 	return rooms;
 }
 
-int Linphone::Native::Core::ConferenceSize::get()
+int Core::ConferenceSize::get()
 {
 	API_LOCK;
 	return linphone_core_get_conference_size(this->lc);
 }
 
-Linphone::Native::LpConfig^ Linphone::Native::Core::Config::get()
+BelledonneCommunications::Linphone::Native::LpConfig^ Core::Config::get()
 {
 	API_LOCK;
 	::LpConfig *config = linphone_core_get_config(this->lc);
-	return (Linphone::Native::LpConfig^)Linphone::Native::Utils::CreateLpConfig(config);
+	return (LpConfig^)Utils::CreateLpConfig(config);
 }
 
-Linphone::Native::CoreListener^ Linphone::Native::Core::CoreListener::get()
+CoreListener^ Core::CoreListener::get()
 {
 	return this->listener;
 }
 
-void Linphone::Native::Core::CoreListener::set(Linphone::Native::CoreListener^ listener)
+void Core::CoreListener::set(BelledonneCommunications::Linphone::Native::CoreListener^ listener)
 {
 	API_LOCK;
 	this->listener = listener;
 }
 
-Linphone::Native::Call^ Linphone::Native::Core::CurrentCall::get()
+Call^ Core::CurrentCall::get()
 {
 	API_LOCK;
 	::LinphoneCall *lCall = linphone_core_get_current_call(this->lc);
-	return (Linphone::Native::Call^)Linphone::Native::Utils::GetCall(lCall);
+	return (Call^)Utils::GetCall(lCall);
 }
 
-Linphone::Native::ProxyConfig^ Linphone::Native::Core::DefaultProxyConfig::get()
+ProxyConfig^ Core::DefaultProxyConfig::get()
 {
 	API_LOCK;
 	ProxyConfig^ defaultProxy = nullptr;
 	::LinphoneProxyConfig *proxy = linphone_core_get_default_proxy_config(this->lc);
 	if (proxy != nullptr) {
-		defaultProxy = ref new Linphone::Native::ProxyConfig(proxy);
+		defaultProxy = ref new ProxyConfig(proxy);
 	}
 	return defaultProxy;
 }
 
-void Linphone::Native::Core::DefaultProxyConfig::set(Linphone::Native::ProxyConfig^ proxyCfg)
+void Core::DefaultProxyConfig::set(ProxyConfig^ proxyCfg)
 {
 	API_LOCK;
 	linphone_core_set_default_proxy_config(this->lc, proxyCfg->proxyConfig);
 }
 
-int Linphone::Native::Core::DeviceRotation::get()
+int Core::DeviceRotation::get()
 {
 	API_LOCK;
 	return linphone_core_get_device_rotation(this->lc);
 }
 
-void Linphone::Native::Core::DeviceRotation::set(int rotation)
+void Core::DeviceRotation::set(int rotation)
 {
 	API_LOCK;
 	linphone_core_set_device_rotation(this->lc, rotation);
 }
 
-int Linphone::Native::Core::DownloadBandwidth::get()
+int Core::DownloadBandwidth::get()
 {
 	API_LOCK;
 	return linphone_core_get_download_bandwidth(this->lc);
 }
 
-void Linphone::Native::Core::DownloadBandwidth::set(int value)
+void Core::DownloadBandwidth::set(int value)
 {
 	API_LOCK;
 	linphone_core_set_download_bandwidth(this->lc, value);
 }
 
-int Linphone::Native::Core::DownloadPtime::get()
+int Core::DownloadPtime::get()
 {
 	API_LOCK;
 	return linphone_core_get_download_ptime(this->lc);
 }
 
-void Linphone::Native::Core::DownloadPtime::set(int ptime)
+void Core::DownloadPtime::set(int ptime)
 {
 	API_LOCK;
 	linphone_core_set_download_ptime(this->lc, ptime);
 }
 
-Linphone::Native::FirewallPolicy Linphone::Native::Core::FirewallPolicy::get()
+FirewallPolicy Core::FirewallPolicy::get()
 {
 	API_LOCK;
-	return (Linphone::Native::FirewallPolicy) linphone_core_get_firewall_policy(this->lc);
+	return (BelledonneCommunications::Linphone::Native::FirewallPolicy) linphone_core_get_firewall_policy(this->lc);
 }
 
-void Linphone::Native::Core::FirewallPolicy::set(Linphone::Native::FirewallPolicy policy)
+void Core::FirewallPolicy::set(BelledonneCommunications::Linphone::Native::FirewallPolicy policy)
 {
 	API_LOCK;
 	linphone_core_set_firewall_policy(this->lc, (LinphoneFirewallPolicy)policy);
 }
 
-int Linphone::Native::Core::InCallTimeout::get()
+int Core::InCallTimeout::get()
 {
 	API_LOCK;
 	return linphone_core_get_in_call_timeout(this->lc);
 }
 
-void Linphone::Native::Core::InCallTimeout::set(int timeout)
+void Core::InCallTimeout::set(int timeout)
 {
 	API_LOCK;
 	linphone_core_set_in_call_timeout(this->lc, timeout);
 }
 
-int Linphone::Native::Core::IncTimeout::get()
+int Core::IncTimeout::get()
 {
 	API_LOCK;
 	return linphone_core_get_inc_timeout(this->lc);
 }
 
-void Linphone::Native::Core::IncTimeout::set(int timeout)
+void Core::IncTimeout::set(int timeout)
 {
 	API_LOCK;
 	linphone_core_set_inc_timeout(this->lc, timeout);
 }
 
-Platform::Boolean Linphone::Native::Core::IsEchoCancellationEnabled::get()
+Platform::Boolean Core::IsEchoCancellationEnabled::get()
 {
 	API_LOCK;
 	return (linphone_core_echo_cancellation_enabled(this->lc) == TRUE);
 }
 
-void Linphone::Native::Core::IsEchoCancellationEnabled::set(Platform::Boolean enable)
+void Core::IsEchoCancellationEnabled::set(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_core_enable_echo_cancellation(this->lc, enable);
 }
 
-Platform::Boolean Linphone::Native::Core::IsEchoLimiterEnabled::get()
+Platform::Boolean Core::IsEchoLimiterEnabled::get()
 {
 	API_LOCK;
 	return (linphone_core_echo_limiter_enabled(this->lc) == TRUE);
 }
 
-void Linphone::Native::Core::IsEchoLimiterEnabled::set(Platform::Boolean enable)
+void Core::IsEchoLimiterEnabled::set(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_core_enable_echo_limiter(this->lc, enable);
 }
 
-Platform::Boolean Linphone::Native::Core::IsInCall::get()
+Platform::Boolean Core::IsInCall::get()
 {
 	API_LOCK;
 	return (linphone_core_in_call(this->lc) == TRUE);
 }
 
-Platform::Boolean Linphone::Native::Core::IsIncomingInvitePending::get()
+Platform::Boolean Core::IsIncomingInvitePending::get()
 {
 	API_LOCK;
 	return (linphone_core_is_incoming_invite_pending(this->lc) == TRUE);
 }
 
-Platform::Boolean Linphone::Native::Core::IsInConference::get()
+Platform::Boolean Core::IsInConference::get()
 {
 	API_LOCK;
 	return (linphone_core_is_in_conference(this->lc) == TRUE);
 }
 
-Platform::Boolean Linphone::Native::Core::IsIpv6Enabled::get()
+Platform::Boolean Core::IsIpv6Enabled::get()
 {
 	API_LOCK;
 	return (linphone_core_ipv6_enabled(this->lc) == TRUE);
 }
 
-void Linphone::Native::Core::IsIpv6Enabled::set(Platform::Boolean enable)
+void Core::IsIpv6Enabled::set(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_core_enable_ipv6(this->lc, enable);
 }
 
-Platform::Boolean Linphone::Native::Core::IsIterateEnabled::get()
+Platform::Boolean Core::IsIterateEnabled::get()
 {
 	return isIterateEnabled;
 }
 
-void Linphone::Native::Core::IsIterateEnabled::set(Platform::Boolean value)
+void Core::IsIterateEnabled::set(Platform::Boolean value)
 {
 	API_LOCK;
 	if (isIterateEnabled && !value && IterateWorkItem)
@@ -457,7 +457,7 @@ void Linphone::Native::Core::IsIterateEnabled::set(Platform::Boolean value)
 	}
 	else if (!isIterateEnabled && value)
 	{
-		IAsyncAction^ IterateWorkItem = ThreadPool::RunAsync(ref new WorkItemHandler([this](IAsyncAction^ action)
+		IAsyncAction^ IterateWorkItem = Windows::System::Threading::ThreadPool::RunAsync(ref new Windows::System::Threading::WorkItemHandler([this](IAsyncAction^ action)
 		{
 			while (true) {
 				GlobalApiLock::Instance()->Lock(__FUNCTION__);
@@ -465,257 +465,257 @@ void Linphone::Native::Core::IsIterateEnabled::set(Platform::Boolean value)
 				GlobalApiLock::Instance()->Unlock(__FUNCTION__);
 				ms_usleep(20000);
 			}
-		}), WorkItemPriority::Low);
+		}), Windows::System::Threading::WorkItemPriority::Low);
 	}
 	isIterateEnabled = value;
 }
 
-Platform::Boolean Linphone::Native::Core::IsKeepAliveEnabled::get()
+Platform::Boolean Core::IsKeepAliveEnabled::get()
 {
 	API_LOCK;
 	return (linphone_core_keep_alive_enabled(this->lc) == TRUE);
 }
 
-void Linphone::Native::Core::IsKeepAliveEnabled::set(Platform::Boolean enable)
+void Core::IsKeepAliveEnabled::set(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_core_enable_keep_alive(this->lc, enable);
 }
 
-Platform::Boolean Linphone::Native::Core::IsMediaEncryptionMandatory::get()
+Platform::Boolean Core::IsMediaEncryptionMandatory::get()
 {
 	API_LOCK;
 	return (linphone_core_is_media_encryption_mandatory(this->lc) == TRUE);
 }
 
-void Linphone::Native::Core::IsMediaEncryptionMandatory::set(Platform::Boolean yesno)
+void Core::IsMediaEncryptionMandatory::set(Platform::Boolean yesno)
 {
 	API_LOCK;
 	linphone_core_set_media_encryption_mandatory(this->lc, yesno);
 }
 
-Platform::Boolean Linphone::Native::Core::IsMicEnabled::get()
+Platform::Boolean Core::IsMicEnabled::get()
 {
 	API_LOCK;
 	return (linphone_core_mic_enabled(this->lc) == TRUE);
 }
 
-void Linphone::Native::Core::IsMicEnabled::set(Platform::Boolean isMuted)
+void Core::IsMicEnabled::set(Platform::Boolean isMuted)
 {
 	API_LOCK;
 	linphone_core_enable_mic(this->lc, isMuted);
 }
 
-Platform::Boolean Linphone::Native::Core::IsNetworkReachable::get()
+Platform::Boolean Core::IsNetworkReachable::get()
 {
 	API_LOCK;
 	return (linphone_core_is_network_reachable(this->lc) == TRUE);
 }
 
-void Linphone::Native::Core::IsNetworkReachable::set(Platform::Boolean isReachable)
+void Core::IsNetworkReachable::set(Platform::Boolean isReachable)
 {
 	API_LOCK;
 	linphone_core_set_network_reachable(this->lc, isReachable);
 }
 
-Platform::Boolean Linphone::Native::Core::IsSelfViewEnabled::get()
+Platform::Boolean Core::IsSelfViewEnabled::get()
 {
 	API_LOCK;
 	return (linphone_core_self_view_enabled(this->lc) == TRUE);
 }
 
-void Linphone::Native::Core::IsSelfViewEnabled::set(Platform::Boolean enable)
+void Core::IsSelfViewEnabled::set(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_core_enable_self_view(this->lc, enable);
 }
 
-Platform::Boolean Linphone::Native::Core::IsSoundResourcesLocked::get()
+Platform::Boolean Core::IsSoundResourcesLocked::get()
 {
 	API_LOCK;
 	return (linphone_core_sound_resources_locked(this->lc) == TRUE);
 }
 
-Platform::Boolean Linphone::Native::Core::IsVideoCaptureEnabled::get()
+Platform::Boolean Core::IsVideoCaptureEnabled::get()
 {
 	API_LOCK;
 	return (linphone_core_video_capture_enabled(this->lc) == TRUE);
 }
 
-void Linphone::Native::Core::IsVideoCaptureEnabled::set(Platform::Boolean enable)
+void Core::IsVideoCaptureEnabled::set(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_core_enable_video_capture(this->lc, enable);
 }
 
-Platform::Boolean Linphone::Native::Core::IsVideoDisplayEnabled::get()
+Platform::Boolean Core::IsVideoDisplayEnabled::get()
 {
 	API_LOCK;
 	return (linphone_core_video_display_enabled(this->lc) == TRUE);
 }
 
-void Linphone::Native::Core::IsVideoDisplayEnabled::set(Platform::Boolean enable)
+void Core::IsVideoDisplayEnabled::set(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_core_enable_video_display(this->lc, enable);
 }
 
-Platform::Boolean Linphone::Native::Core::IsVideoSupported::get()
+Platform::Boolean Core::IsVideoSupported::get()
 {
 	API_LOCK;
 	return (linphone_core_video_supported(this->lc) == TRUE);
 }
 
-Platform::String^ Linphone::Native::Core::LogCollectionUploadServerUrl::get()
+Platform::String^ Core::LogCollectionUploadServerUrl::get()
 {
 	// TODO
 	throw ref new NotImplementedException();
 	return nullptr;
 }
 
-void Linphone::Native::Core::LogCollectionUploadServerUrl::set(Platform::String^ url)
+void Core::LogCollectionUploadServerUrl::set(Platform::String^ url)
 {
 	API_LOCK;
-	const char *curl = Linphone::Native::Utils::pstoccs(url);
+	const char *curl = Utils::pstoccs(url);
 	linphone_core_set_log_collection_upload_server_url(this->lc, curl);
 	delete(curl);
 }
 
-int Linphone::Native::Core::MaxCalls::get()
+int Core::MaxCalls::get()
 {
 	API_LOCK;
 	return linphone_core_get_max_calls(this->lc);
 }
 
-void Linphone::Native::Core::MaxCalls::set(int max)
+void Core::MaxCalls::set(int max)
 {
 	API_LOCK;
 	linphone_core_set_max_calls(this->lc, max);
 }
 
-Linphone::Native::MediaEncryption Linphone::Native::Core::MediaEncryption::get()
+MediaEncryption Core::MediaEncryption::get()
 {
 	API_LOCK;
-	return (Linphone::Native::MediaEncryption) linphone_core_get_media_encryption(this->lc);
+	return (BelledonneCommunications::Linphone::Native::MediaEncryption) linphone_core_get_media_encryption(this->lc);
 }
 
-void Linphone::Native::Core::MediaEncryption::set(Linphone::Native::MediaEncryption menc)
+void Core::MediaEncryption::set(BelledonneCommunications::Linphone::Native::MediaEncryption menc)
 {
 	API_LOCK;
 	linphone_core_set_media_encryption(this->lc, (LinphoneMediaEncryption)menc);
 }
 
-float Linphone::Native::Core::MicGainDb::get()
+float Core::MicGainDb::get()
 {
 	API_LOCK;
 	return linphone_core_get_mic_gain_db(this->lc);
 }
 
-void Linphone::Native::Core::MicGainDb::set(float gain)
+void Core::MicGainDb::set(float gain)
 {
 	API_LOCK;
 	linphone_core_set_mic_gain_db(this->lc, gain);
 }
 
-int Linphone::Native::Core::MissedCallsCount::get()
+int Core::MissedCallsCount::get()
 {
 	API_LOCK;
 	return linphone_core_get_missed_calls_count(this->lc);
 }
 
-Platform::Object^ Linphone::Native::Core::NativePreviewWindowId::get()
+Platform::Object^ Core::NativePreviewWindowId::get()
 {
 	API_LOCK;
 	void *id = linphone_core_get_native_preview_window_id(this->lc);
 	if (id == NULL) return nullptr;
-	Linphone::Native::RefToPtrProxy<Platform::Object^> *proxy = reinterpret_cast<Linphone::Native::RefToPtrProxy<Platform::Object^>*>(id);
+	RefToPtrProxy<Platform::Object^> *proxy = reinterpret_cast<RefToPtrProxy<Platform::Object^>*>(id);
 	Platform::Object^ nativeWindowId = (proxy) ? proxy->Ref() : nullptr;
 	return nativeWindowId;
 }
 
-void Linphone::Native::Core::NativePreviewWindowId::set(Platform::Object^ value)
+void Core::NativePreviewWindowId::set(Platform::Object^ value)
 {
 	API_LOCK;
-	Linphone::Native::RefToPtrProxy<Platform::Object^> *nativeWindowId = new Linphone::Native::RefToPtrProxy<Platform::Object^>(value);
+	RefToPtrProxy<Platform::Object^> *nativeWindowId = new RefToPtrProxy<Platform::Object^>(value);
 	linphone_core_set_native_preview_window_id(this->lc, nativeWindowId);
 }
 
-Platform::Object^ Linphone::Native::Core::NativeVideoWindowId::get()
+Platform::Object^ Core::NativeVideoWindowId::get()
 {
 	API_LOCK;
 	void *id = linphone_core_get_native_video_window_id(this->lc);
 	if (id == NULL) return nullptr;
-	Linphone::Native::RefToPtrProxy<Platform::Object^> *proxy = reinterpret_cast<Linphone::Native::RefToPtrProxy<Platform::Object^>*>(id);
+	RefToPtrProxy<Platform::Object^> *proxy = reinterpret_cast<RefToPtrProxy<Platform::Object^>*>(id);
 	Platform::Object^ nativeWindowId = (proxy) ? proxy->Ref() : nullptr;
 	return nativeWindowId;
 }
 
-void Linphone::Native::Core::NativeVideoWindowId::set(Platform::Object^ value)
+void Core::NativeVideoWindowId::set(Platform::Object^ value)
 {
 	API_LOCK;
-	Linphone::Native::RefToPtrProxy<Platform::Object^> *nativeWindowId = new Linphone::Native::RefToPtrProxy<Platform::Object^>(value);
+	RefToPtrProxy<Platform::Object^> *nativeWindowId = new RefToPtrProxy<Platform::Object^>(value);
 	linphone_core_set_native_video_window_id(this->lc, nativeWindowId);
 }
 
-float Linphone::Native::Core::PlaybackGainDb::get()
+float Core::PlaybackGainDb::get()
 {
 	API_LOCK;
 	return linphone_core_get_playback_gain_db(this->lc);
 }
 
-void Linphone::Native::Core::PlaybackGainDb::set(float gain)
+void Core::PlaybackGainDb::set(float gain)
 {
 	API_LOCK;
 	linphone_core_set_playback_gain_db(this->lc, gain);
 }
 
-Platform::String^ Linphone::Native::Core::PlayFile::get()
+Platform::String^ Core::PlayFile::get()
 {
 	API_LOCK;
-	return Linphone::Native::Utils::cctops(linphone_core_get_play_file(this->lc));
+	return Utils::cctops(linphone_core_get_play_file(this->lc));
 }
 
-void Linphone::Native::Core::PlayFile::set(Platform::String^ path)
+void Core::PlayFile::set(Platform::String^ path)
 {
 	API_LOCK;
-	const char* file = Linphone::Native::Utils::pstoccs(path);
+	const char* file = Utils::pstoccs(path);
 	linphone_core_set_play_file(this->lc, file);
 	delete(file);
 }
 
-int Linphone::Native::Core::PlayLevel::get()
+int Core::PlayLevel::get()
 {
 	API_LOCK;
 	return linphone_core_get_play_level(this->lc);
 }
 
-void Linphone::Native::Core::PlayLevel::set(int level)
+void Core::PlayLevel::set(int level)
 {
 	API_LOCK;
 	linphone_core_set_play_level(this->lc, level);
 }
 
-Linphone::Native::VideoSize^ Linphone::Native::Core::PreferredVideoSize::get()
+VideoSize^ Core::PreferredVideoSize::get()
 {
 	API_LOCK;
-	Linphone::Native::VideoSize^ size = nullptr;
+	VideoSize^ size = nullptr;
 	const MSVideoSizeDef *sizesList = linphone_core_get_supported_video_sizes(this->lc);
 	MSVideoSize vsize = linphone_core_get_preferred_video_size(this->lc);
 	while (sizesList->name != NULL) {
 		if ((sizesList->vsize.width == vsize.width) && (sizesList->vsize.height == vsize.height)) {
 			Platform::String^ sizeName = Utils::cctops(sizesList->name);
-			size = ref new Linphone::Native::VideoSize(vsize.width, vsize.height, sizeName);
+			size = ref new VideoSize(vsize.width, vsize.height, sizeName);
 			break;
 		}
 		sizesList++;
 	}
 	if (size == nullptr) {
-		size = ref new Linphone::Native::VideoSize(vsize.width, vsize.height);
+		size = ref new VideoSize(vsize.width, vsize.height);
 	}
 	return size;
 }
 
-void Linphone::Native::Core::PreferredVideoSize::set(Linphone::Native::VideoSize^ size)
+void Core::PreferredVideoSize::set(VideoSize^ size)
 {
 	API_LOCK;
 	if (size->Name != nullptr) {
@@ -731,7 +731,7 @@ void Linphone::Native::Core::PreferredVideoSize::set(Linphone::Native::VideoSize
 	}
 }
 
-Platform::String^ Linphone::Native::Core::PreferredVideoSizeName::get()
+Platform::String^ Core::PreferredVideoSizeName::get()
 {
 	API_LOCK;
 	char *cSizeName = linphone_core_get_preferred_video_size_name(this->lc);
@@ -743,29 +743,29 @@ Platform::String^ Linphone::Native::Core::PreferredVideoSizeName::get()
 static void AddProxyConfigToVector(void *vProxyConfig, void *vector)
 {
 	::LinphoneProxyConfig *lProxyConfig = (::LinphoneProxyConfig *)vProxyConfig;
-	Linphone::Native::RefToPtrProxy<IVector<Linphone::Native::ProxyConfig^>^> *list = reinterpret_cast< Linphone::Native::RefToPtrProxy<IVector<Linphone::Native::ProxyConfig^>^> *>(vector);
-	IVector<Linphone::Native::ProxyConfig^>^ proxyconfigs = (list) ? list->Ref() : nullptr;
-	Linphone::Native::ProxyConfig^ proxyConfig = (Linphone::Native::ProxyConfig^)Linphone::Native::Utils::GetProxyConfig(lProxyConfig);
+	RefToPtrProxy<IVector<ProxyConfig^>^> *list = reinterpret_cast< RefToPtrProxy<IVector<ProxyConfig^>^> *>(vector);
+	IVector<ProxyConfig^>^ proxyconfigs = (list) ? list->Ref() : nullptr;
+	ProxyConfig^ proxyConfig = (ProxyConfig^)Utils::GetProxyConfig(lProxyConfig);
 	proxyconfigs->Append(proxyConfig);
 }
 
-IVector<Linphone::Native::ProxyConfig^>^ Linphone::Native::Core::ProxyConfigList::get()
+IVector<ProxyConfig^>^ Core::ProxyConfigList::get()
 {
 	API_LOCK;
-	IVector<Linphone::Native::ProxyConfig^>^ proxyconfigs = ref new Vector<Linphone::Native::ProxyConfig^>();
+	IVector<ProxyConfig^>^ proxyconfigs = ref new Vector<ProxyConfig^>();
 	const MSList *configList = linphone_core_get_proxy_config_list(this->lc);
-	RefToPtrProxy<IVector<Linphone::Native::ProxyConfig^>^> *proxyConfigPtr = new RefToPtrProxy<IVector<Linphone::Native::ProxyConfig^>^>(proxyconfigs);
+	RefToPtrProxy<IVector<ProxyConfig^>^> *proxyConfigPtr = new RefToPtrProxy<IVector<ProxyConfig^>^>(proxyconfigs);
 	ms_list_for_each2(configList, AddProxyConfigToVector, proxyConfigPtr);
 	return proxyconfigs;
 }
 
-Platform::String^ Linphone::Native::Core::RootCa::get()
+Platform::String^ Core::RootCa::get()
 {
 	API_LOCK;
 	return Utils::cctops(linphone_core_get_root_ca(this->lc));
 }
 
-void Linphone::Native::Core::RootCa::set(Platform::String^ path)
+void Core::RootCa::set(Platform::String^ path)
 {
 	API_LOCK;
 	const char *ccPath = Utils::pstoccs(path);
@@ -773,15 +773,15 @@ void Linphone::Native::Core::RootCa::set(Platform::String^ path)
 	delete ccPath;
 }
 
-Linphone::Native::Transports^ Linphone::Native::Core::SipTransports::get()
+Transports^ Core::SipTransports::get()
 {
 	API_LOCK;
 	::LCSipTransports transports;
 	linphone_core_get_sip_transports(this->lc, &transports);
-	return ref new Linphone::Native::Transports(transports.udp_port, transports.tcp_port, transports.tls_port);
+	return ref new Transports(transports.udp_port, transports.tcp_port, transports.tls_port);
 }
 
-void Linphone::Native::Core::SipTransports::set(Transports^ t)
+void Core::SipTransports::set(Transports^ t)
 {
 	API_LOCK;
 	::LCSipTransports transports;
@@ -792,104 +792,104 @@ void Linphone::Native::Core::SipTransports::set(Transports^ t)
 	linphone_core_set_sip_transports(this->lc, &transports);
 }
 
-Platform::String^ Linphone::Native::Core::StunServer::get()
+Platform::String^ Core::StunServer::get()
 {
 	API_LOCK;
-	return Linphone::Native::Utils::cctops(linphone_core_get_stun_server(this->lc));
+	return Utils::cctops(linphone_core_get_stun_server(this->lc));
 }
 
-void Linphone::Native::Core::StunServer::set(Platform::String^ stun)
+void Core::StunServer::set(Platform::String^ stun)
 {
 	API_LOCK;
-	const char* stunserver = Linphone::Native::Utils::pstoccs(stun);
+	const char* stunserver = Utils::pstoccs(stun);
 	linphone_core_set_stun_server(this->lc, stunserver);
 	delete(stunserver);
 }
 
-Windows::Foundation::Collections::IVector<Linphone::Native::VideoSize^>^ Linphone::Native::Core::SupportedVideoSizes::get()
+Windows::Foundation::Collections::IVector<VideoSize^>^ Core::SupportedVideoSizes::get()
 {
 	API_LOCK;
-	Vector<Linphone::Native::VideoSize^>^ sizes = ref new Vector<Linphone::Native::VideoSize^>();
+	Vector<VideoSize^>^ sizes = ref new Vector<VideoSize^>();
 	const MSVideoSizeDef *sizesList = linphone_core_get_supported_video_sizes(this->lc);
 	while (sizesList->name != NULL) {
 		Platform::String^ sizeName = Utils::cctops(sizesList->name);
-		Linphone::Native::VideoSize^ size = ref new Linphone::Native::VideoSize(sizesList->vsize.width, sizesList->vsize.height, sizeName);
+		VideoSize^ size = ref new VideoSize(sizesList->vsize.width, sizesList->vsize.height, sizeName);
 		sizes->Append(size);
 		sizesList++;
 	}
 	return sizes;
 }
 
-Linphone::Native::Tunnel^ Linphone::Native::Core::Tunnel::get()
+Tunnel^ Core::Tunnel::get()
 {
 	API_LOCK;
-	Linphone::Native::Tunnel^ tunnel = nullptr;
+	BelledonneCommunications::Linphone::Native::Tunnel^ tunnel = nullptr;
 	LinphoneTunnel *lt = linphone_core_get_tunnel(this->lc);
 	if (lt != nullptr) {
-		tunnel = ref new Linphone::Native::Tunnel(lt);
+		tunnel = ref new BelledonneCommunications::Linphone::Native::Tunnel(lt);
 	}
 	return tunnel;
 }
 
-int Linphone::Native::Core::UploadBandwidth::get()
+int Core::UploadBandwidth::get()
 {
 	API_LOCK;
 	return linphone_core_get_upload_bandwidth(this->lc);
 }
 
-void Linphone::Native::Core::UploadBandwidth::set(int value)
+void Core::UploadBandwidth::set(int value)
 {
 	API_LOCK;
 	linphone_core_set_upload_bandwidth(this->lc, value);
 }
 
-int Linphone::Native::Core::UploadPtime::get()
+int Core::UploadPtime::get()
 {
 	API_LOCK;
 	return linphone_core_get_upload_ptime(this->lc);
 }
 
-void Linphone::Native::Core::UploadPtime::set(int ptime)
+void Core::UploadPtime::set(int ptime)
 {
 	API_LOCK;
 	linphone_core_set_upload_ptime(this->lc, ptime);
 }
 
-Platform::Boolean Linphone::Native::Core::UseInfoForDtmf::get()
+Platform::Boolean Core::UseInfoForDtmf::get()
 {
 	API_LOCK;
 	return (linphone_core_get_use_info_for_dtmf(this->lc) == TRUE);
 }
 
-void Linphone::Native::Core::UseInfoForDtmf::set(Platform::Boolean use)
+void Core::UseInfoForDtmf::set(Platform::Boolean use)
 {
 	API_LOCK;
 	linphone_core_set_use_info_for_dtmf(this->lc, use);
 }
 
-Platform::Boolean Linphone::Native::Core::UseRfc2833ForDtmf::get()
+Platform::Boolean Core::UseRfc2833ForDtmf::get()
 {
 	API_LOCK;
 	return (linphone_core_get_use_rfc2833_for_dtmf(this->lc) == TRUE);
 }
 
-void Linphone::Native::Core::UseRfc2833ForDtmf::set(Platform::Boolean use)
+void Core::UseRfc2833ForDtmf::set(Platform::Boolean use)
 {
 	API_LOCK;
 	linphone_core_set_use_rfc2833_for_dtmf(this->lc, use);
 }
 
-IVector<Linphone::Native::PayloadType^>^ Linphone::Native::Core::VideoCodecs::get()
+IVector<BelledonneCommunications::Linphone::Native::PayloadType^>^ Core::VideoCodecs::get()
 {
 	API_LOCK;
-	IVector<Linphone::Native::PayloadType^>^ codecs = ref new Vector<Linphone::Native::PayloadType^>();
+	IVector<PayloadType^>^ codecs = ref new Vector<PayloadType^>();
 	const MSList *codecslist = linphone_core_get_video_codecs(this->lc);
-	RefToPtrProxy<IVector<Linphone::Native::PayloadType^>^> *codecsPtr = new RefToPtrProxy<IVector<Linphone::Native::PayloadType^>^>(codecs);
+	RefToPtrProxy<IVector<PayloadType^>^> *codecsPtr = new RefToPtrProxy<IVector<PayloadType^>^>(codecs);
 	ms_list_for_each2(codecslist, AddPayloadTypeToVector, codecsPtr);
 	return codecs;
 }
 
-Platform::String^ Linphone::Native::Core::VideoDevice::get()
+Platform::String^ Core::VideoDevice::get()
 {
 	API_LOCK;
 	Platform::String^ device = nullptr;
@@ -900,7 +900,7 @@ Platform::String^ Linphone::Native::Core::VideoDevice::get()
 	return device;
 }
 
-void Linphone::Native::Core::VideoDevice::set(Platform::String^ device)
+void Core::VideoDevice::set(Platform::String^ device)
 {
 	API_LOCK;
 	const char *ccname = Utils::pstoccs(device);
@@ -908,7 +908,7 @@ void Linphone::Native::Core::VideoDevice::set(Platform::String^ device)
 	delete ccname;
 }
 
-Windows::Foundation::Collections::IVector<Platform::String^>^ Linphone::Native::Core::VideoDevices::get()
+Windows::Foundation::Collections::IVector<Platform::String^>^ Core::VideoDevices::get()
 {
 	API_LOCK;
 	Vector<Platform::String^>^ devices = ref new Vector<Platform::String^>();
@@ -921,14 +921,14 @@ Windows::Foundation::Collections::IVector<Platform::String^>^ Linphone::Native::
 	return devices;
 }
 
-Linphone::Native::VideoPolicy^ Linphone::Native::Core::VideoPolicy::get()
+VideoPolicy^ Core::VideoPolicy::get()
 {
 	API_LOCK;
 	const ::LinphoneVideoPolicy *lvp = linphone_core_get_video_policy(this->lc);
-	return ref new Linphone::Native::VideoPolicy((lvp->automatically_initiate == TRUE), (lvp->automatically_accept == TRUE));
+	return ref new BelledonneCommunications::Linphone::Native::VideoPolicy((lvp->automatically_initiate == TRUE), (lvp->automatically_accept == TRUE));
 }
 
-void Linphone::Native::Core::VideoPolicy::set(Linphone::Native::VideoPolicy^ policy)
+void Core::VideoPolicy::set(BelledonneCommunications::Linphone::Native::VideoPolicy^ policy)
 {
 	API_LOCK;
 	::LinphoneVideoPolicy lvp;
@@ -941,220 +941,220 @@ void Linphone::Native::Core::VideoPolicy::set(Linphone::Native::VideoPolicy^ pol
 
 
 
-void Linphone::Native::Core::AcceptCall(Linphone::Native::Call^ call)
+void Core::AcceptCall(Call^ call)
 {
 	API_LOCK;
 	linphone_core_accept_call(this->lc, call->call);
 }
 
-void Linphone::Native::Core::AcceptCallUpdate(Linphone::Native::Call^ call, Linphone::Native::CallParams^ params)
+void Core::AcceptCallUpdate(Call^ call, CallParams^ params)
 {
 	API_LOCK;
 	linphone_core_accept_call_update(this->lc, call->call, params->params);
 }
 
-void Linphone::Native::Core::AcceptCallWithParams(Linphone::Native::Call^ call, Linphone::Native::CallParams^ params)
+void Core::AcceptCallWithParams(Call^ call, CallParams^ params)
 {
 	API_LOCK;
 	linphone_core_accept_call_with_params(this->lc, call->call, params->params);
 }
 
-void Linphone::Native::Core::AddAllToConference()
+void Core::AddAllToConference()
 {
 	API_LOCK;
 	linphone_core_add_all_to_conference(this->lc);
 }
 
-void Linphone::Native::Core::AddAuthInfo(Linphone::Native::AuthInfo^ info)
+void Core::AddAuthInfo(AuthInfo^ info)
 {
 	API_LOCK;
 	linphone_core_add_auth_info(this->lc, info->auth_info);
 }
 
-void Linphone::Native::Core::AddProxyConfig(Linphone::Native::ProxyConfig^ proxyCfg)
+void Core::AddProxyConfig(ProxyConfig^ proxyCfg)
 {
 	API_LOCK;
 	linphone_core_add_proxy_config(this->lc, proxyCfg->proxyConfig);
 }
 
-void Linphone::Native::Core::AddToConference(Call^ call)
+void Core::AddToConference(Call^ call)
 {
 	API_LOCK;
 	linphone_core_add_to_conference(this->lc, call->call);
 }
 
-void Linphone::Native::Core::ClearAllAuthInfo()
+void Core::ClearAllAuthInfo()
 {
 	API_LOCK;
 	linphone_core_clear_all_auth_info(this->lc);
 }
 
-void Linphone::Native::Core::ClearCallLogs()
+void Core::ClearCallLogs()
 {
 	API_LOCK;
 	linphone_core_clear_call_logs(this->lc);
 }
 
-void Linphone::Native::Core::ClearProxyConfig()
+void Core::ClearProxyConfig()
 {
 	API_LOCK;
 	linphone_core_clear_proxy_config(this->lc);
 }
 
-Linphone::Native::Address^ Linphone::Native::Core::CreateAddress(Platform::String^ address)
+Address^ Core::CreateAddress(Platform::String^ address)
 {
 	API_LOCK;
-	const char *caddress = Linphone::Native::Utils::pstoccs(address);
-	Linphone::Native::Address^ addr = dynamic_cast<Linphone::Native::Address^>(Linphone::Native::Utils::CreateAddress(caddress));
+	const char *caddress = Utils::pstoccs(address);
+	Address^ addr = dynamic_cast<Address^>(Utils::CreateAddress(caddress));
 	delete(caddress);
 	return addr;
 }
 
-Linphone::Native::AuthInfo^ Linphone::Native::Core::CreateAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm, Platform::String^ domain)
+AuthInfo^ Core::CreateAuthInfo(Platform::String^ username, Platform::String^ userid, Platform::String^ password, Platform::String^ ha1, Platform::String^ realm, Platform::String^ domain)
 {
 	API_LOCK;
-	Linphone::Native::AuthInfo^ authInfo = ref new Linphone::Native::AuthInfo(username, userid, password, ha1, realm, domain);
+	AuthInfo^ authInfo = ref new AuthInfo(username, userid, password, ha1, realm, domain);
 	return authInfo;
 }
 
-Linphone::Native::CallParams^ Linphone::Native::Core::CreateCallParams(Linphone::Native::Call^ call)
+CallParams^ Core::CreateCallParams(Call^ call)
 {
 	API_LOCK;
-	return (Linphone::Native::CallParams^) Linphone::Native::Utils::GetCallParams(linphone_core_create_call_params(this->lc, call->call));
+	return (CallParams^) Utils::GetCallParams(linphone_core_create_call_params(this->lc, call->call));
 }
 
-Linphone::Native::ProxyConfig^ Linphone::Native::Core::CreateProxyConfig()
+ProxyConfig^ Core::CreateProxyConfig()
 {
 	API_LOCK;
 	ProxyConfig^ proxyConfig = nullptr;
 	::LinphoneProxyConfig *proxy = linphone_core_create_proxy_config(this->lc);
 	if (proxy != nullptr) {
-		proxyConfig = ref new Linphone::Native::ProxyConfig(proxy);
+		proxyConfig = ref new ProxyConfig(proxy);
 	}
 	return proxyConfig;
 }
 
-void Linphone::Native::Core::DeclineCall(Linphone::Native::Call^ call, Linphone::Native::Reason reason)
+void Core::DeclineCall(Call^ call, Reason reason)
 {
 	API_LOCK;
 	linphone_core_decline_call(this->lc, call->call, (LinphoneReason)reason);
 }
 
-void Linphone::Native::Core::DeferCallUpdate(Linphone::Native::Call^ call)
+void Core::DeferCallUpdate(Call^ call)
 {
 	API_LOCK;
 	linphone_core_defer_call_update(this->lc, call->call);
 }
 
-void Linphone::Native::Core::EnablePayloadType(PayloadType^ pt, Platform::Boolean enable)
+void Core::EnablePayloadType(BelledonneCommunications::Linphone::Native::PayloadType^ pt, Platform::Boolean enable)
 {
 	API_LOCK;
 	::PayloadType *payload = pt->payload;
 	linphone_core_enable_payload_type(this->lc, payload, enable);
 }
 
-Platform::Boolean Linphone::Native::Core::EnterConference()
+Platform::Boolean Core::EnterConference()
 {
 	API_LOCK;
 	return (linphone_core_enter_conference(this->lc) == 0);
 }
 
-Linphone::Native::Call^ Linphone::Native::Core::FindCallFromUri(Platform::String^ uri)
+Call^ Core::FindCallFromUri(Platform::String^ uri)
 {
 	API_LOCK;
 	const char *curi = Utils::pstoccs(uri);
 	::LinphoneCall *call = const_cast<::LinphoneCall *>(linphone_core_find_call_from_uri(this->lc, curi));
 	delete curi;
-	return (Linphone::Native::Call^)Linphone::Native::Utils::GetCall(call);
+	return (Call^)Utils::GetCall(call);
 }
 
-Linphone::Native::PayloadType^ Linphone::Native::Core::FindPayloadType(Platform::String^ mime, int clockRate, int channels)
+BelledonneCommunications::Linphone::Native::PayloadType^ Core::FindPayloadType(Platform::String^ mime, int clockRate, int channels)
 {
 	API_LOCK;
-	const char* type = Linphone::Native::Utils::pstoccs(mime);
+	const char* type = Utils::pstoccs(mime);
 	::PayloadType* pt = linphone_core_find_payload_type(this->lc, type, clockRate, channels);
 	delete type;
-	return (Linphone::Native::PayloadType^)Linphone::Native::Utils::CreatePayloadType(pt);
+	return (BelledonneCommunications::Linphone::Native::PayloadType^)Utils::CreatePayloadType(pt);
 }
 
-Linphone::Native::ChatRoom^ Linphone::Native::Core::GetChatRoom(Linphone::Native::Address^ address)
+ChatRoom^ Core::GetChatRoom(Address^ address)
 {
 	API_LOCK;
 	::LinphoneChatRoom *lChatRoom = linphone_core_get_chat_room(this->lc, address->address);
-	return (Linphone::Native::ChatRoom^)Linphone::Native::Utils::GetChatRoom(lChatRoom);
+	return (ChatRoom^)Utils::GetChatRoom(lChatRoom);
 }
 
-Linphone::Native::ChatRoom^ Linphone::Native::Core::GetChatRoomFromUri(Platform::String^ to)
+ChatRoom^ Core::GetChatRoomFromUri(Platform::String^ to)
 {
 	API_LOCK;
-	::LinphoneChatRoom *lChatRoom = linphone_core_get_chat_room_from_uri(this->lc, Linphone::Native::Utils::pstoccs(to));
-	return (Linphone::Native::ChatRoom^)Linphone::Native::Utils::GetChatRoom(lChatRoom);
+	::LinphoneChatRoom *lChatRoom = linphone_core_get_chat_room_from_uri(this->lc, Utils::pstoccs(to));
+	return (ChatRoom^)Utils::GetChatRoom(lChatRoom);
 }
 
-Linphone::Native::Address^ Linphone::Native::Core::InterpretURL(Platform::String^ destination)
+Address^ Core::InterpretURL(Platform::String^ destination)
 {
 	API_LOCK;
-	const char* url = Linphone::Native::Utils::pstoccs(destination);
-	Linphone::Native::Address^ addr = (Linphone::Native::Address^) Linphone::Native::Utils::CreateAddress(linphone_core_interpret_url(this->lc, url));
+	const char* url = Utils::pstoccs(destination);
+	Address^ addr = (Address^) Utils::CreateAddress(linphone_core_interpret_url(this->lc, url));
 	delete(url);
 	return addr;
 }
 
-Linphone::Native::Call^ Linphone::Native::Core::Invite(Platform::String^ destination)
+Call^ Core::Invite(Platform::String^ destination)
 {
 	API_LOCK;
-	const char *cc = Linphone::Native::Utils::pstoccs(destination);
+	const char *cc = Utils::pstoccs(destination);
 	::LinphoneCall *call = linphone_core_invite(this->lc, cc);
 	delete(cc);
-	return (Linphone::Native::Call^)Linphone::Native::Utils::GetCall(call);
+	return (Call^)Utils::GetCall(call);
 }
 
-Linphone::Native::Call^ Linphone::Native::Core::InviteAddress(Linphone::Native::Address^ destination)
+Call^ Core::InviteAddress(Address^ destination)
 {
 	API_LOCK;
 	::LinphoneCall *call = linphone_core_invite_address(this->lc, destination->address);
-	return (Linphone::Native::Call^)Linphone::Native::Utils::GetCall(call);
+	return (Call^)Utils::GetCall(call);
 }
 
-Linphone::Native::Call^ Linphone::Native::Core::InviteAddressWithParams(Linphone::Native::Address^ destination, CallParams^ params)
+Call^ Core::InviteAddressWithParams(Address^ destination, CallParams^ params)
 {
 	API_LOCK;
 	::LinphoneCall *call = linphone_core_invite_address_with_params(this->lc, destination->address, params->params);
-	return (Linphone::Native::Call^)Linphone::Native::Utils::GetCall(call);
+	return (Call^)Utils::GetCall(call);
 }
 
-Platform::Boolean Linphone::Native::Core::IsMediaEncryptionSupported(Linphone::Native::MediaEncryption menc)
+Platform::Boolean Core::IsMediaEncryptionSupported(BelledonneCommunications::Linphone::Native::MediaEncryption menc)
 {
 	API_LOCK;
 	return (linphone_core_media_encryption_supported(this->lc, (LinphoneMediaEncryption)menc) == TRUE);
 }
 
-void Linphone::Native::Core::LeaveConference()
+void Core::LeaveConference()
 {
 	API_LOCK;
 	linphone_core_leave_conference(this->lc);
 }
 
-Platform::Boolean Linphone::Native::Core::PauseAllCalls()
+Platform::Boolean Core::PauseAllCalls()
 {
 	API_LOCK;
 	return (linphone_core_pause_all_calls(this->lc) == 0);
 }
 
-Platform::Boolean Linphone::Native::Core::PauseCall(Call^ call)
+Platform::Boolean Core::PauseCall(Call^ call)
 {
 	API_LOCK;
 	return (linphone_core_pause_call(this->lc, call->call) == 0);
 }
 
-bool Linphone::Native::Core::PayloadTypeEnabled(PayloadType^ pt)
+bool Core::PayloadTypeEnabled(BelledonneCommunications::Linphone::Native::PayloadType^ pt)
 {
 	API_LOCK;
 	::PayloadType *payload = pt->payload;
 	return (linphone_core_payload_type_enabled(this->lc, payload) == TRUE);
 }
 
-void Linphone::Native::Core::PlayDtmf(char16 number, int duration)
+void Core::PlayDtmf(char16 number, int duration)
 {
 	API_LOCK;
 	char conv[4];
@@ -1163,37 +1163,37 @@ void Linphone::Native::Core::PlayDtmf(char16 number, int duration)
 	}
 }
 
-void Linphone::Native::Core::RefreshRegisters()
+void Core::RefreshRegisters()
 {
 	API_LOCK;
 	linphone_core_refresh_registers(this->lc);
 }
 
-void Linphone::Native::Core::RemoveCallLog(Linphone::Native::CallLog^ log)
+void Core::RemoveCallLog(CallLog^ log)
 {
 	API_LOCK;
 	linphone_core_remove_call_log(this->lc, log->callLog);
 }
 
-void Linphone::Native::Core::RemoveFromConference(Call^ call)
+void Core::RemoveFromConference(Call^ call)
 {
 	API_LOCK;
 	linphone_core_remove_from_conference(this->lc, call->call);
 }
 
-void Linphone::Native::Core::ResetMissedCallsCount()
+void Core::ResetMissedCallsCount()
 {
 	API_LOCK;
 	linphone_core_reset_missed_calls_count(this->lc);
 }
 
-Platform::Boolean Linphone::Native::Core::ResumeCall(Call^ call)
+Platform::Boolean Core::ResumeCall(Call^ call)
 {
 	API_LOCK;
 	return (linphone_core_resume_call(this->lc, call->call) == 0);
 }
 
-void Linphone::Native::Core::SendDtmf(char16 number)
+void Core::SendDtmf(char16 number)
 {
 	API_LOCK;
 	char conv[4];
@@ -1202,69 +1202,69 @@ void Linphone::Native::Core::SendDtmf(char16 number)
 	}
 }
 
-void Linphone::Native::Core::SetAudioPortRange(int minP, int maxP)
+void Core::SetAudioPortRange(int minP, int maxP)
 {
 	API_LOCK;
 	linphone_core_set_audio_port_range(this->lc, minP, maxP);
 }
 
-void Linphone::Native::Core::SetPreferredVideoSizeByName(Platform::String^ sizeName)
+void Core::SetPreferredVideoSizeByName(Platform::String^ sizeName)
 {
 	API_LOCK;
 	linphone_core_set_preferred_video_size_by_name(this->lc, Utils::pstoccs(sizeName));
 }
 
-void Linphone::Native::Core::SetPresenceInfo(int minuteAway, Platform::String^ alternativeContact, OnlineStatus status)
+void Core::SetPresenceInfo(int minuteAway, Platform::String^ alternativeContact, OnlineStatus status)
 {
 	API_LOCK;
-	const char* ac = Linphone::Native::Utils::pstoccs(alternativeContact);
+	const char* ac = Utils::pstoccs(alternativeContact);
 	linphone_core_set_presence_info(this->lc, minuteAway, ac, (LinphoneOnlineStatus)status);
 	delete(ac);
 }
 
-void Linphone::Native::Core::SetPrimaryContact(Platform::String^ contact)
+void Core::SetPrimaryContact(Platform::String^ contact)
 {
 	API_LOCK;
-	const char *ccontact = Linphone::Native::Utils::pstoccs(contact);
+	const char *ccontact = Utils::pstoccs(contact);
 	linphone_core_set_primary_contact(this->lc, ccontact);
 	delete(ccontact);
 }
 
-void Linphone::Native::Core::SetUserAgent(Platform::String^ name, Platform::String^ version)
+void Core::SetUserAgent(Platform::String^ name, Platform::String^ version)
 {
 	API_LOCK;
-	const char* ua = Linphone::Native::Utils::pstoccs(name);
-	const char* v = Linphone::Native::Utils::pstoccs(version);
+	const char* ua = Utils::pstoccs(name);
+	const char* v = Utils::pstoccs(version);
 	linphone_core_set_user_agent(this->lc, ua, v);
 	delete(v);
 	delete(ua);
 }
 
-void Linphone::Native::Core::StopDtmf()
+void Core::StopDtmf()
 {
 	API_LOCK;
 	linphone_core_stop_dtmf(this->lc);
 }
 
-void Linphone::Native::Core::TerminateAllCalls()
+void Core::TerminateAllCalls()
 {
 	API_LOCK;
 	linphone_core_terminate_all_calls(this->lc);
 }
 
-void Linphone::Native::Core::TerminateCall(Linphone::Native::Call^ call)
+void Core::TerminateCall(Call^ call)
 {
 	API_LOCK;
 	linphone_core_terminate_call(this->lc, call->call);
 }
 
-void Linphone::Native::Core::TerminateConference()
+void Core::TerminateConference()
 {
 	API_LOCK;
 	linphone_core_terminate_conference(this->lc);
 }
 
-void Linphone::Native::Core::UpdateCall(Linphone::Native::Call^ call, Linphone::Native::CallParams^ params)
+void Core::UpdateCall(Call^ call, CallParams^ params)
 {
 	API_LOCK;
 	if (params != nullptr) {
@@ -1275,7 +1275,7 @@ void Linphone::Native::Core::UpdateCall(Linphone::Native::Call^ call, Linphone::
 	}
 }
 
-void Linphone::Native::Core::UploadLogCollection()
+void Core::UploadLogCollection()
 {
 	API_LOCK;
 	linphone_core_upload_log_collection(this->lc);
@@ -1284,12 +1284,12 @@ void Linphone::Native::Core::UploadLogCollection()
 #if 0
 static void EchoCalibrationCallback(LinphoneCore *lc, LinphoneEcCalibratorStatus status, int delay_ms, void *data)
 {
-	Linphone::Native::Utils::EchoCalibrationCallback(lc, status, delay_ms, data);
+	Utils::EchoCalibrationCallback(lc, status, delay_ms, data);
 }
 
 static void EchoCalibrationAudioInit(void *data)
 {
-	Linphone::Native::EchoCalibrationData *ecData = static_cast<Linphone::Native::EchoCalibrationData *>(data);
+	EchoCalibrationData *ecData = static_cast<EchoCalibrationData *>(data);
 	if (ecData != nullptr) {
 		ecData->endpoint = AudioRoutingManager::GetDefault()->GetAudioEndpoint();
 		// Need to create a dummy VoipPhoneCall to be able to capture audio!
@@ -1306,21 +1306,21 @@ static void EchoCalibrationAudioInit(void *data)
 
 static void EchoCalibrationAudioUninit(void *data)
 {
-	Linphone::Native::EchoCalibrationData *ecData = static_cast<Linphone::Native::EchoCalibrationData *>(data);
+	EchoCalibrationData *ecData = static_cast<EchoCalibrationData *>(data);
 	if (ecData != nullptr) {
 		ecData->call->NotifyCallEnded();
 		AudioRoutingManager::GetDefault()->SetAudioEndpoint(AudioRoutingEndpoint::Default);
 	}
 }
 
-void Linphone::Native::Core::StartEchoCalibration() 
+void Core::StartEchoCalibration() 
 {
 	API_LOCK;
-	Linphone::Native::EchoCalibrationData *data = new Linphone::Native::EchoCalibrationData();
+	EchoCalibrationData *data = new EchoCalibrationData();
 	linphone_core_start_echo_calibration(this->lc, EchoCalibrationCallback, EchoCalibrationAudioInit, EchoCalibrationAudioUninit, data);
 }
 
-int Linphone::Native::Core::NativeVideoWindowId::get()
+int Core::NativeVideoWindowId::get()
 {
 	API_LOCK;
 	return Globals::Instance->VideoRenderer->GetNativeWindowId();
@@ -1329,39 +1329,39 @@ int Linphone::Native::Core::NativeVideoWindowId::get()
 
 void global_state_changed(::LinphoneCore *lc, ::LinphoneGlobalState gstate, const char *msg)
 {
-	Linphone::Native::Core^ lCore = (Linphone::Native::Core^)Linphone::Native::Utils::GetCore(lc);
-	Linphone::Native::CoreListener^ listener = lCore->CoreListener;
+	Core^ lCore = (Core^)Utils::GetCore(lc);
+	CoreListener^ listener = lCore->CoreListener;
 	if (listener != nullptr) {
-		Linphone::Native::GlobalState state = (Linphone::Native::GlobalState) gstate;
-		listener->GlobalStateChanged(state, Linphone::Native::Utils::cctops(msg));
+		GlobalState state = (GlobalState) gstate;
+		listener->GlobalStateChanged(state, Utils::cctops(msg));
 	}
 }
 
 void registration_state_changed(::LinphoneCore *lc, ::LinphoneProxyConfig *cfg, ::LinphoneRegistrationState cstate, const char *msg)
 {
-	Linphone::Native::Core^ lCore = (Linphone::Native::Core^)Linphone::Native::Utils::GetCore(lc);
-	Linphone::Native::CoreListener^ listener = lCore->CoreListener;
+	Core^ lCore = (Core^)Utils::GetCore(lc);
+	CoreListener^ listener = lCore->CoreListener;
 	if (listener != nullptr) {
-		Linphone::Native::RegistrationState state = (Linphone::Native::RegistrationState) cstate;
-		Linphone::Native::RefToPtrProxy<Linphone::Native::ProxyConfig^> *proxy = reinterpret_cast< Linphone::Native::RefToPtrProxy<Linphone::Native::ProxyConfig^> *>(linphone_proxy_config_get_user_data(cfg));
-		Linphone::Native::ProxyConfig^ config = (proxy) ? proxy->Ref() : nullptr;
-		listener->RegistrationStateChanged(config, state, Linphone::Native::Utils::cctops(msg));
+		RegistrationState state = (RegistrationState) cstate;
+		RefToPtrProxy<ProxyConfig^> *proxy = reinterpret_cast< RefToPtrProxy<ProxyConfig^> *>(linphone_proxy_config_get_user_data(cfg));
+		ProxyConfig^ config = (proxy) ? proxy->Ref() : nullptr;
+		listener->RegistrationStateChanged(config, state, Utils::cctops(msg));
 	}
 }
 
 void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCallState cstate, const char *msg)
 {
-	Linphone::Native::Core^ lCore = (Linphone::Native::Core^)Linphone::Native::Utils::GetCore(lc);
-	Linphone::Native::CoreListener^ listener = lCore->CoreListener;
+	Core^ lCore = (Core^)Utils::GetCore(lc);
+	CoreListener^ listener = lCore->CoreListener;
 	if (listener != nullptr) {
-		Linphone::Native::Call^ lCall = (Linphone::Native::Call^)Linphone::Native::Utils::GetCall(call);
-		Linphone::Native::CallState state = (Linphone::Native::CallState) cstate;
-		listener->CallStateChanged(lCall, state, Linphone::Native::Utils::cctops(msg));
+		Call^ lCall = (Call^)Utils::GetCall(call);
+		CallState state = (CallState) cstate;
+		listener->CallStateChanged(lCall, state, Utils::cctops(msg));
 	}
 
 #if 0
-	Linphone::Native::CallController^ callController = Linphone::Native::Globals::Instance->CallController;
-	if (state == Linphone::Native::CallState::IncomingReceived) {
+	CallController^ callController = Globals::Instance->CallController;
+	if (state == CallState::IncomingReceived) {
 		Platform::String^ name = lCall->RemoteAddress->DisplayName;
 		if (name == nullptr || name->Length() <= 0) 
 		{
@@ -1370,11 +1370,11 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = callController->OnIncomingCallReceived(lCall, name, lCall->RemoteAddress->AsStringUriOnly(), callController->IncomingCallViewDismissed);
 		lCall->CallContext = platformCall;
 	} 
-	else if (state == Linphone::Native::CallState::OutgoingProgress) {
+	else if (state == CallState::OutgoingProgress) {
 		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = callController->NewOutgoingCall(lCall->RemoteAddress->AsStringUriOnly());
 		lCall->CallContext = platformCall;
 	}
-	else if (state == Linphone::Native::CallState::End || state == Linphone::Native::CallState::Error) {
+	else if (state == CallState::End || state == CallState::Error) {
 		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = (Windows::Phone::Networking::Voip::VoipPhoneCall^) lCall->CallContext;
 		if (platformCall != nullptr)
 			platformCall->NotifyCallEnded();
@@ -1384,12 +1384,12 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 			callController->IncomingCallViewDismissed();
 		}
 	}
-	else if (state == Linphone::Native::CallState::Paused || state == Linphone::Native::CallState::PausedByRemote) {
+	else if (state == CallState::Paused || state == CallState::PausedByRemote) {
 		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = (Windows::Phone::Networking::Voip::VoipPhoneCall^) lCall->CallContext;
 		if (platformCall != nullptr)
 			platformCall->NotifyCallHeld();
 	}
-	else if (state == Linphone::Native::CallState::StreamsRunning) {
+	else if (state == CallState::StreamsRunning) {
 		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = (Windows::Phone::Networking::Voip::VoipPhoneCall^) lCall->CallContext;
 		if (platformCall == nullptr) {
 			// If CallContext is null here, it is because we have an incoming call using the custom incoming call view so create the VoipPhoneCall now
@@ -1406,43 +1406,43 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 #endif
 }
 
-void auth_info_requested(LinphoneCore *lc, const char *realm, const char *username, const char *domain) 
+void auth_info_requested(::LinphoneCore *lc, const char *realm, const char *username, const char *domain) 
 {
-	Linphone::Native::Core^ lCore = (Linphone::Native::Core^)Linphone::Native::Utils::GetCore(lc);
-	Linphone::Native::CoreListener^ listener = lCore->CoreListener;
+	Core^ lCore = (Core^)Utils::GetCore(lc);
+	CoreListener^ listener = lCore->CoreListener;
 	if (listener != nullptr) {
-		listener->AuthInfoRequested(Linphone::Native::Utils::cctops(realm), Linphone::Native::Utils::cctops(username), Linphone::Native::Utils::cctops(domain));
+		listener->AuthInfoRequested(Utils::cctops(realm), Utils::cctops(username), Utils::cctops(domain));
 	}
 }
 
-void message_received(LinphoneCore *lc, LinphoneChatRoom* room, LinphoneChatMessage* message)
+void message_received(::LinphoneCore *lc, LinphoneChatRoom* room, LinphoneChatMessage* message)
 {
-	Linphone::Native::Core^ lCore = (Linphone::Native::Core^)Linphone::Native::Utils::GetCore(lc);
-	Linphone::Native::CoreListener^ listener = lCore->CoreListener;
+	Core^ lCore = (Core^)Utils::GetCore(lc);
+	CoreListener^ listener = lCore->CoreListener;
 	if (listener != nullptr)
 	{
-		Linphone::Native::ChatRoom^ lChatRoom = (Linphone::Native::ChatRoom^)Linphone::Native::Utils::GetChatRoom(room);
-		Linphone::Native::ChatMessage^ lChatMessage = (Linphone::Native::ChatMessage^)Linphone::Native::Utils::GetChatMessage(message);
+		ChatRoom^ lChatRoom = (ChatRoom^)Utils::GetChatRoom(room);
+		ChatMessage^ lChatMessage = (ChatMessage^)Utils::GetChatMessage(message);
 		listener->MessageReceived(lChatRoom, lChatMessage);
 	}
 }
 
-void is_composing_received(LinphoneCore *lc, LinphoneChatRoom *room)
+void is_composing_received(::LinphoneCore *lc, LinphoneChatRoom *room)
 {
-	Linphone::Native::Core^ lCore = (Linphone::Native::Core^)Linphone::Native::Utils::GetCore(lc);
-	Linphone::Native::CoreListener^ listener = lCore->CoreListener;
+	Core^ lCore = (Core^)Utils::GetCore(lc);
+	CoreListener^ listener = lCore->CoreListener;
 	if (listener != nullptr) {
-		Linphone::Native::ChatRoom^ lChatRoom = (Linphone::Native::ChatRoom^)Linphone::Native::Utils::GetChatRoom(room);
+		ChatRoom^ lChatRoom = (ChatRoom^)Utils::GetChatRoom(room);
 		listener->IsComposingReceived(lChatRoom);
 	}
 }
 
-void dtmf_received(LinphoneCore *lc, LinphoneCall *call, int dtmf)
+void dtmf_received(::LinphoneCore *lc, LinphoneCall *call, int dtmf)
 {
-	Linphone::Native::Core^ lCore = (Linphone::Native::Core^)Linphone::Native::Utils::GetCore(lc);
-	Linphone::Native::CoreListener^ listener = lCore->CoreListener;
+	Core^ lCore = (Core^)Utils::GetCore(lc);
+	CoreListener^ listener = lCore->CoreListener;
 	if (listener != nullptr) {
-		Linphone::Native::Call^ lCall = (Linphone::Native::Call^)Linphone::Native::Utils::GetCall(call);
+		Call^ lCall = (Call^)Utils::GetCall(call);
 		char cdtmf = (char)dtmf;
 		char16 wdtmf;
 		mbtowc(&wdtmf, &cdtmf, 1);
@@ -1450,58 +1450,58 @@ void dtmf_received(LinphoneCore *lc, LinphoneCall *call, int dtmf)
 	}
 }
 
-void call_encryption_changed(LinphoneCore *lc, LinphoneCall *call, bool_t on, const char *authentication_token)
+void call_encryption_changed(::LinphoneCore *lc, LinphoneCall *call, bool_t on, const char *authentication_token)
 {
-	Linphone::Native::Core^ lCore = (Linphone::Native::Core^)Linphone::Native::Utils::GetCore(lc);
-	Linphone::Native::CoreListener^ listener = lCore->CoreListener;
+	Core^ lCore = (Core^)Utils::GetCore(lc);
+	CoreListener^ listener = lCore->CoreListener;
 	if (listener != nullptr) {
-		Linphone::Native::Call^ lCall = (Linphone::Native::Call^)Linphone::Native::Utils::GetCall(call);
-		listener->CallEncryptionChanged(lCall, (on == TRUE), Linphone::Native::Utils::cctops(authentication_token));
+		Call^ lCall = (Call^)Utils::GetCall(call);
+		listener->CallEncryptionChanged(lCall, (on == TRUE), Utils::cctops(authentication_token));
 	}
 }
 
-void call_stats_updated(LinphoneCore *lc, LinphoneCall *call, const LinphoneCallStats *stats)
+void call_stats_updated(::LinphoneCore *lc, LinphoneCall *call, const LinphoneCallStats *stats)
 {
-	Linphone::Native::Core^ lCore = (Linphone::Native::Core^)Linphone::Native::Utils::GetCore(lc);
-	Linphone::Native::CoreListener^ listener = lCore->CoreListener;
-	Linphone::Native::Call^ lCall = (Linphone::Native::Call^)Linphone::Native::Utils::GetCall(call);
-	Linphone::Native::CallStats^ lStats = (Linphone::Native::CallStats^)Linphone::Native::Utils::CreateCallStats((void *)stats);
+	Core^ lCore = (Core^)Utils::GetCore(lc);
+	CoreListener^ listener = lCore->CoreListener;
+	Call^ lCall = (Call^)Utils::GetCall(call);
+	CallStats^ lStats = (CallStats^)Utils::CreateCallStats((void *)stats);
 	if ((lStats != nullptr) && (listener != nullptr)) {
 		listener->CallStatsUpdated(lCall, lStats);
 	}
 }
 
-void log_collection_upload_state_changed(LinphoneCore *lc, ::LinphoneCoreLogCollectionUploadState state, const char *info)
+void log_collection_upload_state_changed(::LinphoneCore *lc, ::LinphoneCoreLogCollectionUploadState state, const char *info)
 {
-	Linphone::Native::Core^ lCore = (Linphone::Native::Core^)Linphone::Native::Utils::GetCore(lc);
-	Linphone::Native::CoreListener^ listener = lCore->CoreListener;
+	Core^ lCore = (Core^)Utils::GetCore(lc);
+	CoreListener^ listener = lCore->CoreListener;
 	if (listener != nullptr) {
-		listener->LogCollectionUploadStateChanged((Linphone::Native::LogCollectionUploadState)state, info ? Linphone::Native::Utils::cctops(info) : nullptr);
+		listener->LogCollectionUploadStateChanged((LogCollectionUploadState)state, info ? Utils::cctops(info) : nullptr);
 	}
 }
 
-void log_collection_upload_progress_indication(LinphoneCore *lc, size_t offset, size_t total)
+void log_collection_upload_progress_indication(::LinphoneCore *lc, size_t offset, size_t total)
 {
-	Linphone::Native::Core^ lCore = (Linphone::Native::Core^)Linphone::Native::Utils::GetCore(lc);
-	Linphone::Native::CoreListener^ listener = lCore->CoreListener;
+	Core^ lCore = (Core^)Utils::GetCore(lc);
+	CoreListener^ listener = lCore->CoreListener;
 	if (listener != nullptr) {
 		listener->LogCollectionUploadProgressIndication((int)offset, (int)total);
 	}
 }
 
-Linphone::Native::Core::Core(Linphone::Native::CoreListener^ coreListener)
+Core::Core(BelledonneCommunications::Linphone::Native::CoreListener^ coreListener)
 	: lc(nullptr), listener(coreListener), config(ref new LpConfig(nullptr, nullptr)), isIterateEnabled(false)
 {
 	Init();
 }
 
-Linphone::Native::Core::Core(Linphone::Native::CoreListener^ coreListener, LpConfig^ config)
+Core::Core(BelledonneCommunications::Linphone::Native::CoreListener^ coreListener, BelledonneCommunications::Linphone::Native::LpConfig^ config)
 	: lc(nullptr), listener(coreListener), config(config), isIterateEnabled(false)
 {
 	Init();
 }
 
-void Linphone::Native::Core::Init()
+void Core::Init()
 {
 	LinphoneCoreVTable *vtable = (LinphoneCoreVTable*) malloc(sizeof(LinphoneCoreVTable));
 	memset (vtable, 0, sizeof(LinphoneCoreVTable));
@@ -1523,7 +1523,7 @@ void Linphone::Native::Core::Init()
 	linphone_core_set_ring(this->lc, nullptr);
 }
 
-Linphone::Native::Core::~Core()
+Core::~Core()
 {
 	API_LOCK;
 	IsIterateEnabled = false;

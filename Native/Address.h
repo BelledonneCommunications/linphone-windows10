@@ -18,118 +18,121 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "Core.h"
 
-namespace Linphone
+namespace BelledonneCommunications
 {
-	namespace Native
+	namespace Linphone
 	{
-		/// <summary>
-		/// Object that represents a SIP address.
-		/// It's an opaque object that represents a SIP address, i.e. the content of SIP's "from" and "to" headers.
-		/// A SIP address is made of a display name, username, domain, port and various URI headers(such as tags).
-		/// It looks like "Alice &lt;sip:alice@example.net&gt;". The LinphoneAddress has methods to extract and manipulate all parts of the address.
-		/// When some part of the address (for example the username) is empty, the accessor method return null.
-		/// </summary>
-		/// <example>
-		/// Can be instancied using:
-		/// <code>
-		/// Address addr = Core.CreateAddress("sip:alice@example.net");
-		/// </code>
-		/// or
-		/// <code>
-		/// Address addr = Core.CreateAddress("alice", "example.net", "Alice B.");
-		/// </code>
-		/// </example>
-		public ref class Address sealed
+		namespace Native
 		{
-		public:
 			/// <summary>
-			/// The human display name of the address.
-			/// For example for the "Alice &lt;sip:alice@example.net&gt;" URI, it will return "Alice".
+			/// Object that represents a SIP address.
+			/// It's an opaque object that represents a SIP address, i.e. the content of SIP's "from" and "to" headers.
+			/// A SIP address is made of a display name, username, domain, port and various URI headers(such as tags).
+			/// It looks like "Alice &lt;sip:alice@example.net&gt;". The LinphoneAddress has methods to extract and manipulate all parts of the address.
+			/// When some part of the address (for example the username) is empty, the accessor method return null.
 			/// </summary>
-			property Platform::String^ DisplayName
+			/// <example>
+			/// Can be instancied using:
+			/// <code>
+			/// Address addr = Core.CreateAddress("sip:alice@example.net");
+			/// </code>
+			/// or
+			/// <code>
+			/// Address addr = Core.CreateAddress("alice", "example.net", "Alice B.");
+			/// </code>
+			/// </example>
+			public ref class Address sealed
 			{
-				Platform::String^ get();
-				void set(Platform::String^ value);
-			}
+			public:
+				/// <summary>
+				/// The human display name of the address.
+				/// For example for the "Alice &lt;sip:alice@example.net&gt;" URI, it will return "Alice".
+				/// </summary>
+				property Platform::String^ DisplayName
+				{
+					Platform::String^ get();
+					void set(Platform::String^ value);
+				}
 
-			/// <summary>
-			/// The domain part of the address.
-			/// For example for the "Alice &lt;sip:alice@example.net&gt;" URI, it will return "example.net".
-			/// </summary>
-			property Platform::String^ Domain
-			{
-				Platform::String^ get();
-				void set(Platform::String^ value);
-			}
+				/// <summary>
+				/// The domain part of the address.
+				/// For example for the "Alice &lt;sip:alice@example.net&gt;" URI, it will return "example.net".
+				/// </summary>
+				property Platform::String^ Domain
+				{
+					Platform::String^ get();
+					void set(Platform::String^ value);
+				}
 
-			/// <summary>
-			/// The port part of the address.
-			/// </summary>
-			property int Port
-			{
-				int get();
-				void set(int value);
-			}
+				/// <summary>
+				/// The port part of the address.
+				/// </summary>
+				property int Port
+				{
+					int get();
+					void set(int value);
+				}
 
-			/// <summary>
-			/// The address scheme, normally "sip".
-			/// </summary>
-			property Platform::String^ Scheme
-			{
-				Platform::String^ get();
-			}
+				/// <summary>
+				/// The address scheme, normally "sip".
+				/// </summary>
+				property Platform::String^ Scheme
+				{
+					Platform::String^ get();
+				}
 
-			/// <summary>
-			/// The transport of the address.
-			/// </summary>
-			property Linphone::Native::Transport Transport
-			{
-				Linphone::Native::Transport get();
-				void set(Linphone::Native::Transport value);
-			}
+				/// <summary>
+				/// The transport of the address.
+				/// </summary>
+				property Transport Transport
+				{
+					BelledonneCommunications::Linphone::Native::Transport get();
+					void set(BelledonneCommunications::Linphone::Native::Transport value);
+				}
 
-			/// <summary>
-			/// The username part of the address.
-			/// For example for the "Alice &lt;sip:alice@example.net&gt;" URI, it will return "alice".
-			/// </summary>
-			property Platform::String^ UserName
-			{
-				Platform::String^ get();
-				void set(Platform::String^ value);
-			}
+				/// <summary>
+				/// The username part of the address.
+				/// For example for the "Alice &lt;sip:alice@example.net&gt;" URI, it will return "alice".
+				/// </summary>
+				property Platform::String^ UserName
+				{
+					Platform::String^ get();
+					void set(Platform::String^ value);
+				}
 
-			/// <summary>
-			/// Gets the string representation of the address.
-			/// </summary>
-			/// <returns>The address as a string</returns>
-			Platform::String^ AsString();
+				/// <summary>
+				/// Gets the string representation of the address.
+				/// </summary>
+				/// <returns>The address as a string</returns>
+				Platform::String^ AsString();
 
-			/// <summary>
-			/// Gets the string representation of the URI part of the address (without the display name).
-			/// </summary>
-			/// <returns>The address without display name as a string</returns>
-			Platform::String^ AsStringUriOnly();
+				/// <summary>
+				/// Gets the string representation of the URI part of the address (without the display name).
+				/// </summary>
+				/// <returns>The address without display name as a string</returns>
+				Platform::String^ AsStringUriOnly();
 
-			/// <summary>
-			/// Removes address's tags and uri headers so that it is displayable to the user.
-			/// </summary>
-			void Clean();
+				/// <summary>
+				/// Removes address's tags and uri headers so that it is displayable to the user.
+				/// </summary>
+				void Clean();
 
-			/// <summary>
-			/// Same as AsString.
-			/// </summary>
-			/// <seealso cref="AsString()" />
-			virtual Platform::String^ ToString() override;
+				/// <summary>
+				/// Same as AsString.
+				/// </summary>
+				/// <seealso cref="AsString()" />
+				virtual Platform::String^ ToString() override;
 
-		private:
-			friend class Linphone::Native::Utils;
-			friend ref class Linphone::Native::Core;
-			
-			Address(::LinphoneAddress *addr);
-			Address(const char *uri);
-			~Address();
+			private:
+				friend class Utils;
+				friend ref class Core;
 
-			::LinphoneAddress *address;
-		};
+				Address(::LinphoneAddress *addr);
+				Address(const char *uri);
+				~Address();
+
+				::LinphoneAddress *address;
+			};
+		}
 	}
 }

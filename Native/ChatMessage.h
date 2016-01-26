@@ -22,123 +22,126 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Enums.h"
 
 
-namespace Linphone
+namespace BelledonneCommunications
 {
-	namespace Native
+	namespace Linphone
 	{
-		ref class ChatRoom;
-		ref class Core;
-
-		/// <summary>
-		/// Represents a chat message shared between two users.
-		/// </summary>
-		public ref class ChatMessage sealed
+		namespace Native
 		{
-		public:
+			ref class ChatRoom;
+			ref class Core;
+
 			/// <summary>
-			/// Returns the content of the appData
+			/// Represents a chat message shared between two users.
 			/// </summary>
-			property Platform::String^ AppData
+			public ref class ChatMessage sealed
 			{
-				Platform::String^ get();
-				void set(Platform::String^ value);
-			}
+			public:
+				/// <summary>
+				/// Returns the content of the appData
+				/// </summary>
+				property Platform::String^ AppData
+				{
+					Platform::String^ get();
+					void set(Platform::String^ value);
+				}
 
-			/// <summary>
-			/// Linphone message can carry external body as defined by rfc2017.
-			/// </summary>
-			property Platform::String^ ExternalBodyUrl
-			{
-				Platform::String^ get();
-				void set(Platform::String^ value);
-			}
+				/// <summary>
+				/// Linphone message can carry external body as defined by rfc2017.
+				/// </summary>
+				property Platform::String^ ExternalBodyUrl
+				{
+					Platform::String^ get();
+					void set(Platform::String^ value);
+				}
 
-			/// <summary>
-			/// Returns the name of the file used in the file transfer if it exists
-			/// </summary>
-			property Platform::String^ FileTransferName
-			{
-				Platform::String^ get();
-			}
+				/// <summary>
+				/// Returns the name of the file used in the file transfer if it exists
+				/// </summary>
+				property Platform::String^ FileTransferName
+				{
+					Platform::String^ get();
+				}
 
-			/// <summary>
-			/// Gets the path to the file to read from or write to during the file transfer.
-			/// </summary>
-			property Platform::String^ FileTransferFilepath
-			{
-				Platform::String^ get();
-			}
+				/// <summary>
+				/// Gets the path to the file to read from or write to during the file transfer.
+				/// </summary>
+				property Platform::String^ FileTransferFilepath
+				{
+					Platform::String^ get();
+				}
 
-			/// <summary>
-			/// Get from address as Address associated to this message.
-			/// </summary>
-			property Linphone::Native::Address^ FromAddress
-			{
-				Linphone::Native::Address^ get();
-			}
+				/// <summary>
+				/// Get from address as Address associated to this message.
+				/// </summary>
+				property Address^ FromAddress
+				{
+					Address^ get();
+				}
 
-			/// <summary>
-			/// Returns true if the message was outgoing, otherwise return false.
-			/// </summary>
-			property Platform::Boolean IsOutgoing
-			{
-				Platform::Boolean get();
-			}
+				/// <summary>
+				/// Returns true if the message was outgoing, otherwise return false.
+				/// </summary>
+				property Platform::Boolean IsOutgoing
+				{
+					Platform::Boolean get();
+				}
 
-			/// <summary>
-			/// Returns true if the message has been read, otherwise return false.
-			/// </summary>
-			property Platform::Boolean IsRead
-			{
-				Platform::Boolean get();
-			}
+				/// <summary>
+				/// Returns true if the message has been read, otherwise return false.
+				/// </summary>
+				property Platform::Boolean IsRead
+				{
+					Platform::Boolean get();
+				}
 
-			/// <summary>
-			/// Get peer address as Address associated to this message.
-			/// </summary>
-			property Linphone::Native::Address^ PeerAddress
-			{
-				Linphone::Native::Address^ get();
-			}
+				/// <summary>
+				/// Get peer address as Address associated to this message.
+				/// </summary>
+				property Address^ PeerAddress
+				{
+					Address^ get();
+				}
 
-			/// <summary>
-			/// Gets the state of the message (Idle, InProgress, Delivered or NotDelivered).
-			/// </summary>
-			property Linphone::Native::ChatMessageState State
-			{
-				Linphone::Native::ChatMessageState get();
-			}
+				/// <summary>
+				/// Gets the state of the message (Idle, InProgress, Delivered or NotDelivered).
+				/// </summary>
+				property ChatMessageState State
+				{
+					ChatMessageState get();
+				}
 
-			/// <summary>
-			/// Returns the text associated to this message.
-			/// </summary>
-			property Platform::String^ Text
-			{
-				Platform::String^ get();
-			}
-			
-			/// <summary>
-			/// Gets the time at which the message was sent (in seconds since 01/01/1970).
-			/// </summary>
-			property int64 Time
-			{
-				int64 get();
-			}
+				/// <summary>
+				/// Returns the text associated to this message.
+				/// </summary>
+				property Platform::String^ Text
+				{
+					Platform::String^ get();
+				}
 
-			/// <summary>
-			/// Starts the download of the image in the message if exists
-			/// </summary>
-			void StartFileDownload(Linphone::Native::ChatMessageListener^ listener, Platform::String^ filepath);
+				/// <summary>
+				/// Gets the time at which the message was sent (in seconds since 01/01/1970).
+				/// </summary>
+				property int64 Time
+				{
+					int64 get();
+				}
 
-		private:
-			friend class Linphone::Native::Utils;
-			friend ref class Linphone::Native::ChatRoom;
-			friend ref class Linphone::Native::Core;
+				/// <summary>
+				/// Starts the download of the image in the message if exists
+				/// </summary>
+				void StartFileDownload(ChatMessageListener^ listener, Platform::String^ filepath);
 
-			ChatMessage(::LinphoneChatMessage *cm);
-			~ChatMessage();
+			private:
+				friend class Utils;
+				friend ref class ChatRoom;
+				friend ref class Core;
 
-			::LinphoneChatMessage *message;
-		};
+				ChatMessage(::LinphoneChatMessage *cm);
+				~ChatMessage();
+
+				::LinphoneChatMessage *message;
+			};
+		}
 	}
 }

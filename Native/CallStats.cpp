@@ -17,78 +17,79 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "ApiLock.h"
 #include "CallStats.h"
 
+using namespace BelledonneCommunications::Linphone::Native;
 
-float Linphone::Native::CallStats::DownloadBandwidth::get()
+float CallStats::DownloadBandwidth::get()
 {
 	return this->downloadBandwidth;
 }
 
-Linphone::Native::IceState Linphone::Native::CallStats::IceState::get()
+IceState CallStats::IceState::get()
 {
 	return this->iceState;
 }
 
-float Linphone::Native::CallStats::JitterBufferSize::get()
+float CallStats::JitterBufferSize::get()
 {
 	return this->jitterBufferSize;
 }
 
-int64 Linphone::Native::CallStats::LatePacketsCumulativeNumber::get()
+int64 CallStats::LatePacketsCumulativeNumber::get()
 {
 	return this->cumulativeLatePackets;
 }
 
-float Linphone::Native::CallStats::LocalLateRate::get()
+float CallStats::LocalLateRate::get()
 {
 	return this->localLateRate;
 }
 
-float Linphone::Native::CallStats::LocalLossRate::get()
+float CallStats::LocalLossRate::get()
 {
 	return this->localLossRate;
 }
 
-Linphone::Native::MediaType Linphone::Native::CallStats::MediaType::get()
+MediaType CallStats::MediaType::get()
 {
 	return this->mediaType;
 }
 
-float Linphone::Native::CallStats::ReceiverInterarrivalJitter::get()
+float CallStats::ReceiverInterarrivalJitter::get()
 {
 	return this->receiverInterarrivalJitter;
 }
 
-float Linphone::Native::CallStats::ReceiverLossRate::get()
+float CallStats::ReceiverLossRate::get()
 {
 	return this->receiverLossRate;
 }
 
-float Linphone::Native::CallStats::RoundTripDelay::get()
+float CallStats::RoundTripDelay::get()
 {
 	return this->roundTripDelay;
 }
 
-float Linphone::Native::CallStats::SenderInterarrivalJitter::get()
+float CallStats::SenderInterarrivalJitter::get()
 {
 	return this->senderInterarrivalJitter;
 }
 
-float Linphone::Native::CallStats::SenderLossRate::get()
+float CallStats::SenderLossRate::get()
 {
 	return this->senderLossRate;
 }
 
-float Linphone::Native::CallStats::UploadBandwidth::get()
+float CallStats::UploadBandwidth::get()
 {
 	return this->uploadBandwidth;
 }
 
-Linphone::Native::CallStats::CallStats(::LinphoneCall *call, Linphone::Native::MediaType mediaType)
+CallStats::CallStats(::LinphoneCall *call, BelledonneCommunications::Linphone::Native::MediaType mediaType)
 	: call(call)
 {
 	API_LOCK;
 	const ::LinphoneCallStats *stats = nullptr;
-	if (mediaType == Linphone::Native::MediaType::Audio) {
+	if (mediaType == BelledonneCommunications::Linphone::Native::MediaType::Audio) {
 		stats = linphone_call_get_audio_stats(this->call);
 	} else {
 		stats = linphone_call_get_video_stats(this->call);
@@ -96,46 +97,46 @@ Linphone::Native::CallStats::CallStats(::LinphoneCall *call, Linphone::Native::M
 	FillStats(stats);
 }
 
-Linphone::Native::CallStats::CallStats(::LinphoneCallStats *callStats)
+CallStats::CallStats(::LinphoneCallStats *callStats)
 {
 	API_LOCK;
 	FillStats(callStats);
 }
 
-Linphone::Native::CallStats::~CallStats()
+CallStats::~CallStats()
 {
 	
 }
 
-float Linphone::Native::CallStats::GetSenderLossRate(const ::LinphoneCallStats *stats)
+float CallStats::GetSenderLossRate(const ::LinphoneCallStats *stats)
 {
 	return linphone_call_stats_get_sender_loss_rate(stats);
 }
 
-float Linphone::Native::CallStats::GetReceiverLossRate(const ::LinphoneCallStats *stats)
+float CallStats::GetReceiverLossRate(const ::LinphoneCallStats *stats)
 {
 	return linphone_call_stats_get_receiver_loss_rate(stats);
 }
 
-float Linphone::Native::CallStats::GetSenderInterarrivalJitter(const ::LinphoneCallStats *stats)
+float CallStats::GetSenderInterarrivalJitter(const ::LinphoneCallStats *stats)
 {
 	return linphone_call_stats_get_sender_interarrival_jitter(stats, this->call);
 }
 
-float Linphone::Native::CallStats::GetReceiverInterarrivalJitter(const ::LinphoneCallStats *stats)
+float CallStats::GetReceiverInterarrivalJitter(const ::LinphoneCallStats *stats)
 {
 	return linphone_call_stats_get_receiver_interarrival_jitter(stats, this->call);
 }
 
-int64 Linphone::Native::CallStats::GetLatePacketsCumulativeNumber(const ::LinphoneCallStats *stats)
+int64 CallStats::GetLatePacketsCumulativeNumber(const ::LinphoneCallStats *stats)
 {
 	return linphone_call_stats_get_late_packets_cumulative_number(stats, this->call);
 }
 
-void Linphone::Native::CallStats::FillStats(const ::LinphoneCallStats *stats)
+void CallStats::FillStats(const ::LinphoneCallStats *stats)
 {
-	this->mediaType = (Linphone::Native::MediaType) stats->type;
-	this->iceState = (Linphone::Native::IceState) stats->ice_state;
+	this->mediaType = (BelledonneCommunications::Linphone::Native::MediaType) stats->type;
+	this->iceState = (BelledonneCommunications::Linphone::Native::IceState) stats->ice_state;
 	this->downloadBandwidth = stats->download_bandwidth;
 	this->uploadBandwidth = stats->upload_bandwidth;
 	this->senderLossRate = GetSenderLossRate(stats);

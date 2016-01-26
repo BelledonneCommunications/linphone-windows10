@@ -20,19 +20,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Enums.h"
 
 
-namespace Linphone
+namespace BelledonneCommunications
 {
-	namespace Native
+	namespace Linphone
 	{
-		ref class ChatMessage;
-
-		/// <summary>
-		/// Listener to be called when the state of the message changes.
-		/// </summary>
-		public interface class ChatMessageListener
+		namespace Native
 		{
-		public:
-			void MessageStateChanged(ChatMessage^ message, ChatMessageState state);
-		};
+			ref class ChatMessage;
+
+			/// <summary>
+			/// Listener to be called when the state of the message changes.
+			/// </summary>
+			public interface class ChatMessageListener
+			{
+			public:
+				void MessageStateChanged(ChatMessage^ message, ChatMessageState state);
+			};
+		}
 	}
 }

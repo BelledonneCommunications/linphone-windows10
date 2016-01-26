@@ -17,23 +17,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "ApiLock.h"
 #include "PayloadType.h"
 
-
-Linphone::Native::PayloadType::PayloadType(::PayloadType *payload)
+BelledonneCommunications::Linphone::Native::PayloadType::PayloadType(::PayloadType *payload)
 	: payload(payload)
 {
 }
 
-Linphone::Native::PayloadType::~PayloadType()
+BelledonneCommunications::Linphone::Native::PayloadType::~PayloadType()
 {
 }
 
-Platform::String^ Linphone::Native::PayloadType::MimeType::get()
+Platform::String^ BelledonneCommunications::Linphone::Native::PayloadType::MimeType::get()
 {
 	API_LOCK;
 	return Utils::cctops(payload_type_get_mime(this->payload));
 }
 
-int Linphone::Native::PayloadType::ClockRate::get()
+int BelledonneCommunications::Linphone::Native::PayloadType::ClockRate::get()
 {
 	API_LOCK;
 	return payload_type_get_rate(this->payload);

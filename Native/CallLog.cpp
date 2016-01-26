@@ -19,56 +19,57 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "CallLog.h"
 #include "Enums.h"
 
+using namespace BelledonneCommunications::Linphone::Native;
 
-Platform::String^ Linphone::Native::CallLog::CallId::get()
+Platform::String^ CallLog::CallId::get()
 {
 	API_LOCK;
-	return Linphone::Native::Utils::cctops(linphone_call_log_get_call_id(this->callLog));
+	return Utils::cctops(linphone_call_log_get_call_id(this->callLog));
 }
 
-Linphone::Native::CallDirection Linphone::Native::CallLog::Direction::get()
+CallDirection CallLog::Direction::get()
 {
 	API_LOCK;
-	return (Linphone::Native::CallDirection)linphone_call_log_get_dir(this->callLog);
+	return (CallDirection)linphone_call_log_get_dir(this->callLog);
 }
 
-int Linphone::Native::CallLog::Duration::get()
+int CallLog::Duration::get()
 {
 	API_LOCK;
 	return linphone_call_log_get_duration(this->callLog);
 }
 
-Linphone::Native::Address^ Linphone::Native::CallLog::FromAddress::get()
+Address^ CallLog::FromAddress::get()
 {
 	API_LOCK;
-	return (Linphone::Native::Address^)Linphone::Native::Utils::CreateAddress((void*)linphone_call_log_get_from_address(this->callLog));
+	return (Address^)Utils::CreateAddress((void*)linphone_call_log_get_from_address(this->callLog));
 }
 
-Platform::Boolean Linphone::Native::CallLog::IsVideoEnabled::get()
+Platform::Boolean CallLog::IsVideoEnabled::get()
 {
 	API_LOCK;
 	return (linphone_call_log_video_enabled(this->callLog) == TRUE);
 }
 
-int64 Linphone::Native::CallLog::StartDate::get()
+int64 CallLog::StartDate::get()
 {
 	API_LOCK;
 	return linphone_call_log_get_start_date(this->callLog);
 }
 
-Linphone::Native::CallStatus Linphone::Native::CallLog::Status::get()
+CallStatus CallLog::Status::get()
 {
 	API_LOCK;
-	return (Linphone::Native::CallStatus)linphone_call_log_get_status(this->callLog);
+	return (CallStatus)linphone_call_log_get_status(this->callLog);
 }
 
-Linphone::Native::Address^ Linphone::Native::CallLog::ToAddress::get()
+Address^ CallLog::ToAddress::get()
 {
 	API_LOCK;
-	return (Linphone::Native::Address^)Linphone::Native::Utils::CreateAddress((void*)linphone_call_log_get_to_address(this->callLog));
+	return (Address^)Utils::CreateAddress((void*)linphone_call_log_get_to_address(this->callLog));
 }
 
-Linphone::Native::CallLog::CallLog(::LinphoneCallLog *cl)
+CallLog::CallLog(::LinphoneCallLog *cl)
 	: callLog(cl)
 {
 	API_LOCK;
@@ -77,7 +78,7 @@ Linphone::Native::CallLog::CallLog(::LinphoneCallLog *cl)
 	linphone_call_log_set_user_data(this->callLog, log);
 }
 
-Linphone::Native::CallLog::~CallLog()
+CallLog::~CallLog()
 {
 	API_LOCK;
 	if (this->callLog != nullptr) {

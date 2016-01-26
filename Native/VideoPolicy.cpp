@@ -17,33 +17,35 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "ApiLock.h"
 #include "VideoPolicy.h"
 
-Linphone::Native::VideoPolicy::VideoPolicy()
+using namespace BelledonneCommunications::Linphone::Native;
+
+VideoPolicy::VideoPolicy()
 	: automaticallyInitiate(true), automaticallyAccept(true)
 {
 }
 
-Linphone::Native::VideoPolicy::VideoPolicy(bool automaticallyInitiate, bool automaticallyAccept)
+VideoPolicy::VideoPolicy(bool automaticallyInitiate, bool automaticallyAccept)
 	: automaticallyInitiate(automaticallyInitiate), automaticallyAccept(automaticallyAccept)
 {
 }
 
-bool Linphone::Native::VideoPolicy::AutomaticallyInitiate::get()
+bool VideoPolicy::AutomaticallyInitiate::get()
 {
 	return automaticallyInitiate;
 }
 
-void Linphone::Native::VideoPolicy::AutomaticallyInitiate::set(bool value)
+void VideoPolicy::AutomaticallyInitiate::set(bool value)
 {
 	API_LOCK;
 	automaticallyInitiate = value;
 }
 
-bool Linphone::Native::VideoPolicy::AutomaticallyAccept::get()
+bool VideoPolicy::AutomaticallyAccept::get()
 {
 	return automaticallyAccept;
 }
 
-void Linphone::Native::VideoPolicy::AutomaticallyAccept::set(bool value)
+void VideoPolicy::AutomaticallyAccept::set(bool value)
 {
 	API_LOCK;
 	automaticallyAccept = value;

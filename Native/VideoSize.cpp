@@ -17,44 +17,46 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "ApiLock.h"
 #include "VideoSize.h"
 
-Linphone::Native::VideoSize::VideoSize(int width, int height)
+using namespace BelledonneCommunications::Linphone::Native;
+
+VideoSize::VideoSize(int width, int height)
 	: width(width), height(height), name("")
 {
 }
 
-Linphone::Native::VideoSize::VideoSize(int width, int height, Platform::String^ name)
+VideoSize::VideoSize(int width, int height, Platform::String^ name)
 	: width(width), height(height), name(name)
 {
 }
 
-int Linphone::Native::VideoSize::Width::get()
+int VideoSize::Width::get()
 {
 	return width;
 }
 
-void Linphone::Native::VideoSize::Width::set(int value)
+void VideoSize::Width::set(int value)
 {
 	API_LOCK;
 	width = value;
 }
 
-int Linphone::Native::VideoSize::Height::get()
+int VideoSize::Height::get()
 {
 	return height;
 }
 
-void Linphone::Native::VideoSize::Height::set(int value)
+void VideoSize::Height::set(int value)
 {
 	API_LOCK;
 	height = value;
 }
 
-Platform::String^ Linphone::Native::VideoSize::Name::get()
+Platform::String^ VideoSize::Name::get()
 {
 	return name;
 }
 
-void Linphone::Native::VideoSize::Name::set(Platform::String^ value)
+void VideoSize::Name::set(Platform::String^ value)
 {
 	API_LOCK;
 	name = value;

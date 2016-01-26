@@ -22,191 +22,192 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "CallStats.h"
 
 
+using namespace BelledonneCommunications::Linphone::Native;
 //using namespace Windows::Phone::Networking::Voip;
 
 
-Linphone::Native::CallStats^ Linphone::Native::Call::AudioStats::get()
+CallStats^ Call::AudioStats::get()
 {
 	API_LOCK;
-	return (Linphone::Native::CallStats^) Linphone::Native::Utils::CreateCallStats(this->call, (int)Linphone::Native::MediaType::Audio);
+	return (CallStats^) Utils::CreateCallStats(this->call, (int)MediaType::Audio);
 }
 
-Platform::String^ Linphone::Native::Call::AuthenticationToken::get()
+Platform::String^ Call::AuthenticationToken::get()
 {
 	API_LOCK;
-	return Linphone::Native::Utils::cctops(linphone_call_get_authentication_token(this->call));
+	return Utils::cctops(linphone_call_get_authentication_token(this->call));
 }
 
-Platform::Boolean Linphone::Native::Call::AuthenticationTokenVerified::get()
+Platform::Boolean Call::AuthenticationTokenVerified::get()
 {
 	API_LOCK;
 	return (linphone_call_get_authentication_token_verified(this->call) == TRUE);
 }
 
-void Linphone::Native::Call::AuthenticationTokenVerified::set(Platform::Boolean verified)
+void Call::AuthenticationTokenVerified::set(Platform::Boolean verified)
 {
 	API_LOCK;
 	linphone_call_set_authentication_token_verified(this->call, verified);
 }
 
-float Linphone::Native::Call::AverageQuality::get()
+float Call::AverageQuality::get()
 {
 	API_LOCK;
 	return linphone_call_get_average_quality(this->call);
 }
 
-Linphone::Native::CallLog^ Linphone::Native::Call::CallLog::get()
+CallLog^ Call::CallLog::get()
 {
 	API_LOCK;
-	return (Linphone::Native::CallLog^) Linphone::Native::Utils::GetCallLog(linphone_call_get_call_log(this->call));
+	return (BelledonneCommunications::Linphone::Native::CallLog^) Utils::GetCallLog(linphone_call_get_call_log(this->call));
 }
 
-Platform::Boolean Linphone::Native::Call::CameraEnabled::get()
+Platform::Boolean Call::CameraEnabled::get()
 {
 	API_LOCK;
 	return (linphone_call_camera_enabled(this->call) == TRUE);
 }
 
-void Linphone::Native::Call::CameraEnabled::set(Platform::Boolean enable)
+void Call::CameraEnabled::set(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_call_enable_camera(this->call, enable);
 }
 
-Linphone::Native::CallParams^ Linphone::Native::Call::CurrentParams::get()
+CallParams^ Call::CurrentParams::get()
 {
 	API_LOCK;
-	return (Linphone::Native::CallParams^) Linphone::Native::Utils::GetCallParams((void *)linphone_call_get_current_params(this->call));
+	return (CallParams^) Utils::GetCallParams((void *)linphone_call_get_current_params(this->call));
 }
 
-float Linphone::Native::Call::CurrentQuality::get()
+float Call::CurrentQuality::get()
 {
 	API_LOCK;
 	return linphone_call_get_current_quality(this->call);
 }
 
-Linphone::Native::CallDirection Linphone::Native::Call::Direction::get()
+CallDirection Call::Direction::get()
 {
 	API_LOCK;
-	return (Linphone::Native::CallDirection)linphone_call_get_dir(this->call);
+	return (CallDirection)linphone_call_get_dir(this->call);
 }
 
-int Linphone::Native::Call::Duration::get()
+int Call::Duration::get()
 {
 	API_LOCK;
 	return linphone_call_get_duration(this->call);
 }
 
-Platform::Boolean Linphone::Native::Call::EchoCancellationEnabled::get()
+Platform::Boolean Call::EchoCancellationEnabled::get()
 {
 	API_LOCK;
 	return (linphone_call_echo_cancellation_enabled(this->call) == TRUE);
 }
 
-void Linphone::Native::Call::EchoCancellationEnabled::set(Platform::Boolean enable)
+void Call::EchoCancellationEnabled::set(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_call_enable_echo_cancellation(this->call, enable);
 }
 
-Platform::Boolean Linphone::Native::Call::EchoLimiterEnabled::get()
+Platform::Boolean Call::EchoLimiterEnabled::get()
 {
 	API_LOCK;
 	return (linphone_call_echo_limiter_enabled(this->call) == TRUE);
 }
 
-void Linphone::Native::Call::EchoLimiterEnabled::set(Platform::Boolean enable)
+void Call::EchoLimiterEnabled::set(Platform::Boolean enable)
 {
 	API_LOCK;
 	linphone_call_enable_echo_limiter(this->call, enable);
 }
 
-Platform::Boolean Linphone::Native::Call::IsInConference::get()
+Platform::Boolean Call::IsInConference::get()
 {
 	API_LOCK;
 	return (linphone_call_is_in_conference(this->call) == TRUE);
 }
 
-Platform::Object^ Linphone::Native::Call::NativeVideoWindowId::get()
+Platform::Object^ Call::NativeVideoWindowId::get()
 {
 	API_LOCK;
 	void *id = linphone_call_get_native_video_window_id(this->call);
 	if (id == NULL) return nullptr;
-	Linphone::Native::RefToPtrProxy<Platform::Object^> *proxy = reinterpret_cast<Linphone::Native::RefToPtrProxy<Platform::Object^>*>(id);
+	RefToPtrProxy<Platform::Object^> *proxy = reinterpret_cast<RefToPtrProxy<Platform::Object^>*>(id);
 	Platform::Object^ nativeWindowId = (proxy) ? proxy->Ref() : nullptr;
 	return nativeWindowId;
 }
 
-void Linphone::Native::Call::NativeVideoWindowId::set(Platform::Object^ value)
+void Call::NativeVideoWindowId::set(Platform::Object^ value)
 {
 	API_LOCK;
-	Linphone::Native::RefToPtrProxy<Platform::Object^> *nativeWindowId = new Linphone::Native::RefToPtrProxy<Platform::Object^>(value);
+	RefToPtrProxy<Platform::Object^> *nativeWindowId = new RefToPtrProxy<Platform::Object^>(value);
 	linphone_call_set_native_video_window_id(this->call, nativeWindowId);
 }
 
-float Linphone::Native::Call::PlayVolume::get()
+float Call::PlayVolume::get()
 {
 	API_LOCK;
 	return linphone_call_get_play_volume(this->call);
 }
 
-Linphone::Native::Reason Linphone::Native::Call::Reason::get()
+Reason Call::Reason::get()
 {
 	API_LOCK;
-	return (Linphone::Native::Reason)linphone_call_get_reason(this->call);
+	return (BelledonneCommunications::Linphone::Native::Reason)linphone_call_get_reason(this->call);
 }
 
-Platform::String^ Linphone::Native::Call::RemoteContact::get()
+Platform::String^ Call::RemoteContact::get()
 {
 	API_LOCK;
-	return Linphone::Native::Utils::cctops(linphone_call_get_remote_contact(this->call));
+	return Utils::cctops(linphone_call_get_remote_contact(this->call));
 }
 
-Linphone::Native::Address^ Linphone::Native::Call::RemoteAddress::get()
+Address^ Call::RemoteAddress::get()
 {
 	API_LOCK;
 	const ::LinphoneAddress *addr = linphone_call_get_remote_address(this->call);
-	return (Linphone::Native::Address^)Linphone::Native::Utils::CreateAddress((void*)addr);
+	return (Address^)Utils::CreateAddress((void*)addr);
 }
 
-Linphone::Native::CallParams^ Linphone::Native::Call::RemoteParams::get()
+CallParams^ Call::RemoteParams::get()
 {
 	API_LOCK;
-	return (Linphone::Native::CallParams^) Linphone::Native::Utils::GetCallParams((void *)linphone_call_get_remote_params(this->call));
+	return (CallParams^) Utils::GetCallParams((void *)linphone_call_get_remote_params(this->call));
 }
 
-Platform::String^ Linphone::Native::Call::RemoteUserAgent::get()
+Platform::String^ Call::RemoteUserAgent::get()
 {
 	API_LOCK;
-	return Linphone::Native::Utils::cctops(linphone_call_get_remote_user_agent(this->call));
+	return Utils::cctops(linphone_call_get_remote_user_agent(this->call));
 }
 
-Linphone::Native::CallState Linphone::Native::Call::State::get()
+CallState Call::State::get()
 {
 	API_LOCK;
-	return (Linphone::Native::CallState)linphone_call_get_state(this->call);
+	return (CallState)linphone_call_get_state(this->call);
 }
 
-Linphone::Native::CallStats^ Linphone::Native::Call::VideoStats::get()
+CallStats^ Call::VideoStats::get()
 {
 	API_LOCK;
-	return (Linphone::Native::CallStats^) Linphone::Native::Utils::CreateCallStats(this->call, (int)Linphone::Native::MediaType::Video);
+	return (CallStats^) Utils::CreateCallStats(this->call, (int)MediaType::Video);
 }
 
-void Linphone::Native::Call::SendVFURequest()
+void Call::SendVFURequest()
 {
 	API_LOCK;
 	linphone_call_send_vfu_request(this->call);
 }
 
 #if 0
-void Linphone::Native::Call::CallContext::set(Windows::Phone::Networking::Voip::VoipPhoneCall^ cc)
+void Call::CallContext::set(Windows::Phone::Networking::Voip::VoipPhoneCall^ cc)
 {
 	API_LOCK;
 	this->callContext = cc;
 }
 
-Platform::Object^ Linphone::Native::Call::CallStartTimeFromContext::get()
+Platform::Object^ Call::CallStartTimeFromContext::get()
 {
 	API_LOCK;
 	Platform::Object^ result = nullptr;
@@ -220,13 +221,13 @@ Platform::Object^ Linphone::Native::Call::CallStartTimeFromContext::get()
 	return result;
 }
 
-Windows::Phone::Networking::Voip::VoipPhoneCall^ Linphone::Native::Call::CallContext::get()
+Windows::Phone::Networking::Voip::VoipPhoneCall^ Call::CallContext::get()
 {
 	return this->callContext;
 }
 #endif
 
-Linphone::Native::Call::Call(::LinphoneCall *call)
+Call::Call(::LinphoneCall *call)
 	: call(call)
 {
 	API_LOCK;
@@ -234,7 +235,7 @@ Linphone::Native::Call::Call(::LinphoneCall *call)
 	linphone_call_set_user_data(this->call, proxy);
 }
 
-Linphone::Native::Call::~Call()
+Call::~Call()
 {
 	API_LOCK;
 	linphone_call_unref(call);
