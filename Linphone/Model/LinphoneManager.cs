@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Linphone.Native;
+using BelledonneCommunications.Linphone.Native;
 using System.ComponentModel;
 using Windows.UI.Core;
 

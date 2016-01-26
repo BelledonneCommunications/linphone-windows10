@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Belledonne Communications")]
 [assembly: AssemblyProduct("Linphone")]
-[assembly: AssemblyCopyright("Copyright © 2015 Belledonne Communications")]
+[assembly: AssemblyCopyright("Copyright © 2015-2016 Belledonne Communications")]
 [assembly: AssemblyTrademark("Linphone")]
 [assembly: AssemblyCulture("")]
 
