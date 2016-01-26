@@ -16,7 +16,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using LibLinphoneTester.DataModel;
-using linphone_tester_runtime;
+using BelledonneCommunications.Linphone.Tester;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -41,8 +41,8 @@ namespace LibLinphoneTester
             }
             else
             {
-                linphone_tester_runtime.LibLinphoneTester.Instance.initialize(ApplicationData.Current.LocalFolder, true);
-                _suites = UnitTestDataSource.GetSuites(linphone_tester_runtime.LibLinphoneTester.Instance);
+                NativeTester.Instance.initialize(ApplicationData.Current.LocalFolder, true);
+                _suites = UnitTestDataSource.GetSuites(NativeTester.Instance);
             }
         }
 
@@ -116,7 +116,7 @@ namespace LibLinphoneTester
             ProgressIndicator.Minimum = 0;
             ProgressIndicator.Maximum = nbCases;
             ProgressIndicator.Value = 0;
-            linphone_tester_runtime.LibLinphoneTester.Instance.setOutputTraceListener(this);
+            NativeTester.Instance.setOutputTraceListener(this);
         }
 
         private async Task RunUnitTestCase(UnitTestCase c, bool verbose)
@@ -131,7 +131,7 @@ namespace LibLinphoneTester
                 c.Traces.Clear();
             });
             c.Dispatcher = Dispatcher;
-            if (linphone_tester_runtime.LibLinphoneTester.Instance.run(c.Suite.Name, c.Name, verbose))
+            if (NativeTester.Instance.run(c.Suite.Name, c.Name, verbose))
             {
                 newState = UnitTestCaseState.Failure;
             }
@@ -152,7 +152,7 @@ namespace LibLinphoneTester
 
         private void UnprepareRun()
         {
-            linphone_tester_runtime.LibLinphoneTester.Instance.setOutputTraceListener(null);
+            NativeTester.Instance.setOutputTraceListener(null);
             RunningTestCase = null;
             ProgressIndicator.IsEnabled = false;
             CommandBar.IsEnabled = true;
@@ -182,11 +182,11 @@ namespace LibLinphoneTester
             CommandBar.IsEnabled = false;
             ProgressIndicator.IsIndeterminate = true;
             ProgressIndicator.IsEnabled = true;
-            linphone_tester_runtime.LibLinphoneTester.Instance.initialize(ApplicationData.Current.LocalFolder, false);
-            linphone_tester_runtime.LibLinphoneTester.Instance.runAllToXml();
-            if (linphone_tester_runtime.LibLinphoneTester.Instance.AsyncAction != null)
+            NativeTester.Instance.initialize(ApplicationData.Current.LocalFolder, false);
+            NativeTester.Instance.runAllToXml();
+            if (NativeTester.Instance.AsyncAction != null)
             {
-                linphone_tester_runtime.LibLinphoneTester.Instance.AsyncAction.Completed += (asyncInfo, asyncStatus) => {
+                NativeTester.Instance.AsyncAction.Completed += (asyncInfo, asyncStatus) => {
                     App.Current.Exit();
                 };
             }

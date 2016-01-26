@@ -1,6 +1,6 @@
 ﻿{
   "dependencies": {
-    "LibLinphoneTesterSDK": "1.0.0",
+    "LinphoneTesterSDK": "3.9.1.375",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0"
   },
   "frameworks": {

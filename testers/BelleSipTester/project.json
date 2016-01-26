@@ -1,6 +1,6 @@
 ﻿{
   "dependencies": {
-    "BelleSipTesterSDK": "1.0.0",
+    "BelleSipTesterSDK": "1.4.2.41",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0"
   },
   "frameworks": {

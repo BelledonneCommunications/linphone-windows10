@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using belle_sip_tester.DataModel;
+using BelledonneCommunications.BelleSip.Tester;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -24,7 +25,7 @@ namespace BelleSipTester
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page, belle_sip_tester_runtime.OutputTraceListener
+    public sealed partial class MainPage : Page, OutputTraceListener
     {
         public MainPage()
         {
@@ -40,8 +41,8 @@ namespace BelleSipTester
             }
             else
             {
-                belle_sip_tester_runtime.BelleSipTester.Instance.initialize(ApplicationData.Current.LocalFolder, true);
-                _suites = UnitTestDataSource.GetSuites(belle_sip_tester_runtime.BelleSipTester.Instance);
+                NativeTester.Instance.initialize(ApplicationData.Current.LocalFolder, true);
+                _suites = UnitTestDataSource.GetSuites(NativeTester.Instance);
             }
         }
 
@@ -115,7 +116,7 @@ namespace BelleSipTester
             ProgressIndicator.Minimum = 0;
             ProgressIndicator.Maximum = nbCases;
             ProgressIndicator.Value = 0;
-            belle_sip_tester_runtime.BelleSipTester.Instance.setOutputTraceListener(this);
+            NativeTester.Instance.setOutputTraceListener(this);
         }
 
         private async Task RunUnitTestCase(UnitTestCase c, bool verbose)
@@ -130,7 +131,7 @@ namespace BelleSipTester
                 c.Traces.Clear();
             });
             c.Dispatcher = Dispatcher;
-            if (belle_sip_tester_runtime.BelleSipTester.Instance.run(c.Suite.Name, c.Name, verbose))
+            if (NativeTester.Instance.run(c.Suite.Name, c.Name, verbose))
             {
                 newState = UnitTestCaseState.Failure;
             }
@@ -151,7 +152,7 @@ namespace BelleSipTester
 
         private void UnprepareRun()
         {
-            belle_sip_tester_runtime.BelleSipTester.Instance.setOutputTraceListener(null);
+            NativeTester.Instance.setOutputTraceListener(null);
             RunningTestCase = null;
             ProgressIndicator.IsEnabled = false;
             CommandBar.IsEnabled = true;
@@ -181,11 +182,11 @@ namespace BelleSipTester
             CommandBar.IsEnabled = false;
             ProgressIndicator.IsIndeterminate = true;
             ProgressIndicator.IsEnabled = true;
-            belle_sip_tester_runtime.BelleSipTester.Instance.initialize(ApplicationData.Current.LocalFolder, false);
-            belle_sip_tester_runtime.BelleSipTester.Instance.runAllToXml();
-            if (belle_sip_tester_runtime.BelleSipTester.Instance.AsyncAction != null)
+            NativeTester.Instance.initialize(ApplicationData.Current.LocalFolder, false);
+            NativeTester.Instance.runAllToXml();
+            if (NativeTester.Instance.AsyncAction != null)
             {
-                belle_sip_tester_runtime.BelleSipTester.Instance.AsyncAction.Completed += (asyncInfo, asyncStatus) => {
+                NativeTester.Instance.AsyncAction.Completed += (asyncInfo, asyncStatus) => {
                     App.Current.Exit();
                 };
             }

@@ -16,7 +16,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using MS2Tester.DataModel;
-using mediastreamer2_tester_runtime;
+using BelledonneCommunications.Mediastreamer2.Tester;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -41,8 +41,8 @@ namespace MS2Tester
             }
             else
             {
-                mediastreamer2_tester_runtime.MS2Tester.Instance.initialize(ApplicationData.Current.LocalFolder, true);
-                _suites = UnitTestDataSource.GetSuites(mediastreamer2_tester_runtime.MS2Tester.Instance);
+                NativeTester.Instance.initialize(ApplicationData.Current.LocalFolder, true);
+                _suites = UnitTestDataSource.GetSuites(NativeTester.Instance);
             }
         }
 
@@ -116,7 +116,7 @@ namespace MS2Tester
             ProgressIndicator.Minimum = 0;
             ProgressIndicator.Maximum = nbCases;
             ProgressIndicator.Value = 0;
-            mediastreamer2_tester_runtime.MS2Tester.Instance.setOutputTraceListener(this);
+            NativeTester.Instance.setOutputTraceListener(this);
         }
 
         private async Task RunUnitTestCase(UnitTestCase c, bool verbose)
@@ -131,7 +131,7 @@ namespace MS2Tester
                 c.Traces.Clear();
             });
             c.Dispatcher = Dispatcher;
-            if (mediastreamer2_tester_runtime.MS2Tester.Instance.run(c.Suite.Name, c.Name, verbose))
+            if (NativeTester.Instance.run(c.Suite.Name, c.Name, verbose))
             {
                 newState = UnitTestCaseState.Failure;
             }
@@ -152,7 +152,7 @@ namespace MS2Tester
 
         private void UnprepareRun()
         {
-            mediastreamer2_tester_runtime.MS2Tester.Instance.setOutputTraceListener(null);
+            NativeTester.Instance.setOutputTraceListener(null);
             RunningTestCase = null;
             ProgressIndicator.IsEnabled = false;
             CommandBar.IsEnabled = true;
@@ -182,11 +182,11 @@ namespace MS2Tester
             CommandBar.IsEnabled = false;
             ProgressIndicator.IsIndeterminate = true;
             ProgressIndicator.IsEnabled = true;
-            mediastreamer2_tester_runtime.MS2Tester.Instance.initialize(ApplicationData.Current.LocalFolder, false);
-            mediastreamer2_tester_runtime.MS2Tester.Instance.runAllToXml();
-            if (mediastreamer2_tester_runtime.MS2Tester.Instance.AsyncAction != null)
+            NativeTester.Instance.initialize(ApplicationData.Current.LocalFolder, false);
+            NativeTester.Instance.runAllToXml();
+            if (NativeTester.Instance.AsyncAction != null)
             {
-                mediastreamer2_tester_runtime.MS2Tester.Instance.AsyncAction.Completed += (asyncInfo, asyncStatus) =>
+                NativeTester.Instance.AsyncAction.Completed += (asyncInfo, asyncStatus) =>
                 {
                     App.Current.Exit();
                 };

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using belle_sip_tester_runtime;
+using BelledonneCommunications.BelleSip.Tester;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -130,12 +130,12 @@ namespace belle_sip_tester.DataModel
             get { return this._suites; }
         }
 
-        public static IEnumerable<UnitTestSuite> GetSuites(belle_sip_tester_runtime.BelleSipTester tester)
+        public static IEnumerable<UnitTestSuite> GetSuites(NativeTester tester)
         {
             return _unitTestDataSource.FillSuites(tester);
         }
 
-        private IEnumerable<UnitTestSuite> FillSuites(belle_sip_tester_runtime.BelleSipTester tester)
+        private IEnumerable<UnitTestSuite> FillSuites(NativeTester tester)
         {
             if (this.Suites.Count != 0) return this.Suites;
             for (int i = 0; i < tester.nbTestSuites(); i++)

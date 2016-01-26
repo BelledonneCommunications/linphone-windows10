@@ -15,7 +15,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using mediastreamer2_tester_runtime;
+using BelledonneCommunications.Mediastreamer2.Tester;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -29,9 +29,9 @@ namespace MS2Tester
         public VideoPage()
         {
             this.InitializeComponent();
-            mediastreamer2_tester_runtime.MS2Tester.Instance.initVideo();
+            NativeTester.Instance.initVideo();
             bool isSelected = true;
-            foreach (String device in mediastreamer2_tester_runtime.MS2Tester.Instance.VideoDevices)
+            foreach (String device in NativeTester.Instance.VideoDevices)
             {
                 ComboBoxItem item = new ComboBoxItem();
                 item.Content = device;
@@ -84,7 +84,7 @@ namespace MS2Tester
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            mediastreamer2_tester_runtime.MS2Tester.Instance.uninitVideo();
+            NativeTester.Instance.uninitVideo();
             ((Frame)Window.Current.Content).GoBack();
         }
 
@@ -136,18 +136,18 @@ namespace MS2Tester
                 UInt32.TryParse((FramerateComboBox.SelectedItem as ComboBoxItem).Content as String, out frameRate);
                 UInt32 bitRate = 1500;
                 UInt32.TryParse(BitrateTextBox.Text, out bitRate);
-                mediastreamer2_tester_runtime.MS2Tester.Instance.startVideoStream(LocalVideo, RemoteVideo, camera, codec, videoSize, frameRate, bitRate);
+                NativeTester.Instance.startVideoStream(LocalVideo, RemoteVideo, camera, codec, videoSize, frameRate, bitRate);
             }
             else
             {
-                mediastreamer2_tester_runtime.MS2Tester.Instance.stopVideoStream();
+                NativeTester.Instance.stopVideoStream();
             }
         }
 
         private void ChangeCameraButton_Click(object sender, RoutedEventArgs e)
         {
             String camera = (CameraComboBox.SelectedItem as ComboBoxItem).Content as String;
-            mediastreamer2_tester_runtime.MS2Tester.Instance.changeCamera(camera);
+            NativeTester.Instance.changeCamera(camera);
         }
 
         private void SetVideoOrientation()
@@ -190,9 +190,9 @@ namespace MS2Tester
                     break;
             }
 
-            if (mediastreamer2_tester_runtime.MS2Tester.Instance.getOrientation() != degrees)
+            if (NativeTester.Instance.getOrientation() != degrees)
             {
-                mediastreamer2_tester_runtime.MS2Tester.Instance.setOrientation(degrees);
+                NativeTester.Instance.setOrientation(degrees);
             }
         }
 

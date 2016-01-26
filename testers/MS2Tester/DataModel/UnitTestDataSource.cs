@@ -12,7 +12,7 @@ using System.ComponentModel;
 using Windows.UI;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Core;
-using mediastreamer2_tester_runtime;
+using BelledonneCommunications.Mediastreamer2.Tester;
 
 namespace MS2Tester.DataModel
 {
@@ -130,12 +130,12 @@ namespace MS2Tester.DataModel
             get { return this._suites; }
         }
 
-        public static IEnumerable<UnitTestSuite> GetSuites(mediastreamer2_tester_runtime.MS2Tester tester)
+        public static IEnumerable<UnitTestSuite> GetSuites(NativeTester tester)
         {
             return _unitTestDataSource.FillSuites(tester);
         }
 
-        private IEnumerable<UnitTestSuite> FillSuites(mediastreamer2_tester_runtime.MS2Tester tester)
+        private IEnumerable<UnitTestSuite> FillSuites(NativeTester tester)
         {
             if (this.Suites.Count != 0) return this.Suites;
             for (int i = 0; i < tester.nbTestSuites(); i++)
