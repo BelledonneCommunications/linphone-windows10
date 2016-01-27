@@ -1,20 +1,20 @@
-[submodule "submodules/antlr3"]
-	path = submodules/antlr3
+[submodule "submodules/externals/antlr3"]
+	path = submodules/externals/antlr3
 	url = git://git.linphone.org/antlr3.git
 [submodule "submodules/belle-sip"]
 	path = submodules/belle-sip
 	url = git://git.linphone.org/belle-sip.git
-[submodule "submodules/gsm"]
-	path = submodules/gsm
+[submodule "submodules/externals/gsm"]
+	path = submodules/externals/gsm
 	url = git://git.linphone.org/gsm.git
-[submodule "submodules/speex"]
-	path = submodules/speex
+[submodule "submodules/externals/speex"]
+	path = submodules/externals/speex
 	url = git://git.linphone.org/speex.git
 [submodule "submodules/linphone"]
 	path = submodules/linphone
 	url = git://git.linphone.org/linphone.git
-[submodule "submodules/cunit"]
-	path = submodules/cunit
+[submodule "submodules/externals/cunit"]
+	path = submodules/externals/cunit
 	url = git://git.linphone.org/cunit.git
 [submodule "submodules/mswasapi"]
 	path = submodules/mswasapi
@@ -28,32 +28,32 @@
 [submodule "submodules/mssilk"]
 	path = submodules/mssilk
 	url = git://git.linphone.org/mssilk.git
-[submodule "submodules/polarssl"]
-	path = submodules/polarssl
+[submodule "submodules/externals/polarssl"]
+	path = submodules/externals/polarssl
 	url = git://git.linphone.org/polarssl.git
-[submodule "submodules/opencore-amr"]
-	path = submodules/opencore-amr
+[submodule "submodules/externals/opencore-amr"]
+	path = submodules/externals/opencore-amr
 	url = git://git.linphone.org/opencore-amr.git
-[submodule "submodules/vo-amrwbenc"]
-	path = submodules/vo-amrwbenc
+[submodule "submodules/externals/vo-amrwbenc"]
+	path = submodules/externals/vo-amrwbenc
 	url = git://git.linphone.org/vo-amrwbenc.git
 [submodule "submodules/msamr"]
 	path = submodules/msamr
 	url = git://git.linphone.org/msamr.git
-[submodule "submodules/libxml2"]
-	path = submodules/libxml2
+[submodule "submodules/externals/libxml2"]
+	path = submodules/externals/libxml2
 	url = git://git.gnome.org/libxml2
 [submodule "submodules/bcg729"]
 	path = submodules/bcg729
 	url = git://git.linphone.org/bcg729.git
-[submodule "submodules/srtp"]
-	path = submodules/srtp
+[submodule "submodules/externals/srtp"]
+	path = submodules/externals/srtp
 	url = git://git.linphone.org/srtp.git
 [submodule "submodules/mswebrtc"]
 	path = submodules/mswebrtc
 	url = git://git.linphone.org/mswebrtc.git
-[submodule "submodules/opus"]
-	path = submodules/opus
+[submodule "submodules/externals/opus"]
+	path = submodules/externals/opus
 	url = git://git.linphone.org/opus.git
 [submodule "submodules/zlib"]
 	path = submodules/zlib
@@ -76,6 +76,6 @@
 [submodule "submodules/cmake-builder"]
 	path = submodules/cmake-builder
 	url = git://git.linphone.org/linphone-cmake-builder.git
-[submodule "submodules/matroska"]
-	path = submodules/matroska
+[submodule "submodules/externals/libmatroska-c"]
+	path = submodules/externals/libmatroska-c
 	url = git://git.linphone.org/libmatroska-c.git
