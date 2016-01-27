@@ -52,9 +52,6 @@
 [submodule "submodules/zlib"]
 	path = submodules/zlib
 	url = git://git.linphone.org/zlib.git
-[submodule "submodules/libvpx"]
-	path = submodules/libvpx
-	url = https://chromium.googlesource.com/webm/libvpx
 [submodule "submodules/bzrtp"]
 	path = submodules/bzrtp
 	url = git://git.linphone.org/bzrtp.git
@@ -64,9 +61,6 @@
 [submodule "submodules/msopenh264"]
 	path = submodules/msopenh264
 	url = git://git.linphone.org/msopenh264.git
-[submodule "submodules/openh264"]
-	path = submodules/openh264
-	url = git://github.com/cisco/openh264.git
 [submodule "submodules/cmake-builder"]
 	path = submodules/cmake-builder
 	url = git://git.linphone.org/linphone-cmake-builder.git
