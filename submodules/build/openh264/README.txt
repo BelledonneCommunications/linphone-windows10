@@ -1,35 +1,53 @@
-Here is how the openh264 prebuilt libraries have been generated.
+Here is how the openh264 prebuilt libraries have been generated from the tag v1.5.0 of the git repository (https://github.com/cisco/openh264.git) with the 0001-Add-compilation-and-link-flags-for-Windows-10-build.patch applied.
+These instructions are mainly based on those to build ffmpeg from https://trac.ffmpeg.org/wiki/CompilationGuide/WinRT.
 
-The commands are to be executed in a Git Bash shell.
 
 
 x86:
 
-export PATH="/c/Users/Ghislain/AppData/Local/nasm:/c/MinGW/bin:$PATH"
-export PATH="/c/Program Files (x86)/Microsoft Visual Studio 14.0/Common7/IDE/CommonExtensions/Microsoft/TestWindow:/c/Program Files (x86)/MSBuild/14.0/bin/amd64:/c/Program Files (x86)/Microsoft Visual Studio 14.0/VC/BIN/amd64_x86:/c/Program Files (x86)/Microsoft Visual Studio 14.0/VC/BIN/amd64:/c/WINDOWS/Microsoft.NET/Framework64/v4.0.30319:/c/Program Files (x86)/Microsoft Visual Studio 14.0/VC/VCPackages:/c/Program Files (x86)/Microsoft Visual Studio 14.0/Common7/IDE:/c/Program Files (x86)/Microsoft Visual Studio 14.0/Common7/Tools:/c/Program Files (x86)/HTML Help Workshop:/c/Program Files (x86)/Microsoft Visual Studio 14.0/Team Tools/Performance Tools/x64:/c/Program Files (x86)/Microsoft Visual Studio 14.0/Team Tools/Performance Tools:/c/Program Files (x86)/Windows Kits/8.1/bin/x64:/c/Program Files (x86)/Windows Kits/8.1/bin/x86:/c/Program Files (x86)/Microsoft SDKs/Windows/v8.1A/bin/NETFX 4.5.1 Tools/x64:$PATH"
-export INCLUDE="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE;C:\Program Files (x86)\Windows Kits\10\\include\10.0.10056.0\ucrt;C:\Program Files (x86)\Windows Kits\8.1\include\shared;C:\Program Files (x86)\Windows Kits\8.1\include\um;C:\Program Files (x86)\Windows Kits\8.1\include\winrt;"
-export LIB="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\LIB;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\LIB;C:\Program Files (x86)\Windows Kits\10\\lib\10.0.10056.0\ucrt\x86;C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86;"
-export LIBPATH="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcpackages;C:\WINDOWS\Microsoft.NET\Framework64\v4.0.30319;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\LIB;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\LIB;C:\Program Files (x86)\Windows Kits\8.1\References\CommonConfiguration\Neutral;\Microsoft.VCLibs\14.0\References\CommonConfiguration\neutral;"
-mingw32-make.exe OS=msvc-app ARCH=i386
+In the VS2015 x64 x86 Cross Tools Command Prompt:
+
+SET LIB=%VSINSTALLDIR%VC\lib\store;%VSINSTALLDIR%VC\atlmfc\lib;%UniversalCRTSdkDir%lib\%UCRTVersion%\ucrt\x86;;%UniversalCRTSdkDir%lib\%UCRTVersion%\um\x86;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6\lib\um\x86;;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6\Lib\um\x86
+SET LIBPATH=%VSINSTALLDIR%VC\vcpackages;%FrameworkDir%\%FrameworkVersion%;%VSINSTALLDIR%VC\lib;%VSINSTALLDIR%VC\atlmfc\lib;C:\Program Files (x86)\Windows Kits\8.1\References\CommonConfiguration\Neutral;\Microsoft.VCLibs\14.0\References\CommonConfiguration\neutral;
+SET INCLUDE=%VSINSTALLDIR%VC\include;%VSINSTALLDIR%VC\atlmfc\include;%UniversalCRTSdkDir%Include\%UCRTVersion%\ucrt;%UniversalCRTSdkDir%Include\%UCRTVersion%\um;%UniversalCRTSdkDir%Include\%UCRTVersion%\shared;%UniversalCRTSdkDir%Include\%UCRTVersion%\winrt;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6\Include\um;
+C:\msys64\msys2_shell.bat
+
+Then, in the just opened msys64 shell (in the source directory of openh264):
+
+mingw32-make.exe libraries PREFIX=win10-x86 OS=msvc-app ARCH=i386
+mingw32-make.exe install-shared PREFIX=win10-x86 OS=msvc-app ARCH=i386
+mingw32-make.exe libraries PREFIX=win10-x86 OS=msvc-app ARCH=i386 clean
 
 
 
 x64:
 
-export PATH="/c/Users/Ghislain/AppData/Local/nasm:/c/MinGW/bin:$PATH"
-export PATH="/c/Program Files (x86)/Microsoft Visual Studio 14.0/Common7/IDE/CommonExtensions/Microsoft/TestWindow:/c/Program Files (x86)/MSBuild/14.0/bin/amd64:/c/Program Files (x86)/Microsoft Visual Studio 14.0/VC/BIN/amd64:/c/WINDOWS/Microsoft.NET/Framework64/v4.0.30319:/c/Program Files (x86)/Microsoft Visual Studio 14.0/VC/VCPackages:/c/Program Files (x86)/Microsoft Visual Studio 14.0/Common7/IDE:/c/Program Files (x86)/Microsoft Visual Studio 14.0/Common7/Tools:/c/Program Files (x86)/HTML Help Workshop:/c/Program Files (x86)/Microsoft Visual Studio 14.0/Team Tools/Performance Tools/x64:/c/Program Files (x86)/Microsoft Visual Studio 14.0/Team Tools/Performance Tools:/c/Program Files (x86)/Windows Kits/8.1/bin/x64:/c/Program Files (x86)/Windows Kits/8.1/bin/x86:/c/Program Files (x86)/Microsoft SDKs/Windows/v8.1A/bin/NETFX 4.5.1 Tools/x64:$PATH"
-export INCLUDE="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE;C:\Program Files (x86)\Windows Kits\10\\include\10.0.10056.0\ucrt;C:\Program Files (x86)\Windows Kits\8.1\include\shared;C:\Program Files (x86)\Windows Kits\8.1\include\um;C:\Program Files (x86)\Windows Kits\8.1\include\winrt"
-export LIB="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\LIB\amd64;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\LIB\amd64;C:\Program Files (x86)\Windows Kits\10\\lib\10.0.10056.0\ucrt\x64;C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x64"
-export LIBPATH="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcpackages;C:\WINDOWS\Microsoft.NET\Framework64\v4.0.30319;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\LIB\amd64;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\LIB\amd64;C:\Program Files (x86)\Windows Kits\8.1\References\CommonConfiguration\Neutral;\Microsoft.VCLibs\14.0\References\CommonConfiguration\neutral;"
-mingw32-make.exe OS=msvc-app ARCH=x86_64
+In the VS2015 x64 Native Tools Command Prompt:
+
+SET LIB=%VSINSTALLDIR%VC\lib\store\amd64;%VSINSTALLDIR%VC\atlmfc\lib\amd64;%UniversalCRTSdkDir%lib\%UCRTVersion%\ucrt\x64;;%UniversalCRTSdkDir%lib\%UCRTVersion%\um\x64;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6\lib\um\x64;;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6\Lib\um\x64
+SET LIBPATH=%VSINSTALLDIR%VC\vcpackages;%FrameworkDir%\%FrameworkVersion%;%VSINSTALLDIR%VC\lib\amd64;%VSINSTALLDIR%VC\atlmfc\lib\amd64;C:\Program Files (x86)\Windows Kits\8.1\References\CommonConfiguration\Neutral;\Microsoft.VCLibs\14.0\References\CommonConfiguration\neutral;
+SET INCLUDE=%VSINSTALLDIR%VC\include;%VSINSTALLDIR%VC\atlmfc\include;%UniversalCRTSdkDir%Include\%UCRTVersion%\ucrt;%UniversalCRTSdkDir%Include\%UCRTVersion%\um;%UniversalCRTSdkDir%Include\%UCRTVersion%\shared;%UniversalCRTSdkDir%Include\%UCRTVersion%\winrt;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6\Include\um;
+C:\msys64\msys2_shell.bat
+
+Then, in the just opened msys64 shell (in the source directory of openh264):
+
+mingw32-make.exe libraries PREFIX=win10-x64 OS=msvc-app ARCH=x86_64
+mingw32-make.exe install-shared PREFIX=win10-x64 OS=msvc-app ARCH=x86_64
+mingw32-make.exe libraries PREFIX=win10-x64 OS=msvc-app ARCH=x86_64 clean
 
 
 
 ARM:
 
-export PATH="/c/code/gas-preprocessor:/c/MinGW/bin:$PATH"
-export PATH="/c/Program Files (x86)/Microsoft Visual Studio 14.0/Common7/IDE/CommonExtensions/Microsoft/TestWindow:/c/Program Files (x86)/MSBuild/14.0/bin/amd64:/c/Program Files (x86)/Microsoft Visual Studio 14.0/VC/BIN/amd64_arm:/c/Program Files (x86)/Microsoft Visual Studio 14.0/VC/BIN/amd64:/c/WINDOWS/Microsoft.NET/Framework64/v4.0.30319:/c/Program Files (x86)/Microsoft Visual Studio 14.0/VC/VCPackages:/c/Program Files (x86)/Microsoft Visual Studio 14.0/Common7/IDE:/c/Program Files (x86)/Microsoft Visual Studio 14.0/Common7/Tools:/c/Program Files (x86)/HTML Help Workshop:/c/Program Files (x86)/Microsoft Visual Studio 14.0/Team Tools/Performance Tools/x64:/c/Program Files (x86)/Microsoft Visual Studio 14.0/Team Tools/Performance Tools:/c/Program Files (x86)/Windows Kits/8.1/bin/x64:/c/Program Files (x86)/Windows Kits/8.1/bin/x86:/c/Program Files (x86)/Microsoft SDKs/Windows/v8.1A/bin/NETFX 4.5.1 Tools/x64:$PATH"
-export INCLUDE="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE;C:\Program Files (x86)\Windows Kits\10\\include\10.0.10056.0\ucrt;C:\Program Files (x86)\Windows Kits\8.1\include\shared;C:\Program Files (x86)\Windows Kits\8.1\include\um;C:\Program Files (x86)\Windows Kits\8.1\include\winrt;"
-export LIB="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\LIB\ARM;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\LIB\ARM;C:\Program Files (x86)\Windows Kits\10\\lib\10.0.10056.0\ucrt\ARM;C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\ARM;"
-export LIBPATH="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcpackages;C:\WINDOWS\Microsoft.NET\Framework64\v4.0.30319;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\LIB\ARM;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\LIB\ARM;C:\Program Files (x86)\Windows Kits\8.1\References\CommonConfiguration\Neutral;\Microsoft.VCLibs\14.0\References\CommonConfiguration\neutral;"
-mingw32-make.exe OS=msvc-app ARCH=armv7
+In the VS2015 x64 ARM Cross Tools Command Prompt:
+
+SET LIB=%VSINSTALLDIR%VC\lib\store\ARM;%VSINSTALLDIR%VC\atlmfc\lib\ARM;%UniversalCRTSdkDir%lib\%UCRTVersion%\ucrt\arm;;%UniversalCRTSdkDir%lib\%UCRTVersion%\um\arm;
+SET LIBPATH=%VSINSTALLDIR%VC\vcpackages;%FrameworkDir%\%FrameworkVersion%;%VSINSTALLDIR%VC\lib\ARM;%VSINSTALLDIR%VC\atlmfc\lib\ARM;C:\Program Files (x86)\Windows Kits\8.1\References\CommonConfiguration\Neutral;\Microsoft.VCLibs\14.0\References\CommonConfiguration\neutral;
+SET INCLUDE=%VSINSTALLDIR%VC\include;%VSINSTALLDIR%VC\atlmfc\include;%UniversalCRTSdkDir%Include\%UCRTVersion%\ucrt;%UniversalCRTSdkDir%Include\%UCRTVersion%\um;%UniversalCRTSdkDir%Include\%UCRTVersion%\shared;%UniversalCRTSdkDir%Include\%UCRTVersion%\winrt;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6\Include\um;
+C:\msys64\msys2_shell.bat
+
+Then, in the just opened msys64 shell (in the source directory of openh264):
+
+mingw32-make.exe libraries PREFIX=win10-arm OS=msvc-app ARCH=armv7
+mingw32-make.exe install-shared PREFIX=win10-arm OS=msvc-app ARCH=armv7
+mingw32-make.exe libraries PREFIX=win10-arm OS=msvc-app ARCH=armv7 clean

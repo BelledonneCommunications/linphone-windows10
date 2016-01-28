@@ -1,0 +1,30 @@
+From 4bef0bd0a66cef255fcdf3ff0b62daf38e071829 Mon Sep 17 00:00:00 2001
+From: Ghislain MARY <ghislain.mary@belledonne-communications.com>
+Date: Thu, 28 Jan 2016 18:01:01 +0100
+Subject: [PATCH] Add compilation and link flags for Windows 10 build.
+
+---
+ build/msvc-app.mk | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/build/msvc-app.mk b/build/msvc-app.mk
+index 10c0954..56d1b03 100644
+--- a/build/msvc-app.mk
++++ b/build/msvc-app.mk
+@@ -1,11 +1,12 @@
+ include $(SRC_PATH)build/msvc-common.mk
+-CFLAGS_OPT += -MD
++CFLAGS_OPT += -MD -D_WIN32_WINNT=0x0A00
+ CFLAGS_DEBUG += -MDd
+ CFLAGS += -DUNICODE
+ # Ignore warnings about the main function prototype when building with -ZW
+ CXXFLAGS += -ZW -wd4447
+ # Ignore warnings about code built with -ZW in .lib files
+ AR_OPTS += -ignore:4264
++LDFLAGS += -APPCONTAINER WindowsApp.lib
+ 
+ # WelsThreadLib requires building with -ZW, since it uses new Windows Runtime
+ # classes for creating threads.
+-- 
+1.9.5.msysgit.1
+
