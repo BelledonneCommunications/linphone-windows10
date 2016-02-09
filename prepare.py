@@ -248,16 +248,24 @@ def generate_solution(debug, selected_platforms, builder_target):
     sln_confs = ""
     other_sdks = []
     build_type = 'Debug' if debug else 'Release'
-    version = '1.0.0'
     if builder_target == 'linphone':
-        builder_target = ['LinphoneTester', 'Linphone']
-        version = git_version('submodules/linphone')
+        linphone_version = git_version('submodules/linphone')
+        builder_target = [
+            ('LinphoneTesterSDK', linphone_version),
+            ('LinphoneSDK', linphone_version),
+        ]
     elif builder_target == 'ms2-plugins':
-        builder_target = ['MS2Tester']
-        version = git_version('submodules/linphone/mediastreamer2')
+        ms2_version = git_version('submodules/linphone/mediastreamer2')
+        builder_target = [
+            ('MS2TesterSDK', ms2_version),
+        ]
     elif builder_target == 'belle-sip':
-        builder_target = ['BelleSipTester']
-        version = git_version('submodules/belle-sip')
+        bellesip_version = git_version('submodules/belle-sip')
+        builder_target = [
+            ('BelleSipTesterSDK', bellesip_version),
+        ]
+    else:
+        return
 
     vcxproj_platforms = {}
     for platform in selected_platforms:
@@ -346,8 +354,8 @@ EndProject
 \t\t{project_guid}.{build_type}|Win32.Build.0 = {build_type}|{vcxproj_platform}
 """.format(project_guid=guids[platform], platform=platform, build_type=build_type, vcxproj_platform=vcxproj_platforms[platform])
 
-    # Generate Visual Studio projects to create a nuget packages of the SDKs
-    for target in builder_target:
+    # Generate Visual Studio projects to create a nuget packages
+    for target, version in builder_target:
         guid = '{' + str(uuid.uuid4()).upper() + '}'
         vcxproj = """<?xml version="1.0" encoding="UTF-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
@@ -367,7 +375,7 @@ EndProject
     <WindowsTargetPlatformMinVersion>10.0.10586.0</WindowsTargetPlatformMinVersion>
     <Keyword>Win32Proj</Keyword>
     <Platform>Win32</Platform>
-    <ProjectName>Nuget{target}SDK</ProjectName>
+    <ProjectName>Nuget{target}</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration">
@@ -387,18 +395,18 @@ EndProject
     <IntDir>$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemGroup>
-    <CustomBuild Include="{current_path}/WORK/NuGet{target}SDK.rule">
-      <Message>Generating NuGet package for {target} SDK</Message>
+    <CustomBuild Include="{current_path}/WORK/NuGet{target}.rule">
+      <Message>Generating NuGet package for {target}</Message>
       <Command>setlocal
 cd {current_path}
 if %errorlevel% neq 0 goto :cmEnd
 C:
 if %errorlevel% neq 0 goto :cmEnd
-python.exe submodules/build/nuget.py -s OUTPUT -w WORK/NuGet{target}SDK -v {version} -t {target} {platforms}
+python.exe submodules/build/nuget.py -s OUTPUT -w WORK/NuGet{target} -v {version} -t {target} {platforms}
 if %errorlevel% neq 0 goto :cmEnd
 cd {current_path}/OUTPUT
 if %errorlevel% neq 0 goto :cmEnd
-{current_path}/WORK/nuget.exe pack {current_path}/WORK/NuGet{target}SDK/{target}SDK.nuspec
+{current_path}/WORK/nuget.exe pack {current_path}/WORK/NuGet{target}/{target}.nuspec
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 :cmErrorLevel
@@ -406,7 +414,7 @@ exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalInputs>%(AdditionalInputs)</AdditionalInputs>
-      <Outputs>{current_path}/WORK/NuGetSDK-build</Outputs>
+      <Outputs>{current_path}/WORK/NuGet-build</Outputs>
       <LinkObjects>false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
@@ -415,10 +423,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ImportGroup>
 </Project>
 """.format(platforms=' '.join(selected_platforms), target=target, build_type=build_type, version=version, current_path=current_path, guid=guid)
-        f = open("WORK/NuGet{target}SDK.vcxproj".format(target=target), 'w')
+        f = open("WORK/NuGet{target}.vcxproj".format(target=target), 'w')
         f.write(vcxproj)
         f.close()
-        f = open("WORK/NuGet{target}SDK.rule".format(target=target), 'w')
+        f = open("WORK/NuGet{target}.rule".format(target=target), 'w')
         f.close()
         project_dependencies = ""
         for platform in selected_platforms:
@@ -430,7 +438,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
         other_sdks += [target]
         guids[target] = guid
         sln_projects += \
-"""Project("{{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}}") = "Nuget{target}SDK", "WORK\Nuget{target}SDK.vcxproj", "{project_guid}"
+"""Project("{{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}}") = "Nuget{target}", "WORK\Nuget{target}.vcxproj", "{project_guid}"
 \tProjectSection(ProjectDependencies) = postProject
 {project_dependencies}\tEndProjectSection
 EndProject

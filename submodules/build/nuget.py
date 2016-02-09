@@ -72,12 +72,20 @@ def main(argv=None):
     args, additional_args2 = argparser.parse_known_args()
 
     target_winmd = "BelledonneCommunications.Linphone.Native"
-    if args.target == "LinphoneTester":
+    target_id = "LinphoneSDK"
+    target_desc = "Linphone SDK"
+    if args.target == "LinphoneTesterSDK":
         target_winmd = "BelledonneCommunications.Linphone.Tester"
-    elif args.target == "MS2Tester":
+        target_id = "LinphoneTesterSDK"
+        target_desc = "Linphone Tester SDK"
+    elif args.target == "MS2TesterSDK":
         target_winmd = "BelledonneCommunications.Mediastreamer2.Tester"
-    elif args.target == "BelleSipTester":
+        target_id = "MS2TesterSDK"
+        target_desc = "Mediastreamer2 Tester SDK"
+    elif args.target == "BelleSipTesterSDK":
         target_winmd = "BelledonneCommunications.BelleSip.Tester"
+        target_id = "BelleSipTesterSDK"
+        target_desc = "BelleSip Tester SDK"
 
     # Create work dir structure
     work_dir = os.path.abspath(args.work_dir)
@@ -98,6 +106,7 @@ def main(argv=None):
         dlls += glob.glob(os.path.join(sdk_dir, platform_dir, 'lib', '*.dll'))
         dlls += glob.glob(os.path.join(sdk_dir, platform_dir, 'lib', 'mediastreamer', 'plugins', '*.dll'))
         winmds = glob.glob(os.path.join(sdk_dir, platform_dir, 'lib', '*.winmd'))
+        winmds += glob.glob(os.path.join(sdk_dir, platform_dir, 'lib', 'mediastreamer', 'plugins','*.winmd'))
         pdbs = glob.glob(os.path.join(sdk_dir, platform_dir, 'bin', '*.pdb'))
         pdbs += glob.glob(os.path.join(sdk_dir, platform_dir, 'lib', '*.pdb'))
         pdbs += glob.glob(os.path.join(sdk_dir, platform_dir, 'lib', 'mediastreamer', 'plugins', '*.pdb'))
@@ -144,7 +153,7 @@ def main(argv=None):
     </ItemGroup>
   </Target>
 </Project>"""
-    f = open(os.path.join(work_dir, 'build', 'uap10.0', args.target + 'SDK.targets'), 'w')
+    f = open(os.path.join(work_dir, 'build', 'uap10.0', target_id + '.targets'), 'w')
     f.write(targets)
     f.close()
 
@@ -152,7 +161,7 @@ def main(argv=None):
     nuspec = """<?xml version="1.0"?>
 <package >
   <metadata>
-    <id>{target}SDK</id>
+    <id>{target_id}</id>
     <version>{version}</version>
     <authors>Belledonne Communications</authors>
     <owners>Belledonne Communications</owners>
@@ -160,15 +169,15 @@ def main(argv=None):
     <projectUrl>https://linphone.org/</projectUrl>
     <iconUrl>http://www.linphone.org/img/linphone-open-source-voip-projectX2.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>{target} SDK</description>
+    <description>{target_desc}</description>
     <releaseNotes>Nothing new</releaseNotes>
     <copyright>Copyright 2016 Belledonne Communications</copyright>
     <tags>SIP</tags>
     <dependencies>
     </dependencies>
   </metadata>
-</package>""".format(version=args.version, target=args.target)
-    f = open(os.path.join(work_dir, args.target + 'SDK.nuspec'), 'w')
+</package>""".format(version=args.version, target_id=target_id, target_desc=target_desc)
+    f = open(os.path.join(work_dir, target_id + '.nuspec'), 'w')
     f.write(nuspec)
     f.close()
 
