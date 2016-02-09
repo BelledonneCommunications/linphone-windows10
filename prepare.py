@@ -171,8 +171,10 @@ def check_tools():
 
 
 def download_nuget():
-    os.makedirs("WORK")
-    urllib.urlretrieve("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe", "WORK/nuget.exe")
+    if not os.path.isdir('WORK'):
+        os.makedirs("WORK")
+    if not os.path.isfile('WORK/nuget.exe'):
+        urllib.urlretrieve("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe", "WORK/nuget.exe")
 
 
 def list_features_with_args(debug, additional_args):
