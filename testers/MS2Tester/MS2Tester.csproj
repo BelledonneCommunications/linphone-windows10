@@ -14,6 +14,7 @@
     <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
+    <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>MS2Tester_TemporaryKey.pfx</PackageCertificateKeyFile>
@@ -95,6 +96,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AppServiceHelper.cs" />
+    <Compile Include="Helpers\MS2TesterHelper.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -111,63 +114,28 @@
     <None Include="MS2Tester_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\StoreLogo.png" />
-    <Content Include="Assets\WideLogo.png" />
+    <Content Include="Assets\SplashScreen.scale-200.png" />
+    <Content Include="Assets\Square150x150Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.scale-200.png" />
+    <Content Include="Assets\StoreLogo.scale-200.png" />
     <Content Include="Properties\Default.rd.xml" />
-    <Content Include="Assets\Images\nowebcamCIF.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Logo.png" />
-    <Content Include="Assets\SmallLogo.png" />
-    <Content Include="Assets\Sounds\arpeggio_8000_mono.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Sounds\bird_44100_stereo.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Sounds\chimes_48000_stereo.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Sounds\hello16000-1s.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Sounds\hello16000.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Sounds\hello8000-1s.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Sounds\hello8000.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Sounds\hello_opus.mka">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Sounds\hello_pcmu.mka">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Sounds\laserrocket_16000_mono.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Sounds\nylon_48000_mono.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Sounds\owl_44100_mono.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Sounds\piano_8000_stereo.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Sounds\punch_16000_stereo.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Sounds\sintel_trailer_opus_h264.mkv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Sounds\sintel_trailer_pcmu_h264.mkv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\SplashScreen.png" />
+    <Content Include="Assets\Images\nowebcamCIF.jpg" />
+    <Content Include="Assets\Sounds\arpeggio_8000_mono.wav" />
+    <Content Include="Assets\Sounds\bird_44100_stereo.wav" />
+    <Content Include="Assets\Sounds\chimes_48000_stereo.wav" />
+    <Content Include="Assets\Sounds\hello16000-1s.wav" />
+    <Content Include="Assets\Sounds\hello16000.wav" />
+    <Content Include="Assets\Sounds\hello8000-1s.wav" />
+    <Content Include="Assets\Sounds\hello8000.wav" />
+    <Content Include="Assets\Sounds\hello_opus.mka" />
+    <Content Include="Assets\Sounds\hello_pcmu.mka" />
+    <Content Include="Assets\Sounds\laserrocket_16000_mono.wav" />
+    <Content Include="Assets\Sounds\nylon_48000_mono.wav" />
+    <Content Include="Assets\Sounds\owl_44100_mono.wav" />
+    <Content Include="Assets\Sounds\piano_8000_stereo.wav" />
+    <Content Include="Assets\Sounds\punch_16000_stereo.wav" />
+    <Content Include="Assets\Sounds\sintel_trailer_opus_h264.mkv" />
+    <Content Include="Assets\Sounds\sintel_trailer_pcmu_h264.mkv" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -182,6 +150,25 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\submodules\mswinrtvid\MSWinRTVideo.vcxproj">
+      <Project>{2d0e44c4-e51d-4911-b876-345d1e5e5209}</Project>
+      <Name>MSWinRTVideo</Name>
+    </ProjectReference>
+    <ProjectReference Include="MS2TesterHost\MS2TesterHost.vcxproj">
+      <Project>{8a1a89b3-f2db-4428-a571-f0dff2e1eec1}</Project>
+      <Name>MS2TesterHost</Name>
+    </ProjectReference>
+    <ProjectReference Include="MS2TesterTasks\MS2TesterTasks.csproj">
+      <Project>{1ba81d48-5fc4-47fc-8a08-524c4b2859dd}</Project>
+      <Name>MS2TesterTasks</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="WindowsMobile, Version=10.0.10240.0">
+      <Name>Windows Mobile Extensions for the UWP</Name>
+    </SDKReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
