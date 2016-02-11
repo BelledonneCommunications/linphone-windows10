@@ -107,16 +107,6 @@ namespace MS2Tester
             }
             else
             {
-                if (_videoSource != null)
-                {
-                    _videoSource.Stop();
-                    _videoSource = null;
-                }
-                if (_previewSource != null)
-                {
-                    _previewSource.Stop();
-                    _previewSource = null;
-                }
                 StopVideoStream();
             }
         }
@@ -247,6 +237,16 @@ namespace MS2Tester
                 else
                 {
                     Debug.WriteLine("StopVideoStream: failure");
+                }
+                if (_videoSource != null)
+                {
+                    _videoSource.Stop();
+                    _videoSource = null;
+                }
+                if (_previewSource != null)
+                {
+                    _previewSource.Stop();
+                    _previewSource = null;
                 }
             }
             catch (Exception e)
