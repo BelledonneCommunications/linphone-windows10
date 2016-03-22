@@ -22,9 +22,6 @@
 [submodule "submodules/mssilk"]
 	path = submodules/mssilk
 	url = git://git.linphone.org/mssilk.git
-[submodule "submodules/externals/polarssl"]
-	path = submodules/externals/polarssl
-	url = git://git.linphone.org/polarssl.git
 [submodule "submodules/externals/opencore-amr"]
 	path = submodules/externals/opencore-amr
 	url = git://git.linphone.org/opencore-amr.git
@@ -70,3 +67,6 @@
 [submodule "submodules/bctoolbox"]
 	path = submodules/bctoolbox
 	url = git://git.linphone.org/bctoolbox.git
+[submodule "submodules/externals/mbedtls"]
+	path = submodules/externals/mbedtls
+	url = git://git.linphone.org/mbedtls.git
