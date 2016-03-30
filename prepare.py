@@ -177,12 +177,12 @@ def download_nuget():
         urllib.urlretrieve("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe", "WORK/nuget.exe")
 
 
-def list_features_with_args(debug, additional_args):
+def list_features_with_args(debug, additional_args, initial_options = {}):
     tmpdir = tempfile.mkdtemp(prefix="linphone-windows10")
     tmptarget = Win10X86Target()
     tmptarget.abs_cmake_dir = tmpdir
 
-    option_regex = re.compile("ENABLE_(.*):(.*)=(.*)")
+    option_regex = re.compile("^ENABLE_(.*):(.*)=(.*)$")
     options = {}
     ended = True
     build_type = 'Debug' if debug else 'Release'
@@ -192,9 +192,13 @@ def list_features_with_args(debug, additional_args):
         match = option_regex.match(line)
         if match is not None:
             (name, typeof, value) = match.groups()
+            value = value.strip()
             options["ENABLE_{}".format(name)] = value
             ended &= (value == 'ON')
     shutil.rmtree(tmpdir)
+    shared_items = set(initial_options.items()) & set(options.items())
+    if len(shared_items) == len(options):
+        ended = True
     return (options, ended)
 
 
@@ -206,7 +210,7 @@ def list_features(debug, args):
     # of others are also listed (cmake_dependent_option macro will not output options if
     # prerequisite is not met)
     while True:
-        (options, ended) = list_features_with_args(debug, additional_args)
+        (options, ended) = list_features_with_args(debug, additional_args, options)
         if ended:
             break
         else:
