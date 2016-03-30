@@ -70,3 +70,9 @@
 [submodule "submodules/externals/mbedtls"]
 	path = submodules/externals/mbedtls
 	url = git://git.linphone.org/mbedtls.git
+[submodule "submodules/belr"]
+	path = submodules/belr
+	url = git://git.linphone.org/belr.git
+[submodule "submodules/belcard"]
+	path = submodules/belcard
+	url = git://git.linphone.org/belcard.git
