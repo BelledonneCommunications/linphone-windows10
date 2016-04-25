@@ -1,0 +1,180 @@
+﻿<UserControl x:Class="Linphone.Controls.CallControlsL"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Linphone.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="300" d:DesignWidth="860">
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <ToggleButton
+			x:Name="speaker"
+			Grid.Row="1"
+			Grid.Column="0"
+			BorderThickness="0"
+			Margin="-10"
+			Click="speaker_Click_1">
+            <StackPanel Orientation="Vertical">
+                <Image x:Name="speakerImg" Source="/Assets/Incall_Icons/speaker_off.png" Stretch="None"/>
+            </StackPanel>
+        </ToggleButton>
+
+        <ToggleButton 
+			x:Name="microphone"
+			Grid.Row="1"
+			Grid.Column="1"
+			BorderThickness="0"
+			Margin="-10"
+			Click="microphone_Click_1"
+			IsEnabled="False">
+            <StackPanel Orientation="Vertical">
+                <Image x:Name="microImg" Source="/Assets/Incall_Icons/micro_on.png" Stretch="None" Opacity="0.4"/>
+            </StackPanel>
+        </ToggleButton>
+
+        <ToggleButton 
+            x:Name="bluetooth"
+            Grid.Row="1"
+            Grid.Column="2"
+            BorderThickness="0"
+            Margin="-10"
+            Click="bluetooth_Click_1"
+            IsEnabled="False">
+            <StackPanel Orientation="Vertical">
+                <Image x:Name="bluetoothImg" Source="/Assets/Incall_Icons/bluetooth_off.png" Stretch="None" Opacity="0.4"/>
+            </StackPanel>
+        </ToggleButton>
+
+        <ToggleButton
+			x:Name="pause"
+			Grid.Row="2"
+			Grid.Column="0"
+			BorderThickness="0"
+			Margin="-10"
+			Click="pause_Click_1"
+			IsEnabled="False">
+            <StackPanel Orientation="Vertical">
+                <Image x:Name="pauseImg" Source="/Assets/Incall_Icons/play.png" Stretch="None" Opacity="0.4"/>
+            </StackPanel>
+        </ToggleButton>
+
+        <ToggleButton 
+			x:Name="video"
+			Grid.Row="2"
+			Grid.Column="1"
+			BorderThickness="0"
+			Margin="-10"
+			Click="video_Click_1"
+			IsEnabled="False"
+			Visibility="{Binding VideoButtonVisibility}">
+            <StackPanel Orientation="Vertical">
+                <Image x:Name="videoImg" Source="/Assets/Incall_Icons/video_off.png" Stretch="None" Opacity="0.4"/>
+            </StackPanel>
+        </ToggleButton>
+
+        <ToggleButton 
+			x:Name="stats"
+			Grid.Row="2"
+			Grid.Column="2"
+			BorderThickness="0"
+			Margin="-10"
+			Click="stats_Click_1">
+            <StackPanel Orientation="Vertical">
+                <Image x:Name="statsImg" Source="/Assets/Incall_Icons/stats.png" Stretch="None"/>
+            </StackPanel>
+        </ToggleButton>
+
+        <Button 
+			x:Name="camera"
+			Grid.Row="3"
+			Grid.Column="3"
+			BorderThickness="0"
+			Margin="-10"
+			Click="camera_Click_1"
+            IsEnabled="False"
+			Visibility="{Binding CameraButtonVisibility}">
+            <StackPanel Orientation="Vertical">
+                <Image x:Name="cameraImg" Source="/Assets/Incall_Icons/camera.png" Stretch="None" Opacity="0.4"/>
+            </StackPanel>
+        </Button>
+
+        <Button
+            x:Name="hangUp"
+			Grid.Row="3"
+			Grid.Column="0"
+			Grid.ColumnSpan="3"
+			BorderThickness="0"
+			Margin="-10"
+			Content="HangUp"
+			Click="hangUp_Click"
+			ClickMode="Release"/>
+
+        <ToggleButton
+			x:Name="dialpad"
+			Grid.Row="3"
+			Grid.Column="4"
+            Grid.ColumnSpan="2"
+			BorderThickness="0"
+			Margin="-10"
+			Click="dialpad_Click_1">
+            <Image Source="/Assets/Incall_Icons/dialpad.png" Stretch="None"/>
+        </ToggleButton>
+
+        <!-- Statistics panel -->
+        <Grid x:Name="statsPanel"  Grid.Row="1" Grid.RowSpan="2" Grid.Column="3" Grid.ColumnSpan="3" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="StatPayloadType" Margin="5" Grid.Column="0" Grid.Row="1"/>
+            <TextBlock Text="{Binding PayloadType}" Grid.Column="1" Grid.Row="1"/>
+            <TextBlock Text="StatDownloadBandwidth" Margin="5" Grid.Column="0" Grid.Row="2"/>
+            <TextBlock Text="{Binding DownBandwidth}" Grid.Column="1" Grid.Row="2"/>
+            <TextBlock Text="StatUploadBandwidth" Margin="5" Grid.Column="0" Grid.Row="3"/>
+            <TextBlock Text="{Binding UpBandwidth}" Grid.Column="1" Grid.Row="3"/>
+            <TextBlock Text="StatMediaEncryption" Margin="5" Grid.Column="0" Grid.Row="4"/>
+            <TextBlock Text="{Binding MediaEncryption}" Grid.Column="1" Grid.Row="4"/>
+            <TextBlock Text="StatICE" Margin="5" Grid.Column="0" Grid.Row="5"/>
+            <TextBlock Text="{Binding ICE}" Grid.Column="1" Grid.Row="5"/>
+            <TextBlock Text="StatReceivedVideoSize" Visibility="{Binding VideoStatsVisibility}" Margin="5" Grid.Column="0" Grid.Row="6"/>
+            <TextBlock Text="{Binding ReceivedVideoSize}" Visibility="{Binding VideoStatsVisibility}" Grid.Column="1" Grid.Row="6"/>
+            <TextBlock Text="StatSentVideoSize" Visibility="{Binding VideoStatsVisibility}" Margin="5" Grid.Column="0" Grid.Row="7"/>
+            <TextBlock Text="{Binding SentVideoSize}" Visibility="{Binding VideoStatsVisibility}" Grid.Column="1" Grid.Row="7"/>
+        </Grid>
+
+        <!-- Numeric pad buttons -->
+        <controls:Numpad
+			x:Name="numpad"
+			Grid.Row="0"
+			Grid.RowSpan="3"
+			Grid.Column="3"
+			Grid.ColumnSpan="3"
+			Visibility="Collapsed"/>
+    </Grid>
+</UserControl>

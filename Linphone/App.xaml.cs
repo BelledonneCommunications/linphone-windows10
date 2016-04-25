@@ -30,14 +30,21 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using BelledonneCommunications.Linphone.Native;
+using Linphone.Model;
+using System.Diagnostics;
+using Windows.UI.Core;
+using Windows.Networking.PushNotifications;
 
 namespace Linphone
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
-    sealed partial class App : Application
+    sealed partial class App : Application, CallControllerListener
     {
+        Frame rootFrame;
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -46,6 +53,56 @@ namespace Linphone
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+        }
+
+
+        private void Back_requested(object sender, BackRequestedEventArgs e)
+        {
+            if (rootFrame.CanGoBack)
+            {
+                rootFrame.GoBack();
+                e.Handled = true;
+            }
+        }
+
+        public void CallEnded(Call call)
+        {
+            Debug.WriteLine("[CallListener] Call ended, can go back ? " + rootFrame.CanGoBack);
+            
+
+            if (rootFrame.CanGoBack)
+            {
+                rootFrame.GoBack();
+            }
+            else
+            {
+                // Launch the Dialer and remove the incall view from the backstack
+                rootFrame.Navigate(typeof(Views.Dialer), null);
+                //this.Page.NavigationService.RemoveBackEntry();
+            }
+        }
+
+        public void CallUpdatedByRemote(Call call, bool isVideoAdded)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void MuteStateChanged(bool isMicMuted)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void NewCallStarted(string callerNumber)
+        {
+            Debug.WriteLine("[CallListener] NewCallStarted " + callerNumber);
+            rootFrame.Navigate(typeof(Views.InCall), callerNumber);
+        }
+
+        public void PauseStateChanged(Call call, bool isCallPaused, bool isCallPausedByRemote)
+        {
+            Debug.WriteLine("Pausestatechanged");
+           // if (this.PauseListener != null)
+           //     this.PauseListener.PauseStateChanged(call, isCallPaused, isCallPausedByRemote);
         }
 
         /// <summary>
@@ -59,11 +116,17 @@ namespace Linphone
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
-                this.DebugSettings.EnableFrameRateCounter = true;
+                this.DebugSettings.EnableFrameRateCounter = false;
             }
 #endif
 
-            Frame rootFrame = Window.Current.Content as Frame;
+            //Start linphone
+        
+            LinphoneManager.Instance.InitLinphoneCore();
+            LinphoneManager.Instance.CoreDispatcher = Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().CoreWindow.Dispatcher;
+            LinphoneManager.Instance.CallListener = this;
+
+            rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -83,12 +146,14 @@ namespace Linphone
                 Window.Current.Content = rootFrame;
             }
 
+            SystemNavigationManager.GetForCurrentView().BackRequested += Back_requested;
+
             if (rootFrame.Content == null)
             {
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
-                rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                rootFrame.Navigate(typeof(Views.Dialer), e.Arguments);
             }
             // Ensure the current window is active
             Window.Current.Activate();
@@ -116,6 +181,11 @@ namespace Linphone
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        public void CallIncoming(Call call)
+        {
+            rootFrame.Navigate(typeof(Views.IncomingCall), call.RemoteAddress.AsString());
         }
     }
 }

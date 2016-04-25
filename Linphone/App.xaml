@@ -5,4 +5,15 @@
     xmlns:local="using:Linphone"
     RequestedTheme="Light">
 
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles/Styles.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light" Source="Styles/Light.xaml"></ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>    
+        </ResourceDictionary>
+    </Application.Resources>
+
 </Application>

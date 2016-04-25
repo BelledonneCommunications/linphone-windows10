@@ -1,0 +1,139 @@
+﻿<Page
+    x:Class="Linphone.Views.AudioSettings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:linphone="clr-namespace:Linphone"
+    mc:Ignorable="d">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="{StaticResource AppBarBackgroundThemeBrush}">
+        <!--Pivot Control-->
+        <Pivot Title="AudioSettingsMenu">
+            <PivotItem Header="CodecsMenu">
+                <ScrollViewer>
+                    <ScrollViewer.Content>
+                        <Grid x:Name="ContentPanel">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <ToggleSwitch  
+                                Grid.Row="0"
+                                x:Name="OPUS" 
+                                x:Uid="OpusCodec">
+                            </ToggleSwitch>
+                            
+                            <ToggleSwitch  
+                                Grid.Row="1"
+                                x:Name="AMRNB" 
+                                x:Uid="AMRNBCodec">
+                            </ToggleSwitch>
+
+                            <ToggleSwitch
+                                Grid.Row="2"
+                                x:Name="AMRWB" 
+                                x:Uid="AMRWBCodec">
+                            </ToggleSwitch>
+
+                            <ToggleSwitch
+                                Grid.Row="3"
+                                x:Name="Speex16" 
+                                Header="Speex16Codec">
+                            </ToggleSwitch>
+
+                            <ToggleSwitch
+                                Grid.Row="4"
+                                x:Name="Speex8" 
+                                Header="Speex8Codec">
+                            </ToggleSwitch>
+
+                            <ToggleSwitch
+                                Grid.Row="5"
+                                x:Name="PCMU" 
+                                Header="PCMUCodec">
+                            </ToggleSwitch>
+
+                            <ToggleSwitch
+                                Grid.Row="6"
+                                x:Name="PCMA" 
+                                Header="PCMACodec">
+                            </ToggleSwitch>
+
+                            <ToggleSwitch
+                                Grid.Row="7"
+                                x:Name="G722" 
+                                Header="G722Codec">
+                            </ToggleSwitch>
+
+                            <ToggleSwitch
+                                Grid.Row="8"
+                                x:Name="G729" 
+                                Header="G729Codec">
+                            </ToggleSwitch>
+
+                            <ToggleSwitch
+                                Grid.Row="9"
+                                x:Name="ILBC" 
+                                Header="ILBCCodec">
+                            </ToggleSwitch>
+
+                            <ToggleSwitch
+                                Grid.Row="10"
+                                x:Name="SILK16" 
+                                Header="SILK16Codec">
+                            </ToggleSwitch>
+
+                            <ToggleSwitch
+                                Grid.Row="11"
+                                x:Name="GSM" 
+                                Header="GSMCodec">
+                            </ToggleSwitch>
+                            
+                            <ToggleSwitch
+                                Grid.Row="12"
+                                x:Name="ISAC" 
+                                Header="ISACCodec">
+                            </ToggleSwitch>
+
+
+                        </Grid>
+                    </ScrollViewer.Content>
+                </ScrollViewer>
+            </PivotItem>
+
+            <!--Pivot item two-->
+            <PivotItem Header="OptionsMenu">
+                <StackPanel Orientation="Vertical">
+                    <Button
+                        Grid.Row="3"
+                        x:Name="ECCalibratorButton"
+                        Click="ECCalibratorButton_Click_1"
+                        Margin="0,30,0,0"
+                        Content="EchoCancellerCalibration" />
+                    <Button
+                        Grid.Row="3"
+                        x:Name="ECCalibratorStatusButton"
+                        IsEnabled="False"
+                        BorderThickness="0"
+                        Margin="0,30,0,0"
+                        Content="ECCalibrationNotRun" />
+                </StackPanel>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+
+</Page>

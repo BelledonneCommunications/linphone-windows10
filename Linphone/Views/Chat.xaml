@@ -1,0 +1,115 @@
+﻿<Page
+    x:Class="Linphone.Views.Chat"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:Linphone"
+    xmlns:controls="using:Linphone.Controls"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <Style x:Key="TextStyle"
+           TargetType="TextBlock">
+            <Setter Property="FontSize"
+                Value="16" />
+            <Setter Property="FontFamily"
+                Value="{ThemeResource PhoneFontFamilySemiLight}" />
+            <Setter Property="FontWeight"
+                Value="ExtraLight"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid x:Name="LayoutRoot" Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="12,17,0,10">
+            <TextBlock 
+                x:Name="ContactName"
+                Style="{StaticResource HeaderTextStyle}"
+                Margin="9,0,0,0" />
+            
+            <Border x:Name="NewChat" BorderThickness="0,0,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" x:Uid="To" Text="To:" VerticalAlignment="Center" Margin="0,0,5,0"></TextBlock>
+                    <TextBox Grid.Column="1" 
+                             x:Name="NewChatSipAddress" 
+                             VerticalAlignment="Center" 
+                             VerticalContentAlignment="Center" 
+                             InputScope="EmailSmtpAddress"
+                              AcceptsReturn="False"
+                             PlaceholderText="Number or address"
+                             TextChanged="NewChatSipAddress_TextChanged">
+                        
+                    </TextBox>
+                    <Button Grid.Column="2" x:Name="ChooseContact" BorderThickness="0" Click="ChooseContact_Click">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <BitmapIcon 
+                                    Width="48" 
+                                    Height="48">
+                                </BitmapIcon>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+            </Border>
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <ScrollViewer x:Name="MessagesScroll" Grid.Row="0">
+                <StackPanel 
+                    x:Name="MessagesList" 
+                    Orientation="Vertical"
+                    VerticalAlignment="Bottom">
+
+                    <controls:TextBoxChatBubble x:Name="MessageBox"/>
+                </StackPanel>
+            </ScrollViewer>
+            
+            <Border 
+                x:Name="ProgressPopup"
+                Grid.Row="1"
+                Padding="5"
+                Visibility="Collapsed"
+                BorderThickness="10">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                    <ProgressBar
+                        IsIndeterminate="True"
+                        Width="300"/>
+                    <TextBlock
+                        Width="300"
+                        TextAlignment="Center"
+                        Text="" />
+                </StackPanel>
+            </Border>
+
+            <TextBlock
+                x:Name="RemoteComposing"
+                Visibility="Collapsed"
+                Grid.Row="1"/>
+        </Grid>
+        <CommandBar Grid.Row="2" VerticalAlignment="Bottom">
+            <AppBarButton Icon="Send" Click="send_Click_1"/>
+            <AppBarButton Icon="Back" Click="back_click"/>
+        </CommandBar>
+
+    </Grid>
+
+</Page>

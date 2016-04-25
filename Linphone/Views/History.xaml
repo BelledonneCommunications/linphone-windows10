@@ -1,0 +1,82 @@
+﻿<Page
+    x:Class="Linphone.Views.History"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:linphone="clr-namespace:Linphone"
+    xmlns:controls="clr-namespace:Linphone.Controls"
+    xmlns:model="using:Linphone.Model"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <model:SipUriToUsernameConverter x:Key="SipUriConverter"/>
+        <model:BoolToAccentBrushConverter x:Key="BoolToAccentBrushConverter"/>
+
+        <DataTemplate x:Name="CallLogListViewTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="1"
+                            Text="{Binding DisplayedName, Converter={StaticResource SipUriConverter}}" 
+                            Style="{StaticResource ListItemHeaderStyle}"/>
+                <TextBlock  Grid.Column="1" Margin="0,0,0,10"
+                                Grid.Row="1" Style="{StaticResource ListItemStyle}" Foreground="{Binding IsMissed, Converter={StaticResource BoolToAccentBrushConverter}}">
+                    <Run Text="{Binding StatusText}"></Run>
+                    <Run Text=","></Run>
+                    <Run Text="{Binding DetailsText}"></Run>
+                </TextBlock>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid x:Name="LayoutRoot" Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1">
+            <Pivot>
+                <PivotItem Header="All" x:Uid="HistoryAll">
+                    <ListView x:Name="Calls" 
+                              Margin="-12,0,-12,0"
+                              ItemsSource="{Binding}"
+                              ItemTemplate="{StaticResource CallLogListViewTemplate}"
+                              IsItemClickEnabled="True"
+                              SelectionChanged="calls_SelectionChanged_1"
+                              IsMultiSelectCheckBoxEnabled="True"
+                              ItemClick="Calls_ItemClick" UseLayoutRounding="True">
+                    </ListView>
+                </PivotItem>
+                
+                <PivotItem Header="Missed" x:Uid="HistoryMissedTitle">
+                    <ListView x:Name="MissedCalls"
+                              Margin="-12,0,-12,0"
+                              SelectionChanged="calls_SelectionChanged_1"
+                              ItemTemplate="{StaticResource CallLogListViewTemplate}"
+                              ItemClick="Calls_ItemClick">
+                    </ListView>
+                </PivotItem>
+            </Pivot>
+        </Grid>
+
+        <CommandBar Grid.Row="2" VerticalAlignment="Bottom" >
+            <AppBarButton Label="Delete All" Icon="Delete" x:Name="Delete_button"/>
+        </CommandBar>
+
+    </Grid>
+
+</Page>

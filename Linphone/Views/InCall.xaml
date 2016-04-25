@@ -1,0 +1,110 @@
+﻿<Page
+    x:Class="Linphone.Views.InCall"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:linphone="using:Linphone.Views"
+    xmlns:controls="using:Linphone.Controls"
+    xmlns:custom="using:Linphone.Views"
+    mc:Ignorable="d">
+
+    <Grid x:Name="LayoutRoot" Background="{StaticResource AppBarBackgroundThemeBrush}" Tapped="LayoutRoot_Tap">
+        <MediaElement
+            x:Name="remoteVideo"
+            Visibility="{Binding RemoteVideoVisibility}"
+            MediaOpened="remoteVideo_MediaOpened_1"
+            MediaFailed="remoteVideo_MediaFailed_1"
+            Source="{Binding RemoteVideoUri}"
+            Width="{Binding ActualWidth, ElementName=LayoutRoot, Mode=OneWay}"
+            Height="{Binding ActualHeight, ElementName=LayoutRoot, Mode=OneWay}"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            RenderTransformOrigin="0.5,0.5"/>
+
+        <ProgressBar x:Name="RemoteVideoProgressBar"
+            Visibility="{Binding RemoteVideoProgressBarVisibility}"
+            IsIndeterminate="True"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            Width="{Binding ActualWidth, ElementName=LayoutRoot, Mode=OneWay}"
+            Height="{Binding ActualHeight, ElementName=LayoutRoot, Mode=OneWay}"/>
+
+        <Grid x:Name="HUD"
+              HorizontalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Status text -->
+            <TextBlock
+                Grid.Row="0"
+                x:Name="Status"
+                Text="Dialing"
+                Margin="12,0,12,0"
+                FontSize="20" />
+
+            <!-- Contact text -->
+            <TextBlock
+                Grid.Row="1"
+                x:Name="Contact"
+                FontSize="20"
+                HorizontalAlignment="Center"
+                FontFamily="{ThemeResource PhoneFontFamilySemiLight}"
+                TextWrapping="Wrap"
+                Margin="12,0,12,0"/>
+
+            <!-- Number text -->
+            <TextBlock
+                Grid.Row="2"
+                x:Name="Number"
+                Margin="12,0,12,0"
+                FontSize="25"/>
+
+            <controls:CallControlsP 
+                x:Name="buttons"
+                VerticalAlignment="Bottom"
+                Visibility="Visible"
+                Grid.Row="3"/>
+
+            <controls:CallControlsL
+                x:Name="buttons_landscape"
+                Visibility="Collapsed"
+                Grid.Row="3"/>
+
+            <!-- Local video media element -->
+            <Grid Grid.RowSpan="4" Canvas.ZIndex="-1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                <MediaElement
+                    x:Name="localVideo"
+                    Grid.Row="3"
+                    Grid.Column="2"
+                    Visibility="{Binding LocalVideoVisibility}"
+                    MediaOpened="localVideo_MediaOpened_1"
+                    MediaFailed="localVideo_MediaFailed_1"
+                    Source="{Binding LocalVideoUri}"
+                    RenderTransformOrigin="0.5,0.5"
+                    Stretch="Uniform"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+                    <MediaElement.RenderTransform>
+                        <CompositeTransform Rotation="{Binding LocalVideoRotation}" ScaleX="{Binding LocalVideoScaleX}"/>
+                    </MediaElement.RenderTransform>
+                </MediaElement>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

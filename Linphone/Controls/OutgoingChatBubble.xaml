@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="Linphone.Controls.OutgoingChatBubble"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:linphone="using:Linphone.Controls"
+    xmlns:custom="using:Linphone.Controls"
+    xmlns:controls="Linphone.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="100" d:DesignWidth="420">
+
+    <UserControl.Resources>
+        <Style TargetType="TextBlock" x:Key="TimestampStyle">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Opacity" Value="0.5"/>
+            <Setter Property="Margin" Value="0,0,5,3"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="MessageStyle">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Margin" Value="5,5,5,3"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="100,5,5,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Rectangle 
+                x:Name="Background"
+                Fill="{ThemeResource SystemControlBackgroundAccentBrush}"
+                Grid.RowSpan="2"/>
+
+        <TextBlock 
+                Grid.Row="0" 
+                x:Name="Message"
+                Style="{StaticResource MessageStyle}"
+                TextAlignment="Left"/>
+
+        <Image
+                Grid.Row="0" 
+                Margin="5"
+                Stretch="UniformToFill"
+                x:Name="Image" />
+
+        <StackPanel 
+                Grid.Row="1" 
+                Orientation="Horizontal"
+                HorizontalAlignment="Right">
+            <Image
+                    x:Name="Status" 
+                    Source="/Assets/AppBar/next.png"
+                    Height="25"
+                    Stretch="Uniform"/>
+            
+            <TextBlock 
+                    x:Name="Timestamp"
+                    Style="{StaticResource TimestampStyle}"
+                    TextAlignment="Right"/>
+        </StackPanel>
+
+        <Path 
+                x:Name="Path"
+                Grid.Row="2"
+                Data="m 0,0 l 8,0 l 0,16 l -16,-16"
+                Fill="{ThemeResource SystemControlBackgroundAccentBrush}"
+                Margin="0,-1,10,0"
+                HorizontalAlignment="Right"/>
+
+    </Grid>
+</UserControl>

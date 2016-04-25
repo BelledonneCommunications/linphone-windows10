@@ -1,0 +1,69 @@
+﻿<Page
+    x:Class="Linphone.Views.Chats"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:linphone="clr-namespace:Linphone"
+    xmlns:model="using:Linphone.Model"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <model:BoolToAccentBrushConverter x:Key="BoolToAccentBrushConverter"/>
+    </Page.Resources>
+
+    <Grid x:Name="LayoutRoot" Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="12">
+            <TextBlock x:Uid="Conversations" Text="CONVERSATIONS" Style="{StaticResource HeaderTextStyle}" />
+        </StackPanel>
+
+        <Grid x:Name="ContentPanel" Grid.Row="1">
+            <ListView Grid.Row="0" x:Name="Conversations" ItemsSource="{Binding ChatList}" 
+                      IsHoldingEnabled="True" Holding="Conversations_Holding"
+                      IsItemClickEnabled="True" ItemClick="Conversations_ItemClick">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate >
+                        <Grid Tapped="conversation_Click_1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="{Binding DisplayedName}"
+                                    Style="{StaticResource ListItemHeaderStyle}"/>
+                            <TextBlock Grid.Column="1" 
+                                       VerticalAlignment="Bottom"
+                                       Text="{Binding LatestMessageDate}" 
+                                       Style="{StaticResource DateStyle}"/>
+                            <TextBlock Grid.Row="1" Text="{Binding LatestMessage}" 
+                                    HorizontalAlignment="Left"
+                                    Style="{StaticResource ListItemStyle}"
+                                    Foreground="{Binding IsLastMessageUnread, Converter={StaticResource BoolToAccentBrushConverter}}"   
+                                    MaxLines="2"
+                                    TextWrapping="Wrap"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+
+        <CommandBar Grid.Row="1" VerticalAlignment="Bottom">
+            <AppBarButton Icon="Add" Label="New" x:Uid="New" Click="newChat_Click_1"/>
+        </CommandBar>
+
+    </Grid>
+
+</Page>
