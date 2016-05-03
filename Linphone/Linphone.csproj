@@ -94,8 +94,9 @@
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
     <None Include="Assets\linphonerc" />
-    <None Include="Assets\linphonerc-factory" />
+    <Content Include="Assets\linphonerc-factory" />
     <Content Include="Assets\avatar.png" />
+    <Content Include="Assets\avatar2.png" />
     <Content Include="Assets\rootca.pem" />
     <None Include="project.json" />
   </ItemGroup>
@@ -105,9 +106,6 @@
     </Compile>
     <Compile Include="Controls\AddressBox.xaml.cs">
       <DependentUpon>AddressBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\CallControlsL.xaml.cs">
-      <DependentUpon>CallControlsL.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CallControlsP.xaml.cs">
       <DependentUpon>CallControlsP.xaml</DependentUpon>
@@ -140,6 +138,7 @@
     <Compile Include="Model\BugCollector.cs" />
     <Compile Include="Model\CallControllerListener.cs" />
     <Compile Include="Model\CallLogModel.cs" />
+    <Compile Include="Model\CodecModel.cs" />
     <Compile Include="Model\ContactPictureConverter.cs" />
     <Compile Include="Model\ContactsManager.cs" />
     <Compile Include="Model\Conversation.cs" />
@@ -243,10 +242,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Controls\AddressBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\CallControlsL.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -367,7 +362,17 @@
   <ItemGroup>
     <PRIResource Include="String\en-US\Resources.resw" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\submodules\mswinrtvid\MSWinRTVideo.vcxproj">
+      <Project>{2d0e44c4-e51d-4911-b876-345d1e5e5209}</Project>
+      <Name>MSWinRTVideo</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="WindowsMobile, Version=10.0.10586.0">
+      <Name>Windows Mobile Extensions for the UWP</Name>
+    </SDKReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

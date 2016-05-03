@@ -26,6 +26,7 @@ using System.Diagnostics;
 using Linphone.Views;
 using System.IO;
 using Windows.Storage;
+using Windows.Phone.Media.Devices;
 
 namespace Linphone.Model
 {
@@ -46,7 +47,7 @@ namespace Linphone.Model
         private Core _core;
         private string _callStateText = "No call";
         public bool isLinphoneRunning = false;
-        
+        private string _linphoneFactoryPath;
 
         public class CallEventArgs : EventArgs
         {
@@ -92,7 +93,7 @@ namespace Linphone.Model
             {
                 if (_core == null)
                 {
-                    LpConfig config = new LpConfig(GetConfigPath(), GetFactoryConfigPath());
+                    LpConfig config = new LpConfig(GetConfigPath(),GetFactoryConfigPath());
                     _core = new Core(this, config);
                 }
                 return _core;
@@ -149,52 +150,37 @@ namespace Linphone.Model
             return Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "Assets", "linphonerc");
         }
 
-        /// <summary>
-        /// Get the path of the config file stored in the Isolated Storage
-        /// </summary>
-        /// <returns>The path of the config file</returns>
         public static String GetConfigPath()
         {
             return Path.Combine(ApplicationData.Current.LocalFolder.Path, "linphonerc");
         }
 
-        /// <summary>
-        /// Get the path of the factory config file stored in the package
-        /// </summary>
-        /// <returns>The path of the factory config file</returns>
-        public static String GetFactoryConfigPath()
+        public String GetFactoryConfigPath()
         {
-            return "Assets/linphonerc-factory";
+            return Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "Assets", "linphonerc-factory");
         }
 
-        /// <summary>
-        /// Creates a new LinphoneCore (if not created yet) using a LinphoneCoreFactory.
-        /// </summary>
-        public async void InitLinphoneCore()
+        public String GetRootCaPath()
+        {
+            return Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "Assets", "rootca.pem");
+        }
+
+        public void InitLinphoneCore()
         {
 
             Core.LogLevel = OutputTraceLevel.Debug;
            
             LinphoneManager.Instance.Core.ChatDatabasePath = GetChatDatabasePath();
-
-            var localFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
-            var originalDbFileUri = new Uri("ms-appx:///Assets/rootca.pem");
-            var assetFolder = await localFolder.GetFolderAsync(@"Assets");
-            var originalDbFile = await StorageFile.GetFileFromApplicationUriAsync(originalDbFileUri);
-            if (null != originalDbFile)
-            {
-                LinphoneManager.Instance.Core.RootCa = originalDbFile.Path;
-               
-            }
+            LinphoneManager.Instance.Core.RootCa = GetRootCaPath();
 
 
-            //AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;
+            AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;
             //CallController.MuteRequested += MuteRequested;
             //CallController.UnmuteRequested += UnmuteRequested;
 
             if (LinphoneManager.Instance.Core.IsVideoSupported)
             {
-                // DetectCameras();
+                DetectCameras();
             }
 
             //LinphoneManager.Instance.Core..SetUserAgent(Customs.UserAgent, Linphone.Version.Number);
@@ -205,6 +191,8 @@ namespace Linphone.Model
             // ConfigureTunnel();
 
             isLinphoneRunning = true;
+
+            Debug.WriteLine(LinphoneManager.Instance.Core.MaxCalls);
             
             LinphoneManager.Instance.Core.IsIterateEnabled = true;
         }
@@ -223,14 +211,14 @@ namespace Linphone.Model
                     if (from.Length == 0)
                     {
                         Address fromAddress = log.FromAddress;
-                        from = String.Format("{0}@{1}", fromAddress.UserName, fromAddress.Domain);
+                        from = fromAddress.AsStringUriOnly();
                     }
 
                     string to = log.ToAddress.DisplayName;
                     if (to.Length == 0)
                     {
                         Address toAddress = log.ToAddress;
-                        to = String.Format("{0}@{1}", toAddress.UserName, toAddress.Domain);
+                        to = toAddress.AsStringUriOnly();
                     }
 
                     bool isMissed = log.Status == CallStatus.Missed;
@@ -329,6 +317,10 @@ namespace Linphone.Model
             }
         }
 
+        private void AudioEndpointChanged(AudioRoutingManager sender, object args)
+        {
+           Debug.WriteLine("[LinphoneManager] AudioEndpointChanged:" + sender.GetAudioEndpoint().ToString() + "\r\n");
+        }
 
         /// <summary>
         /// Property that handles the audio routing between the speaker and the earpiece.
@@ -338,15 +330,17 @@ namespace Linphone.Model
             get
             {
                 //AudioRoutingManager
-                //return AudioRoutingManager.GetDefault().GetAudioEndpoint() == AudioRoutingEndpoint.Speakerphone;
-                return false;
+                //
+                return AudioRoutingManager.GetDefault().GetAudioEndpoint() == AudioRoutingEndpoint.Speakerphone;
             }
             set
             {
-                //if (value)
-                    //AudioRoutingManager.GetDefault().SetAudioEndpoint(AudioRoutingEndpoint.Speakerphone);
-                //else
-                    //AudioRoutingManager.GetDefault().SetAudioEndpoint(AudioRoutingEndpoint.Earpiece);
+                var toto = AudioRoutingManager.GetDefault().AvailableAudioEndpoints;
+                var titi = AudioRoutingManager.GetDefault().GetAudioEndpoint();
+                if (value)
+                    AudioRoutingManager.GetDefault().SetAudioEndpoint(AudioRoutingEndpoint.Speakerphone);
+                else
+                    AudioRoutingManager.GetDefault().SetAudioEndpoint(AudioRoutingEndpoint.Earpiece);
             }
         }
 
@@ -398,6 +392,39 @@ namespace Linphone.Model
             }
             return null;
         }
+
+        private void DetectCameras()
+        {
+            int nbCameras = 0;
+            foreach (String device in LinphoneManager.Instance.Core.VideoDevices)
+            {
+
+                if (device.Contains("Front"))
+                {
+                    frontCamera = device;
+                    nbCameras++;
+                }
+                else if (device.Contains("Back"))
+                {
+                    backCamera = device;
+                    nbCameras++;
+                }
+
+            }
+            String currentDevice = LinphoneManager.Instance.Core.VideoDevice;
+            if ((currentDevice != frontCamera) && (currentDevice != backCamera))
+            {
+                if (frontCamera != null)
+                {
+                    Core.VideoDevice = frontCamera;
+                }
+                else if (backCamera != null)
+                {
+                    Core.VideoDevice = backCamera;
+                }
+            }
+        }
+
 
         /// <summary>
         /// Enables disables video.
@@ -469,18 +496,22 @@ namespace Linphone.Model
 
         void CoreListener.CallStateChanged(Call call, CallState state, string message)
         {
-            Debug.WriteLine("Call state " + state);
             CallStateText = message;
+            Debug.WriteLine("Call state " + message);
+
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
-            CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            CoreDispatcher.RunAsync(CoreDispatcherPriority.High, () =>
             {
                 if (Changed != null)
                 {
+                    Debug.WriteLine("CHANGED");
                     Changed(this, new CallEventArgs(call));
                 }
             });
 #pragma warning restore CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
-                
+
+#pragma warning restore CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
+
             if (state == CallState.OutgoingProgress)
             {
                 
@@ -498,7 +529,7 @@ namespace Linphone.Model
 #pragma warning restore CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
             }
 
-            else if (state == CallState.IncomingReceived)
+            if (state == CallState.IncomingReceived)
             {
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
                 CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
@@ -572,7 +603,7 @@ namespace Linphone.Model
 
         void CoreListener.CallStatsUpdated(Call call, CallStats stats)
         {
-            System.Diagnostics.Debug.WriteLine("CallStatsUpdated");
+            //System.Diagnostics.Debug.WriteLine("CallStatsUpdated");
         }
 
         void CoreListener.DtmfReceived(Call call, char dtmf)

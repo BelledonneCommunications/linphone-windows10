@@ -7,9 +7,10 @@
     xmlns:linphone="using:Linphone.Views"
     xmlns:controls="using:Linphone.Controls"
     xmlns:custom="using:Linphone.Views"
+    Background="{ThemeResource AppBarBackgroundThemeBrush}"
     mc:Ignorable="d">
 
-    <Grid x:Name="LayoutRoot" Background="{StaticResource AppBarBackgroundThemeBrush}" Tapped="LayoutRoot_Tap">
+    <Grid x:Name="LayoutRoot" Tapped="LayoutRoot_Tap">
         <MediaElement
             x:Name="remoteVideo"
             Visibility="{Binding RemoteVideoVisibility}"
@@ -33,49 +34,56 @@
               HorizontalAlignment="Stretch">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Status text -->
-            <TextBlock
-                Grid.Row="0"
-                x:Name="Status"
-                Text="Dialing"
-                Margin="12,0,12,0"
-                FontSize="20" />
+            <Grid x:Name="ContactHeader" Margin="10,50,10,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-            <!-- Contact text -->
-            <TextBlock
-                Grid.Row="1"
-                x:Name="Contact"
-                FontSize="20"
-                HorizontalAlignment="Center"
-                FontFamily="{ThemeResource PhoneFontFamilySemiLight}"
-                TextWrapping="Wrap"
-                Margin="12,0,12,0"/>
+                <Image Source="/Assets/avatar2.png"
+                       HorizontalAlignment="Center"
+                       Width="50"/>
 
-            <!-- Number text -->
-            <TextBlock
-                Grid.Row="2"
-                x:Name="Number"
-                Margin="12,0,12,0"
-                FontSize="25"/>
+                <TextBlock
+                    Grid.Row="1"
+                    x:Name="Contact"
+                    FontSize="20"
+                    HorizontalAlignment="Center"
+                    Style="{StaticResource TextStyle}"
+                    TextWrapping="Wrap"
+                    Margin="5"/>
 
+                <TextBlock
+                    Grid.Row="2"
+                    x:Name="Number"
+                    Margin="5"
+                    Visibility="Collapsed"
+                    FontSize="25"/>
+
+                <TextBlock
+                    Grid.Row="3"
+                    x:Name="Status"
+                    Text="Dialing ..."
+                    x:Uid="Dialing"
+                    Style="{StaticResource ListItemStyle}"
+                    HorizontalAlignment="Center"
+                    Margin="12,0,12,0"
+                    FontSize="20" />
+            </Grid>
+            
             <controls:CallControlsP 
                 x:Name="buttons"
                 VerticalAlignment="Bottom"
                 Visibility="Visible"
-                Grid.Row="3"/>
-
-            <controls:CallControlsL
-                x:Name="buttons_landscape"
-                Visibility="Collapsed"
-                Grid.Row="3"/>
+                Grid.Row="1"/>
 
             <!-- Local video media element -->
-            <Grid Grid.RowSpan="4" Canvas.ZIndex="-1">
+            <Grid Grid.RowSpan="2" x:Name="VideoGrid" Canvas.ZIndex="-1" Background="Black" Visibility="Visible" Tapped="Video_Tapped">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
@@ -88,22 +96,12 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 
-                <MediaElement
-                    x:Name="localVideo"
-                    Grid.Row="3"
-                    Grid.Column="2"
-                    Visibility="{Binding LocalVideoVisibility}"
-                    MediaOpened="localVideo_MediaOpened_1"
-                    MediaFailed="localVideo_MediaFailed_1"
-                    Source="{Binding LocalVideoUri}"
-                    RenderTransformOrigin="0.5,0.5"
-                    Stretch="Uniform"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch">
-                    <MediaElement.RenderTransform>
-                        <CompositeTransform Rotation="{Binding LocalVideoRotation}" ScaleX="{Binding LocalVideoScaleX}"/>
-                    </MediaElement.RenderTransform>
-                </MediaElement>
+                <SwapChainPanel x:Name="VideoSwapChainPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3"/>
+                <SwapChainPanel x:Name="PreviewSwapChainPanel" Grid.Column="2" Grid.Row="2" Width="120" Height="160" RenderTransformOrigin="0.5,0.5">
+                    <SwapChainPanel.RenderTransform>
+                        <CompositeTransform ScaleX="-1"/>
+                    </SwapChainPanel.RenderTransform>
+                </SwapChainPanel>
             </Grid>
         </Grid>
     </Grid>
