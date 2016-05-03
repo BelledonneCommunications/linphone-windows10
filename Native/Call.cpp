@@ -128,6 +128,12 @@ Platform::Boolean Call::IsInConference::get()
 	return (linphone_call_is_in_conference(this->call) == TRUE);
 }
 
+Platform::Boolean Call::MediaInProgress::get()
+{
+	API_LOCK;
+	return (linphone_call_media_in_progress(this->call) == TRUE);
+}
+
 Platform::Object^ Call::NativeVideoWindowId::get()
 {
 	API_LOCK;
@@ -232,6 +238,7 @@ Call::Call(::LinphoneCall *call)
 {
 	API_LOCK;
 	RefToPtrProxy<Call^> *proxy = new RefToPtrProxy<Call^>(this);
+	linphone_call_ref(this->call);
 	linphone_call_set_user_data(this->call, proxy);
 }
 

@@ -164,6 +164,14 @@ namespace BelledonneCommunications
 				}
 
 				/// <summary>
+				/// Tells whether an operation is in progress at the media side.
+				/// </summary>
+				property Platform::Boolean MediaInProgress
+				{
+					Platform::Boolean get();
+				}
+
+				/// <summary>
 				/// Sets the native video window id (a Windows::UI::Xaml::Controls::MediaElement as a Platform::Object).
 				/// </summary>
 				property Platform::Object^ NativeVideoWindowId
