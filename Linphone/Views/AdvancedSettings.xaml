@@ -5,10 +5,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:linphone="clr-namespace:Linphone"
+    Background="{ThemeResource AppBarBackgroundThemeBrush}"
     mc:Ignorable="d">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="{StaticResource AppBarBackgroundThemeBrush}">
+    <Grid x:Name="LayoutRoot">
         <!--Pivot Control-->
         <Pivot Name="AdvancedSettingsMenu">
             <PivotItem Header="NetworkMenu">

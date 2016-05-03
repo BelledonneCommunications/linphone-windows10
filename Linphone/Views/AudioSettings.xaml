@@ -5,13 +5,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:linphone="clr-namespace:Linphone"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="{StaticResource AppBarBackgroundThemeBrush}">
+    <Grid x:Name="LayoutRoot">
         <!--Pivot Control-->
-        <Pivot Title="AudioSettingsMenu">
-            <PivotItem Header="CodecsMenu">
+        <Pivot Title="AudioSettings" x:Uid="AudioSettings">
+            <PivotItem Header="CodecsMenu" x:Uid="CodecsMenu">
                 <ScrollViewer>
                     <ScrollViewer.Content>
                         <Grid x:Name="ContentPanel">
@@ -33,83 +34,63 @@
 
                             <ToggleSwitch  
                                 Grid.Row="0"
-                                x:Name="OPUS" 
+                                x:Name="OPUS"
                                 x:Uid="OpusCodec">
-                            </ToggleSwitch>
-                            
-                            <ToggleSwitch  
-                                Grid.Row="1"
-                                x:Name="AMRNB" 
-                                x:Uid="AMRNBCodec">
                             </ToggleSwitch>
 
                             <ToggleSwitch
                                 Grid.Row="2"
-                                x:Name="AMRWB" 
-                                x:Uid="AMRWBCodec">
+                                x:Name="Speex16" 
+                                x:Uid="Speex16Codec">
                             </ToggleSwitch>
 
                             <ToggleSwitch
                                 Grid.Row="3"
-                                x:Name="Speex16" 
-                                Header="Speex16Codec">
+                                x:Name="Speex8" 
+                                x:Uid="Speex8Codec">
                             </ToggleSwitch>
 
                             <ToggleSwitch
                                 Grid.Row="4"
-                                x:Name="Speex8" 
-                                Header="Speex8Codec">
+                                x:Name="PCMU" 
+                                x:Uid="PCMUCodec">
                             </ToggleSwitch>
 
                             <ToggleSwitch
                                 Grid.Row="5"
-                                x:Name="PCMU" 
-                                Header="PCMUCodec">
+                                x:Name="PCMA" 
+                                x:Uid="PCMACodec">
                             </ToggleSwitch>
 
                             <ToggleSwitch
                                 Grid.Row="6"
-                                x:Name="PCMA" 
-                                Header="PCMACodec">
+                                x:Name="G722" 
+                                x:Uid="G722Codec">
                             </ToggleSwitch>
 
                             <ToggleSwitch
                                 Grid.Row="7"
-                                x:Name="G722" 
-                                Header="G722Codec">
+                                x:Name="GSM" 
+                                x:Uid="GSMCodec">
                             </ToggleSwitch>
 
                             <ToggleSwitch
                                 Grid.Row="8"
-                                x:Name="G729" 
-                                Header="G729Codec">
+                                x:Name="ILBC" 
+                                x:Uid="ILBCCodec">
                             </ToggleSwitch>
 
                             <ToggleSwitch
                                 Grid.Row="9"
-                                x:Name="ILBC" 
-                                Header="ILBCCodec">
+                                x:Name="ISAC" 
+                                x:Uid="ISACCodec">
                             </ToggleSwitch>
 
                             <ToggleSwitch
                                 Grid.Row="10"
                                 x:Name="SILK16" 
-                                Header="SILK16Codec">
+                                x:Uid="SILK16Codec">
                             </ToggleSwitch>
-
-                            <ToggleSwitch
-                                Grid.Row="11"
-                                x:Name="GSM" 
-                                Header="GSMCodec">
-                            </ToggleSwitch>
-                            
-                            <ToggleSwitch
-                                Grid.Row="12"
-                                x:Name="ISAC" 
-                                Header="ISACCodec">
-                            </ToggleSwitch>
-
-
                         </Grid>
                     </ScrollViewer.Content>
                 </ScrollViewer>

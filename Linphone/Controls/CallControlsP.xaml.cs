@@ -81,6 +81,12 @@ namespace Linphone.Controls
             dialpad.Visibility = isDialpadShown ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        public void enabledVideo(bool isDialpadShown)
+        {
+            video.IsEnabled = isDialpadShown;
+        }
+
+
         private void hangUp_Click(object sender, RoutedEventArgs e)
         {
             HangUpClick(this);

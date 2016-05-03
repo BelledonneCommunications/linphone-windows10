@@ -140,14 +140,14 @@
   <data name="DeleteAllMenu" xml:space="preserve">
     <value>Delete All</value>
   </data>
-  <data name="HistoryMenu" xml:space="preserve">
-    <value>History</value>
+  <data name="HistoryMenu.Text" xml:space="preserve">
+    <value>HISTORY</value>
   </data>
   <data name="SaveSettings" xml:space="preserve">
     <value>Save</value>
   </data>
   <data name="SettingsMenu.Text" xml:space="preserve">
-    <value>Settings</value>
+    <value>SETTINGS</value>
   </data>
   <data name="DeleteSelectionMenu" xml:space="preserve">
     <value>Delete Selection</value>
@@ -155,8 +155,8 @@
   <data name="AddressHint.PlaceholderText" xml:space="preserve">
     <value>Number or address</value>
   </data>
-  <data name="ContactsMenu" xml:space="preserve">
-    <value>Contacts</value>
+  <data name="ContactsMenu.Text" xml:space="preserve">
+    <value>CONTACTS</value>
   </data>
   <data name="DialerMenu" xml:space="preserve">
     <value>Dialer</value>
@@ -183,31 +183,31 @@ and cc-by-nd from https://github.com/Templarian/WindowsIcons</value>
   <data name="AudioSettingsMenu.Text" xml:space="preserve">
     <value>Audio settings</value>
   </data>
-  <data name="G722Codec" xml:space="preserve">
+  <data name="G722Codec.Header" xml:space="preserve">
     <value>G722</value>
   </data>
-  <data name="GSMCodec" xml:space="preserve">
+  <data name="GSMCodec.Header" xml:space="preserve">
     <value>GSM</value>
   </data>
-  <data name="ILBCCodec" xml:space="preserve">
+  <data name="ILBCCodec.Header" xml:space="preserve">
     <value>ILBC</value>
   </data>
-  <data name="PCMACodec" xml:space="preserve">
+  <data name="PCMACodec.Header" xml:space="preserve">
     <value>PCMA</value>
   </data>
-  <data name="PCMUCodec" xml:space="preserve">
+  <data name="PCMUCodec.Header" xml:space="preserve">
     <value>PCMU</value>
   </data>
   <data name="SILK16Codec" xml:space="preserve">
     <value>SILK 16</value>
   </data>
-  <data name="Speex16Codec" xml:space="preserve">
+  <data name="Speex16Codec.Header" xml:space="preserve">
     <value>Speex 16</value>
   </data>
-  <data name="Speex8Codec" xml:space="preserve">
+  <data name="Speex8Codec.Header" xml:space="preserve">
     <value>Speex 8</value>
   </data>
-  <data name="TransportSetting" xml:space="preserve">
+  <data name="TransportSetting.Header" xml:space="preserve">
     <value>Transport</value>
   </data>
   <data name="TransportTCP" xml:space="preserve">
@@ -273,19 +273,19 @@ and cc-by-nd from https://github.com/Templarian/WindowsIcons</value>
   <data name="AccountMenu.Text" xml:space="preserve">
     <value>SIP account</value>
   </data>
-  <data name="SIPDomain" xml:space="preserve">
+  <data name="SIPDomain.Text" xml:space="preserve">
     <value>Domain</value>
   </data>
-  <data name="SIPOutboundProxy" xml:space="preserve">
+  <data name="SIPOutboundProxy.Header" xml:space="preserve">
     <value>Outbound proxy</value>
   </data>
-  <data name="SIPPassword" xml:space="preserve">
+  <data name="SIPPassword.Text" xml:space="preserve">
     <value>Password</value>
   </data>
-  <data name="SIPProxy" xml:space="preserve">
+  <data name="SIPProxy.Text" xml:space="preserve">
     <value>Proxy (not mandatory)</value>
   </data>
-  <data name="SIPUsername" xml:space="preserve">
+  <data name="SIPUsername.Text" xml:space="preserve">
     <value>Username</value>
   </data>
   <data name="TransportTLS" xml:space="preserve">
@@ -294,7 +294,7 @@ and cc-by-nd from https://github.com/Templarian/WindowsIcons</value>
   <data name="Call.Content" xml:space="preserve">
     <value>Call</value>
   </data>
-  <data name="Dialing" xml:space="preserve">
+  <data name="Dialing.Text" xml:space="preserve">
     <value>Dialing...</value>
   </data>
   <data name="Refresh" xml:space="preserve">
@@ -351,7 +351,7 @@ and cc-by-nd from https://github.com/Templarian/WindowsIcons</value>
   <data name="EchoCancellerCalibration" xml:space="preserve">
     <value>Echo canceller calibration</value>
   </data>
-  <data name="CodecsMenu" xml:space="preserve">
+  <data name="CodecsMenu.Header" xml:space="preserve">
     <value>Codecs</value>
   </data>
   <data name="OptionsMenu" xml:space="preserve">
@@ -372,25 +372,25 @@ and cc-by-nd from https://github.com/Templarian/WindowsIcons</value>
   <data name="ECCalibrationNotRun" xml:space="preserve">
     <value>Click button to calibrate</value>
   </data>
-  <data name="H264Codec" xml:space="preserve">
+  <data name="H264Codec.Header" xml:space="preserve">
     <value>H.264</value>
   </data>
   <data name="VideoSettingsMenu.Text" xml:space="preserve">
     <value>Video settings</value>
   </data>
-  <data name="VideoEnabledSetting" xml:space="preserve">
+  <data name="VideoEnabledSetting.Header" xml:space="preserve">
     <value>Video enabled</value>
   </data>
-  <data name="AutomaticallyAcceptVideoSetting" xml:space="preserve">
+  <data name="AutomaticallyAcceptVideoSetting.Header" xml:space="preserve">
     <value>Automatically accept</value>
   </data>
-  <data name="AutomaticallyInitiateVideoSetting" xml:space="preserve">
+  <data name="AutomaticallyInitiateVideoSetting.Header" xml:space="preserve">
     <value>Automatically initiate</value>
   </data>
   <data name="VideoStatsMenu" xml:space="preserve">
     <value>Video stats</value>
   </data>
-  <data name="SelfViewEnabledSetting" xml:space="preserve">
+  <data name="SelfViewEnabledSetting.Header" xml:space="preserve">
     <value>Self view enabled</value>
   </data>
   <data name="Video" xml:space="preserve">
@@ -468,7 +468,7 @@ and cc-by-nd from https://github.com/Templarian/WindowsIcons</value>
   <data name="EditPassword" xml:space="preserve">
     <value>edit password</value>
   </data>
-  <data name="DisplayName" xml:space="preserve">
+  <data name="DisplayName.Text" xml:space="preserve">
     <value>Display name (not mandatory)</value>
   </data>
   <data name="VibratorSetting.Text" xml:space="preserve">
@@ -517,7 +517,7 @@ and cc-by-nd from https://github.com/Templarian/WindowsIcons</value>
     <value>The application has detected a crash. 
 Do you want to report it to the developpers ? It will help fix it faster.</value>
   </data>
-  <data name="G729Codec" xml:space="preserve">
+  <data name="G729Codec.Header" xml:space="preserve">
     <value>G729</value>
   </data>
   <data name="DeleteLogs" xml:space="preserve">
@@ -535,7 +535,7 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   <data name="SendLogsEmail.Content" xml:space="preserve">
     <value>Send logs by email</value>
   </data>
-  <data name="SIPUserId" xml:space="preserve">
+  <data name="SIPUserId.Text" xml:space="preserve">
     <value>Auth userid (not mandatory)</value>
   </data>
   <data name="FirewallPolicyIce" xml:space="preserve">
@@ -556,10 +556,10 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   <data name="StunServer.Text" xml:space="preserve">
     <value>Stun server</value>
   </data>
-  <data name="OpusCodec" xml:space="preserve">
+  <data name="OpusCodec.Header" xml:space="preserve">
     <value>OPUS</value>
   </data>
-  <data name="ISACCodec" xml:space="preserve">
+  <data name="ISACCodec.Header" xml:space="preserve">
     <value>iSAC</value>
   </data>
   <data name="ConnectMenu" xml:space="preserve">
@@ -659,7 +659,7 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   <data name="StatReceivedVideoSize" xml:space="preserve">
     <value>Received Video Size:</value>
   </data>
-  <data name="PreferredVideoSizeSetting" xml:space="preserve">
+  <data name="PreferredVideoSizeSetting.Header" xml:space="preserve">
     <value>Preferred video size</value>
   </data>
   <data name="StatSentVideoSize" xml:space="preserve">
@@ -688,7 +688,7 @@ The current release of Linphone for Windows Phone 8 includes the following featu
 To enjoy the best experience with Linphone WP8, we recommend that you use the SIP service available for free at www.linphone.org/eng/linphone/register-a-linphone-account.html. This service, provided by Belledonne Communications, supports many exciting features including push-notified incoming calls.</value>
     <comment>Description of the app on the Windows Phone Store. It is mandatory for the description to be translated in all the languages the app supports, otherwise the publication is denied.</comment>
   </data>
-  <data name="Expires" xml:space="preserve">
+  <data name="Expires.Text" xml:space="preserve">
     <value>Expires</value>
   </data>
   <data name="CallErrorIOError" xml:space="preserve">
@@ -697,10 +697,16 @@ To enjoy the best experience with Linphone WP8, we recommend that you use the SI
   <data name="VP8Codec" xml:space="preserve">
     <value>VP8</value>
   </data>
-  <data name="AVPF" xml:space="preserve">
+  <data name="AVPF.Header" xml:space="preserve">
     <value>AVPF</value>
   </data>
   <data name="HistoryMissed" xml:space="preserve">
     <value>Missed</value>
+  </data>
+  <data name="AudioSettings.Title" xml:space="preserve">
+    <value>AUDIO SETTINGS</value>
+  </data>
+  <data name="VideoSettings.Title" xml:space="preserve">
+    <value>VIDEO SETTINGS</value>
   </data>
 </root>

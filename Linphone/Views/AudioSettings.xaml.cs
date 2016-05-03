@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using BelledonneCommunications.Linphone.Native;
 using Linphone.Model;
 using System;
+using System.Diagnostics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -39,20 +40,18 @@ namespace Linphone.Views
             this.InitializeComponent();
 
             _settings.Load();
-            AMRNB.IsEnabled = _settings.AMRNB;
-            AMRWB.IsEnabled = _settings.AMRWB;
-            Speex16.IsEnabled = _settings.Speex16;
-            Speex8.IsEnabled = _settings.Speex8;
-            PCMU.IsEnabled = _settings.PCMU;
-            PCMA.IsEnabled = _settings.PCMA;
-            G722.IsEnabled = _settings.G722;
+            Speex16.IsOn = _settings.Speex16;
+            Speex8.IsOn = _settings.Speex8;
+            PCMU.IsOn = _settings.PCMU;
+            PCMA.IsOn = _settings.PCMA;
+            G722.IsOn = _settings.G722;
             //G729.IsEnabled = _settings.G729 && Customs.EnableG729;
             //G729.IsEnabled = Customs.EnableG729;
-            ILBC.IsEnabled = _settings.ILBC;
-            SILK16.IsEnabled = _settings.SILK16;
-            GSM.IsEnabled = _settings.GSM;
-            OPUS.IsEnabled = _settings.OPUS;
-            ISAC.IsEnabled = _settings.Isac;
+            ILBC.IsOn = _settings.ILBC;
+            SILK16.IsOn = _settings.SILK16;
+            GSM.IsOn = _settings.GSM;
+            OPUS.IsOn = _settings.OPUS;
+            ISAC.IsOn = _settings.Isac;
         }
 
         /// <summary>
@@ -78,19 +77,17 @@ namespace Linphone.Views
 
         private void Save()
         {
-            _settings.AMRNB = ToBool(AMRNB.IsEnabled);
-            _settings.AMRWB = ToBool(AMRWB.IsEnabled);
-            _settings.Speex16 = ToBool(Speex16.IsEnabled);
-            _settings.Speex8 = ToBool(Speex8.IsEnabled);
-            _settings.PCMU = ToBool(PCMU.IsEnabled);
-            _settings.PCMA = ToBool(PCMA.IsEnabled);
-            _settings.G722 = ToBool(G722.IsEnabled);
+            _settings.Speex16 = ToBool(Speex16.IsOn);
+            _settings.Speex8 = ToBool(Speex8.IsOn);
+            _settings.PCMU = ToBool(PCMU.IsOn);
+            _settings.PCMA = ToBool(PCMA.IsOn);
+            _settings.G722 = ToBool(G722.IsOn);
             //_settings.G729 = ToBool(G729.IsEnabled) && Customs.EnableG729;
-            _settings.ILBC = ToBool(ILBC.IsEnabled);
-            _settings.SILK16 = ToBool(SILK16.IsEnabled);
-            _settings.GSM = ToBool(GSM.IsEnabled);
-            _settings.OPUS = ToBool(OPUS.IsEnabled);
-            _settings.Isac = ToBool(ISAC.IsEnabled);
+            _settings.ILBC = ToBool(ILBC.IsOn);
+            _settings.SILK16 = ToBool(SILK16.IsOn);
+            _settings.GSM = ToBool(GSM.IsOn);
+            _settings.OPUS = ToBool(OPUS.IsOn);
+            _settings.Isac = ToBool(ISAC.IsOn);
             _settings.Save();
         }
 

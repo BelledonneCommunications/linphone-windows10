@@ -14,33 +14,24 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-using System;
-using System.Globalization;
-using System.Windows;
 using BelledonneCommunications.Linphone.Native;
+using System;
 using Windows.UI.Xaml.Data;
-using System.Diagnostics;
 
 namespace Linphone.Model
 {
-    /// <summary>
-    /// Converter returning the AccentColorBrush if the boolean is true, else returning a title color.
-    /// </summary>
     public class SipUriToUsernameConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             string sipAddress = (string)value;
-            Debug.WriteLine(sipAddress);
-            //Address addr = LinphoneManager.Instance.Core.InterpretURL(sipAddress);
-            //return addr.UserName;
-            return sipAddress;
+            Address addr = LinphoneManager.Instance.Core.InterpretURL(sipAddress);
+            return addr.UserName;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             throw new NotImplementedException();
         }
-
     }
 }

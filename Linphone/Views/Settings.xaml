@@ -5,9 +5,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:linphone="clr-namespace:Linphone"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
-    <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -15,83 +15,81 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,5,0,0">
-            <!--<TextBlock Foreground="Black" Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextNormalStyle}"/>-->
-            <TextBlock x:Uid="SettingsMenu" Style="{ThemeResource HeaderTextBlockStyle}"/>
+        <StackPanel Grid.Row="0" Margin="12,12,12,0">
+            <TextBlock x:Uid="SettingsMenu" Text="SETTINGS" Style="{StaticResource HeaderTextStyle}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <ScrollViewer x:Name="ContentPanel" Grid.Row="1">
             <Grid Margin="12,0,12,0">
-                <StackPanel Orientation="Vertical" VerticalAlignment="Top">
-                    <StackPanel Orientation="Vertical" Tapped="account_Click_1" Margin="0,12,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Vertical" Tapped="account_Click_1" Margin="0,12,0,0">
                         <TextBlock
                             HorizontalAlignment="Left"
-                            Style="{ThemeResource TitleTextBlockStyle}"
+                            Style="{StaticResource ListItemHeaderStyle}"
                             x:Uid="AccountMenu"/>
-                        
+
                         <TextBlock
                             HorizontalAlignment="Left"
-                            Style="{ThemeResource SubtitleTextBlockStyle}"
+                            Style="{StaticResource ListItemStyle}"
                             x:Uid="AccountMenuSubtitle"/>
                     </StackPanel>
 
-                    <StackPanel Orientation="Vertical" Tapped="audio_Click_1" Margin="0,12,0,0">
-                        <TextBlock
-                            HorizontalAlignment="Left"
-                            Style="{ThemeResource TitleTextBlockStyle}"
-                            x:Uid="AudioSettingsMenu"/>
+                <StackPanel Grid.Row="1" Orientation="Vertical" Tapped="audio_Click_1" Margin="0,12,0,0">
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        Style="{ThemeResource ListItemHeaderStyle}"
+                        x:Uid="AudioSettingsMenu"/>
 
-                        <TextBlock
-                            HorizontalAlignment="Left"
-                            Style="{ThemeResource SubtitleTextBlockStyle}"
-                            x:Uid="AudioSettingsMenuSubtitle"/>
-                    </StackPanel>
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        Style="{ThemeResource ListItemStyle}"
+                        x:Uid="AudioSettingsMenuSubtitle"/>
+                </StackPanel>
 
-                    <StackPanel x:Name="Video" Orientation="Vertical" Tapped="video_Click_1" Margin="0,12,0,0">
+                <StackPanel  Grid.Row="2" x:Name="Video" Orientation="Vertical" Tapped="video_Click_1" Margin="0,12,0,0">
                         <TextBlock
-                            Style="{ThemeResource TitleTextBlockStyle}"
+                            Style="{ThemeResource ListItemHeaderStyle}"
                             HorizontalAlignment="Left"
                             x:Uid="VideoSettingsMenu"/>
 
                         <TextBlock
-                            Style="{ThemeResource SubtitleTextBlockStyle}"
+                            Style="{ThemeResource ListItemStyle}"
                             HorizontalAlignment="Left"
                             x:Uid="VideoSettingsMenuSubtitle"/>
                     </StackPanel>
 
-                    <StackPanel Orientation="Vertical" Tapped="advanced_Click_1" Margin="0,12,0,0">
-                        <TextBlock
-                            HorizontalAlignment="Left"
-                            Style="{ThemeResource TitleTextBlockStyle}"
-                            x:Uid="AdvancedSettingsMenu"/>
+                <StackPanel  Grid.Row="3" Orientation="Vertical" Tapped="advanced_Click_1" Margin="0,12,0,0">
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        Style="{ThemeResource ListItemHeaderStyle}"
+                        x:Uid="AdvancedSettingsMenu"/>
 
-                        <TextBlock
-                            HorizontalAlignment="Left"
-                            Style="{ThemeResource SubtitleTextBlockStyle}"
-                            x:Uid="AdvancedSettingsMenuSubtitle"/>
-                    </StackPanel>
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        Style="{ThemeResource ListItemStyle}"
+                        x:Uid="AdvancedSettingsMenuSubtitle"/>
+                </StackPanel>
 
-                    <StackPanel Orientation="Vertical" Tapped="LockScreenSettings_Click_1" Margin="0,12,0,0">
-                        <TextBlock
-                            Style="{ThemeResource TitleTextBlockStyle}"
+                <StackPanel  Grid.Row="4" Orientation="Vertical" Tapped="LockScreenSettings_Click_1" Margin="0,12,0,0">
+                    <TextBlock
+                            Style="{ThemeResource ListItemHeaderStyle}"
                             HorizontalAlignment="Left"
                             x:Uid="LockScreenSettings"/>
 
-                        <TextBlock
-                            Style="{ThemeResource SubtitleTextBlockStyle}"
+                    <TextBlock
+                            Style="{ThemeResource ListItemStyle}"
                             HorizontalAlignment="Left"
                             x:Uid="LockScreenSettingsSubtitle"/>
-                    </StackPanel>
                 </StackPanel>
             </Grid>
         </ScrollViewer>
-
-        <CommandBar Grid.Row="2" VerticalAlignment="Bottom">
-            <AppBarButton Icon="Back" Click="back_Click"/>
-        </CommandBar>
-
     </Grid>
-
 </Page>

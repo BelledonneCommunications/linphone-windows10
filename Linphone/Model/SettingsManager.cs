@@ -997,7 +997,8 @@ namespace Linphone.Model
             }
             if (ValueChanged(AutomaticallyInitiateVideoKeyName) || ValueChanged(AutomaticallyAcceptVideoKeyName))
             {
-                //VideoPolicy policy = LinphoneManager.Instance.Core.VideoPolicy = AutomaticallyInitiateVideoKeyName;
+                VideoPolicy policy = new VideoPolicy(Convert.ToBoolean(GetNew(AutomaticallyInitiateVideoKeyName)),Convert.ToBoolean(GetNew(AutomaticallyAcceptVideoKeyName)));
+                LinphoneManager.Instance.Core.VideoPolicy = policy;
             }
             if (ValueChanged(SelfViewEnabledKeyName))
             {

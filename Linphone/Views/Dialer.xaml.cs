@@ -122,6 +122,8 @@ namespace Linphone.Views
                 String uri = call.RemoteAddress.AsStringUriOnly();
                 Frame.Navigate(typeof(Views.InCall), uri);
             }
+
+            Debug.WriteLine(LinphoneManager.Instance.Core.AudioCodecs[0].MimeType);
         }
 
         /// <summary>

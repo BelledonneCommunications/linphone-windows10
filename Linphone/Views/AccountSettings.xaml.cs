@@ -28,14 +28,12 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Linphone.Views
 {
-    /// <summary>
-    /// Page used to display SIP account settings
-    /// </summary>
+
     public partial class AccountSettings : Page
     {
         private SIPAccountSettingsManager _settings = new SIPAccountSettingsManager();
       
-        private bool saveSettingsOnLeave = true;
+        private bool saveSettingsOnLeave = false;
         private bool linphoneAccount = false;
 
         /// <summary>
@@ -51,7 +49,7 @@ namespace Linphone.Views
             Password.Password = _settings.Password;
             Domain.Text = _settings.Domain;
             Proxy.Text = _settings.Proxy;
-            OutboundProxy.IsEnabled = (bool) _settings.OutboundProxy;
+            OutboundProxy.IsOn = (bool) _settings.OutboundProxy;
             DisplayName.Text = _settings.DisplayName;
             Expires.Text = _settings.Expires;
 
@@ -64,7 +62,7 @@ namespace Linphone.Views
             Transport.ItemsSource = transports;
             Transport.SelectedItem = _settings.Transports;
 
-            AVPF.IsEnabled = true;
+            AVPF.IsOn = (bool) _settings.AVPF;
         }
 
         private void Save()
@@ -83,11 +81,12 @@ namespace Linphone.Views
             _settings.Password = Password.Password;
             _settings.Domain = Domain.Text;
             _settings.Proxy = Proxy.Text;
-            _settings.OutboundProxy = OutboundProxy.IsEnabled;
+            _settings.OutboundProxy = OutboundProxy.IsOn;
             _settings.DisplayName = DisplayName.Text;
             _settings.Transports = Transport.SelectedItem.ToString();
             _settings.Expires = Expires.Text;
-            _settings.AVPF = AVPF.IsEnabled;
+            _settings.AVPF = AVPF.IsOn;
+
             _settings.Save();
 
             if (linphoneAccount)
@@ -109,7 +108,6 @@ namespace Linphone.Views
             if (saveSettingsOnLeave)
             {
                 Save();
-                Debug.WriteLine("SAVE ");
             }
             base.OnNavigatingFrom(e);
         }
@@ -137,10 +135,10 @@ namespace Linphone.Views
         {
             Domain.Text = "sip.linphone.org";
             Transport.SelectedItem = ResourceLoader.GetForCurrentView().GetString("TransportTLS");
-            Proxy.Text = "sip.linphone.org:5223";
-            OutboundProxy.IsEnabled = true;
+            Proxy.Text = "sip.linphone.org";
+            OutboundProxy.IsOn = true;
             Expires.Text = "28800";
-            AVPF.IsEnabled = true;
+            AVPF.IsOn = true;
             linphoneAccount = true;
         }
     }

@@ -5,39 +5,38 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:linphone="clr-namespace:Linphone"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
-    <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="{StaticResource AppBarBackgroundThemeBrush}">
-        <!--Pivot Control-->
-        <Pivot Title="VideoSettingsMenu">
+    <Grid x:Name="LayoutRoot">
+        <Pivot Title="VideoSettingsMenu" x:Uid="VideoSettings">
             <PivotItem Header="OptionsMenu">
                 <ScrollViewer x:Name="OptionsContentPanel">
                     <Grid Margin="12,0,12,0">
                         <StackPanel Orientation="Vertical">
                             <ToggleSwitch
-                            x:Name="VideoEnabled"
-                            Header="VideoEnabledSetting">
+                                x:Name="VideoEnabled"
+                                x:Uid="VideoEnabledSetting">
                             </ToggleSwitch>
 
                             <ComboBox
-                            x:Name="PreferredVideoSize"
-                            Header="PreferredVideoSizeSetting">
+                                x:Name="PreferredVideoSize"
+                                x:Uid="PreferredVideoSizeSetting">
                             </ComboBox>
 
                             <ToggleSwitch
-                            x:Name="AutomaticallyInitiateVideo"
-                            Header="AutomaticallyInitiateVideoSetting">
+                                x:Name="AutomaticallyInitiateVideo"
+                                x:Uid="AutomaticallyInitiateVideoSetting">
                             </ToggleSwitch>
 
                             <ToggleSwitch
-                            x:Name="AutomaticallyAcceptVideo"
-                            Header="AutomaticallyAcceptVideoSetting">
+                                x:Name="AutomaticallyAcceptVideo"
+                                x:Uid="AutomaticallyAcceptVideoSetting">
                             </ToggleSwitch>
 
                             <ToggleSwitch
-                            x:Name="SelfViewEnabled"
-                            Header="SelfViewEnabledSetting">
+                                x:Name="SelfViewEnabled"
+                                x:Uid="SelfViewEnabledSetting">
                             </ToggleSwitch>
                         </StackPanel>
                     </Grid>

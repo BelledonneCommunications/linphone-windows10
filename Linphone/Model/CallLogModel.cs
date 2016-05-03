@@ -14,6 +14,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+using BelledonneCommunications.Linphone.Native;
 using System;
 using System.Diagnostics;
 using Windows.UI.Xaml.Media.Imaging;
@@ -149,6 +150,8 @@ namespace Linphone.Model
             }
         }
 
+
+        private String _displayName;
         /// <summary>
         /// Named displayed for the caller/callee.
         /// </summary>
@@ -156,11 +159,12 @@ namespace Linphone.Model
         {
             get
             {
-                if (_isIncoming)
-                    return _from;
-                else
-                    return _to;
+                return _displayName;
             }
+            set
+            {
+                _displayName = value;
+            } 
         }
 
         private DateTime _startDate;
@@ -188,7 +192,16 @@ namespace Linphone.Model
             _to = to;
             _isIncoming = isIncoming;
             _isMissed = isMissed;
-            
+
+            if (_isIncoming)
+            {
+                _displayName = Utils.GetUsernameFromAddress((nativeLog as CallLog).FromAddress);
+            } else
+            {
+                _displayName = Utils.GetUsernameFromAddress((nativeLog as CallLog).ToAddress);
+            }
+                
+
             DateTime unixStart = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
             long unixTimeStampInTicks = (long)(startDate * TimeSpan.TicksPerSecond);
             _startDate = new DateTime(unixStart.Ticks + unixTimeStampInTicks).ToLocalTime();

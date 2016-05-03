@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:linphone="clr-namespace:Linphone"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     xmlns:model="using:Linphone.Model"
     mc:Ignorable="d">
 
@@ -18,7 +19,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Margin="12">
+        <StackPanel Grid.Row="0" Margin="12,12,12,0">
             <TextBlock x:Uid="Conversations" Text="CONVERSATIONS" Style="{StaticResource HeaderTextStyle}" />
         </StackPanel>
 

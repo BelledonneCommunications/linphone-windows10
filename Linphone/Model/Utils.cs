@@ -14,8 +14,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+using BelledonneCommunications.Linphone.Native;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
@@ -90,6 +92,24 @@ namespace Linphone.Model
             catch { }
 
             return null;
+        }
+
+        public static string GetUsernameFromAddress(Address addr)
+        {
+            if (addr.DisplayName != null && addr.DisplayName.Length > 0)
+            { 
+                return addr.DisplayName;
+            }
+            else
+            {
+                if(addr.UserName != null && addr.UserName.Length > 0)
+                {
+                    return addr.UserName;
+                } else
+                {
+                    return addr.AsStringUriOnly();
+                }
+            }
         }
 
         /// <summary>

@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prim="using:Windows.UI.Xaml.Controls.Primitives"
     xmlns:helper="using:Linphone.Helpers"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -18,18 +19,22 @@
         <prim:JumpListItemForegroundConverter x:Key="JumpListItemForeground" />
     </Page.Resources>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <StackPanel Grid.Row="0" Margin="12,12,12,0">
+            <TextBlock x:Uid="ContactsMenu" Text="CONTACTS" Style="{StaticResource HeaderTextStyle}" />
+        </StackPanel>
+
         <TextBox x:Name="ContactSearchBox"   
             Grid.Row="1"
             PlaceholderText="Search" 
             VerticalAlignment="Top" 
-            Margin="12,12,12,20" 
+            Margin="12,12,12,0" 
             TextChanged="ContactSearchBox_TextChanged" />
 
         <ListView x:Name="ContactListView" 
@@ -123,7 +128,9 @@
                 <GridView
                     Background="Transparent"
                     ItemsSource="{Binding Source={StaticResource groupedContactsCvs}, Path=CollectionGroups}"
-                    Padding="8"                   
+                    Padding="8"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
                     ScrollViewer.HorizontalScrollMode="Disabled"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     ScrollViewer.IsVerticalRailEnabled="True"
@@ -131,24 +138,25 @@
                     ScrollViewer.VerticalScrollMode="Auto"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"  
                     SelectionMode="None">
+         
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <ItemsWrapGrid Orientation="Horizontal" />
+                            <ItemsWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="4" />
                         </ItemsPanelTemplate>
                     </GridView.ItemsPanel>
                     <GridView.ItemTemplate>
                         <DataTemplate>
                             <Border                                
-                                Height="65"
-                                Width="65"
+                                Height="40"
+                                Width="40"
                                 Background="{Binding Converter={StaticResource JumpListItemBackground}}"
-                                HorizontalAlignment="Left"
+                                HorizontalAlignment="Center"
                                 Margin="4.5">
                                 <TextBlock
-                                    FontSize="40"
+                                    FontSize="30"
                                     FontWeight="SemiBold"
                                     Foreground="{Binding Converter={StaticResource JumpListItemForeground}}"
-                                    HorizontalAlignment="Left"
+                                    HorizontalAlignment="Center"
                                     Padding="7,0"
                                     Text="{Binding Group.Key, Mode=OneWay}"
                                     VerticalAlignment="Bottom"

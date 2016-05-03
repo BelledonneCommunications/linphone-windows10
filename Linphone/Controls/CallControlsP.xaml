@@ -17,7 +17,7 @@
             <Setter Property="VerticalAlignment" Value="Stretch" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="Foreground" Value="{ThemeResource SystemChromeWhiteColor}" />
-            <Setter Property="Background" Value="Red" />
+            <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundAccentBrush}" />
             <Setter Property="MinWidth" Value="0" />
             <Setter Property="Height" Value="72" />
             <Setter Property="IsTextScaleFactorEnabled" Value="False" />
@@ -67,6 +67,10 @@
                                     </VisualState>
                                     <VisualState x:Name="Checked">
                                         <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid"
+                                               Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0.7" />
+                                            </ObjectAnimationUsingKeyFrames>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid"
                                                Storyboard.TargetProperty="Background">
                                                 <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightAccentBrush}" />
@@ -219,14 +223,44 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
+        <ToggleButton
+            x:Name="video"
+            Grid.Row="2"
+            Grid.Column="0"
+            Style="{StaticResource ToggleButtonStyle}"
+            BorderThickness="0"
+            IsEnabled="False"
+            Click="video_Click_1">
+            <ToggleButton.ContentTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE116;" RenderTransformOrigin="0.5,0.5">
+                            <FontIcon.RenderTransform>
+                                <CompositeTransform ScaleX=".75" ScaleY=".75"/>
+                            </FontIcon.RenderTransform>
+                        </FontIcon>
+                        <TextBlock Text="Video"
+                        Grid.Row="1"
+                        Margin="0,4,0,0"
+                        LineHeight="14"
+                        HorizontalAlignment="Center" />
+                    </Grid>
+                </DataTemplate>
+            </ToggleButton.ContentTemplate>
+        </ToggleButton>
+
         <Button 
             x:Name="camera"
             Grid.Row="2"
-            Grid.Column="3"
+            Grid.Column="1"
             BorderThickness="0"
             Style="{StaticResource ButtonStyle}"
             Click="camera_Click_1"
-            IsEnabled="False"
+            IsEnabled="True"
             Visibility="{Binding CameraButtonVisibility}">
             <Button.ContentTemplate>
                 <DataTemplate>
@@ -251,12 +285,12 @@
         </Button>
 
         <ToggleButton
-            x:Name="speaker"
-            Grid.Row="2"
-            Grid.Column="0"
-            BorderThickness="0"
+            x:Name="stats"
+            Grid.Row="3"
+            Grid.Column="2"
             Style="{StaticResource ToggleButtonStyle}"
-            Click="speaker_Click_1">
+            BorderThickness="0"
+            Click="stats_Click_1">
             <ToggleButton.ContentTemplate>
                 <DataTemplate>
                     <Grid>
@@ -264,12 +298,12 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE15D;" RenderTransformOrigin="0.5,0.5">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE2C0;" RenderTransformOrigin="0.5,0.5">
                             <FontIcon.RenderTransform>
                                 <CompositeTransform ScaleX=".75" ScaleY=".75"/>
                             </FontIcon.RenderTransform>
                         </FontIcon>
-                        <TextBlock Text="Speaker"
+                        <TextBlock Text="Stats"
                         Grid.Row="1"
                         Margin="0,4,0,0"
                         LineHeight="14"
@@ -278,36 +312,7 @@
                 </DataTemplate>
             </ToggleButton.ContentTemplate>
         </ToggleButton>
-
-        <ToggleButton 
-            x:Name="microphone"
-            Grid.Row="2"
-            Grid.Column="1"
-            BorderThickness="0"
-            Style="{StaticResource ToggleButtonStyle}"
-            Click="microphone_Click_1">
-            <ToggleButton.ContentTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE720;" RenderTransformOrigin="0.5,0.5">
-                            <FontIcon.RenderTransform>
-                                <CompositeTransform ScaleX=".75" ScaleY=".75"/>
-                            </FontIcon.RenderTransform>
-                        </FontIcon>
-                        <TextBlock Text="Micro"
-                        Grid.Row="1"
-                        Margin="0,4,0,0"
-                        LineHeight="14"
-                        HorizontalAlignment="Center" />
-                    </Grid>
-                </DataTemplate>
-            </ToggleButton.ContentTemplate>
-        </ToggleButton>
-
+        
         <ToggleButton 
             x:Name="bluetooth"
             Grid.Row="2"
@@ -369,14 +374,13 @@
             </ToggleButton.ContentTemplate>
         </ToggleButton>
 
-        <ToggleButton
-            x:Name="video"
+        <ToggleButton 
+            x:Name="microphone"
             Grid.Row="3"
             Grid.Column="1"
-            Style="{StaticResource ToggleButtonStyle}"
             BorderThickness="0"
-            IsEnabled="False"
-            Click="video_Click_1">
+            Style="{StaticResource ToggleButtonStyle}"
+            Click="microphone_Click_1">
             <ToggleButton.ContentTemplate>
                 <DataTemplate>
                     <Grid>
@@ -384,12 +388,12 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE116;" RenderTransformOrigin="0.5,0.5">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE720;" RenderTransformOrigin="0.5,0.5">
                             <FontIcon.RenderTransform>
                                 <CompositeTransform ScaleX=".75" ScaleY=".75"/>
                             </FontIcon.RenderTransform>
                         </FontIcon>
-                        <TextBlock Text="Video"
+                        <TextBlock Text="Micro"
                         Grid.Row="1"
                         Margin="0,4,0,0"
                         LineHeight="14"
@@ -400,12 +404,12 @@
         </ToggleButton>
 
         <ToggleButton
-            x:Name="stats"
-            Grid.Row="3"
-            Grid.Column="2"
-            Style="{StaticResource ToggleButtonStyle}"
+            x:Name="speaker"
+            Grid.Row="2"
+            Grid.Column="3"
             BorderThickness="0"
-            Click="stats_Click_1">
+            Style="{StaticResource ToggleButtonStyle}"
+            Click="speaker_Click_1">
             <ToggleButton.ContentTemplate>
                 <DataTemplate>
                     <Grid>
@@ -413,12 +417,12 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE2C0;" RenderTransformOrigin="0.5,0.5">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE15D;" RenderTransformOrigin="0.5,0.5">
                             <FontIcon.RenderTransform>
                                 <CompositeTransform ScaleX=".75" ScaleY=".75"/>
                             </FontIcon.RenderTransform>
                         </FontIcon>
-                        <TextBlock Text="Stats"
+                        <TextBlock Text="Speaker"
                         Grid.Row="1"
                         Margin="0,4,0,0"
                         LineHeight="14"
@@ -427,7 +431,7 @@
                 </DataTemplate>
             </ToggleButton.ContentTemplate>
         </ToggleButton>
-
+        
         <Button
             x:Name="hangUp"
             Grid.Row="4"

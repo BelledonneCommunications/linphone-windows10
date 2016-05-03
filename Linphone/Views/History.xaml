@@ -7,10 +7,10 @@
     xmlns:linphone="clr-namespace:Linphone"
     xmlns:controls="clr-namespace:Linphone.Controls"
     xmlns:model="using:Linphone.Model"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <model:SipUriToUsernameConverter x:Key="SipUriConverter"/>
         <model:BoolToAccentBrushConverter x:Key="BoolToAccentBrushConverter"/>
 
         <DataTemplate x:Name="CallLogListViewTemplate">
@@ -24,7 +24,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="1"
-                            Text="{Binding DisplayedName, Converter={StaticResource SipUriConverter}}" 
+                            Text="{Binding DisplayedName}" 
                             Style="{StaticResource ListItemHeaderStyle}"/>
                 <TextBlock  Grid.Column="1" Margin="0,0,0,10"
                                 Grid.Row="1" Style="{StaticResource ListItemStyle}" Foreground="{Binding IsMissed, Converter={StaticResource BoolToAccentBrushConverter}}">
@@ -46,6 +46,10 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="12,12,12,0">
+            <TextBlock x:Uid="HistoryMenu" Text="HISTORY" Style="{StaticResource HeaderTextStyle}" />
+        </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1">

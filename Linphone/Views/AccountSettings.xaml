@@ -5,20 +5,18 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:linphone="clr-namespace:Linphone"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
-
-    <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="{StaticResource AppBarBackgroundThemeBrush}">
+    
+    <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,5,0,0">
-            <!--<TextBlock Foreground="Black" Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextNormalStyle}"/>-->
-            <TextBlock Text="AccountMenu" Margin="9,-7,0,0" />
+        <StackPanel Grid.Row="0" Margin="12,12,12,0">
+            <TextBlock Text="ACCOUNT" x:Uid="AccountMenu" Style="{StaticResource HeaderTextStyle}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
@@ -39,14 +37,14 @@
                 
                 <StackPanel Orientation="Vertical" Grid.Row="0" Margin="0,10,0,0">
                     <TextBlock
-                        Text="SIPUsername">
+                        Text="Username" x:Uid="SIPUsername">
                     </TextBlock>
                     <TextBox
                         x:Name="Username">
                         <TextBox.InputScope>
                             <InputScope>
                                 <InputScope.Names>
-                                    <InputScopeName NameValue="EmailNameOrAddress" />
+                                    <InputScopeName NameValue="EmailSmtpAddress" />
                                 </InputScope.Names>
                             </InputScope>
                         </TextBox.InputScope>
@@ -55,7 +53,7 @@
 
                 <StackPanel Orientation="Vertical" Grid.Row="1" Margin="0,10,0,0">
                     <TextBlock
-                        Text="SIPUserId">
+                        Text="User Id" x:Uid="SIPUserId">
                     </TextBlock>
                     <TextBox
                         x:Name="UserId">
@@ -71,7 +69,7 @@
 
                 <StackPanel Orientation="Vertical" Grid.Row="2" Margin="0,10,0,0">
                     <TextBlock
-                        Text="SIPPassword">
+                        Text="Password" x:Uid="SIPPassword">
                     </TextBlock>
                     <PasswordBox
                         x:Name="Password">
@@ -80,7 +78,7 @@
 
                 <StackPanel Orientation="Vertical" Grid.Row="3" Margin="0,10,0,0">
                     <TextBlock
-                        Text="SIPDomain">
+                        Text="Domain" x:Uid="SIPDomain">
                     </TextBlock>
                     <TextBox
                         x:Name="Domain">
@@ -97,12 +95,15 @@
                 <ComboBox
                     Grid.Row="4"
                     x:Name="Transport"
+                    Header="Transport"
+                    Margin="0,10,0,0"
+                    x:Uid="TransportSettings"
                     ItemsSource="{Binding Transports}">
                 </ComboBox>
                 
                 <StackPanel Orientation="Vertical" Grid.Row="5" Margin="0,10,0,0">
                     <TextBlock
-                         Text="SIPProxy">
+                         Text="Proxy" x:Uid="SIPProxy">
                     </TextBlock>
                     <TextBox
                         x:Name="Proxy">
@@ -111,19 +112,19 @@
 
                 <StackPanel Orientation="Vertical" Grid.Row="6" Margin="0,10,0,0">
                     <ToggleSwitch  
-                        x:Name="OutboundProxy">
+                        x:Name="OutboundProxy" x:Uid="SIPOutboundProxy" Header="Outbound Proxy">
                     </ToggleSwitch>
                 </StackPanel>
 
                 <StackPanel Orientation="Vertical" Grid.Row="7" Margin="0,10,0,0">
                     <ToggleSwitch
-                        x:Name="AVPF">
+                        x:Name="AVPF" x:Uid="AVPF" Header="AVPF">
                     </ToggleSwitch>
                 </StackPanel>
 
                 <StackPanel Orientation="Vertical" Grid.Row="8" Margin="0,10,0,0">
                     <TextBlock
-                       Text="Expire">
+                       Text="Expire" x:Uid="Expire">
                     </TextBlock>
                     <TextBox
                         x:Name="Expires">
@@ -139,7 +140,7 @@
 
                 <StackPanel Orientation="Vertical" Grid.Row="9" Margin="0,10,0,0">
                     <TextBlock
-                        Text=".DisplayName">
+                        Text="DisplayName" x:Uid="DisplayName">
                     </TextBlock>
                     <TextBox
                         x:Name="DisplayName">
@@ -156,9 +157,9 @@
         </ScrollViewer>
 
         <CommandBar Grid.Row="2" VerticalAlignment="Bottom">
-            <AppBarButton Icon="Save" Click="save_Click_1"/>
-            <AppBarButton Icon="Cancel" Click="cancel_Click_1" />
-            <AppBarButton Icon="Emoji" Click="linphone_Click_1"/>
+            <AppBarButton Icon="Save" Label="Save" Click="save_Click_1"/>
+            <AppBarButton Icon="Cancel" Label="Cancel" Click="cancel_Click_1" />
+            <AppBarButton Icon="Emoji" Label="Linphone" Click="linphone_Click_1"/>
         </CommandBar>
     </Grid>
 

@@ -14,9 +14,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+using BelledonneCommunications.Linphone.Native;
 using Linphone.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -39,10 +41,15 @@ namespace Linphone.Views
             this.InitializeComponent();
 
             _callSettings.Load();
-            VideoEnabled.IsEnabled = (bool) _callSettings.VideoEnabled;
-            AutomaticallyInitiateVideo.IsEnabled = (bool) _callSettings.AutomaticallyInitiateVideo;
-            AutomaticallyAcceptVideo.IsEnabled = (bool) _callSettings.AutomaticallyAcceptVideo;
-            SelfViewEnabled.IsEnabled = (bool) _callSettings.SelfViewEnabled;
+            VideoEnabled.IsOn = (bool) _callSettings.VideoEnabled;
+            AutomaticallyInitiateVideo.IsOn = (bool) _callSettings.AutomaticallyInitiateVideo;
+            AutomaticallyAcceptVideo.IsOn = (bool) _callSettings.AutomaticallyAcceptVideo;
+            SelfViewEnabled.IsOn = (bool) _callSettings.SelfViewEnabled;
+
+            foreach(VideoSize size in LinphoneManager.Instance.Core.SupportedVideoSizes)
+            {
+                Debug.WriteLine(size.Name);
+            }
 
             List<string> videoSizes = new List<string>
             {
@@ -53,8 +60,8 @@ namespace Linphone.Views
             PreferredVideoSize.SelectedItem = _callSettings.PreferredVideoSize;
 
             _codecsSettings.Load();
-            H264.IsEnabled = _codecsSettings.H264;
-            VP8.IsEnabled = _codecsSettings.VP8;
+            H264.IsOn = _codecsSettings.H264;
+            VP8.IsOn = _codecsSettings.VP8;
         }
 
         /// <summary>
@@ -71,14 +78,14 @@ namespace Linphone.Views
 
         private void Save()
         {
-            _codecsSettings.H264 = ToBool(H264.IsEnabled);
-            _codecsSettings.VP8 = ToBool(VP8.IsEnabled);
+            _codecsSettings.H264 = ToBool(H264.IsOn);
+            _codecsSettings.VP8 = ToBool(VP8.IsOn);
             _codecsSettings.Save();
 
-            _callSettings.VideoEnabled = ToBool(VideoEnabled.IsEnabled);
-            _callSettings.AutomaticallyInitiateVideo = ToBool(AutomaticallyInitiateVideo.IsEnabled);
-            _callSettings.AutomaticallyAcceptVideo = ToBool(AutomaticallyAcceptVideo.IsEnabled);
-            _callSettings.SelfViewEnabled = ToBool(SelfViewEnabled.IsEnabled);
+            _callSettings.VideoEnabled = ToBool(VideoEnabled.IsOn);
+            _callSettings.AutomaticallyInitiateVideo = ToBool(AutomaticallyInitiateVideo.IsOn);
+            _callSettings.AutomaticallyAcceptVideo = ToBool(AutomaticallyAcceptVideo.IsOn);
+            _callSettings.SelfViewEnabled = ToBool(SelfViewEnabled.IsOn);
             _callSettings.PreferredVideoSize = PreferredVideoSize.SelectedItem.ToString();
             if (PreferredVideoSize.SelectedItem.ToString() == "vga")
             {
