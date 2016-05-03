@@ -121,7 +121,9 @@ namespace Linphone
 #endif
 
             //Start linphone
-        
+            var currentView = SystemNavigationManager.GetForCurrentView();
+            currentView.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+
             LinphoneManager.Instance.InitLinphoneCore();
             LinphoneManager.Instance.CoreDispatcher = Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().CoreWindow.Dispatcher;
             LinphoneManager.Instance.CallListener = this;
