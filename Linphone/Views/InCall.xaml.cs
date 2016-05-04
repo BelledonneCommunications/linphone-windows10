@@ -54,7 +54,7 @@ namespace Linphone.Views
             }
 
             Call call = LinphoneManager.Instance.Core.CurrentCall;
-            LinphoneManager.Instance.Changed += Instance_Changed;
+            LinphoneManager.Instance.CallStateChanged += Instance_Changed;
 
             Debug.WriteLine("Device orientation :" + LinphoneManager.Instance.Core.DeviceRotation);
 
@@ -121,7 +121,7 @@ namespace Linphone.Views
             if (_call.State == CallState.StreamsRunning)
             {
 
-                if (!_call.MediaInProgress)
+               if (!_call.MediaInProgress)
                 {
                     buttons.enabledPause(true);
                     buttons.enabledVideo(true);

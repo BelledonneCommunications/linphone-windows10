@@ -17,16 +17,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BelledonneCommunications.Linphone.Native;
-using System.ComponentModel;
 using Windows.UI.Core;
 using System.Diagnostics;
 using Linphone.Views;
 using System.IO;
 using Windows.Storage;
 using Windows.Phone.Media.Devices;
+using Windows.System.Profile;
+using Windows.Networking.PushNotifications;
 
 namespace Linphone.Model
 {
@@ -36,18 +35,15 @@ namespace Linphone.Model
         public static LinphoneManager Instance { get { return _instance; } }
 
         public delegate void ChangedEventHandler(object sender, EventArgs e);
-        public event ChangedEventHandler Changed;
 
-        public delegate void RegistrationStateChanged(object sender, EventArgs e);
+        public event ChangedEventHandler CallStateChanged;
         public event ChangedEventHandler RegistrationChanged;
-
-        public delegate void MessageReceiveHandler(object sender, EventArgs e);
         public event ChangedEventHandler MessagReceived;
 
         private Core _core;
-        private string _callStateText = "No call";
         public bool isLinphoneRunning = false;
-        private string _linphoneFactoryPath;
+
+        private PushNotificationChannel channel;
 
         public class CallEventArgs : EventArgs
         {
@@ -134,23 +130,24 @@ namespace Linphone.Model
         }
 
 
+        #region Linphone Core Initialization
 
-        public static String GetChatDatabasePath()
+        public async void InitPushNotifications()
+        {
+            channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
+
+        }
+        public String GetChatDatabasePath()
         {
             return Path.Combine(ApplicationData.Current.LocalFolder.Path, "chat.db");
         }
 
-        public void ConfigureLogger(OutputTraceLevel LogLevel)
-        {
-      
-        }
-
-        public static String GetDefaultConfigPath()
+        public String GetDefaultConfigPath()
         {
             return Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "Assets", "linphonerc");
         }
 
-        public static String GetConfigPath()
+        public String GetConfigPath()
         {
             return Path.Combine(ApplicationData.Current.LocalFolder.Path, "linphonerc");
         }
@@ -167,35 +164,30 @@ namespace Linphone.Model
 
         public void InitLinphoneCore()
         {
-
             Core.LogLevel = OutputTraceLevel.Debug;
            
             LinphoneManager.Instance.Core.ChatDatabasePath = GetChatDatabasePath();
             LinphoneManager.Instance.Core.RootCa = GetRootCaPath();
 
-
-            AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;
-            //CallController.MuteRequested += MuteRequested;
-            //CallController.UnmuteRequested += UnmuteRequested;
+            if(AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
+            {
+                AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;
+            }
 
             if (LinphoneManager.Instance.Core.IsVideoSupported)
             {
                 DetectCameras();
             }
 
-            //LinphoneManager.Instance.Core..SetUserAgent(Customs.UserAgent, Linphone.Version.Number);
-
-            //  lastNetworkState = DeviceNetworkInformation.IsNetworkAvailable;
+            LinphoneManager.Instance.Core.SetUserAgent("LinphoneW10", Core.Version);
             //server.LinphoneCore.NetworkReachable = lastNetworkState;
             // DeviceNetworkInformation.NetworkAvailabilityChanged += new EventHandler<NetworkNotificationEventArgs>(OnNetworkStatusChanged);
             // ConfigureTunnel();
-
-            isLinphoneRunning = true;
-
-            Debug.WriteLine(LinphoneManager.Instance.Core.MaxCalls);
-            
+            InitPushNotifications();
+            isLinphoneRunning = true;            
             LinphoneManager.Instance.Core.IsIterateEnabled = true;
         }
+        #endregion
 
         private List<CallLogModel> _history;
 
@@ -465,24 +457,6 @@ namespace Linphone.Model
 
         public CallControllerListener CallListener { get; set; }
 
-        public string CallStateText
-        {
-            get
-            {
-                return _callStateText;
-            }
-            set
-            {
-                _callStateText = value;
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                {
-                    //PropertyChanged(this, new PropertyChangedEventArgs("CallStateText"));
-                });
-            }
-        }
-
         #region Listeners
         void CoreListener.AuthInfoRequested(string realm, string username, string domain)
         {
@@ -496,16 +470,14 @@ namespace Linphone.Model
 
         void CoreListener.CallStateChanged(Call call, CallState state, string message)
         {
-            CallStateText = message;
             Debug.WriteLine("Call state " + message);
 
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
             CoreDispatcher.RunAsync(CoreDispatcherPriority.High, () =>
             {
-                if (Changed != null)
+                if (CallStateChanged != null)
                 {
-                    Debug.WriteLine("CHANGED");
-                    Changed(this, new CallEventArgs(call));
+                    CallStateChanged(this, new CallEventArgs(call));
                 }
             });
 #pragma warning restore CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel

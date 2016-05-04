@@ -138,7 +138,6 @@
     <Compile Include="Model\BugCollector.cs" />
     <Compile Include="Model\CallControllerListener.cs" />
     <Compile Include="Model\CallLogModel.cs" />
-    <Compile Include="Model\CodecModel.cs" />
     <Compile Include="Model\ContactPictureConverter.cs" />
     <Compile Include="Model\ContactsManager.cs" />
     <Compile Include="Model\Conversation.cs" />

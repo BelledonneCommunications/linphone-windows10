@@ -32,7 +32,6 @@ namespace Linphone.Controls
         public StatusBar()
         {
             InitializeComponent();
-            //RefreshStatus();
         }
 
         public void RefreshStatus()
