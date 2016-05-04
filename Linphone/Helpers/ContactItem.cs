@@ -1,13 +1,18 @@
-﻿//*********************************************************
-//
-// Copyright (c) Microsoft. All rights reserved.
-// This code is licensed under the MIT License (MIT).
-// THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-// ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-// IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-// PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
-//
-//*********************************************************
+﻿/*
+ContactItem.xaml.cs
+Copyright (C) 2016  Belledonne Communications, Grenoble, France
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+*/
 
 using System;
 using Windows.Storage.Streams;
@@ -21,22 +26,15 @@ namespace Linphone.Helpers
         private string contactId;
         private string contactName;
         private ImageSource contactImage;
+        private string contactNumber;
+        private string contactEmail;
 
-        /// <summary>
-        /// A simple class that holds a contact item for the contacts panel.
-        /// </summary>
-        /// <param name="ContactId">The unique id of the contact from the contact store. Used to retrive the contact</param>
-        /// <param name="contactName">The display name of the contact</param>
         public ContactItem(string ContactId, string ContactName)
         {
             this.contactId = ContactId;
             this.contactName = ContactName;
         }
 
-        /// <summary>
-        /// Sets the contact image. If there is no image, we set a default one picked from our solution
-        /// </summary>
-        /// <param name="ThumbnailReference">Thumbnail reference of the contact from the contact store.</param>
         public async void SetImageAsync(IRandomAccessStreamReference ThumbnailReference)
         {
             var thumbnailImage = new BitmapImage();
@@ -49,15 +47,11 @@ namespace Linphone.Helpers
             }
             else
             {
-                thumbnailImage = new BitmapImage(new Uri("ms-appx:///Assets/unknown.png", UriKind.Absolute));
+                thumbnailImage = new BitmapImage(new Uri("ms-appx:///Assets/avatar.png", UriKind.Absolute));
             }
             this.contactImage = thumbnailImage;
         }
 
-        #region Getters
-        /// <summary>
-        /// Gets the id of the contact.
-        /// </summary>
         public string ContactId
         {
             get
@@ -66,9 +60,6 @@ namespace Linphone.Helpers
             }
         }
 
-        /// <summary>
-        /// Gets the display name of the contact.
-        /// </summary>
         public string ContactName
         {
             get
@@ -77,9 +68,6 @@ namespace Linphone.Helpers
             }
         }
 
-        /// <summary>
-        /// Gets the image source of the contact.
-        /// </summary>
         public ImageSource ContactImage
         {
             get
@@ -87,6 +75,5 @@ namespace Linphone.Helpers
                 return contactImage;
             }
         }
-        #endregion
     }
 }

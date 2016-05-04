@@ -291,7 +291,6 @@ namespace Linphone.Model
                 //should batch add to avoid triggering callbacks            
                 foreach (Contact c in contactBatch.Contacts)
                 {
-                    //Debug.WriteLine(c.DisplayName);
                     ContactItem contactToAdd = new ContactItem(c.Id, c.DisplayName);
                     contactToAdd.SetImageAsync(c.Thumbnail);
                     contactItems.Add(contactToAdd);

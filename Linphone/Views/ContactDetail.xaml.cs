@@ -59,12 +59,8 @@ namespace Linphone.Views
 
             if (contact.ContactImage != null)
             {
-                Image contactPicture = new Image();
-                contactPicture.Width = 150;
-                contactPicture.Height = 150;
-                contactPicture.Source = contact.ContactImage;
-                contactPicture.Margin = new Thickness(0,0,0,15);
-                actions.Children.Add(contactPicture);
+
+                contactPicture.ImageSource = contact.ContactImage;
             }
 
           /*  foreach (ContactPhone phone in contact.Phones)

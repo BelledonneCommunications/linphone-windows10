@@ -147,17 +147,17 @@
                     <GridView.ItemTemplate>
                         <DataTemplate>
                             <Border                                
-                                Height="40"
-                                Width="40"
-                                Background="{Binding Converter={StaticResource JumpListItemBackground}}"
+                                Height="45"
+                                Width="45"
+                                Background="Transparent"
                                 HorizontalAlignment="Center"
-                                Margin="4.5">
+                                Margin="4">
                                 <TextBlock
-                                    FontSize="30"
-                                    FontWeight="SemiBold"
-                                    Foreground="{Binding Converter={StaticResource JumpListItemForeground}}"
+                                    FontSize="22"
+                                    FontWeight="SemiLight"
+                                    Foreground="{ThemeResource SystemControlBackgroundAccentBrush}"
                                     HorizontalAlignment="Center"
-                                    Padding="7,0"
+                                    Padding="7"
                                     Text="{Binding Group.Key, Mode=OneWay}"
                                     VerticalAlignment="Bottom"
                                     AutomationProperties.AccessibilityView="Raw" />

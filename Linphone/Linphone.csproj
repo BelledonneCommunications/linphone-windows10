@@ -171,9 +171,6 @@
     <Compile Include="Views\ContactList.xaml.cs">
       <DependentUpon>ContactList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Contacts.xaml.cs">
-      <DependentUpon>Contacts.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Dialer.xaml.cs">
       <DependentUpon>Dialer.xaml</DependentUpon>
     </Compile>
@@ -317,10 +314,6 @@
     <Page Include="Views\ContactList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Contacts.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Dialer.xaml">
       <SubType>Designer</SubType>

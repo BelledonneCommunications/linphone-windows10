@@ -6,24 +6,34 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:linphone="clr-namespace:Linphone"
     xmlns:controls="clr-namespace:Linphone.Controls"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
-    <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="{ThemeResource AppBarBackgroundThemeBrush}">
+    <Grid x:Name="LayoutRoot" >
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="1" Margin="12,17,0,28">
+        <StackPanel Grid.Row="0" Margin="12,12,12,0">
+            <TextBlock x:Uid="ContactsMenu" Text="CONTACT" Style="{StaticResource HeaderTextStyle}" />
+        </StackPanel>
+
+        <Ellipse Width="50" Height="50" VerticalAlignment="Center" Grid.Row="1">
+            <Ellipse.Fill>
+                <ImageBrush x:Name="contactPicture" ImageSource="{Binding ContactImage}"/>
+            </Ellipse.Fill>
+        </Ellipse>
+
+        <StackPanel Grid.Row="2">
             <!--<TextBlock Text="" Style="{StaticResource PhoneTextNormalStyle}"/>-->
             <TextBlock x:Name="contactName" TextWrapping="Wrap"  Margin="9,-7,0,0" />
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="2" Margin="12,0,12,0">
+        <Grid x:Name="ContentPanel" Grid.Row="3" Margin="12,0,12,0">
             <ScrollViewer>
                 <StackPanel x:Name="actions" Orientation="Vertical" Margin="20,0,0,0">
                     
