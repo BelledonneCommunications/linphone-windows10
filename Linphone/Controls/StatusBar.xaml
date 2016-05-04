@@ -7,16 +7,8 @@
     xmlns:Model="using:Linphone.Model"
     d:DesignHeight="30" d:DesignWidth="480">
 
-    <UserControl.Resources>
-        <Style x:Key="TextStyle"
-           TargetType="TextBlock">
-            <Setter Property="FontSize" Value="15"/>
-            <Setter Property="FontFamily" Value="{ThemeResource PhoneFontFamilyNormal}" />
-        </Style>
-    </UserControl.Resources>
-
     <StackPanel x:Name="LayoutRoot" Background="Transparent" Orientation="Horizontal" Padding="5,5,5,5" VerticalAlignment="Center">
         <Image x:Name="StatusLed" Height="15" Width="15" Stretch="Uniform" Margin="10,0,5,0" VerticalAlignment="Center" ></Image>
-        <TextBlock x:Name="StatusText" Style="{StaticResource TextStyle}" VerticalAlignment="Center"></TextBlock>
+        <TextBlock x:Name="StatusText" Style="{StaticResource StatusBarTextStyle}" VerticalAlignment="Center"></TextBlock>
     </StackPanel>
 </UserControl>

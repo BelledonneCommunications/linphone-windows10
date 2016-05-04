@@ -1,6 +1,6 @@
 ﻿/*
 StatusBar.xaml.cs
-Copyright (C) 20016  Belledonne Communications, Grenoble, France
+Copyright (C) 2016  Belledonne Communications, Grenoble, France
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
 as published by the Free Software Foundation; either version 2
@@ -23,9 +23,7 @@ using Windows.ApplicationModel.Resources;
 
 namespace Linphone.Controls
 {
-    /// <summary>
-    /// User control to be displayed on each page, giving the state of the account registration.
-    /// </summary>'
+
     public partial class StatusBar : UserControl
     {
 
