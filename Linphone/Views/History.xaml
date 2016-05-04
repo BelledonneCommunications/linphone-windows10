@@ -23,10 +23,17 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="1"
+                
+                <Ellipse Width="32" Height="32" VerticalAlignment="Center" Grid.RowSpan="2" Margin="0,2,10,0">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="/Assets/avatar.png"/>
+                    </Ellipse.Fill>
+                </Ellipse>
+                
+                <TextBlock Grid.Column="1" Padding="0,5,0,0"
                             Text="{Binding DisplayedName}" 
                             Style="{StaticResource ListItemHeaderStyle}"/>
-                <TextBlock  Grid.Column="1" Margin="0,0,0,10"
+                <TextBlock  Grid.Column="1" Padding="0,0,0,5"
                                 Grid.Row="1" Style="{StaticResource ListItemStyle}" Foreground="{Binding IsMissed, Converter={StaticResource BoolToAccentBrushConverter}}">
                     <Run Text="{Binding StatusText}"></Run>
                     <Run Text=","></Run>

@@ -125,7 +125,7 @@ namespace Linphone.Views
 
             LinphoneManager.Instance.CoreDispatcher = Dispatcher;
             LinphoneManager.Instance.RegistrationChanged += RegistrationChanged;
-            LinphoneManager.Instance.MessagReceived += MessageReceived;
+            LinphoneManager.Instance.MessageReceived += MessageReceived;
             LinphoneManager.Instance.CallStateChanged += CallStateChanged;
             status.RefreshStatus();
             /*    if (e.NavigationMode == NavigationMode.New)

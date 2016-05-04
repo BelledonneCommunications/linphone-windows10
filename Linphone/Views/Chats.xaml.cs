@@ -67,7 +67,7 @@ namespace Linphone.Views
             
             */
 
-            LinphoneManager.Instance.MessagReceived += MessagReceived;
+            LinphoneManager.Instance.MessageReceived += MessageReceived;
 
             GetMessagesAndDisplayConversationsList();
             Conversations.ItemsSource = _conversations;
@@ -85,7 +85,7 @@ namespace Linphone.Views
             base.OnNavigatedFrom(e);
         }
 
-        private void MessagReceived(object sender, EventArgs e)
+        private void MessageReceived(object sender, EventArgs e)
         {
             //GetMessagesAndDisplayConversationsList();
         }

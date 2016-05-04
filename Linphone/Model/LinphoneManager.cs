@@ -38,7 +38,7 @@ namespace Linphone.Model
 
         public event ChangedEventHandler CallStateChanged;
         public event ChangedEventHandler RegistrationChanged;
-        public event ChangedEventHandler MessagReceived;
+        public event ChangedEventHandler MessageReceived;
 
         private Core _core;
         public bool isLinphoneRunning = false;
@@ -622,9 +622,9 @@ namespace Linphone.Model
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
             CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                if (MessagReceived != null)
+                if (MessageReceived != null)
                 {
-                    MessagReceived(this, new MessageEventArgs(message));
+                    MessageReceived(this, new MessageEventArgs(message));
                 }
 
                 Address fromAddress = message.FromAddress;
