@@ -159,7 +159,13 @@
         <CommandBar Grid.Row="2" VerticalAlignment="Bottom">
             <AppBarButton Icon="Save" Label="Save" Click="save_Click_1"/>
             <AppBarButton Icon="Cancel" Label="Cancel" Click="cancel_Click_1" />
-            <AppBarButton Icon="Emoji" Label="Linphone" Click="linphone_Click_1"/>
+            <AppBarButton Label="Linphone" Click="linphone_Click_1">
+                <AppBarButton.Content>
+                    <Grid>
+                        <Image Source="/Assets/linphone_user.png"/>
+                    </Grid>
+                </AppBarButton.Content>
+            </AppBarButton>
         </CommandBar>
     </Grid>
 

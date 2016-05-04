@@ -189,6 +189,19 @@ namespace Linphone.Model
         }
         #endregion
 
+        #region Chat
+        public int GetUnreadMessageCount()
+        {
+            int nbUnreadMessages = 0;
+            foreach(ChatRoom chatroom in Core.ChatRooms)
+            {
+                nbUnreadMessages += chatroom.UnreadMessageCount;
+            }
+            return nbUnreadMessages;
+        }
+
+        #endregion
+
         private List<CallLogModel> _history;
 
         public List<CallLogModel> GetCallsHistory()
@@ -327,8 +340,6 @@ namespace Linphone.Model
             }
             set
             {
-                var toto = AudioRoutingManager.GetDefault().AvailableAudioEndpoints;
-                var titi = AudioRoutingManager.GetDefault().GetAudioEndpoint();
                 if (value)
                     AudioRoutingManager.GetDefault().SetAudioEndpoint(AudioRoutingEndpoint.Speakerphone);
                 else

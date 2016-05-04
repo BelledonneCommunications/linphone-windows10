@@ -21,18 +21,75 @@ using System;
 using BelledonneCommunications.Linphone.Native;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
+using System.ComponentModel;
 
 namespace Linphone.Views
 {
 
-    public sealed partial class Dialer : Page
+    public sealed partial class Dialer : Page, INotifyPropertyChanged
     {
 
         public Dialer()
         {
             this.InitializeComponent();
+            DataContext = this;
             ContactsManager contactsManager = ContactsManager.Instance;
         }
+
+        private int unreadMessageCount;
+        public int UnreadMessageCount
+        {
+            get
+            {
+                return unreadMessageCount;
+            }
+
+            set
+            {
+                unreadMessageCount = value;
+                if(unreadMessageCount > 0)
+                {
+                    unreadMassageText.Visibility = Visibility.Visible; 
+                } else
+                {
+                    unreadMassageText.Visibility = Visibility.Collapsed;
+                }
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("UnreadMessageCount"));
+                }
+            }
+        }
+
+        private int missedCallCount;
+        public int MissedCallCount
+        {
+            get
+            {
+                return missedCallCount;
+            }
+
+            set
+            {
+                missedCallCount = value;
+                if (missedCallCount > 0)
+                {
+                    MissedCallText.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    MissedCallText.Visibility = Visibility.Collapsed;
+                }
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("MissedCallCount"));
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private void LogUploadProgressIndication(int offset, int total)
         {
@@ -51,12 +108,25 @@ namespace Linphone.Views
             status.RefreshStatus();
         }
 
+        private void MessageReceived(object sender, EventArgs e)
+        {
+            UnreadMessageCount = LinphoneManager.Instance.GetUnreadMessageCount();
+        }
+
+        private void CallStateChanged(object sender, EventArgs e)
+        {
+            MissedCallCount = LinphoneManager.Instance.Core.MissedCallsCount;
+        }
+
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
             LinphoneManager.Instance.CoreDispatcher = Dispatcher;
             LinphoneManager.Instance.RegistrationChanged += RegistrationChanged;
+            LinphoneManager.Instance.MessagReceived += MessageReceived;
+            LinphoneManager.Instance.CallStateChanged += CallStateChanged;
             status.RefreshStatus();
             /*    if (e.NavigationMode == NavigationMode.New)
                 {
@@ -107,6 +177,11 @@ namespace Linphone.Views
                 Call call = LinphoneManager.Instance.Core.CurrentCall;
                 String uri = call.RemoteAddress.AsStringUriOnly();
                 Frame.Navigate(typeof(Views.InCall), uri);
+            }
+
+            if(LinphoneManager.Instance.GetUnreadMessageCount() > 0)
+            {
+                UnreadMessageCount = LinphoneManager.Instance.GetUnreadMessageCount();
             }
         }
 

@@ -256,9 +256,39 @@
         </Grid>
 
         <CommandBar Grid.Row="3" VerticalAlignment="Bottom">
-            <AppBarButton Icon="Clock" Label="History" Click="history_Click"/>
+            <AppBarButton Label="History" Click="history_Click">
+                <AppBarButton.Content>
+                    <Grid>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" 
+                            Glyph="&#xE121;" 
+                            FontSize="20"/>
+                        <TextBlock 
+                            x:Name="MissedCallText"
+                            Visibility="Collapsed"
+                            Text="{Binding MissedCallCount, Mode = TwoWay}"
+                            HorizontalAlignment="Right"
+                            Style="{StaticResource TextStyle}"
+                            Padding="0,5,12,0"/>
+                    </Grid>
+                </AppBarButton.Content>
+            </AppBarButton>
             <AppBarButton Icon="Contact" Label="Contacts" Click="contacts_Click"/>
-            <AppBarButton Icon="Message" Label="Chat" Click="chat_Click"/>
+            <AppBarButton Label="Chat" Click="chat_Click">
+                <AppBarButton.Content>
+                    <Grid>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" 
+                            Glyph="&#xE8BD;" 
+                            FontSize="20"/>
+                        <TextBlock 
+                            x:Name="unreadMassageText"
+                            Visibility="Collapsed"
+                            Text="{Binding UnreadMessageCount, Mode = TwoWay}" 
+                            HorizontalAlignment="Right"
+                            Style="{StaticResource TextStyle}"
+                            Padding="0,5,12,0"/>
+                    </Grid>
+                </AppBarButton.Content>
+            </AppBarButton>
             <AppBarButton Icon="Setting" Label="Settings" Click="settings_Click"/>
 
             <CommandBar.SecondaryCommands>

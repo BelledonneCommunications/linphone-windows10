@@ -97,6 +97,7 @@
     <Content Include="Assets\linphonerc-factory" />
     <Content Include="Assets\avatar.png" />
     <Content Include="Assets\avatar2.png" />
+    <Content Include="Assets\linphone_user.png" />
     <Content Include="Assets\rootca.pem" />
     <None Include="project.json" />
   </ItemGroup>
