@@ -26,6 +26,8 @@ using Windows.Storage;
 using Windows.Phone.Media.Devices;
 using Windows.System.Profile;
 using Windows.Networking.PushNotifications;
+using Windows.ApplicationModel.Calls;
+using LinphoneTasks;
 
 namespace Linphone.Model
 {
@@ -101,6 +103,14 @@ namespace Linphone.Model
         public LinphoneManager()
         {
             LastKnownState = RegistrationState.None;
+            Init();
+        }
+
+        private async void Init()
+        {
+            var vcc = VoipCallCoordinator.GetDefault();
+            var entryPoint = typeof(PhoneCallTask).FullName;
+            var status = await vcc.ReserveCallResourcesAsync(entryPoint);
         }
 
 
@@ -334,8 +344,6 @@ namespace Linphone.Model
         {
             get
             {
-                //AudioRoutingManager
-                //
                 return AudioRoutingManager.GetDefault().GetAudioEndpoint() == AudioRoutingEndpoint.Speakerphone;
             }
             set
