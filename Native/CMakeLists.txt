@@ -71,6 +71,8 @@ set(SOURCE_FILES
 	VideoPolicy.h
 	VideoSize.cpp
 	VideoSize.h
+	VoipCallController.cpp
+	VoipCallController.h
 )
 set(LIBS ${LINPHONE_LIBRARIES})
 

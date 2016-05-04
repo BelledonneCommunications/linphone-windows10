@@ -33,6 +33,7 @@ namespace BelledonneCommunications
 			/// <summary>
 			/// Definition of the CoreListener interface.
 			/// </summary>
+			[Windows::Foundation::Metadata::WebHostHidden]
 			public interface class CoreListener
 			{
 			public:

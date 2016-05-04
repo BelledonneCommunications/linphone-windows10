@@ -207,12 +207,6 @@ void Call::SendVFURequest()
 }
 
 #if 0
-void Call::CallContext::set(Windows::Phone::Networking::Voip::VoipPhoneCall^ cc)
-{
-	API_LOCK;
-	this->callContext = cc;
-}
-
 Platform::Object^ Call::CallStartTimeFromContext::get()
 {
 	API_LOCK;
@@ -226,12 +220,18 @@ Platform::Object^ Call::CallStartTimeFromContext::get()
 	}
 	return result;
 }
+#endif
 
-Windows::Phone::Networking::Voip::VoipPhoneCall^ Call::CallContext::get()
+Windows::ApplicationModel::Calls::VoipPhoneCall^ Call::CallContext::get()
 {
 	return this->callContext;
 }
-#endif
+
+void Call::CallContext::set(Windows::ApplicationModel::Calls::VoipPhoneCall^ cc)
+{
+	API_LOCK;
+	this->callContext = cc;
+}
 
 Call::Call(::LinphoneCall *call)
 	: call(call)

@@ -31,6 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Tunnel.h"
 #include "VideoPolicy.h"
 #include "VideoSize.h"
+#include "VoipCallController.h"
 
 #include <collection.h>
 
@@ -40,8 +41,7 @@ using namespace Platform;
 using namespace Platform::Collections;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
-//using namespace Windows::Phone::Media::Devices;
-//using namespace Windows::Phone::Networking::Voip;
+using namespace Windows::ApplicationModel::Calls;
 
 
 
@@ -938,6 +938,12 @@ void Core::VideoPolicy::set(BelledonneCommunications::Linphone::Native::VideoPol
 	linphone_core_set_video_policy(this->lc, &lvp);
 }
 
+VoipCallController^ Core::VoipCallController::get()
+{
+	API_LOCK;
+	return this->voipCallController;
+}
+
 
 
 
@@ -1354,57 +1360,41 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 {
 	Core^ lCore = (Core^)Utils::GetCore(lc);
 	CoreListener^ listener = lCore->CoreListener;
-	if (listener != nullptr) {
-		Call^ lCall = (Call^)Utils::GetCall(call);
-		CallState state = (CallState) cstate;
-		listener->CallStateChanged(lCall, state, Utils::cctops(msg));
-	}
+	Call^ lCall = (Call^)Utils::GetCall(call);
+	CallState state = (CallState)cstate;
 
-#if 0
-	CallController^ callController = Globals::Instance->CallController;
 	if (state == CallState::IncomingReceived) {
-		Platform::String^ name = lCall->RemoteAddress->DisplayName;
-		if (name == nullptr || name->Length() <= 0) 
-		{
-			name = lCall->RemoteAddress->UserName;
-		}
-		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = callController->OnIncomingCallReceived(lCall, name, lCall->RemoteAddress->AsStringUriOnly(), callController->IncomingCallViewDismissed);
+		VoipPhoneCall^ platformCall = lCore->VoipCallController->NewIncomingCall(lCall->RemoteAddress->AsStringUriOnly());
 		lCall->CallContext = platformCall;
-	} 
+	}
 	else if (state == CallState::OutgoingProgress) {
-		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = callController->NewOutgoingCall(lCall->RemoteAddress->AsStringUriOnly());
+		VoipPhoneCall^ platformCall = lCore->VoipCallController->NewOutgoingCall(lCall->RemoteAddress->AsStringUriOnly());
 		lCall->CallContext = platformCall;
 	}
 	else if (state == CallState::End || state == CallState::Error) {
-		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = (Windows::Phone::Networking::Voip::VoipPhoneCall^) lCall->CallContext;
+		VoipPhoneCall^ platformCall = lCall->CallContext;
 		if (platformCall != nullptr)
 			platformCall->NotifyCallEnded();
-
-		if (callController->IncomingCallViewDismissed != nullptr) {
-			// When we receive a call with PN, call the callback to kill the agent process in case the caller stops the call before user accepts/denies it
-			callController->IncomingCallViewDismissed();
-		}
 	}
 	else if (state == CallState::Paused || state == CallState::PausedByRemote) {
-		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = (Windows::Phone::Networking::Voip::VoipPhoneCall^) lCall->CallContext;
+		VoipPhoneCall^ platformCall = lCall->CallContext;
 		if (platformCall != nullptr)
 			platformCall->NotifyCallHeld();
 	}
 	else if (state == CallState::StreamsRunning) {
-		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = (Windows::Phone::Networking::Voip::VoipPhoneCall^) lCall->CallContext;
-		if (platformCall == nullptr) {
-			// If CallContext is null here, it is because we have an incoming call using the custom incoming call view so create the VoipPhoneCall now
-			platformCall = callController->NewIncomingCallForCustomIncomingCallView(lCall->RemoteAddress->DisplayName);
-			lCall->CallContext = platformCall;
-		}
+		VoipPhoneCall^ platformCall = lCall->CallContext;
 		if (lCall->CameraEnabled) {
-			platformCall->CallMedia = VoipCallMedia::Audio | VoipCallMedia::Video;
-		} else {
-			platformCall->CallMedia = VoipCallMedia::Audio;
+			platformCall->CallMedia = VoipPhoneCallMedia::Audio | VoipPhoneCallMedia::Video;
+		}
+		else {
+			platformCall->CallMedia = VoipPhoneCallMedia::Audio;
 		}
 		platformCall->NotifyCallActive();
 	}
-#endif
+
+	if (listener != nullptr) {
+		listener->CallStateChanged(lCall, state, Utils::cctops(msg));
+	}
 }
 
 void auth_info_requested(::LinphoneCore *lc, const char *realm, const char *username, const char *domain) 
@@ -1491,13 +1481,15 @@ void log_collection_upload_progress_indication(::LinphoneCore *lc, size_t offset
 }
 
 Core::Core(BelledonneCommunications::Linphone::Native::CoreListener^ coreListener)
-	: lc(nullptr), listener(coreListener), config(ref new LpConfig(nullptr, nullptr)), isIterateEnabled(false)
+	: lc(nullptr), listener(coreListener), config(ref new LpConfig(nullptr, nullptr)), isIterateEnabled(false),
+	voipCallController(ref new BelledonneCommunications::Linphone::Native::VoipCallController())
 {
 	Init();
 }
 
 Core::Core(BelledonneCommunications::Linphone::Native::CoreListener^ coreListener, BelledonneCommunications::Linphone::Native::LpConfig^ config)
-	: lc(nullptr), listener(coreListener), config(config), isIterateEnabled(false)
+	: lc(nullptr), listener(coreListener), config(config), isIterateEnabled(false),
+	voipCallController(ref new BelledonneCommunications::Linphone::Native::VoipCallController())
 {
 	Init();
 }
