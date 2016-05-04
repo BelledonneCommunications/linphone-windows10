@@ -21,21 +21,13 @@ using Windows.UI.Xaml.Controls;
 namespace Linphone.Controls
 {
 
-    public interface AddressBoxFocused
-    {
-        void Focused();
-
-        void UnFocused();
-    }
-
     public partial class AddressBox : UserControl
     {
-        public AddressBoxFocused FocusListener;
 
         public String Text
         {
             get { return address.Text; }
-            set { address.Text = value;  Debug.WriteLine("Set"); }
+            set { address.Text = value; }
         }
 
         public AddressBox()
@@ -53,18 +45,6 @@ namespace Linphone.Controls
         {
             if (address.Text.Length > 0)
                 address.Text = address.Text.Substring(0, address.Text.Length - 1);
-        }
-
-        private void address_GotFocus(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            if (FocusListener != null)
-                FocusListener.Focused();
-        }
-
-        private void address_LostFocus(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            if (FocusListener != null)
-                FocusListener.UnFocused();
         }
 
         private void address_TextChanged(object sender, TextChangedEventArgs e)

@@ -20,25 +20,18 @@ using Windows.UI.Xaml.Navigation;
 using System;
 using BelledonneCommunications.Linphone.Native;
 using Windows.UI.Xaml;
-using System.Diagnostics;
-using Linphone.Controls;
+using Windows.UI.Xaml.Input;
 
 namespace Linphone.Views
 {
-    /// <summary>
-    /// Home page for the application, displays a numpad and links to Settings/History/Contacts pages.
-    /// </summary>
-    public sealed partial class Dialer : Page, AddressBoxFocused
+
+    public sealed partial class Dialer : Page
     {
 
         public Dialer()
         {
             this.InitializeComponent();
-            addressBox.FocusListener = this;
             ContactsManager contactsManager = ContactsManager.Instance;
-            //addressBox.FocusListener = this;
-            //ContactsManager.Instance.readContacts();
-            //Force creation and init of ContactManager
         }
 
         private void LogUploadProgressIndication(int offset, int total)
@@ -58,11 +51,6 @@ namespace Linphone.Views
             status.RefreshStatus();
         }
 
-
-        /// <summary>
-        /// Method called when the page is displayed.
-        /// Check if the uri contains a sip address, if yes, it starts a call to this address.
-        /// </summary>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -108,8 +96,6 @@ namespace Linphone.Views
                     }
                 }*/
 
-            //status.RefreshStatus(LinphoneManager.Instance.LastKnownState);
-
             if (e.Parameter is String && (e.Parameter as String).Contains("sip") && e.NavigationMode != NavigationMode.Back)
             {
                 String sipAddressToCall = e.Parameter as String;
@@ -122,17 +108,11 @@ namespace Linphone.Views
                 String uri = call.RemoteAddress.AsStringUriOnly();
                 Frame.Navigate(typeof(Views.InCall), uri);
             }
-
-            Debug.WriteLine(LinphoneManager.Instance.Core.AudioCodecs[0].MimeType);
         }
 
-        /// <summary>
-        /// Method called when the page is hidden.
-        /// </summary>
         protected override void OnNavigatedFrom(NavigationEventArgs nee)
         {
             base.OnNavigatedFrom(nee);
- 
            // LinphoneManager.Instance.LogUploadProgressIndicationEH -= LogUploadProgressIndication;
            // BugReportUploadPopup.Visibility = Visibility.Collapsed;
         }
@@ -156,7 +136,7 @@ namespace Linphone.Views
             String tag = button.Tag as String;
             LinphoneManager.Instance.Core.PlayDtmf(Convert.ToChar(tag), 1000);
 
-           addressBox.Text += tag;
+            addressBox.Text += tag;
         }
 
         private void VoicemailClick(object sender, RoutedEventArgs e)
@@ -167,7 +147,7 @@ namespace Linphone.Views
         private void zero_Hold(object sender, RoutedEventArgs e)
         {
             if (addressBox.Text.Length > 0)
-               addressBox.Text = addressBox.Text.Substring(0, addressBox.Text.Length - 1);
+                addressBox.Text = addressBox.Text.Substring(0, addressBox.Text.Length - 1);
             addressBox.Text += "+";
         }
 
@@ -218,19 +198,9 @@ namespace Linphone.Views
             }
         }
 
-        public void Focused()
+        private void status_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            //numpad.Visibility = Visibility.Collapsed;
-        }
-
-        public void UnFocused()
-        {
-            //numpad.Visibility = Visibility.Visible;
-        }
-
-        private void call_Click_1(object sender, RoutedEventArgs e)
-        {
-
+            LinphoneManager.Instance.Core.RefreshRegisters();
         }
     }
 }

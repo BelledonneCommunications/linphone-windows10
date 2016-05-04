@@ -23,8 +23,6 @@
             AcceptsReturn="False"
             TextChanged="address_TextChanged"
             InputScope="EmailSmtpAddress"
-            GotFocus="address_GotFocus"
-            LostFocus="address_LostFocus" 
             CompositeMode="MinBlend">
         </TextBox>
 

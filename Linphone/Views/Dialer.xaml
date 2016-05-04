@@ -9,100 +9,17 @@
     Background="{ThemeResource AppBarBackgroundThemeBrush}"
     mc:Ignorable="d">
 
-    <Page.Resources>
-        <Style x:Key="DialpadButtonStyle"
-           TargetType="Button">
-            <Setter Property="Margin" Value="0" />
-            <Setter Property="Padding" Value="0,0,1,0" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Stretch" />
-            <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="Height" Value="60" />
-            <Setter Property="ClickMode" Value="Press" />
-            <Setter Property="Foreground" Value="{ThemeResource SystemBaseHighColor}" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="IsTextScaleFactorEnabled" Value="False" />
-        </Style>
-
-        <Style x:Key="AccentLongButtonStyle"
-           TargetType="Button">
-            <Setter Property="Margin" Value="0" />
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Stretch" />
-            <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="Foreground" Value="{ThemeResource SystemChromeWhiteColor}" />
-            <Setter Property="Background" Value="{ThemeResource SystemAccentColor}" />
-            <Setter Property="MinWidth" Value="0" />
-            <Setter Property="Height" Value="72" />
-            <Setter Property="IsTextScaleFactorEnabled" Value="False" />
-        </Style>
-
-        <Style x:Key="DialpadNumberStyle"
-           TargetType="TextBlock">
-            <Setter Property="FontSize"
-                Value="{ThemeResource TextStyleExtraLargeFontSize}" />
-            <Setter Property="FontFamily"
-                Value="{ThemeResource PhoneFontFamilyNormal}" />
-            <Setter Property="VerticalAlignment"
-                Value="Bottom" />
-            <Setter Property="HorizontalAlignment"
-                Value="Center" />
-        </Style>
-
-        <Style x:Key="DialpadLetterStyle"
-           TargetType="TextBlock">
-            <Setter Property="FontSize"
-                Value="12" />
-            <Setter Property="FontFamily"
-                Value="{ThemeResource PhoneFontFamilySemiLight}" />
-            <Setter Property="FontWeight"
-                Value="ExtraLight" />
-            <Setter Property="VerticalAlignment"
-                Value="Bottom" />
-            <Setter Property="HorizontalAlignment"
-                Value="Center" />
-            <Setter Property="Padding"
-                Value="0,0,0,0" />
-        </Style>
-
-        <Style x:Key="TextStyle"
-           TargetType="TextBlock">
-            <Setter Property="FontSize"
-                Value="16" />
-            <Setter Property="FontFamily"
-                Value="{ThemeResource PhoneFontFamilySemiLight}" />
-            <Setter Property="FontWeight"
-                Value="ExtraLight"/>
-        </Style>
-
-        <Style x:Key="DialpadIconStyle"
-           TargetType="FontIcon">
-            <Setter Property="FontSize"
-                Value="12" />
-            <Setter Property="FontFamily"
-                Value="{ThemeResource PhoneFontFamilySemiLight}" />
-            <Setter Property="FontWeight"
-                Value="ExtraLight" />
-            <Setter Property="VerticalAlignment"
-                Value="Bottom" />
-            <Setter Property="HorizontalAlignment"
-                Value="Center" />
-        </Style>
-    </Page.Resources>
-
-    <Grid Background="{ThemeResource AppBarBackgroundThemeBrush}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <controls:StatusBar x:Name="status" Grid.Row="0"></controls:StatusBar>
+        <controls:StatusBar 
+            x:Name="status" 
+            Grid.Row="0" 
+            Tapped="status_Tapped"/>
 
         <Grid x:Name="ContentPanel" Grid.Row="1">
             <Grid.RowDefinitions>
@@ -119,7 +36,12 @@
                 BorderThickness="0"
                 FontSize="40"/>
 
-            <StackPanel x:Name="numpad" Grid.Row="1" VerticalAlignment="Bottom" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <StackPanel 
+                x:Name="numpad" 
+                Grid.Row="1" 
+                VerticalAlignment="Bottom" 
+                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="12" />
@@ -287,9 +209,10 @@
                     </Button>
                 </Grid>
 
-                <Button Background="{ThemeResource SystemControlBackgroundAccentBrush}"
-                        Click="call_Click" 
-                        Style="{StaticResource AccentLongButtonStyle}">
+                <Button
+                    Click="call_Click" 
+                     Style="{StaticResource AccentLongButtonStyle}">
+                    
                     <Button.ContentTemplate>
                         <DataTemplate>
                             <Grid>
@@ -333,7 +256,7 @@
         </Grid>
 
         <CommandBar Grid.Row="3" VerticalAlignment="Bottom">
-            <AppBarButton Icon="Clock" Label="History" Click="history_Click" />
+            <AppBarButton Icon="Clock" Label="History" Click="history_Click"/>
             <AppBarButton Icon="Contact" Label="Contacts" Click="contacts_Click"/>
             <AppBarButton Icon="Message" Label="Chat" Click="chat_Click"/>
             <AppBarButton Icon="Setting" Label="Settings" Click="settings_Click"/>
@@ -342,7 +265,5 @@
                 <AppBarButton Label="About" Click="about_Click"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
-
-
     </Grid>
 </Page>
