@@ -292,6 +292,8 @@ namespace Linphone.Model
                 foreach (Contact c in contactBatch.Contacts)
                 {
                     ContactItem contactToAdd = new ContactItem(c.Id, c.DisplayName);
+                    contactToAdd.ContactEmails = c.Emails;
+                    contactToAdd.ContactPhones = c.Phones;
                     contactToAdd.SetImageAsync(c.Thumbnail);
                     contactItems.Add(contactToAdd);
                 }

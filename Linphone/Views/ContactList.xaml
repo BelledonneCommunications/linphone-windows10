@@ -153,8 +153,8 @@
                                 HorizontalAlignment="Center"
                                 Margin="4">
                                 <TextBlock
-                                    FontSize="22"
-                                    FontWeight="SemiLight"
+                                    FontSize="21"
+                                    FontWeight="SemiBold"
                                     Foreground="{ThemeResource SystemControlBackgroundAccentBrush}"
                                     HorizontalAlignment="Center"
                                     Padding="7"

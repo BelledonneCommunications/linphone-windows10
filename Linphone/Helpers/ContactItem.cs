@@ -15,6 +15,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 using System;
+using System.Collections.Generic;
+using Windows.ApplicationModel.Contacts;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
@@ -26,8 +28,8 @@ namespace Linphone.Helpers
         private string contactId;
         private string contactName;
         private ImageSource contactImage;
-        private string contactNumber;
-        private string contactEmail;
+        private IEnumerable<ContactPhone> contactPhones;
+        private IEnumerable<ContactEmail> contactEmails;
 
         public ContactItem(string ContactId, string ContactName)
         {
@@ -73,6 +75,32 @@ namespace Linphone.Helpers
             get
             {
                 return contactImage;
+            }
+        }
+        
+        public IEnumerable<ContactPhone> ContactPhones
+        {
+            get
+            {
+                return contactPhones;
+            }
+
+            set
+            {
+                contactPhones = value;
+            }
+        }
+
+        public IEnumerable<ContactEmail> ContactEmails
+        {
+            get
+            {
+                return contactEmails;
+            }
+
+            set
+            {
+                contactEmails = value;
             }
         }
     }

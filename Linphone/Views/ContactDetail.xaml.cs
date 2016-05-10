@@ -63,11 +63,9 @@ namespace Linphone.Views
                 contactPicture.ImageSource = contact.ContactImage;
             }
 
-          /*  foreach (ContactPhone phone in contact.Phones)
+            foreach (ContactPhone phone in contact.ContactPhones)
             {
                 ContactAction entry = new ContactAction();
-                entry.Action = "/Assets/AppBar/feature.phone.png";
-                entry.Action2 = "/Assets/AppBar/chat.png";
                 entry.Label = phone.Kind.ToString();
                 entry.NumberOrAddress = phone.Number;
                 entry.Click += action_Click_1;
@@ -75,17 +73,15 @@ namespace Linphone.Views
                 actions.Children.Add(entry);
             }
 
-            foreach (ContactEmail email in contact.Emails)
+            foreach (ContactEmail email in contact.ContactEmails)
             {
                 ContactAction entry = new ContactAction();
-                entry.Action = "/Assets/AppBar/feature.phone.png";
-                entry.Action2 = "/Assets/AppBar/chat.png";
                 entry.Label = email.Kind.ToString();
                 entry.NumberOrAddress = email.Address;
                 entry.Click += action_Click_1;
                 entry.Click2 += action_Click_2;
                 actions.Children.Add(entry);
-            }*/
+            }
         }
 
         private void SetAddressGoToDialerAndCall(String address)
