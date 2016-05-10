@@ -64,8 +64,7 @@
                                     VerticalAlignment="Center" 
                                     HorizontalAlignment="Left" 
                                     Margin="12,0,0,0"
-                                    Style="{ThemeResource BaseTextBlockStyle}"
-                                    Foreground="{ThemeResource SystemBaseHighColor}"/>
+                                    Style="{StaticResource TextStyle}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -102,8 +101,7 @@
                                            VerticalAlignment="Center" 
                                            HorizontalAlignment="Left" 
                                            Margin="12,0,0,0"
-                                           Style="{ThemeResource BaseTextBlockStyle}"
-                                           Foreground="{ThemeResource SystemBaseHighColor}"/>
+                                           Style="{StaticResource ListItemHeaderStyle}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -115,7 +113,7 @@
                                         Text="{Binding Key}"
                                         FontWeight="SemiBold"
                                         FontSize="25"
-                                        Margin="12,0,0,4"
+                                        Margin="4,0,0,0"
                                         Foreground="{ThemeResource SystemAccentColor}"/>
                                 </DataTemplate>
                             </GroupStyle.HeaderTemplate>

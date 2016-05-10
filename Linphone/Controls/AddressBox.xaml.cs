@@ -27,7 +27,16 @@ namespace Linphone.Controls
         public String Text
         {
             get { return address.Text; }
-            set { address.Text = value; }
+            set {
+                address.Text = value;
+                if(value.Length > 0)
+                {
+                    Backspace.IsEnabled = true;
+                } else
+                {
+                    Backspace.IsEnabled = false;
+                }
+            }
         }
 
         public AddressBox()

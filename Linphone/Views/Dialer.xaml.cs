@@ -166,10 +166,14 @@ namespace Linphone.Views
                     }
                 }*/
 
-            if (e.Parameter is String && (e.Parameter as String).Contains("sip") && e.NavigationMode != NavigationMode.Back)
+            if (e.Parameter is String && (e.Parameter as String)?.Length > 0 && e.NavigationMode != NavigationMode.Back)
             {
-                String sipAddressToCall = e.Parameter as String;
-                addressBox.Text = sipAddressToCall;
+                try {
+                    Address address = LinphoneManager.Instance.Core.InterpretURL(e.Parameter as String);
+                    String sipAddressToCall = address.AsStringUriOnly();
+                    addressBox.Text = sipAddressToCall;
+                } catch(Exception exception)
+                { }
             }
         
             if (LinphoneManager.Instance.Core.CallsNb > 0)
