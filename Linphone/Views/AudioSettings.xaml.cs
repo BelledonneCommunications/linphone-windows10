@@ -17,7 +17,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using BelledonneCommunications.Linphone.Native;
 using Linphone.Model;
 using System;
-using System.Diagnostics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -116,9 +115,10 @@ namespace Linphone.Views
 
         private void ECCalibratorButton_Click_1(object sender, RoutedEventArgs e)
         {
-            //ECCalibratorButton.IsEnabled = false;
-            //ECCalibratorStatusButton.Content = AppResources.ECCalibrationInProgress;
-            //LinphoneManager.Instance.LinphoneCore.StartEchoCalibration();
+            var loader = new Windows.ApplicationModel.Resources.ResourceLoader();
+            ECCalibratorButton.IsEnabled = false;
+            ECCalibratorStatusButton.Content = loader.GetString("ECCalibrationInProgress");
+            //LinphoneManager.Instance.Core.StartEchoCalibration();
         }
 
         /// <summary>

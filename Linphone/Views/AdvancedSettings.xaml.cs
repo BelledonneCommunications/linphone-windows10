@@ -16,7 +16,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using Linphone.Model;
 using System;
-using System.Windows;
 using System.Collections.Generic;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -25,9 +24,7 @@ using Windows.UI.Xaml;
 
 namespace Linphone.Views
 {
-    /// <summary>
-    ///  Page displaying advanced settings (such as Tunnel, DTMFs, ...)
-    /// </summary>
+
     public partial class AdvancedSettings : Page
     {
         private CallSettingsManager _callSettings = new CallSettingsManager();
@@ -36,9 +33,6 @@ namespace Linphone.Views
         private ApplicationSettingsManager _settings = new ApplicationSettingsManager();
         private bool saveSettingsOnLeave = true;
 
-        /// <summary>
-        /// Public constructor.
-        /// </summary>
         public AdvancedSettings()
         {
             this.InitializeComponent();
@@ -48,10 +42,10 @@ namespace Linphone.Views
             _chatSettings.Load();
             _settings.Load();
 
-            rfc2833.IsEnabled = (bool) _callSettings.SendDTFMsRFC2833;
-            sipInfo.IsEnabled = (bool) _callSettings.SendDTFMsSIPInfo;
-            vibrator.IsEnabled = (bool) _chatSettings.VibrateOnIncomingMessage;
-            resizeDown.IsEnabled = (bool) _chatSettings.ScaleDownSentPictures;
+            rfc2833.IsOn = (bool) _callSettings.SendDTFMsRFC2833;
+            sipInfo.IsOn = (bool) _callSettings.SendDTFMsSIPInfo;
+            vibrator.IsOn = (bool) _chatSettings.VibrateOnIncomingMessage;
+            resizeDown.IsOn = (bool) _chatSettings.ScaleDownSentPictures;
 
             List<string> mediaEncryptions = new List<string>
             {
@@ -84,32 +78,36 @@ namespace Linphone.Views
             tunnelPort.Text = _networkSettings.TunnelPort;
             tunnelServer.Text = _networkSettings.TunnelServer;
 
-            //TunnelPanel.Visibility = LinphoneManager.Instance.Core.Tunnel && Customs.IsTunnelEnabled ? Visibility.Visible : Visibility.Collapsed; //Hidden properties for now
+            TunnelPanel.Visibility = LinphoneManager.Instance.Core.Tunnel != null ? Visibility.Visible : Visibility.Collapsed; //Hidden properties for now
 
-            Debug.IsEnabled = _settings.DebugEnabled;
+            Debug.IsOn = _settings.DebugEnabled;
             SendLogs.IsEnabled = _settings.DebugEnabled;
             ResetLogs.IsEnabled = _settings.DebugEnabled;
         }
 
         private void Save()
         {
-            _callSettings.SendDTFMsRFC2833 = rfc2833.IsEnabled;
-            _callSettings.SendDTFMsSIPInfo = sipInfo.IsEnabled;
+            _callSettings.SendDTFMsRFC2833 = rfc2833.IsOn;
+            _callSettings.SendDTFMsSIPInfo = sipInfo.IsOn;
             _callSettings.Save();
 
             _networkSettings.MEncryption = mediaEncryption.SelectedItem.ToString();
             _networkSettings.FWPolicy = firewallPolicy.SelectedItem.ToString();
             _networkSettings.StunServer = Stun.Text;
-            _networkSettings.TunnelMode = tunnelMode.SelectedItem.ToString();
-            _networkSettings.TunnelServer = tunnelServer.Text;
-            _networkSettings.TunnelPort = tunnelPort.Text;
+
+            if(TunnelPanel.Visibility == Visibility.Visible)
+            {
+                _networkSettings.TunnelMode = tunnelMode.SelectedItem.ToString();
+                _networkSettings.TunnelServer = tunnelServer.Text;
+                _networkSettings.TunnelPort = tunnelPort.Text;
+            }          
             _networkSettings.Save();
 
-            _chatSettings.VibrateOnIncomingMessage = vibrator.IsEnabled;
-            _chatSettings.ScaleDownSentPictures = resizeDown.IsEnabled;
+            _chatSettings.VibrateOnIncomingMessage = vibrator.IsOn;
+            _chatSettings.ScaleDownSentPictures = resizeDown.IsOn;
             _chatSettings.Save();
 
-            _settings.DebugEnabled = (bool)Debug.IsEnabled;
+            _settings.DebugEnabled = (bool)Debug.IsOn;
             _settings.Save();
 
             //LinphoneManager.Instance.ConfigureLogger();

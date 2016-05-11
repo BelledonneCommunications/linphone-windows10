@@ -97,13 +97,14 @@
             </PivotItem>
 
             <!--Pivot item two-->
-            <PivotItem Header="OptionsMenu">
+            <PivotItem Header="OptionsMenu" x:Uid="OptionsMenu">
                 <StackPanel Orientation="Vertical">
                     <Button
                         Grid.Row="3"
                         x:Name="ECCalibratorButton"
                         Click="ECCalibratorButton_Click_1"
                         Margin="0,30,0,0"
+                        x:Uid="EchoCancellerCalibration"
                         Content="EchoCancellerCalibration" />
                     <Button
                         Grid.Row="3"
@@ -111,6 +112,7 @@
                         IsEnabled="False"
                         BorderThickness="0"
                         Margin="0,30,0,0"
+                        x:Uid="ECCalibrationNotRun"
                         Content="ECCalibrationNotRun" />
                 </StackPanel>
             </PivotItem>

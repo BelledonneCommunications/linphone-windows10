@@ -5,54 +5,51 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:linphone="clr-namespace:Linphone"
-    Background="{ThemeResource AppBarBackgroundThemeBrush}"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
-
-    <!--LayoutRoot is the root grid where all page content is placed-->
+    
     <Grid x:Name="LayoutRoot">
-        <!--Pivot Control-->
-        <Pivot Name="AdvancedSettingsMenu">
-            <PivotItem Header="NetworkMenu">
+        <Pivot Name="AdvancedSettingsMenu" x:Uid="AdvancedSettingsTitle">
+            <PivotItem Header="NetworkMenu" x:Uid="NetworkMenu">
                 <ScrollViewer>
                     <StackPanel Orientation="Vertical">
                         <ComboBox
                             x:Name="mediaEncryption"
+                            x:Uid="MediaEncryptionSetting"
                             Header="MediaEncryptionSetting">
                         </ComboBox>
 
                         <ComboBox
+                            Margin="0,10,0,0"
                             x:Name="firewallPolicy"
+                            x:Uid="FirewallPolicySetting"
                             Header="FirewallPolicySetting">
                         </ComboBox>
 
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock
-                                Style="{ThemeResource SubtitleTextBlockStyle}"
-                                x:Uid="StunServer" />
+                        <TextBox
+                            x:Name="Stun"
+                            Margin="0,10,0,0"
+                            Header="StunServer"
+                            IsEnabled="True"
+                            IsReadOnly="False">
+                            <TextBox.InputScope>
+                                <InputScope>
+                                    <InputScope.Names>
+                                        <InputScopeName NameValue="Url" />
+                                    </InputScope.Names>
+                                </InputScope>
+                            </TextBox.InputScope>
+                        </TextBox>
 
-                            <TextBox
-                                x:Name="Stun"
-                                IsEnabled="True"
-                                IsReadOnly="False">
-                                <TextBox.InputScope>
-                                    <InputScope>
-                                        <InputScope.Names>
-                                            <InputScopeName NameValue="Url" />
-                                        </InputScope.Names>
-                                    </InputScope>
-                                </TextBox.InputScope>
-                            </TextBox>
-                        </StackPanel>
-                            
 
                         <StackPanel x:Name="TunnelPanel" Orientation="Vertical">
                             <ComboBox 
                                 x:Name="tunnelMode"
+                                x:Uid="TunnelMode"
                                 Header="TunnelMode">
                             </ComboBox>
                         
                             <TextBlock
-                                Style="{ThemeResource SubtitleTextBlockStyle}"
                                 x:Uid="TunnelServer" />
 
                             <TextBox
@@ -69,7 +66,6 @@
                             </TextBox>
 
                             <TextBlock
-                                Style="{ThemeResource SubtitleTextBlockStyle}"
                                 x:Uid="TunnelPort" />
 
                             <TextBox
@@ -90,38 +86,43 @@
             </PivotItem>
 
             <!--Pivot item Call-->
-            <PivotItem Header="CallMenu">
+            <PivotItem Header="CallMenu" x:Uid="CallMenu">
                 <StackPanel Orientation="Vertical">
                     <ToggleSwitch  
                         x:Name="rfc2833" 
+                        x:Uid="RFC2833Setting"
                         Header="RFC2833Setting">
                     </ToggleSwitch>
                     <ToggleSwitch  
-                        x:Name="sipInfo" 
+                        x:Name="sipInfo"
+                        x:Uid="SIPInfoSetting"
                         Header="SIPInfoSetting">
                     </ToggleSwitch>
                 </StackPanel>
             </PivotItem>
 
             <!--Pivot item Chat-->
-            <PivotItem Header="ChatMenu">
+            <PivotItem Header="ChatMenu" x:Uid="ChatMenu">
                 <StackPanel Orientation="Vertical">
                     <ToggleSwitch  
-                        x:Name="vibrator" 
+                        x:Name="vibrator"
+                        x:Uid="VibratorSetting"
                         Header="VibratorSetting">
                     </ToggleSwitch>
                     <ToggleSwitch  
-                        x:Name="resizeDown" 
+                        x:Name="resizeDown"
+                        x:Uid="ResizeSetting"
                         Header="ResizeSetting">
                     </ToggleSwitch>
                 </StackPanel>
             </PivotItem>
 
             <!--Pivot item Debug-->
-            <PivotItem  Header="DebugMenu">
+            <PivotItem  Header="DebugMenu" x:Uid="DebugMenu">
                 <StackPanel Orientation="Vertical">
                     <ToggleSwitch
                         x:Name="Debug"
+                        x:Uid="DebugSetting"
                         Header="DebugSetting">
                     </ToggleSwitch>
 
@@ -130,8 +131,8 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Button x:Name="SendLogs" Grid.Row="0" Content="SendLogsEmail" Click="SendLogs_Click"/>
-                        <Button x:Name="ResetLogs" Grid.Row="1" Content="ResetLogs" Click="ResetLogs_Click"/>
+                        <Button x:Name="SendLogs" Margin="0,10,0,0" Grid.Row="0" Content="SendLogsEmail" x:Uid="SendLogsEmail" Click="SendLogs_Click"/>
+                        <Button x:Name="ResetLogs" Margin="0,10,0,0" Grid.Row="1" Content="ResetLogs" x:Uid="ResetLogs" Click="ResetLogs_Click"/>
                         <StackPanel
                             x:Name="BugReportUploadPopup"
                             Grid.RowSpan="2"

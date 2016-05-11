@@ -134,7 +134,7 @@
   <data name="CancelChanges" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="DebugSetting.Text" xml:space="preserve">
+  <data name="DebugSetting.Header" xml:space="preserve">
     <value>Enable debug logs</value>
   </data>
   <data name="DeleteAllMenu" xml:space="preserve">
@@ -198,7 +198,7 @@ and cc-by-nd from https://github.com/Templarian/WindowsIcons</value>
   <data name="PCMUCodec.Header" xml:space="preserve">
     <value>PCMU</value>
   </data>
-  <data name="SILK16Codec" xml:space="preserve">
+  <data name="SILK16Codec.Header" xml:space="preserve">
     <value>SILK 16</value>
   </data>
   <data name="Speex16Codec.Header" xml:space="preserve">
@@ -237,16 +237,16 @@ and cc-by-nd from https://github.com/Templarian/WindowsIcons</value>
   <data name="AdvancedSettingsMenu.Text" xml:space="preserve">
     <value>Advanced settings</value>
   </data>
-  <data name="CallMenu.Text" xml:space="preserve">
+  <data name="CallMenu.Header" xml:space="preserve">
     <value>Call</value>
   </data>
-  <data name="RFC2833Setting.Text" xml:space="preserve">
+  <data name="RFC2833Setting.Header" xml:space="preserve">
     <value>Send DTMFs as RFC2833</value>
   </data>
   <data name="TunnelMenu" xml:space="preserve">
     <value>Tunnel</value>
   </data>
-  <data name="TunnelMode.Text" xml:space="preserve">
+  <data name="TunnelMode.Header" xml:space="preserve">
     <value>Tunnel mode</value>
   </data>
   <data name="TunnelMode3GOnly" xml:space="preserve">
@@ -267,7 +267,7 @@ and cc-by-nd from https://github.com/Templarian/WindowsIcons</value>
   <data name="TunnelServer.Text" xml:space="preserve">
     <value>Tunnel server</value>
   </data>
-  <data name="NetworkMenu.Text" xml:space="preserve">
+  <data name="NetworkMenu.Header" xml:space="preserve">
     <value>Network</value>
   </data>
   <data name="AccountMenu.Text" xml:space="preserve">
@@ -345,16 +345,16 @@ and cc-by-nd from https://github.com/Templarian/WindowsIcons</value>
   <data name="StatUploadBandwidth" xml:space="preserve">
     <value>Upload bandwidth:</value>
   </data>
-  <data name="SIPInfoSetting.Text" xml:space="preserve">
+  <data name="SIPInfoSetting.Header" xml:space="preserve">
     <value>Send DTMFs as SIP INFO</value>
   </data>
-  <data name="EchoCancellerCalibration" xml:space="preserve">
+  <data name="EchoCancellerCalibration.Content" xml:space="preserve">
     <value>Echo canceller calibration</value>
   </data>
   <data name="CodecsMenu.Header" xml:space="preserve">
     <value>Codecs</value>
   </data>
-  <data name="OptionsMenu" xml:space="preserve">
+  <data name="OptionsMenu.Header" xml:space="preserve">
     <value>Options</value>
   </data>
   <data name="ECCalibrationDone" xml:space="preserve">
@@ -369,7 +369,7 @@ and cc-by-nd from https://github.com/Templarian/WindowsIcons</value>
   <data name="ECCalibrationInProgress" xml:space="preserve">
     <value>Calibration in progress</value>
   </data>
-  <data name="ECCalibrationNotRun" xml:space="preserve">
+  <data name="ECCalibrationNotRun.Content" xml:space="preserve">
     <value>Click button to calibrate</value>
   </data>
   <data name="H264Codec.Header" xml:space="preserve">
@@ -402,7 +402,7 @@ and cc-by-nd from https://github.com/Templarian/WindowsIcons</value>
   <data name="VideoActivationPopupContent" xml:space="preserve">
     <value>You have been proposed video, would you like to accept it?</value>
   </data>
-  <data name="ChatMenu.Text" xml:space="preserve">
+  <data name="ChatMenu.Header" xml:space="preserve">
     <value>Chat</value>
   </data>
   <data name="Conversations.Text" xml:space="preserve">
@@ -471,7 +471,7 @@ and cc-by-nd from https://github.com/Templarian/WindowsIcons</value>
   <data name="DisplayName.Text" xml:space="preserve">
     <value>Display name (not mandatory)</value>
   </data>
-  <data name="VibratorSetting.Text" xml:space="preserve">
+  <data name="VibratorSetting.Header" xml:space="preserve">
     <value>Vibrate on incoming message</value>
   </data>
   <data name="FileSaving" xml:space="preserve">
@@ -504,7 +504,7 @@ and cc-by-nd from https://github.com/Templarian/WindowsIcons</value>
   <data name="LinphoneLogin" xml:space="preserve">
     <value>use linphone.org account</value>
   </data>
-  <data name="ResizeSetting.Text" xml:space="preserve">
+  <data name="ResizeSetting.Header" xml:space="preserve">
     <value>Scale down sent pictures</value>
   </data>
   <data name="ReportCrash" xml:space="preserve">
@@ -547,13 +547,13 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   <data name="FirewallPolicyNone" xml:space="preserve">
     <value>None</value>
   </data>
-  <data name="FirewallPolicySetting.Text" xml:space="preserve">
+  <data name="FirewallPolicySetting.Header" xml:space="preserve">
     <value>Firewall policy</value>
   </data>
   <data name="FirewallPolicyStun" xml:space="preserve">
     <value>STUN</value>
   </data>
-  <data name="StunServer.Text" xml:space="preserve">
+  <data name="StunServer.Header" xml:space="preserve">
     <value>Stun server</value>
   </data>
   <data name="OpusCodec.Header" xml:space="preserve">
@@ -568,7 +568,7 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   <data name="DisconnectMenu" xml:space="preserve">
     <value>Disable register</value>
   </data>
-  <data name="DebugMenu.Text" xml:space="preserve">
+  <data name="DebugMenu.Header" xml:space="preserve">
     <value>Debug</value>
   </data>
   <data name="TCPRemote" xml:space="preserve">
@@ -587,7 +587,7 @@ Do you want to report it to the developpers ? It will help fix it faster.</value
   <data name="MediaEncryptionNone" xml:space="preserve">
     <value>None</value>
   </data>
-  <data name="MediaEncryptionSetting.Text" xml:space="preserve">
+  <data name="MediaEncryptionSetting.Header" xml:space="preserve">
     <value>Media encryption</value>
   </data>
   <data name="MediaEncryptionSRTP" xml:space="preserve">
@@ -694,7 +694,7 @@ To enjoy the best experience with Linphone WP8, we recommend that you use the SI
   <data name="CallErrorIOError" xml:space="preserve">
     <value>Please ensure you are registered and/or you have an Internet access</value>
   </data>
-  <data name="VP8Codec" xml:space="preserve">
+  <data name="VP8Codec.Header" xml:space="preserve">
     <value>VP8</value>
   </data>
   <data name="AVPF.Header" xml:space="preserve">
@@ -708,5 +708,8 @@ To enjoy the best experience with Linphone WP8, we recommend that you use the SI
   </data>
   <data name="VideoSettings.Title" xml:space="preserve">
     <value>VIDEO SETTINGS</value>
+  </data>
+  <data name="AdvancedSettingsTitle.Title" xml:space="preserve">
+    <value>ADVENCED SETTINGS</value>
   </data>
 </root>

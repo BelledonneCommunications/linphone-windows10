@@ -10,9 +10,9 @@
 
     <Grid x:Name="LayoutRoot">
         <Pivot Title="VideoSettingsMenu" x:Uid="VideoSettings">
-            <PivotItem Header="OptionsMenu">
+            <PivotItem Header="OptionsMenu" x:Uid="OptionsMenu">
                 <ScrollViewer x:Name="OptionsContentPanel">
-                    <Grid Margin="12,0,12,0">
+                    <Grid>
                         <StackPanel Orientation="Vertical">
                             <ToggleSwitch
                                 x:Name="VideoEnabled"
@@ -20,21 +20,25 @@
                             </ToggleSwitch>
 
                             <ComboBox
+                                Margin="0,10,0,5"
                                 x:Name="PreferredVideoSize"
                                 x:Uid="PreferredVideoSizeSetting">
                             </ComboBox>
 
                             <ToggleSwitch
+                                Margin="0,10,0,0"
                                 x:Name="AutomaticallyInitiateVideo"
                                 x:Uid="AutomaticallyInitiateVideoSetting">
                             </ToggleSwitch>
 
                             <ToggleSwitch
+                                Margin="0,10,0,0"
                                 x:Name="AutomaticallyAcceptVideo"
                                 x:Uid="AutomaticallyAcceptVideoSetting">
                             </ToggleSwitch>
 
                             <ToggleSwitch
+                                Margin="0,10,0,0"
                                 x:Name="SelfViewEnabled"
                                 x:Uid="SelfViewEnabledSetting">
                             </ToggleSwitch>
@@ -44,7 +48,7 @@
             </PivotItem>
 
             <!--Pivot item two-->
-            <PivotItem Header="CodecsMenu">
+            <PivotItem Header="CodecsMenu" x:Uid="CodecsMenu">
                 <ScrollViewer>
                     <ScrollViewer.Content>
                         <Grid x:Name="CodecsContentPanel">
@@ -56,14 +60,15 @@
                             <ToggleSwitch
                                 Grid.Row="0"
                                 x:Name="H264"
+                                x:Uid="H264Codec"
                                 Header="H264Codec">
                             </ToggleSwitch>
                             <ToggleSwitch
                                 Grid.Row="1"
                                 x:Name="VP8"
+                                x:Uid="VP8Codec"
                                 Header="VP8Codec">
                             </ToggleSwitch>
-
                         </Grid>
                     </ScrollViewer.Content>
                 </ScrollViewer>

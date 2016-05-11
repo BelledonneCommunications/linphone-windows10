@@ -78,7 +78,7 @@
                         x:Uid="AdvancedSettingsMenuSubtitle"/>
                 </StackPanel>
 
-                <StackPanel  Grid.Row="4" Orientation="Vertical" Tapped="LockScreenSettings_Click_1" Margin="0,12,0,0">
+                <StackPanel Visibility="Collapsed" Grid.Row="4" Orientation="Vertical" Tapped="LockScreenSettings_Click_1" Margin="0,12,0,0">
                     <TextBlock
                             Style="{ThemeResource ListItemHeaderStyle}"
                             HorizontalAlignment="Left"
