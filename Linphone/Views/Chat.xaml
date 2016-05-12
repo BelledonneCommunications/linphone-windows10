@@ -6,21 +6,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="using:Linphone"
     xmlns:controls="using:Linphone.Controls"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
-    <Page.Resources>
-        <Style x:Key="TextStyle"
-           TargetType="TextBlock">
-            <Setter Property="FontSize"
-                Value="16" />
-            <Setter Property="FontFamily"
-                Value="{ThemeResource PhoneFontFamilySemiLight}" />
-            <Setter Property="FontWeight"
-                Value="ExtraLight"/>
-        </Style>
-    </Page.Resources>
-
-    <Grid x:Name="LayoutRoot" Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+    <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -30,7 +19,7 @@
         <StackPanel Grid.Row="0" Margin="12,17,0,10">
             <TextBlock 
                 x:Name="ContactName"
-                Style="{StaticResource HeaderTextStyle}"
+                Style="{StaticResource StatusBarTextStyle}"
                 Margin="9,0,0,0" />
             
             <Border x:Name="NewChat" BorderThickness="0,0,0,0">
@@ -71,18 +60,22 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
             <ScrollViewer x:Name="MessagesScroll" Grid.Row="0">
-                <StackPanel 
+                <StackPanel
                     x:Name="MessagesList" 
                     Orientation="Vertical"
-                    VerticalAlignment="Bottom">
-
-                    <controls:TextBoxChatBubble x:Name="MessageBox"/>
-                </StackPanel>
+                    VerticalAlignment="Bottom"/>
             </ScrollViewer>
-            
+
+            <TextBlock x:Name="RemoteComposing" Grid.Row="1" Visibility="Collapsed"/>
+
+            <controls:TextBoxChatBubble x:Name="MessageBox" Grid.Row="2" Margin="10"/>
+
             <Border 
                 x:Name="ProgressPopup"
                 Grid.Row="1"
@@ -99,15 +92,9 @@
                         Text="" />
                 </StackPanel>
             </Border>
-
-            <TextBlock
-                x:Name="RemoteComposing"
-                Visibility="Collapsed"
-                Grid.Row="1"/>
         </Grid>
         <CommandBar Grid.Row="2" VerticalAlignment="Bottom">
-            <AppBarButton Icon="Send" Click="send_Click_1"/>
-            <AppBarButton Icon="Back" Click="back_click"/>
+            <AppBarButton Icon="Phone" Label="Call" x:Uid="Call" Click="Call_Click"/>
         </CommandBar>
 
     </Grid>

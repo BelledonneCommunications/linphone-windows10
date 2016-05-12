@@ -6,19 +6,19 @@
     xmlns:linphone="using:Linphone.Controls"
     xmlns:custom="using:Linphone.Controls"
     xmlns:controls="Linphone.Controls"
-    mc:Ignorable="d"
-    d:DesignHeight="100" d:DesignWidth="420">
+    mc:Ignorable="d">
 
     <UserControl.Resources>
         <Style TargetType="TextBlock" x:Key="TimestampStyle">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Opacity" Value="0.5"/>
-            <Setter Property="Margin" Value="0,0,5,3"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="0,0,5,5"/>
         </Style>
 
         <Style TargetType="TextBlock" x:Key="MessageStyle">
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Margin" Value="5,5,5,3"/>
+            <Setter Property="Margin" Value="7,5,2,2"/>
         </Style>
     </UserControl.Resources>
 
@@ -38,6 +38,7 @@
                 Grid.Row="0" 
                 x:Name="Message"
                 Style="{StaticResource MessageStyle}"
+                TextWrapping="Wrap"
                 TextAlignment="Left"/>
 
         <Image
@@ -53,7 +54,7 @@
             <Image
                     x:Name="Status" 
                     Source="/Assets/AppBar/next.png"
-                    Height="25"
+                    Height="15"
                     Stretch="Uniform"/>
             
             <TextBlock 

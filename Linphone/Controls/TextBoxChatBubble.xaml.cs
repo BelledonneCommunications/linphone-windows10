@@ -13,54 +13,39 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace Linphone.Controls
 {
-    /// <summary>
-    /// Custom TextBox to look like a chat bubble.
-    /// </summary>
+   
     public partial class TextBoxChatBubble : UserControl
     {
-        /// <summary>
-        /// Public accessor to this control text.
-        /// </summary>
         public string Text { get; set; }
 
-        /// <summary>
-        /// Sets the filename associated with the image to send
-        /// </summary>
         public string ImageName { get; set; }
 
-        /// <summary>
-        /// Sets the local path where the image is stored
-        /// </summary>
         public string ImageLocalPath { get; set; }
 
-        /// <summary>
-        /// Public constructor.
-        /// </summary>
+        public delegate void SendFileClickEventHandler(object sender);
+        public event SendFileClickEventHandler SendFileClick;
+
+        public delegate void SendMessageClickEventHandler(object sender);
+        public event SendMessageClickEventHandler SendMessageClick;
+
         public TextBoxChatBubble()
         {
             InitializeComponent();
         }
 
-        /// <summary>
-        /// Empty the content of the textbox.
-        /// </summary>
         public void Reset()
         {
             Message.Text = "";
             Text = null;
             ImageName = null;
             ImageLocalPath = null;
+            SendMessage.IsEnabled = false;
             Message.Visibility = Visibility.Visible;
             Image.Visibility = Visibility.Collapsed;
         }
@@ -68,16 +53,13 @@ namespace Linphone.Controls
         private void Message_TextChanged(object sender, TextChangedEventArgs e)
         {
             Text = Message.Text;
+            SendMessage.IsEnabled = Text.Length > 0 ? true : false;
             if (TextChanged != null)
-            {
-              TextChanged(this, Message.Text);
+            {           
+                TextChanged(this, Message.Text);
             }
         }
 
-        /// <summary>
-        /// Sets and displays the BitmapImage that will be sent we the user clicks on the send button
-        /// </summary>
-        /// <param name="image">the BitmapImage to display</param>
         public void SetImage(BitmapImage image)
         {
            // Image.SourceProperty = image;
@@ -91,17 +73,21 @@ namespace Linphone.Controls
             string previousText = Text;
             Reset();
             Text = previousText;
-           Message.Text = Text;
+            Message.Text = Text;
         }
 
-        /// <summary>
-        /// Delegate for text changed event.
-        /// </summary>
         public delegate void TextChangedEventHandler(object sender, string text);
 
-        /// <summary>
-        /// Handler for text changed event.
-        /// </summary>
         public event TextChangedEventHandler TextChanged;
+
+        private void SendFile_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SendMessage_Click(object sender, RoutedEventArgs e)
+        {
+            SendMessageClick(this);
+        }
     }
 }

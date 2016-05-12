@@ -7,93 +7,59 @@
     xmlns:controls="Linphone.Controls"
     mc:Ignorable="d"
     d:DesignHeight="150" d:DesignWidth="420">
-    
-    <UserControl.Resources>
-        <Style x:Key="ChatTextBox" TargetType="TextBox">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="TextBox">
-                        <Grid Background="Transparent">
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="CommonStates">
-                                    <VisualState x:Name="Normal"/>
-                                    <VisualState x:Name="MouseOver"/>
-                                    <VisualState x:Name="Disabled">
-                                        <Storyboard>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="MainBorder">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="Transparent"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="MainBorder">
-                                                <DiscreteObjectKeyFrame KeyTime="0"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentElement">
-                                                <DiscreteObjectKeyFrame KeyTime="0"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                </VisualStateGroup>
-                                <VisualStateGroup x:Name="FocusStates">
-                                    <VisualState x:Name="Focused">
-                                        <Storyboard>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="MainBorder">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="Transparent"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="MainBorder">
-                                                <DiscreteObjectKeyFrame KeyTime="0"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                    <VisualState x:Name="Unfocused"/>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
-                            <Border x:Name="MainBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" />
-                            <Border x:Name="ReadonlyBorder" BorderThickness="{TemplateBinding BorderThickness}" Background="Transparent" Visibility="Collapsed"/>
-                            <Border BorderBrush="Transparent" BorderThickness="{TemplateBinding BorderThickness}" Background="Transparent" >
-                                <ContentControl x:Name="ContentElement" BorderThickness="0" HorizontalContentAlignment="Stretch" Padding="{TemplateBinding Padding}" VerticalContentAlignment="Stretch"/>
-                            </Border>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </UserControl.Resources>
 
-    <Grid Margin="60,5,5,5">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-
-        <Rectangle Fill="WhiteSmoke" Grid.RowSpan="2" Grid.Row="0"/>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="40"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="40"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
 
         <Image
-                Grid.Row="0"
-                x:Name="Image"
-                Stretch="Uniform"
-                Margin="10"
-                Visibility="Collapsed">
-          
+            Grid.Row="1"
+            x:Name="Image"
+            Stretch="Uniform"
+            Margin="10"
+            Visibility="Collapsed">
         </Image>
 
-        <TextBox
-                Grid.Row="1"
-                x:Name="Message"
-                TextChanged="Message_TextChanged"
-                InputScope="Chat"
-                TextAlignment="Left"
-                TextWrapping="Wrap"
-                AcceptsReturn="True"
-                Style="{StaticResource ChatTextBox}"/>
+        <Button 
+            x:Name="SendFile"
+            BorderThickness="0"
+            Style="{StaticResource ButtonStyle}"
+            Click="SendFile_Click"
+            Background="Transparent">
+            <Button.ContentTemplate>
+                <DataTemplate>
+                    <FontIcon x:Name="SendFile" FontFamily="Segoe MDL2 Assets" Glyph="&#xE723;" RenderTransformOrigin="0.5,0.5"/>
+                </DataTemplate>
+            </Button.ContentTemplate>
+        </Button>
+        
+        <TextBox 
+            x:Name="Message"
+            TextChanged="Message_TextChanged"
+            InputScope="Chat"
+            x:Uid="ChatMessageHint"
+            TextAlignment="Left"
+            TextWrapping="Wrap"
+            AcceptsReturn="True"
+            BorderThickness="0"
+            Grid.Column="1"/>
 
-        <Path 
-                Grid.Row="2"
-                Data="m 0,0 l 8,0 l 0,16 l -16,-16"
-                Fill="WhiteSmoke"
-                Margin="0,-1,10,0"
-                HorizontalAlignment="Right"/>
-
+        <Button 
+            x:Name="SendMessage"
+            BorderThickness="0"
+            Grid.Column="2"
+            Style="{StaticResource ButtonStyle}"
+            Click="SendMessage_Click"
+            Background="Transparent"
+            IsEnabled="False">
+            <Button.ContentTemplate>
+                <DataTemplate>
+                    <FontIcon Grid.Column="2" FontFamily="Segoe MDL2 Assets" Glyph="&#xE724;" RenderTransformOrigin="0.5,0.5"/>
+                </DataTemplate>
+            </Button.ContentTemplate>
+        </Button>
     </Grid>
 </UserControl>

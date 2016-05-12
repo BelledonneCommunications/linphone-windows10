@@ -35,6 +35,7 @@
             PlaceholderText="Search" 
             VerticalAlignment="Top" 
             Margin="12,12,12,0" 
+            Visibility="Collapsed"
             TextChanged="ContactSearchBox_TextChanged" />
 
         <ListView x:Name="ContactListView" 

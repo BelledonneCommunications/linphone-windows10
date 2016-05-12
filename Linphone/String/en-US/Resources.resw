@@ -712,4 +712,10 @@ To enjoy the best experience with Linphone WP8, we recommend that you use the SI
   <data name="AdvancedSettingsTitle.Title" xml:space="preserve">
     <value>ADVENCED SETTINGS</value>
   </data>
+  <data name="Call.Label" xml:space="preserve">
+    <value>Call</value>
+  </data>
+  <data name="ChatMessageHint.PlaceholderText" xml:space="preserve">
+    <value>Enter your message</value>
+  </data>
 </root>

@@ -4,14 +4,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:linphone="using:Linphone.Controls"
-    mc:Ignorable="d"
-    d:DesignHeight="100" d:DesignWidth="420">
+    mc:Ignorable="d">
 
     <UserControl.Resources>
         <Style TargetType="TextBlock" x:Key="TimestampStyle">
             <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
             <Setter Property="Opacity" Value="0.5"/>
-            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Margin" Value="0,0,5,5"/>
         </Style>
 
         <Style TargetType="TextBlock" x:Key="MessageStyle">

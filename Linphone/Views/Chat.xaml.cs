@@ -17,18 +17,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Windows;
 using Linphone.Model;
 using System.Diagnostics;
 using Linphone.Controls;
-using System.ComponentModel;
-using System.IO;
 using System.Net.Http;
-using System.Threading.Tasks;
-using System.IO.IsolatedStorage;
-using System.Net.Http.Headers;
-using Windows.Storage;
 using BelledonneCommunications.Linphone.Native;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml;
@@ -37,77 +29,43 @@ using Windows.UI.Core;
 
 namespace Linphone.Views
 {
-    /// <summary>
-    /// Listener to let this view to be notified by LinphoneManager when a new message arrives.
-    /// </summary>
     public interface MessageReceivedListener
     {
-        /// <summary>
-        /// Callback called when a message is received.
-        /// </summary>
         void MessageReceived(ChatMessage message);
 
-        /// <summary>
-        /// Returns the sip address of the current displayed conversation if possible
-        /// </summary>
         string GetSipAddressAssociatedWithDisplayConversation();
     }
 
-    /// <summary>
-    /// Listener to let this view to be notified by LinphoneManager when a composing is received.
-    /// </summary>
     public interface ComposingReceivedListener
     {
-        /// <summary>
-        /// Callback called when a composing is received.
-        /// </summary>
         void ComposeReceived();
 
-        /// <summary>
-        /// Returns the sip address of the current displayed conversation if possible
-        /// </summary>
         string GetSipAddressAssociatedWithDisplayConversation();
     }
 
-    /// <summary>
-    /// Displays chat messages between two users.
-    /// </summary>
     public partial class Chat : Page, ChatMessageListener, MessageReceivedListener, ComposingReceivedListener
     {
         private const int SENT_IMAGES_QUALITY = 50;
 
         private HttpClient _httpPostClient { get; set; }
 
-        /// <summary>
-        /// SIP address linked to the current displayed chat.
-        /// </summary>
         public Address sipAddress;
-
-        /// <summary>
-        /// ChatRoom used to send and receive messages.
-        /// </summary>
         public ChatRoom chatRoom;
 
-        /// <summary>
-        /// Public constructor.
-        /// </summary>
         public Chat()
         {
             this.InitializeComponent();
-           // BuildLocalizedApplicationBar();
+            //MessageBox.SendFileClick += send_file;
+            MessageBox.SendMessageClick += send_message;
         }
 
-        /// <summary>
-        /// Method called when the page is displayed.
-        /// Check if the uri contains a sip address, if yes, it displays the matching chat history.
-        /// </summary>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             LinphoneManager.Instance.MessageListener = this;
-           // LinphoneManager.Instance.ComposingListener = this;
+            LinphoneManager.Instance.ComposingListener = this;
 
-         //   ContactManager cm = ContactManager.Instance;
+            //  ContactManager cm = ContactManager.Instance;
           //  cm.ContactFound += cm_ContactFound;
 
             MessageBox.TextChanged += MessageBox_TextChanged;
@@ -158,27 +116,24 @@ namespace Linphone.Views
                     IncomingChatBubble bubble = new IncomingChatBubble(message);
                     bubble.MessageDeleted += bubble_MessageDeleted;
                     bubble.DownloadImage += bubble_DownloadImage;
-                    MessagesList.Children.Insert(MessagesList.Children.Count - 1, bubble);
-                }
+                    MessagesList.Children.Add(bubble);
+                } 
                 else
                 {
                     OutgoingChatBubble bubble = new OutgoingChatBubble(message);
                     bubble.MessageDeleted += bubble_MessageDeleted;
                     bubble.UpdateStatus(message.State);
-                    MessagesList.Children.Insert(MessagesList.Children.Count - 1, bubble);
+                    MessagesList.Children.Add(bubble);
                 }
             }
             scrollToBottom();
         }
 
-        /// <summary>
-        /// Method called when this page isn't displayed anymore.
-        /// </summary>
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             chatRoom = null;
-           // LinphoneManager.Instance.MessageListener = null;
-           // LinphoneManager.Instance.ComposingListener = null;
+            LinphoneManager.Instance.MessageListener = null;
+            LinphoneManager.Instance.ComposingListener = null;
             base.OnNavigatingFrom(e);
         }
 
@@ -234,7 +189,7 @@ namespace Linphone.Views
                          // Create the chat bubble for both text or image messages
                          OutgoingChatBubble bubble = new OutgoingChatBubble(message);
                          bubble.MessageDeleted += bubble_MessageDeleted;
-                         MessagesList.Children.Insert(MessagesList.Children.Count - 1, bubble);
+                         MessagesList.Children.Add(bubble);
                          scrollToBottom();
                      }
                      else if (state == ChatMessageState.FileTransferDone && !message.IsOutgoing)
@@ -300,38 +255,37 @@ namespace Linphone.Views
             // It will throw an exception that will be catched in task_Completed function and will reset the interface.
         }
 
-        private void send_Click_1(object sender, RoutedEventArgs e)
+        private void send_message(object sender)
         {
-               if (NewChatSipAddress.Text != null || NewChatSipAddress.Visibility == Visibility.Collapsed)
-             {
-                Debug.WriteLine(NewChatSipAddress.Text);
+            if (NewChatSipAddress.Text != null || NewChatSipAddress.Visibility == Visibility.Collapsed)
+            {
                 if (chatRoom == null) //This code will be executed only in case of new conversation
-                 {
-                     CreateChatRoom(LinphoneManager.Instance.Core.InterpretURL(NewChatSipAddress.Text));
-                 }
+                {
+                    CreateChatRoom(LinphoneManager.Instance.Core.InterpretURL(NewChatSipAddress.Text));
+                }
 
-                 if (chatRoom != null)
-                 {
-                     if (MessageBox.Text != null && MessageBox.Text.Length > 0)
-                     {
+                if (chatRoom != null)
+                {
+                    if (MessageBox.Text != null && MessageBox.Text.Length > 0)
+                    {
                         Debug.WriteLine(MessageBox.Text);
                         SendMessage(MessageBox.Text);
-                     }
-                     else if (MessageBox.ImageName != null && MessageBox.ImageLocalPath != null)
-                     {
-                         InitiateImageUpload(MessageBox.ImageLocalPath, MessageBox.ImageName);
-                     } else
+                    }
+                    else if (MessageBox.ImageName != null && MessageBox.ImageLocalPath != null)
+                    {
+                        InitiateImageUpload(MessageBox.ImageLocalPath, MessageBox.ImageName);
+                    }
+                    else
                     {
                         Debug.WriteLine("No text :)");
                     }
-                     MessageBox.Reset();
-                 }
-                 else
-                 {
-                    Debug.WriteLine("Else");
-                    // System.Windows.MessageBox.Show(AppResources.ChatRoomCreationError, AppResources.GenericError, MessageBoxButton.OK);
-                 }
-             }
+                    MessageBox.Reset();
+                }
+                else
+                {
+                    //System.Windows.MessageBox.Show(AppResources.ChatRoomCreationError, AppResources.GenericError, MessageBoxButton.OK);
+                }
+            }
         }
 
         private void back_click(object sender, RoutedEventArgs e)
@@ -489,7 +443,7 @@ namespace Linphone.Views
                 IncomingChatBubble bubble = new IncomingChatBubble(message);
                 bubble.MessageDeleted += bubble_MessageDeleted;
                 bubble.DownloadImage += bubble_DownloadImage;
-                MessagesList.Children.Insert(MessagesList.Children.Count - 1, bubble);
+                MessagesList.Children.Add(bubble);
 
                 if (chatRoom != null)
                 {
@@ -506,16 +460,12 @@ namespace Linphone.Views
         /// </summary>
         public void ComposeReceived()
         {
-          /*  Dispatcher.BeginInvoke(() =>
-            {
-                UpdateComposingMessage();
-                scrollToBottom();
-            });*/
+            UpdateComposingMessage();
         }
 
         private void UpdateComposingMessage()
         {
-          /*  if (chatRoom == null)
+            if (chatRoom == null)
                 return;
 
             bool isRemoteComposing = chatRoom.IsRemoteComposing;
@@ -526,7 +476,7 @@ namespace Linphone.Views
             if (remoteName.Length <= 0)
                 remoteName = chatRoom.PeerAddress.UserName;
             var loader = new Windows.ApplicationModel.Resources.ResourceLoader();
-            RemoteComposing.Text = remoteName + loader.GetString("RemoteComposing");*/
+            RemoteComposing.Text = remoteName + loader.GetString("RemoteComposing");
         }
 
         /// <summary>
@@ -581,5 +531,18 @@ namespace Linphone.Views
                 }
             }
         }
-     }
+
+        private void Call_Click(object sender, RoutedEventArgs e)
+        {
+            if (chatRoom == null) //This code will be executed only in case of new conversation
+            {
+                LinphoneManager.Instance.NewOutgoingCall(LinphoneManager.Instance.Core.InterpretURL(NewChatSipAddress.Text).AsStringUriOnly());
+            }
+
+            if (chatRoom != null)
+            {
+                LinphoneManager.Instance.NewOutgoingCall(chatRoom.PeerAddress.AsStringUriOnly());
+            }
+        }
+    }
 }
