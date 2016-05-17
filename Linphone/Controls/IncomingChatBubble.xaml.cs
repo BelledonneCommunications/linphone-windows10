@@ -15,31 +15,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
 using Linphone.Model;
-using Linphone.Views;
-using Linphone.Controls;
 using BelledonneCommunications.Linphone.Native;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace Linphone.Controls
 {
-    /// <summary>
-    /// Control to display received chat messages.
-    /// </summary>
     public partial class IncomingChatBubble : UserControl
     {
 
         private ChatMessage _message;
 
-        /// <summary>
-        /// Chat message associated with this bubble
-        /// </summary>
         public ChatMessage ChatMessage
         {
             get
@@ -51,44 +39,41 @@ namespace Linphone.Controls
                 _message = value;
             }
         }
-        /// <summary>
-        /// Public constructor.
-        /// </summary>
+
         public IncomingChatBubble(ChatMessage message)
         {
             InitializeComponent();
-            Message.Text = message.Text;
             ChatMessage = message;
             Timestamp.Text = HumanFriendlyTimeStamp;
 
-              /*string fileName = message.FileTransferName;
-              string filePath = message.AppData;
-              bool isImageMessage = fileName != null && fileName.Length > 0;
-              if (isImageMessage)
-              {
-                  Message.Visibility = Visibility.Collapsed;
-                 // Copy.Visibility = Visibility.Collapsed;
-                  if (filePath != null && filePath.Length > 0)
-                  {
-                      // Image already downloaded
-                      Image.Visibility = Visibility.Visible;
-  //                    Save.Visibility = Visibility.Visible;
+            string fileName = message.FileTransferName;
+            string filePath = message.AppData;
+            bool isImageMessage = fileName != null && fileName.Length > 0;
+            if (isImageMessage)
+            {
+                Message.Visibility = Visibility.Collapsed;
+                //Copy.Visibility = Visibility.Collapsed;
+                if (filePath != null && filePath.Length > 0)
+                {
+                    // Image already downloaded
+                    Image.Visibility = Visibility.Visible;
+//                  Save.Visibility = Visibility.Visible;
 
-                      BitmapImage image = Utils.ReadImageFromIsolatedStorage(filePath);
-                      Image.Source = image;
-                  }
-                  else
-                  {
-                      // Image needs to be downloaded
-                      Download.Visibility = Visibility.Visible;
-                  }
-              }
-              else
-              {
-                  Message.Visibility = Visibility.Visible;
-                  Image.Visibility = Visibility.Collapsed;
-                 // Message.Blocks.Add(TextWithLinks);
-              }*/
+                    BitmapImage image = Utils.ReadImageFromIsolatedStorage(filePath);
+                    Image.Source = image;
+                }
+                else
+                {
+                    // Image needs to be downloaded
+                    Download.Visibility = Visibility.Visible;
+                }
+            }
+            else
+            {
+                Message.Visibility = Visibility.Visible;
+                Image.Visibility = Visibility.Collapsed;
+                Message.Blocks.Add(Utils.FormatText(message.Text));
+            }
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)
@@ -144,10 +129,7 @@ namespace Linphone.Controls
         {
             get
             {
-                DateTime unixStart = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-                long unixTimeStampInTicks = (long)(ChatMessage.Time * TimeSpan.TicksPerSecond);
-                DateTime date = new DateTime(unixStart.Ticks + unixTimeStampInTicks).ToLocalTime();
-                return FormatDate(date);
+                return Utils.FormatDate(ChatMessage.Time);
             }
         }
 

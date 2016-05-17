@@ -21,7 +21,7 @@ using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
-namespace Linphone.Helpers
+namespace Linphone.Model
 {
     public class ContactItem
     {

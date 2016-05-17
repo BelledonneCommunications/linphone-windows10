@@ -15,24 +15,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
 using Linphone.Model;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace Linphone.Controls
 {
-    /// <summary>
-    /// Control to display numpad during a call
-    /// </summary>
+
     public partial class Numpad : UserControl
     {
-        /// <summary>
-        /// Public constructor
-        /// </summary>
+
         public Numpad()
         {
             InitializeComponent();

@@ -463,7 +463,7 @@ and cc-by-nd from https://github.com/Templarian/WindowsIcons</value>
     <value>decline</value>
   </data>
   <data name="IncomingCall.Text" xml:space="preserve">
-    <value>INCOMING CALL</value>
+    <value>Incoming Call</value>
   </data>
   <data name="EditPassword" xml:space="preserve">
     <value>edit password</value>

@@ -16,25 +16,69 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using BelledonneCommunications.Linphone.Native;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.IO.IsolatedStorage;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Documents;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace Linphone.Model
 {
-    /// <summary>
-    /// Static utiliy methods, mostly image management
-    /// </summary>
     public class Utils
     {
         private const int LOCAL_IMAGES_QUALITY = 100;
         private const int THUMBNAIL_WIDTH = 420;
         private const string LOCAL_IMAGES_PATH = "ChatImages";
+
+        public static Paragraph FormatText(String text)
+        {
+            Paragraph paragraph = new Paragraph();
+            if (text.Length > 0)
+            {
+                Run run = new Run();
+                if (text.Contains("http://") || text.Contains("https://"))
+                {
+                    string[] split = text.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (string word in split)
+                    {
+                        run.Text = word;
+                        if (word.StartsWith("http://") || word.StartsWith("https://"))
+                        {
+                            Hyperlink link = new Hyperlink();
+                            link.NavigateUri = new Uri(word);
+                            link.Inlines.Add(run);
+                            link.Foreground = (Brush)Application.Current.Resources["ApplicationPageBackgroundThemeBrush"];
+                            paragraph.Inlines.Add(link);
+                        }
+                        else
+                        {
+                            paragraph.Inlines.Add(run);
+                        }
+                    }
+                }
+                else
+                {
+                    run.Text = text;
+                    paragraph.Inlines.Add(run);
+                }
+            }
+            return paragraph;
+        }
+
+        public static string FormatDate(long time)
+        {
+            DateTime unixStart = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            long unixTimeStampInTicks = (long)(time * TimeSpan.TicksPerSecond);
+            DateTime date = new DateTime(unixStart.Ticks + unixTimeStampInTicks).ToLocalTime();
+            DateTime now = DateTime.Now;
+            if (now.Year == date.Year && now.Month == date.Month && now.Day == date.Day)
+                return String.Format("{0:HH:mm}", date);
+            else if (now.Year == date.Year)
+                return String.Format("{0:ddd d MMM, HH:mm}", date);
+            else
+                return String.Format("{0:ddd d MMM yyyy, HH:mm}", date);
+        }
 
         /// <summary>
         /// Saves an image sent or received in the media library of the device.

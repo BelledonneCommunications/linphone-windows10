@@ -82,7 +82,7 @@ namespace Linphone.Controls
 
         private void SendFile_Click(object sender, RoutedEventArgs e)
         {
-
+            SendFileClick(this);
         }
 
         private void SendMessage_Click(object sender, RoutedEventArgs e)

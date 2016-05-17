@@ -14,32 +14,15 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
 using Linphone.Model;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Media.Imaging;
 
 namespace Linphone.Controls
 {
 
     public partial class CallControlsP : UserControl
     {
-        private const string speakerOn = "/Assets/Incall_Icons/speaker_on.png";
-        private const string speakerOff = "/Assets/Incall_Icons/speaker_off.png";
-        private const string bluetoothOn = "/Assets/Incall_Icons/bluetooth_on.png";
-        private const string bluetoothOff = "/Assets/Incall_Icons/bluetooth_off.png";
-        private const string videoOn = "/Assets/Incall_Icons/video_on.png";
-        private const string videoOff = "/Assets/Incall_Icons/video_off.png";
-        private const string pauseOn = "/Assets/Incall_Icons/pause.png";
-        private const string pauseOff = "/Assets/Incall_Icons/play.png";
-        private const string micOn = "/Assets/Incall_Icons/micro_on.png";
-        private const string micOff = "/Assets/Incall_Icons/micro_off.png";
-
         public delegate void HangUpClickEventHandler(object sender);
         public event HangUpClickEventHandler HangUpClick;
 
@@ -67,26 +50,33 @@ namespace Linphone.Controls
         public delegate void BluetoothClickEventHandler(object sender, bool isBluetoothOn);
         public event DialpadClickEventHandler BluetoothClick;
 
-        /// <summary>
-        /// Public constructor
-        /// </summary>
         public CallControlsP()
         {
             InitializeComponent();
             microphone.IsChecked = LinphoneManager.Instance.Core.IsMicEnabled;
+            video.IsEnabled = LinphoneManager.Instance.Core.IsVideoSupported;
+            camera.IsEnabled = LinphoneManager.Instance.Core.IsVideoSupported && LinphoneManager.Instance.NumberOfCameras > 1;
         }
 
+        #region Button enabled/disabled 
         public void enabledDialpad(bool isDialpadShown)
         {
             dialpad.Visibility = isDialpadShown ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        public void enabledVideo(bool isDialpadShown)
+        public void enabledVideo(bool isVideoEnabled)
         {
-            video.IsEnabled = isDialpadShown;
+            video.IsEnabled = isVideoEnabled;
         }
 
+        public void enabledPause(bool isPauseEnabled)
+        {
+            pause.IsEnabled = isPauseEnabled;
+        }
 
+        #endregion
+
+        #region Click Event
         private void hangUp_Click(object sender, RoutedEventArgs e)
         {
             HangUpClick(this);
@@ -95,28 +85,19 @@ namespace Linphone.Controls
         private void bluetooth_Click_1(object sender, RoutedEventArgs e)
         {
             bool isBluetoothToggled = (bool)bluetooth.IsChecked;
-            //bluetoothImg.Source = new BitmapImage(new Uri(isBluetoothToggled ? bluetoothOn : bluetoothOff, UriKind.RelativeOrAbsolute));
             BluetoothClick(this, isBluetoothToggled);
         }
 
         private void speaker_Click_1(object sender, RoutedEventArgs e)
         {
             bool isSpeakerToggled = (bool)speaker.IsChecked;
-            if (SpeakerClick(this, isSpeakerToggled)) {
-                //speakerImg.Source = new BitmapImage(new Uri((bool)speaker.IsChecked ? speakerOn : speakerOff, UriKind.RelativeOrAbsolute));
-            }
+            SpeakerClick(this, isSpeakerToggled);
         }
 
         private void microphone_Click_1(object sender, RoutedEventArgs e)
         {
             bool isMicToggled = (bool)microphone.IsChecked;
-            //microImg.Source = new BitmapImage(new Uri(isMicToggled ? micOff : micOn, UriKind.RelativeOrAbsolute));
             MuteClick(this, isMicToggled);
-        }
-
-        public void enabledPause(bool v)
-        {
-            pause.IsEnabled = true;
         }
 
         private void stats_Click_1(object sender, RoutedEventArgs e)
@@ -124,13 +105,12 @@ namespace Linphone.Controls
             bool areStatsVisible = (bool)stats.IsChecked;
             stats.IsChecked = areStatsVisible;
             statsPanel.Visibility = areStatsVisible ? Visibility.Visible : Visibility.Collapsed;
-             StatsClick(this, areStatsVisible);
+            StatsClick(this, areStatsVisible);
         }
 
         private void video_Click_1(object sender, RoutedEventArgs e)
         {
             bool isVideoToggled = (bool)video.IsChecked;
-           // videoImg.Source = new BitmapImage(new Uri((bool)video.IsChecked ? videoOn : videoOff, UriKind.RelativeOrAbsolute));
             video.IsChecked = isVideoToggled;
             VideoClick(this, isVideoToggled);
         }
@@ -145,14 +125,14 @@ namespace Linphone.Controls
             bool isDialpadChecked = (bool)dialpad.IsChecked;
             dialpad.IsChecked = isDialpadChecked;
             numpad.Visibility = isDialpadChecked ? Visibility.Visible : Visibility.Collapsed;
-            //DialpadClick(this, isDialpadChecked);
+            DialpadClick(this, isDialpadChecked);
         }
 
         private void pause_Click_1(object sender, RoutedEventArgs e)
         {
             bool isPauseToggled = (bool)pause.IsChecked;
-            //pauseImg.Source = new BitmapImage(new Uri(isPauseToggled ? pauseOn : pauseOff, UriKind.RelativeOrAbsolute));
             PauseClick(this, isPauseToggled);
         }
+        #endregion
     }
 }

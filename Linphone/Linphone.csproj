@@ -132,8 +132,8 @@
     <Compile Include="Controls\TextBoxChatBubble.xaml.cs">
       <DependentUpon>TextBoxChatBubble.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\AlphaKeyGroup.cs" />
-    <Compile Include="Helpers\ContactItem.cs" />
+    <Compile Include="Model\AlphaKeyGroup.cs" />
+    <Compile Include="Model\ContactItem.cs" />
     <Compile Include="Model\BaseModel.cs" />
     <Compile Include="Model\BoolToAccentBrushConverter.cs" />
     <Compile Include="Model\BugCollector.cs" />
@@ -230,7 +230,6 @@
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-200.png" />
-    <Content Include="Assets\unknown.png" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
   <ItemGroup>

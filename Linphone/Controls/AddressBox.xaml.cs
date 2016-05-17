@@ -15,7 +15,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 using System;
-using System.Diagnostics;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace Linphone.Controls
@@ -23,7 +23,6 @@ namespace Linphone.Controls
 
     public partial class AddressBox : UserControl
     {
-
         public String Text
         {
             get { return address.Text; }
@@ -45,15 +44,16 @@ namespace Linphone.Controls
             this.DataContext = this;
         }
 
-        private void backspace_Hold_1(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void backspace_Hold_1(object sender, RoutedEventArgs e)
         {
             address.Text = "";
         }
 
-        private void backspace_Click_1(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void backspace_Click_1(object sender, RoutedEventArgs e)
         {
             if (address.Text.Length > 0)
                 address.Text = address.Text.Substring(0, address.Text.Length - 1);
+
         }
 
         private void address_TextChanged(object sender, TextChangedEventArgs e)

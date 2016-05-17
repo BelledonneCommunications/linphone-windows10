@@ -7,21 +7,7 @@
     xmlns:custom="using:Linphone.Controls"
     xmlns:controls="Linphone.Controls"
     mc:Ignorable="d">
-
-    <UserControl.Resources>
-        <Style TargetType="TextBlock" x:Key="TimestampStyle">
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Opacity" Value="0.5"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Margin" Value="0,0,5,5"/>
-        </Style>
-
-        <Style TargetType="TextBlock" x:Key="MessageStyle">
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Margin" Value="7,5,2,2"/>
-        </Style>
-    </UserControl.Resources>
-
+    
     <Grid Margin="100,5,5,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -34,12 +20,13 @@
                 Fill="{ThemeResource SystemControlBackgroundAccentBrush}"
                 Grid.RowSpan="2"/>
 
-        <TextBlock 
-                Grid.Row="0" 
-                x:Name="Message"
-                Style="{StaticResource MessageStyle}"
-                TextWrapping="Wrap"
-                TextAlignment="Left"/>
+        <RichTextBlock
+            Grid.Row="0"
+            x:Name="Message"
+            TextWrapping="Wrap"
+            IsTextSelectionEnabled="True"
+            Style="{StaticResource MessageStyle}"
+            TextAlignment="Left"/>
 
         <Image
                 Grid.Row="0" 

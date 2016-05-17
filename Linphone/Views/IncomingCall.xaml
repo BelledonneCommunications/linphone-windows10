@@ -4,11 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <Style x:Key="AccentLongButtonStyle"
-           TargetType="Button">
+        <Style x:Key="AccentLongButtonStyle" TargetType="Button">
             <Setter Property="Margin" Value="0" />
             <Setter Property="Padding" Value="0" />
             <Setter Property="BorderThickness" Value="0" />
@@ -21,7 +21,6 @@
             <Setter Property="MinWidth" Value="0" />
             <Setter Property="IsTextScaleFactorEnabled" Value="False" />
         </Style>
-
         <Style x:Key="ButtonStyle"
            TargetType="Button">
             <Setter Property="Margin" Value="0" />
@@ -36,73 +35,54 @@
             <Setter Property="MinWidth" Value="0" />
             <Setter Property="IsTextScaleFactorEnabled" Value="False" />
         </Style>
-
-        <Style x:Key="TextStyle"
-           TargetType="TextBlock">
-            <Setter Property="FontSize"
-                Value="16" />
-            <Setter Property="FontFamily"
-                Value="{ThemeResource PhoneFontFamilySemiLight}" />
-            <Setter Property="FontWeight"
-                Value="ExtraLight"/>
-        </Style>
     </Page.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="{StaticResource AppBarBackgroundThemeBrush}">
+    <Grid x:Name="LayoutRoot" >
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1"  Margin="0,25,0,0">
+        <Grid x:Name="ContentPanel" Grid.Row="1"  Margin="0,5,0,0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            
-            <!-- Status text -->
+
             <TextBlock
-                Grid.Row="0"
                 x:Name="Status"
                 Text="Incoming Call"
                 x:Uid="IncomingCall"
+                Style="{StaticResource ListItemStyle}"
                 HorizontalAlignment="Center"
-                Margin="12,0,12,0"
-                FontSize="30" />
+                Margin="12"
+                FontSize="20" />
 
-            <!-- Contact text -->
-            <TextBlock
-                Grid.Row="1"
-                x:Name="Contact"
-                Margin="12,20,12,0"
-                FontSize="20"
-                HorizontalAlignment="Center"
-                FontFamily="{ThemeResource PhoneFontFamilySemiLight}"
-                TextWrapping="Wrap"/>
+            <StackPanel Margin="0,50,0,0" Grid.Row="1">
+                <Image 
+                    Source="/Assets/avatar2.png"
+                    HorizontalAlignment="Center"
+                    Width="60"/>
 
-            <!-- Number text -->
-            <TextBlock
-                Grid.Row="2"
-                x:Name="Number"
-                Margin="12,0,12,0"
-                FontSize="16"
-                HorizontalAlignment="Center"
-                FontFamily="{ThemeResource PhoneFontFamilySemiLight}"
-                TextWrapping="NoWrap"/>
+                <TextBlock
+                    x:Name="Contact"
+                    FontSize="18"
+                    HorizontalAlignment="Center"
+                    Style="{StaticResource TextStyle}"
+                    TextWrapping="Wrap"
+                    Margin="5,10,5,10"/>
 
-            <Image
-                Grid.Row="3"
-                x:Name="Avatar"
-                Width="200"
-                Source="/Assets/avatar.png"
-                HorizontalAlignment="Center"/>
+                <TextBlock
+                    x:Name="Number"
+                    Margin="5,10,5,10"
+                    Visibility="Collapsed"
+                    FontSize="25"/>
+            </StackPanel>
+                
 
             <!-- Buttons -->
-            <Grid Grid.Row="4" VerticalAlignment="Bottom">
+            <Grid Grid.Row="2" VerticalAlignment="Bottom">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>

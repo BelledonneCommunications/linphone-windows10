@@ -15,11 +15,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 using Linphone.Controls;
-using Linphone.Helpers;
 using Linphone.Model;
 using System;
-using System.IO;
-using System.Windows;
 using Windows.ApplicationModel.Contacts;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;

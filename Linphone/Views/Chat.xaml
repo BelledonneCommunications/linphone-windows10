@@ -37,35 +37,31 @@
                              VerticalContentAlignment="Center" 
                              InputScope="EmailSmtpAddress"
                               AcceptsReturn="False"
-                             PlaceholderText="Number or address"
-                             TextChanged="NewChatSipAddress_TextChanged">
+                             PlaceholderText="Number or address">
                         
                     </TextBox>
-                    <Button Grid.Column="2" x:Name="ChooseContact" BorderThickness="0" Click="ChooseContact_Click">
-                        <Button.Template>
-                            <ControlTemplate>
-                                <BitmapIcon 
-                                    Width="48" 
-                                    Height="48">
-                                </BitmapIcon>
-                            </ControlTemplate>
-                        </Button.Template>
+                    <Button Grid.Column="2" x:Name="ChooseContact" Margin="0,0,5,5" Style="{StaticResource ButtonStyle}" Background="Transparent" BorderThickness="0" Click="ChooseContact_Click">
+                        <Button.ContentTemplate>
+                            <DataTemplate>
+                                <FontIcon x:Name="SendFile" FontFamily="Segoe MDL2 Assets" Glyph="&#xE710;" RenderTransformOrigin="0.5,0.5"/>
+                            </DataTemplate>
+                        </Button.ContentTemplate>
                     </Button>
                 </Grid>
             </Border>
         </StackPanel>
 
-        <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <ScrollViewer x:Name="MessagesScroll" Grid.Row="0">
+            <ScrollViewer x:Name="MessagesScroll">
                 <StackPanel
                     x:Name="MessagesList" 
                     Orientation="Vertical"
@@ -74,7 +70,8 @@
 
             <TextBlock x:Name="RemoteComposing" Grid.Row="1" Visibility="Collapsed"/>
 
-            <controls:TextBoxChatBubble x:Name="MessageBox" Grid.Row="2" Margin="10"/>
+            <Border Grid.Row="2" BorderBrush="Gray" BorderThickness="0.5"/>
+            <controls:TextBoxChatBubble Grid.Row="3" x:Name="MessageBox"  BorderThickness="1" BorderBrush="Gray" Margin="10"/>
 
             <Border 
                 x:Name="ProgressPopup"
@@ -93,7 +90,7 @@
                 </StackPanel>
             </Border>
         </Grid>
-        <CommandBar Grid.Row="2" VerticalAlignment="Bottom">
+        <CommandBar Grid.Row="4" VerticalAlignment="Bottom">
             <AppBarButton Icon="Phone" Label="Call" x:Uid="Call" Click="Call_Click"/>
         </CommandBar>
 

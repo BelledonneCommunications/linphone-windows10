@@ -451,7 +451,7 @@ namespace Linphone.Model
 
                     lc.AddProxyConfig(cfg);
                     lc.DefaultProxyConfig = cfg;
-                   // LinphoneManager.Instance.AddPushInformationsToContactParams();
+                    LinphoneManager.Instance.AddPushInformationsToContactParams();
                     cfg.IsAvpfEnabled = avpf;
                     cfg.IsRegisterEnabled = true;
                     cfg.Done();

@@ -10,7 +10,7 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="40"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="40"></ColumnDefinition>
         </Grid.ColumnDefinitions>
@@ -28,6 +28,7 @@
             BorderThickness="0"
             Style="{StaticResource ButtonStyle}"
             Click="SendFile_Click"
+            Visibility="Collapsed"
             Background="Transparent">
             <Button.ContentTemplate>
                 <DataTemplate>
