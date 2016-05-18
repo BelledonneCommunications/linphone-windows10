@@ -17,13 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using BelledonneCommunications.Linphone.Native;
 using Linphone.Model;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
 using Windows.UI.Xaml;
 
 namespace Linphone.Views
@@ -34,10 +28,6 @@ namespace Linphone.Views
     public class InCallModel : BaseModel
     {
 
-
-        //private MSWinRTVideo.SwapChainPanelSource _videoSource;
-        //private MSWinRTVideo.SwapChainPanelSource _previewSource;
-
         /// <summary>
         /// Public constructor.
         /// </summary>
@@ -46,15 +36,12 @@ namespace Linphone.Views
         {
             if (CurrentPage != null)
             {
-               // PageOrientation = CurrentPage.Orientation;
+               //PageOrientation = CurrentPage.Orientation;
             }
 
-           // if (LinphoneManager.Instance.isLinphoneRunning)
-           // {
-                bool isVideoAvailable = LinphoneManager.Instance.IsVideoAvailable;
-                videoButtonVisibility = isVideoAvailable ? Visibility.Visible : Visibility.Collapsed;
-                cameraButtonVisibility = isVideoAvailable && LinphoneManager.Instance.NumberOfCameras >= 2 ? Visibility.Visible : Visibility.Collapsed;
-           // }
+            bool isVideoAvailable = LinphoneManager.Instance.IsVideoAvailable;
+            videoButtonEnabled = isVideoAvailable;
+            cameraButtonEnabled = isVideoAvailable && LinphoneManager.Instance.NumberOfCameras >= 2;
         }
 
         /// <summary>
@@ -140,14 +127,14 @@ namespace Linphone.Views
             
             if (RemoteVideoVisibility == Visibility.Collapsed)
             {
-                RemoteVideoProgressBarVisibility = Visibility.Visible;
+                //RemoteVideoProgressBarVisibility = Visibility.Visible;
             }
         }
 
         public void RemoteVideoOpened()
         {
             RemoteVideoVisibility = Visibility.Visible;
-            RemoteVideoProgressBarVisibility = Visibility.Collapsed;
+            //RemoteVideoProgressBarVisibility = Visibility.Collapsed;
         }
 
         private void HideRemoteVideo()
@@ -242,39 +229,33 @@ namespace Linphone.Views
         }*/
 
         #region Button properties
-        /// <summary>
-        /// Visibility of the video button.
-        /// </summary>
-        public Visibility VideoButtonVisibility
+        public bool VideoButtonVisibility
         {
             get
             {
-                return this.videoButtonVisibility;
+                return this.videoButtonEnabled;
             }
             set
             {
-                if (this.videoButtonVisibility != value)
+                if (this.videoButtonEnabled != value)
                 {
-                    this.videoButtonVisibility = value;
+                    this.videoButtonEnabled = value;
                     this.OnPropertyChanged();
                 }
             }
         }
 
-        /// <summary>
-        /// Visibility of the camera button.
-        /// </summary>
-        public Visibility CameraButtonVisibility
+        public bool CameraButtonEnabled
         {
             get
             {
-                return this.cameraButtonVisibility;
+                return this.cameraButtonEnabled;
             }
             set
             {
-                if (this.cameraButtonVisibility != value)
+                if (this.cameraButtonEnabled != value)
                 {
-                    this.cameraButtonVisibility = value;
+                    this.cameraButtonEnabled = value;
                     this.OnPropertyChanged();
                 }
             }
@@ -390,22 +371,6 @@ namespace Linphone.Views
                 if (this.remoteVideoVisibility != value)
                 {
                     this.remoteVideoVisibility = value;
-                    this.OnPropertyChanged();
-                }
-            }
-        }
-
-        public Visibility RemoteVideoProgressBarVisibility
-        {
-            get
-            {
-                return this.remoteVideoProgressBarVisibility;
-            }
-            set
-            {
-                if (this.RemoteVideoProgressBarVisibility != value)
-                {
-                    this.remoteVideoProgressBarVisibility = value;
                     this.OnPropertyChanged();
                 }
             }
@@ -609,8 +574,8 @@ namespace Linphone.Views
 
         #region Private variables
        // private Microsoft.Phone.Controls.PageOrientation pageOrientation = Microsoft.Phone.Controls.PageOrientation.Portrait;
-        private Visibility videoButtonVisibility = Visibility.Collapsed;
-        private Visibility cameraButtonVisibility = Visibility.Collapsed;
+        private bool videoButtonEnabled = false;
+        private bool cameraButtonEnabled = false;
         private Visibility portraitButtonsVisibility = Visibility.Visible;
         private Visibility landscapeButtonsVisibility = Visibility.Collapsed;
         private Boolean isVideoActive = false;

@@ -11,33 +11,14 @@
     mc:Ignorable="d">
 
     <Grid x:Name="LayoutRoot" Tapped="LayoutRoot_Tap">
-        <MediaElement
-            x:Name="remoteVideo"
-            Visibility="{Binding RemoteVideoVisibility}"
-            MediaOpened="remoteVideo_MediaOpened_1"
-            MediaFailed="remoteVideo_MediaFailed_1"
-            Source="{Binding RemoteVideoUri}"
-            Width="{Binding ActualWidth, ElementName=LayoutRoot, Mode=OneWay}"
-            Height="{Binding ActualHeight, ElementName=LayoutRoot, Mode=OneWay}"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            RenderTransformOrigin="0.5,0.5"/>
-
-        <ProgressBar x:Name="RemoteVideoProgressBar"
-            Visibility="{Binding RemoteVideoProgressBarVisibility}"
-            IsIndeterminate="True"
-            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-            Width="{Binding ActualWidth, ElementName=LayoutRoot, Mode=OneWay}"
-            Height="{Binding ActualHeight, ElementName=LayoutRoot, Mode=OneWay}"/>
-
         <Grid x:Name="HUD"
               HorizontalAlignment="Stretch">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Grid x:Name="ContactHeader" Margin="10,50,10,10">
+            <Grid x:Name="ContactHeader" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -47,16 +28,16 @@
 
                 <Image Source="/Assets/avatar2.png"
                        HorizontalAlignment="Center"
-                       Width="50"/>
+                       Width="60" Height="60" VerticalAlignment="Top"/>
 
                 <TextBlock
                     Grid.Row="1"
                     x:Name="Contact"
-                    FontSize="20"
+                    FontSize="18"
                     HorizontalAlignment="Center"
                     Style="{StaticResource TextStyle}"
                     TextWrapping="Wrap"
-                    Margin="5"/>
+                    Margin="5,10,5,10"/>
 
                 <TextBlock
                     Grid.Row="2"
@@ -83,7 +64,7 @@
                 Grid.Row="1"/>
 
             <!-- Local video media element -->
-            <Grid Grid.RowSpan="2" x:Name="VideoGrid" Canvas.ZIndex="-1" Background="Black" Visibility="Visible" Tapped="Video_Tapped">
+            <Grid Grid.RowSpan="2" x:Name="VideoGrid" Canvas.ZIndex="-1" Background="Black" Visibility="Collapsed" Tapped="Video_Tapped">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />

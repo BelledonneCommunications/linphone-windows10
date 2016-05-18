@@ -15,26 +15,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using BelledonneCommunications.Linphone.Native;
 using Linphone.Model;
 using System.Diagnostics;
 using Windows.UI.Core;
-using Windows.Networking.PushNotifications;
 
 namespace Linphone
 {
@@ -52,9 +41,18 @@ namespace Linphone
         public App()
         {
             this.InitializeComponent();
+            SettingsManager.InstallConfigFile();
             this.Suspending += OnSuspending;
+            this.Resuming += App_Resuming;
         }
 
+        private void App_Resuming(object sender, object e)
+        {
+            if (rootFrame.BackStack.Count > 0)
+            {
+                rootFrame.BackStack.Clear();
+            }
+        }
 
         private void Back_requested(object sender, BackRequestedEventArgs e)
         {
@@ -78,7 +76,10 @@ namespace Linphone
             {
                 // Launch the Dialer and remove the incall view from the backstack
                 rootFrame.Navigate(typeof(Views.Dialer), null);
-                //this.Page.NavigationService.RemoveBackEntry();
+                if (rootFrame.BackStack.Count > 0)
+                {
+                    rootFrame.BackStack.Clear();
+                }
             }
         }
 

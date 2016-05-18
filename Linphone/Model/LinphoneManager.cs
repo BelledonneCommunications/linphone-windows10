@@ -28,7 +28,6 @@ using Windows.System.Profile;
 using Windows.Networking.PushNotifications;
 using Windows.ApplicationModel.Calls;
 using LinphoneTasks;
-using Windows.UI.Notifications;
 
 namespace Linphone.Model
 {
@@ -545,7 +544,7 @@ namespace Linphone.Model
         {
         }
 
-         public class CallEventArgs : EventArgs
+        public class CallEventArgs : EventArgs
         {
             public Call _call { get; set; }
             public CallEventArgs(Call c)
@@ -562,14 +561,15 @@ namespace Linphone.Model
                 State = state;
             }
         }
-        void CoreListener.CallStateChanged(Call call, CallState state, string message)
+
+void CoreListener.CallStateChanged(Call call, CallState state, string message)
         {
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
             CoreDispatcher.RunAsync(CoreDispatcherPriority.High, () =>
             {
-                if (CallStateChanged != null)
+                if(CallStateChangedEvent != null)
                 {
-                    CallStateChanged(this, new CallStateEventArgs(state.ToString()));
+                    CallStateChangedEvent(call, state);
                 }
             });
 #pragma warning restore CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
@@ -620,6 +620,20 @@ namespace Linphone.Model
                 });
 #pragma warning restore CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
             }
+
+            else if (state == CallState.UpdatedByRemote)
+            {
+                Core.DeferCallUpdate(call);
+#pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
+                CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    Debug.WriteLine("[LinphoneManager] Update call\r\n");
+                   
+                    
+                });
+#pragma warning restore CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
+            }
+
 
             else if (state == CallState.End || state == CallState.Error)
             {

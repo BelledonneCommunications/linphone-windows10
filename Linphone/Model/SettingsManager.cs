@@ -64,12 +64,14 @@ namespace Linphone.Model
         /// <summary>
         /// Install the default config file from the package to the Isolated Storage
         /// </summary>
-        public static void InstallConfigFile()
+        public static async void InstallConfigFile()
         {
-           /* if (!File.Exists(InitManager.GetConfigPath()))
+            FileInfo fInfo = new FileInfo(LinphoneManager.Instance.GetConfigPath());
+            if (!fInfo.Exists)
             {
-                File.Copy(InitManager.GetDefaultConfigPath(), InitManager.GetConfigPath());
-            }*/
+                fInfo = new FileInfo(LinphoneManager.Instance.GetDefaultConfigPath());
+                fInfo.MoveTo(LinphoneManager.Instance.GetConfigPath());
+            }
         }
 
         /// <summary>
@@ -421,7 +423,7 @@ namespace Linphone.Model
 
                     if (transport != null)
                     {
-                        Address proxyAddr = LinphoneManager.Instance.Core.CreateAddress(cfg.Identity);
+                        Address proxyAddr = LinphoneManager.Instance.Core.CreateAddress(proxy);
                         if (proxyAddr != null)
                         {
                             proxyAddr.Transport = TransportToEnum[transport];
@@ -430,7 +432,7 @@ namespace Linphone.Model
                     }
                     if (outboundProxy)
                     {
-                        Address proxyAddr = LinphoneManager.Instance.Core.CreateAddress(cfg.Identity);
+                        Address proxyAddr = LinphoneManager.Instance.Core.CreateAddress(proxy);
                         cfg.Route = proxyAddr.AsStringUriOnly();
                     }
 
@@ -993,7 +995,8 @@ namespace Linphone.Model
             if (ValueChanged(VideoEnabledKeyName))
             {
                 bool isVideoEnabled = Convert.ToBoolean(GetNew(VideoEnabledKeyName));
-                LinphoneManager.Instance.Core.IsSelfViewEnabled = isVideoEnabled;
+                LinphoneManager.Instance.Core.IsVideoCaptureEnabled = isVideoEnabled;
+                LinphoneManager.Instance.Core.IsVideoDisplayEnabled = isVideoEnabled;
             }
             if (ValueChanged(AutomaticallyInitiateVideoKeyName) || ValueChanged(AutomaticallyAcceptVideoKeyName))
             {

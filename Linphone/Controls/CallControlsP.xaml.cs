@@ -54,8 +54,8 @@ namespace Linphone.Controls
         {
             InitializeComponent();
             microphone.IsChecked = LinphoneManager.Instance.Core.IsMicEnabled;
-            video.IsEnabled = LinphoneManager.Instance.Core.IsVideoSupported;
-            camera.IsEnabled = LinphoneManager.Instance.Core.IsVideoSupported && LinphoneManager.Instance.NumberOfCameras > 1;
+            video.IsEnabled = LinphoneManager.Instance.IsVideoAvailable;
+            camera.IsEnabled = LinphoneManager.Instance.IsVideoAvailable && LinphoneManager.Instance.NumberOfCameras > 1;
         }
 
         #region Button enabled/disabled 
@@ -67,6 +67,11 @@ namespace Linphone.Controls
         public void enabledVideo(bool isVideoEnabled)
         {
             video.IsEnabled = isVideoEnabled;
+        }
+
+        public void checkedVideo(bool isVideoChecked)
+        {
+            video.IsChecked = isVideoChecked;
         }
 
         public void enabledPause(bool isPauseEnabled)

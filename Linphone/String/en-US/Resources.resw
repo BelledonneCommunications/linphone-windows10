@@ -718,4 +718,10 @@ To enjoy the best experience with Linphone WP8, we recommend that you use the SI
   <data name="ChatMessageHint.PlaceholderText" xml:space="preserve">
     <value>Enter your message</value>
   </data>
+  <data name="Accept" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+  <data name="Dismiss" xml:space="preserve">
+    <value>Dismiss</value>
+  </data>
 </root>

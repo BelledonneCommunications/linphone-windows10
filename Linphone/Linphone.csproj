@@ -93,7 +93,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <None Include="Assets\linphonerc" />
+    <Content Include="Assets\linphonerc" />
     <Content Include="Assets\linphonerc-factory" />
     <Content Include="Assets\avatar.png" />
     <Content Include="Assets\avatar2.png" />

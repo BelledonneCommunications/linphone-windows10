@@ -15,8 +15,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 using System;
-using System.Globalization;
-using System.Windows;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
