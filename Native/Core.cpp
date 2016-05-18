@@ -1378,8 +1378,8 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 	}
 	else if (state == CallState::Paused || state == CallState::PausedByRemote) {
 		VoipPhoneCall^ platformCall = lCall->CallContext;
-		if (platformCall != nullptr)
-			platformCall->NotifyCallHeld();
+		//if (platformCall != nullptr)
+			//platformCall->NotifyCallHeld();
 	}
 	else if (state == CallState::StreamsRunning) {
 		VoipPhoneCall^ platformCall = lCall->CallContext;
