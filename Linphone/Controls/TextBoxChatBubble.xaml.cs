@@ -13,6 +13,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
+using Linphone.Model;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
@@ -37,6 +38,8 @@ namespace Linphone.Controls
         public TextBoxChatBubble()
         {
             InitializeComponent();
+            SendMessage.IsEnabled = true;
+            Message.Text = "./flexisip_pusher --pntype wp --appid db5.notify.windows.com --key XUKRFi6vmn0hhuESdAAvx5i --sid ms-app://s-1-15-2-1651060753-3098445494-746237450-1823971881-1920600302-2358223438-102324794 --pntok " + LinphoneManager.Instance.Core.DefaultProxyConfig.ContactUriParameters;
         }
 
         public void Reset()

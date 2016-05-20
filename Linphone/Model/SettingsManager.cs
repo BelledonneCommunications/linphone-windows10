@@ -64,13 +64,16 @@ namespace Linphone.Model
         /// <summary>
         /// Install the default config file from the package to the Isolated Storage
         /// </summary>
-        public static async void InstallConfigFile()
+        public static void InstallConfigFile()
         {
             FileInfo fInfo = new FileInfo(LinphoneManager.Instance.GetConfigPath());
             if (!fInfo.Exists)
             {
                 fInfo = new FileInfo(LinphoneManager.Instance.GetDefaultConfigPath());
-                fInfo.MoveTo(LinphoneManager.Instance.GetConfigPath());
+                if(fInfo.Exists)
+                {
+                    fInfo.MoveTo(LinphoneManager.Instance.GetConfigPath());
+                }
             }
         }
 
@@ -418,7 +421,16 @@ namespace Linphone.Model
                     if ((proxy == null) || (proxy.Length <= 0))
                     {
                         proxy = "sip:" + domain;
+                    } else
+                    {
+                        if (!proxy.StartsWith("sip:") && !proxy.StartsWith("<sip:")
+                            && !proxy.StartsWith("sips:") && !proxy.StartsWith("<sips:"))
+                        {
+                            proxy = "sip:" + proxy;
+                        }
                     }
+
+
                     cfg.ServerAddr = proxy;
 
                     if (transport != null)

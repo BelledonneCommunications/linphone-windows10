@@ -28,6 +28,7 @@ using Windows.System.Profile;
 using Windows.Networking.PushNotifications;
 using Windows.ApplicationModel.Calls;
 using LinphoneTasks;
+using Windows.Networking.Connectivity;
 
 namespace Linphone.Model
 {
@@ -80,9 +81,12 @@ namespace Linphone.Model
 
         public async void InitPushNotifications()
         {
-            channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
-            AddPushInformationsToContactParams();
-
+            var internetProfile = NetworkInformation.GetInternetConnectionProfile();
+            if (internetProfile != null)
+            {
+                channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
+                AddPushInformationsToContactParams();
+            }
         }
         public String GetChatDatabasePath()
         {
@@ -127,18 +131,14 @@ namespace Linphone.Model
             }
 
             LinphoneManager.Instance.Core.SetUserAgent("LinphoneW10", Core.Version);
-
             InitPushNotifications();
-            //server.LinphoneCore.NetworkReachable = lastNetworkState;
-            // DeviceNetworkInformation.NetworkAvailabilityChanged += new EventHandler<NetworkNotificationEventArgs>(OnNetworkStatusChanged);
-            // ConfigureTunnel();
             isLinphoneRunning = true;            
             LinphoneManager.Instance.Core.IsIterateEnabled = true;
         }
 
         public void AddPushInformationsToContactParams()
         {
-            if (Core.DefaultProxyConfig != null)
+            if (Core.DefaultProxyConfig != null && channel != null)
             {
                 Uri pushUri = new Uri(channel.Uri);
                 string host = null, token = null;

@@ -21,14 +21,8 @@
             x:Uid="AddressHint"
             VerticalAlignment="Center"
             AcceptsReturn="False"
+            InputScope="EmailSmtpAddress"
             TextChanged="address_TextChanged">
-            <TextBox.InputScope>
-            <InputScope>
-                <InputScope.Names>
-                    <InputScopeName NameValue="EmailNameOrAddress" />
-                </InputScope.Names>
-            </InputScope>
-            </TextBox.InputScope>
         </TextBox>
 
         <Button 

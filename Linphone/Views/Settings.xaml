@@ -19,30 +19,25 @@
             <TextBlock x:Uid="SettingsMenu" Text="SETTINGS" Style="{StaticResource HeaderTextStyle}"/>
         </StackPanel>
 
-        <!--ContentPanel - place additional content here-->
-        <ScrollViewer x:Name="ContentPanel" Grid.Row="1">
-            <Grid Margin="12,0,12,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                </Grid.RowDefinitions>
 
-                <StackPanel Orientation="Vertical" Tapped="account_Click_1" Margin="0,12,0,0">
-                        <TextBlock
-                            HorizontalAlignment="Left"
-                            Style="{StaticResource ListItemHeaderStyle}"
-                            x:Uid="AccountMenu"/>
 
-                        <TextBlock
-                            HorizontalAlignment="Left"
-                            Style="{StaticResource ListItemStyle}"
-                            x:Uid="AccountMenuSubtitle"/>
-                    </StackPanel>
+        <ListView Grid.Row="1">
+            <ListViewItem Tapped="account_Click_1" >
+                <StackPanel Orientation="Vertical"  Margin="0,12,0,0">
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource ListItemHeaderStyle}"
+                        x:Uid="AccountMenu"/>
 
-                <StackPanel Grid.Row="1" Orientation="Vertical" Tapped="audio_Click_1" Margin="0,12,0,0">
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource ListItemStyle}"
+                        x:Uid="AccountMenuSubtitle"/>
+                </StackPanel>
+            </ListViewItem>
+
+            <ListViewItem Tapped="audio_Click_1" >
+                <StackPanel Orientation="Vertical"  Margin="0,12,0,0">
                     <TextBlock
                         HorizontalAlignment="Left"
                         Style="{ThemeResource ListItemHeaderStyle}"
@@ -53,20 +48,24 @@
                         Style="{ThemeResource ListItemStyle}"
                         x:Uid="AudioSettingsMenuSubtitle"/>
                 </StackPanel>
+            </ListViewItem>
 
-                <StackPanel  Grid.Row="2" x:Name="Video" Orientation="Vertical" Tapped="video_Click_1" Margin="0,12,0,0">
-                        <TextBlock
+            <ListViewItem Tapped="video_Click_1" >
+                <StackPanel Orientation="Vertical"  Margin="0,12,0,0">
+                    <TextBlock
                             Style="{ThemeResource ListItemHeaderStyle}"
                             HorizontalAlignment="Left"
                             x:Uid="VideoSettingsMenu"/>
 
-                        <TextBlock
+                    <TextBlock
                             Style="{ThemeResource ListItemStyle}"
                             HorizontalAlignment="Left"
                             x:Uid="VideoSettingsMenuSubtitle"/>
-                    </StackPanel>
+                </StackPanel>
+            </ListViewItem>
 
-                <StackPanel  Grid.Row="3" Orientation="Vertical" Tapped="advanced_Click_1" Margin="0,12,0,0">
+            <ListViewItem Tapped="advanced_Click_1" >
+                <StackPanel Orientation="Vertical"  Margin="0,12,0,0">
                     <TextBlock
                         HorizontalAlignment="Left"
                         Style="{ThemeResource ListItemHeaderStyle}"
@@ -77,8 +76,10 @@
                         Style="{ThemeResource ListItemStyle}"
                         x:Uid="AdvancedSettingsMenuSubtitle"/>
                 </StackPanel>
+            </ListViewItem>
 
-                <StackPanel Visibility="Collapsed" Grid.Row="4" Orientation="Vertical" Tapped="LockScreenSettings_Click_1" Margin="0,12,0,0">
+            <ListViewItem Tapped="LockScreenSettings_Click_1" Visibility="Collapsed">
+                <StackPanel Orientation="Vertical"  Margin="0,12,0,0">
                     <TextBlock
                             Style="{ThemeResource ListItemHeaderStyle}"
                             HorizontalAlignment="Left"
@@ -89,7 +90,7 @@
                             HorizontalAlignment="Left"
                             x:Uid="LockScreenSettingsSubtitle"/>
                 </StackPanel>
-            </Grid>
-        </ScrollViewer>
+            </ListViewItem>
+        </ListView>
     </Grid>
 </Page>

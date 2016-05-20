@@ -191,9 +191,12 @@ namespace Linphone.Views
                 oneSecondTimer.Interval = TimeSpan.FromSeconds(1);
                 oneSecondTimer.Tick += timerTick;
                 oneSecondTimer.Start();
+
+                statusIcon.Visibility = Visibility.Visible;
             }
             if (state == CallState.StreamsRunning)
             {
+                statusIcon.Glyph = "\uE768";
                 if (!call.MediaInProgress)
                 {
                     buttons.enabledPause(true);
@@ -202,7 +205,6 @@ namespace Linphone.Views
                         buttons.enabledVideo(true);
                     }
                 }
-                Debug.WriteLine(call.CurrentParams.IsVideoEnabled);
                 if (call.CurrentParams.IsVideoEnabled)
                 {
                     displayVideo(true);
@@ -220,6 +222,7 @@ namespace Linphone.Views
                     displayVideo(false);
                 }
                 buttons.enabledVideo(false);
+                statusIcon.Glyph = "\uE769";
             }
             else if (state == CallState.Paused)
             {
@@ -228,10 +231,14 @@ namespace Linphone.Views
                     displayVideo(false);
                 }
                 buttons.enabledVideo(false);
+                statusIcon.Glyph = "\uE769";
             }
             else if (state == CallState.Error || state == CallState.End)
             {
-                oneSecondTimer.Stop();
+                if(oneSecondTimer != null)
+                {
+                    oneSecondTimer.Stop();
+                }
             }
             else if (state == CallState.UpdatedByRemote)
             {

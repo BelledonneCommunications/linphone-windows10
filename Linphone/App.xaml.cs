@@ -41,17 +41,8 @@ namespace Linphone
         public App()
         {
             this.InitializeComponent();
-            SettingsManager.InstallConfigFile();
+            //SettingsManager.InstallConfigFile();
             this.Suspending += OnSuspending;
-            this.Resuming += App_Resuming;
-        }
-
-        private void App_Resuming(object sender, object e)
-        {
-            if (rootFrame.BackStack.Count > 0)
-            {
-                rootFrame.BackStack.Clear();
-            }
         }
 
         private void Back_requested(object sender, BackRequestedEventArgs e)

@@ -24,6 +24,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <Image Source="/Assets/avatar2.png"
@@ -55,6 +56,15 @@
                     HorizontalAlignment="Center"
                     Margin="12,0,12,0"
                     FontSize="20" />
+
+                <FontIcon 
+                    Grid.Row="4"
+                    Margin="12"
+                    x:Name="statusIcon"
+                    Visibility="Collapsed"
+                    FontFamily="Segoe MDL2 Assets" 
+                    Glyph="&#xE768;" 
+                    RenderTransformOrigin="0.5,0.5"/>
             </Grid>
             
             <controls:CallControlsP 
