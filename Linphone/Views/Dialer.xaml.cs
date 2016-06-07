@@ -110,6 +110,7 @@ namespace Linphone.Views
 
         private void MessageReceived(object sender, EventArgs e)
         {
+
             UnreadMessageCount = LinphoneManager.Instance.GetUnreadMessageCount();
         }
 
@@ -165,6 +166,7 @@ namespace Linphone.Views
                         BugReportUploadPopup.Visibility = Visibility.Collapsed;
                     }
                 }*/
+
 
             if (e.Parameter is String && (e.Parameter as String)?.Length > 0 && e.NavigationMode != NavigationMode.Back)
             {

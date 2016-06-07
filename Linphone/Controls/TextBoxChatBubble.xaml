@@ -5,8 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:linphone="using:Linphone.Controls"
     xmlns:controls="Linphone.Controls"
-    mc:Ignorable="d"
-    d:DesignHeight="150" d:DesignWidth="420">
+    mc:Ignorable="d">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -44,6 +43,7 @@
             x:Uid="ChatMessageHint"
             TextAlignment="Left"
             TextWrapping="Wrap"
+            MaxHeight="80"
             AcceptsReturn="True"
             BorderThickness="0"
             Grid.Column="1"/>

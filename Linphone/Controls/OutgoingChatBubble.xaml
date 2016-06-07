@@ -38,12 +38,15 @@
                 Grid.Row="1" 
                 Orientation="Horizontal"
                 HorizontalAlignment="Right">
-            <Image
-                    x:Name="Status" 
-                    Source="/Assets/AppBar/next.png"
-                    Height="15"
-                    Stretch="Uniform"/>
-            
+
+            <FontIcon
+                x:Name="Status" 
+                Foreground="White"
+                FontFamily="Segoe MDL2 Assets" 
+                Glyph="&#xE72A;"
+                FontSize="10"
+                Margin="0,0,3,0"/>
+
             <TextBlock 
                     x:Name="Timestamp"
                     Style="{StaticResource TimestampStyle}"

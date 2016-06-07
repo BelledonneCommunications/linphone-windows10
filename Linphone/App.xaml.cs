@@ -41,7 +41,7 @@ namespace Linphone
         public App()
         {
             this.InitializeComponent();
-            //SettingsManager.InstallConfigFile();
+            SettingsManager.InstallConfigFile();
             this.Suspending += OnSuspending;
         }
 
@@ -111,8 +111,7 @@ namespace Linphone
                 this.DebugSettings.EnableFrameRateCounter = false;
             }
 #endif
-
-            //Start linphone
+                              //Start linphone
             var currentView = SystemNavigationManager.GetForCurrentView();
             currentView.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
 
@@ -151,6 +150,44 @@ namespace Linphone
             }
             // Ensure the current window is active
             Window.Current.Activate();
+        }
+
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+
+            // Do not repeat app initialization when the Window already has content
+            if (rootFrame == null)
+            {
+                // Create a Frame to act as the navigation context
+                rootFrame = new Frame();
+                //rootFrame.NavigationFailed += OnNavigationFailed;
+
+                //if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
+               // {
+                    //TODO: Load state from previously suspended application
+               // }
+
+                // Place the frame in the current Window
+                Window.Current.Content = rootFrame;
+            }
+
+            if(args.Kind == ActivationKind.ToastNotification)
+            {
+                //Get the pre-defined arguments and user inputs from the eventargs;
+                var toastArgs = args as ToastNotificationActivatedEventArgs;
+                var arguments = toastArgs.Argument;
+                if(arguments.StartsWith("chat"))
+                {
+                    var sipAddrr = arguments.Split('=')[1];
+                    rootFrame.Navigate(typeof(Views.Chat), sipAddrr);
+                } else
+                {
+                    rootFrame.Navigate(typeof(Views.IncomingCall), arguments);
+                }
+                Window.Current.Activate();
+            }
+
         }
 
         /// <summary>

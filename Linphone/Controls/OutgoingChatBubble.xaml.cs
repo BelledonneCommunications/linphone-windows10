@@ -22,7 +22,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace Linphone.Controls
 {
-    public partial class OutgoingChatBubble : UserControl
+    public partial class OutgoingChatBubble : UserControl, ChatMessageListener
     {
         private ChatMessage _message;
 
@@ -75,16 +75,16 @@ namespace Linphone.Controls
 
         public void UpdateStatus(ChatMessageState state)
         {
-            //string delivered = "/Assets/AppBar/check.png";
-            //string notdelivered = "/Assets/AppBar/stop.png";
-
             if (state == ChatMessageState.InProgress)
             {
-              //  Status.Source = new BitmapImage(new Uri(delivered, UriKind.RelativeOrAbsolute));
+                Status.Glyph = "\uE72A";
             }
             else if (state == ChatMessageState.NotDelivered)
             {
-               // Status.Source = new BitmapImage(new Uri(notdelivered, UriKind.RelativeOrAbsolute));
+                Status.Glyph = "\uE711";
+            } else
+            {
+                Status.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -105,6 +105,10 @@ namespace Linphone.Controls
         {
            // bool result = Utils.SavePictureInMediaLibrary(ChatMessage.AppData);
           //  MessageBox.Show(result ? AppResources.FileSavingSuccess : AppResources.FileSavingFailure, AppResources.FileSaving, MessageBoxButton.OK);
+        }
+
+        public void MessageStateChanged(ChatMessage message, ChatMessageState state)
+        {
         }
 
         public delegate void MessageDeletedEventHandler(object sender, ChatMessage message);

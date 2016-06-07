@@ -19,11 +19,10 @@ using Linphone.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 
 namespace Linphone.Views
@@ -44,21 +43,23 @@ namespace Linphone.Views
             }
         }
 
-        /// <summary>
-        /// Public constructor.
-        /// </summary>
         public Chats()
           //  :base(new ChatsModel())
         {
             _conversations = new ObservableCollection<Conversation>();
             _sortedConversations = new ObservableCollection<Conversation>();
+
             this.InitializeComponent();
+
+            SetCommandsVisibility(Conversations);
+            Conversations.SelectionChanged += OnSelectionChanged;
         }
 
-        /// <summary>
-        /// Method called when the page is displayed.
-        /// Fetches the conversations from the LinphoneManager and displays them.
-        /// </summary>
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+           
+        }
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             /*ContactManager cm = ContactManager.Instance;
@@ -68,15 +69,12 @@ namespace Linphone.Views
             */
 
             LinphoneManager.Instance.MessageReceived += MessageReceived;
-
             GetMessagesAndDisplayConversationsList();
+
             Conversations.ItemsSource = _conversations;
             base.OnNavigatedTo(e);
         }
         
-        /// <summary>
-        /// Method called when the page is hidden.
-        /// </summary>
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             /* ContactManager cm = ContactManager.Instance;
@@ -87,7 +85,7 @@ namespace Linphone.Views
 
         private void MessageReceived(object sender, EventArgs e)
         {
-            //GetMessagesAndDisplayConversationsList();
+            GetMessagesAndDisplayConversationsList();
         }
 
         /// <summary>
@@ -146,12 +144,26 @@ namespace Linphone.Views
                 }
             }
 
+            if(_conversations.Count() == 0)
+            {
+                EmptyText.Visibility = Visibility.Visible;
+                Conversations.Visibility = Visibility.Collapsed;
+                SelectItems.IsEnabled = false;
+            } else
+            {
+                EmptyText.Visibility = Visibility.Collapsed;
+                Conversations.Visibility = Visibility.Visible;
+                SelectItems.IsEnabled = true;
+            }
+
             _sortedConversations = new ObservableCollection<Conversation>();
             foreach (var i in _conversations.OrderByDescending(g => g.Messages.Last().Time).ToList())
             {
                 _sortedConversations.Add(i);
             }
-          //  ((ChatsModel)ViewModel).Conversations = _sortedConversations;*/
+            //  ((ChatsModel)ViewModel).Conversations = _sortedConversations;*/
+
+            SetCommandsVisibility(Conversations);
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)
@@ -164,19 +176,6 @@ namespace Linphone.Views
             }*/
         }
 
-        private void deleteSelection_Click_1(object sender, EventArgs e)
-        {
-           /* foreach (var c in _selection)
-            {
-                LinphoneManager.Instance.LinphoneCore.GetChatRoomFromUri(c.SipAddress).DeleteHistory();
-            }
-
-            GetMessagesAndDisplayConversationsList();
-
-            ClearApplicationBar();
-            SetupAppBarForEmptySelection();*/
-        }
-
         private void newChat_Click_1(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(Views.Chat), null);
@@ -187,75 +186,69 @@ namespace Linphone.Views
             if (Frame.CanGoBack)
             {
                 Frame.GoBack();
+            } else
+            {
+                if (Frame.BackStack.Count == 0)
+                {
+                    Frame.Navigate(typeof(Views.Dialer), null);
+                }
             }
-
         }
 
-        /* private void SetupAppBarForEmptySelection()
-         {
-             Del
-             appBarNewChatSelection.Click += newChat_Click_1;
-
-             _usingSelectionAppBar = false;
-         }
-
-         private void SetupAppBarForSelectedItems()
-         {
-             ApplicationBarIconButton appBarDeleteSelection = new ApplicationBarIconButton(new Uri("/Assets/AppBar/delete.png", UriKind.Relative));
-             appBarDeleteSelection.Text = AppResources.DeleteSelectionMenu;
-             ApplicationBar.Buttons.Add(appBarDeleteSelection);
-             appBarDeleteSelection.Click += deleteSelection_Click_1;
-
-             _usingSelectionAppBar = true;
-         }
-
-         private void conversations_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
-         {
-             LongListMultiSelector list = (LongListMultiSelector)sender;
-             if (list.SelectedItems.Count == 0)
-             {
-                 ClearApplicationBar();
-                 SetupAppBarForEmptySelection();
-             }
-             else if (list.SelectedItems.Count >= 1 && !_usingSelectionAppBar) // Do it only once, when selection was empty and isn't anymore
-             {
-                 _selection = list.SelectedItems.Cast<Conversation>();
-                 ClearApplicationBar();
-                 SetupAppBarForSelectedItems();
-             }
-         }*/
-
-        private void conversation_Click_1(object sender, RoutedEventArgs e)
-         {
-             Conversation chat = ((sender as StackPanel).Tag as Conversation);
-            if (chat != null)
-            {
-                Frame.Navigate(typeof(Views.Chat), chat.SipAddress);
-            }
-            
-         }
-
-        private void Conversations_Holding(object sender, Windows.UI.Xaml.Input.HoldingRoutedEventArgs e)
+        private void SelectItmesBtn_Click(object sender, RoutedEventArgs e)
         {
-        
+            Conversations.SelectionMode = ListViewSelectionMode.Multiple;
+            SetCommandsVisibility(Conversations);
+        }
+
+        private void SetCommandsVisibility(ListView listView)
+        {
+            if (listView.SelectionMode == ListViewSelectionMode.Multiple || listView.SelectedItems.Count > 1)
+            {
+                SelectItems.Visibility = Visibility.Collapsed;
+                CancelBtn.Visibility = Visibility.Visible;
+                NewConversation.Visibility = Visibility.Collapsed;
+                DeleteItem.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                SelectItems.Visibility = Visibility.Visible;
+                CancelBtn.Visibility = Visibility.Collapsed;
+                NewConversation.Visibility = Visibility.Visible;
+                DeleteItem.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void DeleteItem_Click(object sender, RoutedEventArgs e)
+        {
+            List<Conversation> _selectItem = new List<Conversation>();
+            foreach (Conversation item in Conversations.SelectedItems)
+            {
+                _selectItem.Add(item);
+            }
+            foreach (Conversation item in _selectItem)
+            {
+                LinphoneManager.Instance.Core.GetChatRoomFromUri(item.SipAddress).DeleteHistory();
+            }
+            Conversations.SelectionMode = ListViewSelectionMode.None;
+            GetMessagesAndDisplayConversationsList();
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            Conversations.SelectionMode = ListViewSelectionMode.None;
+            SetCommandsVisibility(Conversations);
         }
 
         private void Conversations_ItemClick(object sender, ItemClickEventArgs e)
         {
-            Frame.Navigate(typeof(Views.Chat), (e.ClickedItem as Conversation).DisplayedName);
-        }
-
-        /// <summary>
-        /// Add Dialer in the history if not already there
-        /// </summary>
-        /*protected override void OnBackKeyPress(CancelEventArgs e)
-        {
-            if (!NavigationService.CanGoBack)
+            if(Conversations.SelectionMode == ListViewSelectionMode.Multiple || Conversations.SelectedItems.Count > 1)
             {
-                e.Cancel = true;
-                NavigationService.Navigate(new Uri("/Views/Dialer.xaml", UriKind.RelativeOrAbsolute));
-                NavigationService.RemoveBackEntry(); //To prevent a new click on back button to start again chat view (simulate a back click)
+                //(e.ClickedItem as ListViewItem).IsSelected = !(e.ClickedItem as ListViewItem).IsSelected;
+            } else
+            {
+                Frame.Navigate(typeof(Views.Chat), (e.ClickedItem as Conversation).SipAddress);
             }
-        }*/
+        }
     }
 }

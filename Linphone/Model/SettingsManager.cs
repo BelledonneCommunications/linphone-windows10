@@ -19,9 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.IO.IsolatedStorage;
-using System.Threading;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
 using Windows.Storage;
 
@@ -64,15 +61,20 @@ namespace Linphone.Model
         /// <summary>
         /// Install the default config file from the package to the Isolated Storage
         /// </summary>
-        public static void InstallConfigFile()
+        public static async void InstallConfigFile()
         {
-            FileInfo fInfo = new FileInfo(LinphoneManager.Instance.GetConfigPath());
+
+            FileInfo fInfo = new FileInfo(Path.Combine(ApplicationData.Current.LocalFolder.Path, "linphonerc"));
             if (!fInfo.Exists)
             {
-                fInfo = new FileInfo(LinphoneManager.Instance.GetDefaultConfigPath());
-                if(fInfo.Exists)
+                try
                 {
-                    fInfo.MoveTo(LinphoneManager.Instance.GetConfigPath());
+                    StorageFile file1 = await StorageFile.GetFileFromPathAsync(Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "Assets", "linphonerc"));
+                    await file1.CopyAsync(ApplicationData.Current.LocalFolder, "linphonerc");
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
                 }
             }
         }
@@ -163,7 +165,7 @@ namespace Linphone.Model
         {
             if (LinphoneManager.Instance.Core == null)
             {
-              //  Config = new LpConfig(InitManager.GetConfigPath(), InitManager.GetFactoryConfigPath());
+                Config = new LpConfig(LinphoneManager.Instance.GetConfigPath(), LinphoneManager.Instance.GetFactoryConfigPath());
             }
             else
             {

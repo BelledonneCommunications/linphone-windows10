@@ -33,7 +33,6 @@ namespace Linphone.Views
         public History()
         {
             this.InitializeComponent();
-            SetupAppBarForEmptySelection();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -43,9 +42,18 @@ namespace Linphone.Views
             LinphoneManager.Instance.Core.ResetMissedCallsCount();
 
             List<CallLogModel> callsHistory = LinphoneManager.Instance.GetCallsHistory();
-            Calls.ItemsSource = callsHistory;
-            Calls.ItemClick += Calls_ItemClick;
-            MissedCalls.ItemsSource = (from log in callsHistory where (log.IsMissed) select log).ToList();
+            if(callsHistory.Count > 0)
+            {
+                Calls.Visibility = Visibility.Visible;
+                EmptyText.Visibility = Visibility.Collapsed;
+                Calls.ItemsSource = callsHistory;
+                Calls.ItemClick += Calls_ItemClick;
+                MissedCalls.ItemsSource = (from log in callsHistory where (log.IsMissed) select log).ToList();
+            } else
+            {
+                Calls.Visibility = Visibility.Collapsed;
+                EmptyText.Visibility = Visibility.Visible;
+            }
         }
 
         private void deleteAll_Click_1(object sender, RoutedEventArgs e)
@@ -85,10 +93,14 @@ namespace Linphone.Views
             ListView list = (ListView)sender;
             if (list.SelectedItems.Count == 0)
             {
+                Calls.Visibility = Visibility.Collapsed;
+                EmptyText.Visibility = Visibility.Visible;
                 SetupAppBarForEmptySelection();
             }
             else if (list.SelectedItems.Count >= 1 && !_usingSelectionAppBar) // Do it only once, when selection was empty and isn't anymore
             {
+                Calls.Visibility = Visibility.Visible;
+                EmptyText.Visibility = Visibility.Collapsed;
                 _selection = list.SelectedItems.Cast<CallLogModel>();
                 SetupAppBarForSelectedItems();
             }

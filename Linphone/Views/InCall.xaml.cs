@@ -170,6 +170,8 @@ namespace Linphone.Views
             {
                 oneSecondTimer.Stop();
             }
+
+            ToggleFullScreenMode(false);
             /*if (fadeTimer != null)
             {
                 fadeTimer.Dispose();
@@ -248,7 +250,13 @@ namespace Linphone.Views
                     LinphoneManager.Instance.Core.AcceptCallUpdate(call, parameters);
                 } else
                 {
-                    AskVideoPopup(call);
+                    bool remoteVideo = call.RemoteParams.IsVideoEnabled;
+                    bool localVideo = call.CurrentParams.IsVideoEnabled;
+                    bool autoAcceptCameraPolicy = LinphoneManager.Instance.Core.VideoPolicy.AutomaticallyAccept;
+                    if (remoteVideo && !localVideo && !autoAcceptCameraPolicy)
+                    {
+                        AskVideoPopup(call);
+                    }
                 }
             }
         }
@@ -261,11 +269,9 @@ namespace Linphone.Views
             dialog.Commands.Add(new UICommand { Label = ResourceLoader.GetForCurrentView().GetString("Dismiss"), Id = 1 });
 
             var res = await dialog.ShowAsync();
-            Debug.WriteLine(res.Id);
             CallParams parameters = LinphoneManager.Instance.Core.CreateCallParams(call);
             if ((int)res.Id == 0)
             {
-                Debug.WriteLine("Enabled video");
                 parameters.IsVideoEnabled = true;
             }
             LinphoneManager.Instance.Core.AcceptCallUpdate(call, parameters);
@@ -304,7 +310,7 @@ namespace Linphone.Views
             ToggleFullScreenMode(isVisible);
             if (isVisible)
             {
-                AdaptVideoSize();
+                //AdaptVideoSize();
                 buttons.Visibility = Visibility.Collapsed;
                 VideoGrid.Visibility = Visibility.Visible;
                 ContactHeader.Visibility = Visibility.Collapsed;

@@ -26,7 +26,6 @@ using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Core;
-using Windows.UI.Popups;
 
 namespace Linphone.Views
 {
@@ -182,7 +181,6 @@ namespace Linphone.Views
 
         public void MessageStateChanged(ChatMessage message, ChatMessageState state)
         {
- 
             if (LinphoneManager.Instance.CoreDispatcher == null) return;
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
             LinphoneManager.Instance.CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
@@ -191,7 +189,7 @@ namespace Linphone.Views
                      {
                          ProgressPopup.Visibility = Visibility.Collapsed;
                          MessageBox.Visibility = Visibility.Visible;
-                     }
+                     }           
 
                      if (state == ChatMessageState.InProgress)
                      {
@@ -206,7 +204,7 @@ namespace Linphone.Views
                          try
                          {
                              message.AppData = message.FileTransferFilepath;
-                            IncomingChatBubble bubble = (IncomingChatBubble)MessagesList.Children.Where(b => message.Equals(((IncomingChatBubble)b).ChatMessage)).Last();
+                             IncomingChatBubble bubble = (IncomingChatBubble)MessagesList.Children.Where(b => message.Equals(((IncomingChatBubble)b).ChatMessage)).Last();
                              if (bubble != null)
                              {
                                  ((IncomingChatBubble)bubble).RefreshImage();
@@ -220,14 +218,16 @@ namespace Linphone.Views
                          // Update the outgoing status of the message
                          try
                          {
-                             OutgoingChatBubble bubble = (OutgoingChatBubble)MessagesList.Children.Where(b => message.Equals(((OutgoingChatBubble)b).ChatMessage)).Last();
-                             if (bubble != null)
-                             {
-                                 ((OutgoingChatBubble)bubble).UpdateStatus(state);
-                             }
+                            foreach (OutgoingChatBubble bubble in MessagesList.Children.OfType<OutgoingChatBubble>())
+                            {
+                                if(bubble.ChatMessage.Equals(message))
+                                {
+                                    bubble.UpdateStatus(state);
+                                }
+                            }
+                        }
+                        catch { }
                          }
-                         catch { }
-                     }
 
                      if (chatRoom != null)
                      {
@@ -268,7 +268,6 @@ namespace Linphone.Views
                 {
                     if (MessageBox.Text != null && MessageBox.Text.Length > 0)
                     {
-                        Debug.WriteLine(MessageBox.Text);
                         SendMessage(MessageBox.Text);
                     }
                     else if (MessageBox.ImageName != null && MessageBox.ImageLocalPath != null)

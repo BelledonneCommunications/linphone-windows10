@@ -37,9 +37,7 @@ namespace Linphone.Controls
 
         public TextBoxChatBubble()
         {
-            InitializeComponent();
-            SendMessage.IsEnabled = true;
-            Message.Text = "./flexisip_pusher --pntype wp --appid db5.notify.windows.com --key XUKRFi6vmn0hhuESdAAvx5i --sid ms-app://s-1-15-2-1651060753-3098445494-746237450-1823971881-1920600302-2358223438-102324794 --pntok " + LinphoneManager.Instance.Core.DefaultProxyConfig.ContactUriParameters;
+            InitializeComponent(); SendMessage.IsEnabled = true;
         }
 
         public void Reset()

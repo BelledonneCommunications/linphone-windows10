@@ -131,7 +131,7 @@
   <data name="AboutMenu" xml:space="preserve">
     <value>About</value>
   </data>
-  <data name="CancelChanges" xml:space="preserve">
+  <data name="Cancel.Label" xml:space="preserve">
     <value>Cancel</value>
   </data>
   <data name="DebugSetting.Header" xml:space="preserve">
@@ -149,8 +149,8 @@
   <data name="SettingsMenu.Text" xml:space="preserve">
     <value>SETTINGS</value>
   </data>
-  <data name="DeleteSelectionMenu" xml:space="preserve">
-    <value>Delete Selection</value>
+  <data name="Delete.Label" xml:space="preserve">
+    <value>Delete</value>
   </data>
   <data name="AddressHint.PlaceholderText" xml:space="preserve">
     <value>Number or address</value>
@@ -723,5 +723,14 @@ To enjoy the best experience with Linphone WP8, we recommend that you use the SI
   </data>
   <data name="Dismiss" xml:space="preserve">
     <value>Dismiss</value>
+  </data>
+  <data name="EmptyChat.Text" xml:space="preserve">
+    <value>No conversations</value>
+  </data>
+  <data name="EmptyHistory.Text" xml:space="preserve">
+    <value>No call in your history</value>
+  </data>
+  <data name="SelectItem.Label" xml:space="preserve">
+    <value>Select</value>
   </data>
 </root>

@@ -58,7 +58,14 @@
             <TextBlock x:Uid="HistoryMenu" Text="HISTORY" Style="{StaticResource HeaderTextStyle}" />
         </StackPanel>
 
-        <!--ContentPanel - place additional content here-->
+        <TextBlock 
+            x:Name="EmptyText"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            Visibility="Collapsed"
+            Grid.Row="1"
+            x:Uid="EmptyHistory"/>
+
         <Grid x:Name="ContentPanel" Grid.Row="1">
             <Pivot>
                 <PivotItem Header="All" x:Uid="HistoryAll">

@@ -37,6 +37,8 @@ namespace Linphone.Model
         private static LinphoneManager _instance = new LinphoneManager();
         public static LinphoneManager Instance { get { return _instance; } }
 
+        private String filePath;
+
         public delegate void ChangedEventHandler(object sender, EventArgs e);
 
         public delegate void CallStateChangedEventHandler(Call call, CallState state);
@@ -100,7 +102,14 @@ namespace Linphone.Model
 
         public String GetConfigPath()
         {
-            return Path.Combine(ApplicationData.Current.LocalFolder.Path, "linphonerc");
+            FileInfo fInfo = new FileInfo(Path.Combine(ApplicationData.Current.LocalFolder.Path, "linphonerc"));
+            if(fInfo.Exists)
+            {
+                return Path.Combine(ApplicationData.Current.LocalFolder.Path, "linphonerc");
+            } else
+            {
+                return null;
+            }
         }
 
         public String GetFactoryConfigPath()
@@ -148,14 +157,14 @@ namespace Linphone.Model
 
                 if (host == null || token == null)
                 {
-                    Debug.WriteLine("no push channel uri");
                     return;
                 }
 
                 if (Core.DefaultProxyConfig != null)
                 {
                     Core.DefaultProxyConfig.Edit();
-                    Core.DefaultProxyConfig.ContactUriParameters = "app-id=" + host + ";pn-type=wp;pn-tok=" + token;
+                    Core.DefaultProxyConfig.ContactUriParameters = "app-id=" + host + ";pn-type=w10;pn-tok=" + token;
+                    Debug.WriteLine(Core.DefaultProxyConfig.ContactUriParameters);
                     Core.DefaultProxyConfig.Done();
                 }
             }

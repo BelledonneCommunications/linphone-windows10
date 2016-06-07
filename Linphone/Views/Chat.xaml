@@ -63,9 +63,9 @@
 
             <ScrollViewer x:Name="MessagesScroll">
                 <StackPanel
-                    x:Name="MessagesList" 
-                    Orientation="Vertical"
-                    VerticalAlignment="Bottom"/>
+                x:Name="MessagesList" 
+                Orientation="Vertical"
+                VerticalAlignment="Bottom"/>
             </ScrollViewer>
 
             <TextBlock x:Name="RemoteComposing" Grid.Row="1" Visibility="Collapsed"/>
