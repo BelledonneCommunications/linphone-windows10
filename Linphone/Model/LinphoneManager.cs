@@ -29,6 +29,7 @@ using Windows.Networking.PushNotifications;
 using Windows.ApplicationModel.Calls;
 using LinphoneTasks;
 using Windows.Networking.Connectivity;
+using System.Text;
 
 namespace Linphone.Model
 {
@@ -160,11 +161,13 @@ namespace Linphone.Model
                     return;
                 }
 
+                byte[] toEncodeAsBytes = Encoding.ASCII.GetBytes(token);
+                String tokenB64 = Convert.ToBase64String(toEncodeAsBytes);
+
                 if (Core.DefaultProxyConfig != null)
                 {
                     Core.DefaultProxyConfig.Edit();
-                    Core.DefaultProxyConfig.ContactUriParameters = "app-id=" + host + ";pn-type=w10;pn-tok=" + token;
-                    Debug.WriteLine(Core.DefaultProxyConfig.ContactUriParameters);
+                    Core.DefaultProxyConfig.ContactUriParameters = "app-id=" + host + ";pn-type=w10;pn-tok=" + tokenB64;
                     Core.DefaultProxyConfig.Done();
                 }
             }

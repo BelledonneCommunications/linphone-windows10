@@ -24,6 +24,7 @@ using BelledonneCommunications.Linphone.Native;
 using Linphone.Model;
 using System.Diagnostics;
 using Windows.UI.Core;
+using Windows.UI.Popups;
 
 namespace Linphone
 {
@@ -41,8 +42,15 @@ namespace Linphone
         public App()
         {
             this.InitializeComponent();
-            SettingsManager.InstallConfigFile();
+            this.UnhandledException += App_UnhandledException; ;
             this.Suspending += OnSuspending;
+            SettingsManager.InstallConfigFile();
+        }
+
+        private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+            Debug.WriteLine(e.Message);
         }
 
         private void Back_requested(object sender, BackRequestedEventArgs e)
@@ -51,7 +59,7 @@ namespace Linphone
             {
                 rootFrame.GoBack();
                 e.Handled = true;
-            }
+            }    
         }
 
         public void CallEnded(Call call)
@@ -104,6 +112,11 @@ namespace Linphone
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            Initialize(e, null);
+        }
+
+        private void Initialize(IActivatedEventArgs e, String args)
+        {       
 
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
@@ -111,7 +124,7 @@ namespace Linphone
                 this.DebugSettings.EnableFrameRateCounter = false;
             }
 #endif
-                              //Start linphone
+            //Start linphone
             var currentView = SystemNavigationManager.GetForCurrentView();
             currentView.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
 
@@ -143,10 +156,18 @@ namespace Linphone
 
             if (rootFrame.Content == null)
             {
-                // When the navigation stack isn't restored navigate to the first page,
-                // configuring the new page by passing required information as a navigation
-                // parameter
-                rootFrame.Navigate(typeof(Views.Dialer), e.Arguments);
+                if (args != null)
+                {
+                    rootFrame.Navigate(typeof(Views.Chat), args);
+                }
+                else
+                {
+
+                    // When the navigation stack isn't restored navigate to the first page,
+                    // configuring the new page by passing required information as a navigation
+                    // parameter
+                    rootFrame.Navigate(typeof(Views.Dialer), args);
+                }
             }
             // Ensure the current window is active
             Window.Current.Activate();
@@ -154,38 +175,24 @@ namespace Linphone
 
         protected override void OnActivated(IActivatedEventArgs args)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
-
-            // Do not repeat app initialization when the Window already has content
-            if (rootFrame == null)
+            if (args.Kind == ActivationKind.ToastNotification)
             {
-                // Create a Frame to act as the navigation context
-                rootFrame = new Frame();
-                //rootFrame.NavigationFailed += OnNavigationFailed;
-
-                //if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-               // {
-                    //TODO: Load state from previously suspended application
-               // }
-
-                // Place the frame in the current Window
-                Window.Current.Content = rootFrame;
-            }
-
-            if(args.Kind == ActivationKind.ToastNotification)
-            {
-                //Get the pre-defined arguments and user inputs from the eventargs;
                 var toastArgs = args as ToastNotificationActivatedEventArgs;
                 var arguments = toastArgs.Argument;
-                if(arguments.StartsWith("chat"))
+
+                if (arguments.StartsWith("chat"))
                 {
+                    Debug.WriteLine("Argument " + arguments);
                     var sipAddrr = arguments.Split('=')[1];
-                    rootFrame.Navigate(typeof(Views.Chat), sipAddrr);
-                } else
-                {
-                    rootFrame.Navigate(typeof(Views.IncomingCall), arguments);
+                    Initialize(args, sipAddrr);
                 }
-                Window.Current.Activate();
+                else
+                {
+                    Initialize(args, arguments);
+                }
+            } else
+            {
+                Initialize(args, null);
             }
 
         }
