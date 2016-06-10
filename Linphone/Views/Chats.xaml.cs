@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -52,6 +53,7 @@ namespace Linphone.Views
             this.InitializeComponent();
 
             SetCommandsVisibility(Conversations);
+            SystemNavigationManager.GetForCurrentView().BackRequested += Back_requested;
             Conversations.SelectionChanged += OnSelectionChanged;
         }
 
@@ -181,18 +183,14 @@ namespace Linphone.Views
             Frame.Navigate(typeof(Views.Chat), null);
         }
 
-        private void back_Click(object sender, RoutedEventArgs e)
+        private void Back_requested(object sender, BackRequestedEventArgs e)
         {
             if (Frame.CanGoBack)
             {
-                Frame.GoBack();
-            } else
-            {
-                if (Frame.BackStack.Count == 0)
-                {
-                    Frame.Navigate(typeof(Views.Dialer), null);
-                }
+                Frame.Navigate(typeof(Views.Dialer), null);
+                Frame.BackStack.Clear();   
             }
+            e.Handled = true;
         }
 
         private void SelectItmesBtn_Click(object sender, RoutedEventArgs e)
@@ -209,6 +207,8 @@ namespace Linphone.Views
                 CancelBtn.Visibility = Visibility.Visible;
                 NewConversation.Visibility = Visibility.Collapsed;
                 DeleteItem.Visibility = Visibility.Visible;
+                SelectAll.Visibility = Visibility.Visible;
+                DeselectAll.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -216,6 +216,8 @@ namespace Linphone.Views
                 CancelBtn.Visibility = Visibility.Collapsed;
                 NewConversation.Visibility = Visibility.Visible;
                 DeleteItem.Visibility = Visibility.Collapsed;
+                SelectAll.Visibility = Visibility.Collapsed;
+                DeselectAll.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -238,6 +240,20 @@ namespace Linphone.Views
         {
             Conversations.SelectionMode = ListViewSelectionMode.None;
             SetCommandsVisibility(Conversations);
+        }
+
+        private void SelectAll_Click(object sender, RoutedEventArgs e)
+        {
+            Conversations.SelectAll();
+            DeselectAll.Visibility = Visibility.Visible;
+            SelectAll.Visibility = Visibility.Collapsed;
+        }
+
+        private void DeselectAll_Click(object sender, RoutedEventArgs e)
+        {
+            Conversations.SelectedItems.Clear();
+            DeselectAll.Visibility = Visibility.Collapsed;
+            SelectAll.Visibility = Visibility.Visible;
         }
 
         private void Conversations_ItemClick(object sender, ItemClickEventArgs e)

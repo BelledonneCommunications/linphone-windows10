@@ -78,8 +78,12 @@
             <AppBarButton Label="Delete" Icon="Delete" x:Uid="Delete" Click="DeleteItem_Click" x:Name="DeleteItem" />
             <AppBarButton Label="Cancel" Icon="Cancel" x:Uid="Cancel" Click="Cancel_Click" x:Name="CancelBtn"/>
             <AppBarButton Icon="Add" Label="New" x:Uid="New" Click="newChat_Click_1" x:Name="NewConversation"/>
-        </CommandBar>
 
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Visibility="Collapsed" x:Name="SelectAll" x:Uid="SelectAll"  Click="SelectAll_Click"/>
+                <AppBarButton Visibility="Collapsed" x:Name="DeselectAll" x:Uid="DeselectAll"  Click="DeselectAll_Click"/>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
     </Grid>
 
 </Page>

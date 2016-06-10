@@ -55,6 +55,20 @@ namespace Linphone.Views
             this.InitializeComponent();
             MessageBox.SendFileClick += send_file;
             MessageBox.SendMessageClick += send_message;
+
+            SystemNavigationManager.GetForCurrentView().BackRequested += Back_requested;
+        }
+
+        private void Back_requested(object sender, BackRequestedEventArgs e)
+        {
+            if (Frame.CanGoBack)
+            {
+                Frame.GoBack();
+            } else
+            {
+                Frame.Navigate(typeof(Views.Chats), null);
+            }
+            e.Handled = true;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

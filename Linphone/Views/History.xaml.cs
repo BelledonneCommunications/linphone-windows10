@@ -54,6 +54,8 @@ namespace Linphone.Views
                 Calls.Visibility = Visibility.Collapsed;
                 EmptyText.Visibility = Visibility.Visible;
             }
+
+            SetCommandsVisibility(Calls);
         }
 
         private void deleteAll_Click_1(object sender, RoutedEventArgs e)
@@ -72,38 +74,29 @@ namespace Linphone.Views
             List<CallLogModel> callsHistory = LinphoneManager.Instance.GetCallsHistory();
             Calls.ItemsSource = callsHistory;
             MissedCalls.ItemsSource = (from log in callsHistory where (log.IsMissed) select log).ToList();
-
-            SetupAppBarForEmptySelection();
-        }
-
-        private void SetupAppBarForEmptySelection()
-        {
-            Delete_button.Click += deleteAll_Click_1;
-            _usingSelectionAppBar = false;
-        }
-
-        private void SetupAppBarForSelectedItems()
-        {
-            Delete_button.Click += deleteSelection_Click_1;
-            _usingSelectionAppBar = true;
         }
 
         private void calls_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
             ListView list = (ListView)sender;
-            if (list.SelectedItems.Count == 0)
+            if (_selection.Count() == 0)
             {
                 Calls.Visibility = Visibility.Collapsed;
                 EmptyText.Visibility = Visibility.Visible;
-                SetupAppBarForEmptySelection();
             }
-            else if (list.SelectedItems.Count >= 1 && !_usingSelectionAppBar) // Do it only once, when selection was empty and isn't anymore
+            else if (_selection.Count() >= 1)
             {
                 Calls.Visibility = Visibility.Visible;
                 EmptyText.Visibility = Visibility.Collapsed;
                 _selection = list.SelectedItems.Cast<CallLogModel>();
-                SetupAppBarForSelectedItems();
             }
+        }
+
+        private void updateCallList()
+        {
+            List<CallLogModel> callsHistory = LinphoneManager.Instance.GetCallsHistory();
+            Calls.ItemsSource = callsHistory;
+            MissedCalls.ItemsSource = (from log in callsHistory where (log.IsMissed) select log).ToList();
         }
 
         private void SetAddressGoToDialerAndCall(String address)
@@ -113,16 +106,81 @@ namespace Linphone.Views
 
         private void Calls_ItemClick(object sender, ItemClickEventArgs e)
         {
-            CallLogModel log = e.ClickedItem as CallLogModel;
-            CallLog nativeLog = (CallLog)log.NativeLog;
+            if (Calls.SelectionMode == ListViewSelectionMode.None || Calls.SelectedItems.Count == 0)
+            {
+                CallLogModel log = e.ClickedItem as CallLogModel;
+                CallLog nativeLog = (CallLog)log.NativeLog;
 
-            String address;
-            if (log.IsIncoming)
-                address = nativeLog.FromAddress.AsStringUriOnly();
+                String address;
+                if (log.IsIncoming)
+                    address = nativeLog.FromAddress.AsStringUriOnly();
+                else
+                    address = nativeLog.ToAddress.AsStringUriOnly();
+
+                SetAddressGoToDialerAndCall(address);
+            }
+        }
+
+        private void SelectItems_Click(object sender, RoutedEventArgs e)
+        {
+            Calls.SelectionMode = ListViewSelectionMode.Multiple;
+            SetCommandsVisibility(Calls);
+        }
+
+        private void SetCommandsVisibility(ListView listView)
+        {
+            if (listView.SelectionMode == ListViewSelectionMode.Multiple || listView.SelectedItems.Count > 1)
+            {
+                SelectItems.Visibility = Visibility.Collapsed;
+                CancelBtn.Visibility = Visibility.Visible;
+                DeleteItem.Visibility = Visibility.Visible;
+                SelectAll.Visibility = Visibility.Visible;
+                DeselectAll.Visibility = Visibility.Collapsed;
+            }
             else
-                address = nativeLog.ToAddress.AsStringUriOnly();
+            {
+                SelectItems.Visibility = Visibility.Visible;
+                CancelBtn.Visibility = Visibility.Collapsed;
+                DeleteItem.Visibility = Visibility.Collapsed;
+                SelectAll.Visibility = Visibility.Collapsed;
+                DeselectAll.Visibility = Visibility.Collapsed;
+            }
+        }
 
-            SetAddressGoToDialerAndCall(address);
+        private void DeleteItem_Click(object sender, RoutedEventArgs e)
+        {
+            List<CallLogModel> _selectItem = new List<CallLogModel>();
+            foreach (CallLogModel item in Calls.SelectedItems)
+            {
+                _selectItem.Add(item);
+            }
+            foreach (CallLogModel item in _selectItem)
+            {
+                LinphoneManager.Instance.Core.RemoveCallLog((CallLog)item.NativeLog);
+            }
+            Calls.SelectionMode = ListViewSelectionMode.None;
+            updateCallList();
+            
+        }
+
+        private void CancelBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Calls.SelectionMode = ListViewSelectionMode.None;
+            SetCommandsVisibility(Calls);
+        }
+
+        private void SelectAll_Click(object sender, RoutedEventArgs e)
+        {
+            Calls.SelectAll();
+            DeselectAll.Visibility = Visibility.Visible;
+            SelectAll.Visibility = Visibility.Collapsed;
+        }
+
+        private void DeselectAll_Click(object sender, RoutedEventArgs e)
+        {
+            Calls.SelectedItems.Clear();
+            DeselectAll.Visibility = Visibility.Collapsed;
+            SelectAll.Visibility = Visibility.Visible;
         }
     }
 }

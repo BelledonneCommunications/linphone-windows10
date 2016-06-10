@@ -74,16 +74,14 @@
                               ItemsSource="{Binding}"
                               ItemTemplate="{StaticResource CallLogListViewTemplate}"
                               IsItemClickEnabled="True"
-                              SelectionChanged="calls_SelectionChanged_1"
                               IsMultiSelectCheckBoxEnabled="True"
                               ItemClick="Calls_ItemClick" UseLayoutRounding="True">
                     </ListView>
                 </PivotItem>
-                
+
                 <PivotItem Header="Missed" x:Uid="HistoryMissedTitle">
                     <ListView x:Name="MissedCalls"
                               Margin="-12,0,-12,0"
-                              SelectionChanged="calls_SelectionChanged_1"
                               ItemTemplate="{StaticResource CallLogListViewTemplate}"
                               ItemClick="Calls_ItemClick">
                     </ListView>
@@ -92,9 +90,18 @@
         </Grid>
 
         <CommandBar Grid.Row="2" VerticalAlignment="Bottom" >
-            <AppBarButton Label="Delete All" Icon="Delete" x:Name="Delete_button"/>
+            <AppBarButton x:Name="SelectItems" FontFamily="OverflowCheckGlyph" x:Uid="SelectItem" Label="Select Items" Click="SelectItems_Click">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xe762;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton Label="Delete" Icon="Delete" x:Uid="Delete" Click="DeleteItem_Click" x:Name="DeleteItem" />
+            <AppBarButton Label="Cancel" Icon="Cancel" x:Uid="Cancel" Click="CancelBtn_Click" x:Name="CancelBtn"/>
+
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Name="SelectAll" x:Uid="SelectAll"  Click="SelectAll_Click"/>
+                <AppBarButton Visibility="Collapsed" x:Name="DeselectAll" x:Uid="DeselectAll"  Click="DeselectAll_Click"/>
+            </CommandBar.SecondaryCommands>
         </CommandBar>
-
     </Grid>
-
 </Page>

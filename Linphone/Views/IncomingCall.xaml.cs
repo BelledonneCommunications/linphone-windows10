@@ -116,7 +116,6 @@ namespace Linphone.Views
         private void Answer_Click(object sender, RoutedEventArgs e)
         {
             LinphoneManager.Instance.Core.AcceptCall(LinphoneManager.Instance.Core.CurrentCall);
-            Debug.WriteLine(_callingNumber);
             Frame.Navigate(typeof(Views.InCall), _callingNumber);
         }
 

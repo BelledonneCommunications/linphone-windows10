@@ -22,6 +22,7 @@ using BelledonneCommunications.Linphone.Native;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace Linphone.Views
 {
@@ -166,17 +167,6 @@ namespace Linphone.Views
                         BugReportUploadPopup.Visibility = Visibility.Collapsed;
                     }
                 }*/
-
-
-            if (e.Parameter is String && (e.Parameter as String)?.Length > 0 && e.NavigationMode != NavigationMode.Back)
-            {
-                try {
-                    Address address = LinphoneManager.Instance.Core.InterpretURL(e.Parameter as String);
-                    String sipAddressToCall = address.AsStringUriOnly();
-                    addressBox.Text = sipAddressToCall;
-                } catch(Exception exception)
-                { }
-            }
         
             if (LinphoneManager.Instance.Core.CallsNb > 0)
             {
@@ -188,6 +178,19 @@ namespace Linphone.Views
             if(LinphoneManager.Instance.GetUnreadMessageCount() > 0)
             {
                 UnreadMessageCount = LinphoneManager.Instance.GetUnreadMessageCount();
+            }
+
+            if (e.Parameter is String && (e.Parameter as String)?.Length > 0 && e.NavigationMode != NavigationMode.Back)
+            {
+                String arguments = e.Parameter as String;
+                try
+                {
+                    Address address = LinphoneManager.Instance.Core.InterpretURL(e.Parameter as String);
+                    String sipAddressToCall = address.AsStringUriOnly();
+                    addressBox.Text = sipAddressToCall;
+                }
+                catch (Exception exception)
+                { }
             }
         }
 

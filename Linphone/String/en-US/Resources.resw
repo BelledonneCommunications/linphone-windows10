@@ -733,4 +733,10 @@ To enjoy the best experience with Linphone WP8, we recommend that you use the SI
   <data name="SelectItem.Label" xml:space="preserve">
     <value>Select</value>
   </data>
+  <data name="DeselectAll.Label" xml:space="preserve">
+    <value>Deselect all</value>
+  </data>
+  <data name="SelectAll.Label" xml:space="preserve">
+    <value>Select all</value>
+  </data>
 </root>
