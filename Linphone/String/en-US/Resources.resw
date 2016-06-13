@@ -739,4 +739,7 @@ To enjoy the best experience with Linphone WP8, we recommend that you use the SI
   <data name="SelectAll.Label" xml:space="preserve">
     <value>Select all</value>
   </data>
+  <data name="EmptyContactsList.Text" xml:space="preserve">
+    <value>No contact in your address book</value>
+  </data>
 </root>

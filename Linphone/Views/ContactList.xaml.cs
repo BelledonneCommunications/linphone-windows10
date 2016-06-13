@@ -18,6 +18,7 @@ using Linphone.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml;
 
 namespace Linphone.Views
 {
@@ -33,7 +34,17 @@ namespace Linphone.Views
         {
             this.InitializeComponent();
             groupedContactsCvs.Source = ContactsManager.Instance.GroupsOfContacts;
-            ContactListView.ItemsSource = ContactsManager.Instance.ContactsList;
+
+            if (ContactsManager.Instance.ContactsList.Count == 0)
+            {
+                ContactListView.Visibility = Visibility.Collapsed;
+                EmptyText.Visibility = Visibility.Visible;
+            }
+            else 
+            {
+                ContactListView.Visibility = Visibility.Visible;
+                EmptyText.Visibility = Visibility.Collapsed;
+            }
         }  
 
         private void ContactSearchBox_TextChanged(object sender, TextChangedEventArgs e)

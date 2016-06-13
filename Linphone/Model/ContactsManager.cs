@@ -167,7 +167,7 @@ namespace Linphone.Model
         {
             get
             {
-                return _contactsList;
+                return contactItems;
             }
         }
 

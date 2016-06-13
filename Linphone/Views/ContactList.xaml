@@ -38,6 +38,14 @@
             Visibility="Collapsed"
             TextChanged="ContactSearchBox_TextChanged" />
 
+        <TextBlock 
+            x:Name="EmptyText"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            Visibility="Collapsed"
+            Grid.Row="2"
+            x:Uid="EmptyContactsList"/>
+
         <ListView x:Name="ContactListView" 
             Grid.Row="2"
             ScrollViewer.IsVerticalRailEnabled="True"
