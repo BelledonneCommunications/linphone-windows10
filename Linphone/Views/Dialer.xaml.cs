@@ -22,7 +22,6 @@ using BelledonneCommunications.Linphone.Native;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
 using System.ComponentModel;
-using System.Diagnostics;
 
 namespace Linphone.Views
 {
@@ -50,10 +49,10 @@ namespace Linphone.Views
                 unreadMessageCount = value;
                 if(unreadMessageCount > 0)
                 {
-                    unreadMassageText.Visibility = Visibility.Visible; 
+                    unreadMessageText.Visibility = Visibility.Visible; 
                 } else
                 {
-                    unreadMassageText.Visibility = Visibility.Collapsed;
+                    unreadMessageText.Visibility = Visibility.Collapsed;
                 }
 
                 if (PropertyChanged != null)
@@ -115,12 +114,6 @@ namespace Linphone.Views
             UnreadMessageCount = LinphoneManager.Instance.GetUnreadMessageCount();
         }
 
-        private void CallStateChanged(object sender, EventArgs e)
-        {
-            MissedCallCount = LinphoneManager.Instance.Core.MissedCallsCount;
-        }
-
-
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -128,7 +121,7 @@ namespace Linphone.Views
             LinphoneManager.Instance.CoreDispatcher = Dispatcher;
             LinphoneManager.Instance.RegistrationChanged += RegistrationChanged;
             LinphoneManager.Instance.MessageReceived += MessageReceived;
-            LinphoneManager.Instance.CallStateChanged += CallStateChanged;
+            LinphoneManager.Instance.CallStateChangedEvent += CallStateChanged;
             status.RefreshStatus();
             /*    if (e.NavigationMode == NavigationMode.New)
                 {
@@ -180,9 +173,15 @@ namespace Linphone.Views
                 UnreadMessageCount = LinphoneManager.Instance.GetUnreadMessageCount();
             }
 
+            if(LinphoneManager.Instance.Core.MissedCallsCount > 0)
+            {
+                MissedCallCount = LinphoneManager.Instance.Core.MissedCallsCount;
+            }
+
             if (e.Parameter is String && (e.Parameter as String)?.Length > 0 && e.NavigationMode != NavigationMode.Back)
             {
                 String arguments = e.Parameter as String;
+                addressBox.Text = arguments;
                 try
                 {
                     Address address = LinphoneManager.Instance.Core.InterpretURL(e.Parameter as String);
@@ -192,6 +191,11 @@ namespace Linphone.Views
                 catch (Exception exception)
                 { }
             }
+        }
+
+        private void CallStateChanged(Call call, CallState state)
+        {
+            MissedCallCount = LinphoneManager.Instance.Core.MissedCallsCount;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs nee)

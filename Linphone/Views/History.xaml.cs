@@ -27,7 +27,6 @@ namespace Linphone.Views
 {
     public partial class History : Page
     {
-        private bool _usingSelectionAppBar = false;
         private IEnumerable<CallLogModel> _selection;
 
         public History()

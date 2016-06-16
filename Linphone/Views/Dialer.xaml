@@ -281,7 +281,7 @@
                             Glyph="&#xE8BD;" 
                             FontSize="20"/>
                         <TextBlock 
-                            x:Name="unreadMassageText"
+                            x:Name="unreadMessageText"
                             Visibility="Collapsed"
                             Text="{Binding UnreadMessageCount, Mode = TwoWay}" 
                             HorizontalAlignment="Right"
