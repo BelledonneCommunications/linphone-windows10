@@ -8,39 +8,63 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
-    <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,5,0,0">
-            <!--<TextBlock Foreground="Black" Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextNormalStyle}"/>-->
-            <TextBlock Text="AboutMenu" Margin="9,-7,0,0"/>
+        <StackPanel Grid.Row="0" Margin="12,12,12,0">
+            <TextBlock x:Uid="AboutMenu"  Style="{StaticResource HeaderTextStyle}" />
         </StackPanel>
 
-        <!--ContentPanel - place additional content here-->
-        <ScrollViewer x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                <Rectangle Width="80" Height="80">
-                </Rectangle>
-                <TextBlock 
+        <StackPanel Grid.Row="1"  Orientation="Vertical" HorizontalAlignment="Center" Margin="0,20,0,0">
+            <Image Source="/Assets/linphone_logo_orange.png" Width="100" Height="100">
+            </Image>
+            <TextBlock 
                     HorizontalAlignment="Center"
                     Margin="0,10,0,0"
-                    FontSize="40"
+                    Text="Linphone"
+                    FontWeight="SemiLight"
+                    Style="{StaticResource HeaderTextBlockStyle}"
                     x:Uid="ApplicationTitle"/>
-                <Image Source="\Assets\Square44x44Logo.scale-200.png"/>
-                <TextBlock
+            <TextBlock
                     x:Name="AboutText"
                     HorizontalAlignment="Center"
-                    Margin="0,20,0,0"
-                    TextWrapping="Wrap"
-                    FontSize="25"
-                    TextAlignment="Center" />
-            </StackPanel>
-        </ScrollViewer>
+                    Style="{StaticResource AboutTextStyle}"
+                    TextAlignment="Center">
+                <Run Text="The"></Run>
+                <Run FontStyle="Italic" Text="libre"></Run>
+                <Run Text="SIP client"></Run>
+            </TextBlock>
+            <TextBlock 
+                TextAlignment="Center"
+                Style="{StaticResource ListItemStyle}"
+                Margin="0,10,0,0">
+                <Run Text="Linphone Windows Phone"/>
+                <Run x:Name="AppVersion"/>
+            </TextBlock>
+            <TextBlock 
+                TextAlignment="Center"
+                Style="{StaticResource ListItemStyle}">
+                <Run Text="Linphone Core"/>
+                <Run x:Name="CoreVersion"/>
+            </TextBlock>
+
+            <TextBlock
+                TextAlignment="Center"
+                Margin="0,5,0,0">
+                <Hyperlink NavigateUri="http://www.linphone.org" Foreground="#FFFF5E00">www.linphone.org</Hyperlink>
+            </TextBlock>
+
+            <TextBlock
+                TextAlignment="Center"
+                Margin="0,10,0,0">
+                    GNU General Public License V2 <LineBreak/>
+                    © 2010-2016 Belledonne Communications
+            </TextBlock>
+                
+        </StackPanel>
     </Grid>
 
 </Page>

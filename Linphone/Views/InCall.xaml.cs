@@ -259,6 +259,24 @@ namespace Linphone.Views
                     }
                 }
             }
+            refreshUI();
+        }
+
+        private void refreshUI()
+        {
+            if (!LinphoneManager.Instance.IsVideoAvailable)
+            {
+                buttons.enabledVideo(false);
+            }
+            else {
+                if (LinphoneManager.Instance.Core.CurrentCall.CurrentParams.IsVideoEnabled)
+                {
+                    buttons.checkedVideo(true);
+                }
+                else {
+                    buttons.checkedVideo(false);
+                }
+            }
         }
 
         public async void AskVideoPopup(Call call)

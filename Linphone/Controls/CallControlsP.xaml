@@ -94,7 +94,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE2C0;" RenderTransformOrigin="0.5,0.5">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE946;" RenderTransformOrigin="0.5,0.5">
                             <FontIcon.RenderTransform>
                                 <CompositeTransform ScaleX=".75" ScaleY=".75"/>
                             </FontIcon.RenderTransform>
@@ -273,7 +273,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE717;" RenderTransformOrigin="0.5,0.5">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE75F;" RenderTransformOrigin="0.5,0.5">
                             <FontIcon.RenderTransform>
                                 <CompositeTransform ScaleX=".75" ScaleY=".75"/>
                             </FontIcon.RenderTransform>
@@ -324,7 +324,7 @@
         <controls:Numpad
             x:Name="numpad"
             Grid.Row="0"
-            Grid.RowSpan="4"
+            Grid.RowSpan="3"
             Grid.ColumnSpan="3"
             Visibility="Collapsed"/>
     </Grid>

@@ -16,6 +16,11 @@
         <Setter Property="Margin" Value="0,0,5,5"/>
     </Style>
 
+    <Style TargetType="TextBlock" x:Key="AboutTextStyle">
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="Foreground" Value="#FFFF5E00"/>
+    </Style>
+
     <Style TargetType="RichTextBlock" x:Key="MessageStyle">
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="Margin" Value="7,5,2,2"/>

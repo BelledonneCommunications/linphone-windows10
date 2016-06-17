@@ -38,8 +38,6 @@ namespace Linphone.Model
         private static LinphoneManager _instance = new LinphoneManager();
         public static LinphoneManager Instance { get { return _instance; } }
 
-        private String filePath;
-
         public delegate void ChangedEventHandler(object sender, EventArgs e);
 
         public delegate void CallStateChangedEventHandler(Call call, CallState state);
@@ -171,6 +169,11 @@ namespace Linphone.Model
                     Core.DefaultProxyConfig.Done();
                 }
             }
+        }
+
+        public String getCoreVersion()
+        {
+            return Core.Version;
         }
         #endregion
 
@@ -697,7 +700,7 @@ void CoreListener.CallStateChanged(Call call, CallState state, string message)
 
         void CoreListener.DtmfReceived(Call call, char dtmf)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         void CoreListener.GlobalStateChanged(GlobalState state, string message)
@@ -707,12 +710,12 @@ void CoreListener.CallStateChanged(Call call, CallState state, string message)
 
         void CoreListener.LogCollectionUploadProgressIndication(int offset, int total)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         void CoreListener.LogCollectionUploadStateChanged(LogCollectionUploadState state, string info)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public class ProxyEventArgs : EventArgs
@@ -833,6 +836,11 @@ void CoreListener.CallStateChanged(Call call, CallState state, string message)
                 }
             }
             ContactManager.ContactFound -= OnContactFound;
+        }
+
+        public void EcCalibrationStatus(EcCalibratorStatus status, int delayMs)
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }
