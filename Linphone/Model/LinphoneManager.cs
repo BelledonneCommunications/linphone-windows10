@@ -30,6 +30,7 @@ using Windows.ApplicationModel.Calls;
 using LinphoneTasks;
 using Windows.Networking.Connectivity;
 using System.Text;
+using Windows.Foundation.Metadata;
 
 namespace Linphone.Model
 {
@@ -128,8 +129,7 @@ namespace Linphone.Model
             LinphoneManager.Instance.Core.ChatDatabasePath = GetChatDatabasePath();
             LinphoneManager.Instance.Core.RootCa = GetRootCaPath();
 
-            if(AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
-            {
+            if (ApiInformation.IsApiContractPresent("Windows.Phone.PhoneContract", 1)) {
                 AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;
             }
 
