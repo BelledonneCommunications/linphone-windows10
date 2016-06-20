@@ -83,6 +83,7 @@ target_compile_options(linphone_native PRIVATE "/doc")
 set_target_properties(linphone_native PROPERTIES LIBRARY_OUTPUT_NAME "BelledonneCommunications.Linphone.Native")
 set_target_properties(linphone_native PROPERTIES LINK_FLAGS "/WINMDFILE:BelledonneCommunications.Linphone.Native.winmd")
 set_target_properties(linphone_native PROPERTIES VS_WINRT_COMPONENT TRUE)
+set_target_properties(linphone_native PROPERTIES VS_MOBILE_EXTENSIONS_VERSION ${CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION}) # Include mobile extensions
 target_link_libraries(linphone_native ${LIBS})
 
 install(TARGETS linphone_native

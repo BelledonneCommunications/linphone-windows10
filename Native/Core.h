@@ -1054,13 +1054,11 @@ namespace BelledonneCommunications
 				/// </summary>
 				void UploadLogCollection();
 
-#if 0
 				/// <summary>
 				/// Starts an echo calibration of the sound devices, in order to find adequate settings for the echo canceller automatically.
 				/// Status is notified to CoreListener::EcCalibrationStatus.
 				/// </summary>
 				void StartEchoCalibration();
-#endif
 
 			private:
 				friend ref class Address;

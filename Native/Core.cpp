@@ -42,6 +42,7 @@ using namespace Platform::Collections;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
 using namespace Windows::ApplicationModel::Calls;
+using namespace Windows::Phone::Media::Devices;
 
 
 
@@ -1288,8 +1289,7 @@ void Core::UploadLogCollection()
 	linphone_core_upload_log_collection(this->lc);
 }
 
-#if 0
-static void EchoCalibrationCallback(LinphoneCore *lc, LinphoneEcCalibratorStatus status, int delay_ms, void *data)
+static void EchoCalibrationCallback(::LinphoneCore *lc, LinphoneEcCalibratorStatus status, int delay_ms, void *data)
 {
 	Utils::EchoCalibrationCallback(lc, status, delay_ms, data);
 }
@@ -1300,12 +1300,11 @@ static void EchoCalibrationAudioInit(void *data)
 	if (ecData != nullptr) {
 		ecData->endpoint = AudioRoutingManager::GetDefault()->GetAudioEndpoint();
 		// Need to create a dummy VoipPhoneCall to be able to capture audio!
-		VoipCallCoordinator::GetDefault()->RequestNewOutgoingCall(
+		ecData->call = VoipCallCoordinator::GetDefault()->RequestNewOutgoingCall(
 			"ECCalibrator",
 			"ECCalibrator",
 			"ECCalibrator",
-			VoipCallMedia::Audio,
-			&ecData->call);
+			VoipPhoneCallMedia::Audio);
 		ecData->call->NotifyCallActive();
 	}
 	AudioRoutingManager::GetDefault()->SetAudioEndpoint(AudioRoutingEndpoint::Speakerphone);
@@ -1323,16 +1322,11 @@ static void EchoCalibrationAudioUninit(void *data)
 void Core::StartEchoCalibration() 
 {
 	API_LOCK;
-	EchoCalibrationData *data = new EchoCalibrationData();
-	linphone_core_start_echo_calibration(this->lc, EchoCalibrationCallback, EchoCalibrationAudioInit, EchoCalibrationAudioUninit, data);
+	if (Windows::Foundation::Metadata::ApiInformation::IsApiContractPresent("Windows.Phone.PhoneContract", 1)) {
+		EchoCalibrationData *data = new EchoCalibrationData();
+		linphone_core_start_echo_calibration(this->lc, EchoCalibrationCallback, EchoCalibrationAudioInit, EchoCalibrationAudioUninit, data);
+	}
 }
-
-int Core::NativeVideoWindowId::get()
-{
-	API_LOCK;
-	return Globals::Instance->VideoRenderer->GetNativeWindowId();
-}
-#endif
 
 void global_state_changed(::LinphoneCore *lc, ::LinphoneGlobalState gstate, const char *msg)
 {

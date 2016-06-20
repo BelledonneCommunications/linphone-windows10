@@ -74,6 +74,13 @@ namespace BelledonneCommunications
 				void DtmfReceived(Call^ call, char16 dtmf);
 
 				/// <summary>
+				/// Callback method called when the echo canceller calibration finishes.
+				/// </summary>
+				/// <param name="status">The status of the echo canceller calibration</param>
+				/// <param name="delayMs">The echo delay in milliseconds if the status is EcCalibratorStatus::Done</param>
+				void EcCalibrationStatus(EcCalibratorStatus status, int delayMs);
+
+				/// <summary>
 				/// Callback method called when the application state has changed.
 				/// </summary>
 				/// <param name="state">The new state of the application</param>
