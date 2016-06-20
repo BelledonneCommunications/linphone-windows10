@@ -128,8 +128,8 @@
   <data name="ApplicationTitle.Text" xml:space="preserve">
     <value>Linphone</value>
   </data>
-  <data name="AboutMenu" xml:space="preserve">
-    <value>About</value>
+  <data name="AboutMenu.Text" xml:space="preserve">
+    <value>ABOUT</value>
   </data>
   <data name="Cancel.Label" xml:space="preserve">
     <value>Cancel</value>

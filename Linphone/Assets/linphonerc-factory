@@ -7,9 +7,12 @@ inc_timeout=45
 use_ipv6=0
 register_only_when_network_is_up=1
 ping_with_options=0
+store_ha1_passwd=0
 inactive_video_on_pause=1
 
 [rtp]
+audio_rtp_port=7076
+video_rtp_port=9078
 audio_jitt_comp=60
 video_jitt_comp=60
 nortp_timeout=30
@@ -20,5 +23,3 @@ dtmf_player_amp=0.1
 [misc]
 history_max_size=30
 max_calls=1
-file_transfer_server_url=https://www.linphone.org:444/lft.php
-log_collection_upload_server_url=https://www.linphone.org:444/lft.php

@@ -1,19 +1,20 @@
 [net]
-firewall_policy=0
 download_bw=380
 upload_bw=380
 
 [sip]
 default_proxy=0
 
-[rtp]
-audio_rtp_port=7076
-video_rtp_port=9078
+[misc]
+log_collection_upload_server_url=https://www.linphone.org:444/lft.php
+file_transfer_server_url=https://www.linphone.org:444/lft.php
 
 [sound]
 hold_music=Assets/Sounds/toy-mono.wav
 
 [video]
+automatically_accept=0
+automatically_initiate=0
 capture=1
 display=1
 size=qvga
