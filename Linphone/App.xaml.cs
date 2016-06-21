@@ -34,6 +34,8 @@ namespace Linphone
     sealed partial class App : Application, CallControllerListener
     {
         Frame rootFrame;
+        bool acceptCall;
+        String sipAddress;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -45,6 +47,7 @@ namespace Linphone
             this.UnhandledException += App_UnhandledException; ;
             this.Suspending += OnSuspending;
             SettingsManager.InstallConfigFile();
+            acceptCall = false;
         }
 
         private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -129,8 +132,9 @@ namespace Linphone
             currentView.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
 
             LinphoneManager.Instance.InitLinphoneCore();
-            LinphoneManager.Instance.CoreDispatcher = Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().CoreWindow.Dispatcher;
             LinphoneManager.Instance.CallListener = this;
+            LinphoneManager.Instance.CoreDispatcher = Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().CoreWindow.Dispatcher;
+            
 
             rootFrame = Window.Current.Content as Frame;
 
@@ -158,11 +162,23 @@ namespace Linphone
             {
                 if (args != null)
                 {
-                    rootFrame.Navigate(typeof(Views.Chat), args);
+                    if (args.StartsWith("chat"))
+                    {
+                        var sipAddrr = args.Split('=')[1];
+                        rootFrame.Navigate(typeof(Views.Chat), args);
+                    }
+                    else
+                    {                    
+                        if (args.StartsWith("answer"))
+                        {
+                            acceptCall = true;
+                            sipAddress = args.Split('=')[1];
+                        }
+                        rootFrame.Navigate(typeof(Views.Dialer), null);
+                    }   
                 }
                 else
                 {
-
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
@@ -179,20 +195,7 @@ namespace Linphone
             {
                 var toastArgs = args as ToastNotificationActivatedEventArgs;
                 var arguments = toastArgs.Argument;
-
-                if (arguments.StartsWith("chat"))
-                {
-                    Debug.WriteLine("Argument " + arguments);
-                    var sipAddrr = arguments.Split('=')[1];
-                    Initialize(args, sipAddrr);
-                }
-                else
-                {
-                    Initialize(args, arguments);
-                }
-            } else
-            {
-                Initialize(args, null);
+                Initialize(args, arguments);
             }
 
         }
@@ -223,7 +226,22 @@ namespace Linphone
 
         public void CallIncoming(Call call)
         {
-            rootFrame.Navigate(typeof(Views.IncomingCall), call.RemoteAddress.AsString());
+            if(acceptCall)
+            {
+                if (sipAddress != "")
+                {
+                    Address addr = LinphoneManager.Instance.Core.InterpretURL(sipAddress);
+                    if (addr != null && addr.AsStringUriOnly().Equals(call.RemoteAddress.AsStringUriOnly()))
+                    {
+                        LinphoneManager.Instance.Core.AcceptCall(call);
+                        rootFrame.Navigate(typeof(Views.InCall), call.RemoteAddress.AsString());
+                        acceptCall = false;
+                    }
+                }
+            } else
+            {
+                rootFrame.Navigate(typeof(Views.IncomingCall), call.RemoteAddress.AsString());
+            }
         }
     }
 }
