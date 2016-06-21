@@ -740,7 +740,23 @@ void CoreListener.CallStateChanged(Call call, CallState state, string message)
             });
         }
 
+        public EchoCalibratorListener ECListener { get; set; }
 
+        public void EcCalibrationStatus(EcCalibratorStatus status, int delayMs)
+        {
+            Debug.WriteLine("[LinphoneManager] Echo canceller calibration status: " + status.ToString() + "\r\n");
+            if (status == EcCalibratorStatus.Done)
+            {
+                Debug.WriteLine("[LinphoneManager] Echo canceller delay: {0} ms\r\n", delayMs);
+            }
+            CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                if (ECListener != null)
+                {
+                    ECListener.ECStatusNotified(status, delayMs);
+                }
+            });
+        }
 
         #endregion
 
@@ -837,12 +853,12 @@ void CoreListener.CallStateChanged(Call call, CallState state, string message)
             }
             ContactManager.ContactFound -= OnContactFound;
         }
-
-        public void EcCalibrationStatus(EcCalibratorStatus status, int delayMs)
-        {
-            throw new NotImplementedException();
-        }
         #endregion
+    }
+
+    public interface EchoCalibratorListener
+    {
+        void ECStatusNotified(EcCalibratorStatus status, int delayMs);
     }
 
 }

@@ -26,7 +26,7 @@ namespace Linphone.Views
     /// <summary>
     /// Page displaying the audio settings and the audio codecs to let the user enable/disable them.
     /// </summary>
-    public partial class AudioSettings : Page
+    public partial class AudioSettings : Page, EchoCalibratorListener
     {
         private CodecsSettingsManager _settings = new CodecsSettingsManager();
         private bool saveSettingsOnLeave = true;
@@ -59,7 +59,7 @@ namespace Linphone.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            //LinphoneManager.Instance.ECListener = this;
+            LinphoneManager.Instance.ECListener = this;
         }
 
         /// <summary>
@@ -117,8 +117,8 @@ namespace Linphone.Views
         {
             var loader = new Windows.ApplicationModel.Resources.ResourceLoader();
             ECCalibratorButton.IsEnabled = false;
-            ECCalibratorStatusButton.Content = loader.GetString("ECCalibrationInProgress");
-            //LinphoneManager.Instance.Core.StartEchoCalibration();
+            ECCalibratorStatusButton.Text = loader.GetString("ECCalibrationInProgress");
+            LinphoneManager.Instance.Core.StartEchoCalibration();
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Linphone.Views
         /// </summary>
         protected override void OnNavigatedFrom(NavigationEventArgs nea)
         {
-            //LinphoneManager.Instance.ECListener = null;
+            LinphoneManager.Instance.ECListener = null;
         }
 
         /// <summary>
@@ -136,26 +136,25 @@ namespace Linphone.Views
         /// <param name="delayMs">The echo delay in milliseconds if the status is EcCalibratorStatus.Done</param>
         public void ECStatusNotified(EcCalibratorStatus status, int delayMs)
         {
-            /*BaseModel.UIDispatcher.BeginInvoke(() =>
+
+            var loader = new Windows.ApplicationModel.Resources.ResourceLoader();
+            if (status == EcCalibratorStatus.Done)
             {
-                if (status == EcCalibratorStatus.Done)
-                {
-                    ECCalibratorStatusButton.Content = String.Format(AppResources.ECCalibrationDone, delayMs);
-                }
-                else if (status == EcCalibratorStatus.DoneNoEcho)
-                {
-                    ECCalibratorStatusButton.Content = AppResources.ECCalibrationDoneNoEcho;
-                }
-                else if (status == EcCalibratorStatus.Failed)
-                {
-                    ECCalibratorStatusButton.Content = AppResources.ECCalibrationFailed;
-                }
-                else if (status == EcCalibratorStatus.InProgress)
-                {
-                    ECCalibratorStatusButton.Content = AppResources.ECCalibrationInProgress;
-                }
-                ECCalibratorButton.IsEnabled = true;
-            });*/
+                ECCalibratorStatusButton.Text = String.Format(loader.GetString("ECCalibrationDone"), delayMs);
+            }
+            else if (status == EcCalibratorStatus.DoneNoEcho)
+            {
+                ECCalibratorStatusButton.Text = loader.GetString("ECCalibrationDoneNoEcho");
+            }
+            else if (status == EcCalibratorStatus.Failed)
+            {
+                ECCalibratorStatusButton.Text = loader.GetString("ECCalibrationFailed");
+            }
+            else if (status == EcCalibratorStatus.InProgress)
+            {
+                ECCalibratorStatusButton.Text = loader.GetString("ECCalibrationInProgress");
+            }
+            ECCalibratorButton.IsEnabled = true;
         }
     }
 }

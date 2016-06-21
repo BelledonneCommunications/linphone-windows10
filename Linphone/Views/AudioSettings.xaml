@@ -105,15 +105,16 @@
                         Click="ECCalibratorButton_Click_1"
                         Margin="0,30,0,0"
                         x:Uid="EchoCancellerCalibration"
+                        HorizontalAlignment="Center"
                         Content="EchoCancellerCalibration" />
-                    <Button
+                    <TextBlock
                         Grid.Row="3"
                         x:Name="ECCalibratorStatusButton"
-                        IsEnabled="False"
-                        BorderThickness="0"
                         Margin="0,30,0,0"
+                        Style="{StaticResource ListItemStyle}"
+                        HorizontalAlignment="Center"
                         x:Uid="ECCalibrationNotRun"
-                        Content="ECCalibrationNotRun" />
+                        Text="ECCalibrationNotRun" />
                 </StackPanel>
             </PivotItem>
         </Pivot>

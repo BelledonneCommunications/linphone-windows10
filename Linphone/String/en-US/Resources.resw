@@ -369,7 +369,7 @@ and cc-by-nd from https://github.com/Templarian/WindowsIcons</value>
   <data name="ECCalibrationInProgress" xml:space="preserve">
     <value>Calibration in progress</value>
   </data>
-  <data name="ECCalibrationNotRun.Content" xml:space="preserve">
+  <data name="ECCalibrationNotRun.Text" xml:space="preserve">
     <value>Click button to calibrate</value>
   </data>
   <data name="H264Codec.Header" xml:space="preserve">
