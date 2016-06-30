@@ -103,12 +103,12 @@ namespace Linphone.Views
             });*/
         }
 
-        private void RegistrationChanged(object sender, EventArgs e)
+        private void RegistrationChanged(ProxyConfig config, RegistrationState state, string message)
         {
             status.RefreshStatus();
         }
 
-        private void MessageReceived(object sender, EventArgs e)
+        private void MessageReceived(ChatRoom room, ChatMessage message)
         {
 
             UnreadMessageCount = LinphoneManager.Instance.GetUnreadMessageCount();

@@ -20,6 +20,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -85,10 +87,12 @@ namespace Linphone.Views
             base.OnNavigatedFrom(e);
         }
 
-        private void MessageReceived(object sender, EventArgs e)
+        private void MessageReceived(ChatRoom room, ChatMessage message)
         {
             GetMessagesAndDisplayConversationsList();
         }
+
+        
 
         /// <summary>
         /// Callback called when the search on a phone number or an email for a contact has a match

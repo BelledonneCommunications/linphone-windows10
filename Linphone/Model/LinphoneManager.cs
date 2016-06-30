@@ -39,15 +39,6 @@ namespace Linphone.Model
         private static LinphoneManager _instance = new LinphoneManager();
         public static LinphoneManager Instance { get { return _instance; } }
 
-        public delegate void ChangedEventHandler(object sender, EventArgs e);
-
-        public delegate void CallStateChangedEventHandler(Call call, CallState state);
-        public event CallStateChangedEventHandler CallStateChangedEvent;
-
-        public event ChangedEventHandler CallStateChanged;
-        public event ChangedEventHandler RegistrationChanged;
-        public event ChangedEventHandler MessageReceived;
-
         private Core _core;
         public bool isLinphoneRunning = false;
 
@@ -175,6 +166,17 @@ namespace Linphone.Model
         {
             return Core.Version;
         }
+
+        public void ConfigureLog(OutputTraceLevel level)
+        {
+            Core.LogLevel = level;
+        }
+
+        public void resetLogCollection()
+        {
+            Core.ResetLogCollection();
+        }
+
         #endregion
 
         #region CallLogs
@@ -360,14 +362,8 @@ namespace Linphone.Model
             return nbUnreadMessages;
         }
 
-        public class MessageEventArgs : EventArgs
-        {
-            public ChatMessage _chatMessage { get; set; }
-            public MessageEventArgs(ChatMessage m)
-            {
-                _chatMessage = m;
-            }
-        }
+        public delegate void MessageReceivedEventHandler(ChatRoom room, ChatMessage message);
+        public event MessageReceivedEventHandler MessageReceived;
 
         public MessageReceivedListener MessageListener { get; set; }
         //public ToastNotification MessageReceivedNotification { get; set; }
@@ -379,7 +375,7 @@ namespace Linphone.Model
             {
                 if (MessageReceived != null)
                 {
-                    MessageReceived(this, new MessageEventArgs(message));
+                    MessageReceived(room, message);
                 }
 
                 Address fromAddress = message.FromAddress;
@@ -559,25 +555,10 @@ namespace Linphone.Model
         {
         }
 
-        public class CallEventArgs : EventArgs
-        {
-            public Call _call { get; set; }
-            public CallEventArgs(Call c)
-            {
-                _call = c;
-            }
-        }
+        public delegate void CallStateChangedEventHandler(Call call, CallState state);
+        public event CallStateChangedEventHandler CallStateChangedEvent;
 
-        public class CallStateEventArgs : EventArgs
-        {
-            public string State { get; set; }
-            public CallStateEventArgs(string state)
-            {
-                State = state;
-            }
-        }
-
-void CoreListener.CallStateChanged(Call call, CallState state, string message)
+        void CoreListener.CallStateChanged(Call call, CallState state, string message)
         {
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
             CoreDispatcher.RunAsync(CoreDispatcherPriority.High, () =>
@@ -708,24 +689,43 @@ void CoreListener.CallStateChanged(Call call, CallState state, string message)
             Debug.WriteLine(String.Format("GlobalStateChanged: {0} [{1}]", state, message));
         }
 
+        public delegate void LogUploadProgressIndicationEventHandler(int offset, int total);
+        public event LogUploadProgressIndicationEventHandler LogUploadProgressIndicationEH;
+
         void CoreListener.LogCollectionUploadProgressIndication(int offset, int total)
         {
-            //throw new NotImplementedException();
+            if (LogUploadProgressIndicationEH != null)
+            {
+                LogUploadProgressIndicationEH(offset, total);
+            }
         }
 
         void CoreListener.LogCollectionUploadStateChanged(LogCollectionUploadState state, string info)
         {
-            //throw new NotImplementedException();
+            if (CoreDispatcher == null) return;
+#pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
+            CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                if (state == LogCollectionUploadState.Delivered)
+                {
+                    BugCollector.ReportExceptions(info);
+                }
+                else if (state == LogCollectionUploadState.NotDelivered)
+                {
+                    Debug.WriteLine("[LinphoneManager] Logs upload error: " + info);
+                    /* var notif = new CustomMessageBox()
+                     {
+                         Caption = "Logfile upload failed",
+                         Message = info,
+                         RightButtonContent = AppResources.Close
+                     };
+                     notif.Show();*/
+                }
+            });
         }
 
-        public class ProxyEventArgs : EventArgs
-        {
-            public ProxyConfig _proxy { get; set; }
-            public ProxyEventArgs(ProxyConfig p)
-            {
-                _proxy = p;
-            }
-        }
+        public delegate void RegistrationStateChangedEventHandler(ProxyConfig config, RegistrationState state, string message);
+        public event RegistrationStateChangedEventHandler RegistrationChanged;
 
         void CoreListener.RegistrationStateChanged(ProxyConfig config, RegistrationState state, string message)
         {
@@ -735,7 +735,7 @@ void CoreListener.CallStateChanged(Call call, CallState state, string message)
             {
                 if(RegistrationChanged != null)
                 {
-                    RegistrationChanged(this, new ProxyEventArgs(config));
+                    RegistrationChanged(config, state, message);
                 } 
             });
         }
