@@ -33,6 +33,7 @@ namespace BelledonneCommunications
 			/// <summary>
 			/// Definition of the CoreListener interface.
 			/// </summary>
+			[Windows::Foundation::Metadata::WebHostHidden]
 			public interface class CoreListener
 			{
 			public:
@@ -71,6 +72,13 @@ namespace BelledonneCommunications
 				/// <param name="call">The call on which a DTMF has been received</param>
 				/// <param name="dtmf">The DTMF that has been received</param>
 				void DtmfReceived(Call^ call, char16 dtmf);
+
+				/// <summary>
+				/// Callback method called when the echo canceller calibration finishes.
+				/// </summary>
+				/// <param name="status">The status of the echo canceller calibration</param>
+				/// <param name="delayMs">The echo delay in milliseconds if the status is EcCalibratorStatus::Done</param>
+				void EcCalibrationStatus(EcCalibratorStatus status, int delayMs);
 
 				/// <summary>
 				/// Callback method called when the application state has changed.

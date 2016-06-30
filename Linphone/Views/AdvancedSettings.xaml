@@ -1,0 +1,159 @@
+﻿<Page
+    x:Class="Linphone.Views.AdvancedSettings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:linphone="clr-namespace:Linphone"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
+    
+    <Grid x:Name="LayoutRoot">
+        <Pivot Name="AdvancedSettingsMenu" x:Uid="AdvancedSettingsTitle">
+            <PivotItem Header="NetworkMenu" x:Uid="NetworkMenu">
+                <ScrollViewer>
+                    <StackPanel Orientation="Vertical">
+                        <ComboBox
+                            x:Name="mediaEncryption"
+                            x:Uid="MediaEncryptionSetting"
+                            Header="MediaEncryptionSetting">
+                        </ComboBox>
+
+                        <ComboBox
+                            Margin="0,10,0,0"
+                            x:Name="firewallPolicy"
+                            x:Uid="FirewallPolicySetting"
+                            Header="FirewallPolicySetting">
+                        </ComboBox>
+
+                        <TextBox
+                            x:Name="Stun"
+                            Margin="0,10,0,0"
+                            Header="StunServer"
+                            IsEnabled="True"
+                            IsReadOnly="False">
+                            <TextBox.InputScope>
+                                <InputScope>
+                                    <InputScope.Names>
+                                        <InputScopeName NameValue="Url" />
+                                    </InputScope.Names>
+                                </InputScope>
+                            </TextBox.InputScope>
+                        </TextBox>
+
+
+                        <StackPanel x:Name="TunnelPanel" Orientation="Vertical">
+                            <ComboBox 
+                                x:Name="tunnelMode"
+                                x:Uid="TunnelMode"
+                                Header="TunnelMode">
+                            </ComboBox>
+                        
+                            <TextBlock
+                                x:Uid="TunnelServer" />
+
+                            <TextBox
+                                x:Name="tunnelServer"
+                                IsEnabled="True"
+                                IsReadOnly="False">
+                                <TextBox.InputScope>
+                                    <InputScope>
+                                        <InputScope.Names>
+                                            <InputScopeName NameValue="Url" />
+                                        </InputScope.Names>
+                                    </InputScope>
+                                </TextBox.InputScope>
+                            </TextBox>
+
+                            <TextBlock
+                                x:Uid="TunnelPort" />
+
+                            <TextBox
+                                x:Name="tunnelPort"
+                                IsEnabled="True"
+                                IsReadOnly="False">
+                                <TextBox.InputScope>
+                                    <InputScope>
+                                        <InputScope.Names>
+                                            <InputScopeName NameValue="Number" />
+                                        </InputScope.Names>
+                                    </InputScope>
+                                </TextBox.InputScope>
+                                </TextBox>
+                            </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+
+            <!--Pivot item Call-->
+            <PivotItem Header="CallMenu" x:Uid="CallMenu">
+                <StackPanel Orientation="Vertical">
+                    <ToggleSwitch  
+                        x:Name="rfc2833" 
+                        x:Uid="RFC2833Setting"
+                        Header="RFC2833Setting">
+                    </ToggleSwitch>
+                    <ToggleSwitch  
+                        x:Name="sipInfo"
+                        x:Uid="SIPInfoSetting"
+                        Header="SIPInfoSetting">
+                    </ToggleSwitch>
+                </StackPanel>
+            </PivotItem>
+
+            <!--Pivot item Chat-->
+            <PivotItem Header="ChatMenu" x:Uid="ChatMenu">
+                <StackPanel Orientation="Vertical">
+                    <ToggleSwitch  
+                        x:Name="vibrator"
+                        x:Uid="VibratorSetting"
+                        Header="VibratorSetting">
+                    </ToggleSwitch>
+                    <ToggleSwitch  
+                        x:Name="resizeDown"
+                        x:Uid="ResizeSetting"
+                        Header="ResizeSetting">
+                    </ToggleSwitch>
+                </StackPanel>
+            </PivotItem>
+
+            <!--Pivot item Debug-->
+            <PivotItem  Header="DebugMenu" x:Uid="DebugMenu">
+                <StackPanel Orientation="Vertical">
+                    <ToggleSwitch
+                        x:Name="Debug"
+                        x:Uid="DebugSetting"
+                        Header="DebugSetting">
+                    </ToggleSwitch>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Button x:Name="SendLogs" Margin="0,10,0,0" Grid.Row="0" Content="SendLogsEmail" x:Uid="SendLogsEmail" Click="SendLogs_Click"/>
+                        <Button x:Name="ResetLogs" Margin="0,10,0,0" Grid.Row="1" Content="ResetLogs" x:Uid="ResetLogs" Click="ResetLogs_Click"/>
+                        <StackPanel
+                            x:Name="BugReportUploadPopup"
+                            Grid.RowSpan="2"
+                            Background="Black"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Visibility="Collapsed">
+                            <ProgressBar
+                                x:Name="BugReportUploadProgressBar"
+                                Grid.Row="0"
+                                Margin="20,0"
+                                IsIndeterminate="False"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                            />
+                            <TextBlock HorizontalAlignment="Center" Margin="20,0" x:Uid="UploadingLogs" />
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+    
+</Page>

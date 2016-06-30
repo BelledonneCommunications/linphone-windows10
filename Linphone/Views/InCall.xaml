@@ -1,0 +1,98 @@
+﻿<Page
+    x:Class="Linphone.Views.InCall"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:linphone="using:Linphone.Views"
+    xmlns:controls="using:Linphone.Controls"
+    xmlns:custom="using:Linphone.Views"
+    Background="{ThemeResource AppBarBackgroundThemeBrush}"
+    mc:Ignorable="d">
+
+    <Grid x:Name="LayoutRoot" Tapped="LayoutRoot_Tap">
+        <Grid x:Name="HUD"
+              HorizontalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid x:Name="ContactHeader" VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Image Source="/Assets/avatar2.png"
+                       HorizontalAlignment="Center"
+                       Width="60" Height="60" VerticalAlignment="Top"/>
+
+                <TextBlock
+                    Grid.Row="1"
+                    x:Name="Contact"
+                    FontSize="18"
+                    HorizontalAlignment="Center"
+                    Style="{StaticResource TextStyle}"
+                    TextWrapping="Wrap"
+                    Margin="5,10,5,10"/>
+
+                <TextBlock
+                    Grid.Row="2"
+                    x:Name="Number"
+                    Margin="5"
+                    Visibility="Collapsed"
+                    FontSize="25"/>
+
+                <TextBlock
+                    Grid.Row="3"
+                    x:Name="Status"
+                    Text="Dialing ..."
+                    x:Uid="Dialing"
+                    Style="{StaticResource ListItemStyle}"
+                    HorizontalAlignment="Center"
+                    Margin="12,0,12,0"
+                    FontSize="20" />
+
+                <FontIcon 
+                    Grid.Row="4"
+                    Margin="12"
+                    x:Name="statusIcon"
+                    FontFamily="Segoe MDL2 Assets" 
+                    Glyph="" 
+                    RenderTransformOrigin="0.5,0.5"/>
+            </Grid>
+            
+            <controls:CallControlsP 
+                x:Name="buttons"
+                VerticalAlignment="Bottom"
+                Visibility="Visible"
+                Grid.RowSpan="2"/>
+
+            <!-- Local video media element -->
+            <Grid Grid.RowSpan="2" x:Name="VideoGrid" Canvas.ZIndex="-1" Background="Black" Visibility="Collapsed" Tapped="Video_Tapped">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                <SwapChainPanel x:Name="VideoSwapChainPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3"/>
+                <SwapChainPanel x:Name="PreviewSwapChainPanel" Grid.Column="2" Grid.Row="2" Width="120" Height="160" RenderTransformOrigin="0.5,0.5">
+                    <SwapChainPanel.RenderTransform>
+                        <CompositeTransform ScaleX="-1"/>
+                    </SwapChainPanel.RenderTransform>
+                </SwapChainPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

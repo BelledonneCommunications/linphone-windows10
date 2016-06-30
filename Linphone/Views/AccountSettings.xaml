@@ -1,0 +1,172 @@
+﻿<Page
+    x:Class="Linphone.Views.AccountSettings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:linphone="clr-namespace:Linphone"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
+    
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="12,12,12,0">
+            <TextBlock Text="ACCOUNT" x:Uid="AccountMenu" Style="{StaticResource HeaderTextStyle}"/>
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <ScrollViewer x:Name="ContentPanel" Grid.Row="1">
+            <Grid Margin="12,0,12,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                
+                <StackPanel Orientation="Vertical" Grid.Row="0" Margin="0,10,0,0">
+                    <TextBlock
+                        Text="Username" x:Uid="SIPUsername">
+                    </TextBlock>
+                    <TextBox
+                        x:Name="Username">
+                        <TextBox.InputScope>
+                            <InputScope>
+                                <InputScope.Names>
+                                    <InputScopeName NameValue="EmailSmtpAddress" />
+                                </InputScope.Names>
+                            </InputScope>
+                        </TextBox.InputScope>
+                    </TextBox>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Grid.Row="1" Margin="0,10,0,0">
+                    <TextBlock
+                        Text="User Id" x:Uid="SIPUserId">
+                    </TextBlock>
+                    <TextBox
+                        x:Name="UserId">
+                        <TextBox.InputScope>
+                            <InputScope>
+                                <InputScope.Names>
+                                    <InputScopeName NameValue="EmailNameOrAddress" />
+                                </InputScope.Names>
+                            </InputScope>
+                        </TextBox.InputScope>
+                    </TextBox>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Grid.Row="2" Margin="0,10,0,0">
+                    <TextBlock
+                        Text="Password" x:Uid="SIPPassword">
+                    </TextBlock>
+                    <PasswordBox
+                        x:Name="Password">
+                    </PasswordBox>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Grid.Row="3" Margin="0,10,0,0">
+                    <TextBlock
+                        Text="Domain" x:Uid="SIPDomain">
+                    </TextBlock>
+                    <TextBox
+                        x:Name="Domain">
+                        <TextBox.InputScope>
+                            <InputScope>
+                                <InputScope.Names>
+                                    <InputScopeName NameValue="Url" />
+                                </InputScope.Names>
+                            </InputScope>
+                        </TextBox.InputScope>
+                    </TextBox>
+                </StackPanel>
+
+                <ComboBox
+                    Grid.Row="4"
+                    x:Name="Transport"
+                    Header="Transport"
+                    Margin="0,10,0,0"
+                    x:Uid="TransportSettings"
+                    ItemsSource="{Binding Transports}">
+                </ComboBox>
+                
+                <StackPanel Orientation="Vertical" Grid.Row="5" Margin="0,10,0,0">
+                    <TextBlock
+                         Text="Proxy" x:Uid="SIPProxy">
+                    </TextBlock>
+                    <TextBox
+                        x:Name="Proxy">
+                    </TextBox>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Grid.Row="6" Margin="0,10,0,0">
+                    <ToggleSwitch  
+                        x:Name="OutboundProxy" x:Uid="SIPOutboundProxy" Header="Outbound Proxy">
+                    </ToggleSwitch>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Grid.Row="7" Margin="0,10,0,0">
+                    <ToggleSwitch
+                        x:Name="AVPF" x:Uid="AVPF" Header="AVPF">
+                    </ToggleSwitch>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Grid.Row="8" Margin="0,10,0,0">
+                    <TextBlock
+                       Text="Expire" x:Uid="Expire">
+                    </TextBlock>
+                    <TextBox
+                        x:Name="Expires">
+                        <TextBox.InputScope>
+                            <InputScope>
+                                <InputScope.Names>
+                                    <InputScopeName NameValue="Number" />
+                                </InputScope.Names>
+                            </InputScope>
+                        </TextBox.InputScope>
+                    </TextBox>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Grid.Row="9" Margin="0,10,0,0">
+                    <TextBlock
+                        Text="DisplayName" x:Uid="DisplayName">
+                    </TextBlock>
+                    <TextBox
+                        x:Name="DisplayName">
+                        <TextBox.InputScope>
+                            <InputScope>
+                                <InputScope.Names>
+                                    <InputScopeName NameValue="PersonalFullName" />
+                                </InputScope.Names>
+                            </InputScope>
+                        </TextBox.InputScope>
+                    </TextBox>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+
+        <CommandBar Grid.Row="2" VerticalAlignment="Bottom">
+            <AppBarButton Icon="Save" Label="Save" Click="save_Click_1"/>
+            <AppBarButton Icon="Cancel" Label="Cancel" Click="cancel_Click_1" />
+            <AppBarButton Label="Linphone" Click="linphone_Click_1">
+                <AppBarButton.Content>
+                    <Grid>
+                        <Image Source="/Assets/linphone_user.png"/>
+                    </Grid>
+                </AppBarButton.Content>
+            </AppBarButton>
+        </CommandBar>
+    </Grid>
+
+</Page>

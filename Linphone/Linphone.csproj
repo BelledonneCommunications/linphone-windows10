@@ -11,8 +11,8 @@
     <AssemblyName>BelledonneCommunications.Linphone.App</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.10240.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.10069.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
     <FileAlignment>512</FileAlignment>
@@ -93,17 +93,113 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Content Include="Assets\linphonerc" />
+    <Content Include="Assets\linphonerc-factory" />
+    <Content Include="Assets\avatar.png" />
+    <Content Include="Assets\avatar2.png" />
+    <Content Include="Assets\linphone_user.png" />
+    <Content Include="Assets\rootca.pem" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="Controls\AddressBox.xaml.cs">
+      <DependentUpon>AddressBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CallControlsP.xaml.cs">
+      <DependentUpon>CallControlsP.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ChatBubble.xaml.cs">
+      <DependentUpon>ChatBubble.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ContactAction.xaml.cs">
+      <DependentUpon>ContactAction.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\IncomingChatBubble.xaml.cs">
+      <DependentUpon>IncomingChatBubble.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Numpad.xaml.cs">
+      <DependentUpon>Numpad.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OutgoingChatBubble.xaml.cs">
+      <DependentUpon>OutgoingChatBubble.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StatusBar.xaml.cs">
+      <DependentUpon>StatusBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TextBoxChatBubble.xaml.cs">
+      <DependentUpon>TextBoxChatBubble.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AlphaKeyGroup.cs" />
+    <Compile Include="Model\ContactItem.cs" />
+    <Compile Include="Model\BaseModel.cs" />
+    <Compile Include="Model\BoolToAccentBrushConverter.cs" />
+    <Compile Include="Model\BugCollector.cs" />
+    <Compile Include="Model\CallControllerListener.cs" />
+    <Compile Include="Model\CallLogModel.cs" />
+    <Compile Include="Model\ContactPictureConverter.cs" />
+    <Compile Include="Model\ContactsManager.cs" />
+    <Compile Include="Model\Conversation.cs" />
+    <Compile Include="Model\InCallModel.cs" />
+    <Compile Include="Model\SettingsManager.cs" />
+    <Compile Include="Model\SipUriToUsernameConverter.cs" />
+    <Compile Include="Model\Utils.cs" />
+    <Compile Include="Views\About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AccountSettings.xaml.cs">
+      <DependentUpon>AccountSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AdvancedSettings.xaml.cs">
+      <DependentUpon>AdvancedSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AudioSettings.xaml.cs">
+      <DependentUpon>AudioSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BasePage.cs" />
+    <Compile Include="Views\Chat.xaml.cs">
+      <DependentUpon>Chat.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Chats.xaml.cs">
+      <DependentUpon>Chats.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ContactDetail.xaml.cs">
+      <DependentUpon>ContactDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ContactList.xaml.cs">
+      <DependentUpon>ContactList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialer.xaml.cs">
+      <DependentUpon>Dialer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FirstLogin.xaml.cs">
+      <DependentUpon>FirstLogin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\History.xaml.cs">
+      <DependentUpon>History.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InCall.xaml.cs">
+      <DependentUpon>InCall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\IncomingCall.xaml.cs">
+      <DependentUpon>IncomingCall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Launcher.xaml.cs">
+      <DependentUpon>Launcher.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\LinphoneManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\Settings.xaml.cs">
+      <DependentUpon>Settings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\VideoSettings.xaml.cs">
+      <DependentUpon>VideoSettings.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -112,6 +208,24 @@
     <None Include="Linphone_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Incall_Icons\bluetooth_off.png" />
+    <Content Include="Assets\Incall_Icons\bluetooth_on.png" />
+    <Content Include="Assets\Incall_Icons\camera.png" />
+    <Content Include="Assets\Incall_Icons\dialpad.png" />
+    <Content Include="Assets\Incall_Icons\LICENSE.txt" />
+    <Content Include="Assets\Incall_Icons\micro_off.png" />
+    <Content Include="Assets\Incall_Icons\micro_on.png" />
+    <Content Include="Assets\Incall_Icons\pause.png" />
+    <Content Include="Assets\Incall_Icons\play.png" />
+    <Content Include="Assets\Incall_Icons\speaker_off.png" />
+    <Content Include="Assets\Incall_Icons\speaker_on.png" />
+    <Content Include="Assets\Incall_Icons\stats.png" />
+    <Content Include="Assets\Incall_Icons\video_off.png" />
+    <Content Include="Assets\Incall_Icons\video_on.png" />
+    <Content Include="Assets\led_connected.png" />
+    <Content Include="Assets\led_disconnected.png" />
+    <Content Include="Assets\led_error.png" />
+    <Content Include="Assets\led_inprogress.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
@@ -123,12 +237,138 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainPage.xaml">
+    <Page Include="Controls\AddressBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CallControlsP.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ChatBubble.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ContactAction.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\IncomingChatBubble.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Numpad.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\OutgoingChatBubble.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\StatusBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\TextBoxChatBubble.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Light.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Styles\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\About.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AccountSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AdvancedSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AudioSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Chat.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Chats.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ContactDetail.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ContactList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FirstLogin.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\History.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\InCall.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\IncomingCall.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Launcher.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Settings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\VideoSettings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PRIResource Include="String\en-US\Resources.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\submodules\mswinrtvid\MSWinRTVideo.vcxproj">
+      <Project>{2d0e44c4-e51d-4911-b876-345d1e5e5209}</Project>
+      <Name>MSWinRTVideo</Name>
+    </ProjectReference>
+    <ProjectReference Include="Tasks\LinphoneTasks.csproj">
+      <Project>{088a6c0f-16fa-4360-93c7-d781244e77fd}</Project>
+      <Name>LinphoneTasks</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="WindowsMobile, Version=10.0.10586.0">
+      <Name>Windows Mobile Extensions for the UWP</Name>
+    </SDKReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="Linphone.Controls.AddressBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="Linphone.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="100" d:DesignWidth="480">
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <TextBox 
+            Grid.Column="0"
+            x:Name="address"
+            Text="{Binding Text}"
+            PlaceholderText="Number or address"
+            x:Uid="AddressHint"
+            VerticalAlignment="Center"
+            AcceptsReturn="False"
+            InputScope="EmailSmtpAddress"
+            TextChanged="address_TextChanged">
+        </TextBox>
+
+        <Button 
+            x:Name="Backspace"
+            Grid.Column="1"
+            Background="Transparent"
+            ClickMode="Press" 
+            IsEnabled="False"
+            Style="{StaticResource ButtonStyle}"
+            Click="backspace_Click_1"
+            Holding="backspace_Hold_1">
+                <FontIcon 
+                    FontFamily="Segoe MDL2 Assets" 
+                    Glyph="&#xE750;" 
+                    FontSize="30"/>
+        </Button>
+    </Grid>
+</UserControl>

@@ -166,7 +166,6 @@ namespace BelledonneCommunications
 				/// <param name="loglevel">A bitmask of the log levels to set.</param>
 				static void SetLogLevel(int loglevel);
 
-#if 0
 				/// <summary>
 				/// A callback called when the echo canceller calibration finishes.
 				/// </summary>
@@ -175,19 +174,16 @@ namespace BelledonneCommunications
 				/// <param name="delay_ms">The echo delay if the status is "done", 0 otherwise</param>
 				/// <param name="data">Some user data given when starting the echo canceller calibration process</param>
 				static void EchoCalibrationCallback(void *lc, int status, int delay_ms, void *data);
-#endif
 
 			private:
 				static std::wstring UTF8ToUTF16(const char *utf8);
 				static std::string UTF16ToUTF8(const wchar_t *utf16);
 			};
 
-#if 0
 			struct EchoCalibrationData {
 				Windows::Phone::Media::Devices::AudioRoutingEndpoint endpoint;
-				Windows::Phone::Networking::Voip::VoipPhoneCall^ call;
+				Windows::ApplicationModel::Calls::VoipPhoneCall^ call;
 			};
-#endif
 
 			template <class T>
 			class RefToPtrProxy

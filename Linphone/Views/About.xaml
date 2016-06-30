@@ -1,0 +1,70 @@
+﻿<Page
+    x:Class="Linphone.Views.About"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:linphone="clr-namespace:Linphone"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
+
+    <Grid x:Name="LayoutRoot" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="12,12,12,0">
+            <TextBlock x:Uid="AboutMenu"  Style="{StaticResource HeaderTextStyle}" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="1"  Orientation="Vertical" HorizontalAlignment="Center" Margin="0,20,0,0">
+            <Image Source="/Assets/linphone_logo_orange.png" Width="100" Height="100">
+            </Image>
+            <TextBlock 
+                    HorizontalAlignment="Center"
+                    Margin="0,10,0,0"
+                    Text="Linphone"
+                    FontWeight="SemiLight"
+                    Style="{StaticResource HeaderTextBlockStyle}"
+                    x:Uid="ApplicationTitle"/>
+            <TextBlock
+                    x:Name="AboutText"
+                    HorizontalAlignment="Center"
+                    Style="{StaticResource AboutTextStyle}"
+                    TextAlignment="Center">
+                <Run Text="The"></Run>
+                <Run FontStyle="Italic" Text="libre"></Run>
+                <Run Text="SIP client"></Run>
+            </TextBlock>
+            <TextBlock 
+                TextAlignment="Center"
+                Style="{StaticResource ListItemStyle}"
+                Margin="0,10,0,0">
+                <Run Text="Linphone Windows Phone"/>
+                <Run x:Name="AppVersion"/>
+            </TextBlock>
+            <TextBlock 
+                TextAlignment="Center"
+                Style="{StaticResource ListItemStyle}">
+                <Run Text="Linphone Core"/>
+                <Run x:Name="CoreVersion"/>
+            </TextBlock>
+
+            <TextBlock
+                TextAlignment="Center"
+                Margin="0,5,0,0">
+                <Hyperlink NavigateUri="http://www.linphone.org" Foreground="#FFFF5E00">www.linphone.org</Hyperlink>
+            </TextBlock>
+
+            <TextBlock
+                TextAlignment="Center"
+                Margin="0,10,0,0">
+                    GNU General Public License V2 <LineBreak/>
+                    © 2010-2016 Belledonne Communications
+            </TextBlock>
+                
+        </StackPanel>
+    </Grid>
+
+</Page>

@@ -1,0 +1,80 @@
+﻿<Page
+    x:Class="Linphone.Views.VideoSettings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:linphone="clr-namespace:Linphone"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
+
+    <Grid x:Name="LayoutRoot">
+        <Pivot Title="VideoSettingsMenu" x:Uid="VideoSettings">
+            <PivotItem Header="OptionsMenu" x:Uid="OptionsMenu">
+                <ScrollViewer x:Name="OptionsContentPanel">
+                    <Grid>
+                        <StackPanel Orientation="Vertical">
+                            <ToggleSwitch
+                                x:Name="VideoEnabled"
+                                x:Uid="VideoEnabledSetting">
+                            </ToggleSwitch>
+
+                            <ComboBox
+                                Margin="0,10,0,5"
+                                x:Name="PreferredVideoSize"
+                                x:Uid="PreferredVideoSizeSetting">
+                            </ComboBox>
+
+                            <ToggleSwitch
+                                Margin="0,10,0,0"
+                                x:Name="AutomaticallyInitiateVideo"
+                                x:Uid="AutomaticallyInitiateVideoSetting">
+                            </ToggleSwitch>
+
+                            <ToggleSwitch
+                                Margin="0,10,0,0"
+                                x:Name="AutomaticallyAcceptVideo"
+                                x:Uid="AutomaticallyAcceptVideoSetting">
+                            </ToggleSwitch>
+
+                            <ToggleSwitch
+                                Margin="0,10,0,0"
+                                x:Name="SelfViewEnabled"
+                                Visibility="Collapsed"
+                                x:Uid="SelfViewEnabledSetting">
+                            </ToggleSwitch>
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </PivotItem>
+
+            <!--Pivot item two-->
+            <PivotItem Header="CodecsMenu" x:Uid="CodecsMenu">
+                <ScrollViewer>
+                    <ScrollViewer.Content>
+                        <Grid x:Name="CodecsContentPanel">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <ToggleSwitch
+                                Grid.Row="0"
+                                x:Name="H264"
+                                x:Uid="H264Codec"
+                                Header="H264Codec">
+                            </ToggleSwitch>
+                            <ToggleSwitch
+                                Grid.Row="1"
+                                x:Name="VP8"
+                                x:Uid="VP8Codec"
+                                Header="VP8Codec">
+                            </ToggleSwitch>
+                        </Grid>
+                    </ScrollViewer.Content>
+                </ScrollViewer>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+
+</Page>

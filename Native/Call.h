@@ -35,6 +35,7 @@ namespace BelledonneCommunications
 			/// Object representing a call.
 			/// Calls are create using Core::Invite or passed to the application by the listener CoreListener::CallState.
 			/// </summary>
+			[Windows::Foundation::Metadata::WebHostHidden]
 			public ref class Call sealed
 			{
 			public:
@@ -164,6 +165,14 @@ namespace BelledonneCommunications
 				}
 
 				/// <summary>
+				/// Tells whether an operation is in progress at the media side.
+				/// </summary>
+				property Platform::Boolean MediaInProgress
+				{
+					Platform::Boolean get();
+				}
+
+				/// <summary>
 				/// Sets the native video window id (a Windows::UI::Xaml::Controls::MediaElement as a Platform::Object).
 				/// </summary>
 				property Platform::Object^ NativeVideoWindowId
@@ -252,16 +261,16 @@ namespace BelledonneCommunications
 				{
 					Platform::Object^ get();
 				}
+#endif
 
 				/// <summary>
 				/// Gets the CallContext object (native VoipPhoneCall)
 				/// </summary>
-				property Windows::Phone::Networking::Voip::VoipPhoneCall^ CallContext
+				property Windows::ApplicationModel::Calls::VoipPhoneCall^ CallContext
 				{
-					Windows::Phone::Networking::Voip::VoipPhoneCall^ get();
-					void set(Windows::Phone::Networking::Voip::VoipPhoneCall^ cc);
+					Windows::ApplicationModel::Calls::VoipPhoneCall^ get();
+					void set(Windows::ApplicationModel::Calls::VoipPhoneCall^ cc);
 				}
-#endif
 
 			private:
 				friend class Utils;
@@ -271,7 +280,7 @@ namespace BelledonneCommunications
 				Call(::LinphoneCall *call);
 				~Call();
 
-				//Windows::Phone::Networking::Voip::VoipPhoneCall^ callContext;
+				Windows::ApplicationModel::Calls::VoipPhoneCall^ callContext;
 				::LinphoneCall *call;
 			};
 		}

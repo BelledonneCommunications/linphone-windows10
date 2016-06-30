@@ -31,6 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Tunnel.h"
 #include "VideoPolicy.h"
 #include "VideoSize.h"
+#include "VoipCallController.h"
 
 #include <collection.h>
 
@@ -40,8 +41,8 @@ using namespace Platform;
 using namespace Platform::Collections;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
-//using namespace Windows::Phone::Media::Devices;
-//using namespace Windows::Phone::Networking::Voip;
+using namespace Windows::ApplicationModel::Calls;
+using namespace Windows::Phone::Media::Devices;
 
 
 
@@ -623,37 +624,38 @@ int Core::MissedCallsCount::get()
 	return linphone_core_get_missed_calls_count(this->lc);
 }
 
-Platform::Object^ Core::NativePreviewWindowId::get()
+Platform::String^ Core::NativePreviewWindowId::get()
 {
 	API_LOCK;
 	void *id = linphone_core_get_native_preview_window_id(this->lc);
 	if (id == NULL) return nullptr;
-	RefToPtrProxy<Platform::Object^> *proxy = reinterpret_cast<RefToPtrProxy<Platform::Object^>*>(id);
-	Platform::Object^ nativeWindowId = (proxy) ? proxy->Ref() : nullptr;
+	RefToPtrProxy<Platform::String^> *proxy = reinterpret_cast<RefToPtrProxy<Platform::String^>*>(id);
+	Platform::String^ nativeWindowId = (proxy) ? proxy->Ref() : nullptr;
 	return nativeWindowId;
 }
 
-void Core::NativePreviewWindowId::set(Platform::Object^ value)
+void Core::NativePreviewWindowId::set(Platform::String^ value)
 {
 	API_LOCK;
-	RefToPtrProxy<Platform::Object^> *nativeWindowId = new RefToPtrProxy<Platform::Object^>(value);
+	RefToPtrProxy<Platform::String^> *nativeWindowId = new RefToPtrProxy<Platform::String^>(value);
 	linphone_core_set_native_preview_window_id(this->lc, nativeWindowId);
+	linphone_core_use_preview_window(this->lc, TRUE);
 }
 
-Platform::Object^ Core::NativeVideoWindowId::get()
+Platform::String^ Core::NativeVideoWindowId::get()
 {
 	API_LOCK;
 	void *id = linphone_core_get_native_video_window_id(this->lc);
 	if (id == NULL) return nullptr;
-	RefToPtrProxy<Platform::Object^> *proxy = reinterpret_cast<RefToPtrProxy<Platform::Object^>*>(id);
-	Platform::Object^ nativeWindowId = (proxy) ? proxy->Ref() : nullptr;
+	RefToPtrProxy<Platform::String^> *proxy = reinterpret_cast<RefToPtrProxy<Platform::String^>*>(id);
+	Platform::String^ nativeWindowId = (proxy) ? proxy->Ref() : nullptr;
 	return nativeWindowId;
 }
 
-void Core::NativeVideoWindowId::set(Platform::Object^ value)
+void Core::NativeVideoWindowId::set(Platform::String^ value)
 {
 	API_LOCK;
-	RefToPtrProxy<Platform::Object^> *nativeWindowId = new RefToPtrProxy<Platform::Object^>(value);
+	RefToPtrProxy<Platform::String^> *nativeWindowId = new RefToPtrProxy<Platform::String^>(value);
 	linphone_core_set_native_video_window_id(this->lc, nativeWindowId);
 }
 
@@ -935,6 +937,12 @@ void Core::VideoPolicy::set(BelledonneCommunications::Linphone::Native::VideoPol
 	lvp.automatically_initiate = policy->AutomaticallyInitiate;
 	lvp.automatically_accept = policy->AutomaticallyAccept;
 	linphone_core_set_video_policy(this->lc, &lvp);
+}
+
+VoipCallController^ Core::VoipCallController::get()
+{
+	API_LOCK;
+	return this->voipCallController;
 }
 
 
@@ -1281,8 +1289,7 @@ void Core::UploadLogCollection()
 	linphone_core_upload_log_collection(this->lc);
 }
 
-#if 0
-static void EchoCalibrationCallback(LinphoneCore *lc, LinphoneEcCalibratorStatus status, int delay_ms, void *data)
+static void EchoCalibrationCallback(::LinphoneCore *lc, LinphoneEcCalibratorStatus status, int delay_ms, void *data)
 {
 	Utils::EchoCalibrationCallback(lc, status, delay_ms, data);
 }
@@ -1293,12 +1300,11 @@ static void EchoCalibrationAudioInit(void *data)
 	if (ecData != nullptr) {
 		ecData->endpoint = AudioRoutingManager::GetDefault()->GetAudioEndpoint();
 		// Need to create a dummy VoipPhoneCall to be able to capture audio!
-		VoipCallCoordinator::GetDefault()->RequestNewOutgoingCall(
+		ecData->call = VoipCallCoordinator::GetDefault()->RequestNewOutgoingCall(
 			"ECCalibrator",
 			"ECCalibrator",
 			"ECCalibrator",
-			VoipCallMedia::Audio,
-			&ecData->call);
+			VoipPhoneCallMedia::Audio);
 		ecData->call->NotifyCallActive();
 	}
 	AudioRoutingManager::GetDefault()->SetAudioEndpoint(AudioRoutingEndpoint::Speakerphone);
@@ -1316,16 +1322,11 @@ static void EchoCalibrationAudioUninit(void *data)
 void Core::StartEchoCalibration() 
 {
 	API_LOCK;
-	EchoCalibrationData *data = new EchoCalibrationData();
-	linphone_core_start_echo_calibration(this->lc, EchoCalibrationCallback, EchoCalibrationAudioInit, EchoCalibrationAudioUninit, data);
+	if (Windows::Foundation::Metadata::ApiInformation::IsApiContractPresent("Windows.Phone.PhoneContract", 1)) {
+		EchoCalibrationData *data = new EchoCalibrationData();
+		linphone_core_start_echo_calibration(this->lc, EchoCalibrationCallback, EchoCalibrationAudioInit, EchoCalibrationAudioUninit, data);
+	}
 }
-
-int Core::NativeVideoWindowId::get()
-{
-	API_LOCK;
-	return Globals::Instance->VideoRenderer->GetNativeWindowId();
-}
-#endif
 
 void global_state_changed(::LinphoneCore *lc, ::LinphoneGlobalState gstate, const char *msg)
 {
@@ -1353,57 +1354,41 @@ void call_state_changed(::LinphoneCore *lc, ::LinphoneCall *call, ::LinphoneCall
 {
 	Core^ lCore = (Core^)Utils::GetCore(lc);
 	CoreListener^ listener = lCore->CoreListener;
-	if (listener != nullptr) {
-		Call^ lCall = (Call^)Utils::GetCall(call);
-		CallState state = (CallState) cstate;
-		listener->CallStateChanged(lCall, state, Utils::cctops(msg));
-	}
+	Call^ lCall = (Call^)Utils::GetCall(call);
+	CallState state = (CallState)cstate;
 
-#if 0
-	CallController^ callController = Globals::Instance->CallController;
 	if (state == CallState::IncomingReceived) {
-		Platform::String^ name = lCall->RemoteAddress->DisplayName;
-		if (name == nullptr || name->Length() <= 0) 
-		{
-			name = lCall->RemoteAddress->UserName;
-		}
-		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = callController->OnIncomingCallReceived(lCall, name, lCall->RemoteAddress->AsStringUriOnly(), callController->IncomingCallViewDismissed);
+		VoipPhoneCall^ platformCall = lCore->VoipCallController->NewIncomingCall(lCall->RemoteAddress->AsStringUriOnly());
 		lCall->CallContext = platformCall;
-	} 
+	}
 	else if (state == CallState::OutgoingProgress) {
-		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = callController->NewOutgoingCall(lCall->RemoteAddress->AsStringUriOnly());
+		VoipPhoneCall^ platformCall = lCore->VoipCallController->NewOutgoingCall(lCall->RemoteAddress->AsStringUriOnly());
 		lCall->CallContext = platformCall;
 	}
 	else if (state == CallState::End || state == CallState::Error) {
-		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = (Windows::Phone::Networking::Voip::VoipPhoneCall^) lCall->CallContext;
+		VoipPhoneCall^ platformCall = lCall->CallContext;
 		if (platformCall != nullptr)
 			platformCall->NotifyCallEnded();
-
-		if (callController->IncomingCallViewDismissed != nullptr) {
-			// When we receive a call with PN, call the callback to kill the agent process in case the caller stops the call before user accepts/denies it
-			callController->IncomingCallViewDismissed();
-		}
 	}
 	else if (state == CallState::Paused || state == CallState::PausedByRemote) {
-		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = (Windows::Phone::Networking::Voip::VoipPhoneCall^) lCall->CallContext;
-		if (platformCall != nullptr)
-			platformCall->NotifyCallHeld();
+		VoipPhoneCall^ platformCall = lCall->CallContext;
+		//if (platformCall != nullptr)
+			//platformCall->NotifyCallHeld();
 	}
 	else if (state == CallState::StreamsRunning) {
-		Windows::Phone::Networking::Voip::VoipPhoneCall^ platformCall = (Windows::Phone::Networking::Voip::VoipPhoneCall^) lCall->CallContext;
-		if (platformCall == nullptr) {
-			// If CallContext is null here, it is because we have an incoming call using the custom incoming call view so create the VoipPhoneCall now
-			platformCall = callController->NewIncomingCallForCustomIncomingCallView(lCall->RemoteAddress->DisplayName);
-			lCall->CallContext = platformCall;
-		}
+		VoipPhoneCall^ platformCall = lCall->CallContext;
 		if (lCall->CameraEnabled) {
-			platformCall->CallMedia = VoipCallMedia::Audio | VoipCallMedia::Video;
-		} else {
-			platformCall->CallMedia = VoipCallMedia::Audio;
+			platformCall->CallMedia = VoipPhoneCallMedia::Audio | VoipPhoneCallMedia::Video;
+		}
+		else {
+			platformCall->CallMedia = VoipPhoneCallMedia::Audio;
 		}
 		platformCall->NotifyCallActive();
 	}
-#endif
+
+	if (listener != nullptr) {
+		listener->CallStateChanged(lCall, state, Utils::cctops(msg));
+	}
 }
 
 void auth_info_requested(::LinphoneCore *lc, const char *realm, const char *username, const char *domain) 
@@ -1490,13 +1475,15 @@ void log_collection_upload_progress_indication(::LinphoneCore *lc, size_t offset
 }
 
 Core::Core(BelledonneCommunications::Linphone::Native::CoreListener^ coreListener)
-	: lc(nullptr), listener(coreListener), config(ref new LpConfig(nullptr, nullptr)), isIterateEnabled(false)
+	: lc(nullptr), listener(coreListener), config(ref new LpConfig(nullptr, nullptr)), isIterateEnabled(false),
+	voipCallController(ref new BelledonneCommunications::Linphone::Native::VoipCallController())
 {
 	Init();
 }
 
 Core::Core(BelledonneCommunications::Linphone::Native::CoreListener^ coreListener, BelledonneCommunications::Linphone::Native::LpConfig^ config)
-	: lc(nullptr), listener(coreListener), config(config), isIterateEnabled(false)
+	: lc(nullptr), listener(coreListener), config(config), isIterateEnabled(false),
+	voipCallController(ref new BelledonneCommunications::Linphone::Native::VoipCallController())
 {
 	Init();
 }

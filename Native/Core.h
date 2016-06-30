@@ -51,10 +51,12 @@ namespace BelledonneCommunications
 			ref class Tunnel;
 			ref class VideoPolicy;
 			ref class VideoSize;
+			ref class VoipCallController;
 
 			/// <summary>
 			/// Main object.
 			/// </summary>
+			[Windows::Foundation::Metadata::WebHostHidden]
 			public ref class Core sealed
 			{
 			public:
@@ -508,19 +510,19 @@ namespace BelledonneCommunications
 				/// <summary>
 				/// Sets the native preview window id (a Windows::UI::Xaml::Controls::CaptureElement as a Platform::Object).
 				/// </summary>
-				property Platform::Object^ NativePreviewWindowId
+				property Platform::String^ NativePreviewWindowId
 				{
-					Platform::Object^ get();
-					void set(Platform::Object^ value);
+					Platform::String^ get();
+					void set(Platform::String^ value);
 				}
 
 				/// <summary>
 				/// Sets the native video window id (a Windows::UI::Xaml::Controls::MediaElement as a Platform::Object).
 				/// </summary>
-				property Platform::Object^ NativeVideoWindowId
+				property Platform::String^ NativeVideoWindowId
 				{
-					Platform::Object^ get();
-					void set(Platform::Object^ value);
+					Platform::String^ get();
+					void set(Platform::String^ value);
 				}
 
 				/// <summary>
@@ -692,6 +694,11 @@ namespace BelledonneCommunications
 				{
 					BelledonneCommunications::Linphone::Native::VideoPolicy^ get();
 					void set(BelledonneCommunications::Linphone::Native::VideoPolicy^ value);
+				}
+
+				property VoipCallController^ VoipCallController
+				{
+					BelledonneCommunications::Linphone::Native::VoipCallController^ get();
 				}
 
 
@@ -931,7 +938,7 @@ namespace BelledonneCommunications
 				/// </summary>
 				/// <param name="number">The DTMF digit to be played</param>
 				/// <param name="duration">The duration of the DTMF digit in ms, -1 for unlimited</param>
-				/// <seealso cref="SendDTMF(char16)"/>
+				/// <seealso cref="SendDtmf(char16)"/>
 				void PlayDtmf(char16 number, int duration);
 
 				/// <summary>
@@ -974,7 +981,7 @@ namespace BelledonneCommunications
 				/// Playing the DTMF locally is done with PlayDTMF(char16, int).
 				/// </summary>
 				/// <param name="number">The DTMF digit to be sent</param>
-				/// <seealso cref="PlayDTMF(char16, int)"/>
+				/// <seealso cref="PlayDtmf(char16, int)"/>
 				void SendDtmf(char16 number);
 
 				/// <summary>
@@ -1047,13 +1054,11 @@ namespace BelledonneCommunications
 				/// </summary>
 				void UploadLogCollection();
 
-#if 0
 				/// <summary>
 				/// Starts an echo calibration of the sound devices, in order to find adequate settings for the echo canceller automatically.
 				/// Status is notified to CoreListener::EcCalibrationStatus.
 				/// </summary>
 				void StartEchoCalibration();
-#endif
 
 			private:
 				friend ref class Address;
@@ -1066,6 +1071,7 @@ namespace BelledonneCommunications
 				LpConfig^ config;
 				Windows::Foundation::IAsyncAction^ IterateWorkItem;
 				Platform::Boolean isIterateEnabled;
+				BelledonneCommunications::Linphone::Native::VoipCallController^ voipCallController;
 
 				static OutputTraceLevel logLevel;
 			};

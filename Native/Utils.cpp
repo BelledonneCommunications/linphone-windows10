@@ -22,6 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "CallStats.h"
 #include "ChatMessage.h"
 #include "ChatRoom.h"
+#include "Core.h"
 #include "LpConfig.h"
 #include "PayloadType.h"
 #include "ProxyConfig.h"
@@ -249,7 +250,6 @@ void Utils::SetLogLevel(int loglevel)
 	linphone_core_set_log_level(static_cast<OrtpLogLevel>(loglevel));
 }
 
-#if 0
 void Utils::EchoCalibrationCallback(void *lc, int status, int delay_ms, void *data)
 {
 	API_LOCK;
@@ -257,9 +257,10 @@ void Utils::EchoCalibrationCallback(void *lc, int status, int delay_ms, void *da
 	if (ecData != nullptr) {
 		delete ecData;
 	}
-	RefToPtrProxy<LinphoneCore^> *proxy = reinterpret_cast< RefToPtrProxy<LinphoneCore^> *>(linphone_core_get_user_data(static_cast<::LinphoneCore *>(lc)));
-	LinphoneCore^ lCore = (proxy) ? proxy->Ref() : nullptr;
+	RefToPtrProxy<Core^> *proxy = reinterpret_cast< RefToPtrProxy<Core^> *>(linphone_core_get_user_data(static_cast<::LinphoneCore *>(lc)));
+	Core^ lCore = (proxy) ? proxy->Ref() : nullptr;
 	EcCalibratorStatus ecStatus = (EcCalibratorStatus) status;
-	lCore->listener->EcCalibrationStatus(ecStatus, delay_ms);
+	if (lCore) {
+		lCore->listener->EcCalibrationStatus(ecStatus, delay_ms);
+	}
 }
-#endif

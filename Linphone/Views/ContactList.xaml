@@ -1,0 +1,178 @@
+﻿<Page
+    x:Class="Linphone.Views.ContactList"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Linphone.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prim="using:Windows.UI.Xaml.Controls.Primitives"
+    xmlns:model="using:Linphone.Model"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <CollectionViewSource x:Name="groupedContactsCvs" 
+                              IsSourceGrouped="true"
+                              ItemsPath="InternalList" 
+                              Source="{Binding GroupsOfContacts}"/>
+        <prim:JumpListItemBackgroundConverter x:Key="JumpListItemBackground" />
+        <prim:JumpListItemForegroundConverter x:Key="JumpListItemForeground" />
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="12,12,12,0">
+            <TextBlock x:Uid="ContactsMenu" Text="CONTACTS" Style="{StaticResource HeaderTextStyle}" />
+        </StackPanel>
+
+        <TextBox x:Name="ContactSearchBox"   
+            Grid.Row="1"
+            PlaceholderText="Search" 
+            VerticalAlignment="Top" 
+            Margin="12,12,12,0" 
+            Visibility="Collapsed"
+            TextChanged="ContactSearchBox_TextChanged" />
+
+        <TextBlock 
+            x:Name="EmptyText"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            Visibility="Collapsed"
+            Grid.Row="2"
+            x:Uid="EmptyContactsList"/>
+
+        <ListView x:Name="ContactListView" 
+            Grid.Row="2"
+            ScrollViewer.IsVerticalRailEnabled="True"
+            ScrollViewer.IsVerticalScrollChainingEnabled="False"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
+            IsItemClickEnabled="true"
+            ItemClick="ListView_ItemClick"                  
+            SelectionMode="None"                               
+            ItemsSource="{Binding ContactsList}">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsStackPanel/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="model:ContactItem">
+                    <StackPanel Orientation="Horizontal" 
+                                Tag="{Binding ContactId}">
+                        <Ellipse Width="32" Height="32" VerticalAlignment="Center">
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="{Binding ContactImage}"/>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <TextBlock Text="{Binding ContactName}" 
+                                    VerticalAlignment="Center" 
+                                    HorizontalAlignment="Left" 
+                                    Margin="12,0,0,0"
+                                    Style="{StaticResource TextStyle}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <SemanticZoom x:Name="ContactGroupView"
+                      Grid.Row="2" 
+                      Grid.RowSpan="7"
+                      Margin="0,0,0,20"         
+                      ViewChangeStarted="ContactGroupView_ViewChangeStarted">
+            <SemanticZoom.ZoomedInView>
+                <ListView ScrollViewer.IsVerticalRailEnabled="True"                       
+                          ScrollViewer.IsVerticalScrollChainingEnabled="False"
+                          ScrollViewer.VerticalScrollBarVisibility="Auto"
+                          IsItemClickEnabled="true"
+                          ItemClick="ListView_ItemClick"
+                          x:Name="GroupeItems"
+                          SelectionMode="None"                                                       
+                          ItemsSource="{Binding Source={StaticResource groupedContactsCvs}}">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsStackPanel/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:ContactItem">
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Width="32" Height="32" VerticalAlignment="Center">
+                                    <Ellipse.Fill>
+                                        <ImageBrush ImageSource="{Binding ContactImage}"/>
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                                <TextBlock Text="{Binding ContactName}" 
+                                           VerticalAlignment="Center" 
+                                           HorizontalAlignment="Left" 
+                                           Margin="12,0,0,0"
+                                           Style="{StaticResource ListItemHeaderStyle}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.GroupStyle>
+                        <GroupStyle HidesIfEmpty="True">
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock 
+                                        Text="{Binding Key}"
+                                        FontWeight="SemiBold"
+                                        FontSize="25"
+                                        Margin="4,0,0,0"
+                                        Foreground="{ThemeResource SystemAccentColor}"/>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ListView.GroupStyle>
+                </ListView>
+            </SemanticZoom.ZoomedInView>
+
+            <SemanticZoom.ZoomedOutView>
+                <GridView
+                    Background="Transparent"
+                    ItemsSource="{Binding Source={StaticResource groupedContactsCvs}, Path=CollectionGroups}"
+                    Padding="8"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    ScrollViewer.HorizontalScrollMode="Disabled"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.IsVerticalRailEnabled="True"
+                    ScrollViewer.IsVerticalScrollChainingEnabled="False"
+                    ScrollViewer.VerticalScrollMode="Auto"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"  
+                    SelectionMode="None">
+         
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="4" />
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Border                                
+                                Height="45"
+                                Width="45"
+                                Background="Transparent"
+                                HorizontalAlignment="Center"
+                                Margin="4">
+                                <TextBlock
+                                    FontSize="21"
+                                    FontWeight="SemiBold"
+                                    Foreground="{ThemeResource SystemControlBackgroundAccentBrush}"
+                                    HorizontalAlignment="Center"
+                                    Padding="7"
+                                    Text="{Binding Group.Key, Mode=OneWay}"
+                                    VerticalAlignment="Bottom"
+                                    AutomationProperties.AccessibilityView="Raw" />
+                            </Border>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </SemanticZoom.ZoomedOutView>
+        </SemanticZoom>
+    </Grid>
+</Page>
