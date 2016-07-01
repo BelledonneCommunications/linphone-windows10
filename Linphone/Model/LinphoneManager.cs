@@ -51,6 +51,7 @@ namespace Linphone.Model
             {
                 if (_core == null)
                 {
+                    EnableLogCollection(true);
                     LpConfig config = new LpConfig(GetConfigPath(),GetFactoryConfigPath());
                     _core = new Core(this, config);
                 }
@@ -134,6 +135,13 @@ namespace Linphone.Model
             isLinphoneRunning = true;            
             LinphoneManager.Instance.Core.IsIterateEnabled = true;
         }
+
+        public void EnableLogCollection(bool enable)
+        {
+            Core.LogCollectionEnabled = enable ? LogCollectionState.EnabledWithoutPreviousLogHandler : LogCollectionState.Disabled;
+            Core.LogCollectionPath = ApplicationData.Current.LocalFolder.Path;
+        }
+
 
         public void AddPushInformationsToContactParams()
         {
@@ -694,10 +702,15 @@ namespace Linphone.Model
 
         void CoreListener.LogCollectionUploadProgressIndication(int offset, int total)
         {
-            if (LogUploadProgressIndicationEH != null)
+            if (CoreDispatcher == null) return;
+#pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
+            CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                LogUploadProgressIndicationEH(offset, total);
-            }
+                if (LogUploadProgressIndicationEH != null)
+                {
+                    LogUploadProgressIndicationEH(offset, total);
+                }
+            });
         }
 
         void CoreListener.LogCollectionUploadStateChanged(LogCollectionUploadState state, string info)

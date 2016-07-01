@@ -25,6 +25,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Windows.Storage;
 using BelledonneCommunications.Linphone.Native;
+using Windows.ApplicationModel.Email;
 
 namespace Linphone.Model
 {
@@ -74,15 +75,17 @@ namespace Linphone.Model
             return false;
         }
 
-        internal static void ReportExceptions(string url)
+        internal static async void ReportExceptions(string url)
         {
+            Debug.WriteLine(url);
             try
             {
-              /*  string subject = "Logs report";
+                string subject = "Logs report";
                 string body = "";
                 body += "Version of the app: " + Core.Version;
                 body += "\r\n--------------------\r\n";
 
+                Debug.WriteLine(IsolatedStorageFile.GetUserStoreForApplication().ToString());
                 using (var store = IsolatedStorageFile.GetUserStoreForApplication())
                 {
                     if (store.FileExists(exceptionsFileName))
@@ -97,16 +100,17 @@ namespace Linphone.Model
                 if (url != "")
                 {
                     body += "\r\n" + url;
-                }*/
-              /*  EmailComposeTask email = new EmailComposeTask();
-                email.To = "linphone-wphone@belledonne-communications.com";
-                email.Subject = subject;
-                email.Body = body;
-                email.Show();*/
+                }
+                var emailMessage = new EmailMessage();
+                emailMessage.Body = body;
+                emailMessage.Subject = subject;
+                emailMessage.To.Add(new EmailRecipient("linphone-wphone@belledonne-communications.com"));
+                await EmailManager.ShowComposeNewEmailAsync(emailMessage);
                 DeleteFile();
             }
             catch (Exception) { }
         }
+
 
         internal static void DeleteFile()
         {

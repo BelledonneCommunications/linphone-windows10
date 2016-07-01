@@ -87,7 +87,7 @@
                 </Grid.ColumnDefinitions>
                 
                 <SwapChainPanel x:Name="VideoSwapChainPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3"/>
-                <SwapChainPanel x:Name="PreviewSwapChainPanel" Grid.Column="2" Grid.Row="3" RenderTransformOrigin="0.5,0.5">
+                <SwapChainPanel x:Name="PreviewSwapChainPanel" Grid.Column="2" Grid.Row="3" Width="120" Height="160" RenderTransformOrigin="0.5,0.5">
                     <SwapChainPanel.RenderTransform>
                         <CompositeTransform ScaleX="-1"/>
                     </SwapChainPanel.RenderTransform>

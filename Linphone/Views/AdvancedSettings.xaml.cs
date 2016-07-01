@@ -21,6 +21,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
+using BelledonneCommunications.Linphone.Native;
 
 namespace Linphone.Views
 {
@@ -109,8 +110,7 @@ namespace Linphone.Views
 
             _settings.DebugEnabled = (bool)Debug.IsOn;
             _settings.Save();
-
-            //LinphoneManager.Instance.ConfigureLogger();
+            
         }
 
         /// <summary>
@@ -128,8 +128,8 @@ namespace Linphone.Views
         protected override void OnNavigatedFrom(NavigationEventArgs nee)
         {
             base.OnNavigatedFrom(nee);
-           // LinphoneManager.Instance.LogUploadProgressIndicationEH -= LogUploadProgressIndication;
-           // BugReportUploadPopup.Visibility = Visibility.Collapsed;
+            LinphoneManager.Instance.LogUploadProgressIndicationEH -= LogUploadProgressIndication;
+            BugReportUploadPopup.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
@@ -169,42 +169,39 @@ namespace Linphone.Views
         }
 
         private void LogUploadProgressIndication(int offset, int total)
-        {
-           /* BaseModel.UIDispatcher.BeginInvoke(() =>
+        {         
+            BugReportUploadProgressBar.Maximum = total;
+            if (offset <= total)
             {
-                BugReportUploadProgressBar.Maximum = total;
-                if (offset <= total)
-                {
-                    BugReportUploadProgressBar.Value = offset;
-                }
-            });*/
+                BugReportUploadProgressBar.Value = offset;
+            }
         }
         
         private void SendLogs_Click(object sender, RoutedEventArgs e)
         {
             saveSettingsOnLeave = false;
-            //BugReportUploadPopup.Visibility = Visibility.Visible;
-            //LinphoneManager.Instance.LogUploadProgressIndicationEH += LogUploadProgressIndication;
-            //LinphoneManager.Instance.LinphoneCore.UploadLogCollection();
+            BugReportUploadPopup.Visibility = Visibility.Visible;
+            LinphoneManager.Instance.LogUploadProgressIndicationEH += LogUploadProgressIndication;
+            LinphoneManager.Instance.Core.UploadLogCollection();
         }
 
         private void Debug_Checked(object sender, RoutedEventArgs e)
         {
-            //_settings.LogLevel = OutputTraceLevel.Message;
-            //SendLogs.IsEnabled = true;
-            //ResetLogs.IsEnabled = true;
+            _settings.LogLevel = OutputTraceLevel.Message;
+            SendLogs.IsEnabled = true;
+            ResetLogs.IsEnabled = true;
         }
 
         private void Debug_Unchecked(object sender, RoutedEventArgs e)
         {
-            //_settings.LogLevel = OutputTraceLevel.None;
-            //SendLogs.IsEnabled = false;
-            //ResetLogs.IsEnabled = false;
+            _settings.LogLevel = OutputTraceLevel.None;
+            SendLogs.IsEnabled = false;
+            ResetLogs.IsEnabled = false;
         }
 
         private void ResetLogs_Click(object sender, RoutedEventArgs e)
         {
-            //LinphoneManager.Instance.LinphoneCoreFactory.ResetLogCollection();
+            LinphoneManager.Instance.resetLogCollection();
         }
     }
 }

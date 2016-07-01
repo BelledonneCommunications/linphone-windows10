@@ -1,6 +1,7 @@
 [net]
 download_bw=380
 upload_bw=380
+firewall_policy=0
 
 [sip]
 default_proxy=0

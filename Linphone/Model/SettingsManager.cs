@@ -194,7 +194,7 @@ namespace Linphone.Model
                 try
                 {
                     Config.SetInt(ApplicationSection, LogLevelKeyName, Convert.ToInt32(GetNew(LogLevelKeyName)));
-                    //LinphoneManager.Instance.ConfigureLogger();
+                    LinphoneManager.Instance.ConfigureLog(LogLevel);
                 }
                 catch
                 {

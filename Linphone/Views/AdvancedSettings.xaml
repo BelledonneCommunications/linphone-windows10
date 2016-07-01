@@ -136,7 +136,7 @@
                         <StackPanel
                             x:Name="BugReportUploadPopup"
                             Grid.RowSpan="2"
-                            Background="Black"
+                            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
                             Visibility="Collapsed">
