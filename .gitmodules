@@ -13,9 +13,6 @@
 [submodule "submodules/linphone"]
 	path = submodules/linphone
 	url = git://git.linphone.org/linphone.git
-[submodule "submodules/externals/cunit"]
-	path = submodules/externals/cunit
-	url = git://git.linphone.org/cunit.git
 [submodule "submodules/mswasapi"]
 	path = submodules/mswasapi
 	url = git://git.linphone.org/mswasapi.git
@@ -76,3 +73,6 @@
 [submodule "submodules/belcard"]
 	path = submodules/belcard
 	url = git://git.linphone.org/belcard.git
+[submodule "submodules/bcunit"]
+	path = submodules/bcunit
+	url = git://git.linphone.org/bcunit.git
