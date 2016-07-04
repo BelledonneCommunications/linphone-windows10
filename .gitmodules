@@ -44,7 +44,7 @@
 	path = submodules/externals/opus
 	url = git://git.linphone.org/opus.git
 [submodule "submodules/zlib"]
-	path = submodules/zlib
+	path = submodules/externals/zlib
 	url = git://git.linphone.org/zlib.git
 [submodule "submodules/bzrtp"]
 	path = submodules/bzrtp
