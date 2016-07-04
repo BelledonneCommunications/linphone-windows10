@@ -54,7 +54,6 @@ namespace Linphone.Controls
         {
             InitializeComponent();
             microphone.IsChecked = LinphoneManager.Instance.Core.IsMicEnabled;
-            video.IsEnabled = LinphoneManager.Instance.IsVideoAvailable;
             camera.IsEnabled = LinphoneManager.Instance.IsVideoAvailable && LinphoneManager.Instance.NumberOfCameras > 1;
         }
 

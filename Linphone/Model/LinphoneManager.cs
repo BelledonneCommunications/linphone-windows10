@@ -543,6 +543,7 @@ namespace Linphone.Model
                 {
                     Core.VideoDevice = frontCamera;
                 }
+
                 if (Core.IsInCall)
                 {
                     Call call = Core.CurrentCall;
@@ -627,7 +628,14 @@ namespace Linphone.Model
 
             else if (state == CallState.UpdatedByRemote)
             {
-                Core.DeferCallUpdate(call);
+                bool remoteVideo = call.RemoteParams.IsVideoEnabled;
+                bool localVideo = call.CurrentParams.Copy().IsVideoEnabled;
+                bool autoAcceptCameraPolicy = Core.VideoPolicy.AutomaticallyAccept;
+                if (remoteVideo && !localVideo && !autoAcceptCameraPolicy)
+                {
+                    Core.DeferCallUpdate(call);
+                }
+               
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
                 CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {

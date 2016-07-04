@@ -195,6 +195,7 @@ namespace Linphone.Views
                 oneSecondTimer.Start();
 
                 statusIcon.Visibility = Visibility.Visible;
+                buttons.enabledVideo(false);
             }
             if (state == CallState.StreamsRunning)
             {
@@ -256,7 +257,7 @@ namespace Linphone.Views
                     if (remoteVideo && !localVideo && !autoAcceptCameraPolicy)
                     {
                         AskVideoPopup(call);
-                    }
+                    } 
                 }
             }
             refreshUI();
@@ -269,7 +270,7 @@ namespace Linphone.Views
                 buttons.enabledVideo(false);
             }
             else {
-                if (LinphoneManager.Instance.Core.CurrentCall.CurrentParams.IsVideoEnabled)
+                if (LinphoneManager.Instance.Core.CurrentCall != null && LinphoneManager.Instance.Core.CurrentCall.CurrentParams.IsVideoEnabled)
                 {
                     buttons.checkedVideo(true);
                 }
