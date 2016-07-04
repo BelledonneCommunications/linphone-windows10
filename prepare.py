@@ -86,7 +86,7 @@ linphone_builder_targets = ['linphone', 'ms2', 'belle-sip']
 class ComponentListAction(argparse.Action):
     def __call__(self, parser, namespace, value, option_string=None):
         if value:
-            if value not in builder_targets:
+            if value not in linphone_builder_targets:
                 message = ("Invalid target: {0!r} (choose from {1}".format(
                     value, ', '.join([repr(target) for target in linphone_builder_targets])))
                 raise argparse.ArgumentError(self, message)
