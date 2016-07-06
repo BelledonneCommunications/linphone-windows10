@@ -1,11 +1,11 @@
 [net]
 download_bw=380
 upload_bw=380
-firewall_policy=0
+firewall_policy=ice
 
 [sip]
 default_proxy=0
-media_encryption=0
+media_encryption=none
 
 [misc]
 log_collection_upload_server_url=https://www.linphone.org:444/lft.php

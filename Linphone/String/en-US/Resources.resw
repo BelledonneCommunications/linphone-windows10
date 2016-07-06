@@ -710,7 +710,7 @@ To enjoy the best experience with Linphone WP8, we recommend that you use the SI
     <value>VIDEO SETTINGS</value>
   </data>
   <data name="AdvancedSettingsTitle.Title" xml:space="preserve">
-    <value>ADVENCED SETTINGS</value>
+    <value>ADVANCED SETTINGS</value>
   </data>
   <data name="Call.Label" xml:space="preserve">
     <value>Call</value>
