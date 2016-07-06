@@ -14,9 +14,12 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+using BelledonneCommunications.Linphone.Native;
 using Linphone.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -53,6 +56,13 @@ namespace Linphone.Views
             PreferredVideoSize.SelectedItem = _callSettings.PreferredVideoSize;
 
             _codecsSettings.Load();
+            foreach (PayloadType p in LinphoneManager.Instance.Core.VideoCodecs)
+            {
+                if (p.Equals("H264"))
+                {
+                    H264.Visibility = Visibility.Visible;
+                }
+            }
             H264.IsOn = _codecsSettings.H264;
             VP8.IsOn = _codecsSettings.VP8;
         }

@@ -45,8 +45,8 @@ namespace Linphone.Views
 
             rfc2833.IsOn = (bool) _callSettings.SendDTFMsRFC2833;
             sipInfo.IsOn = (bool) _callSettings.SendDTFMsSIPInfo;
-            vibrator.IsOn = (bool) _chatSettings.VibrateOnIncomingMessage;
-            resizeDown.IsOn = (bool) _chatSettings.ScaleDownSentPictures;
+            //vibrator.IsOn = (bool) _chatSettings.VibrateOnIncomingMessage;
+            //resizeDown.IsOn = (bool) _chatSettings.ScaleDownSentPictures;
 
             List<string> mediaEncryptions = new List<string>
             {
@@ -104,8 +104,8 @@ namespace Linphone.Views
             }          
             _networkSettings.Save();
 
-            _chatSettings.VibrateOnIncomingMessage = vibrator.IsOn;
-            _chatSettings.ScaleDownSentPictures = resizeDown.IsOn;
+            //_chatSettings.VibrateOnIncomingMessage = vibrator.IsOn;
+            //_chatSettings.ScaleDownSentPictures = resizeDown.IsOn;
             _chatSettings.Save();
 
             _settings.DebugEnabled = (bool)Debug.IsOn;

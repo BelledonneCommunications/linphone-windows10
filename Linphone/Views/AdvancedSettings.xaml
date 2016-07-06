@@ -101,8 +101,8 @@
                 </StackPanel>
             </PivotItem>
 
-            <!--Pivot item Chat-->
-            <PivotItem Header="ChatMenu" x:Uid="ChatMenu">
+            <!--Pivot item Chat
+            <PivotItem Header="ChatMenu" x:Uid="ChatMenu" Visibility="Collapsed">
                 <StackPanel Orientation="Vertical">
                     <ToggleSwitch  
                         x:Name="vibrator"
@@ -115,7 +115,7 @@
                         Header="ResizeSetting">
                     </ToggleSwitch>
                 </StackPanel>
-            </PivotItem>
+            </PivotItem> -->
 
             <!--Pivot item Debug-->
             <PivotItem  Header="DebugMenu" x:Uid="DebugMenu">

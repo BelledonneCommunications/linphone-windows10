@@ -61,6 +61,7 @@
                             <ToggleSwitch
                                 Grid.Row="0"
                                 x:Name="H264"
+                                Visibility="Collapsed"
                                 x:Uid="H264Codec"
                                 Header="H264Codec">
                             </ToggleSwitch>
