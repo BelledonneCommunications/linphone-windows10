@@ -164,8 +164,8 @@ namespace Linphone
                 {
                     if (args.StartsWith("chat"))
                     {
-                        var sipAddrr = args.Split('=')[1];
-                        rootFrame.Navigate(typeof(Views.Chat), args);
+                        var sipAddr = args.Split('=')[1];
+                        rootFrame.Navigate(typeof(Views.Chat), sipAddr);
                     }
                     else
                     {                    
