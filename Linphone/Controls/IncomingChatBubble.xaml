@@ -39,6 +39,10 @@
             Grid.Row="1"
             x:Name="Download"
             Visibility="Collapsed"
+            Content="Download"
+            x:Uid="DownloadImage"
+            HorizontalAlignment="Stretch"
+            Margin="5,5,5,0"
             Click="DownloadImage_Click"
             Foreground="White"
             BorderBrush="White"/>

@@ -432,7 +432,7 @@ and cc-by-nd from https://github.com/Templarian/WindowsIcons</value>
   <data name="ShowImage" xml:space="preserve">
     <value>Show</value>
   </data>
-  <data name="DownloadImage" xml:space="preserve">
+  <data name="DownloadImage.Content" xml:space="preserve">
     <value>Download</value>
   </data>
   <data name="Uploading" xml:space="preserve">

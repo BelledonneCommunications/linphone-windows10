@@ -121,7 +121,7 @@ namespace Linphone.Controls
             {
                 Download.Visibility = Visibility.Collapsed;
                 ProgressBar.Visibility = Visibility.Visible;
-                //DownloadImage(this, ChatMessage);
+                DownloadImage(this, ChatMessage);
             }
         }
 
