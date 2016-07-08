@@ -189,7 +189,7 @@ class Windows10Preparator(prepare.Preparator):
                 ('MS2TesterSDK', ms2_version),
             ]
         elif self.linphone_builder_target == 'belle-sip':
-            bellesip_version = git_version('submodules/belle-sip')
+            bellesip_version = self.git_version('submodules/belle-sip')
             builder_target = [
                 ('BelleSipTesterSDK', bellesip_version),
             ]
