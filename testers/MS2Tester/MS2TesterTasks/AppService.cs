@@ -69,7 +69,8 @@ namespace MS2TesterTasks
                                 message[StartVideoStreamArguments.Codec.ToString()] as String,
                                 message[StartVideoStreamArguments.VideoSize.ToString()] as String,
                                 Convert.ToUInt32(message[StartVideoStreamArguments.FrameRate.ToString()]),
-                                Convert.ToUInt32(message[StartVideoStreamArguments.BitRate.ToString()]));
+                                Convert.ToUInt32(message[StartVideoStreamArguments.BitRate.ToString()]),
+                                Convert.ToBoolean(message[StartVideoStreamArguments.UsePreviewStream.ToString()]));
                             response[BackgroundOperation.Result] = (int)OperationResult.Succeeded;
                             break;
                         case BackgroundRequest.StopVideoStream:

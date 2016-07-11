@@ -29,7 +29,8 @@ namespace MS2TesterTasks
         Codec,
         VideoSize,
         FrameRate,
-        BitRate
+        BitRate,
+        UsePreviewStream
     }
 
     public enum ChangeCameraArguments

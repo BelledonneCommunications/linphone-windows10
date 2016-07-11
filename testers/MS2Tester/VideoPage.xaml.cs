@@ -103,7 +103,8 @@ namespace MS2Tester
                 UInt32.TryParse((FramerateComboBox.SelectedItem as ComboBoxItem).Content as String, out frameRate);
                 UInt32 bitRate = 1500;
                 UInt32.TryParse(BitrateTextBox.Text, out bitRate);
-                StartVideoStream(camera, codec, videoSize, frameRate, bitRate);
+                Boolean usePreviewStream = UsePreviewStreamToggleSwitch.IsOn;
+                StartVideoStream(camera, codec, videoSize, frameRate, bitRate, usePreviewStream);
             }
             else
             {
@@ -195,7 +196,7 @@ namespace MS2Tester
             return result;
         }
 
-        private async void StartVideoStream(String camera, String codec, String videoSize, UInt32 frameRate, UInt32 bitRate)
+        private async void StartVideoStream(String camera, String codec, String videoSize, UInt32 frameRate, UInt32 bitRate, Boolean usePreviewStream)
         {
             try
             {
@@ -209,7 +210,7 @@ namespace MS2Tester
                 var capabilities = VoipPhoneCallMedia.Audio | VoipPhoneCallMedia.Video;
                 call = vcc.RequestNewOutgoingCall("FooContext", "FooContact", "MS2Tester", capabilities);
                 call.NotifyCallActive();
-                OperationResult result = await MS2TesterHelper.StartVideoStream(VideoSwapChainPanel.Name, PreviewSwapChainPanel.Name, camera, codec, videoSize, frameRate, bitRate);
+                OperationResult result = await MS2TesterHelper.StartVideoStream(VideoSwapChainPanel.Name, PreviewSwapChainPanel.Name, camera, codec, videoSize, frameRate, bitRate, usePreviewStream);
                 if (result == OperationResult.Succeeded)
                 {
                     Debug.WriteLine("StartVideoStream: success");
@@ -315,6 +316,14 @@ namespace MS2Tester
         {
             String camera = (CameraComboBox.SelectedItem as ComboBoxItem).Content as String;
             ChangeCamera(camera);
+        }
+
+        private async void RotateCameraButton_Click(object sender, RoutedEventArgs e)
+        {
+            int degrees = await GetOrientation();
+            degrees += 90;
+            degrees %= 360;
+            SetOrientation(degrees);
         }
 
         private async void SetVideoOrientation()

@@ -84,7 +84,7 @@ namespace ms2_tester.Helpers
             }
         }
 
-        public static async Task<OperationResult> StartVideoStream(String videoSwapChainPanelName, String previewSwapChainPanelName, String camera, String codec, String videoSize, UInt32 frameRate, UInt32 bitRate)
+        public static async Task<OperationResult> StartVideoStream(String videoSwapChainPanelName, String previewSwapChainPanelName, String camera, String codec, String videoSize, UInt32 frameRate, UInt32 bitRate, Boolean usePreviewStream)
         {
             if (RunInBackground)
             {
@@ -98,6 +98,7 @@ namespace ms2_tester.Helpers
                 message[StartVideoStreamArguments.VideoSize.ToString()] = videoSize;
                 message[StartVideoStreamArguments.FrameRate.ToString()] = frameRate;
                 message[StartVideoStreamArguments.BitRate.ToString()] = bitRate;
+                message[StartVideoStreamArguments.UsePreviewStream.ToString()] = usePreviewStream;
                 message[BackgroundOperation.NewBackgroundRequest] = (int)BackgroundRequest.StartVideoStream;
 
                 ValueSet response = await appServiceHelper.SendMessageAsync(message);
@@ -110,7 +111,7 @@ namespace ms2_tester.Helpers
             }
             else
             {
-                NativeTester.Instance.startVideoStream(videoSwapChainPanelName, previewSwapChainPanelName, camera, codec, videoSize, frameRate, bitRate);
+                NativeTester.Instance.startVideoStream(videoSwapChainPanelName, previewSwapChainPanelName, camera, codec, videoSize, frameRate, bitRate, usePreviewStream);
                 return OperationResult.Succeeded;
             }
         }

@@ -1,7 +1,7 @@
 ﻿{
   "dependencies": {
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
-    "MS2TesterSDK": "2.12.1.380"
+    "MS2TesterSDK": "2.13.0.469"
   },
   "frameworks": {
     "uap10.0": {}

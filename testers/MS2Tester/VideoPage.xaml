@@ -32,6 +32,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <TextBlock x:Name="CameraLabel" Grid.Row="0" Grid.Column="0" Text="Camera:" VerticalAlignment="Center" Margin="8"/>
@@ -60,9 +61,12 @@
                 </ComboBox>
                 <TextBlock x:Name="BitrateLabel" Grid.Row="4" Grid.Column="0" Text="Bitrate:" VerticalAlignment="Center" Margin="8"/>
                 <TextBox x:Name="BitrateTextBox" Grid.Row="4" Grid.Column="1" Margin="8" IsSpellCheckEnabled="False" IsTextPredictionEnabled="False" InputScope="Number" Text="1500"/>
-                <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal">
+                <TextBlock x:Name="UsePreviewStreamLabel" Grid.Row="5" Grid.Column="0" Text="Use preview stream:" VerticalAlignment="Center" Margin="8"/>
+                <ToggleSwitch x:Name="UsePreviewStreamToggleSwitch" Grid.Row="5" Grid.Column="1" Margin="8" IsOn="False"/>
+                <StackPanel Grid.Row="6" Grid.ColumnSpan="2" Orientation="Horizontal">
                     <ToggleButton x:Name="VideoToggleButton" Content="Toggle video" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8" Checked="VideoToggleButton_Checked" Unchecked="VideoToggleButton_Checked"/>
                     <Button x:Name="ChangeCameraButton" Content="Change camera" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8" Click="ChangeCameraButton_Click" IsEnabled="{Binding ElementName=VideoToggleButton, Path=IsChecked}"/>
+                    <Button x:Name="RotateCameraButton" Content="Rotate camera" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8" Click="RotateCameraButton_Click" IsEnabled="{Binding ElementName=VideoToggleButton, Path=IsChecked}"/>
                 </StackPanel>
             </Grid>
             <Grid x:Name="VideoGrid" Grid.Row="1" HorizontalAlignment="Center" Background="Black">
