@@ -24,3 +24,4 @@ Linphone/Linphone.csproj.user
 OUTPUT/
 WORK/
 SDK.sln
+prepare.conf
