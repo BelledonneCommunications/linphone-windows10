@@ -39,6 +39,12 @@
       <Project>{2d0e44c4-e51d-4911-b876-345d1e5e5209}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="SplashScreen.scale-200.png" />
+    <Image Include="Square150x150Logo.scale-200.png" />
+    <Image Include="Square44x44Logo.scale-200.png" />
+    <Image Include="StoreLogo.scale-200.png" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8a1a89b3-f2db-4428-a571-f0dff2e1eec1}</ProjectGuid>
     <Keyword>WindowsRuntimeComponent</Keyword>
@@ -51,6 +57,7 @@
     <WindowsTargetPlatformVersion>10.0.10240.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.10240.0</WindowsTargetPlatformMinVersion>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
+    <PackageCertificateKeyFile>..\MS2Tester_TemporaryKey.pfx</PackageCertificateKeyFile>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">

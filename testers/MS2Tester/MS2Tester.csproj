@@ -18,6 +18,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>MS2Tester_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateThumbprint>F17B2AAE62B410C6C687857347F409812E882032</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -114,10 +115,6 @@
     <None Include="MS2Tester_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\SplashScreen.scale-200.png" />
-    <Content Include="Assets\Square150x150Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.scale-200.png" />
-    <Content Include="Assets\StoreLogo.scale-200.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\Images\nowebcamCIF.jpg" />
     <Content Include="Assets\Sounds\arpeggio_8000_mono.wav" />
@@ -136,6 +133,10 @@
     <Content Include="Assets\Sounds\punch_16000_stereo.wav" />
     <Content Include="Assets\Sounds\sintel_trailer_opus_h264.mkv" />
     <Content Include="Assets\Sounds\sintel_trailer_pcmu_h264.mkv" />
+    <Content Include="SplashScreen.scale-200.png" />
+    <Content Include="Square150x150Logo.scale-200.png" />
+    <Content Include="Square44x44Logo.scale-200.png" />
+    <Content Include="StoreLogo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
