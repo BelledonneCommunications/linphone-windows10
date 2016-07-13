@@ -474,6 +474,16 @@ namespace Linphone.Model
                 }
             }
         }
+
+        public void Delete()
+        {
+            ProxyConfig cfg = LinphoneManager.Instance.Core.DefaultProxyConfig;
+            if (cfg != null)
+            {
+                LinphoneManager.Instance.Core.ClearProxyConfig();
+                LinphoneManager.Instance.Core.ClearAllAuthInfo();
+            }
+        }
         #endregion
 
         #region Accessors

@@ -4,7 +4,7 @@
   <mp:PhoneIdentity PhoneProductId="ed47fa26-a45b-4bda-82e1-cdc792d1d9bd" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Linphone</DisplayName>
-    <PublisherDisplayName>Belledonne Communications</PublisherDisplayName>
+    <PublisherDisplayName>Belledonne Communications SARL</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>

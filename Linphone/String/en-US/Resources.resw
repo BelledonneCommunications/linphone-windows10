@@ -143,7 +143,7 @@
   <data name="HistoryMenu.Text" xml:space="preserve">
     <value>HISTORY</value>
   </data>
-  <data name="SaveSettings" xml:space="preserve">
+  <data name="SaveSettings.Label" xml:space="preserve">
     <value>Save</value>
   </data>
   <data name="SettingsMenu.Text" xml:space="preserve">

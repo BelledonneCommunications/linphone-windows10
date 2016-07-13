@@ -41,7 +41,7 @@
                 TextAlignment="Center"
                 Style="{StaticResource ListItemStyle}"
                 Margin="0,10,0,0">
-                <Run Text="Linphone Windows Phone"/>
+                <Run Text="Linphone Windows 10"/>
                 <Run x:Name="AppVersion"/>
             </TextBlock>
             <TextBlock 

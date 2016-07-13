@@ -16,11 +16,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using BelledonneCommunications.Linphone.Native;
 using Linphone.Model;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Windows;
-using System.Windows.Input;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -111,9 +107,9 @@ namespace Linphone.Views
             base.OnNavigatingFrom(e);
         }
 
-        private void cancel_Click_1(object sender, RoutedEventArgs e)
+        private void delete_Click_1(object sender, RoutedEventArgs e)
         {
-            saveSettingsOnLeave = false;
+            _settings.Delete();
             if (Frame.CanGoBack)
             {
                 Frame.GoBack();

@@ -115,7 +115,13 @@ namespace Linphone.Controls
         private void video_Click_1(object sender, RoutedEventArgs e)
         {
             bool isVideoToggled = (bool)video.IsChecked;
-            video.IsChecked = isVideoToggled;
+            if (!isVideoToggled)
+            {
+                video.IsEnabled = false;
+            } else
+            {
+                video.IsChecked = isVideoToggled;
+            }
             VideoClick(this, isVideoToggled);
         }
 

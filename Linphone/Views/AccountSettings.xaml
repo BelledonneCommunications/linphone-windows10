@@ -158,7 +158,6 @@
 
         <CommandBar Grid.Row="2" VerticalAlignment="Bottom">
             <AppBarButton Icon="Save" Label="Save" Click="save_Click_1"/>
-            <AppBarButton Icon="Cancel" Label="Cancel" Click="cancel_Click_1" />
             <AppBarButton Label="Linphone" Click="linphone_Click_1">
                 <AppBarButton.Content>
                     <Grid>
@@ -166,6 +165,8 @@
                     </Grid>
                 </AppBarButton.Content>
             </AppBarButton>
+            <AppBarButton Icon="Delete" Label="Delete" Click="delete_Click_1" />
+            
         </CommandBar>
     </Grid>
 

@@ -18,6 +18,7 @@ using BelledonneCommunications.Linphone.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Windows.ApplicationModel.Resources;
 
 namespace Linphone.Model
 {
@@ -46,8 +47,7 @@ namespace Linphone.Model
                 string lastText = Messages.Last().Text;
                 if (lastText == null || lastText.Length <= 0)
                 {
-                    return null;
-                    //return Resources.AppResources.ImageMessageReceived;
+                    return ResourceLoader.GetForCurrentView().GetString("ImageMessageReceived");
                 }
                 return lastText;
             }
