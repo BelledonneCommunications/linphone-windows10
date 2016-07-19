@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Windows.ApplicationModel.Resources;
+using Windows.UI.Xaml;
 
 namespace Linphone.Model
 {
@@ -45,9 +46,9 @@ namespace Linphone.Model
             get
             {
                 string lastText = Messages.Last().Text;
-                if (lastText == null || lastText.Length <= 0)
+                if (lastText == null || lastText.Length <= 0 || Messages.Last().AppData != "")
                 {
-                    return ResourceLoader.GetForCurrentView().GetString("ImageMessageReceived");
+                    return null;
                 }
                 return lastText;
             }
@@ -72,6 +73,21 @@ namespace Linphone.Model
             get
             {
                 return !Messages.Last().IsRead;
+            }
+        }
+
+        public Visibility IsLastMessageImage
+        {
+            get
+            {
+                if (Messages.Last().FileTransferFilepath != "" || Messages.Last().AppData != "")
+                {
+                    return Visibility.Visible;
+                } else
+                {
+                    return Visibility.Collapsed;
+                }
+
             }
         }
 

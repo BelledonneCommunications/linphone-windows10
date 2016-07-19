@@ -15,10 +15,11 @@
         </Grid.ColumnDefinitions>
 
         <Image
-            Grid.Row="1"
+            Grid.Column="1"
             x:Name="Image"
             Stretch="Uniform"
             Margin="10"
+            MaxHeight="100"
             Visibility="Collapsed">
         </Image>
 
@@ -27,7 +28,6 @@
             BorderThickness="0"
             Style="{StaticResource ButtonStyle}"
             Click="SendFile_Click"
-            Visibility="Collapsed"
             Background="Transparent">
             <Button.ContentTemplate>
                 <DataTemplate>

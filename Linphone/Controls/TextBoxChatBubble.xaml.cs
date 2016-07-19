@@ -13,7 +13,6 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
-using Linphone.Model;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
@@ -54,7 +53,7 @@ namespace Linphone.Controls
         private void Message_TextChanged(object sender, TextChangedEventArgs e)
         {
             Text = Message.Text;
-            SendMessage.IsEnabled = Text.Length > 0 ? true : false;
+            SendMessage.IsEnabled = (Text.Length > 0 ? true : false || Image.Visibility == Visibility.Visible);
             if (TextChanged != null)
             {           
                 TextChanged(this, Message.Text);
@@ -63,10 +62,11 @@ namespace Linphone.Controls
 
         public void SetImage(BitmapImage image)
         {
-           // Image.SourceProperty = image;
-           // Image.Visibility = Visibility.Visible;
-           // Message.Visibility = Visibility.Collapsed;
-           // Message.Text = "";
+            Image.Source = image;
+            Image.Visibility = Visibility.Visible;
+            Message.Visibility = Visibility.Collapsed;
+            Message.Text = "";
+            SendMessage.IsEnabled = true;
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)

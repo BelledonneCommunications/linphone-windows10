@@ -57,6 +57,11 @@
                                        VerticalAlignment="Bottom"
                                        Text="{Binding LatestMessageDate}" 
                                        Style="{StaticResource DateStyle}"/>
+                            <FontIcon Grid.Row="1" 
+                                FontFamily="Segoe MDL2 Assets" 
+                                Glyph="&#xE723;"
+                                HorizontalAlignment="Left"
+                                Visibility="{Binding IsLastMessageImage}"/>
                             <TextBlock Grid.Row="1" Text="{Binding LatestMessage}" 
                                     HorizontalAlignment="Left"
                                     Style="{StaticResource ListItemStyle}"

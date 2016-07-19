@@ -742,4 +742,7 @@ To enjoy the best experience with Linphone WP8, we recommend that you use the SI
   <data name="EmptyContactsList.Text" xml:space="preserve">
     <value>No contact in your address book</value>
   </data>
+  <data name="DeleteChat.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
 </root>

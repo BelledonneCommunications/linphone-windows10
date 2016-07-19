@@ -19,6 +19,7 @@ using BelledonneCommunications.Linphone.Native;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 
 namespace Linphone.Controls
 {
@@ -43,26 +44,31 @@ namespace Linphone.Controls
             InitializeComponent();
 
             ChatMessage = message;
+            this.Holding += Bubble_Holding;
             string filePath = message.AppData;
             bool isImageMessage = filePath != null && filePath.Length > 0;
             if (isImageMessage)
             {
-               // Message.Visibility = Visibility.Collapsed;
-               // Copy.Visibility = Visibility.Collapsed;
-               // Image.Visibility = Visibility.Visible;
-               // Save.Visibility = Visibility.Visible;
-
-                BitmapImage image = Utils.ReadImageFromIsolatedStorage(filePath);
-                //Image.Source = image;
+               Message.Visibility = Visibility.Collapsed;
+               //Copy.Visibility = Visibility.Collapsed;
+               Image.Visibility = Visibility.Visible;
+               //Save.Visibility = Visibility.Visible;
+               SetImage(filePath);
             }
             else
             {
                 Message.Visibility = Visibility.Visible;
                 Message.Blocks.Add(Utils.FormatText(message.Text));
-                //Image.Visibility = Visibility.Collapsed;
+                Image.Visibility = Visibility.Collapsed;
             }
 
             Timestamp.Text = HumanFriendlyTimeStamp;
+        }
+
+        private async void SetImage(string name)
+        {
+            BitmapImage image = await Utils.ReadImageFromTempStorage(name);
+            Image.Source = image;
         }
 
         public string HumanFriendlyTimeStamp
@@ -88,11 +94,17 @@ namespace Linphone.Controls
             }
         }
 
+        private void Bubble_Holding(object sender, HoldingRoutedEventArgs e)
+        {
+            FrameworkElement senderElement = sender as FrameworkElement;
+            FlyoutMenu.ShowAt(senderElement);
+        }
+
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
             if (MessageDeleted != null)
             {
-                //MessageDeleted(this, ChatMessage);
+                MessageDeleted(this, ChatMessage);
             }
         }
 

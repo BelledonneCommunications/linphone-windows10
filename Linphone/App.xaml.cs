@@ -24,7 +24,6 @@ using BelledonneCommunications.Linphone.Native;
 using Linphone.Model;
 using System.Diagnostics;
 using Windows.UI.Core;
-using Windows.UI.Popups;
 
 namespace Linphone
 {
@@ -53,7 +52,6 @@ namespace Linphone
         private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             e.Handled = true;
-            Debug.WriteLine(e.Message);
         }
 
         private void Back_requested(object sender, BackRequestedEventArgs e)
@@ -179,13 +177,9 @@ namespace Linphone
                 }
                 else
                 {
-                    // When the navigation stack isn't restored navigate to the first page,
-                    // configuring the new page by passing required information as a navigation
-                    // parameter
                     rootFrame.Navigate(typeof(Views.Dialer), args);
                 }
             }
-            // Ensure the current window is active
             Window.Current.Activate();
         }
 

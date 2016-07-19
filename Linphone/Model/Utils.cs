@@ -16,8 +16,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using BelledonneCommunications.Linphone.Native;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.IO.IsolatedStorage;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
@@ -85,22 +88,19 @@ namespace Linphone.Model
         /// </summary>
         /// <param name="fileName">File's name in the isolated storage</param>
         /// <returns>true if the operation succeeds</returns>
-        public static bool SavePictureInMediaLibrary(string fileName)
+        public static async System.Threading.Tasks.Task<bool> SavePictureInMediaLibrary(string fileName)
         {
-          //  MediaLibrary library = new MediaLibrary();
-            byte[] data;
+            FolderPicker picker = new FolderPicker();
             try
             {
-                using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
+                picker.FileTypeFilter.Add("*");
+                StorageFolder folder = await picker.PickSingleFolderAsync();
+                if(folder != null)
                 {
-                    using (IsolatedStorageFileStream file = store.OpenFile(fileName, FileMode.Open, FileAccess.Read))
-                    {
-                        data = new byte[file.Length];
-                        file.Read(data, 0, data.Length);
-                    }
-                }
-
-               // library.SavePicture(fileName, data);
+                    var tempFolder = ApplicationData.Current.LocalFolder;
+                    StorageFile file = await tempFolder.GetFileAsync(fileName);
+                    await file.CopyAsync(folder);
+                } 
                 return true;
             }
             catch { }
@@ -162,7 +162,7 @@ namespace Linphone.Model
         /// <param name="image">The bitmap image to save</param>
         /// <param name="fileName">The file's name to use</param>
         /// <returns>true if the operation succeeds</returns>
-        public static string SaveImageInLocalFolder(BitmapImage image, string fileName)
+        public static string SaveImageInIsolatedFolder(BitmapImage image, string fileName)
         {
             try
             {
@@ -180,8 +180,8 @@ namespace Linphone.Model
 
                     using (IsolatedStorageFileStream file = store.CreateFile(filePath))
                     {
-                        WriteableBitmap bitmap = new WriteableBitmap(image.PixelWidth, image.PixelHeight);
-                        /*  Extensions.SaveJpeg(bitmap, file, bitmap.PixelWidth, bitmap.PixelHeight, 0, LOCAL_IMAGES_QUALITY);
+                      /*  WriteableBitmap bitmap = new WriteableBitmap(image.PixelWidth, image.PixelHeight);
+                          bitmap.Save(bitmap, file, bitmap.PixelWidth, bitmap.PixelHeight, 0, LOCAL_IMAGES_QUALITY);
                           file.Flush();
                           string hash = GetRandomHash();
                           file.Close();
@@ -192,11 +192,55 @@ namespace Linphone.Model
                           fileName = newFile.Name;
                           newFile.Close();*/
                         // return fileName;
-                        return "";
+                        //return "";
                     }
                 }
             }
             catch { }
+            return null;
+        }
+
+        public static async System.Threading.Tasks.Task<string> SaveImageInLocalFolder(StorageFile image)
+        {
+            try
+            {
+                var tempFolder = ApplicationData.Current.LocalFolder;
+                StorageFile tempFile = await image.CopyAsync(tempFolder, GetFileName());
+                return tempFile.Name;
+            } catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return null;
+            }
+        }
+
+        public static async System.Threading.Tasks.Task<string> GetImageTempFileName()
+        {
+            var tempFolder = ApplicationData.Current.LocalFolder;         
+            String fileName = GetFileName() + ".jpg";
+            var tempFile = await tempFolder.CreateFileAsync(fileName, CreationCollisionOption.GenerateUniqueName);
+            return tempFile.Name;
+        }
+
+        public static async System.Threading.Tasks.Task<BitmapImage> ReadImageFromTempStorage(String name)
+        {
+            var tempFolder = ApplicationData.Current.LocalFolder;
+            try
+            {
+                var tempFile = await tempFolder.GetFileAsync(name);
+                Windows.Storage.Streams.IRandomAccessStream fileStream = await tempFile.OpenAsync(FileAccessMode.Read);
+                try
+                {
+                    BitmapImage bitmapImage = new BitmapImage();
+                    await bitmapImage.SetSourceAsync(fileStream);
+                    return bitmapImage;
+                }
+                catch (Exception e)
+                {
+                }                  
+            } catch (Exception e)
+            {
+            }
             return null;
         }
 
@@ -206,7 +250,7 @@ namespace Linphone.Model
             {
                 using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
                 {
-                    string hash = GetRandomHash();
+                    string hash = GetFileName();
                     string filePath = Path.Combine(LOCAL_IMAGES_PATH, hash + ".jpg");
                     if (!store.DirectoryExists(LOCAL_IMAGES_PATH))
                     {
@@ -221,15 +265,12 @@ namespace Linphone.Model
             return null;
         }
 
-        private static string GetRandomHash()
+        private static string GetFileName()
         {
-            byte[] bytes = new byte[1024];
-            /* RNGCryptoServiceProvider cryptProv = new RNGCryptoServiceProvider();
-             cryptProv.GetBytes(bytes);
-             SHA1Managed s = new SHA1Managed();*/
-            // byte[] hashBytes = s.ComputeHash(bytes);
-            // return BitConverter.ToString(hashBytes).Replace("-", "");
-            return "";
+            long ticks = DateTime.UtcNow.Ticks - DateTime.Parse("01/01/1970 00:00:00").Ticks;
+            ticks /= 10000000; //Convert windows ticks to seconds
+            String timestamp = ticks.ToString();
+            return timestamp;
         }
 
         public static string ReplacePlusInUri(string uri)

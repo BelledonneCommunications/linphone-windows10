@@ -60,13 +60,22 @@
             Margin="5"
             Stretch="UniformToFill"
             Visibility="Collapsed"
+            Tapped="Image_Tap"
             x:Name="Image" />
 
-    <TextBlock 
-            Grid.Row="2" 
-            x:Name="Timestamp" 
-            Style="{StaticResource TimestampStyle}"
-            TextAlignment="Right"/>
+        <TextBlock 
+                Grid.Row="2" 
+                x:Name="Timestamp" 
+                Style="{StaticResource TimestampStyle}"
+                TextAlignment="Right"/>
+        <Grid.Resources>
+            <MenuFlyout x:Name="FlyoutMenu" x:Key="FlyoutBase">
+                <MenuFlyoutItem x:Name="DeleteButton" Text="Delete" x:Uid="DeleteChat" Click="Delete_Click"/>
+            </MenuFlyout>
+        </Grid.Resources>
+        <FlyoutBase.AttachedFlyout>
+            <StaticResource ResourceKey="FlyoutBase"/>
+        </FlyoutBase.AttachedFlyout>
     </Grid>
     
 </UserControl>

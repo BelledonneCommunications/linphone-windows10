@@ -20,11 +20,15 @@ using BelledonneCommunications.Linphone.Native;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Input;
 
 namespace Linphone.Controls
 {
     public partial class IncomingChatBubble : UserControl
     {
+
+        public delegate void ImageTappedEventHandler(object sender, String appData);
+        public event ImageTappedEventHandler ImageTapped;
 
         private ChatMessage _message;
 
@@ -46,6 +50,7 @@ namespace Linphone.Controls
             ChatMessage = message;
             Timestamp.Text = HumanFriendlyTimeStamp;
 
+            this.Holding += Bubble_Holding;
             string fileName = message.FileTransferName;
             string filePath = message.AppData;
             bool isImageMessage = fileName != null && fileName.Length > 0;
@@ -57,10 +62,10 @@ namespace Linphone.Controls
                 {
                     // Image already downloaded
                     Image.Visibility = Visibility.Visible;
-//                  Save.Visibility = Visibility.Visible;
+                    //                  Save.Visibility = Visibility.Visible;
 
-                    BitmapImage image = Utils.ReadImageFromIsolatedStorage(filePath);
-                    Image.Source = image;
+                    SetImage(filePath);
+                    
                 }
                 else
                 {
@@ -76,12 +81,24 @@ namespace Linphone.Controls
             }
         }
 
+        private async void SetImage(string name)
+        {
+            BitmapImage image = await Utils.ReadImageFromTempStorage(name);
+            Image.Source = image;
+        }
+
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
             if (MessageDeleted != null)
             {
-               // MessageDeleted(this, ChatMessage);
+               MessageDeleted(this, ChatMessage);
             }
+        }
+
+        private void Bubble_Holding(object sender, HoldingRoutedEventArgs e)
+        {
+            FrameworkElement senderElement = sender as FrameworkElement;
+            FlyoutMenu.ShowAt(senderElement);
         }
 
         private void Copy_Click(object sender, RoutedEventArgs e)
@@ -91,8 +108,8 @@ namespace Linphone.Controls
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            //bool result = Utils.SavePictureInMediaLibrary(ChatMessage.AppData);
-           // MessageBox.Show(result ? AppResources.FileSavingSuccess : AppResources.FileSavingFailure, AppResources.FileSaving, MessageBoxButton.OK);
+           // bool result = await Utils.SavePictureInMediaLibrary(ChatMessage.AppData);
+            // MessageBox.Show(result ? AppResources.FileSavingSuccess : AppResources.FileSavingFailure, AppResources.FileSaving, MessageBoxButton.OK);
         }
 
         /// <summary>
@@ -147,28 +164,28 @@ namespace Linphone.Controls
         /// <summary>
         /// Displays the image in the bubble
         /// </summary>
-        public void RefreshImage()
+        public async void RefreshImage()
         {
-            //string filePath = ChatMessage.AppData;
-           /* ProgressBar.Visibility = Visibility.Collapsed;
+            string filePath = ChatMessage.AppData;
+            ProgressBar.Visibility = Visibility.Collapsed;
             if (filePath != null && filePath.Length > 0)
             {
                 Download.Visibility = Visibility.Collapsed;
                 Image.Visibility = Visibility.Visible;
                // Save.Visibility = Visibility.Visible;
 
-                BitmapImage image = Utils.ReadImageFromIsolatedStorage(filePath);
+                BitmapImage image = await Utils.ReadImageFromTempStorage(filePath);
                 Image.Source = image;
             }
             else
             {
                 Download.Visibility = Visibility.Visible;
-            }*/
+            }
         }
 
-       /* private void Image_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        private void Image_Tap(object sender, TappedRoutedEventArgs e)
         {
-            BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/FullScreenPicture.xaml?uri=" + ChatMessage.AppData, UriKind.RelativeOrAbsolute));
-        }*/
+            ImageTapped(this, ChatMessage.AppData);
+        }
     }
 }

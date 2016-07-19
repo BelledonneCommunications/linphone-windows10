@@ -63,9 +63,10 @@
 
             <ScrollViewer x:Name="MessagesScroll">
                 <StackPanel
-                x:Name="MessagesList" 
-                Orientation="Vertical"
-                VerticalAlignment="Bottom"/>
+                    x:Name="MessagesList" 
+                    Orientation="Vertical"
+                    VerticalAlignment="Bottom">
+                </StackPanel>
             </ScrollViewer>
 
             <TextBlock x:Name="RemoteComposing" Grid.Row="1" Visibility="Collapsed"/>
@@ -92,6 +93,7 @@
         </Grid>
         <CommandBar Grid.Row="4" VerticalAlignment="Bottom">
             <AppBarButton Icon="Phone" Label="Call" x:Uid="Call" Click="Call_Click"/>
+            <AppBarButton Visibility="Collapsed" x:Name="CancelUpload" Icon="Cancel" Label="Cancel" x:Uid="Cancel" Click="Cancel_Upload"/>
         </CommandBar>
 
     </Grid>

@@ -54,12 +54,19 @@
         </StackPanel>
 
         <Path 
-                x:Name="Path"
-                Grid.Row="2"
-                Data="m 0,0 l 8,0 l 0,16 l -16,-16"
-                Fill="{ThemeResource SystemControlBackgroundAccentBrush}"
-                Margin="0,-1,10,0"
-                HorizontalAlignment="Right"/>
-
+            x:Name="Path"
+            Grid.Row="2"
+            Data="m 0,0 l 8,0 l 0,16 l -16,-16"
+            Fill="{ThemeResource SystemControlBackgroundAccentBrush}"
+            Margin="0,-1,10,0"
+            HorizontalAlignment="Right"/>
+        <Grid.Resources>
+            <MenuFlyout x:Name="FlyoutMenu" x:Key="FlyoutBase">
+                <MenuFlyoutItem x:Name="DeleteButton" Text="Delete" x:Uid="DeleteChat" Click="Delete_Click"/>
+            </MenuFlyout>
+        </Grid.Resources>
+        <FlyoutBase.AttachedFlyout>
+            <StaticResource ResourceKey="FlyoutBase"/>
+        </FlyoutBase.AttachedFlyout>
     </Grid>
 </UserControl>

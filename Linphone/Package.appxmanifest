@@ -33,6 +33,8 @@
     <Capability Name="internetClient" />
     <uap:Capability Name="contacts" />
     <uap:Capability Name="voipCall" />
+    <uap:Capability Name="picturesLibrary" />
+    <uap:Capability Name="removableStorage" />
     <DeviceCapability Name="microphone" />
     <DeviceCapability Name="webcam" />
   </Capabilities>

@@ -26,6 +26,14 @@ using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Core;
+using System.IO;
+using Windows.UI.Popups;
+using Windows.ApplicationModel.Resources;
+using Windows.Storage.Pickers;
+using Windows.Storage;
+using Windows.Storage.Streams;
+using Windows.UI.Xaml.Media.Imaging;
+using System.Threading.Tasks;
 
 namespace Linphone.Views
 {
@@ -49,6 +57,8 @@ namespace Linphone.Views
 
         public Address sipAddress;
         public ChatRoom chatRoom;
+        private String upload_filename;
+        private ChatMessage messageUploading = null;
 
         public Chat()
         {
@@ -64,7 +74,8 @@ namespace Linphone.Views
             if (Frame.CanGoBack)
             {
                 Frame.GoBack();
-            } else
+            }
+            else
             {
                 Frame.Navigate(typeof(Views.Chats), null);
             }
@@ -89,16 +100,12 @@ namespace Linphone.Views
                 sipAddress = LinphoneManager.Instance.Core.InterpretURL(e.Parameter as String);
                 CreateChatRoom(sipAddress);
                 UpdateComposingMessage();
-
-                if (e.NavigationMode != NavigationMode.Back)
-                {
-                    chatRoom.MarkAsRead();
-                    DisplayPastMessages(chatRoom.History);
-                }
+                chatRoom.MarkAsRead();
+                DisplayPastMessages(chatRoom.History);
             }
             if (sipAddress == null)
             {
-                ContactName.Visibility = Visibility.Collapsed; 
+                ContactName.Visibility = Visibility.Collapsed;
                 NewChat.Visibility = Visibility.Visible;
             }
             scrollToBottom();
@@ -120,6 +127,12 @@ namespace Linphone.Views
             else {
                 LinphoneManager.Instance.NewOutgoingCall(chatRoom.PeerAddress.AsStringUriOnly());
             }
+        }
+
+        private void Cancel_Upload(object sender, RoutedEventArgs e)
+        {
+            if (_httpPostClient != null)
+                _httpPostClient.CancelPendingRequests();
         }
 
         private void SendMessage(string message)
@@ -147,8 +160,9 @@ namespace Linphone.Views
                     IncomingChatBubble bubble = new IncomingChatBubble(message);
                     bubble.MessageDeleted += bubble_MessageDeleted;
                     bubble.DownloadImage += bubble_DownloadImage;
+                    bubble.ImageTapped += Bubble_ImageTapped;
                     MessagesList.Children.Add(bubble);
-                } 
+                }
                 else
                 {
                     OutgoingChatBubble bubble = new OutgoingChatBubble(message);
@@ -160,37 +174,47 @@ namespace Linphone.Views
             scrollToBottom();
         }
 
+        private void Bubble_ImageTapped(object sender, string appData)
+        {
+            Frame.Navigate(typeof(Views.FullScreenPicture), appData);
+        }
+
         private void bubble_MessageDeleted(object sender, ChatMessage message)
         {
-            //TODO
+            MessagesList.Children.Remove(sender as UserControl);
+            if (chatRoom != null)
+            {
+                chatRoom.DeleteMessage(message);
+            }
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             chatRoom = null;
+            upload_filename = "";
             LinphoneManager.Instance.MessageListener = null;
             LinphoneManager.Instance.ComposingListener = null;
             MessageBox.TextChanged -= MessageBox_TextChanged;
             base.OnNavigatingFrom(e);
         }
 
-      /*  private void cm_ContactFound(object sender, ContactFoundEventArgs e)
-        {
-            if (e.ContactFound != null)
-            {
-                ContactName.Text = e.ContactFound.DisplayName;
-                ContactManager.Instance.TempContact = e.ContactFound;
-                ContactName.Tap += ContactName_Tap;
+        /*  private void cm_ContactFound(object sender, ContactFoundEventArgs e)
+          {
+              if (e.ContactFound != null)
+              {
+                  ContactName.Text = e.ContactFound.DisplayName;
+                  ContactManager.Instance.TempContact = e.ContactFound;
+                  ContactName.Tap += ContactName_Tap;
 
-                ContactName.Visibility = Visibility.Visible;
-                NewChat.Visibility = Visibility.Collapsed;
-            }
-        }*/
+                  ContactName.Visibility = Visibility.Visible;
+                  NewChat.Visibility = Visibility.Collapsed;
+              }
+          }*/
 
-       /* private void ContactName_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/Views/Contact.xaml", UriKind.RelativeOrAbsolute));
-        }*/
+        /* private void ContactName_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+         {
+             NavigationService.Navigate(new Uri("/Views/Contact.xaml", UriKind.RelativeOrAbsolute));
+         }*/
 
 
         public void MessageStateChanged(ChatMessage message, ChatMessageState state)
@@ -200,55 +224,66 @@ namespace Linphone.Views
             LinphoneManager.Instance.CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 if (ProgressPopup.Visibility == Visibility.Visible)
-                     {
-                         ProgressPopup.Visibility = Visibility.Collapsed;
-                         MessageBox.Visibility = Visibility.Visible;
-                     }           
+                {
+                    ProgressPopup.Visibility = Visibility.Collapsed;
+                    MessageBox.Visibility = Visibility.Visible;
+                }
 
-                     if (state == ChatMessageState.InProgress)
-                     {
-                         // Create the chat bubble for both text or image messages
-                         OutgoingChatBubble bubble = new OutgoingChatBubble(message);
-                         bubble.MessageDeleted += bubble_MessageDeleted;
-                         MessagesList.Children.Add(bubble);
-                         scrollToBottom();
-                     }
-                     else if (state == ChatMessageState.FileTransferDone && !message.IsOutgoing)
-                     {
-                         try
-                         {
-                             message.AppData = message.FileTransferFilepath;
-                             IncomingChatBubble bubble = (IncomingChatBubble)MessagesList.Children.Where(b => message.Equals(((IncomingChatBubble)b).ChatMessage)).Last();
-                             if (bubble != null)
-                             {
-                                 ((IncomingChatBubble)bubble).RefreshImage();
-                             }
-                             EnableDownloadButtons(true);
-                         }
-                         catch { }
-                     }
-                     else
-                     {
-                         // Update the outgoing status of the message
-                         try
-                         {
-                            foreach (OutgoingChatBubble bubble in MessagesList.Children.OfType<OutgoingChatBubble>())
+                if (state == ChatMessageState.Delivered)
+                {
+                    if (messageUploading != null && messageUploading.Equals(message))
+                    {
+                        messageUploading = null;
+                    }
+                }
+
+                if (state == ChatMessageState.InProgress && message.IsOutgoing && messageUploading == null)
+                {
+                    // Create the chat bubble for both text or image messages
+                    if (message.AppData != null && messageUploading == null)
+                    {
+                        messageUploading = message;
+                    }
+                    OutgoingChatBubble bubble = new OutgoingChatBubble(message);
+                    bubble.MessageDeleted += bubble_MessageDeleted;
+                    MessagesList.Children.Add(bubble);
+                    scrollToBottom();
+                }
+                else if (state == ChatMessageState.FileTransferDone && !message.IsOutgoing)
+                {
+                    try
+                    {
+                        message.AppData = upload_filename;
+                        IncomingChatBubble bubble = (IncomingChatBubble)MessagesList.Children.OfType<IncomingChatBubble>().Where(b => message.Equals(((IncomingChatBubble)b).ChatMessage)).Last();
+                        if (bubble != null)
+                        {
+                            ((IncomingChatBubble)bubble).RefreshImage();
+                        }
+                        EnableDownloadButtons(true);
+                    }
+                    catch { }
+                }
+                else
+                {
+                    try
+                    {
+                        foreach (OutgoingChatBubble bubble in MessagesList.Children.OfType<OutgoingChatBubble>())
+                        {
+                            if (bubble.ChatMessage.Equals(message))
                             {
-                                if(bubble.ChatMessage.Equals(message))
-                                {
-                                    bubble.UpdateStatus(state);
-                                }
+                                bubble.UpdateStatus(state);
                             }
                         }
-                        catch { }
-                         }
+                    }
+                    catch { }
+                }
 
-                     if (chatRoom != null)
-                     {
-                         chatRoom.MarkAsRead();
-                     }
-                 });
-            }
+                if (chatRoom != null)
+                {
+                    chatRoom.MarkAsRead();
+                }
+            });
+        }
 
         private void CreateChatRoom(Address sipAddress)
         {
@@ -286,7 +321,7 @@ namespace Linphone.Views
                     }
                     else if (MessageBox.ImageName != null && MessageBox.ImageLocalPath != null)
                     {
-                        //InitiateImageUpload(MessageBox.ImageLocalPath, MessageBox.ImageName);
+                        InitiateImageUpload(MessageBox.ImageLocalPath, MessageBox.ImageName);
                     }
                     else
                     {
@@ -303,6 +338,22 @@ namespace Linphone.Views
 
         private async void send_file(object sender)
         {
+            FileOpenPicker openPicker = new FileOpenPicker();
+            openPicker.ViewMode = PickerViewMode.Thumbnail;
+            openPicker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
+            openPicker.FileTypeFilter.Add(".jpg");
+            openPicker.FileTypeFilter.Add(".jpeg");
+            openPicker.FileTypeFilter.Add(".png");
+            StorageFile file = await openPicker.PickSingleFileAsync();
+
+            if (file != null)
+            {
+                imageSelectionTask_Completed(file);
+            }
+            else
+            {
+                //TODO error message
+            }
         }
 
         private void back_click(object sender, RoutedEventArgs e)
@@ -313,79 +364,96 @@ namespace Linphone.Views
             }
         }
 
+        private async void InitiateImageUpload(string filePath, string fileName)
+        {
 
-        /* 
-        private void InitiateImageUpload(string filePath, string fileName)
-      { Dispatcher.BeginInvoke(() =>
-          {
-              if (chatRoom == null) //This code will be executed only in case of new conversation
-              {
-                  CreateChatRoom(LinphoneManager.Instance.LinphoneCore.InterpretURL(NewChatSipAddress.Text));
-              }
-              if (chatRoom != null)
-              {
-                  ProgressPopup.Visibility = Visibility.Visible;
-                  MessageBox.Visibility = Visibility.Collapsed;
-                  AddCancelUploadButtonInAppBar();
+            if (chatRoom == null) //This code will be executed only in case of new conversation
+            {
+                CreateChatRoom(LinphoneManager.Instance.Core.InterpretURL(NewChatSipAddress.Text));
+            }
+            if (chatRoom != null)
+            {
+                ProgressPopup.Visibility = Visibility.Visible;
+                MessageBox.Visibility = Visibility.Collapsed;
+                //CancelUpload.Visibility = Visibility.Visible;
+                Task.Run(() =>
+                {
+                    FileInfo fileInfo;
+                    try
+                    {
+                        fileInfo = new FileInfo(filePath);
+                        ChatMessage msg = chatRoom.CreateFileTransferMessage("application", "octet-stream", fileName, (int)fileInfo.Length, filePath);
+                        msg.AppData = fileName;
+                        chatRoom.SendMessage(msg, this);
+                    }
+                    catch (Exception e)
+                    {
 
-                  FileInfo fileInfo = new FileInfo(filePath);
-                  LinphoneChatMessage msg = chatRoom.CreateFileTransferMessage("application", "octet-stream", fileName, (int)fileInfo.Length, filePath);
-                  msg.AppData = filePath;
-                  chatRoom.SendMessage(msg, this);
-              }
-              else
-              {
-                  ProgressPopup.Visibility = Visibility.Collapsed;
-                  MessageBox.Visibility = Visibility.Visible;
-                  AddSendButtonsToAppBar();
-                  System.Windows.MessageBox.Show(AppResources.ChatRoomCreationError, AppResources.GenericError, MessageBoxButton.OK);
-              }
-          });
-    }*/
+                    }
+                });
 
-    /*  private void imageSelectionTask_Completed(object sender, PhotoResult e)
-      {
-          if (e.TaskResult == TaskResult.OK)
-          {
-              string fileName = e.OriginalFileName.Substring(e.OriginalFileName.LastIndexOf("\\") + 1);
-              BitmapImage image = new BitmapImage();
-              image.SetSource(e.ChosenPhoto);
+            }
+            else
+            {
+                ProgressPopup.Visibility = Visibility.Collapsed;
+                MessageBox.Visibility = Visibility.Visible;
+                var messageDialog = new MessageDialog(ResourceLoader.GetForCurrentView().GetString("ChatRoomCreationError"), ResourceLoader.GetForCurrentView().GetString("GenericError"));
+                await messageDialog.ShowAsync();
+                //CancelUpload.Visibility = Visibility.Collapsed;
+            }
 
-              ChatSettingsManager chatMgr = new ChatSettingsManager();
-              chatMgr.Load();
-              if ((bool)chatMgr.ScaleDownSentPictures)
-              {
-                  // Resize down the image
-                  WriteableBitmap bm = new WriteableBitmap(image);
-                  MemoryStream ms = new MemoryStream();
-                  int w = image.PixelWidth;
-                  int h = image.PixelHeight;
-                  if (w > h && w > 500)
-                  {
-                      h = (500 * h) / w;
-                      w = 500;
-                  }
-                  else if (h > w && h > 500)
-                  {
-                      w = (500 * w) / h;
-                      h = 500;
-                  }
-                  bm.SaveJpeg(ms, w, h, 0, 100);
-                  image.SetSource(ms);
-              }
-              string filePath = Utils.SaveImageInLocalFolder(image, fileName);
-              MessageBox.SetImage(image);
-              MessageBox.ImageName = fileName;
-              MessageBox.ImageLocalPath = filePath;
-              RefreshSendMessageButtonEnabledState();
-          }
-      }*/
+        }
+
+        private async void imageSelectionTask_Completed(StorageFile file)
+        {
+
+            string fileName = file.Name;
+            BitmapImage image = new BitmapImage();
+            IRandomAccessStream fileStream = await file.OpenAsync(FileAccessMode.Read);
+            try
+            {
+                image.SetSource(fileStream);
+            }
+            catch (Exception e)
+            {
+
+            }
+            /*ChatSettingsManager chatMgr = new ChatSettingsManager();
+            chatMgr.Load();
+            if ((bool)chatMgr.ScaleDownSentPictures)
+            {
+                // Resize down the image
+                WriteableBitmap bm = new WriteableBitmap(image);
+                MemoryStream ms = new MemoryStream();
+                int w = image.PixelWidth;
+                int h = image.PixelHeight;
+                if (w > h && w > 500)
+                {
+                    h = (500 * h) / w;
+                    w = 500;
+                }
+                else if (h > w && h > 500)
+                {
+                    w = (500 * w) / h;
+                    h = 500;
+                }
+                bm.SaveJpeg(ms, w, h, 0, 100);
+                image.SetSource(ms);
+            }*/
+            string filename = await Utils.SaveImageInLocalFolder(file);
+            MessageBox.SetImage(image);
+            MessageBox.ImageName = filename;
+            var tempFolder = ApplicationData.Current.LocalFolder;
+            StorageFile tempFile = await tempFolder.GetFileAsync(filename);
+            MessageBox.ImageLocalPath = tempFile.Path;
+            // RefreshSendMessageButtonEnabledState();
+        }
 
         public void MessageReceived(ChatMessage message)
         {
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
-           MessagesList.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-           {
+            MessagesList.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
                 IncomingChatBubble bubble = new IncomingChatBubble(message);
                 bubble.MessageDeleted += bubble_MessageDeleted;
                 bubble.DownloadImage += bubble_DownloadImage;
@@ -400,7 +468,7 @@ namespace Linphone.Views
             });
 #pragma warning restore CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
         }
-        
+
         public void ComposeReceived()
         {
             UpdateComposingMessage();
@@ -428,24 +496,25 @@ namespace Linphone.Views
 
         private void scrollToBottom()
         {
-           MessagesScroll.UpdateLayout();
-           MessagesScroll.ScrollToVerticalOffset(MessagesScroll.ScrollableHeight);
+            MessagesScroll.UpdateLayout();
+            MessagesScroll.ScrollToVerticalOffset(MessagesScroll.ScrollableHeight);
         }
 
-        public void bubble_DownloadImage(object sender, ChatMessage message)
+        public async void bubble_DownloadImage(object sender, ChatMessage message)
         {
             EnableDownloadButtons(false);
-            message.StartFileDownload(this, Utils.GetImageRandomFileName());
+            var tempFolder = ApplicationData.Current.LocalFolder;
+            string name = await Utils.GetImageTempFileName();
+            StorageFile tempFile = await tempFolder.GetFileAsync(name);
+            upload_filename = name;
+            message.StartFileDownload(this, tempFile.Path);
         }
 
         private void EnableDownloadButtons(bool enable)
         {
-            foreach (ChatBubble bubble in MessagesList.Children)
+            foreach (IncomingChatBubble bubble in MessagesList.Children.OfType<IncomingChatBubble>())
             {
-                if (bubble.GetType() == typeof(IncomingChatBubble))
-                {
-                   // (bubble as IncomingChatBubble).Download.IsEnabled = enable;
-                }
+                // (bubble as IncomingChatBubble).Download.IsEnabled = enable;  
             }
         }
     }
