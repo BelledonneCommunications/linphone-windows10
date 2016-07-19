@@ -128,6 +128,14 @@ namespace Linphone.Views
         private void buttons_CameraClick(object sender)
         {
             LinphoneManager.Instance.ToggleCameras();
+            if(LinphoneManager.Instance.Core.VideoDevice.Contains("Front"))
+            {
+                PreviewRender.ScaleX = -1;
+            } else
+            {
+                PreviewRender.ScaleX = 1;
+            }
+
         }
 
         private void buttons_StatsClick(object sender, bool areStatsVisible)
@@ -171,7 +179,10 @@ namespace Linphone.Views
                 oneSecondTimer.Stop();
             }
 
-            ToggleFullScreenMode(false);
+            if (LinphoneManager.Instance.isMobileVersion())
+            {
+                ToggleFullScreenMode(false);
+            }
             /*if (fadeTimer != null)
             {
                 fadeTimer.Dispose();
@@ -308,8 +319,8 @@ namespace Linphone.Views
                 VideoGrid.Width = ActualWidth;
             }
             VideoGrid.Height = VideoGrid.Width * 3 / 4;
-            PreviewSwapChainPanel.Width = VideoGrid.Width / 4;
-            PreviewSwapChainPanel.Height = VideoGrid.Height / 4;
+            //PreviewSwapChainPanel.Width = VideoGrid.Width / 4;
+            //PreviewSwapChainPanel.Height = VideoGrid.Height / 4;
         }
 
         private void Video_Tapped(object sender, TappedRoutedEventArgs e)
@@ -326,10 +337,21 @@ namespace Linphone.Views
 
         private void displayVideo(bool isVisible)
         {
-            ToggleFullScreenMode(isVisible);
+            if (LinphoneManager.Instance.isMobileVersion())
+            {
+                ToggleFullScreenMode(isVisible);
+            }
             if (isVisible)
             {
-                //AdaptVideoSize();
+                if (LinphoneManager.Instance.Core.VideoDevice.Contains("Front"))
+                {
+                    PreviewRender.ScaleX = -1;
+                }
+                else
+                {
+                    PreviewRender.ScaleX = 1;
+                }
+
                 buttons.Visibility = Visibility.Collapsed;
                 VideoGrid.Visibility = Visibility.Visible;
                 ContactHeader.Visibility = Visibility.Collapsed;

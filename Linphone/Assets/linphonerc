@@ -6,6 +6,9 @@ firewall_policy=ice
 [sip]
 default_proxy=0
 media_encryption=none
+sip_port=-1
+sip_tcp_port=-1
+sip_tls_port=-1
 
 [misc]
 log_collection_upload_server_url=https://www.linphone.org:444/lft.php

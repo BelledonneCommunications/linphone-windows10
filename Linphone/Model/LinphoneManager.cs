@@ -24,13 +24,14 @@ using Linphone.Views;
 using System.IO;
 using Windows.Storage;
 using Windows.Phone.Media.Devices;
-using Windows.System.Profile;
 using Windows.Networking.PushNotifications;
 using Windows.ApplicationModel.Calls;
 using LinphoneTasks;
 using Windows.Networking.Connectivity;
 using System.Text;
 using Windows.Foundation.Metadata;
+using Windows.UI.Notifications;
+using Windows.Data.Xml.Dom;
 
 namespace Linphone.Model
 {
@@ -183,6 +184,11 @@ namespace Linphone.Model
         public void resetLogCollection()
         {
             Core.ResetLogCollection();
+        }
+
+        public bool isMobileVersion()
+        {
+            return ApiInformation.IsApiContractPresent("Windows.Phone.PhoneContract", 1);
         }
 
         #endregion
@@ -374,7 +380,7 @@ namespace Linphone.Model
         public event MessageReceivedEventHandler MessageReceived;
 
         public MessageReceivedListener MessageListener { get; set; }
-        //public ToastNotification MessageReceivedNotification { get; set; }
+        public ToastNotification MessageReceivedNotification { get; set; }
         void CoreListener.MessageReceived(ChatRoom room, ChatMessage message)
         {
             if (CoreDispatcher == null) return;
@@ -388,43 +394,30 @@ namespace Linphone.Model
 
                 Address fromAddress = message.FromAddress;
                 string sipAddress = String.Format("{0}@{1}", fromAddress.UserName, fromAddress.Domain);
-                Debug.WriteLine("[LinphoneManager] Message received from " + sipAddress + ": " + message.Text + "\r\n");
-
                 if (MessageListener != null && MessageListener.GetSipAddressAssociatedWithDisplayConversation() != null && MessageListener.GetSipAddressAssociatedWithDisplayConversation().Equals(sipAddress))
                 {
                     MessageListener.MessageReceived(message);
-                }
-                else
+                } else
                 {
-                    /*string dateStr = Utils.FormatDate(message.Time):
-                      string url = message.ExternalBodyUrl;
-                      url = url.Replace("\"", "");
+                    string url = message.ExternalBodyUrl;
+                    url = url.Replace("\"", "");
 
-                      if (MessageReceivedNotification != null)
-                      {
-                          MessageReceivedNotification.Dismiss();
-                      }
+                    if (MessageReceivedNotification != null)
+                    {
+                        ToastNotificationManager.History.Clear();
+                    }
 
-                      MessageReceivedNotification = new CustomMessageBox()
-                      {
-                          Title = dateStr,
-                          Caption = url.Length > 0 ? AppResources.ImageMessageReceived : AppResources.MessageReceived,
-                          Message = url.Length > 0 ? "" : message.Text,
-                          LeftButtonContent = AppResources.Close,
-                          RightButtonContent = AppResources.Show
-                      };
+                    XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText02);
+                    XmlNodeList toastTextElements = toastXml.GetElementsByTagName("text");
 
-                      MessageReceivedNotification.Dismissed += (s, e) =>
-                      {
-                          switch (e.Result)
-                          {
-                              case CustomMessageBoxResult.RightButton:
-                                  BaseModel.CurrentPage.NavigationService.Navigate(new Uri("/Views/Chat.xaml?sip=" + Utils.ReplacePlusInUri(message.PeerAddress.AsStringUriOnly()), UriKind.RelativeOrAbsolute));
-                                  break;
-                          }
-                      };
+                    toastTextElements[0].AppendChild(toastXml.CreateTextNode(sipAddress));
+                    toastTextElements[1].AppendChild(toastXml.CreateTextNode(message.Text));
 
-                      MessageReceivedNotification.Show();*/
+                    IXmlNode toastNode = toastXml.SelectSingleNode("/toast");
+                    ((XmlElement)toastNode).SetAttribute("launch", "chat ? sip = " + sipAddress);
+
+                    MessageReceivedNotification = new ToastNotification(toastXml);
+                    ToastNotificationManager.CreateToastNotifier().Show(MessageReceivedNotification);
                 }
             });
 #pragma warning restore CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
@@ -432,7 +425,12 @@ namespace Linphone.Model
 
         public void FileTransferProgressIndication(ChatMessage message, int offset, int total)
         {
-            Debug.WriteLine(String.Format("FileTransferProgressIndication: {0}/{1}", offset, total));
+            if (CoreDispatcher == null) return;
+#pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
+            CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                Debug.WriteLine(String.Format("FileTransferProgressIndication: {0}/{1}", offset, total));
+            });
         }
 
 
@@ -460,8 +458,8 @@ namespace Linphone.Model
         #endregion
 
         #region Video Management
-        private String frontCamera = null;
-        private String backCamera = null;
+        private List<String> _cameras;
+        private int numberOfCameras = 0;
 
         public bool IsVideoAvailable
         {
@@ -495,39 +493,23 @@ namespace Linphone.Model
         {
             get
             {
-                return Core.VideoDevices.Count;
+                return numberOfCameras;
             }
         }
 
         private void DetectCameras()
         {
             int nbCameras = 0;
+            _cameras = new List<string>();
             foreach (String device in LinphoneManager.Instance.Core.VideoDevices)
             {
-                if (device.Contains("Front"))
+                if (!device.Contains("StaticImage"))
                 {
-                    frontCamera = device;
+                    _cameras.Add(device);
                     nbCameras++;
                 }
-                else if (device.Contains("Back"))
-                {
-                    backCamera = device;
-                    nbCameras++;
-                }
-
             }
-            String currentDevice = LinphoneManager.Instance.Core.VideoDevice;
-            if ((currentDevice != frontCamera) && (currentDevice != backCamera))
-            {
-                if (frontCamera != null)
-                {
-                    Core.VideoDevice = frontCamera;
-                }
-                else if (backCamera != null)
-                {
-                    Core.VideoDevice = backCamera;
-                }
-            }
+            numberOfCameras = nbCameras;
         }
 
         public void ToggleCameras()
@@ -535,14 +517,7 @@ namespace Linphone.Model
             if (NumberOfCameras >= 2)
             {
                 String currentDevice = Core.VideoDevice;
-                if (currentDevice == frontCamera)
-                {
-                    Core.VideoDevice = backCamera;
-                }
-                else if (currentDevice == backCamera)
-                {
-                    Core.VideoDevice = frontCamera;
-                }
+                Core.VideoDevice = _cameras.ElementAt((_cameras.IndexOf(Core.VideoDevice) + 1) % _cameras.Count()); 
 
                 if (Core.IsInCall)
                 {
@@ -629,7 +604,7 @@ namespace Linphone.Model
             else if (state == CallState.UpdatedByRemote)
             {
                 bool remoteVideo = call.RemoteParams.IsVideoEnabled;
-                bool localVideo = call.CurrentParams.Copy().IsVideoEnabled;
+                bool localVideo = call.CurrentParams.IsVideoEnabled;
                 bool autoAcceptCameraPolicy = Core.VideoPolicy.AutomaticallyAccept;
                 if (remoteVideo && !localVideo && !autoAcceptCameraPolicy)
                 {
