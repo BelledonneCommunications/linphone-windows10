@@ -115,6 +115,7 @@
     <None Include="MS2Tester_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Sounds\sintel_trailer_opus_vp8.mkv" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\Images\nowebcamCIF.jpg" />
     <Content Include="Assets\Sounds\arpeggio_8000_mono.wav" />
