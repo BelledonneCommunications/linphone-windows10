@@ -24,6 +24,7 @@
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
       <Extensions>
+        <uap:Extension Category="windows.voipCall"></uap:Extension>
         <uap:Extension Category="windows.protocol">
           <uap:Protocol Name="liblinphone-tester" />
         </uap:Extension>
@@ -32,6 +33,17 @@
   </Applications>
   <Capabilities>
     <Capability Name="internetClient" />
+    <Capability Name="internetClientServer" />
+    <uap:Capability Name="voipCall" />
     <DeviceCapability Name="microphone" />
+    <DeviceCapability Name="webcam" />
   </Capabilities>
+  <Extensions>
+    <Extension Category="windows.activatableClass.inProcessServer">
+      <InProcessServer>
+        <Path>MSWinRTVideo.dll</Path>
+        <ActivatableClass ActivatableClassId="MSWinRTVideo.SchemeHandler" ThreadingModel="both" />
+      </InProcessServer>
+    </Extension>
+  </Extensions>
 </Package>

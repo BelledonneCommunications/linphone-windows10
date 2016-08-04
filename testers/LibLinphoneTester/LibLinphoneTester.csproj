@@ -89,25 +89,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <Content Include="Assets\messages.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\rcfiles\marie_remote_localfile_win10_rc">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="Assets\rcfiles\carddav_rc" />
-    <None Include="Assets\rcfiles\conference_focus_rc" />
-    <None Include="Assets\rcfiles\friends_rc" />
-    <None Include="Assets\rcfiles\laure_call_logs_rc" />
-    <None Include="Assets\rcfiles\laure_rc_udp" />
-    <None Include="Assets\rcfiles\laure_tcp_rc" />
-    <None Include="Assets\rcfiles\marie_nat64_rc" />
-    <None Include="Assets\rcfiles\marie_v4proxy_rc" />
-    <None Include="Assets\rcfiles\michelle_rc_udp" />
-    <None Include="Assets\rcfiles\pauline_as_friend_rc" />
-    <None Include="Assets\rcfiles\pauline_nat64_rc" />
-    <None Include="Assets\rcfiles\pauline_tunnel_verify_server_certificate_rc" />
-    <None Include="Assets\rcfiles\pauline_v4proxy_rc" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
@@ -127,16 +108,57 @@
     <None Include="LibLinphoneTester_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\sounds\hello44100.wav" />
-    <Content Include="Assets\sounds\sintel_trailer_opus_h264.mkv" />
-    <Content Include="Assets\sounds\sintel_trailer_opus_vp8.mkv" />
-    <Content Include="Assets\sounds\sintel_trailer_pcmu_h264.mkv" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-200.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\images\nowebcamCIF.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\messages.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\rcfiles\marie_remote_localfile_win10_rc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\rcfiles\carddav_rc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\rcfiles\conference_focus_rc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\rcfiles\friends_rc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\rcfiles\laure_call_logs_rc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\rcfiles\laure_rc_udp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\rcfiles\laure_tcp_rc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\rcfiles\marie_nat64_rc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\rcfiles\marie_v4proxy_rc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\rcfiles\michelle_rc_udp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\rcfiles\pauline_as_friend_rc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\rcfiles\pauline_nat64_rc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\rcfiles\pauline_tunnel_verify_server_certificate_rc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\rcfiles\pauline_v4proxy_rc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\rcfiles\empty_rc">
@@ -265,6 +287,18 @@
     <Content Include="Assets\sounds\vrroom.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\sounds\hello44100.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\sounds\sintel_trailer_opus_h264.mkv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\sounds\sintel_trailer_opus_vp8.mkv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\sounds\sintel_trailer_pcmu_h264.mkv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\tester_hosts">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -296,6 +330,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\submodules\mswinrtvid\MSWinRTVideo.vcxproj">
+      <Project>{2d0e44c4-e51d-4911-b876-345d1e5e5209}</Project>
+      <Name>MSWinRTVideo</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
