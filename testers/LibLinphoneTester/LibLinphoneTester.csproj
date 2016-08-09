@@ -112,6 +112,12 @@
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-200.png" />
+    <Content Include="Assets\vcards\thousand_vcards.vcf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\vcards\vcards.vcf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\images\nowebcamCIF.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -337,6 +343,7 @@
       <Name>MSWinRTVideo</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
@@ -348,7 +355,8 @@ XCopy /I /Y $(ProjectDir)..\..\submodules\linphone\tester\certificates\altname $
 XCopy /I /Y $(ProjectDir)..\..\submodules\linphone\tester\certificates\cn $(ProjectDir)Assets\certificates\cn
 XCopy /I /Y $(ProjectDir)..\..\submodules\linphone\tester\images $(ProjectDir)Assets\images
 XCopy /I /Y $(ProjectDir)..\..\submodules\linphone\tester\rcfiles $(ProjectDir)Assets\rcfiles
-XCopy /I /Y $(ProjectDir)..\..\submodules\linphone\tester\sounds $(ProjectDir)Assets\sounds</PreBuildEvent>
+XCopy /I /Y $(ProjectDir)..\..\submodules\linphone\tester\sounds $(ProjectDir)Assets\sounds
+XCopy /I /Y $(ProjectDir)..\..\submodules\linphone\tester\vcards $(ProjectDir)Assets\vcards</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
