@@ -89,6 +89,7 @@ namespace Linphone.Views
             {
                 NetworkSettingsManager networkSettings = new NetworkSettingsManager();
                 networkSettings.Load();
+                networkSettings.MEncryption = "SRTP";
                 networkSettings.FWPolicy = networkSettings.EnumToFirewallPolicy[FirewallPolicy.UseIce];
                 networkSettings.StunServer = "stun.linphone.org";
                 networkSettings.Save();

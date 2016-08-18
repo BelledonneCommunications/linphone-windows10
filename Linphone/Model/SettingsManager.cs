@@ -1296,14 +1296,14 @@ namespace Linphone.Model
         /// </summary>
         public void Save()
         {
-            if (ValueChanged(StunServerKeyName))
-                LinphoneManager.Instance.Core.StunServer = GetNew(StunServerKeyName);
-
             if (ValueChanged(FirewallPolicyKeyName))
             {
                 string firewallPolicy = GetNew(FirewallPolicyKeyName);
                 LinphoneManager.Instance.Core.FirewallPolicy = FirewallPolicyToEnum[firewallPolicy];
             }
+
+            if (ValueChanged(StunServerKeyName))
+                LinphoneManager.Instance.Core.StunServer = GetNew(StunServerKeyName);
 
             if (ValueChanged(MediaEncryptionKeyName))
             {

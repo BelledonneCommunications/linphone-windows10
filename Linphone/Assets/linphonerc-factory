@@ -4,7 +4,6 @@ mtu=1300
 [sip]
 guess_hostname=1
 inc_timeout=45
-use_ipv6=0
 register_only_when_network_is_up=1
 ping_with_options=0
 store_ha1_passwd=0
