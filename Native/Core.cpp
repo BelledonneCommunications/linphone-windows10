@@ -639,7 +639,6 @@ void Core::NativePreviewWindowId::set(Platform::String^ value)
 	API_LOCK;
 	RefToPtrProxy<Platform::String^> *nativeWindowId = new RefToPtrProxy<Platform::String^>(value);
 	linphone_core_set_native_preview_window_id(this->lc, nativeWindowId);
-	linphone_core_use_preview_window(this->lc, TRUE);
 }
 
 Platform::String^ Core::NativeVideoWindowId::get()
@@ -1508,6 +1507,7 @@ void Core::Init()
 	this->lc = linphone_core_new_with_config(vtable, config ? config->config : NULL, proxy);
 
 	linphone_core_set_ring(this->lc, nullptr);
+	linphone_core_use_preview_window(this->lc, TRUE);
 }
 
 Core::~Core()
