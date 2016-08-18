@@ -192,9 +192,6 @@
     <Compile Include="Views\Launcher.xaml.cs">
       <DependentUpon>Launcher.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Model\LinphoneManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\Settings.xaml.cs">
@@ -342,10 +339,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Launcher.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

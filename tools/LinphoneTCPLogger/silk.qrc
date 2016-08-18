@@ -1,7 +1,0 @@
-<RCC>
-    <qresource prefix="/icons/silk">
-        <file alias="16x16/application-exit.png">icons/silk/stop.png</file>
-        <file alias="index.theme">icons/silk/index.theme</file>
-        <file alias="16x16/edit-clear.png">icons/silk/page_white.png</file>
-    </qresource>
-</RCC>

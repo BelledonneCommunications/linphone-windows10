@@ -144,30 +144,6 @@ namespace Linphone.Views
             base.OnNavigatingFrom(e);
         }
 
-        private void cancel_Click_1(object sender, EventArgs e)
-        {
-            saveSettingsOnLeave = false;
-            if (Frame.CanGoBack)
-            {
-                Frame.GoBack();
-            }
-        }
-
-        private void save_Click_1(object sender, EventArgs e)
-        {
-            if (Frame.CanGoBack)
-            {
-                Frame.GoBack();
-            }
-        }
-
-        private void linphone_Click_1(object sender, EventArgs e)
-        {
-            mediaEncryption.SelectedItem = ResourceLoader.GetForCurrentView().GetString("MediaEncryptionSRTP");
-            firewallPolicy.SelectedItem = ResourceLoader.GetForCurrentView().GetString("FirewallPolicyIce");
-            Stun.Text = "stun.linphone.org";
-        }
-
         private void LogUploadProgressIndication(int offset, int total)
         {         
             BugReportUploadProgressBar.Maximum = total;
