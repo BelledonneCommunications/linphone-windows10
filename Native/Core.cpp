@@ -443,34 +443,6 @@ void Core::IsIpv6Enabled::set(Platform::Boolean enable)
 	linphone_core_enable_ipv6(this->lc, enable);
 }
 
-Platform::Boolean Core::IsIterateEnabled::get()
-{
-	return isIterateEnabled;
-}
-
-void Core::IsIterateEnabled::set(Platform::Boolean value)
-{
-	API_LOCK;
-	if (isIterateEnabled && !value && IterateWorkItem)
-	{
-		IterateWorkItem->Cancel();
-		IterateWorkItem = nullptr;
-	}
-	else if (!isIterateEnabled && value)
-	{
-		IAsyncAction^ IterateWorkItem = Windows::System::Threading::ThreadPool::RunAsync(ref new Windows::System::Threading::WorkItemHandler([this](IAsyncAction^ action)
-		{
-			while (true) {
-				GlobalApiLock::Instance()->Lock(__FUNCTION__);
-				linphone_core_iterate(this->lc);
-				GlobalApiLock::Instance()->Unlock(__FUNCTION__);
-				ms_usleep(20000);
-			}
-		}), Windows::System::Threading::WorkItemPriority::Low);
-	}
-	isIterateEnabled = value;
-}
-
 Platform::Boolean Core::IsKeepAliveEnabled::get()
 {
 	API_LOCK;
@@ -1136,6 +1108,12 @@ Platform::Boolean Core::IsMediaEncryptionSupported(BelledonneCommunications::Lin
 	return (linphone_core_media_encryption_supported(this->lc, (LinphoneMediaEncryption)menc) == TRUE);
 }
 
+void Core::Iterate()
+{
+	API_LOCK;
+	linphone_core_iterate(this->lc);
+}
+
 void Core::LeaveConference()
 {
 	API_LOCK;
@@ -1474,14 +1452,14 @@ void log_collection_upload_progress_indication(::LinphoneCore *lc, size_t offset
 }
 
 Core::Core(BelledonneCommunications::Linphone::Native::CoreListener^ coreListener)
-	: lc(nullptr), listener(coreListener), config(ref new LpConfig(nullptr, nullptr)), isIterateEnabled(false),
+	: lc(nullptr), listener(coreListener), config(ref new LpConfig(nullptr, nullptr)),
 	voipCallController(ref new BelledonneCommunications::Linphone::Native::VoipCallController())
 {
 	Init();
 }
 
 Core::Core(BelledonneCommunications::Linphone::Native::CoreListener^ coreListener, BelledonneCommunications::Linphone::Native::LpConfig^ config)
-	: lc(nullptr), listener(coreListener), config(config), isIterateEnabled(false),
+	: lc(nullptr), listener(coreListener), config(config),
 	voipCallController(ref new BelledonneCommunications::Linphone::Native::VoipCallController())
 {
 	Init();
@@ -1513,7 +1491,6 @@ void Core::Init()
 Core::~Core()
 {
 	API_LOCK;
-	IsIterateEnabled = false;
 	RefToPtrProxy<Core^> *proxy = reinterpret_cast< RefToPtrProxy<Core^> *>(linphone_core_get_user_data(this->lc));
 	delete proxy;
 	linphone_core_destroy(this->lc);

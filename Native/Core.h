@@ -377,16 +377,6 @@ namespace BelledonneCommunications
 				}
 
 				/// <summary>
-				/// Set it to true to start the iterate, set it to false to stop it. 
-				/// Is disabled by default.
-				/// </summary>
-				property Platform::Boolean IsIterateEnabled
-				{
-					Platform::Boolean get();
-					void set(Platform::Boolean value);
-				}
-
-				/// <summary>
 				/// Defines Linphone behaviour when encryption parameters negociation fails on outgoing call.
 				/// </summary>
 				property Platform::Boolean IsMediaEncryptionMandatory
@@ -907,6 +897,20 @@ namespace BelledonneCommunications
 				Platform::Boolean IsMediaEncryptionSupported(BelledonneCommunications::Linphone::Native::MediaEncryption menc);
 
 				/// <summary>
+				/// Main loop function.It is crucial that your application call it periodically.
+				/// It performs various backgrounds tasks:
+				///  - receiving of SIP messages
+				///  - handles timers and timeout
+				///  - performs registration to proxies
+				///  - authentication retries
+				/// The application MUST call this function periodically, in its main loop.
+				/// Be careful that this function must be called from the same thread as
+				/// other liblinphone methods. If it is not the case make sure all liblinphone calls are
+				/// serialized with a mutex.
+				/// </summary>
+				void Iterate();
+
+				/// <summary>
 				/// Moves the local participant out of the conference.
 				/// When the local participant is out of the conference, the remote participants can continue to talk normally.
 				/// </summary>
@@ -1069,8 +1073,6 @@ namespace BelledonneCommunications
 				::LinphoneCore *lc;
 				BelledonneCommunications::Linphone::Native::CoreListener^ listener;
 				LpConfig^ config;
-				Windows::Foundation::IAsyncAction^ IterateWorkItem;
-				Platform::Boolean isIterateEnabled;
 				BelledonneCommunications::Linphone::Native::VoipCallController^ voipCallController;
 
 				static OutputTraceLevel logLevel;

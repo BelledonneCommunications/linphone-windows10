@@ -32,6 +32,7 @@ using System.Text;
 using Windows.Foundation.Metadata;
 using Windows.UI.Notifications;
 using Windows.Data.Xml.Dom;
+using Windows.System.Threading;
 
 namespace Linphone.Model
 {
@@ -118,7 +119,7 @@ namespace Linphone.Model
         public void InitLinphoneCore()
         {
             Core.LogLevel = OutputTraceLevel.Debug;
-           
+
             LinphoneManager.Instance.Core.ChatDatabasePath = GetChatDatabasePath();
             LinphoneManager.Instance.Core.RootCa = GetRootCaPath();
 
@@ -133,8 +134,15 @@ namespace Linphone.Model
 
             LinphoneManager.Instance.Core.SetUserAgent("LinphoneW10", Core.Version);
             InitPushNotifications();
-            isLinphoneRunning = true;            
-            LinphoneManager.Instance.Core.IsIterateEnabled = true;
+            isLinphoneRunning = true;
+            TimeSpan period = TimeSpan.FromMilliseconds(20);
+            ThreadPoolTimer.CreatePeriodicTimer((source) =>
+            {
+                CoreDispatcher.RunIdleAsync((args) =>
+                {
+                    Core.Iterate();
+                });
+            }, period);
         }
 
         public void EnableLogCollection(bool enable)
