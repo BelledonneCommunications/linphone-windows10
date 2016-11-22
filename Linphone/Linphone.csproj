@@ -355,10 +355,6 @@
     <PRIResource Include="String\en-US\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\submodules\mswinrtvid\MSWinRTVideo.vcxproj">
-      <Project>{2d0e44c4-e51d-4911-b876-345d1e5e5209}</Project>
-      <Name>MSWinRTVideo</Name>
-    </ProjectReference>
     <ProjectReference Include="Tasks\LinphoneTasks.csproj">
       <Project>{088a6c0f-16fa-4360-93c7-d781244e77fd}</Project>
       <Name>LinphoneTasks</Name>

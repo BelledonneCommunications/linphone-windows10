@@ -498,21 +498,21 @@ namespace BelledonneCommunications
 				}
 
 				/// <summary>
-				/// Sets the native preview window id (a Windows::UI::Xaml::Controls::CaptureElement as a Platform::Object).
+				/// Sets the native preview window id.
 				/// </summary>
-				property Platform::String^ NativePreviewWindowId
+				property Platform::Object^ NativePreviewWindowId
 				{
-					Platform::String^ get();
-					void set(Platform::String^ value);
+					Platform::Object^ get();
+					void set(Platform::Object^ value);
 				}
 
 				/// <summary>
-				/// Sets the native video window id (a Windows::UI::Xaml::Controls::MediaElement as a Platform::Object).
+				/// Sets the native video window id.
 				/// </summary>
-				property Platform::String^ NativeVideoWindowId
+				property Platform::Object^ NativeVideoWindowId
 				{
-					Platform::String^ get();
-					void set(Platform::String^ value);
+					Platform::Object^ get();
+					void set(Platform::Object^ value);
 				}
 
 				/// <summary>
