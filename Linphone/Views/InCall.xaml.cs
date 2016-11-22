@@ -75,6 +75,7 @@ namespace Linphone.Views
             buttons.MuteClick += buttons_MuteClick;
             buttons.VideoClick += buttons_VideoClick;
             buttons.BluetoothClick += buttons_BluetoothClick;
+            buttons.DialpadClick += buttons_DialpadClick;
         }
 
         #region Buttons
@@ -101,6 +102,10 @@ namespace Linphone.Views
              {
                  Debug.WriteLine("Exception while trying to toggle bluetooth to " + isBluetoothOn.ToString());
              }
+        }
+
+        private void buttons_DialpadClick(object sender, bool isBluetoothOn)
+        {
         }
 
         private bool buttons_SpeakerClick(object sender, bool isSpeakerOn)
