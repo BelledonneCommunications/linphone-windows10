@@ -76,3 +76,6 @@
 [submodule "submodules/bcunit"]
 	path = submodules/bcunit
 	url = git://git.linphone.org/bcunit.git
+[submodule "submodules/externals/libjpeg-turbo"]
+	path = submodules/externals/libjpeg-turbo
+	url = gitosis@git.linphone.org:libjpeg-turbo.git

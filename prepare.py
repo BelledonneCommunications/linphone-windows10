@@ -80,7 +80,7 @@ windows10_targets = {
     'x64': Win10X64Target(),
     'ARM': Win10ARMTarget()
 }
-linphone_builder_targets = ['linphone', 'ms2', 'belle-sip']
+linphone_builder_targets = ['linphone', 'ms2', 'bellesip']
 
 
 class ComponentListAction(argparse.Action):
@@ -127,7 +127,7 @@ class Windows10Preparator(prepare.Preparator):
 
         self.linphone_builder_target = self.args.component
         if self.linphone_builder_target == 'ms2':
-            self.linphone_builder_target = 'ms2-plugins'
+            self.linphone_builder_target = 'ms2plugins'
         self.additional_args += ["-DLINPHONE_BUILDER_TARGET=" + self.linphone_builder_target]
 
     def clean(self):
@@ -183,12 +183,12 @@ class Windows10Preparator(prepare.Preparator):
                 ('LinphoneTesterSDK', linphone_version),
                 ('LinphoneSDK', linphone_version),
             ]
-        elif self.linphone_builder_target == 'ms2-plugins':
+        elif self.linphone_builder_target == 'ms2plugins':
             ms2_version = self.git_version('submodules/linphone/mediastreamer2')
             builder_target = [
                 ('MS2TesterSDK', ms2_version),
             ]
-        elif self.linphone_builder_target == 'belle-sip':
+        elif self.linphone_builder_target == 'bellesip':
             bellesip_version = self.git_version('submodules/belle-sip')
             builder_target = [
                 ('BelleSipTesterSDK', bellesip_version),
