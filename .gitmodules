@@ -78,4 +78,4 @@
 	url = git://git.linphone.org/bcunit.git
 [submodule "submodules/externals/libjpeg-turbo"]
 	path = submodules/externals/libjpeg-turbo
-	url = git@git.linphone.org:libjpeg-turbo.git
+	url = git://git.linphone.org/libjpeg-turbo.git
