@@ -38,4 +38,12 @@
     <DeviceCapability Name="microphone" />
     <DeviceCapability Name="webcam" />
   </Capabilities>
+  <Extensions>
+    <Extension Category="windows.activatableClass.inProcessServer">
+      <InProcessServer>
+        <Path>MSWinRTVideo.dll</Path>
+        <ActivatableClass ActivatableClassId="MSWinRTVideo.SchemeHandler" ThreadingModel="both" />
+      </InProcessServer>
+    </Extension>
+  </Extensions>
 </Package>

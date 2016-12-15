@@ -596,37 +596,37 @@ int Core::MissedCallsCount::get()
 	return linphone_core_get_missed_calls_count(this->lc);
 }
 
-Platform::Object^ Core::NativePreviewWindowId::get()
+Platform::String^ Core::NativePreviewWindowId::get()
 {
 	API_LOCK;
 	void *id = linphone_core_get_native_preview_window_id(this->lc);
 	if (id == NULL) return nullptr;
-	RefToPtrProxy<Platform::Object^> *proxy = reinterpret_cast<RefToPtrProxy<Platform::Object^>*>(id);
-	Platform::Object^ nativeWindowId = (proxy) ? proxy->Ref() : nullptr;
+	RefToPtrProxy<Platform::String^> *proxy = reinterpret_cast<RefToPtrProxy<Platform::String^>*>(id);
+	Platform::String^ nativeWindowId = (proxy) ? proxy->Ref() : nullptr;
 	return nativeWindowId;
 }
 
-void Core::NativePreviewWindowId::set(Platform::Object^ value)
+void Core::NativePreviewWindowId::set(Platform::String^ value)
 {
 	API_LOCK;
-	RefToPtrProxy<Platform::Object^> *nativeWindowId = new RefToPtrProxy<Platform::Object^>(value);
+	RefToPtrProxy<Platform::String^> *nativeWindowId = new RefToPtrProxy<Platform::String^>(value);
 	linphone_core_set_native_preview_window_id(this->lc, nativeWindowId);
 }
 
-Platform::Object^ Core::NativeVideoWindowId::get()
+Platform::String^ Core::NativeVideoWindowId::get()
 {
 	API_LOCK;
 	void *id = linphone_core_get_native_video_window_id(this->lc);
 	if (id == NULL) return nullptr;
-	RefToPtrProxy<Platform::Object^> *proxy = reinterpret_cast<RefToPtrProxy<Platform::Object^>*>(id);
-	Platform::Object^ nativeWindowId = (proxy) ? proxy->Ref() : nullptr;
+	RefToPtrProxy<Platform::String^> *proxy = reinterpret_cast<RefToPtrProxy<Platform::String^>*>(id);
+	Platform::String^ nativeWindowId = (proxy) ? proxy->Ref() : nullptr;
 	return nativeWindowId;
 }
 
-void Core::NativeVideoWindowId::set(Platform::Object^ value)
+void Core::NativeVideoWindowId::set(Platform::String^ value)
 {
 	API_LOCK;
-	RefToPtrProxy<Platform::Object^> *nativeWindowId = new RefToPtrProxy<Platform::Object^>(value);
+	RefToPtrProxy<Platform::String^> *nativeWindowId = new RefToPtrProxy<Platform::String^>(value);
 	linphone_core_set_native_video_window_id(this->lc, nativeWindowId);
 }
 

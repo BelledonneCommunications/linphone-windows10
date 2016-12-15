@@ -370,12 +370,20 @@ namespace Linphone.Views
             }
         }
 
+        private MSWinRTVideo.SwapChainPanelSource _videoSource;
+        private MSWinRTVideo.SwapChainPanelSource _previewSource;
+
         private void StartVideoStream()
         {
             try
             {
-                LinphoneManager.Instance.Core.NativeVideoWindowId = VideoMediaElement;
-                LinphoneManager.Instance.Core.NativePreviewWindowId = PreviewMediaElement;
+                _videoSource = new MSWinRTVideo.SwapChainPanelSource();
+                _videoSource.Start(VideoSwapChainPanel);
+                _previewSource = new MSWinRTVideo.SwapChainPanelSource();
+                _previewSource.Start(PreviewSwapChainPanel);
+
+                LinphoneManager.Instance.Core.NativeVideoWindowId = VideoSwapChainPanel.Name;
+                LinphoneManager.Instance.Core.NativePreviewWindowId = PreviewSwapChainPanel.Name;
             }
             catch (Exception e)
             {
@@ -387,8 +395,16 @@ namespace Linphone.Views
         {
             try
             {
-                LinphoneManager.Instance.Core.NativeVideoWindowId = null;
-                LinphoneManager.Instance.Core.NativePreviewWindowId = null;
+                if (_videoSource != null)
+                {
+                    _videoSource.Stop();
+                    _videoSource = null;
+                }
+                if (_previewSource != null)
+                {
+                    _previewSource.Stop();
+                    _previewSource = null;
+                }
             }
             catch (Exception e)
             {
