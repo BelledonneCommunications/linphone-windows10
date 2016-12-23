@@ -34,6 +34,11 @@ namespace Linphone.Views
             this.InitializeComponent();
             DataContext = this;
             ContactsManager contactsManager = ContactsManager.Instance;
+            addressBox.KeyDown += (sender, args) => {
+                if (args.Key == Windows.System.VirtualKey.Enter) {
+                    call_Click(null, null);
+                }
+            };
         }
 
         private int unreadMessageCount;
@@ -82,10 +87,7 @@ namespace Linphone.Views
                     MissedCallText.Visibility = Visibility.Collapsed;
                 }
 
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs("MissedCallCount"));
-                }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("MissedCallCount"));
             }
         }
 
