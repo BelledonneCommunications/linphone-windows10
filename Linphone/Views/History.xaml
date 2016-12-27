@@ -82,8 +82,11 @@
                 <PivotItem Header="Missed" x:Uid="HistoryMissedTitle">
                     <ListView x:Name="MissedCalls"
                               Margin="-12,0,-12,0"
+                              ItemsSource="{Binding}"
                               ItemTemplate="{StaticResource CallLogListViewTemplate}"
-                              ItemClick="Calls_ItemClick">
+                              IsItemClickEnabled="True"
+                              IsMultiSelectCheckBoxEnabled="True"
+                              ItemClick="Calls_ItemClick" UseLayoutRounding="True">
                     </ListView>
                 </PivotItem>
             </Pivot>

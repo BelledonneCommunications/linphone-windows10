@@ -21,45 +21,39 @@ using Windows.Storage.Streams;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media.Imaging;
 
-namespace Linphone.Model
-{
+namespace Linphone.Model {
     /// <summary>
     /// Converter to get contacts' images without having to call Contact object methods
     /// </summary>
-    public class ContactPictureConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, string language)
-        {
+    public class ContactPictureConverter : IValueConverter {
+        public object Convert(object value, Type targetType, object parameter, string language) {
             Contact c = value as Contact;
             if (c == null)
                 return null;
 
-            var imgStream = c.Thumbnail; 
+            var imgStream = c.Thumbnail;
             return null;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
+        public object ConvertBack(object value, Type targetType, object parameter, string language) {
             throw new NotImplementedException();
         }
     }
-    
+
     /// <summary>
     /// Converter to get contacts' images without having to call Contact object methods
     /// </summary>
-    public class ContactNameConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, string language)
-        {
+    public class ContactNameConverter : IValueConverter {
+        public object Convert(object value, Type targetType, object parameter, string language) {
             Contact c = value as Contact;
             if (c == null)
                 return null;
 
-            return c.DisplayName.Replace(" ", "\n"); ;
+            return c.DisplayName.Replace(" ", "\n");
+            ;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
+        public object ConvertBack(object value, Type targetType, object parameter, string language) {
             throw new NotImplementedException();
         }
     }

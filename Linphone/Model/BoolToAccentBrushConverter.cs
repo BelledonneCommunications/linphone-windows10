@@ -20,28 +20,21 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 
-namespace Linphone.Model
-{
+namespace Linphone.Model {
     /// <summary>
     /// Converter returning the AccentColorBrush if the boolean is true, else returning a title color.
     /// </summary>
-    public class BoolToAccentBrushConverter : IValueConverter
-    {
+    public class BoolToAccentBrushConverter : IValueConverter {
         /// <returns>A SolidColorBrush (PhoneAccentBrush or PhoneSubtleBrush).</returns>
-        public object Convert(object value, Type targetType, object parameter, string language)
-        {
-            if ((bool)value)
-            {
+        public object Convert(object value, Type targetType, object parameter, string language) {
+            if ((bool)value) {
                 return Application.Current.Resources["SystemControlHighlightAccentBrush"] as SolidColorBrush;
-            }
-            else
-            {
+            } else {
                 return new SolidColorBrush { Color = Colors.Gray };
             }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
+        public object ConvertBack(object value, Type targetType, object parameter, string language) {
             throw new NotImplementedException();
         }
     }

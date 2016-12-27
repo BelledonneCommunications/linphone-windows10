@@ -21,19 +21,15 @@ using BelledonneCommunications.Linphone.Native;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.ApplicationModel.Resources;
 
-namespace Linphone.Controls
-{
+namespace Linphone.Controls {
 
-    public partial class StatusBar : UserControl
-    {
+    public partial class StatusBar : UserControl {
 
-        public StatusBar()
-        {
+        public StatusBar() {
             InitializeComponent();
         }
 
-        public void RefreshStatus()
-        {
+        public void RefreshStatus() {
             RegistrationState state;
             if (LinphoneManager.Instance.Core.DefaultProxyConfig == null)
                 state = RegistrationState.None;
@@ -43,36 +39,27 @@ namespace Linphone.Controls
             RefreshStatus(state);
         }
 
-        public void RefreshStatus(RegistrationState state)
-        {
+        public void RefreshStatus(RegistrationState state) {
 
-        if (state == RegistrationState.Ok)
-            {
+            if (state == RegistrationState.Ok) {
                 StatusLed.Source = new BitmapImage(new Uri(this.BaseUri, "/Assets/led_connected.png"));
                 StatusText.Text = ResourceLoader.GetForCurrentView().GetString("Registered");
-            }
-            else if (state == RegistrationState.Progress)
-            {
+            } else if (state == RegistrationState.Progress) {
                 StatusLed.Source = new BitmapImage(new Uri(this.BaseUri, "/Assets/led_inprogress.png"));
                 StatusText.Text = ResourceLoader.GetForCurrentView().GetString("RegistrationInProgress");
-            }
-            else if (state == RegistrationState.Failed)
-            {
+            } else if (state == RegistrationState.Failed) {
                 StatusLed.Source = new BitmapImage(new Uri(this.BaseUri, "/Assets/led_error.png"));
-                if(LinphoneManager.Instance.Core.DefaultProxyConfig.Error == Reason.Forbidden)
-                {
+                if (LinphoneManager.Instance.Core.DefaultProxyConfig.Error == Reason.Forbidden) {
                     StatusText.Text = ResourceLoader.GetForCurrentView().GetString("RegistrationFailedForbidden");
-                } else
-                {
+                } else {
                     StatusText.Text = ResourceLoader.GetForCurrentView().GetString("RegistrationFailed");
                 }
-            }
-            else {
+            } else {
                 StatusLed.Source = new BitmapImage(new Uri(this.BaseUri, "/Assets/led_disconnected.png"));
                 StatusText.Text = ResourceLoader.GetForCurrentView().GetString("Disconnected");
             }
-           
+
         }
-         
+
     }
 }

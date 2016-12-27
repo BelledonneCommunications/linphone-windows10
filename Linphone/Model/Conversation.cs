@@ -21,33 +21,32 @@ using System.Linq;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
 
-namespace Linphone.Model
-{
+namespace Linphone.Model {
     /// <summary>
     /// Represents a chat conversation between the user and someone else.
     /// </summary>
-    public class Conversation
-    {
+    public class Conversation {
         /// <summary>
         /// Display name of the remote contact.
         /// </summary>
-        public string DisplayedName { get; set; }
+        public string DisplayedName {
+            get; set;
+        }
 
         /// <summary>
         /// SIP address of the remote contact.
         /// </summary>
-        public string SipAddress { get; set; }
+        public string SipAddress {
+            get; set;
+        }
 
         /// <summary>
         /// Latest message (can be troncated) received or sent.
         /// </summary>
-        public string LatestMessage 
-        {
-            get
-            {
+        public string LatestMessage {
+            get {
                 string lastText = Messages.Last().Text;
-                if (lastText == null || lastText.Length <= 0 || Messages.Last().AppData != "")
-                {
+                if (lastText == null || lastText.Length <= 0 || Messages.Last().AppData != "") {
                     return null;
                 }
                 return lastText;
@@ -57,10 +56,8 @@ namespace Linphone.Model
         /// <summary>
         /// Date of the latest message received or sent.
         /// </summary>
-        public string LatestMessageDate 
-        {
-            get
-            {
+        public string LatestMessageDate {
+            get {
                 return FormatDate(Messages.Last().Time);
             }
         }
@@ -68,23 +65,17 @@ namespace Linphone.Model
         /// <summary>
         /// Returns true if the last message hasn't been read yet by the user, otherwise returns false
         /// </summary>
-        public bool IsLastMessageUnread
-        {
-            get
-            {
+        public bool IsLastMessageUnread {
+            get {
                 return !Messages.Last().IsRead;
             }
         }
 
-        public Visibility IsLastMessageImage
-        {
-            get
-            {
-                if (Messages.Last().FileTransferFilepath != "" || Messages.Last().AppData != "")
-                {
+        public Visibility IsLastMessageImage {
+            get {
+                if (Messages.Last().FileTransferFilepath != "" || Messages.Last().AppData != "") {
                     return Visibility.Visible;
-                } else
-                {
+                } else {
                     return Visibility.Collapsed;
                 }
 
@@ -94,24 +85,23 @@ namespace Linphone.Model
         /// <summary>
         /// List of messages sent and received.
         /// </summary>
-        public IList<ChatMessage> Messages { get; set; }
+        public IList<ChatMessage> Messages {
+            get; set;
+        }
 
         /// <summary>
         /// Public constructor.
         /// </summary>
-        public Conversation(string sipAddress, string displayName, IList<ChatMessage> messages)
-        {
+        public Conversation(string sipAddress, string displayName, IList<ChatMessage> messages) {
             SipAddress = sipAddress;
             DisplayedName = displayName;
             Messages = new List<ChatMessage>();
-            foreach (ChatMessage msg in messages)
-            {
+            foreach (ChatMessage msg in messages) {
                 Messages.Add(msg);
             }
         }
 
-        private string FormatDate(long timestamp)
-        {
+        private string FormatDate(long timestamp) {
             DateTime date;
             DateTime now = DateTime.Now;
 

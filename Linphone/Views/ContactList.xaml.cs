@@ -20,46 +20,37 @@ using System.Collections.ObjectModel;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml;
 
-namespace Linphone.Views
-{
+namespace Linphone.Views {
 
-    public sealed partial class ContactList : Page
-    {
+    public sealed partial class ContactList : Page {
 
         private List<AlphaKeyGroup<ContactItem>> groupsOfContacts;
         private ObservableCollection<ContactItem> _contactsList = new ObservableCollection<ContactItem>();
         private ObservableCollection<ContactItem> contactItems = new ObservableCollection<ContactItem>();
 
-        public ContactList()
-        {
+        public ContactList() {
             this.InitializeComponent();
             groupedContactsCvs.Source = ContactsManager.Instance.GroupsOfContacts;
 
-            if (ContactsManager.Instance.ContactsList.Count == 0)
-            {
+            if (ContactsManager.Instance.ContactsList.Count == 0) {
                 ContactListView.Visibility = Visibility.Collapsed;
                 EmptyText.Visibility = Visibility.Visible;
-            }
-            else 
-            {
+            } else {
                 ContactListView.Visibility = Visibility.Visible;
                 EmptyText.Visibility = Visibility.Collapsed;
             }
-        }  
+        }
 
-        private void ContactSearchBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
+        private void ContactSearchBox_TextChanged(object sender, TextChangedEventArgs e) {
 
         }
 
-        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
-        {
+        private void ListView_ItemClick(object sender, ItemClickEventArgs e) {
             ContactsManager.Instance.TempContact = (e.ClickedItem as ContactItem);
             Frame.Navigate(typeof(Views.ContactDetail), null);
         }
 
-        private void ContactGroupView_ViewChangeStarted(object sender, SemanticZoomViewChangedEventArgs e)
-        {
+        private void ContactGroupView_ViewChangeStarted(object sender, SemanticZoomViewChangedEventArgs e) {
 
         }
     }

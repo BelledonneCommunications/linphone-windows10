@@ -31,8 +31,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 
-namespace Linphone.Views
-{
+namespace Linphone.Views {
     public partial class InCall : Page {
         private DispatcherTimer oneSecondTimer;
         private Timer fadeTimer;
@@ -45,23 +44,20 @@ namespace Linphone.Views
         private SimpleOrientationSensor orientationSensor;
         private SimpleOrientation deviceOrientation;
 
-        public InCall()
-        {
+        public InCall() {
             this.InitializeComponent();
             this.DataContext = new InCallModel();
 
-            if (LinphoneManager.Instance.IsVideoAvailable)
-            {
+            if (LinphoneManager.Instance.IsVideoAvailable) {
                 StartVideoStream();
                 VideoGrid.Visibility = Visibility.Collapsed;
-            } 
+            }
 
             displayOrientation = ApplicationView.GetForCurrentView().Orientation;
             displayInformation = DisplayInformation.GetForCurrentView();
             deviceOrientation = SimpleOrientation.NotRotated;
             orientationSensor = SimpleOrientationSensor.GetDefault();
-            if (orientationSensor != null)
-            {
+            if (orientationSensor != null) {
                 deviceOrientation = orientationSensor.GetCurrentOrientation();
                 SetVideoOrientation();
                 orientationSensor.OrientationChanged += OrientationSensor_OrientationChanged;
@@ -79,96 +75,76 @@ namespace Linphone.Views
         }
 
         #region Buttons
-        private void buttons_VideoClick(object sender, bool isVideoOn)
-        {
+        private void buttons_VideoClick(object sender, bool isVideoOn) {
             Call call = LinphoneManager.Instance.Core.CurrentCall;
             CallParams param = call.CurrentParams.Copy();
             param.IsVideoEnabled = isVideoOn;
             LinphoneManager.Instance.Core.UpdateCall(call, param);
         }
 
-        private void buttons_MuteClick(object sender, bool isMuteOn)
-        {
-            LinphoneManager.Instance.Core.IsMicEnabled=isMuteOn;
+        private void buttons_MuteClick(object sender, bool isMuteOn) {
+            LinphoneManager.Instance.Core.IsMicEnabled = isMuteOn;
         }
 
-        private void buttons_BluetoothClick(object sender, bool isBluetoothOn)
-        {
-             try
-             {
-                 LinphoneManager.Instance.BluetoothEnabled = isBluetoothOn;
-             }
-             catch
-             {
-                 Debug.WriteLine("Exception while trying to toggle bluetooth to " + isBluetoothOn.ToString());
-             }
+        private void buttons_BluetoothClick(object sender, bool isBluetoothOn) {
+            try {
+                LinphoneManager.Instance.BluetoothEnabled = isBluetoothOn;
+            } catch {
+                Debug.WriteLine("Exception while trying to toggle bluetooth to " + isBluetoothOn.ToString());
+            }
         }
 
-        private void buttons_DialpadClick(object sender, bool isBluetoothOn)
-        {
+        private void buttons_DialpadClick(object sender, bool isBluetoothOn) {
         }
 
-        private bool buttons_SpeakerClick(object sender, bool isSpeakerOn)
-        {
-             try
-             {
-                 LinphoneManager.Instance.SpeakerEnabled = isSpeakerOn;
-                 return true;
-             }
-             catch
-             {
-                 Debug.WriteLine("Exception while trying to toggle speaker to " + isSpeakerOn.ToString());
-             }
+        private bool buttons_SpeakerClick(object sender, bool isSpeakerOn) {
+            try {
+                LinphoneManager.Instance.SpeakerEnabled = isSpeakerOn;
+                return true;
+            } catch {
+                Debug.WriteLine("Exception while trying to toggle speaker to " + isSpeakerOn.ToString());
+            }
             return false;
         }
 
-        private void buttons_PauseClick(object sender, bool isPaused)
-        {
+        private void buttons_PauseClick(object sender, bool isPaused) {
             if (isPaused)
                 LinphoneManager.Instance.PauseCurrentCall();
             else
                 LinphoneManager.Instance.ResumeCurrentCall();
         }
 
-        private void buttons_CameraClick(object sender)
-        {
+        private void buttons_CameraClick(object sender) {
             LinphoneManager.Instance.ToggleCameras();
-            if(LinphoneManager.Instance.Core.VideoDevice.Contains("Front"))
-            {
+            if (LinphoneManager.Instance.Core.VideoDevice.Contains("Front")) {
                 PreviewRender.ScaleX = -1;
-            } else
-            {
+            } else {
                 PreviewRender.ScaleX = 1;
             }
 
         }
 
-        private void buttons_StatsClick(object sender, bool areStatsVisible)
-        {
+        private void buttons_StatsClick(object sender, bool areStatsVisible) {
             statsVisible = areStatsVisible;
         }
 
-        private void buttons_HangUpClick(object sender)
-        {
+        private void buttons_HangUpClick(object sender) {
             LinphoneManager.Instance.EndCurrentCall();
         }
         #endregion
 
-        protected override void OnNavigatedTo(NavigationEventArgs nee)
-        {
+        protected override void OnNavigatedTo(NavigationEventArgs nee) {
             base.OnNavigatedTo(nee);
 
             LinphoneManager.Instance.CallStateChangedEvent += CallStateChanged;
 
-            if ((nee.Parameter as String).Contains("sip"))
-            {
+            if ((nee.Parameter as String).Contains("sip")) {
                 String calledNumber = nee.Parameter as String;
                 Address address = LinphoneManager.Instance.Core.InterpretURL(calledNumber);
                 calledNumber = String.Format("{0}@{1}", address.UserName, address.Domain);
                 Contact.Text = calledNumber;
 
-                if (calledNumber != null && calledNumber.Length > 0)
-                {
+                if (calledNumber != null && calledNumber.Length > 0) {
                     // ContactManager cm = ContactManager.Instance;
                     // cm.ContactFound += cm_ContactFound;
                     // cm.FindContact(calledNumber);
@@ -176,16 +152,13 @@ namespace Linphone.Views
             }
         }
 
-        protected override void OnNavigatedFrom(NavigationEventArgs nee)
-        {
-            StopVideoStream();           
-            if (oneSecondTimer != null)
-            {
+        protected override void OnNavigatedFrom(NavigationEventArgs nee) {
+            StopVideoStream();
+            if (oneSecondTimer != null) {
                 oneSecondTimer.Stop();
             }
 
-            if (LinphoneManager.Instance.isMobileVersion())
-            {
+            if (LinphoneManager.Instance.isMobileVersion()) {
                 ToggleFullScreenMode(false);
             }
             /*if (fadeTimer != null)
@@ -199,12 +172,11 @@ namespace Linphone.Views
             LinphoneManager.Instance.CallStateChangedEvent -= CallStateChanged;
         }
 
-        public void CallStateChanged(Call call, CallState state)
-        {
-            if (call == null) return;
+        public void CallStateChanged(Call call, CallState state) {
+            if (call == null)
+                return;
 
-            if (state == CallState.Connected && oneSecondTimer == null)
-            {
+            if (state == CallState.Connected && oneSecondTimer == null) {
                 oneSecondTimer = new DispatcherTimer();
                 oneSecondTimer.Interval = TimeSpan.FromSeconds(1);
                 oneSecondTimer.Tick += timerTick;
@@ -213,91 +185,65 @@ namespace Linphone.Views
                 statusIcon.Visibility = Visibility.Visible;
                 buttons.enabledVideo(false);
             }
-            if (state == CallState.StreamsRunning)
-            {
+            if (state == CallState.StreamsRunning) {
                 statusIcon.Glyph = "\uE768";
-                if (!call.MediaInProgress)
-                {
+                if (!call.MediaInProgress) {
                     buttons.enabledPause(true);
-                    if (LinphoneManager.Instance.IsVideoAvailable)
-                    {
+                    if (LinphoneManager.Instance.IsVideoAvailable) {
                         buttons.enabledVideo(true);
                     }
                 }
-                if (call.CurrentParams.IsVideoEnabled)
-                {
+                if (call.CurrentParams.IsVideoEnabled) {
                     displayVideo(true);
                     buttons.checkedVideo(true);
-                }
-                else
-                {
+                } else {
                     displayVideo(false);
                 }
-            }
-            else if (state == CallState.PausedByRemote)
-            {
-                if (call.CurrentParams.IsVideoEnabled)
-                {
+            } else if (state == CallState.PausedByRemote) {
+                if (call.CurrentParams.IsVideoEnabled) {
                     displayVideo(false);
                 }
                 buttons.enabledVideo(false);
                 statusIcon.Glyph = "\uE769";
-            }
-            else if (state == CallState.Paused)
-            {
-                if (call.CurrentParams.IsVideoEnabled)
-                {
+            } else if (state == CallState.Paused) {
+                if (call.CurrentParams.IsVideoEnabled) {
                     displayVideo(false);
                 }
                 buttons.enabledVideo(false);
                 statusIcon.Glyph = "\uE769";
-            }
-            else if (state == CallState.Error || state == CallState.End)
-            {
-                if(oneSecondTimer != null)
-                {
+            } else if (state == CallState.Error || state == CallState.End) {
+                if (oneSecondTimer != null) {
                     oneSecondTimer.Stop();
                 }
-            }
-            else if (state == CallState.UpdatedByRemote)
-            {
-                if (!LinphoneManager.Instance.IsVideoAvailable)
-                {
+            } else if (state == CallState.UpdatedByRemote) {
+                if (!LinphoneManager.Instance.IsVideoAvailable) {
                     CallParams parameters = call.CurrentParams.Copy();
                     LinphoneManager.Instance.Core.AcceptCallUpdate(call, parameters);
-                } else
-                {
+                } else {
                     bool remoteVideo = call.RemoteParams.IsVideoEnabled;
                     bool localVideo = call.CurrentParams.IsVideoEnabled;
                     bool autoAcceptCameraPolicy = LinphoneManager.Instance.Core.VideoPolicy.AutomaticallyAccept;
-                    if (remoteVideo && !localVideo && !autoAcceptCameraPolicy)
-                    {
+                    if (remoteVideo && !localVideo && !autoAcceptCameraPolicy) {
                         AskVideoPopup(call);
-                    } 
+                    }
                 }
             }
             refreshUI();
         }
 
-        private void refreshUI()
-        {
-            if (!LinphoneManager.Instance.IsVideoAvailable)
-            {
+        private void refreshUI() {
+            if (!LinphoneManager.Instance.IsVideoAvailable) {
                 buttons.enabledVideo(false);
-            }
-            else {
-                if (LinphoneManager.Instance.Core.CurrentCall != null && LinphoneManager.Instance.Core.CurrentCall.CurrentParams.IsVideoEnabled)
-                {
+            } else {
+                if (LinphoneManager.Instance.Core.CurrentCall != null && LinphoneManager.Instance.Core.CurrentCall.CurrentParams.IsVideoEnabled) {
                     buttons.checkedVideo(true);
-                }
-                else {
+                } else {
                     buttons.checkedVideo(false);
                 }
             }
         }
 
-        public async void AskVideoPopup(Call call)
-        {
+        public async void AskVideoPopup(Call call) {
             MessageDialog dialog = new MessageDialog(ResourceLoader.GetForCurrentView().GetString("VideoActivationPopupContent"), ResourceLoader.GetForCurrentView().GetString("VideoActivationPopupCaption"));
             dialog.Commands.Clear();
             dialog.Commands.Add(new UICommand { Label = ResourceLoader.GetForCurrentView().GetString("Accept"), Id = 0 });
@@ -305,22 +251,17 @@ namespace Linphone.Views
 
             var res = await dialog.ShowAsync();
             CallParams parameters = LinphoneManager.Instance.Core.CreateCallParams(call);
-            if ((int)res.Id == 0)
-            {
+            if ((int)res.Id == 0) {
                 parameters.IsVideoEnabled = true;
             }
             LinphoneManager.Instance.Core.AcceptCallUpdate(call, parameters);
         }
 
         #region Video
-        private void AdaptVideoSize()
-        {
-            if (ActualWidth > 640)
-            {
+        private void AdaptVideoSize() {
+            if (ActualWidth > 640) {
                 VideoGrid.Width = 640;
-            }
-            else
-            {
+            } else {
                 VideoGrid.Width = ActualWidth;
             }
             VideoGrid.Height = VideoGrid.Width * 3 / 4;
@@ -328,32 +269,22 @@ namespace Linphone.Views
             //PreviewSwapChainPanel.Height = VideoGrid.Height / 4;
         }
 
-        private void Video_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            if (buttons.Visibility == Visibility.Visible)
-            {
+        private void Video_Tapped(object sender, TappedRoutedEventArgs e) {
+            if (buttons.Visibility == Visibility.Visible) {
                 buttons.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
+            } else {
                 buttons.Visibility = Visibility.Visible;
             }
         }
 
-        private void displayVideo(bool isVisible)
-        {
-            if (LinphoneManager.Instance.isMobileVersion())
-            {
+        private void displayVideo(bool isVisible) {
+            if (LinphoneManager.Instance.isMobileVersion()) {
                 ToggleFullScreenMode(isVisible);
             }
-            if (isVisible)
-            {
-                if (LinphoneManager.Instance.Core.VideoDevice.Contains("Front"))
-                {
+            if (isVisible) {
+                if (LinphoneManager.Instance.Core.VideoDevice.Contains("Front")) {
                     PreviewRender.ScaleX = -1;
-                }
-                else
-                {
+                } else {
                     PreviewRender.ScaleX = 1;
                 }
 
@@ -361,9 +292,7 @@ namespace Linphone.Views
                 VideoGrid.Visibility = Visibility.Visible;
                 ContactHeader.Visibility = Visibility.Collapsed;
 
-            }
-            else
-            {              
+            } else {
                 buttons.Visibility = Visibility.Visible;
                 VideoGrid.Visibility = Visibility.Collapsed;
                 ContactHeader.Visibility = Visibility.Visible;
@@ -373,10 +302,8 @@ namespace Linphone.Views
         private MSWinRTVideo.SwapChainPanelSource _videoSource;
         private MSWinRTVideo.SwapChainPanelSource _previewSource;
 
-        private void StartVideoStream()
-        {
-            try
-            {
+        private void StartVideoStream() {
+            try {
                 _videoSource = new MSWinRTVideo.SwapChainPanelSource();
                 _videoSource.Start(VideoSwapChainPanel);
                 _previewSource = new MSWinRTVideo.SwapChainPanelSource();
@@ -384,30 +311,22 @@ namespace Linphone.Views
 
                 LinphoneManager.Instance.Core.NativeVideoWindowId = VideoSwapChainPanel.Name;
                 LinphoneManager.Instance.Core.NativePreviewWindowId = PreviewSwapChainPanel.Name;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Debug.WriteLine(String.Format("StartVideoStream: Exception {0}", e.Message));
             }
         }
 
-        private void StopVideoStream()
-        {
-            try
-            {
-                if (_videoSource != null)
-                {
+        private void StopVideoStream() {
+            try {
+                if (_videoSource != null) {
                     _videoSource.Stop();
                     _videoSource = null;
                 }
-                if (_previewSource != null)
-                {
+                if (_previewSource != null) {
                     _previewSource.Stop();
                     _previewSource = null;
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Debug.WriteLine(String.Format("StartVideoStream: Exception {0}", e.Message));
             }
 
@@ -415,23 +334,18 @@ namespace Linphone.Views
         #endregion
 
         #region Orientation
-        private async void OrientationSensor_OrientationChanged(SimpleOrientationSensor sender, SimpleOrientationSensorOrientationChangedEventArgs args)
-        {
+        private async void OrientationSensor_OrientationChanged(SimpleOrientationSensor sender, SimpleOrientationSensorOrientationChangedEventArgs args) {
             // Keep previous orientation when the user puts its device faceup or facedown
-            if ((args.Orientation != SimpleOrientation.Faceup) && (args.Orientation != SimpleOrientation.Facedown))
-            {
+            if ((args.Orientation != SimpleOrientation.Faceup) && (args.Orientation != SimpleOrientation.Facedown)) {
                 deviceOrientation = args.Orientation;
                 await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => SetVideoOrientation());
             }
         }
 
-        private void SetVideoOrientation()
-        {
+        private void SetVideoOrientation() {
             SimpleOrientation orientation = deviceOrientation;
-            if (displayInformation.NativeOrientation == DisplayOrientations.Portrait)
-            {
-                switch (orientation)
-                {
+            if (displayInformation.NativeOrientation == DisplayOrientations.Portrait) {
+                switch (orientation) {
                     case SimpleOrientation.Rotated90DegreesCounterclockwise:
                         orientation = SimpleOrientation.NotRotated;
                         break;
@@ -448,8 +362,7 @@ namespace Linphone.Views
                 }
             }
             int degrees = 0;
-            switch (orientation)
-            {
+            switch (orientation) {
                 case SimpleOrientation.Rotated90DegreesCounterclockwise:
                     degrees = 90;
                     break;
@@ -466,8 +379,7 @@ namespace Linphone.Views
             }
 
             int currentDegrees = LinphoneManager.Instance.Core.DeviceRotation;
-            if (currentDegrees != degrees)
-            {
+            if (currentDegrees != degrees) {
                 LinphoneManager.Instance.Core.DeviceRotation = degrees;
             }
         }
@@ -489,14 +401,14 @@ namespace Linphone.Views
             }
         }*/
 
-        private void timerTick(Object sender, Object e)
-        {
+        private void timerTick(Object sender, Object e) {
             Call call = ((InCallModel)this.DataContext).GetCurrentCall();
-            if (call == null) return;
+            if (call == null)
+                return;
 
             //startTime = (DateTimeOffset)call.CallStartTimeFromContext;
 
-           
+
             TimeSpan callDuration = new TimeSpan(call.Duration * TimeSpan.TicksPerSecond);
             var hh = callDuration.Hours;
             var ss = callDuration.Seconds;
@@ -514,82 +426,75 @@ namespace Linphone.Views
             ((InCallModel)this.DataContext).MediaEncryption = param.MediaEncryption.ToString();
 
             CallStats audioStats = null;
-            try
-            {
+            try {
                 audioStats = call.AudioStats;
-            }
-            catch { }
+            } catch { }
 
-            if (audioStats != null)
-            {
+            if (audioStats != null) {
                 audioDownloadBandwidth = String.Format("{0:0.00}", audioStats.DownloadBandwidth);
                 audioUploadBandwidth = String.Format("{0:0.00}", audioStats.UploadBandwidth);
-                ((InCallModel)this.DataContext).ICE = audioStats.IceState.ToString(); 
+                ((InCallModel)this.DataContext).ICE = audioStats.IceState.ToString();
             }
 
             PayloadType audiopt = param.UsedAudioCodec;
-            if (audiopt != null) 
-            {
+            if (audiopt != null) {
                 audioPayloadType = audiopt.MimeType + "/" + audiopt.ClockRate;
             }
 
-            if (param.IsVideoEnabled)
-            {
+            if (param.IsVideoEnabled) {
                 CallStats videoStats = call.VideoStats;
-                if (videoStats != null)
-                {
+                if (videoStats != null) {
                     videoDownloadBandwidth = String.Format("{0:0.00}", videoStats.DownloadBandwidth);
                     videoUploadBandwidth = String.Format("{0:0.00}", videoStats.UploadBandwidth);
                 }
 
                 PayloadType videopt = param.UsedVideoCodec;
-                if (videopt != null)
-                {
+                if (videopt != null) {
                     videoPayloadType = videopt.MimeType;
                 }
                 VideoSize receivedVideoSize = param.ReceivedVideoSize;
                 String NewReceivedVideoSize = String.Format("{0}x{1}", receivedVideoSize.Width, receivedVideoSize.Height);
                 String OldReceivedVideoSize = ((InCallModel)this.DataContext).ReceivedVideoSize;
-                if (OldReceivedVideoSize != NewReceivedVideoSize)
-                {
+                if (OldReceivedVideoSize != NewReceivedVideoSize) {
                     ((InCallModel)this.DataContext).ReceivedVideoSize = String.Format("{0}x{1}", receivedVideoSize.Width, receivedVideoSize.Height);
                     ((InCallModel)this.DataContext).IsVideoActive = false;
-                    if (NewReceivedVideoSize != "0x0")
-                    {
+                    if (NewReceivedVideoSize != "0x0") {
                         ((InCallModel)this.DataContext).IsVideoActive = true;
                     }
                 }
                 VideoSize sentVideoSize = param.SentVideoSize;
                 ((InCallModel)this.DataContext).SentVideoSize = String.Format("{0}x{1}", sentVideoSize.Width, sentVideoSize.Height);
                 ((InCallModel)this.DataContext).VideoStatsVisibility = Visibility.Visible;
-            }
-            else
-            {
+            } else {
                 ((InCallModel)this.DataContext).VideoStatsVisibility = Visibility.Collapsed;
             }
 
             string downloadBandwidth = audioDownloadBandwidth;
-            if ((downloadBandwidth != "") && (videoDownloadBandwidth != "")) downloadBandwidth += " - ";
-            if (videoDownloadBandwidth != "") downloadBandwidth += videoDownloadBandwidth;
+            if ((downloadBandwidth != "") && (videoDownloadBandwidth != ""))
+                downloadBandwidth += " - ";
+            if (videoDownloadBandwidth != "")
+                downloadBandwidth += videoDownloadBandwidth;
             ((InCallModel)this.DataContext).DownBandwidth = String.Format("{0} kb/s", downloadBandwidth);
             string uploadBandwidth = audioUploadBandwidth;
-            if ((uploadBandwidth != "") && (videoUploadBandwidth != "")) uploadBandwidth += " - ";
-            if (videoUploadBandwidth != "") uploadBandwidth += videoUploadBandwidth;
+            if ((uploadBandwidth != "") && (videoUploadBandwidth != ""))
+                uploadBandwidth += " - ";
+            if (videoUploadBandwidth != "")
+                uploadBandwidth += videoUploadBandwidth;
             ((InCallModel)this.DataContext).UpBandwidth = String.Format("{0} kb/s", uploadBandwidth);
             string payloadType = audioPayloadType;
-            if ((payloadType != "") && (videoPayloadType != "")) payloadType += " - ";
-            if (videoPayloadType != "") payloadType += videoPayloadType;
+            if ((payloadType != "") && (videoPayloadType != ""))
+                payloadType += " - ";
+            if (videoPayloadType != "")
+                payloadType += videoPayloadType;
             ((InCallModel)this.DataContext).PayloadType = payloadType;
         }
 
-        private void remoteVideo_MediaOpened_1(object sender, RoutedEventArgs e)
-        {
+        private void remoteVideo_MediaOpened_1(object sender, RoutedEventArgs e) {
             Debug.WriteLine("[InCall] RemoteVideo Opened: " + ((MediaElement)sender).Source.AbsoluteUri);
             ((InCallModel)this.DataContext).RemoteVideoOpened();
         }
 
-        private void remoteVideo_MediaFailed_1(object sender, ExceptionRoutedEventArgs e)
-        {
+        private void remoteVideo_MediaFailed_1(object sender, ExceptionRoutedEventArgs e) {
             Debug.WriteLine("[InCall] RemoteVideo Failed: " + e.ErrorMessage);
         }
 
@@ -601,64 +506,51 @@ namespace Linphone.Views
             e.Cancel = true;
         }*/
 
-       private void ButtonsFadeOutAnimation_Completed(object sender, object e)
-        {
+        private void ButtonsFadeOutAnimation_Completed(object sender, object e) {
             /*((InCallModel)this.DataContext).HideButtonsAndPanel();
             Status.Visibility = Visibility.Collapsed;
             Contact.Visibility = Visibility.Collapsed;
             Number.Visibility = Visibility.Collapsed;*/
         }
 
-        private void HideButtons(Object state)
-        {
+        private void HideButtons(Object state) {
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
-            Status.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
+            Status.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
                 //ButtonsFadeOutAnimation.Begin();
             });
 #pragma warning restore CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
         }
 
-        private void StartFadeTimer()
-        {
-            if (fadeTimer != null)
-            {
+        private void StartFadeTimer() {
+            if (fadeTimer != null) {
                 fadeTimer.Dispose();
             }
-            if (!statsVisible)
-            {
+            if (!statsVisible) {
                 fadeTimer = new Timer(new TimerCallback(HideButtons), null, 4000, Timeout.Infinite);
             }
         }
 
-        private void StopFadeTimer()
-        {
-            if (fadeTimer != null)
-            {
+        private void StopFadeTimer() {
+            if (fadeTimer != null) {
                 fadeTimer.Dispose();
                 fadeTimer = null;
             }
         }
 
-        private void LayoutRoot_Tap(object sender, RoutedEventArgs e)
-        {
+        private void LayoutRoot_Tap(object sender, RoutedEventArgs e) {
             ((InCallModel)this.DataContext).ShowButtonsAndPanel();
             Status.Visibility = Visibility.Visible;
             Contact.Visibility = Visibility.Visible;
             //Number.Visibility = Visibility.Visible;
-            if (((InCallModel)this.DataContext).VideoShown)
-            {
+            if (((InCallModel)this.DataContext).VideoShown) {
                 //ButtonsFadeInVideoAnimation.Begin();
                 //StartFadeTimer();
-            }
-            else
-            {
+            } else {
                 //ButtonsFadeInAudioAnimation.Begin();
             }
         }
 
-        private void DoubleAnimation_Completed(object sender, object e)
-        {
+        private void DoubleAnimation_Completed(object sender, object e) {
 
         }
 
@@ -673,21 +565,14 @@ namespace Linphone.Views
              model.OrientationChanged(sender, e);
          }*/
 
-        private void ToggleFullScreenMode(bool fullScreen)
-        {
+        private void ToggleFullScreenMode(bool fullScreen) {
             var view = ApplicationView.GetForCurrentView();
-            if (!fullScreen)
-            {
+            if (!fullScreen) {
                 view.ExitFullScreenMode();
-            }
-            else
-            {
-                if (view.TryEnterFullScreenMode())
-                {
+            } else {
+                if (view.TryEnterFullScreenMode()) {
                     Debug.WriteLine("Entering full screen mode");
-                }
-                else
-                {
+                } else {
                     Debug.WriteLine("Failed to enter full screen mode");
                 }
             }

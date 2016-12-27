@@ -18,11 +18,9 @@ using Linphone.Model;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml;
 
-namespace Linphone.Controls
-{
+namespace Linphone.Controls {
 
-    public partial class CallControlsP : UserControl
-    {
+    public partial class CallControlsP : UserControl {
         public delegate void HangUpClickEventHandler(object sender);
         public event HangUpClickEventHandler HangUpClick;
 
@@ -50,96 +48,80 @@ namespace Linphone.Controls
         public delegate void BluetoothClickEventHandler(object sender, bool isBluetoothOn);
         public event DialpadClickEventHandler BluetoothClick;
 
-        public CallControlsP()
-        {
+        public CallControlsP() {
             InitializeComponent();
             microphone.IsChecked = LinphoneManager.Instance.Core.IsMicEnabled;
             camera.IsEnabled = LinphoneManager.Instance.IsVideoAvailable && LinphoneManager.Instance.NumberOfCameras > 1;
         }
 
         #region Button enabled/disabled 
-        public void enabledDialpad(bool isDialpadShown)
-        {
+        public void enabledDialpad(bool isDialpadShown) {
             dialpad.Visibility = isDialpadShown ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        public void enabledVideo(bool isVideoEnabled)
-        {
+        public void enabledVideo(bool isVideoEnabled) {
             video.IsEnabled = isVideoEnabled;
         }
 
-        public void checkedVideo(bool isVideoChecked)
-        {
+        public void checkedVideo(bool isVideoChecked) {
             video.IsChecked = isVideoChecked;
         }
 
-        public void enabledPause(bool isPauseEnabled)
-        {
+        public void enabledPause(bool isPauseEnabled) {
             pause.IsEnabled = isPauseEnabled;
         }
 
         #endregion
 
         #region Click Event
-        private void hangUp_Click(object sender, RoutedEventArgs e)
-        {
+        private void hangUp_Click(object sender, RoutedEventArgs e) {
             HangUpClick(this);
         }
 
-        private void bluetooth_Click_1(object sender, RoutedEventArgs e)
-        {
+        private void bluetooth_Click_1(object sender, RoutedEventArgs e) {
             bool isBluetoothToggled = (bool)bluetooth.IsChecked;
             BluetoothClick(this, isBluetoothToggled);
         }
 
-        private void speaker_Click_1(object sender, RoutedEventArgs e)
-        {
+        private void speaker_Click_1(object sender, RoutedEventArgs e) {
             bool isSpeakerToggled = (bool)speaker.IsChecked;
             SpeakerClick(this, isSpeakerToggled);
         }
 
-        private void microphone_Click_1(object sender, RoutedEventArgs e)
-        {
+        private void microphone_Click_1(object sender, RoutedEventArgs e) {
             bool isMicToggled = (bool)microphone.IsChecked;
             MuteClick(this, isMicToggled);
         }
 
-        private void stats_Click_1(object sender, RoutedEventArgs e)
-        {
+        private void stats_Click_1(object sender, RoutedEventArgs e) {
             bool areStatsVisible = (bool)stats.IsChecked;
             stats.IsChecked = areStatsVisible;
             statsPanel.Visibility = areStatsVisible ? Visibility.Visible : Visibility.Collapsed;
             StatsClick(this, areStatsVisible);
         }
 
-        private void video_Click_1(object sender, RoutedEventArgs e)
-        {
+        private void video_Click_1(object sender, RoutedEventArgs e) {
             bool isVideoToggled = (bool)video.IsChecked;
-            if (!isVideoToggled)
-            {
+            if (!isVideoToggled) {
                 video.IsEnabled = false;
-            } else
-            {
+            } else {
                 video.IsChecked = isVideoToggled;
             }
             VideoClick(this, isVideoToggled);
         }
 
-        private void camera_Click_1(object sender, RoutedEventArgs e)
-        {
+        private void camera_Click_1(object sender, RoutedEventArgs e) {
             CameraClick(this);
         }
 
-        private void dialpad_Click_1(object sender, RoutedEventArgs e)
-        {
+        private void dialpad_Click_1(object sender, RoutedEventArgs e) {
             bool isDialpadChecked = (bool)dialpad.IsChecked;
             dialpad.IsChecked = isDialpadChecked;
             numpad.Visibility = isDialpadChecked ? Visibility.Visible : Visibility.Collapsed;
             DialpadClick(this, isDialpadChecked);
         }
 
-        private void pause_Click_1(object sender, RoutedEventArgs e)
-        {
+        private void pause_Click_1(object sender, RoutedEventArgs e) {
             bool isPauseToggled = (bool)pause.IsChecked;
             PauseClick(this, isPauseToggled);
         }

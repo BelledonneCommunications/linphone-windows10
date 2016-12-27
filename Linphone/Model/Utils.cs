@@ -26,42 +26,31 @@ using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
-namespace Linphone.Model
-{
-    public class Utils
-    {
+namespace Linphone.Model {
+    public class Utils {
         private const int LOCAL_IMAGES_QUALITY = 100;
         private const int THUMBNAIL_WIDTH = 420;
         private const string LOCAL_IMAGES_PATH = "ChatImages";
 
-        public static Paragraph FormatText(String text)
-        {
+        public static Paragraph FormatText(String text) {
             Paragraph paragraph = new Paragraph();
-            if (text.Length > 0)
-            {
+            if (text.Length > 0) {
                 Run run = new Run();
-                if (text.Contains("http://") || text.Contains("https://"))
-                {
+                if (text.Contains("http://") || text.Contains("https://")) {
                     string[] split = text.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-                    foreach (string word in split)
-                    {
+                    foreach (string word in split) {
                         run.Text = word;
-                        if (word.StartsWith("http://") || word.StartsWith("https://"))
-                        {
+                        if (word.StartsWith("http://") || word.StartsWith("https://")) {
                             Hyperlink link = new Hyperlink();
                             link.NavigateUri = new Uri(word);
                             link.Inlines.Add(run);
                             link.Foreground = (Brush)Application.Current.Resources["ApplicationPageBackgroundThemeBrush"];
                             paragraph.Inlines.Add(link);
-                        }
-                        else
-                        {
+                        } else {
                             paragraph.Inlines.Add(run);
                         }
                     }
-                }
-                else
-                {
+                } else {
                     run.Text = text;
                     paragraph.Inlines.Add(run);
                 }
@@ -69,8 +58,7 @@ namespace Linphone.Model
             return paragraph;
         }
 
-        public static string FormatDate(long time)
-        {
+        public static string FormatDate(long time) {
             DateTime unixStart = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
             long unixTimeStampInTicks = (long)(time * TimeSpan.TicksPerSecond);
             DateTime date = new DateTime(unixStart.Ticks + unixTimeStampInTicks).ToLocalTime();
@@ -88,22 +76,18 @@ namespace Linphone.Model
         /// </summary>
         /// <param name="fileName">File's name in the isolated storage</param>
         /// <returns>true if the operation succeeds</returns>
-        public static async System.Threading.Tasks.Task<bool> SavePictureInMediaLibrary(string fileName)
-        {
+        public static async System.Threading.Tasks.Task<bool> SavePictureInMediaLibrary(string fileName) {
             FolderPicker picker = new FolderPicker();
-            try
-            {
+            try {
                 picker.FileTypeFilter.Add("*");
                 StorageFolder folder = await picker.PickSingleFolderAsync();
-                if(folder != null)
-                {
+                if (folder != null) {
                     var tempFolder = ApplicationData.Current.LocalFolder;
                     StorageFile file = await tempFolder.GetFileAsync(fileName);
                     await file.CopyAsync(folder);
-                } 
+                }
                 return true;
-            }
-            catch { }
+            } catch { }
             return false;
         }
 
@@ -112,45 +96,34 @@ namespace Linphone.Model
         /// </summary>
         /// <param name="fileName">Name of the file to open</param>
         /// <returns>a BitmapImage or null</returns>
-        public static BitmapImage ReadImageFromIsolatedStorage(string fileName)
-        {
+        public static BitmapImage ReadImageFromIsolatedStorage(string fileName) {
             byte[] data;
-            try
-            {
-                using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
-                {
-                    using (IsolatedStorageFileStream file = store.OpenFile(fileName, FileMode.Open, FileAccess.Read))
-                    {
+            try {
+                using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication()) {
+                    using (IsolatedStorageFileStream file = store.OpenFile(fileName, FileMode.Open, FileAccess.Read)) {
                         data = new byte[file.Length];
                         file.Read(data, 0, data.Length);
 
                     }
                 }
 
-              //  MemoryStream ms = new MemoryStream(data);
+                //  MemoryStream ms = new MemoryStream(data);
                 BitmapImage image = new BitmapImage();
                 //image.SetSource(ms);
                 //ms.Close();
                 return image;
-            }
-            catch { }
+            } catch { }
 
             return null;
         }
 
-        public static string GetUsernameFromAddress(Address addr)
-        {
-            if (addr.DisplayName != null && addr.DisplayName.Length > 0)
-            { 
+        public static string GetUsernameFromAddress(Address addr) {
+            if (addr.DisplayName != null && addr.DisplayName.Length > 0) {
                 return addr.DisplayName;
-            }
-            else
-            {
-                if(addr.UserName != null && addr.UserName.Length > 0)
-                {
+            } else {
+                if (addr.UserName != null && addr.UserName.Length > 0) {
                     return addr.UserName;
-                } else
-                {
+                } else {
                     return addr.AsStringUriOnly();
                 }
             }
@@ -162,121 +135,96 @@ namespace Linphone.Model
         /// <param name="image">The bitmap image to save</param>
         /// <param name="fileName">The file's name to use</param>
         /// <returns>true if the operation succeeds</returns>
-        public static string SaveImageInIsolatedFolder(BitmapImage image, string fileName)
-        {
-            try
-            {
-                using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
-                {
-                    if (!store.DirectoryExists(LOCAL_IMAGES_PATH))
-                    {
+        public static string SaveImageInIsolatedFolder(BitmapImage image, string fileName) {
+            try {
+                using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication()) {
+                    if (!store.DirectoryExists(LOCAL_IMAGES_PATH)) {
                         store.CreateDirectory(LOCAL_IMAGES_PATH);
                     }
                     string filePath = Path.Combine(LOCAL_IMAGES_PATH, fileName);
-                    if (store.FileExists(filePath))
-                    {
+                    if (store.FileExists(filePath)) {
                         store.DeleteFile(filePath);
                     }
 
-                    using (IsolatedStorageFileStream file = store.CreateFile(filePath))
-                    {
-                      /*  WriteableBitmap bitmap = new WriteableBitmap(image.PixelWidth, image.PixelHeight);
-                          bitmap.Save(bitmap, file, bitmap.PixelWidth, bitmap.PixelHeight, 0, LOCAL_IMAGES_QUALITY);
-                          file.Flush();
-                          string hash = GetRandomHash();
-                          file.Close();
-                          bitmap = null;
-                          string newFilePath = Path.Combine(LOCAL_IMAGES_PATH, hash + Path.GetExtension(filePath));
-                          store.MoveFile(filePath, newFilePath);
-                          IsolatedStorageFileStream newFile = store.OpenFile(newFilePath, FileMode.Open);
-                          fileName = newFile.Name;
-                          newFile.Close();*/
+                    using (IsolatedStorageFileStream file = store.CreateFile(filePath)) {
+                        /*  WriteableBitmap bitmap = new WriteableBitmap(image.PixelWidth, image.PixelHeight);
+                            bitmap.Save(bitmap, file, bitmap.PixelWidth, bitmap.PixelHeight, 0, LOCAL_IMAGES_QUALITY);
+                            file.Flush();
+                            string hash = GetRandomHash();
+                            file.Close();
+                            bitmap = null;
+                            string newFilePath = Path.Combine(LOCAL_IMAGES_PATH, hash + Path.GetExtension(filePath));
+                            store.MoveFile(filePath, newFilePath);
+                            IsolatedStorageFileStream newFile = store.OpenFile(newFilePath, FileMode.Open);
+                            fileName = newFile.Name;
+                            newFile.Close();*/
                         // return fileName;
                         //return "";
                     }
                 }
-            }
-            catch { }
+            } catch { }
             return null;
         }
 
-        public static async System.Threading.Tasks.Task<string> SaveImageInLocalFolder(StorageFile image)
-        {
-            try
-            {
+        public static async System.Threading.Tasks.Task<string> SaveImageInLocalFolder(StorageFile image) {
+            try {
                 var tempFolder = ApplicationData.Current.LocalFolder;
                 StorageFile tempFile = await image.CopyAsync(tempFolder, GetFileName());
                 return tempFile.Name;
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 Debug.WriteLine(e);
                 return null;
             }
         }
 
-        public static async System.Threading.Tasks.Task<string> GetImageTempFileName()
-        {
-            var tempFolder = ApplicationData.Current.LocalFolder;         
+        public static async System.Threading.Tasks.Task<string> GetImageTempFileName() {
+            var tempFolder = ApplicationData.Current.LocalFolder;
             String fileName = GetFileName() + ".jpg";
             var tempFile = await tempFolder.CreateFileAsync(fileName, CreationCollisionOption.GenerateUniqueName);
             return tempFile.Name;
         }
 
-        public static async System.Threading.Tasks.Task<BitmapImage> ReadImageFromTempStorage(String name)
-        {
+        public static async System.Threading.Tasks.Task<BitmapImage> ReadImageFromTempStorage(String name) {
             var tempFolder = ApplicationData.Current.LocalFolder;
-            try
-            {
+            try {
                 var tempFile = await tempFolder.GetFileAsync(name);
                 Windows.Storage.Streams.IRandomAccessStream fileStream = await tempFile.OpenAsync(FileAccessMode.Read);
-                try
-                {
+                try {
                     BitmapImage bitmapImage = new BitmapImage();
                     await bitmapImage.SetSourceAsync(fileStream);
                     return bitmapImage;
+                } catch (Exception e) {
                 }
-                catch (Exception e)
-                {
-                }                  
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
             }
             return null;
         }
 
-        public static string GetImageRandomFileName()
-        {
-            try
-            {
-                using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
-                {
+        public static string GetImageRandomFileName() {
+            try {
+                using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication()) {
                     string hash = GetFileName();
                     string filePath = Path.Combine(LOCAL_IMAGES_PATH, hash + ".jpg");
-                    if (!store.DirectoryExists(LOCAL_IMAGES_PATH))
-                    {
+                    if (!store.DirectoryExists(LOCAL_IMAGES_PATH)) {
                         store.CreateDirectory(LOCAL_IMAGES_PATH);
                     }
                     IsolatedStorageFileStream newFile = store.OpenFile(filePath, FileMode.OpenOrCreate);
-                    string fileName = newFile.ToString();     
+                    string fileName = newFile.ToString();
                     return fileName;
                 }
-            }
-            catch { }
+            } catch { }
             return null;
         }
 
-        private static string GetFileName()
-        {
+        private static string GetFileName() {
             long ticks = DateTime.UtcNow.Ticks - DateTime.Parse("01/01/1970 00:00:00").Ticks;
             ticks /= 10000000; //Convert windows ticks to seconds
             String timestamp = ticks.ToString();
             return timestamp;
         }
 
-        public static string ReplacePlusInUri(string uri)
-        {
-            if (uri != null && uri.Contains("+"))
-            {
+        public static string ReplacePlusInUri(string uri) {
+            if (uri != null && uri.Contains("+")) {
                 uri = uri.Replace("+", "%2B");
             }
             return uri;

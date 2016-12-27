@@ -23,19 +23,16 @@ using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
 using BelledonneCommunications.Linphone.Native;
 
-namespace Linphone.Views
-{
+namespace Linphone.Views {
 
-    public partial class AdvancedSettings : Page
-    {
+    public partial class AdvancedSettings : Page {
         private CallSettingsManager _callSettings = new CallSettingsManager();
         private NetworkSettingsManager _networkSettings = new NetworkSettingsManager();
         private ChatSettingsManager _chatSettings = new ChatSettingsManager();
         private ApplicationSettingsManager _settings = new ApplicationSettingsManager();
         private bool saveSettingsOnLeave = true;
 
-        public AdvancedSettings()
-        {
+        public AdvancedSettings() {
             this.InitializeComponent();
 
             _callSettings.Load();
@@ -43,8 +40,8 @@ namespace Linphone.Views
             _chatSettings.Load();
             _settings.Load();
 
-            rfc2833.IsOn = (bool) _callSettings.SendDTFMsRFC2833;
-            sipInfo.IsOn = (bool) _callSettings.SendDTFMsSIPInfo;
+            rfc2833.IsOn = (bool)_callSettings.SendDTFMsRFC2833;
+            sipInfo.IsOn = (bool)_callSettings.SendDTFMsSIPInfo;
             //vibrator.IsOn = (bool) _chatSettings.VibrateOnIncomingMessage;
             //resizeDown.IsOn = (bool) _chatSettings.ScaleDownSentPictures;
 
@@ -86,8 +83,7 @@ namespace Linphone.Views
             ResetLogs.IsEnabled = _settings.DebugEnabled;
         }
 
-        private void Save()
-        {
+        private void Save() {
             _callSettings.SendDTFMsRFC2833 = rfc2833.IsOn;
             _callSettings.SendDTFMsSIPInfo = sipInfo.IsOn;
             _callSettings.Save();
@@ -96,12 +92,11 @@ namespace Linphone.Views
             _networkSettings.FWPolicy = firewallPolicy.SelectedItem.ToString();
             _networkSettings.StunServer = Stun.Text;
 
-            if(TunnelPanel.Visibility == Visibility.Visible)
-            {
+            if (TunnelPanel.Visibility == Visibility.Visible) {
                 _networkSettings.TunnelMode = tunnelMode.SelectedItem.ToString();
                 _networkSettings.TunnelServer = tunnelServer.Text;
                 _networkSettings.TunnelPort = tunnelPort.Text;
-            }          
+            }
             _networkSettings.Save();
 
             //_chatSettings.VibrateOnIncomingMessage = vibrator.IsOn;
@@ -110,14 +105,13 @@ namespace Linphone.Views
 
             _settings.DebugEnabled = (bool)Debug.IsOn;
             _settings.Save();
-            
+
         }
 
         /// <summary>
         /// Method called when the page is displayed.
         /// </summary>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
+        protected override void OnNavigatedTo(NavigationEventArgs e) {
             base.OnNavigatedTo(e);
             saveSettingsOnLeave = true;
         }
@@ -125,8 +119,7 @@ namespace Linphone.Views
         /// <summary>
         /// Method called when the page is hidden.
         /// </summary>
-        protected override void OnNavigatedFrom(NavigationEventArgs nee)
-        {
+        protected override void OnNavigatedFrom(NavigationEventArgs nee) {
             base.OnNavigatedFrom(nee);
             LinphoneManager.Instance.LogUploadProgressIndicationEH -= LogUploadProgressIndication;
             BugReportUploadPopup.Visibility = Visibility.Collapsed;
@@ -135,48 +128,40 @@ namespace Linphone.Views
         /// <summary>
         /// Method called when the user is navigation away from this page
         /// </summary>
-        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
-        {
-            if (saveSettingsOnLeave)
-            {
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e) {
+            if (saveSettingsOnLeave) {
                 Save();
             }
             base.OnNavigatingFrom(e);
         }
 
-        private void LogUploadProgressIndication(int offset, int total)
-        {         
+        private void LogUploadProgressIndication(int offset, int total) {
             BugReportUploadProgressBar.Maximum = total;
-            if (offset <= total)
-            {
+            if (offset <= total) {
                 BugReportUploadProgressBar.Value = offset;
             }
         }
-        
-        private void SendLogs_Click(object sender, RoutedEventArgs e)
-        {
+
+        private void SendLogs_Click(object sender, RoutedEventArgs e) {
             saveSettingsOnLeave = false;
             BugReportUploadPopup.Visibility = Visibility.Visible;
             LinphoneManager.Instance.LogUploadProgressIndicationEH += LogUploadProgressIndication;
             LinphoneManager.Instance.Core.UploadLogCollection();
         }
 
-        private void Debug_Checked(object sender, RoutedEventArgs e)
-        {
+        private void Debug_Checked(object sender, RoutedEventArgs e) {
             _settings.LogLevel = OutputTraceLevel.Message;
             SendLogs.IsEnabled = true;
             ResetLogs.IsEnabled = true;
         }
 
-        private void Debug_Unchecked(object sender, RoutedEventArgs e)
-        {
+        private void Debug_Unchecked(object sender, RoutedEventArgs e) {
             _settings.LogLevel = OutputTraceLevel.None;
             SendLogs.IsEnabled = false;
             ResetLogs.IsEnabled = false;
         }
 
-        private void ResetLogs_Click(object sender, RoutedEventArgs e)
-        {
+        private void ResetLogs_Click(object sender, RoutedEventArgs e) {
             LinphoneManager.Instance.resetLogCollection();
         }
     }

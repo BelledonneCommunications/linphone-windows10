@@ -18,35 +18,32 @@ using System;
 using System.Collections.Generic;
 using Windows.Globalization.Collation;
 
-namespace Linphone.Model
-{
+namespace Linphone.Model {
 
-    public class AlphaKeyGroup<T>
-    {
+    public class AlphaKeyGroup<T> {
         const string GlobeGroupKey = "\uD83C\uDF10";
 
-        public string Key { get; private set; }
-        public List<T> InternalList { get; private set; }
+        public string Key {
+            get; private set;
+        }
+        public List<T> InternalList {
+            get; private set;
+        }
 
-        public AlphaKeyGroup(string key)
-        {
+        public AlphaKeyGroup(string key) {
             Key = key;
             InternalList = new List<T>();
         }
 
-        private static List<AlphaKeyGroup<T>> CreateDefaultGroups(CharacterGroupings slg)
-        {
+        private static List<AlphaKeyGroup<T>> CreateDefaultGroups(CharacterGroupings slg) {
             List<AlphaKeyGroup<T>> list = new List<AlphaKeyGroup<T>>();
 
-            foreach (CharacterGrouping cg in slg)
-            {
-                if (cg.Label == "") continue;
-                if (cg.Label == "...")
-                {
+            foreach (CharacterGrouping cg in slg) {
+                if (cg.Label == "")
+                    continue;
+                if (cg.Label == "...") {
                     list.Add(new AlphaKeyGroup<T>(GlobeGroupKey));
-                }
-                else
-                {
+                } else {
                     list.Add(new AlphaKeyGroup<T>(cg.Label));
                 }
             }
@@ -54,30 +51,27 @@ namespace Linphone.Model
             return list;
         }
 
-        public static List<AlphaKeyGroup<T>> CreateGroups(IEnumerable<T> items, Func<T, string> keySelector, bool sort)
-        {
+        public static List<AlphaKeyGroup<T>> CreateGroups(IEnumerable<T> items, Func<T, string> keySelector, bool sort) {
             CharacterGroupings slg = new CharacterGroupings();
             List<AlphaKeyGroup<T>> list = CreateDefaultGroups(slg);
 
-            foreach (T item in items)
-            {
+            foreach (T item in items) {
                 int index = 0;
                 {
                     string label = slg.Lookup(keySelector(item));
                     index = list.FindIndex(alphakeygroup => (alphakeygroup.Key.Equals(label, StringComparison.CurrentCulture)));
                 }
 
-                if (index >= 0 && index < list.Count)
-                {
+                if (index >= 0 && index < list.Count) {
                     list[index].InternalList.Add(item);
                 }
             }
 
-            if (sort)
-            {
-                foreach (AlphaKeyGroup<T> group in list)
-                {
-                    group.InternalList.Sort((c0, c1) => { return keySelector(c0).CompareTo(keySelector(c0)); });
+            if (sort) {
+                foreach (AlphaKeyGroup<T> group in list) {
+                    group.InternalList.Sort((c0, c1) => {
+                        return keySelector(c0).CompareTo(keySelector(c0));
+                    });
                 }
             }
 

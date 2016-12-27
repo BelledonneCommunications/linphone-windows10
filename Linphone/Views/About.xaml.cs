@@ -18,13 +18,10 @@ using Linphone.Model;
 using System.Reflection;
 using Windows.UI.Xaml.Controls;
 
-namespace Linphone.Views
-{
+namespace Linphone.Views {
 
-    public partial class About : Page
-    {
-        public About()
-        {
+    public partial class About : Page {
+        public About() {
             this.InitializeComponent();
 
             var packageId = Windows.ApplicationModel.Package.Current.Id;

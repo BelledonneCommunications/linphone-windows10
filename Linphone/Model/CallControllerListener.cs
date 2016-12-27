@@ -16,13 +16,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 using BelledonneCommunications.Linphone.Native;
 
-namespace Linphone.Model
-{
+namespace Linphone.Model {
     /// <summary>
     /// Interface for a basic call (start, end) listener.
     /// </summary>
-    public interface CallControllerListener
-    {
+    public interface CallControllerListener {
         /// <summary>
         /// Called when a new call is started.
         /// </summary>

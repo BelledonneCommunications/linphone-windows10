@@ -21,21 +21,18 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
-namespace Linphone.Views
-{
+namespace Linphone.Views {
     /// <summary>
     /// Page displaying the audio settings and the audio codecs to let the user enable/disable them.
     /// </summary>
-    public partial class AudioSettings : Page, EchoCalibratorListener
-    {
+    public partial class AudioSettings : Page, EchoCalibratorListener {
         private CodecsSettingsManager _settings = new CodecsSettingsManager();
         private bool saveSettingsOnLeave = true;
 
         /// <summary>
         /// Public constructor.
         /// </summary>
-        public AudioSettings()
-        {
+        public AudioSettings() {
             this.InitializeComponent();
 
             _settings.Load();
@@ -56,8 +53,7 @@ namespace Linphone.Views
         /// <summary>
         /// Method called when the page is displayed.
         /// </summary>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
+        protected override void OnNavigatedTo(NavigationEventArgs e) {
             base.OnNavigatedTo(e);
             LinphoneManager.Instance.ECListener = this;
         }
@@ -65,17 +61,14 @@ namespace Linphone.Views
         /// <summary>
         /// Method called when the user is navigation away from this page
         /// </summary>
-        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
-        {
-            if (saveSettingsOnLeave)
-            {
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e) {
+            if (saveSettingsOnLeave) {
                 Save();
             }
             base.OnNavigatingFrom(e);
         }
 
-        private void Save()
-        {
+        private void Save() {
             _settings.Speex16 = ToBool(Speex16.IsOn);
             _settings.Speex8 = ToBool(Speex8.IsOn);
             _settings.PCMU = ToBool(PCMU.IsOn);
@@ -90,31 +83,26 @@ namespace Linphone.Views
             _settings.Save();
         }
 
-        private void cancel_Click_1(object sender, EventArgs e)
-        {
+        private void cancel_Click_1(object sender, EventArgs e) {
             saveSettingsOnLeave = false;
-            if (Frame.CanGoBack)
-            {
+            if (Frame.CanGoBack) {
                 Frame.GoBack();
             }
         }
 
-        private bool ToBool(bool? enabled)
-        {
-            if (!enabled.HasValue) enabled = false;
+        private bool ToBool(bool? enabled) {
+            if (!enabled.HasValue)
+                enabled = false;
             return (bool)enabled;
         }
 
-        private void save_Click_1(object sender, EventArgs e)
-        {
-            if (Frame.CanGoBack)
-            {
+        private void save_Click_1(object sender, EventArgs e) {
+            if (Frame.CanGoBack) {
                 Frame.GoBack();
             }
         }
 
-        private void ECCalibratorButton_Click_1(object sender, RoutedEventArgs e)
-        {
+        private void ECCalibratorButton_Click_1(object sender, RoutedEventArgs e) {
             var loader = new Windows.ApplicationModel.Resources.ResourceLoader();
             ECCalibratorButton.IsEnabled = false;
             ECCalibratorStatusButton.Text = loader.GetString("ECCalibrationInProgress");
@@ -124,8 +112,7 @@ namespace Linphone.Views
         /// <summary>
         /// Actualises the echo calibrator listener when the pages changes.
         /// </summary>
-        protected override void OnNavigatedFrom(NavigationEventArgs nea)
-        {
+        protected override void OnNavigatedFrom(NavigationEventArgs nea) {
             LinphoneManager.Instance.ECListener = null;
         }
 
@@ -134,24 +121,16 @@ namespace Linphone.Views
         /// </summary>
         /// <param name="status">The status of the echo canceller calibrator</param>
         /// <param name="delayMs">The echo delay in milliseconds if the status is EcCalibratorStatus.Done</param>
-        public void ECStatusNotified(EcCalibratorStatus status, int delayMs)
-        {
+        public void ECStatusNotified(EcCalibratorStatus status, int delayMs) {
 
             var loader = new Windows.ApplicationModel.Resources.ResourceLoader();
-            if (status == EcCalibratorStatus.Done)
-            {
+            if (status == EcCalibratorStatus.Done) {
                 ECCalibratorStatusButton.Text = String.Format(loader.GetString("ECCalibrationDone"), delayMs);
-            }
-            else if (status == EcCalibratorStatus.DoneNoEcho)
-            {
+            } else if (status == EcCalibratorStatus.DoneNoEcho) {
                 ECCalibratorStatusButton.Text = loader.GetString("ECCalibrationDoneNoEcho");
-            }
-            else if (status == EcCalibratorStatus.Failed)
-            {
+            } else if (status == EcCalibratorStatus.Failed) {
                 ECCalibratorStatusButton.Text = loader.GetString("ECCalibrationFailed");
-            }
-            else if (status == EcCalibratorStatus.InProgress)
-            {
+            } else if (status == EcCalibratorStatus.InProgress) {
                 ECCalibratorStatusButton.Text = loader.GetString("ECCalibrationInProgress");
             }
             ECCalibratorButton.IsEnabled = true;

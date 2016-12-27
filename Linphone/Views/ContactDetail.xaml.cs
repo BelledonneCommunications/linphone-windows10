@@ -22,46 +22,41 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
-namespace Linphone.Views
-{
+namespace Linphone.Views {
     /// <summary>
     /// Page displaying contact information + action buttons associated to phone numbers and email addresses.
     /// </summary>
-    public partial class ContactDetail : Page
-    {
-        private ContactItem contact { get; set; }
+    public partial class ContactDetail : Page {
+        private ContactItem contact {
+            get; set;
+        }
 
         /// <summary>
         /// Public constructor.
         /// </summary>
-        public ContactDetail()
-        {
+        public ContactDetail() {
             this.InitializeComponent();
         }
 
         /// <summary>
         /// Method called when the page is displayed, fetches and display contact information and create actions.
         /// </summary>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
+        protected override void OnNavigatedTo(NavigationEventArgs e) {
             base.OnNavigatedTo(e);
 
-            while (actions.Children.Count > 0)
-            {
+            while (actions.Children.Count > 0) {
                 actions.Children.RemoveAt(0);
             }
 
             contact = ContactsManager.Instance.TempContact;
             contactName.Text = contact.ContactName;
 
-            if (contact.ContactImage != null)
-            {
+            if (contact.ContactImage != null) {
 
                 contactPicture.ImageSource = contact.ContactImage;
             }
 
-            foreach (ContactPhone phone in contact.ContactPhones)
-            {
+            foreach (ContactPhone phone in contact.ContactPhones) {
                 ContactAction entry = new ContactAction();
                 entry.Label = phone.Kind.ToString();
                 entry.NumberOrAddress = phone.Number;
@@ -70,8 +65,7 @@ namespace Linphone.Views
                 actions.Children.Add(entry);
             }
 
-            foreach (ContactEmail email in contact.ContactEmails)
-            {
+            foreach (ContactEmail email in contact.ContactEmails) {
                 ContactAction entry = new ContactAction();
                 entry.Label = email.Kind.ToString();
                 entry.NumberOrAddress = email.Address;
@@ -81,21 +75,18 @@ namespace Linphone.Views
             }
         }
 
-        private void SetAddressGoToDialerAndCall(String address)
-        {
+        private void SetAddressGoToDialerAndCall(String address) {
             Frame.Navigate(typeof(Views.Dialer), address);
         }
 
-        private void action_Click_1(object sender, RoutedEventArgs e)
-        {
+        private void action_Click_1(object sender, RoutedEventArgs e) {
             String numberOrAddress = (sender as Button).Tag.ToString();
             SetAddressGoToDialerAndCall(numberOrAddress);
         }
 
-        private void action_Click_2(object sender, RoutedEventArgs e)
-        {
+        private void action_Click_2(object sender, RoutedEventArgs e) {
             String numberOrAddress = (sender as Button).Tag.ToString();
-            Frame.Navigate(typeof (Views.Chat),numberOrAddress);
+            Frame.Navigate(typeof(Views.Chat), numberOrAddress);
         }
     }
 }

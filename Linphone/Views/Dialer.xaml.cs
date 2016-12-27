@@ -23,14 +23,11 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
 using System.ComponentModel;
 
-namespace Linphone.Views
-{
+namespace Linphone.Views {
 
-    public sealed partial class Dialer : Page, INotifyPropertyChanged
-    {
+    public sealed partial class Dialer : Page, INotifyPropertyChanged {
 
-        public Dialer()
-        {
+        public Dialer() {
             this.InitializeComponent();
             DataContext = this;
             ContactsManager contactsManager = ContactsManager.Instance;
@@ -42,48 +39,36 @@ namespace Linphone.Views
         }
 
         private int unreadMessageCount;
-        public int UnreadMessageCount
-        {
-            get
-            {
+        public int UnreadMessageCount {
+            get {
                 return unreadMessageCount;
             }
 
-            set
-            {
+            set {
                 unreadMessageCount = value;
-                if(unreadMessageCount > 0)
-                {
-                    unreadMessageText.Visibility = Visibility.Visible; 
-                } else
-                {
+                if (unreadMessageCount > 0) {
+                    unreadMessageText.Visibility = Visibility.Visible;
+                } else {
                     unreadMessageText.Visibility = Visibility.Collapsed;
                 }
 
-                if (PropertyChanged != null)
-                {
+                if (PropertyChanged != null) {
                     PropertyChanged(this, new PropertyChangedEventArgs("UnreadMessageCount"));
                 }
             }
         }
 
         private int missedCallCount;
-        public int MissedCallCount
-        {
-            get
-            {
+        public int MissedCallCount {
+            get {
                 return missedCallCount;
             }
 
-            set
-            {
+            set {
                 missedCallCount = value;
-                if (missedCallCount > 0)
-                {
+                if (missedCallCount > 0) {
                     MissedCallText.Visibility = Visibility.Visible;
-                }
-                else
-                {
+                } else {
                     MissedCallText.Visibility = Visibility.Collapsed;
                 }
 
@@ -93,31 +78,27 @@ namespace Linphone.Views
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void LogUploadProgressIndication(int offset, int total)
-        {
-           /* base.UIDispatcher.BeginInvoke(() =>
-            {
-                BugReportUploadProgressBar.Maximum = total;
-                if (offset <= total)
-                {
-                    BugReportUploadProgressBar.Value = offset;
-                }
-            });*/
+        private void LogUploadProgressIndication(int offset, int total) {
+            /* base.UIDispatcher.BeginInvoke(() =>
+             {
+                 BugReportUploadProgressBar.Maximum = total;
+                 if (offset <= total)
+                 {
+                     BugReportUploadProgressBar.Value = offset;
+                 }
+             });*/
         }
 
-        private void RegistrationChanged(ProxyConfig config, RegistrationState state, string message)
-        {
+        private void RegistrationChanged(ProxyConfig config, RegistrationState state, string message) {
             status.RefreshStatus();
         }
 
-        private void MessageReceived(ChatRoom room, ChatMessage message)
-        {
+        private void MessageReceived(ChatRoom room, ChatMessage message) {
 
             UnreadMessageCount = LinphoneManager.Instance.GetUnreadMessageCount();
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
+        protected override void OnNavigatedTo(NavigationEventArgs e) {
             base.OnNavigatedTo(e);
 
             LinphoneManager.Instance.CoreDispatcher = Dispatcher;
@@ -162,66 +143,53 @@ namespace Linphone.Views
                         BugReportUploadPopup.Visibility = Visibility.Collapsed;
                     }
                 }*/
-        
-            if (LinphoneManager.Instance.Core.CallsNb > 0)
-            {
+
+            if (LinphoneManager.Instance.Core.CallsNb > 0) {
                 Call call = LinphoneManager.Instance.Core.CurrentCall;
                 String uri = call.RemoteAddress.AsStringUriOnly();
                 Frame.Navigate(typeof(Views.InCall), uri);
             }
 
-            if(LinphoneManager.Instance.GetUnreadMessageCount() > 0)
-            {
+            if (LinphoneManager.Instance.GetUnreadMessageCount() > 0) {
                 UnreadMessageCount = LinphoneManager.Instance.GetUnreadMessageCount();
             }
 
-            if(LinphoneManager.Instance.Core.MissedCallsCount > 0)
-            {
+            if (LinphoneManager.Instance.Core.MissedCallsCount > 0) {
                 MissedCallCount = LinphoneManager.Instance.Core.MissedCallsCount;
             }
 
-            if (e.Parameter is String && (e.Parameter as String)?.Length > 0 && e.NavigationMode != NavigationMode.Back)
-            {
+            if (e.Parameter is String && (e.Parameter as String)?.Length > 0 && e.NavigationMode != NavigationMode.Back) {
                 String arguments = e.Parameter as String;
                 addressBox.Text = arguments;
-                try
-                {
+                try {
                     Address address = LinphoneManager.Instance.Core.InterpretURL(e.Parameter as String);
                     String sipAddressToCall = address.AsStringUriOnly();
                     addressBox.Text = sipAddressToCall;
+                } catch (Exception exception) {
                 }
-                catch (Exception exception)
-                { }
             }
         }
 
-        private void CallStateChanged(Call call, CallState state)
-        {
+        private void CallStateChanged(Call call, CallState state) {
             MissedCallCount = LinphoneManager.Instance.Core.MissedCallsCount;
         }
 
-        protected override void OnNavigatedFrom(NavigationEventArgs nee)
-        {
+        protected override void OnNavigatedFrom(NavigationEventArgs nee) {
             base.OnNavigatedFrom(nee);
-           // LinphoneManager.Instance.LogUploadProgressIndicationEH -= LogUploadProgressIndication;
-           // BugReportUploadPopup.Visibility = Visibility.Collapsed;
+            // LinphoneManager.Instance.LogUploadProgressIndicationEH -= LogUploadProgressIndication;
+            // BugReportUploadPopup.Visibility = Visibility.Collapsed;
         }
 
-        private void call_Click(object sender, RoutedEventArgs e)
-        {
-            if (addressBox.Text.Length > 0)
-            {
+        private void call_Click(object sender, RoutedEventArgs e) {
+            if (addressBox.Text.Length > 0) {
                 LinphoneManager.Instance.NewOutgoingCall(addressBox.Text);
-            }
-            else
-            {
+            } else {
                 string lastDialedNumber = LinphoneManager.Instance.GetLastCalledNumber();
                 addressBox.Text = lastDialedNumber == null ? "" : lastDialedNumber;
             }
         }
 
-        private void numpad_Click(object sender,RoutedEventArgs e)
-        {
+        private void numpad_Click(object sender, RoutedEventArgs e) {
             Button button = sender as Button;
             String tag = button.Tag as String;
             LinphoneManager.Instance.Core.PlayDtmf(Convert.ToChar(tag), 1000);
@@ -229,67 +197,55 @@ namespace Linphone.Views
             addressBox.Text += tag;
         }
 
-        private void VoicemailClick(object sender, RoutedEventArgs e)
-        {
+        private void VoicemailClick(object sender, RoutedEventArgs e) {
 
         }
 
-        private void zero_Hold(object sender, RoutedEventArgs e)
-        {
+        private void zero_Hold(object sender, RoutedEventArgs e) {
             if (addressBox.Text.Length > 0)
                 addressBox.Text = addressBox.Text.Substring(0, addressBox.Text.Length - 1);
             addressBox.Text += "+";
         }
 
-        private void chat_Click(object sender, RoutedEventArgs e)
-        {
+        private void chat_Click(object sender, RoutedEventArgs e) {
             Frame.Navigate(typeof(Views.Chats), null);
         }
 
-        private void history_Click(object sender, RoutedEventArgs e)
-        {
+        private void history_Click(object sender, RoutedEventArgs e) {
             Frame.Navigate(typeof(Views.History), null);
         }
 
-        private void contacts_Click(object sender, RoutedEventArgs e)
-        {
+        private void contacts_Click(object sender, RoutedEventArgs e) {
             Frame.Navigate(typeof(Views.ContactList), null);
         }
 
-        private void settings_Click(object sender, RoutedEventArgs e)
-        {
+        private void settings_Click(object sender, RoutedEventArgs e) {
             Frame.Navigate(typeof(Views.Settings), null);
         }
 
-        private void about_Click(object sender, RoutedEventArgs e)
-        {
+        private void about_Click(object sender, RoutedEventArgs e) {
             Frame.Navigate(typeof(Views.About), null);
         }
 
-        private void disconnect_Click(object sender, RoutedEventArgs e)
-        {
+        private void disconnect_Click(object sender, RoutedEventArgs e) {
             EnableRegister(false);
         }
 
-        private void connect_Click(object sender, EventArgs e)
-        {
+        private void connect_Click(object sender, EventArgs e) {
             EnableRegister(true);
         }
 
-        private void EnableRegister(bool enable)
-        {
+        private void EnableRegister(bool enable) {
             Core lc = LinphoneManager.Instance.Core;
             ProxyConfig cfg = lc.DefaultProxyConfig;
-            if (cfg != null)
-            {
+            if (cfg != null) {
                 cfg.Edit();
                 cfg.IsRegisterEnabled = enable;
                 cfg.Done();
             }
         }
 
-        private void status_Tapped(object sender, TappedRoutedEventArgs e)
-        {
+        private void status_Tapped(object sender, TappedRoutedEventArgs e) {
             LinphoneManager.Instance.Core.RefreshRegisters();
         }
     }

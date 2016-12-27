@@ -22,28 +22,24 @@ using System.Windows;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
-namespace Linphone.Views
-{
-    public partial class Launcher : Page
-    {
-        public Launcher()
-        {
+namespace Linphone.Views {
+    public partial class Launcher : Page {
+        public Launcher() {
             this.InitializeComponent();
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
+        protected override void OnNavigatedTo(NavigationEventArgs e) {
             base.OnNavigatedTo(e);
-/*
-            if (Customs.ShowWizardUntilAccountConfigured)
-            {
-                NavigationService.Navigate(new Uri("/Views/FirstLogin.xaml", UriKind.RelativeOrAbsolute));
-            }
-            else
-            {
-                NavigationService.Navigate(new Uri("/Views/Dialer.xaml", UriKind.RelativeOrAbsolute));
-            }
-            NavigationService.RemoveBackEntry(); // Prevent a back to this screen*/
+            /*
+                        if (Customs.ShowWizardUntilAccountConfigured)
+                        {
+                            NavigationService.Navigate(new Uri("/Views/FirstLogin.xaml", UriKind.RelativeOrAbsolute));
+                        }
+                        else
+                        {
+                            NavigationService.Navigate(new Uri("/Views/Dialer.xaml", UriKind.RelativeOrAbsolute));
+                        }
+                        NavigationService.RemoveBackEntry(); // Prevent a back to this screen*/
         }
     }
 }

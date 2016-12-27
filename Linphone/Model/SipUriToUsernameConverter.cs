@@ -18,19 +18,15 @@ using BelledonneCommunications.Linphone.Native;
 using System;
 using Windows.UI.Xaml.Data;
 
-namespace Linphone.Model
-{
-    public class SipUriToUsernameConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, string language)
-        {
+namespace Linphone.Model {
+    public class SipUriToUsernameConverter : IValueConverter {
+        public object Convert(object value, Type targetType, object parameter, string language) {
             string sipAddress = (string)value;
             Address addr = LinphoneManager.Instance.Core.InterpretURL(sipAddress);
             return addr.UserName;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
+        public object ConvertBack(object value, Type targetType, object parameter, string language) {
             throw new NotImplementedException();
         }
     }

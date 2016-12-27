@@ -34,12 +34,14 @@ using Windows.UI.Notifications;
 using Windows.Data.Xml.Dom;
 using Windows.System.Threading;
 
-namespace Linphone.Model
-{
-    class LinphoneManager : CoreListener
-    {
+namespace Linphone.Model {
+    class LinphoneManager : CoreListener {
         private static LinphoneManager _instance = new LinphoneManager();
-        public static LinphoneManager Instance { get { return _instance; } }
+        public static LinphoneManager Instance {
+            get {
+                return _instance;
+            }
+        }
 
         private Core _core;
         public bool isLinphoneRunning = false;
@@ -49,75 +51,63 @@ namespace Linphone.Model
         #region LinphoneCore and initialization
 
         public Core Core {
-            get
-            {
-                if (_core == null)
-                {
+            get {
+                if (_core == null) {
                     EnableLogCollection(true);
-                    LpConfig config = new LpConfig(GetConfigPath(),GetFactoryConfigPath());
+                    LpConfig config = new LpConfig(GetConfigPath(), GetFactoryConfigPath());
                     _core = new Core(this, config);
                 }
                 return _core;
             }
         }
 
-        public CoreDispatcher CoreDispatcher { get; set; }
+        public CoreDispatcher CoreDispatcher {
+            get; set;
+        }
 
-        public LinphoneManager()
-        {
+        public LinphoneManager() {
             Init();
         }
 
-        private async void Init()
-        {
+        private async void Init() {
             var vcc = VoipCallCoordinator.GetDefault();
             var entryPoint = typeof(PhoneCallTask).FullName;
             var status = await vcc.ReserveCallResourcesAsync(entryPoint);
         }
 
-        public async void InitPushNotifications()
-        {
+        public async void InitPushNotifications() {
             var internetProfile = NetworkInformation.GetInternetConnectionProfile();
-            if (internetProfile != null)
-            {
+            if (internetProfile != null) {
                 channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
                 AddPushInformationsToContactParams();
             }
         }
-        public String GetChatDatabasePath()
-        {
+        public String GetChatDatabasePath() {
             return Path.Combine(ApplicationData.Current.LocalFolder.Path, "chat.db");
         }
 
-        public String GetDefaultConfigPath()
-        {
+        public String GetDefaultConfigPath() {
             return Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "Assets", "linphonerc");
         }
 
-        public String GetConfigPath()
-        {
+        public String GetConfigPath() {
             FileInfo fInfo = new FileInfo(Path.Combine(ApplicationData.Current.LocalFolder.Path, "linphonerc"));
-            if(fInfo.Exists)
-            {
+            if (fInfo.Exists) {
                 return Path.Combine(ApplicationData.Current.LocalFolder.Path, "linphonerc");
-            } else
-            {
+            } else {
                 return null;
             }
         }
 
-        public String GetFactoryConfigPath()
-        {
+        public String GetFactoryConfigPath() {
             return Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "Assets", "linphonerc-factory");
         }
 
-        public String GetRootCaPath()
-        {
+        public String GetRootCaPath() {
             return Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "Assets", "rootca.pem");
         }
 
-        public void InitLinphoneCore()
-        {
+        public void InitLinphoneCore() {
             Core.LogLevel = OutputTraceLevel.Debug;
 
             LinphoneManager.Instance.Core.ChatDatabasePath = GetChatDatabasePath();
@@ -127,8 +117,7 @@ namespace Linphone.Model
                 AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;
             }
 
-            if (LinphoneManager.Instance.Core.IsVideoSupported)
-            {
+            if (LinphoneManager.Instance.Core.IsVideoSupported) {
                 DetectCameras();
             }
 
@@ -136,42 +125,35 @@ namespace Linphone.Model
             InitPushNotifications();
             isLinphoneRunning = true;
             TimeSpan period = TimeSpan.FromMilliseconds(20);
-            ThreadPoolTimer.CreatePeriodicTimer((source) =>
-            {
-                CoreDispatcher.RunIdleAsync((args) =>
-                {
+            ThreadPoolTimer.CreatePeriodicTimer((source) => {
+                CoreDispatcher.RunIdleAsync((args) => {
                     Core.Iterate();
                 });
             }, period);
         }
 
-        public void EnableLogCollection(bool enable)
-        {
+        public void EnableLogCollection(bool enable) {
             Core.LogCollectionEnabled = enable ? LogCollectionState.EnabledWithoutPreviousLogHandler : LogCollectionState.Disabled;
             Core.LogCollectionPath = ApplicationData.Current.LocalFolder.Path;
         }
 
 
-        public void AddPushInformationsToContactParams()
-        {
-            if (Core.DefaultProxyConfig != null && channel != null)
-            {
+        public void AddPushInformationsToContactParams() {
+            if (Core.DefaultProxyConfig != null && channel != null) {
                 Uri pushUri = new Uri(channel.Uri);
                 string host = null, token = null;
 
                 host = pushUri.Host;
                 token = pushUri.OriginalString;
 
-                if (host == null || token == null)
-                {
+                if (host == null || token == null) {
                     return;
                 }
 
                 byte[] toEncodeAsBytes = Encoding.ASCII.GetBytes(token);
                 String tokenB64 = Convert.ToBase64String(toEncodeAsBytes);
 
-                if (Core.DefaultProxyConfig != null)
-                {
+                if (Core.DefaultProxyConfig != null) {
                     Core.DefaultProxyConfig.Edit();
                     Core.DefaultProxyConfig.ContactUriParameters = "app-id=" + host + ";pn-type=w10;pn-tok=" + tokenB64;
                     Core.DefaultProxyConfig.Done();
@@ -179,23 +161,19 @@ namespace Linphone.Model
             }
         }
 
-        public String getCoreVersion()
-        {
+        public String getCoreVersion() {
             return Core.Version;
         }
 
-        public void ConfigureLog(OutputTraceLevel level)
-        {
+        public void ConfigureLog(OutputTraceLevel level) {
             Core.LogLevel = level;
         }
 
-        public void resetLogCollection()
-        {
+        public void resetLogCollection() {
             Core.ResetLogCollection();
         }
 
-        public bool isMobileVersion()
-        {
+        public bool isMobileVersion() {
             return ApiInformation.IsApiContractPresent("Windows.Phone.PhoneContract", 1);
         }
 
@@ -204,24 +182,19 @@ namespace Linphone.Model
         #region CallLogs
         private List<CallLogModel> _history;
 
-        public List<CallLogModel> GetCallsHistory()
-        {
+        public List<CallLogModel> GetCallsHistory() {
             _history = new List<CallLogModel>();
 
-            if (Core.CallLogs != null)
-            {
-                foreach (CallLog log in Core.CallLogs)
-                {
+            if (Core.CallLogs != null) {
+                foreach (CallLog log in Core.CallLogs) {
                     string from = log.FromAddress.DisplayName;
-                    if (from.Length == 0)
-                    {
+                    if (from.Length == 0) {
                         Address fromAddress = log.FromAddress;
                         from = fromAddress.AsStringUriOnly();
                     }
 
                     string to = log.ToAddress.DisplayName;
-                    if (to.Length == 0)
-                    {
+                    if (to.Length == 0) {
                         Address toAddress = log.ToAddress;
                         to = toAddress.AsStringUriOnly();
                     }
@@ -236,80 +209,61 @@ namespace Linphone.Model
             return _history;
         }
 
-        public string GetLastCalledNumber()
-        {
-            foreach (CallLog log in LinphoneManager.Instance.Core.CallLogs)
-            {
-                if (log.Direction == CallDirection.Outgoing)
-                {
+        public string GetLastCalledNumber() {
+            foreach (CallLog log in LinphoneManager.Instance.Core.CallLogs) {
+                if (log.Direction == CallDirection.Outgoing) {
                     return log.ToAddress.AsStringUriOnly();
                 }
             }
             return null;
         }
 
-        public void RemoveCallLogs(IEnumerable<CallLogModel> logsToRemove)
-        {
-            for (int i = 0; i < logsToRemove.Count(); i++)
-            {
+        public void RemoveCallLogs(IEnumerable<CallLogModel> logsToRemove) {
+            for (int i = 0 ; i < logsToRemove.Count() ; i++) {
                 CallLogModel logToRemove = logsToRemove.ElementAt(i);
                 Core.RemoveCallLog(logToRemove.NativeLog as CallLog);
             }
         }
 
-        public void ClearCallLogs()
-        {
+        public void ClearCallLogs() {
             Core.ClearCallLogs();
         }
         #endregion
 
         #region Call Management
-        public void PauseCurrentCall()
-        {
-            if (Core.CallsNb > 0)
-            {
+        public void PauseCurrentCall() {
+            if (Core.CallsNb > 0) {
                 Call call = Core.CurrentCall;
                 Core.PauseCall(call);
             }
         }
 
-        public void ResumeCurrentCall()
-        {
-            foreach (Call call in Core.Calls)
-            {
-                if (call.State == CallState.Paused)
-                {
+        public void ResumeCurrentCall() {
+            foreach (Call call in Core.Calls) {
+                if (call.State == CallState.Paused) {
                     Core.ResumeCall(call);
                 }
             }
         }
 
-        public void NewOutgoingCall(String sipAddress)
-        {
+        public void NewOutgoingCall(String sipAddress) {
             Call LCall = Core.Invite(sipAddress);
         }
 
-        public void EndCurrentCall()
-        {
+        public void EndCurrentCall() {
             Call call = Core.CurrentCall;
-            if (call != null)
-            {
+            if (call != null) {
                 Core.TerminateCall(call);
-            }
-            else
-            {
-                foreach (Call lCall in Core.Calls)
-                {
-                    if (lCall.State == CallState.Paused)
-                    {
+            } else {
+                foreach (Call lCall in Core.Calls) {
+                    if (lCall.State == CallState.Paused) {
                         Core.TerminateCall(lCall);
                     }
                 }
             }
         }
 
-        private void ShowCallError(string message)
-        {
+        private void ShowCallError(string message) {
             /*if (CallErrorNotification != null)
             {
                 CallErrorNotification.Dismiss();
@@ -326,19 +280,15 @@ namespace Linphone.Model
 
         #region Audio Management
 
-        private void AudioEndpointChanged(AudioRoutingManager sender, object args)
-        {
+        private void AudioEndpointChanged(AudioRoutingManager sender, object args) {
             Debug.WriteLine("[LinphoneManager] AudioEndpointChanged:" + sender.GetAudioEndpoint().ToString() + "\r\n");
         }
 
-        public bool SpeakerEnabled
-        {
-            get
-            {
+        public bool SpeakerEnabled {
+            get {
                 return AudioRoutingManager.GetDefault().GetAudioEndpoint() == AudioRoutingEndpoint.Speakerphone;
             }
-            set
-            {
+            set {
                 if (value)
                     AudioRoutingManager.GetDefault().SetAudioEndpoint(AudioRoutingEndpoint.Speakerphone);
                 else
@@ -346,15 +296,12 @@ namespace Linphone.Model
             }
         }
 
-        public bool BluetoothEnabled
-        {
-            get
-            {
+        public bool BluetoothEnabled {
+            get {
                 var audioRoute = AudioRoutingManager.GetDefault().GetAudioEndpoint();
                 return audioRoute == AudioRoutingEndpoint.Bluetooth || audioRoute == AudioRoutingEndpoint.BluetoothWithNoiseAndEchoCancellation;
             }
-            set
-            {
+            set {
                 if (value)
                     AudioRoutingManager.GetDefault().SetAudioEndpoint(AudioRoutingEndpoint.Bluetooth);
                 else
@@ -362,10 +309,8 @@ namespace Linphone.Model
             }
         }
 
-        public bool IsBluetoothAvailable
-        {
-            get
-            {
+        public bool IsBluetoothAvailable {
+            get {
                 return (AudioRoutingManager.GetDefault().AvailableAudioEndpoints & AvailableAudioRoutingEndpoints.Bluetooth) != 0;
             }
         }
@@ -374,11 +319,9 @@ namespace Linphone.Model
         #endregion
 
         #region Chat
-        public int GetUnreadMessageCount()
-        {
+        public int GetUnreadMessageCount() {
             int nbUnreadMessages = 0;
-            foreach(ChatRoom chatroom in Core.ChatRooms)
-            {
+            foreach (ChatRoom chatroom in Core.ChatRooms) {
                 nbUnreadMessages += chatroom.UnreadMessageCount;
             }
             return nbUnreadMessages;
@@ -387,31 +330,30 @@ namespace Linphone.Model
         public delegate void MessageReceivedEventHandler(ChatRoom room, ChatMessage message);
         public event MessageReceivedEventHandler MessageReceived;
 
-        public MessageReceivedListener MessageListener { get; set; }
-        public ToastNotification MessageReceivedNotification { get; set; }
-        void CoreListener.MessageReceived(ChatRoom room, ChatMessage message)
-        {
-            if (CoreDispatcher == null) return;
+        public MessageReceivedListener MessageListener {
+            get; set;
+        }
+        public ToastNotification MessageReceivedNotification {
+            get; set;
+        }
+        void CoreListener.MessageReceived(ChatRoom room, ChatMessage message) {
+            if (CoreDispatcher == null)
+                return;
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
-            CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                if (MessageReceived != null)
-                {
+            CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
+                if (MessageReceived != null) {
                     MessageReceived(room, message);
                 }
 
                 Address fromAddress = message.FromAddress;
                 string sipAddress = String.Format("{0}@{1}", fromAddress.UserName, fromAddress.Domain);
-                if (MessageListener != null && MessageListener.GetSipAddressAssociatedWithDisplayConversation() != null && MessageListener.GetSipAddressAssociatedWithDisplayConversation().Equals(sipAddress))
-                {
+                if (MessageListener != null && MessageListener.GetSipAddressAssociatedWithDisplayConversation() != null && MessageListener.GetSipAddressAssociatedWithDisplayConversation().Equals(sipAddress)) {
                     MessageListener.MessageReceived(message);
-                } else
-                {
+                } else {
                     string url = message.ExternalBodyUrl;
                     url = url.Replace("\"", "");
 
-                    if (MessageReceivedNotification != null)
-                    {
+                    if (MessageReceivedNotification != null) {
                         ToastNotificationManager.History.Clear();
                     }
 
@@ -431,27 +373,26 @@ namespace Linphone.Model
 #pragma warning restore CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
         }
 
-        public void FileTransferProgressIndication(ChatMessage message, int offset, int total)
-        {
-            if (CoreDispatcher == null) return;
+        public void FileTransferProgressIndication(ChatMessage message, int offset, int total) {
+            if (CoreDispatcher == null)
+                return;
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
-            CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
+            CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
                 Debug.WriteLine(String.Format("FileTransferProgressIndication: {0}/{1}", offset, total));
             });
         }
 
 
-        public ComposingReceivedListener ComposingListener { get; set; }
-        void CoreListener.IsComposingReceived(ChatRoom room)
-        {
+        public ComposingReceivedListener ComposingListener {
+            get; set;
+        }
+        void CoreListener.IsComposingReceived(ChatRoom room) {
             {
-                if (CoreDispatcher == null) return;
+                if (CoreDispatcher == null)
+                    return;
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
-                CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    if (ComposingListener != null && room != null)
-                    {
+                CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
+                    if (ComposingListener != null && room != null) {
                         string currentListenerSipAddress = ComposingListener.GetSipAddressAssociatedWithDisplayConversation();
                         Address peerAddress = room.PeerAddress;
                         string roomComposingSipAddress = String.Format("{0}@{1}", peerAddress.UserName, peerAddress.Domain);
@@ -469,25 +410,19 @@ namespace Linphone.Model
         private List<String> _cameras;
         private int numberOfCameras = 0;
 
-        public bool IsVideoAvailable
-        {
-            get
-            {
+        public bool IsVideoAvailable {
+            get {
                 return Core.IsVideoSupported && (Core.IsVideoDisplayEnabled || Core.IsVideoCaptureEnabled);
             }
         }
 
-        public bool EnableVideo(bool enable)
-        {
-            if (Core.IsInCall)
-            {
+        public bool EnableVideo(bool enable) {
+            if (Core.IsInCall) {
                 Call call = Core.CurrentCall;
                 CallParams parameters = call.CurrentParams;
-                if (enable != parameters.IsVideoEnabled)
-                {
+                if (enable != parameters.IsVideoEnabled) {
                     parameters.IsVideoEnabled = enable;
-                    if (enable)
-                    {
+                    if (enable) {
                         // TODO: Handle bandwidth limitation
                     }
                     Core.UpdateCall(call, parameters);
@@ -497,22 +432,17 @@ namespace Linphone.Model
             return false;
         }
 
-        public int NumberOfCameras
-        {
-            get
-            {
+        public int NumberOfCameras {
+            get {
                 return numberOfCameras;
             }
         }
 
-        private void DetectCameras()
-        {
+        private void DetectCameras() {
             int nbCameras = 0;
             _cameras = new List<string>();
-            foreach (String device in LinphoneManager.Instance.Core.VideoDevices)
-            {
-                if (!device.Contains("StaticImage"))
-                {
+            foreach (String device in LinphoneManager.Instance.Core.VideoDevices) {
+                if (!device.Contains("StaticImage")) {
                     _cameras.Add(device);
                     nbCameras++;
                 }
@@ -520,15 +450,12 @@ namespace Linphone.Model
             numberOfCameras = nbCameras;
         }
 
-        public void ToggleCameras()
-        {
-            if (NumberOfCameras >= 2)
-            {
+        public void ToggleCameras() {
+            if (NumberOfCameras >= 2) {
                 String currentDevice = Core.VideoDevice;
-                Core.VideoDevice = _cameras.ElementAt((_cameras.IndexOf(Core.VideoDevice) + 1) % _cameras.Count()); 
+                Core.VideoDevice = _cameras.ElementAt((_cameras.IndexOf(Core.VideoDevice) + 1) % _cameras.Count());
 
-                if (Core.IsInCall)
-                {
+                if (Core.IsInCall) {
                     Call call = Core.CurrentCall;
                     Core.UpdateCall(call, null);
                 }
@@ -537,42 +464,36 @@ namespace Linphone.Model
         #endregion
 
         #region Listeners
-        public CallControllerListener CallListener { get; set; }
-   
-        void CoreListener.AuthInfoRequested(string realm, string username, string domain)
-        {
+        public CallControllerListener CallListener {
+            get; set;
         }
 
-        void CoreListener.CallEncryptionChanged(Call call, bool encrypted, string authenticationToken)
-        {
+        void CoreListener.AuthInfoRequested(string realm, string username, string domain) {
+        }
+
+        void CoreListener.CallEncryptionChanged(Call call, bool encrypted, string authenticationToken) {
         }
 
         public delegate void CallStateChangedEventHandler(Call call, CallState state);
         public event CallStateChangedEventHandler CallStateChangedEvent;
 
-        void CoreListener.CallStateChanged(Call call, CallState state, string message)
-        {
+        void CoreListener.CallStateChanged(Call call, CallState state, string message) {
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
-            CoreDispatcher.RunAsync(CoreDispatcherPriority.High, () =>
-            {
-                if(CallStateChangedEvent != null)
-                {
+            CoreDispatcher.RunAsync(CoreDispatcherPriority.High, () => {
+                if (CallStateChangedEvent != null) {
                     CallStateChangedEvent(call, state);
                 }
             });
 #pragma warning restore CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
-            
 
-            if (state == CallState.OutgoingProgress)
-            {
-                
+
+            if (state == CallState.OutgoingProgress) {
+
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
-                CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                   Debug.WriteLine("[LinphoneManager] Outgoing progress\r\n");
- 
-                    if (CallListener != null && Core.CallsNb > 0)
-                    {
+                CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
+                    Debug.WriteLine("[LinphoneManager] Outgoing progress\r\n");
+
+                    if (CallListener != null && Core.CallsNb > 0) {
                         string sipAddress = call.RemoteAddress.AsStringUriOnly();
                         CallListener.NewCallStarted(sipAddress);
                     }
@@ -580,73 +501,53 @@ namespace Linphone.Model
 #pragma warning restore CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
             }
 
-            if (state == CallState.IncomingReceived)
-            {
+            if (state == CallState.IncomingReceived) {
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
-                CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
+                CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
                     Debug.WriteLine("[LinphoneManager] Incoming received\r\n");
-                    if (CallListener != null && Core.CallsNb > 0)
-                    {
+                    if (CallListener != null && Core.CallsNb > 0) {
                         CallListener.CallIncoming(call);
                     }
 
                 });
 #pragma warning restore CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
-            }
-
-            else if (state == CallState.StreamsRunning)
-            {
+            } else if (state == CallState.StreamsRunning) {
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
-                CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
+                CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
                     Debug.WriteLine("[LinphoneManager] Stream Running\r\n");
-                    if (CallListener != null && Core.CallsNb > 0)
-                    {
+                    if (CallListener != null && Core.CallsNb > 0) {
                         CallListener.PauseStateChanged(call, false, false);
                     }
                 });
 #pragma warning restore CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
-            }
-
-            else if (state == CallState.UpdatedByRemote)
-            {
+            } else if (state == CallState.UpdatedByRemote) {
                 bool remoteVideo = call.RemoteParams.IsVideoEnabled;
                 bool localVideo = call.CurrentParams.IsVideoEnabled;
                 bool autoAcceptCameraPolicy = Core.VideoPolicy.AutomaticallyAccept;
-                if (remoteVideo && !localVideo && !autoAcceptCameraPolicy)
-                {
+                if (remoteVideo && !localVideo && !autoAcceptCameraPolicy) {
                     Core.DeferCallUpdate(call);
                 }
-               
+
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
-                CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
+                CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
                     Debug.WriteLine("[LinphoneManager] Update call\r\n");
-                   
-                    
+
+
                 });
 #pragma warning restore CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
-            }
-
-
-            else if (state == CallState.End || state == CallState.Error)
-            {
+            } else if (state == CallState.End || state == CallState.Error) {
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
-                CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
+                CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
                     Debug.WriteLine(String.Format("[LinphoneManager] Call ended: {0}\r\n", message));
                     if (CallListener != null)
                         CallListener.CallEnded(call);
                     string text;
-                    switch (call.Reason)
-                    {
+                    switch (call.Reason) {
                         case Reason.None:
                         case Reason.NotAnswered:
                             break;
                         case Reason.Declined:
-                            if (call.Direction == CallDirection.Outgoing)
-                            {
+                            if (call.Direction == CallDirection.Outgoing) {
                                 //ShowCallError(text.Replace("#address#", call.RemoteAddress.UserName));
                             }
                             break;
@@ -673,49 +574,40 @@ namespace Linphone.Model
             }
         }
 
-        void CoreListener.CallStatsUpdated(Call call, CallStats stats)
-        {
+        void CoreListener.CallStatsUpdated(Call call, CallStats stats) {
             //System.Diagnostics.Debug.WriteLine("CallStatsUpdated");
         }
 
-        void CoreListener.DtmfReceived(Call call, char dtmf)
-        {
+        void CoreListener.DtmfReceived(Call call, char dtmf) {
             //throw new NotImplementedException();
         }
 
-        void CoreListener.GlobalStateChanged(GlobalState state, string message)
-        {
+        void CoreListener.GlobalStateChanged(GlobalState state, string message) {
             Debug.WriteLine(String.Format("GlobalStateChanged: {0} [{1}]", state, message));
         }
 
         public delegate void LogUploadProgressIndicationEventHandler(int offset, int total);
         public event LogUploadProgressIndicationEventHandler LogUploadProgressIndicationEH;
 
-        void CoreListener.LogCollectionUploadProgressIndication(int offset, int total)
-        {
-            if (CoreDispatcher == null) return;
+        void CoreListener.LogCollectionUploadProgressIndication(int offset, int total) {
+            if (CoreDispatcher == null)
+                return;
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
-            CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                if (LogUploadProgressIndicationEH != null)
-                {
+            CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
+                if (LogUploadProgressIndicationEH != null) {
                     LogUploadProgressIndicationEH(offset, total);
                 }
             });
         }
 
-        void CoreListener.LogCollectionUploadStateChanged(LogCollectionUploadState state, string info)
-        {
-            if (CoreDispatcher == null) return;
+        void CoreListener.LogCollectionUploadStateChanged(LogCollectionUploadState state, string info) {
+            if (CoreDispatcher == null)
+                return;
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
-            CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                if (state == LogCollectionUploadState.Delivered)
-                {
+            CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
+                if (state == LogCollectionUploadState.Delivered) {
                     BugCollector.ReportExceptions(info);
-                }
-                else if (state == LogCollectionUploadState.NotDelivered)
-                {
+                } else if (state == LogCollectionUploadState.NotDelivered) {
                     Debug.WriteLine("[LinphoneManager] Logs upload error: " + info);
                     /* var notif = new CustomMessageBox()
                      {
@@ -731,32 +623,28 @@ namespace Linphone.Model
         public delegate void RegistrationStateChangedEventHandler(ProxyConfig config, RegistrationState state, string message);
         public event RegistrationStateChangedEventHandler RegistrationChanged;
 
-        void CoreListener.RegistrationStateChanged(ProxyConfig config, RegistrationState state, string message)
-        {
-            if (CoreDispatcher == null) return;
+        void CoreListener.RegistrationStateChanged(ProxyConfig config, RegistrationState state, string message) {
+            if (CoreDispatcher == null)
+                return;
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
-            CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                if(RegistrationChanged != null)
-                {
+            CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
+                if (RegistrationChanged != null) {
                     RegistrationChanged(config, state, message);
-                } 
+                }
             });
         }
 
-        public EchoCalibratorListener ECListener { get; set; }
+        public EchoCalibratorListener ECListener {
+            get; set;
+        }
 
-        public void EcCalibrationStatus(EcCalibratorStatus status, int delayMs)
-        {
+        public void EcCalibrationStatus(EcCalibratorStatus status, int delayMs) {
             Debug.WriteLine("[LinphoneManager] Echo canceller calibration status: " + status.ToString() + "\r\n");
-            if (status == EcCalibratorStatus.Done)
-            {
+            if (status == EcCalibratorStatus.Done) {
                 Debug.WriteLine("[LinphoneManager] Echo canceller delay: {0} ms\r\n", delayMs);
             }
-            CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                if (ECListener != null)
-                {
+            CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
+                if (ECListener != null) {
                     ECListener.ECStatusNotified(status, delayMs);
                 }
             });
@@ -765,13 +653,10 @@ namespace Linphone.Model
         #endregion
 
         #region Tunnel
-        public static void ConfigureTunnel(String mode)
-        {
-            if (LinphoneManager.Instance.Core.Tunnel != null)
-            {
+        public static void ConfigureTunnel(String mode) {
+            if (LinphoneManager.Instance.Core.Tunnel != null) {
                 Tunnel tunnel = LinphoneManager.Instance.Core.Tunnel;
-                if (tunnel != null)
-                {
+                if (tunnel != null) {
                     /*if (mode == AppResources.TunnelModeDisabled)
                     {
                         tunnel.Enable(false);
@@ -804,8 +689,7 @@ namespace Linphone.Model
             }
         }
 
-        public void ConfigureTunnel()
-        {
+        public void ConfigureTunnel() {
             NetworkSettingsManager settings = new NetworkSettingsManager();
             settings.Load();
             ConfigureTunnel(settings.TunnelMode);
@@ -813,45 +697,33 @@ namespace Linphone.Model
         #endregion
 
         #region Contact Lookup
-        private ContactsManager ContactManager
-        {
-            get
-            {
+        private ContactsManager ContactManager {
+            get {
                 return ContactsManager.Instance;
             }
         }
 
-        private void LookupForContact(Call call)
-        {
-            try
-            {
+        private void LookupForContact(Call call) {
+            try {
                 Address remoteAddress = call.RemoteAddress;
-                if (remoteAddress.DisplayName.Length == 0)
-                {
+                if (remoteAddress.DisplayName.Length == 0) {
                     string sipAddress = String.Format("{0}@{1}", remoteAddress.UserName, remoteAddress.Domain);
 
                     ContactManager.ContactFound += OnContactFound;
                     //ContactManager.FindContact(sipAddress);
-                }
-                else
-                {
+                } else {
                     Debug.WriteLine("[LinphoneManager] Display name found: " + call.RemoteAddress.DisplayName + "\r\n");
                 }
-            }
-            catch
-            {
+            } catch {
                 Debug.WriteLine("[LinphoneManager] Exception occured while looking for contact...\r\n");
             }
         }
 
-        private void OnContactFound(object sender, ContactFoundEventArgs e)
-        {
-            if (e.ContactFound != null)
-            {
+        private void OnContactFound(object sender, ContactFoundEventArgs e) {
+            if (e.ContactFound != null) {
                 Debug.WriteLine("[LinphoneManager] Contact found: " + e.ContactFound.ContactName + "\r\n");
                 // Store the contact name as display name for call logs
-                if (LinphoneManager.Instance.Core.CurrentCall != null)
-                {
+                if (LinphoneManager.Instance.Core.CurrentCall != null) {
                     LinphoneManager.Instance.Core.CurrentCall.RemoteAddress.DisplayName = e.ContactFound.ContactName;
                 }
             }
@@ -860,8 +732,7 @@ namespace Linphone.Model
         #endregion
     }
 
-    public interface EchoCalibratorListener
-    {
+    public interface EchoCalibratorListener {
         void ECStatusNotified(EcCalibratorStatus status, int delayMs);
     }
 

@@ -22,27 +22,23 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
-namespace Linphone
-{
+namespace Linphone {
     /// <summary>
     /// Base Phone Application Page for every Page in the application that need to be call event aware.
     /// </summary>
-    public class BasePage: Page
-    {
+    public class BasePage : Page {
         /// <summary>
         /// Public constructor.
         /// </summary>
         protected BasePage()
-            : this(new BaseModel())
-        {
+            : this(new BaseModel()) {
 
         }
 
         /// <summary>
         /// Public constructor.
         /// </summary>
-        protected BasePage(BaseModel viewModel)
-        {
+        protected BasePage(BaseModel viewModel) {
             this.ViewModel = viewModel;
             this.ViewModel.Page = this;
             this.Loaded += BasePage_Loaded;
@@ -51,7 +47,9 @@ namespace Linphone
         /// <summary>
         /// The status bar displayed on the page if present.
         /// </summary>
-        public static StatusBar StatusBar { get; set; }
+        public static StatusBar StatusBar {
+            get; set;
+        }
 
         /// <summary>
         /// View model linked to the page, implements the call state listener.
@@ -61,16 +59,14 @@ namespace Linphone
         /// <summary>
         /// Bind the view model to the page when it's been loaded.
         /// </summary>
-        protected virtual void BasePage_Loaded(object sender, RoutedEventArgs e)
-        {
+        protected virtual void BasePage_Loaded(object sender, RoutedEventArgs e) {
             this.DataContext = ViewModel;
         }
 
         /// <summary>
         /// Forwards the OnNavigatedTo event to the model
         /// </summary>
-        protected override void OnNavigatedTo(NavigationEventArgs nee)
-        {
+        protected override void OnNavigatedTo(NavigationEventArgs nee) {
             base.OnNavigatedTo(nee);
 
             this.ViewModel.OnNavigatedTo(nee);
@@ -79,8 +75,7 @@ namespace Linphone
         /// <summary>
         /// Forwards the OnNavigatedFrom event to the model
         /// </summary>
-        protected override void OnNavigatedFrom(NavigationEventArgs nee)
-        {
+        protected override void OnNavigatedFrom(NavigationEventArgs nee) {
             base.OnNavigatedFrom(nee);
             StatusBar = null;
 

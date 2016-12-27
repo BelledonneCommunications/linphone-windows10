@@ -36,7 +36,7 @@
                              VerticalAlignment="Center" 
                              VerticalContentAlignment="Center" 
                              InputScope="EmailSmtpAddress"
-                              AcceptsReturn="False"
+                             AcceptsReturn="False"
                              PlaceholderText="Number or address">
                         
                     </TextBox>

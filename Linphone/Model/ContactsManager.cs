@@ -22,30 +22,26 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Contacts;
 using Windows.UI.Popups;
 
-namespace Linphone.Model
-{
-    public class ContactFoundEventArgs : EventArgs
-    {
-        public ContactItem ContactFound { get; set; }
+namespace Linphone.Model {
+    public class ContactFoundEventArgs : EventArgs {
+        public ContactItem ContactFound {
+            get; set;
+        }
 
-        public ContactFoundEventArgs(ContactItem contact)
-        {
+        public ContactFoundEventArgs(ContactItem contact) {
             ContactFound = contact;
         }
     }
 
-    public class ContactsManager
-    {
+    public class ContactsManager {
         private List<AlphaKeyGroup<ContactItem>> groupsOfContacts;
         private ObservableCollection<ContactItem> _contactsList = new ObservableCollection<ContactItem>();
         private ObservableCollection<ContactItem> contactItems = new ObservableCollection<ContactItem>();
         private ContactStore store;
 
         private static ContactsManager singleton;
-        public static ContactsManager Instance
-        {
-            get 
-            {
+        public static ContactsManager Instance {
+            get {
                 if (ContactsManager.singleton == null)
                     ContactsManager.singleton = new ContactsManager();
 
@@ -58,30 +54,23 @@ namespace Linphone.Model
 
         public event ContactFoundEventHandler ContactFound;
         private static ContactStore contactStore = null;
-        
-        public ContactsManager()
-        {
+
+        public ContactsManager() {
             UpdateContactListAsync();
         }
 
-        public async void UpdateContactListAsync()
-        {
+        public async void UpdateContactListAsync() {
             await LoadContactsFromStoreAsync();
         }
 
-        private async Task LoadContactsFromStoreAsync()
-        {
-            try
-            {
+        private async Task LoadContactsFromStoreAsync() {
+            try {
                 store = await ContactManager.RequestStoreAsync(ContactStoreAccessType.AllContactsReadOnly);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Debug.WriteLine("Potential contact store bug: " + ex, "error");
             }
 
-            if (store == null)
-            {
+            if (store == null) {
 
                 MessageDialog connectionWarning =
                     new MessageDialog("The app needs access to your contacts in order to function correctly. " +
@@ -98,98 +87,78 @@ namespace Linphone.Model
             return;
         }
 
-        private async Task SearchForTextAsync(string ContactFilter)
-        {
-            if (store == null)
-            {
+        private async Task SearchForTextAsync(string ContactFilter) {
+            if (store == null) {
                 await LoadContactsFromStoreAsync();
                 return;
             }
-            if (!string.IsNullOrWhiteSpace(ContactFilter))
-            {
+            if (!string.IsNullOrWhiteSpace(ContactFilter)) {
                 ContactQueryOptions option = new ContactQueryOptions(ContactFilter, ContactQuerySearchFields.All);
                 ContactReader reader = store.GetContactReader(option);
                 await DisplayContactsFromReaderAsync(reader, false);
-            }
-            else
-            {
+            } else {
                 ContactReader reader = store.GetContactReader();
                 await DisplayContactsFromReaderAsync(reader, true);
             }
             return;
         }
 
-        private async Task DisplayContactsFromReaderAsync(ContactReader reader, bool isGroup)
-        {
+        private async Task DisplayContactsFromReaderAsync(ContactReader reader, bool isGroup) {
             contactItems.Clear();
             ContactBatch contactBatch = await reader.ReadBatchAsync();
-            if (contactBatch.Contacts.Count == 0)
-            {
+            if (contactBatch.Contacts.Count == 0) {
                 return;
             }
 
-            while (contactBatch.Contacts.Count != 0)
-            {     
-                foreach (Contact c in contactBatch.Contacts)
-                {
-                    if(c.Phones.Count > 0 || c.Emails.Count > 0)
-                    {
+            while (contactBatch.Contacts.Count != 0) {
+                foreach (Contact c in contactBatch.Contacts) {
+                    if (c.Phones.Count > 0 || c.Emails.Count > 0) {
                         ContactItem contactToAdd = new ContactItem(c.Id, c.DisplayName);
                         contactToAdd.ContactEmails = c.Emails;
                         contactToAdd.ContactPhones = c.Phones;
                         contactToAdd.SetImageAsync(c.Thumbnail);
                         contactItems.Add(contactToAdd);
                     }
-                
+
                 }
                 contactBatch = await reader.ReadBatchAsync();
             }
 
-            if (isGroup)
-            {
+            if (isGroup) {
                 groupsOfContacts = alphaGroupSorting(contactItems);
-            }
-            else
-            {
+            } else {
                 _contactsList = contactItems;
             }
             return;
         }
 
-        private List<AlphaKeyGroup<ContactItem>> alphaGroupSorting(IEnumerable<ContactItem> items)
-        {
-            var returnGroup = AlphaKeyGroup<ContactItem>.CreateGroups(items, (ContactItem s) => { return s.ContactName; }, true);                                      
+        private List<AlphaKeyGroup<ContactItem>> alphaGroupSorting(IEnumerable<ContactItem> items) {
+            var returnGroup = AlphaKeyGroup<ContactItem>.CreateGroups(items, (ContactItem s) => {
+                return s.ContactName;
+            }, true);
             return returnGroup;
         }
 
 
-        public ObservableCollection<ContactItem> ContactsList
-        {
-            get
-            {
+        public ObservableCollection<ContactItem> ContactsList {
+            get {
                 return contactItems;
             }
         }
 
-        public List<AlphaKeyGroup<ContactItem>> GroupsOfContacts
-        {
-            get
-            {
+        public List<AlphaKeyGroup<ContactItem>> GroupsOfContacts {
+            get {
                 return groupsOfContacts;
             }
-            private set
-            {
-                if (groupsOfContacts != value)
-                {
+            private set {
+                if (groupsOfContacts != value) {
                     groupsOfContacts = value;
                 }
             }
         }
 
-        private static bool IsPhoneNumber(string str)
-        {
-            foreach (char c in str)
-            {
+        private static bool IsPhoneNumber(string str) {
+            foreach (char c in str) {
                 if ((c < '0' || c > '9') && c != '+')
                     return false;
             }

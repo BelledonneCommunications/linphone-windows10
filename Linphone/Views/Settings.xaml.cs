@@ -22,59 +22,48 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
-namespace Linphone.Views
-{
+namespace Linphone.Views {
     /// <summary>
     /// Base setting page, provides access to each detailled settings + debug setting.
     /// </summary>
-    public partial class Settings : Page
-    {
+    public partial class Settings : Page {
 
         /// <summary>
         /// Public constructor.
         /// </summary>
-        public Settings()
-        {
+        public Settings() {
             this.InitializeComponent();
         }
 
         /// <summary>
         /// Method called when the page is displayed.
         /// </summary>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
+        protected override void OnNavigatedTo(NavigationEventArgs e) {
             base.OnNavigatedTo(e);
         }
 
-        private void account_Click_1(object sender, RoutedEventArgs e)
-        {
+        private void account_Click_1(object sender, RoutedEventArgs e) {
             Frame.Navigate(typeof(Views.AccountSettings), null);
         }
 
-        private void audio_Click_1(object sender, RoutedEventArgs e)
-        {
-           Frame.Navigate(typeof(Views.AudioSettings), null);
+        private void audio_Click_1(object sender, RoutedEventArgs e) {
+            Frame.Navigate(typeof(Views.AudioSettings), null);
         }
 
-        private void video_Click_1(object sender, RoutedEventArgs e)
-        {
-           Frame.Navigate(typeof(Views.VideoSettings), null);
+        private void video_Click_1(object sender, RoutedEventArgs e) {
+            Frame.Navigate(typeof(Views.VideoSettings), null);
         }
 
-        private void advanced_Click_1(object sender, RoutedEventArgs e)
-        {
+        private void advanced_Click_1(object sender, RoutedEventArgs e) {
             Frame.Navigate(typeof(Views.AdvancedSettings), null);
         }
 
-        private async void LockScreenSettings_Click_1(object sender, RoutedEventArgs e)
-        {
-           // var op = await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-settings-lock:"));
+        private async void LockScreenSettings_Click_1(object sender, RoutedEventArgs e) {
+            // var op = await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-settings-lock:"));
         }
 
-        private void back_Click(object sender, RoutedEventArgs e)
-        {
-            if (Frame.CanGoBack)
-            {
+        private void back_Click(object sender, RoutedEventArgs e) {
+            if (Frame.CanGoBack) {
                 Frame.GoBack();
             }
 

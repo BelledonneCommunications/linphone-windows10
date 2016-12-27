@@ -20,23 +20,19 @@ using System;
 using System.Diagnostics;
 using Windows.UI.Xaml;
 
-namespace Linphone.Views
-{
+namespace Linphone.Views {
     /// <summary>
     /// Model for the InCall page that handles the display of the various elements of the page.
     /// </summary>
-    public class InCallModel : BaseModel
-    {
+    public class InCallModel : BaseModel {
 
         /// <summary>
         /// Public constructor.
         /// </summary>
         public InCallModel()
-            : base()
-        {
-            if (CurrentPage != null)
-            {
-               //PageOrientation = CurrentPage.Orientation;
+            : base() {
+            if (CurrentPage != null) {
+                //PageOrientation = CurrentPage.Orientation;
             }
 
             bool isVideoAvailable = LinphoneManager.Instance.IsVideoAvailable;
@@ -63,13 +59,10 @@ namespace Linphone.Views
             }
         }*/
 
-        public Call GetCurrentCall()
-        {
+        public Call GetCurrentCall() {
             Call call = LinphoneManager.Instance.Core.CurrentCall;
-            if (call == null)
-            {
-                if (LinphoneManager.Instance.Core.CallsNb > 0)
-                {
+            if (call == null) {
+                if (LinphoneManager.Instance.Core.CallsNb > 0) {
                     call = (Call)LinphoneManager.Instance.Core.Calls[0];
                 }
             }
@@ -78,79 +71,71 @@ namespace Linphone.Views
 
         #region Actions
 
-        private void AdjustDisplayAccordingToOrientation()
-        {
-           /* if ((PageOrientation & Microsoft.Phone.Controls.PageOrientation.Portrait) == Microsoft.Phone.Controls.PageOrientation.Portrait)
-            {
-                PortraitButtonsVisibility = Visibility.Visible;
-                LandscapeButtonsVisibility = Visibility.Collapsed;
-            }
-            else if ((PageOrientation & Microsoft.Phone.Controls.PageOrientation.Landscape) == Microsoft.Phone.Controls.PageOrientation.Landscape)
-            {
-                PortraitButtonsVisibility = Visibility.Collapsed;
-                LandscapeButtonsVisibility = Visibility.Visible;
-            }*/
+        private void AdjustDisplayAccordingToOrientation() {
+            /* if ((PageOrientation & Microsoft.Phone.Controls.PageOrientation.Portrait) == Microsoft.Phone.Controls.PageOrientation.Portrait)
+             {
+                 PortraitButtonsVisibility = Visibility.Visible;
+                 LandscapeButtonsVisibility = Visibility.Collapsed;
+             }
+             else if ((PageOrientation & Microsoft.Phone.Controls.PageOrientation.Landscape) == Microsoft.Phone.Controls.PageOrientation.Landscape)
+             {
+                 PortraitButtonsVisibility = Visibility.Collapsed;
+                 LandscapeButtonsVisibility = Visibility.Visible;
+             }*/
         }
 
         /// <summary>
         /// Changes the camera used to capture video
         /// </summary>
-        public void ToggleCameras()
-        {
+        public void ToggleCameras() {
             Debug.WriteLine("[InCall] ToggleCameras");
             HideVideo();
             LinphoneManager.Instance.ToggleCameras();
             ShowVideo();
         }
 
-        private void ShowRemoteVideo()
-        {
+        private void ShowRemoteVideo() {
             int rotation = 0;
-          /*  switch (PageOrientation)
-            {
-                case Microsoft.Phone.Controls.PageOrientation.PortraitUp:
-                    rotation = 0;
-                    break;
-                case Microsoft.Phone.Controls.PageOrientation.PortraitDown:
-                    rotation = 180;
-                    break;
-                case Microsoft.Phone.Controls.PageOrientation.LandscapeLeft:
-                    rotation = 270;
-                    break;
-                case Microsoft.Phone.Controls.PageOrientation.LandscapeRight:
-                    rotation = 90;
-                    break;
-            }*/
+            /*  switch (PageOrientation)
+              {
+                  case Microsoft.Phone.Controls.PageOrientation.PortraitUp:
+                      rotation = 0;
+                      break;
+                  case Microsoft.Phone.Controls.PageOrientation.PortraitDown:
+                      rotation = 180;
+                      break;
+                  case Microsoft.Phone.Controls.PageOrientation.LandscapeLeft:
+                      rotation = 270;
+                      break;
+                  case Microsoft.Phone.Controls.PageOrientation.LandscapeRight:
+                      rotation = 90;
+                      break;
+              }*/
             RemoteVideoRotation = rotation;
             Object id = LinphoneManager.Instance.Core.NativeVideoWindowId;
             //RemoteVideoUri = Mediastreamer2.WP8Video.VideoRenderer.StreamUri(id);
-            
-            if (RemoteVideoVisibility == Visibility.Collapsed)
-            {
+
+            if (RemoteVideoVisibility == Visibility.Collapsed) {
                 //RemoteVideoProgressBarVisibility = Visibility.Visible;
             }
         }
 
-        public void RemoteVideoOpened()
-        {
+        public void RemoteVideoOpened() {
             RemoteVideoVisibility = Visibility.Visible;
             //RemoteVideoProgressBarVisibility = Visibility.Collapsed;
         }
 
-        private void HideRemoteVideo()
-        {
+        private void HideRemoteVideo() {
             RemoteVideoUri = null;
             RemoteVideoVisibility = Visibility.Collapsed;
         }
 
-        private void ShowLocalVideo()
-        {
+        private void ShowLocalVideo() {
             String device = LinphoneManager.Instance.Core.VideoDevice;
             //LocalVideoUri = Mediastreamer2.WP8Video.VideoRenderer.CameraUri(device);
         }
 
-        public void LocalVideoOpened()
-        {
+        public void LocalVideoOpened() {
             Int32 rotation = LinphoneManager.Instance.Core.CameraSensorRotation;
             /*switch (pageOrientation)
             {
@@ -175,86 +160,72 @@ namespace Linphone.Views
             LocalVideoVisibility = Visibility.Visible;
         }
 
-        private void HideLocalVideo()
-        {
+        private void HideLocalVideo() {
             LocalVideoUri = null;
             LocalVideoVisibility = Visibility.Collapsed;
         }
 
-        public void ShowVideo()
-        {
+        public void ShowVideo() {
             Debug.WriteLine("[InCall] ShowVideo");
             ShowRemoteVideo();
-            if (LinphoneManager.Instance.Core.IsSelfViewEnabled)
-            {
+            if (LinphoneManager.Instance.Core.IsSelfViewEnabled) {
                 ShowLocalVideo();
             }
         }
 
-        public void HideVideo()
-        {
+        public void HideVideo() {
             Debug.WriteLine("[InCall] HideVideo");
             HideRemoteVideo();
             HideLocalVideo();
         }
 
-        internal void ShowButtonsAndPanel()
-        {
+        internal void ShowButtonsAndPanel() {
             AdjustDisplayAccordingToOrientation();
         }
 
-        internal void HideButtonsAndPanel()
-        {
+        internal void HideButtonsAndPanel() {
             PortraitButtonsVisibility = Visibility.Collapsed;
             LandscapeButtonsVisibility = Visibility.Collapsed;
         }
 
         #endregion
 
-       /* public Microsoft.Phone.Controls.PageOrientation PageOrientation
-        {
-            get
-            {
-                return this.pageOrientation;
-            }
-            set
-            {
-                if (this.pageOrientation != value)
-                {
-                    this.pageOrientation = value;
-                    AdjustDisplayAccordingToOrientation();
-                    this.OnPropertyChanged();
-                }
-            }
-        }*/
+        /* public Microsoft.Phone.Controls.PageOrientation PageOrientation
+         {
+             get
+             {
+                 return this.pageOrientation;
+             }
+             set
+             {
+                 if (this.pageOrientation != value)
+                 {
+                     this.pageOrientation = value;
+                     AdjustDisplayAccordingToOrientation();
+                     this.OnPropertyChanged();
+                 }
+             }
+         }*/
 
         #region Button properties
-        public bool VideoButtonVisibility
-        {
-            get
-            {
+        public bool VideoButtonVisibility {
+            get {
                 return this.videoButtonEnabled;
             }
-            set
-            {
-                if (this.videoButtonEnabled != value)
-                {
+            set {
+                if (this.videoButtonEnabled != value) {
                     this.videoButtonEnabled = value;
                     this.OnPropertyChanged();
                 }
             }
         }
 
-        public bool CameraButtonEnabled
-        {
-            get
-            {
+        public bool CameraButtonEnabled {
+            get {
                 return this.cameraButtonEnabled;
             }
-            set
-            {
-                if (this.cameraButtonEnabled != value)
-                {
+            set {
+                if (this.cameraButtonEnabled != value) {
                     this.cameraButtonEnabled = value;
                     this.OnPropertyChanged();
                 }
@@ -264,16 +235,12 @@ namespace Linphone.Views
         /// <summary>
         /// Visibility of the portrait buttons.
         /// </summary>
-        public Visibility PortraitButtonsVisibility
-        {
-            get
-            {
+        public Visibility PortraitButtonsVisibility {
+            get {
                 return this.portraitButtonsVisibility;
             }
-            set
-            {
-                if (this.portraitButtonsVisibility != value)
-                {
+            set {
+                if (this.portraitButtonsVisibility != value) {
                     this.portraitButtonsVisibility = value;
                     this.OnPropertyChanged();
                 }
@@ -283,16 +250,12 @@ namespace Linphone.Views
         /// <summary>
         /// Visibility of the landscape buttons.
         /// </summary>
-        public Visibility LandscapeButtonsVisibility
-        {
-            get
-            {
+        public Visibility LandscapeButtonsVisibility {
+            get {
                 return this.landscapeButtonsVisibility;
             }
-            set
-            {
-                if (this.landscapeButtonsVisibility != value)
-                {
+            set {
+                if (this.landscapeButtonsVisibility != value) {
                     this.landscapeButtonsVisibility = value;
                     this.OnPropertyChanged();
                 }
@@ -304,23 +267,16 @@ namespace Linphone.Views
         /// <summary>
         /// Is the video active (Boolean).
         /// </summary>
-        public Boolean IsVideoActive
-        {
-            get
-            {
+        public Boolean IsVideoActive {
+            get {
                 return this.isVideoActive;
             }
-            set
-            {
-                if (this.isVideoActive != value)
-                {
+            set {
+                if (this.isVideoActive != value) {
                     this.isVideoActive = value;
-                    if (this.isVideoActive)
-                    {
+                    if (this.isVideoActive) {
                         ShowVideo();
-                    }
-                    else
-                    {
+                    } else {
                         HideVideo();
                     }
                 }
@@ -330,10 +286,8 @@ namespace Linphone.Views
         /// <summary>
         /// Tells whether the video is shown (Boolean).
         /// </summary>
-        public Boolean VideoShown
-        {
-            get
-            {
+        public Boolean VideoShown {
+            get {
                 return (this.remoteVideoUri != null);
             }
         }
@@ -341,16 +295,12 @@ namespace Linphone.Views
         /// <summary>
         /// Uri of the remote video stream.
         /// </summary>
-        public Uri RemoteVideoUri
-        {
-            get
-            {
+        public Uri RemoteVideoUri {
+            get {
                 return this.remoteVideoUri;
             }
-            set
-            {
-                if (this.remoteVideoUri != value)
-                {
+            set {
+                if (this.remoteVideoUri != value) {
                     this.remoteVideoUri = value;
                     this.OnPropertyChanged();
                 }
@@ -360,16 +310,12 @@ namespace Linphone.Views
         /// <summary>
         /// Visibility of the remote video.
         /// </summary>
-        public Visibility RemoteVideoVisibility
-        {
-            get
-            {
+        public Visibility RemoteVideoVisibility {
+            get {
                 return this.remoteVideoVisibility;
             }
-            set
-            {
-                if (this.remoteVideoVisibility != value)
-                {
+            set {
+                if (this.remoteVideoVisibility != value) {
                     this.remoteVideoVisibility = value;
                     this.OnPropertyChanged();
                 }
@@ -379,16 +325,12 @@ namespace Linphone.Views
         /// <summary>
         /// Uri of the local video stream.
         /// </summary>
-        public Uri LocalVideoUri
-        {
-            get
-            {
+        public Uri LocalVideoUri {
+            get {
                 return this.localVideoUri;
             }
-            set
-            {
-                if (this.localVideoUri != value)
-                {
+            set {
+                if (this.localVideoUri != value) {
                     this.localVideoUri = value;
                     this.OnPropertyChanged();
                 }
@@ -398,16 +340,12 @@ namespace Linphone.Views
         /// <summary>
         /// Visibility of the local video.
         /// </summary>
-        public Visibility LocalVideoVisibility
-        {
-            get
-            {
+        public Visibility LocalVideoVisibility {
+            get {
                 return this.localVideoVisibility;
             }
-            set
-            {
-                if (this.localVideoVisibility != value)
-                {
+            set {
+                if (this.localVideoVisibility != value) {
                     this.localVideoVisibility = value;
                     this.OnPropertyChanged();
                 }
@@ -417,16 +355,12 @@ namespace Linphone.Views
         /// <summary>
         /// Rotation of the local video.
         /// </summary>
-        public Double LocalVideoRotation
-        {
-            get
-            {
+        public Double LocalVideoRotation {
+            get {
                 return this.localVideoRotation;
             }
-            set
-            {
-                if (this.localVideoRotation != value)
-                {
+            set {
+                if (this.localVideoRotation != value) {
                     this.localVideoRotation = value;
                     this.OnPropertyChanged();
                 }
@@ -436,36 +370,29 @@ namespace Linphone.Views
         /// <summary>
         /// Scale of the X axis of the local video.
         /// </summary>
-        public Double LocalVideoScaleX
-        {
-            get
-            {
+        public Double LocalVideoScaleX {
+            get {
                 return this.localVideoScaleX;
             }
-            set
-            {
-                if (this.localVideoScaleX != value)
-                {
+            set {
+                if (this.localVideoScaleX != value) {
                     this.localVideoScaleX = value;
                     this.OnPropertyChanged();
                 }
             }
         }
 
-        public int RemoteVideoRotation
-        {
-            get
-            {
+        public int RemoteVideoRotation {
+            get {
                 return this.remoteVideoRotation;
             }
-            set
-            {
-                if (this.remoteVideoRotation != value)
-                {
+            set {
+                if (this.remoteVideoRotation != value) {
                     this.remoteVideoRotation = value;
                     LinphoneManager.Instance.Core.DeviceRotation = this.remoteVideoRotation;
                     Call call = GetCurrentCall();
-                    if (call != null) LinphoneManager.Instance.Core.UpdateCall(call, null);
+                    if (call != null)
+                        LinphoneManager.Instance.Core.UpdateCall(call, null);
                     this.OnPropertyChanged();
                 }
             }
@@ -474,98 +401,74 @@ namespace Linphone.Views
         #endregion
 
         #region Stats properties
-        public string MediaEncryption
-        {
-            get
-            {
+        public string MediaEncryption {
+            get {
                 return mediaEncryption;
             }
-            set
-            {
+            set {
                 mediaEncryption = value;
                 this.OnPropertyChanged();
             }
         }
-        public string DownBandwidth
-        {
-            get
-            {
+        public string DownBandwidth {
+            get {
                 return downBandwidth;
             }
-            set
-            {
+            set {
                 downBandwidth = value;
                 this.OnPropertyChanged();
             }
         }
-        public string PayloadType
-        {
-            get
-            {
+        public string PayloadType {
+            get {
                 return payloadType;
             }
-            set
-            {
+            set {
                 payloadType = value;
                 this.OnPropertyChanged();
             }
         }
-        public string UpBandwidth
-        {
-            get
-            {
+        public string UpBandwidth {
+            get {
                 return upBandwidth;
             }
-            set
-            {
+            set {
                 upBandwidth = value;
                 this.OnPropertyChanged();
             }
         }
-        public string ICE
-        {
-            get
-            {
+        public string ICE {
+            get {
                 return ice;
             }
-            set
-            {
+            set {
                 ice = value;
                 this.OnPropertyChanged();
             }
         }
-        public string ReceivedVideoSize
-        {
-            get
-            {
+        public string ReceivedVideoSize {
+            get {
                 return receivedVideoSize;
             }
-            set
-            {
+            set {
                 receivedVideoSize = value;
                 this.OnPropertyChanged();
             }
         }
-        public string SentVideoSize
-        {
-            get
-            {
+        public string SentVideoSize {
+            get {
                 return sentVideoSize;
             }
-            set
-            {
+            set {
                 sentVideoSize = value;
                 this.OnPropertyChanged();
             }
         }
-        public Visibility VideoStatsVisibility
-        {
-            get
-            {
+        public Visibility VideoStatsVisibility {
+            get {
                 return videoStatsVisibility;
             }
-            set
-            {
+            set {
                 videoStatsVisibility = value;
                 this.OnPropertyChanged();
             }
@@ -573,7 +476,7 @@ namespace Linphone.Views
         #endregion
 
         #region Private variables
-       // private Microsoft.Phone.Controls.PageOrientation pageOrientation = Microsoft.Phone.Controls.PageOrientation.Portrait;
+        // private Microsoft.Phone.Controls.PageOrientation pageOrientation = Microsoft.Phone.Controls.PageOrientation.Portrait;
         private bool videoButtonEnabled = false;
         private bool cameraButtonEnabled = false;
         private Visibility portraitButtonsVisibility = Visibility.Visible;

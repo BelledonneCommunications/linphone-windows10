@@ -21,85 +21,65 @@ using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
-namespace Linphone.Model
-{
-    public class ContactItem
-    {
+namespace Linphone.Model {
+    public class ContactItem {
         private string contactId;
         private string contactName;
         private ImageSource contactImage;
         private IEnumerable<ContactPhone> contactPhones;
         private IEnumerable<ContactEmail> contactEmails;
 
-        public ContactItem(string ContactId, string ContactName)
-        {
+        public ContactItem(string ContactId, string ContactName) {
             this.contactId = ContactId;
             this.contactName = ContactName;
         }
 
-        public async void SetImageAsync(IRandomAccessStreamReference ThumbnailReference)
-        {
+        public async void SetImageAsync(IRandomAccessStreamReference ThumbnailReference) {
             var thumbnailImage = new BitmapImage();
-            if (ThumbnailReference != null)
-            {
-                using (IRandomAccessStreamWithContentType thumbnailStream = await ThumbnailReference.OpenReadAsync())
-                {
+            if (ThumbnailReference != null) {
+                using (IRandomAccessStreamWithContentType thumbnailStream = await ThumbnailReference.OpenReadAsync()) {
                     thumbnailImage.SetSource(thumbnailStream);
                 }
-            }
-            else
-            {
+            } else {
                 thumbnailImage = new BitmapImage(new Uri("ms-appx:///Assets/avatar.png", UriKind.Absolute));
             }
             this.contactImage = thumbnailImage;
         }
 
-        public string ContactId
-        {
-            get
-            {
+        public string ContactId {
+            get {
                 return contactId;
             }
         }
 
-        public string ContactName
-        {
-            get
-            {
+        public string ContactName {
+            get {
                 return contactName;
             }
         }
 
-        public ImageSource ContactImage
-        {
-            get
-            {
+        public ImageSource ContactImage {
+            get {
                 return contactImage;
             }
         }
-        
-        public IEnumerable<ContactPhone> ContactPhones
-        {
-            get
-            {
+
+        public IEnumerable<ContactPhone> ContactPhones {
+            get {
                 return contactPhones;
             }
 
-            set
-            {
+            set {
                 contactPhones = value;
             }
         }
 
-        public IEnumerable<ContactEmail> ContactEmails
-        {
-            get
-            {
+        public IEnumerable<ContactEmail> ContactEmails {
+            get {
                 return contactEmails;
             }
 
-            set
-            {
+            set {
                 contactEmails = value;
             }
         }
