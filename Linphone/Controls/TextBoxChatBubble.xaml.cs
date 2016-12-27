@@ -40,7 +40,7 @@ namespace Linphone.Controls {
 
         public TextBoxChatBubble() {
             InitializeComponent();
-            SendMessage.IsEnabled = true;
+            SendMessage.IsEnabled = false;
         }
 
         public void Reset() {

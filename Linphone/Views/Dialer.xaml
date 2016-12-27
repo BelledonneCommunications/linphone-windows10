@@ -273,7 +273,7 @@
                     </Grid>
                 </AppBarButton.Content>
             </AppBarButton>
-            <AppBarButton Icon="Contact" Label="Contacts" Click="contacts_Click"/>
+            <!-- <AppBarButton Icon="Contact" Label="Contacts" Click="contacts_Click"/> -->
             <AppBarButton Label="Chat" Click="chat_Click">
                 <AppBarButton.Content>
                     <Grid>

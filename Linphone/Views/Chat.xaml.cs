@@ -82,7 +82,7 @@ namespace Linphone.Views {
 
             //ContactManager cm = ContactManager.Instance;
             //cm.ContactFound += cm_ContactFound;
-
+            
             MessageBox.TextChanged += MessageBox_TextChanged;
 
             NewChat.Visibility = Visibility.Collapsed;

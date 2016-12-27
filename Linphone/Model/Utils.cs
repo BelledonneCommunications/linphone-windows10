@@ -103,7 +103,6 @@ namespace Linphone.Model {
                     using (IsolatedStorageFileStream file = store.OpenFile(fileName, FileMode.Open, FileAccess.Read)) {
                         data = new byte[file.Length];
                         file.Read(data, 0, data.Length);
-
                     }
                 }
 
@@ -228,6 +227,15 @@ namespace Linphone.Model {
                 uri = uri.Replace("+", "%2B");
             }
             return uri;
+        }
+
+        public static void DisplayErrorDialog(string txt) {
+            var dialog = new Windows.UI.Popups.MessageDialog(txt);
+
+            dialog.Commands.Add(new Windows.UI.Popups.UICommand("Ok") { Id = 0 });
+            dialog.DefaultCommandIndex = 0;
+
+            dialog.ShowAsync();
         }
     }
 }

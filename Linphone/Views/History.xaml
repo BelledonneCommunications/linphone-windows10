@@ -20,21 +20,22 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="15"/>
+                    <ColumnDefinition Width="27.4"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                
-                <Ellipse Width="32" Height="32" VerticalAlignment="Center" Grid.RowSpan="2" Margin="0,2,10,0">
+
+                <Ellipse Width="32" Height="32" VerticalAlignment="Center" Grid.RowSpan="2" Margin="0,11,10.4,9" Grid.ColumnSpan="2">
                     <Ellipse.Fill>
                         <ImageBrush ImageSource="/Assets/avatar.png"/>
                     </Ellipse.Fill>
                 </Ellipse>
-                
+
                 <TextBlock Grid.Column="1" Padding="0,5,0,0"
                             Text="{Binding DisplayedName}" 
-                            Style="{StaticResource ListItemHeaderStyle}"/>
-                <TextBlock  Grid.Column="1" Padding="0,0,0,5"
-                                Grid.Row="1" Style="{StaticResource ListItemStyle}" Foreground="{Binding IsMissed, Converter={StaticResource BoolToAccentBrushConverter}}">
+                            Style="{StaticResource ListItemHeaderStyle}" Grid.ColumnSpan="2" Margin="27,0,-0.4,0.6"/>
+                <TextBlock  Grid.Column="2" Padding="0,0,0,5"
+                                Grid.Row="1" Style="{StaticResource ListItemStyle}" Foreground="{Binding IsMissed, Converter={StaticResource BoolToAccentBrushConverter}}" Height="22" Margin="0.6,0,-0.4,0" VerticalAlignment="Bottom">
                     <Run Text="{Binding StatusText}"></Run>
                     <Run Text=","></Run>
                     <Run Text="{Binding DetailsText}"></Run>
@@ -68,7 +69,7 @@
 
         <Grid x:Name="ContentPanel" Grid.Row="1">
             <Pivot>
-                <PivotItem Header="All" x:Uid="HistoryAll">
+                <PivotItem x:Uid="HistoryAll" Header="">
                     <ListView x:Name="Calls" 
                               Margin="-12,0,-12,0"
                               ItemsSource="{Binding}"
@@ -79,7 +80,7 @@
                     </ListView>
                 </PivotItem>
 
-                <PivotItem Header="Missed" x:Uid="HistoryMissedTitle">
+                <PivotItem x:Uid="HistoryMissedTitle">
                     <ListView x:Name="MissedCalls"
                               Margin="-12,0,-12,0"
                               ItemsSource="{Binding}"
