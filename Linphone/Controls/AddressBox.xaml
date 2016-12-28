@@ -22,7 +22,8 @@
             VerticalAlignment="Center"
             AcceptsReturn="False"
             InputScope="EmailSmtpAddress"
-            TextChanged="address_TextChanged">
+            TextChanged="address_TextChanged"
+            IsSpellCheckEnabled="false">
         </TextBox>
 
         <Button 
