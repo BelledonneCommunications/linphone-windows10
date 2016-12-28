@@ -54,6 +54,37 @@ namespace Linphone.Views {
             SetCommandsVisibility(Calls);
         }
 
+        private ListView getDisplayedList() {
+            return (this._missedCallList) ? MissedCalls : Calls;
+        }
+
+        private void headerList_Click_1(object sender, TappedRoutedEventArgs e) {
+            string content;
+
+            if (e.OriginalSource.GetType() == typeof(Grid)) {
+                if (((Grid)e.OriginalSource).Children[0].GetType() == typeof(ContentPresenter))
+                    content = ((ContentPresenter)((Grid)e.OriginalSource).Children[0]).DataContext.ToString();
+                else
+                    return;
+            } else {
+                content = ((TextBlock)e.OriginalSource).DataContext.ToString();
+            }
+
+            if (content.CompareTo("All") == 0) {
+                this._missedCallList = false;
+                Calls.SelectionMode = ListViewSelectionMode.None;
+                SetCommandsVisibility(Calls);
+            } else {
+                this._missedCallList = true;
+                MissedCalls.SelectionMode = ListViewSelectionMode.None;
+                SetCommandsVisibility(MissedCalls);
+            }
+        }
+
+        private void itemList_Click_1(object sender, TappedRoutedEventArgs e) {
+            e.Handled = true;
+        }
+
         private void deleteAll_Click_1(object sender, RoutedEventArgs e) {
             LinphoneManager.Instance.Core.ClearCallLogs();
 
@@ -108,9 +139,8 @@ namespace Linphone.Views {
         }
 
         private void SelectItems_Click(object sender, RoutedEventArgs e) {
-            Calls.SelectionMode = ListViewSelectionMode.Multiple;
-            MissedCalls.SelectionMode = ListViewSelectionMode.Multiple;
-            SetCommandsVisibility(Calls);
+            getDisplayedList().SelectionMode = ListViewSelectionMode.Multiple;
+            SetCommandsVisibility(getDisplayedList());
         }
 
         private void SetCommandsVisibility(ListView listView) {
@@ -138,24 +168,24 @@ namespace Linphone.Views {
                 LinphoneManager.Instance.Core.RemoveCallLog((CallLog)item.NativeLog);
             }
             Calls.SelectionMode = ListViewSelectionMode.None;
-            SetCommandsVisibility(Calls);
+            SetCommandsVisibility(getDisplayedList());
             updateCallList();
         }
 
         private void CancelBtn_Click(object sender, RoutedEventArgs e) {
             Calls.SelectionMode = ListViewSelectionMode.None;
             MissedCalls.SelectionMode = ListViewSelectionMode.None;
-            SetCommandsVisibility(Calls);
+            SetCommandsVisibility(getDisplayedList());
         }
 
         private void SelectAll_Click(object sender, RoutedEventArgs e) {
-            Calls.SelectAll();
+            getDisplayedList().SelectAll();
             DeselectAll.Visibility = Visibility.Visible;
             SelectAll.Visibility = Visibility.Collapsed;
         }
 
         private void DeselectAll_Click(object sender, RoutedEventArgs e) {
-            Calls.SelectedItems.Clear();
+            getDisplayedList().SelectedItems.Clear();
             DeselectAll.Visibility = Visibility.Collapsed;
             SelectAll.Visibility = Visibility.Visible;
         }

@@ -68,14 +68,15 @@
             x:Uid="EmptyHistory"/>
 
         <Grid x:Name="ContentPanel" Grid.Row="1">
-            <Pivot>
-                <PivotItem x:Uid="HistoryAll" Header="">
+            <Pivot Tapped="headerList_Click_1">
+                <PivotItem x:Uid="HistoryAll">
                     <ListView x:Name="Calls" 
                               Margin="-12,0,-12,0"
                               ItemsSource="{Binding}"
                               ItemTemplate="{StaticResource CallLogListViewTemplate}"
                               IsItemClickEnabled="True"
                               IsMultiSelectCheckBoxEnabled="True"
+                              Tapped="itemList_Click_1"
                               ItemClick="Calls_ItemClick" UseLayoutRounding="True">
                     </ListView>
                 </PivotItem>
@@ -87,6 +88,7 @@
                               ItemTemplate="{StaticResource CallLogListViewTemplate}"
                               IsItemClickEnabled="True"
                               IsMultiSelectCheckBoxEnabled="True"
+                              Tapped="itemList_Click_1"
                               ItemClick="Calls_ItemClick" UseLayoutRounding="True">
                     </ListView>
                 </PivotItem>
