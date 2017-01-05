@@ -992,6 +992,7 @@ namespace Linphone.Model {
         private Dictionary<string, FirewallPolicy> FirewallPolicyToEnum;
         private Dictionary<string, MediaEncryption> MediaEncryptionToEnum;
         private Dictionary<string, string> StringToTunnelMode;
+        private Boolean IPV6Enabled;
         public Dictionary<FirewallPolicy, string> EnumToFirewallPolicy;
         public Dictionary<MediaEncryption, string> EnumToMediaEncryption;
 
@@ -1066,7 +1067,7 @@ namespace Linphone.Model {
             dict[StunServerKeyName] = LinphoneManager.Instance.Core.StunServer;
             dict[FirewallPolicyKeyName] = EnumToFirewallPolicy[LinphoneManager.Instance.Core.FirewallPolicy];
             dict[MediaEncryptionKeyName] = EnumToMediaEncryption[LinphoneManager.Instance.Core.MediaEncryption];
-
+            IPV6Enabled = LinphoneManager.Instance.Core.IsIpv6Enabled;
             // Load tunnel configuration
             //  dict[TunnelModeKeyName] = AppResources.TunnelModeDisabled;
             dict[TunnelServerKeyName] = "";
@@ -1105,6 +1106,8 @@ namespace Linphone.Model {
                 string mediaEncryption = GetNew(MediaEncryptionKeyName);
                 LinphoneManager.Instance.Core.MediaEncryption = MediaEncryptionToEnum[mediaEncryption];
             }
+
+            LinphoneManager.Instance.Core.IsIpv6Enabled = IPV6Enabled;
 
             // Save tunnel configuration
             /* if (LinphoneManager.Instance.Core.TunnelAvailable && Customs.IsTunnelEnabled)
@@ -1212,6 +1215,15 @@ namespace Linphone.Model {
             }
             set {
                 Set(TunnelModeKeyName, value);
+            }
+        }
+
+        public Boolean IPV6 {
+            get {
+                return IPV6Enabled;
+            }
+            set {
+                IPV6Enabled = value;
             }
         }
         #endregion

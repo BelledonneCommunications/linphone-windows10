@@ -26,6 +26,13 @@
                             Header="FirewallPolicySetting">
                         </ComboBox>
 
+                        <ToggleSwitch
+                            Margin="0,10,0,0"
+                            x:Name="IPV6"
+                            x:Uid="IPV6Setting"
+                            Header="IPV6">
+                        </ToggleSwitch>
+
                         <TextBox
                             x:Name="Stun"
                             Margin="0,10,0,0"

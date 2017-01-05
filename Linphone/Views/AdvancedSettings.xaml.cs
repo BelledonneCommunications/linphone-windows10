@@ -75,6 +75,7 @@ namespace Linphone.Views {
             tunnelMode.SelectedItem = _networkSettings.TunnelMode;
             tunnelPort.Text = _networkSettings.TunnelPort;
             tunnelServer.Text = _networkSettings.TunnelServer;
+            IPV6.IsOn = LinphoneManager.Instance.Core.IsIpv6Enabled;
 
             TunnelPanel.Visibility = LinphoneManager.Instance.Core.Tunnel != null ? Visibility.Visible : Visibility.Collapsed; //Hidden properties for now
 
@@ -91,6 +92,7 @@ namespace Linphone.Views {
             _networkSettings.MEncryption = mediaEncryption.SelectedItem.ToString();
             _networkSettings.FWPolicy = firewallPolicy.SelectedItem.ToString();
             _networkSettings.StunServer = Stun.Text;
+            _networkSettings.IPV6 = IPV6.IsOn;
 
             if (TunnelPanel.Visibility == Visibility.Visible) {
                 _networkSettings.TunnelMode = tunnelMode.SelectedItem.ToString();
