@@ -374,8 +374,7 @@ namespace Linphone.Model {
                         }
                     }
                     if (outboundProxy) {
-                        Address proxyAddr = LinphoneManager.Instance.Core.CreateAddress(proxy);
-                        cfg.Route = proxyAddr.AsStringUriOnly();
+                        cfg.Route = cfg.ServerAddr;
                     }
 
                     int result = 0;
