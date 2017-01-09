@@ -139,8 +139,10 @@ namespace Linphone.Views {
 
         private void LogUploadProgressIndication(int offset, int total) {
             BugReportUploadProgressBar.Maximum = total;
-            if (offset <= total) {
+            if (offset < total) {
                 BugReportUploadProgressBar.Value = offset;
+            } else {
+                BugReportUploadPopup.Visibility = Visibility.Collapsed;
             }
         }
 
