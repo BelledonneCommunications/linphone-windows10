@@ -53,6 +53,9 @@ namespace Linphone.Views {
                 VideoGrid.Visibility = Visibility.Collapsed;
             }
 
+            if (LinphoneManager.Instance.Core.CurrentCall.State == CallState.StreamsRunning)
+                Status.Text = "00:00:00";
+
             displayOrientation = ApplicationView.GetForCurrentView().Orientation;
             displayInformation = DisplayInformation.GetForCurrentView();
             deviceOrientation = SimpleOrientation.NotRotated;

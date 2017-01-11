@@ -17,6 +17,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using BelledonneCommunications.Linphone.Native;
 using Linphone.Model;
 using System;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -34,6 +35,7 @@ namespace Linphone.Views {
         /// </summary>
         public AudioSettings() {
             this.InitializeComponent();
+            SystemNavigationManager.GetForCurrentView().BackRequested += back_Click;
 
             _settings.Load();
             Speex16.IsOn = _settings.Speex16;
@@ -135,5 +137,13 @@ namespace Linphone.Views {
             }
             ECCalibratorButton.IsEnabled = true;
         }
+
+        private void back_Click(object sender, BackRequestedEventArgs e) {
+            if (Frame.CanGoBack) {
+                e.Handled = true;
+                Frame.GoBack();
+            }
+        }
+
     }
 }

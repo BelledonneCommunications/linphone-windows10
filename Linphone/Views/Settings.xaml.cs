@@ -33,6 +33,7 @@ namespace Linphone.Views {
         /// </summary>
         public Settings() {
             this.InitializeComponent();
+            SystemNavigationManager.GetForCurrentView().BackRequested += back_Click;
         }
 
         /// <summary>
@@ -62,11 +63,11 @@ namespace Linphone.Views {
             // var op = await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-settings-lock:"));
         }
 
-        private void back_Click(object sender, RoutedEventArgs e) {
+        private void back_Click(object sender, BackRequestedEventArgs e) {
             if (Frame.CanGoBack) {
+                e.Handled = true;
                 Frame.GoBack();
             }
-
         }
     }
 }

@@ -18,6 +18,7 @@ using BelledonneCommunications.Linphone.Native;
 using Linphone.Model;
 using System.Collections.Generic;
 using Windows.ApplicationModel.Resources;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -35,6 +36,7 @@ namespace Linphone.Views {
         /// </summary>
         public AccountSettings() {
             this.InitializeComponent();
+            SystemNavigationManager.GetForCurrentView().BackRequested += back_Click;
 
             _settings.Load();
             Username.Text = _settings.Username;
@@ -122,6 +124,13 @@ namespace Linphone.Views {
             Expires.Text = "28800";
             AVPF.IsOn = true;
             linphoneAccount = true;
+        }
+
+        private void back_Click(object sender, BackRequestedEventArgs e) {
+            if (Frame.CanGoBack) {
+                e.Handled = true;
+                Frame.GoBack();
+            }
         }
     }
 }

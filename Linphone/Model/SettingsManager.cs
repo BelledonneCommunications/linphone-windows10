@@ -1049,12 +1049,16 @@ namespace Linphone.Model {
             MediaEncryptionToEnum = new Dictionary<string, MediaEncryption>()
             {
                 { "None", MediaEncryption.None },
-                { "SRTP", MediaEncryption.SRTP }
+                { "SRTP", MediaEncryption.SRTP },
+                { "ZRTP", MediaEncryption.ZRTP },
+                { "DTLS", MediaEncryption.DTLS }
             };
             EnumToMediaEncryption = new Dictionary<MediaEncryption, string>()
             {
                 { MediaEncryption.None, "None" },
-                { MediaEncryption.SRTP, "SRTP" }
+                { MediaEncryption.SRTP, "SRTP" },
+                { MediaEncryption.ZRTP, "ZRTP" },
+                { MediaEncryption.DTLS, "DTLS" }
             };
         }
 

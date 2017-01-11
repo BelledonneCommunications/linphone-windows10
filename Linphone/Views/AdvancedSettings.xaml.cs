@@ -22,6 +22,7 @@ using Windows.UI.Xaml.Navigation;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
 using BelledonneCommunications.Linphone.Native;
+using Windows.UI.Core;
 
 namespace Linphone.Views {
 
@@ -34,6 +35,7 @@ namespace Linphone.Views {
 
         public AdvancedSettings() {
             this.InitializeComponent();
+            SystemNavigationManager.GetForCurrentView().BackRequested += back_Click;
 
             _callSettings.Load();
             _networkSettings.Load();
@@ -45,11 +47,13 @@ namespace Linphone.Views {
             //vibrator.IsOn = (bool) _chatSettings.VibrateOnIncomingMessage;
             //resizeDown.IsOn = (bool) _chatSettings.ScaleDownSentPictures;
 
-            List<string> mediaEncryptions = new List<string>
-            {
-                ResourceLoader.GetForCurrentView().GetString("MediaEncryptionNone"),
-                ResourceLoader.GetForCurrentView().GetString("MediaEncryptionSRTP")
+            List<string> mediaEncryptions = new List<string> {
+                ResourceLoader.GetForCurrentView().GetString("MediaEncryptionNone")
             };
+
+            if (LinphoneManager.Instance.Core.IsMediaEncryptionSupported(MediaEncryption.SRTP))
+                mediaEncryptions.Add(ResourceLoader.GetForCurrentView().GetString("MediaEncryptionSRTP"));
+
             mediaEncryption.ItemsSource = mediaEncryptions;
             mediaEncryption.SelectedItem = _networkSettings.MEncryption;
 
@@ -167,6 +171,13 @@ namespace Linphone.Views {
 
         private void ResetLogs_Click(object sender, RoutedEventArgs e) {
             LinphoneManager.Instance.resetLogCollection();
+        }
+
+        private void back_Click(object sender, BackRequestedEventArgs e) {
+            if (Frame.CanGoBack) {
+                e.Handled = true;
+                Frame.GoBack();
+            }
         }
     }
 }

@@ -19,6 +19,7 @@ using Linphone.Model;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -37,6 +38,7 @@ namespace Linphone.Views {
         /// </summary>
         public VideoSettings() {
             this.InitializeComponent();
+            SystemNavigationManager.GetForCurrentView().BackRequested += back_Click;
 
             _callSettings.Load();
             VideoEnabled.IsOn = (bool)_callSettings.VideoEnabled;
@@ -54,7 +56,7 @@ namespace Linphone.Views {
 
             _codecsSettings.Load();
             foreach (PayloadType p in LinphoneManager.Instance.Core.VideoCodecs) {
-                if (p.Equals("H264")) {
+                if (p.MimeType.Equals("H264")) {
                     H264.Visibility = Visibility.Visible;
                 }
             }
@@ -104,6 +106,13 @@ namespace Linphone.Views {
         }
 
         private void save_Click_1(object sender, EventArgs e) {
+            if (Frame.CanGoBack) {
+                Frame.GoBack();
+            }
+        }
+
+        private void back_Click(object sender, BackRequestedEventArgs e) {
+            e.Handled = true;
             if (Frame.CanGoBack) {
                 Frame.GoBack();
             }
