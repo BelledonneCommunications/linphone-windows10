@@ -92,6 +92,21 @@
     <Content Include="Assets\rcfiles\pauline_tls_client_rc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\certificates\client\cert.pem">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\certificates\client\cert2-signed-by-other-ca.pem">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\certificates\client\cert2.pem">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\certificates\client\key.pem">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\certificates\client\key2.pem">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
@@ -355,6 +370,7 @@
     <PreBuildEvent>XCopy /I /Y $(ProjectDir)..\..\submodules\linphone\tester\messages.db $(ProjectDir)Assets\
 XCopy /I /Y $(ProjectDir)..\..\submodules\linphone\tester\tester_hosts $(ProjectDir)Assets\
 XCopy /I /Y $(ProjectDir)..\..\submodules\linphone\tester\certificates\altname $(ProjectDir)Assets\certificates\altname
+XCopy /I /Y $(ProjectDir)..\..\submodules\linphone\tester\certificates\client $(ProjectDir)Assets\certificates\client
 XCopy /I /Y $(ProjectDir)..\..\submodules\linphone\tester\certificates\cn $(ProjectDir)Assets\certificates\cn
 XCopy /I /Y $(ProjectDir)..\..\submodules\linphone\tester\images $(ProjectDir)Assets\images
 XCopy /I /Y $(ProjectDir)..\..\submodules\linphone\tester\rcfiles $(ProjectDir)Assets\rcfiles
