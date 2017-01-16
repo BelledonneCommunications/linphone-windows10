@@ -143,7 +143,11 @@ namespace LibLinphoneTester.DataModel
                 UnitTestSuite suite = new UnitTestSuite(tester.testSuiteName(i));
                 for (int j = 0; j < tester.nbTests(suite.Name); j++)
                 {
-                    suite.Cases.Add(new UnitTestCase(suite, tester.testName(suite.Name, j)));
+                    String test = tester.testName(suite.Name, j);
+                    if (test.Length > 0)
+                    {
+                        suite.Cases.Add(new UnitTestCase(suite, test));
+                    }
                 }
                 this.Suites.Add(suite);
             }
