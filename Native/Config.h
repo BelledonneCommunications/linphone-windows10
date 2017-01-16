@@ -1,5 +1,5 @@
 /*
-LpConfig.h
+Config.h
 Copyright (C) 2015  Belledonne Communications, Grenoble, France
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -41,21 +41,21 @@ namespace BelledonneCommunications
 			/// enabled=1
 			/// </example>
 			/// </summary>
-			public ref class LpConfig sealed
+			public ref class Config sealed
 			{
 			public:
 				/// <summary>
-				/// Creates a LpConfig object using the path to linphonerc files.
+				/// Creates a Config object using the path to linphonerc files.
 				/// </summary>
 				/// <param name="configPath">The path to the user configuration file that must be readable and writable</param>
 				/// <param name="factoryConfigPath">The path to the factory configuration file that only needs to be readable</param>
-				/// <returns>The created LpConfig</returns>
-				LpConfig(Platform::String^ configPath, Platform::String^ factoryConfigPath);
+				/// <returns>The created Config</returns>
+				Config(Platform::String^ configPath, Platform::String^ factoryConfigPath);
 
 				/// <summary>
-				/// Destructor of LpConfig object.
+				/// Destructor of Config object.
 				/// </summary>
-				virtual ~LpConfig();
+				virtual ~Config();
 
 				/// <summary>
 				/// Gets a boolean configuration item.
@@ -163,9 +163,9 @@ namespace BelledonneCommunications
 				friend class Utils;
 				friend ref class Core;
 
-				LpConfig(::LpConfig *config);
+				Config(::LinphoneConfig *config);
 
-				::LpConfig *config;
+				::LinphoneConfig *config;
 			};
 		}
 	}

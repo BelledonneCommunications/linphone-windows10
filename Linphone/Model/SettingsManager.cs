@@ -126,7 +126,7 @@ namespace Linphone.Model {
     /// Utility class used to handle application settings.
     /// </summary>
     public class ApplicationSettingsManager : SettingsManager, ISettingsManager {
-        private LpConfig Config;
+        private Config Config;
 
         #region Constants settings names
         private const string LogLevelKeyName = "LogLevel";
@@ -139,7 +139,7 @@ namespace Linphone.Model {
         /// </summary>
         public ApplicationSettingsManager() {
             if (LinphoneManager.Instance.Core == null) {
-                Config = new LpConfig(LinphoneManager.Instance.GetConfigPath(), LinphoneManager.Instance.GetFactoryConfigPath());
+                Config = new Config(LinphoneManager.Instance.GetConfigPath(), LinphoneManager.Instance.GetFactoryConfigPath());
             } else {
                 Config = LinphoneManager.Instance.Core.Config;
             }
@@ -986,7 +986,7 @@ namespace Linphone.Model {
     /// Utility class to handle network settings.
     /// </summary>
     public class NetworkSettingsManager : SettingsManager, ISettingsManager {
-        private LpConfig Config;
+        private Config Config;
         private Dictionary<string, string> TunnelModeToString;
         private Dictionary<string, FirewallPolicy> FirewallPolicyToEnum;
         private Dictionary<string, MediaEncryption> MediaEncryptionToEnum;
@@ -1009,7 +1009,7 @@ namespace Linphone.Model {
         /// </summary>
         public NetworkSettingsManager() {
             if (LinphoneManager.Instance.Core == null) {
-                //  Config = LinphoneManager.Instance.Core.CreateLpConfig(InitManager.GetConfigPath(), InitManager.GetFactoryConfigPath());
+                //  Config = LinphoneManager.Instance.Core.CreateConfig(InitManager.GetConfigPath(), InitManager.GetFactoryConfigPath());
             } else {
                 Config = LinphoneManager.Instance.Core.Config;
             }

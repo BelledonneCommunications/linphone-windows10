@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "ChatMessage.h"
 #include "ChatRoom.h"
 #include "Core.h"
-#include "LpConfig.h"
+#include "Config.h"
 #include "PayloadType.h"
 #include "ProxyConfig.h"
 #include "Transports.h"
@@ -143,12 +143,12 @@ Platform::Object^ Utils::CreateCallStats(void *call, int mediaType)
 
 Platform::Object^ Utils::CreateLpConfig(void *config)
 {
-	return ref new LpConfig((::LpConfig *)config);
+	return ref new Config((::LinphoneConfig *)config);
 }
 
 Platform::Object^ Utils::CreateLpConfig(Platform::String^ configPath, Platform::String^ factoryConfigPath)
 {
-	return ref new LpConfig(configPath, factoryConfigPath);
+	return ref new Config(configPath, factoryConfigPath);
 }
 
 Platform::Object^ Utils::CreatePayloadType(void *pt)

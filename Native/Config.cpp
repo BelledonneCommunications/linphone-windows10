@@ -1,5 +1,5 @@
 /*
-LpConfig.cpp
+Config.cpp
 Copyright (C) 2015  Belledonne Communications, Grenoble, France
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -15,19 +15,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include "ApiLock.h"
-#include "LpConfig.h"
+#include "Config.h"
 
-bool BelledonneCommunications::Linphone::Native::LpConfig::GetBool(Platform::String^ section, Platform::String^ key, bool defaultValue)
+bool BelledonneCommunications::Linphone::Native::Config::GetBool(Platform::String^ section, Platform::String^ key, bool defaultValue)
 {
 	return (GetInt(section, key, defaultValue) == TRUE);
 }
 
-void BelledonneCommunications::Linphone::Native::LpConfig::SetBool(Platform::String^ section, Platform::String^ key, bool value)
+void BelledonneCommunications::Linphone::Native::Config::SetBool(Platform::String^ section, Platform::String^ key, bool value)
 {
 	SetInt(section, key, (int)value);
 }
 
-int BelledonneCommunications::Linphone::Native::LpConfig::GetInt(Platform::String^ section, Platform::String^ key, int defaultValue)
+int BelledonneCommunications::Linphone::Native::Config::GetInt(Platform::String^ section, Platform::String^ key, int defaultValue)
 {
 	API_LOCK;
 	const char *ccSection = Utils::pstoccs(section);
@@ -38,7 +38,7 @@ int BelledonneCommunications::Linphone::Native::LpConfig::GetInt(Platform::Strin
 	return value;
 }
 
-void BelledonneCommunications::Linphone::Native::LpConfig::SetInt(Platform::String^ section, Platform::String^ key, int value)
+void BelledonneCommunications::Linphone::Native::Config::SetInt(Platform::String^ section, Platform::String^ key, int value)
 {
 	API_LOCK;
 	const char *ccSection = Utils::pstoccs(section);
@@ -48,7 +48,7 @@ void BelledonneCommunications::Linphone::Native::LpConfig::SetInt(Platform::Stri
 	delete(ccSection);
 }
 
-int64 BelledonneCommunications::Linphone::Native::LpConfig::GetInt64(Platform::String^ section, Platform::String^ key, int64 defaultValue)
+int64 BelledonneCommunications::Linphone::Native::Config::GetInt64(Platform::String^ section, Platform::String^ key, int64 defaultValue)
 {
 	API_LOCK;
 	const char *ccSection = Utils::pstoccs(section);
@@ -59,7 +59,7 @@ int64 BelledonneCommunications::Linphone::Native::LpConfig::GetInt64(Platform::S
 	return value;
 }
 
-void BelledonneCommunications::Linphone::Native::LpConfig::SetInt64(Platform::String^ section, Platform::String^ key, int64 value)
+void BelledonneCommunications::Linphone::Native::Config::SetInt64(Platform::String^ section, Platform::String^ key, int64 value)
 {
 	API_LOCK;
 	const char *ccSection = Utils::pstoccs(section);
@@ -69,7 +69,7 @@ void BelledonneCommunications::Linphone::Native::LpConfig::SetInt64(Platform::St
 	delete(ccSection);
 }
 
-float BelledonneCommunications::Linphone::Native::LpConfig::GetFloat(Platform::String^ section, Platform::String^ key, float defaultValue)
+float BelledonneCommunications::Linphone::Native::Config::GetFloat(Platform::String^ section, Platform::String^ key, float defaultValue)
 {
 	API_LOCK;
 	const char *ccSection = Utils::pstoccs(section);
@@ -80,7 +80,7 @@ float BelledonneCommunications::Linphone::Native::LpConfig::GetFloat(Platform::S
 	return value;
 }
 
-void BelledonneCommunications::Linphone::Native::LpConfig::SetFloat(Platform::String^ section, Platform::String^ key, float value)
+void BelledonneCommunications::Linphone::Native::Config::SetFloat(Platform::String^ section, Platform::String^ key, float value)
 {
 	API_LOCK;
 	const char *ccSection = Utils::pstoccs(section);
@@ -90,7 +90,7 @@ void BelledonneCommunications::Linphone::Native::LpConfig::SetFloat(Platform::St
 	delete(ccSection);
 }
 
-Platform::String^ BelledonneCommunications::Linphone::Native::LpConfig::GetString(Platform::String^ section, Platform::String^ key, Platform::String^ defaultValue)
+Platform::String^ BelledonneCommunications::Linphone::Native::Config::GetString(Platform::String^ section, Platform::String^ key, Platform::String^ defaultValue)
 {
 	API_LOCK;
 	const char *ccSection = Utils::pstoccs(section);
@@ -104,7 +104,7 @@ Platform::String^ BelledonneCommunications::Linphone::Native::LpConfig::GetStrin
 	return value;
 }
 
-void BelledonneCommunications::Linphone::Native::LpConfig::SetString(Platform::String^ section, Platform::String^ key, Platform::String^ value)
+void BelledonneCommunications::Linphone::Native::Config::SetString(Platform::String^ section, Platform::String^ key, Platform::String^ value)
 {
 	API_LOCK;
 	const char *ccSection = Utils::pstoccs(section);
@@ -116,7 +116,7 @@ void BelledonneCommunications::Linphone::Native::LpConfig::SetString(Platform::S
 	delete(ccSection);
 }
 
-Platform::Array<int>^ BelledonneCommunications::Linphone::Native::LpConfig::GetRange(Platform::String^ section, Platform::String^ key, const Platform::Array<int>^ defaultValue)
+Platform::Array<int>^ BelledonneCommunications::Linphone::Native::Config::GetRange(Platform::String^ section, Platform::String^ key, const Platform::Array<int>^ defaultValue)
 {
 	API_LOCK;
 	Platform::Array<int>^ range = ref new Platform::Array<int>(2);
@@ -128,7 +128,7 @@ Platform::Array<int>^ BelledonneCommunications::Linphone::Native::LpConfig::GetR
 	return range;
 }
 
-void BelledonneCommunications::Linphone::Native::LpConfig::SetRange(Platform::String^ section, Platform::String^ key, const Platform::Array<int>^ value)
+void BelledonneCommunications::Linphone::Native::Config::SetRange(Platform::String^ section, Platform::String^ key, const Platform::Array<int>^ value)
 {
 	API_LOCK;
 	const char *ccSection = Utils::pstoccs(section);
@@ -138,13 +138,13 @@ void BelledonneCommunications::Linphone::Native::LpConfig::SetRange(Platform::St
 	delete(ccSection);
 }
 
-BelledonneCommunications::Linphone::Native::LpConfig::LpConfig(::LpConfig *config) :
+BelledonneCommunications::Linphone::Native::Config::Config(::LinphoneConfig *config) :
 	config(config)
 {
 	lp_config_ref(config);
 }
 
-BelledonneCommunications::Linphone::Native::LpConfig::LpConfig(Platform::String^ configPath, Platform::String^ factoryConfigPath)
+BelledonneCommunications::Linphone::Native::Config::Config(Platform::String^ configPath, Platform::String^ factoryConfigPath)
 {
 	API_LOCK;
 	const char *ccConfigPath = Utils::pstoccs(configPath);
@@ -154,7 +154,7 @@ BelledonneCommunications::Linphone::Native::LpConfig::LpConfig(Platform::String^
 	delete(ccConfigPath);
 }
 
-BelledonneCommunications::Linphone::Native::LpConfig::~LpConfig()
+BelledonneCommunications::Linphone::Native::Config::~Config()
 {
 	if (this->config != nullptr) {
 		lp_config_unref(this->config);

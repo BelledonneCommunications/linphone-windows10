@@ -51,12 +51,12 @@ set(SOURCE_FILES
 	ChatMessageListener.h
 	ChatRoom.cpp
 	ChatRoom.h
+	Config.cpp
+	Config.h
 	Core.cpp
 	Core.h
 	CoreListener.h
 	Enums.h
-	LpConfig.cpp
-	LpConfig.h
 	PayloadType.cpp
 	PayloadType.h
 	ProxyConfig.cpp

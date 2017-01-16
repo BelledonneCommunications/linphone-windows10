@@ -44,7 +44,7 @@ namespace BelledonneCommunications
 			ref class CallStats;
 			ref class ChatRoom;
 			ref class Core;
-			ref class LpConfig;
+			ref class Config;
 			ref class PayloadType;
 			ref class ProxyConfig;
 			ref class Transports;
@@ -61,7 +61,7 @@ namespace BelledonneCommunications
 			{
 			public:
 				Core(CoreListener^ coreListener);
-				Core(CoreListener^ coreListener, LpConfig^ config);
+				Core(CoreListener^ coreListener, Config^ config);
 				virtual ~Core();
 
 
@@ -216,11 +216,11 @@ namespace BelledonneCommunications
 				}
 
 				/// <summary>
-				/// Gets the LpConfig object to read/write to the config file: useful if you wish to extend the config file with your own sections.
+				/// Gets the Config object to read/write to the config file: useful if you wish to extend the config file with your own sections.
 				/// </summary>
-				property LpConfig^ Config
+				property BelledonneCommunications::Linphone::Native::Config^ Config
 				{
-					LpConfig^ get();
+					BelledonneCommunications::Linphone::Native::Config^ get();
 				}
 
 				/// <summary>
@@ -1072,7 +1072,7 @@ namespace BelledonneCommunications
 
 				::LinphoneCore *lc;
 				BelledonneCommunications::Linphone::Native::CoreListener^ listener;
-				LpConfig^ config;
+				BelledonneCommunications::Linphone::Native::Config^ config;
 				BelledonneCommunications::Linphone::Native::VoipCallController^ voipCallController;
 
 				static OutputTraceLevel logLevel;

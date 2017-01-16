@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Core.h"
 #include "CoreListener.h"
 #include "Enums.h"
-#include "LpConfig.h"
+#include "Config.h"
 #include "PayloadType.h"
 #include "ProxyConfig.h"
 #include "Transports.h"
@@ -275,11 +275,11 @@ int Core::ConferenceSize::get()
 	return linphone_core_get_conference_size(this->lc);
 }
 
-BelledonneCommunications::Linphone::Native::LpConfig^ Core::Config::get()
+BelledonneCommunications::Linphone::Native::Config^ Core::Config::get()
 {
 	API_LOCK;
-	::LpConfig *config = linphone_core_get_config(this->lc);
-	return (LpConfig^)Utils::CreateLpConfig(config);
+	::LinphoneConfig *config = linphone_core_get_config(this->lc);
+	return (BelledonneCommunications::Linphone::Native::Config^)Utils::CreateLpConfig(config);
 }
 
 CoreListener^ Core::CoreListener::get()
@@ -1452,13 +1452,13 @@ void log_collection_upload_progress_indication(::LinphoneCore *lc, size_t offset
 }
 
 Core::Core(BelledonneCommunications::Linphone::Native::CoreListener^ coreListener)
-	: lc(nullptr), listener(coreListener), config(ref new LpConfig(nullptr, nullptr)),
+	: lc(nullptr), listener(coreListener), config(ref new BelledonneCommunications::Linphone::Native::Config(nullptr, nullptr)),
 	voipCallController(ref new BelledonneCommunications::Linphone::Native::VoipCallController())
 {
 	Init();
 }
 
-Core::Core(BelledonneCommunications::Linphone::Native::CoreListener^ coreListener, BelledonneCommunications::Linphone::Native::LpConfig^ config)
+Core::Core(BelledonneCommunications::Linphone::Native::CoreListener^ coreListener, BelledonneCommunications::Linphone::Native::Config^ config)
 	: lc(nullptr), listener(coreListener), config(config),
 	voipCallController(ref new BelledonneCommunications::Linphone::Native::VoipCallController())
 {

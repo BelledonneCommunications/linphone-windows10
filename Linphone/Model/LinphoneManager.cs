@@ -54,7 +54,7 @@ namespace Linphone.Model {
             get {
                 if (_core == null) {
                     EnableLogCollection(true);
-                    LpConfig config = new LpConfig(GetConfigPath(), GetFactoryConfigPath());
+                    Config config = new Config(GetConfigPath(), GetFactoryConfigPath());
                     _core = new Core(this, config);
                 }
                 return _core;
