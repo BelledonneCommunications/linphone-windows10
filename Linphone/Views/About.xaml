@@ -61,7 +61,7 @@
                 TextAlignment="Center"
                 Margin="0,10,0,0">
                     GNU General Public License V2 <LineBreak/>
-                    © 2010-2016 Belledonne Communications
+                    © 2010-2017 Belledonne Communications
             </TextBlock>
                 
         </StackPanel>
