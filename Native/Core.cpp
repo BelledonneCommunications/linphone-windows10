@@ -1484,7 +1484,6 @@ void Core::Init()
 	RefToPtrProxy<Core^> *proxy = new RefToPtrProxy<Core^>(this);
 	this->lc = linphone_core_new_with_config(vtable, config ? config->config : NULL, proxy);
 
-	linphone_core_set_ring(this->lc, nullptr);
 	linphone_core_use_preview_window(this->lc, TRUE);
 }
 
