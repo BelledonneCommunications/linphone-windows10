@@ -22,6 +22,7 @@ using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml;
 using Windows.UI.Core;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace Linphone.Views {
 
@@ -103,8 +104,10 @@ namespace Linphone.Views {
 
         private void Answer_Click(object sender, RoutedEventArgs e) {
             if (LinphoneManager.Instance.Core.CurrentCall != null) {
-                LinphoneManager.Instance.Core.AcceptCall(LinphoneManager.Instance.Core.CurrentCall);
-                Frame.Navigate(typeof(Views.InCall), _callingNumber);
+                List<string> parameters = new List<string>();
+                parameters.Add(_callingNumber);
+                parameters.Add("incomingCall");
+                Frame.Navigate(typeof(Views.InCall), parameters);
             }
         }
 

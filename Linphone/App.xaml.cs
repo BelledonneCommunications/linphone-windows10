@@ -24,6 +24,7 @@ using BelledonneCommunications.Linphone.Native;
 using Linphone.Model;
 using System.Diagnostics;
 using Windows.UI.Core;
+using System.Collections.Generic;
 
 namespace Linphone
 {
@@ -96,7 +97,9 @@ namespace Linphone
         public void NewCallStarted(string callerNumber)
         {
             Debug.WriteLine("[CallListener] NewCallStarted " + callerNumber);
-            rootFrame.Navigate(typeof(Views.InCall), callerNumber);
+            List<String> parameters = new List<String>();
+            parameters.Add(callerNumber);
+            rootFrame.Navigate(typeof(Views.InCall), parameters);
         }
 
         public void PauseStateChanged(Call call, bool isCallPaused, bool isCallPausedByRemote)
@@ -228,7 +231,9 @@ namespace Linphone
                     if (addr != null && addr.AsStringUriOnly().Equals(call.RemoteAddress.AsStringUriOnly()))
                     {
                         LinphoneManager.Instance.Core.AcceptCall(call);
-                        rootFrame.Navigate(typeof(Views.InCall), call.RemoteAddress.AsString());
+                        List<String> parameters = new List<String>();
+                        parameters.Add(call.RemoteAddress.AsString());
+                        rootFrame.Navigate(typeof(Views.InCall), parameters);
                         acceptCall = false;
                     }
                 }

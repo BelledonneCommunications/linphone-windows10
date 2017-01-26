@@ -22,6 +22,7 @@ using BelledonneCommunications.Linphone.Native;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
 using System.ComponentModel;
+using System.Collections.Generic;
 
 namespace Linphone.Views {
 
@@ -146,8 +147,9 @@ namespace Linphone.Views {
 
             if (LinphoneManager.Instance.Core.CallsNb > 0) {
                 Call call = LinphoneManager.Instance.Core.CurrentCall;
-                String uri = call.RemoteAddress.AsStringUriOnly();
-                Frame.Navigate(typeof(Views.InCall), uri);
+                List<String> parameters = new List<String>();
+                parameters.Add(call.RemoteAddress.AsStringUriOnly());
+                Frame.Navigate(typeof(Views.InCall), parameters);
             }
 
             if (LinphoneManager.Instance.GetUnreadMessageCount() > 0) {

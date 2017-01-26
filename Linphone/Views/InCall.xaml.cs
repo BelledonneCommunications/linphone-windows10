@@ -17,6 +17,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using BelledonneCommunications.Linphone.Native;
 using Linphone.Model;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using Windows.ApplicationModel.Resources;
@@ -53,7 +54,7 @@ namespace Linphone.Views {
                 VideoGrid.Visibility = Visibility.Collapsed;
             }
 
-            if (LinphoneManager.Instance.Core.CurrentCall.State == CallState.StreamsRunning)
+                if (LinphoneManager.Instance.Core.CurrentCall.State == CallState.StreamsRunning)
                 Status.Text = "00:00:00";
 
             displayOrientation = ApplicationView.GetForCurrentView().Orientation;
@@ -137,12 +138,17 @@ namespace Linphone.Views {
         #endregion
 
         protected override void OnNavigatedTo(NavigationEventArgs nee) {
+            List<string> parameters;
             base.OnNavigatedTo(nee);
+            parameters = nee.Parameter as List<string>;
 
             LinphoneManager.Instance.CallStateChangedEvent += CallStateChanged;
 
-            if ((nee.Parameter as String).Contains("sip")) {
-                String calledNumber = nee.Parameter as String;
+            if (parameters == null)
+                return;
+
+            if (parameters.Count >= 1 && parameters[0].Contains("sip")) {
+                String calledNumber = parameters[0];
                 Address address = LinphoneManager.Instance.Core.InterpretURL(calledNumber);
                 calledNumber = String.Format("{0}@{1}", address.UserName, address.Domain);
                 Contact.Text = calledNumber;
@@ -151,6 +157,15 @@ namespace Linphone.Views {
                     // ContactManager cm = ContactManager.Instance;
                     // cm.ContactFound += cm_ContactFound;
                     // cm.FindContact(calledNumber);
+                }
+            }
+            if (parameters.Count >= 2 && parameters[1].Contains("incomingCall")) {
+                if (LinphoneManager.Instance.Core.CurrentCall != null) {
+                    LinphoneManager.Instance.Core.AcceptCall(LinphoneManager.Instance.Core.CurrentCall);
+                } else {
+                    if (Frame.CanGoBack) {
+                        Frame.GoBack();
+                    }
                 }
             }
         }
