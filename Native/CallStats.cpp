@@ -120,17 +120,17 @@ float CallStats::GetReceiverLossRate(const ::LinphoneCallStats *stats)
 
 float CallStats::GetSenderInterarrivalJitter(const ::LinphoneCallStats *stats)
 {
-	return linphone_call_stats_get_sender_interarrival_jitter(stats, this->call);
+	return linphone_call_stats_get_sender_interarrival_jitter(stats);
 }
 
 float CallStats::GetReceiverInterarrivalJitter(const ::LinphoneCallStats *stats)
 {
-	return linphone_call_stats_get_receiver_interarrival_jitter(stats, this->call);
+	return linphone_call_stats_get_receiver_interarrival_jitter(stats);
 }
 
 int64 CallStats::GetLatePacketsCumulativeNumber(const ::LinphoneCallStats *stats)
 {
-	return linphone_call_stats_get_late_packets_cumulative_number(stats, this->call);
+	return linphone_call_stats_get_late_packets_cumulative_number(stats);
 }
 
 void CallStats::FillStats(const ::LinphoneCallStats *stats)
