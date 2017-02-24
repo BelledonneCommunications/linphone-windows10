@@ -17,8 +17,6 @@ video_jitt_comp=60
 nortp_timeout=30
 
 [sound]
-remote_ring=Assets/Sounds/ringback.wav
-local_ring=Assets/Sounds/rings/notes_of_the_optimistic.mkv
 dtmf_player_amp=0.1
 
 [misc]

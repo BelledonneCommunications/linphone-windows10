@@ -53,6 +53,7 @@ namespace Linphone.Model {
         public Core Core {
             get {
                 if (_core == null) {
+                    ConfigurePaths();
                     EnableLogCollection(true);
                     Config config = new Config(GetConfigPath(), GetFactoryConfigPath());
                     _core = new Core(this, config);
@@ -130,6 +131,17 @@ namespace Linphone.Model {
                     Core.Iterate();
                 });
             }, period);
+        }
+
+        private void ConfigurePaths() {
+            string packagePath = Windows.ApplicationModel.Package.Current.InstalledLocation.Path;
+            string assetsPath = packagePath + "\\Assets";
+            Factory.TopResourcesDir = assetsPath;
+            Factory.DataResourcesDir = assetsPath;
+            Factory.SoundResourcesDir = assetsPath;
+            Factory.RingResourcesDir = assetsPath;
+            Factory.ImageResourcesDir = assetsPath;
+            Factory.MspluginsDir = ".";
         }
 
         public void EnableLogCollection(bool enable) {

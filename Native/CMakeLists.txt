@@ -57,6 +57,8 @@ set(SOURCE_FILES
 	Core.h
 	CoreListener.h
 	Enums.h
+	Factory.cpp
+	Factory.h
 	PayloadType.cpp
 	PayloadType.h
 	ProxyConfig.cpp

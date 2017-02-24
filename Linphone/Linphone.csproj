@@ -94,7 +94,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <Content Include="Assets\images\nowebcamCIF.jpg">
+    <Content Include="Assets\nowebcamCIF.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\linphonerc" />
@@ -102,7 +102,7 @@
     <Content Include="Assets\avatar.png" />
     <Content Include="Assets\avatar2.png" />
     <Content Include="Assets\linphone_user.png" />
-    <Content Include="Assets\Sounds\rings\notes_of_the_optimistic.mkv" />
+    <Content Include="Assets\notes_of_the_optimistic.mkv" />
     <Content Include="Assets\rootca.pem" />
     <None Include="Linphone_StoreKey.pfx" />
     <None Include="project.json" />
@@ -232,13 +232,13 @@
     <Content Include="Assets\led_disconnected.png" />
     <Content Include="Assets\led_error.png" />
     <Content Include="Assets\led_inprogress.png" />
-    <Content Include="Assets\Sounds\incoming_chat.wav">
+    <Content Include="Assets\incoming_chat.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Sounds\ringback.wav">
+    <Content Include="Assets\ringback.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Sounds\toy-mono.wav">
+    <Content Include="Assets\dont_wait_too_long.mkv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -392,11 +392,11 @@
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
-      XCopy /I /Y $(ProjectDir)..\submodules\linphone\mediastreamer2\src\voip\nowebcamCIF.jpg $(ProjectDir)Assets\images
-      XCopy /I /Y $(ProjectDir)..\submodules\linphone\share\incoming_chat.wav $(ProjectDir)Assets\Sounds
-      XCopy /I /Y $(ProjectDir)..\submodules\linphone\share\toy-mono.wav $(ProjectDir)Assets\Sounds
-      XCopy /I /Y $(ProjectDir)..\submodules\linphone\share\ringback.wav $(ProjectDir)Assets\Sounds
-      XCopy /I /Y $(ProjectDir)..\submodules\linphone\share\rings\notes_of_the_optimistic.mkv $(ProjectDir)Assets\Sounds\rings</PreBuildEvent>
+      XCopy /I /Y $(ProjectDir)..\submodules\linphone\mediastreamer2\src\voip\nowebcamCIF.jpg $(ProjectDir)Assets
+      XCopy /I /Y $(ProjectDir)..\submodules\linphone\share\incoming_chat.wav $(ProjectDir)Assets
+      XCopy /I /Y $(ProjectDir)..\submodules\linphone\share\dont_wait_too_long.mkv $(ProjectDir)Assets
+      XCopy /I /Y $(ProjectDir)..\submodules\linphone\share\ringback.wav $(ProjectDir)Assets
+      XCopy /I /Y $(ProjectDir)..\submodules\linphone\share\rings\notes_of_the_optimistic.mkv $(ProjectDir)Assets</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
