@@ -1225,6 +1225,13 @@ void Core::SetUserAgent(Platform::String^ name, Platform::String^ version)
 	delete(ua);
 }
 
+Call^ Core::StartReferedCall(Call^ call, CallParams^ params)
+{
+	API_LOCK;
+	::LinphoneCall *ccall = linphone_core_start_refered_call(this->lc, call->call, params->params);
+	return (Call^)Utils::GetCall(ccall);
+}
+
 void Core::StopDtmf()
 {
 	API_LOCK;
@@ -1247,6 +1254,21 @@ void Core::TerminateConference()
 {
 	API_LOCK;
 	linphone_core_terminate_conference(this->lc);
+}
+
+int Core::TransferCall(Call^ call, Platform::String^ referTo)
+{
+	API_LOCK;
+	const char *refer_to = Utils::pstoccs(referTo);
+	int ret = linphone_core_transfer_call(this->lc, call->call, refer_to);
+	delete refer_to;
+	return ret;
+}
+
+int Core::TransferCallToAnother(Call^ call, Call^ dest)
+{
+	API_LOCK;
+	return linphone_core_transfer_call_to_another(this->lc, call->call, dest->call);
 }
 
 void Core::UpdateCall(Call^ call, CallParams^ params)
@@ -1324,6 +1346,18 @@ void registration_state_changed(::LinphoneCore *lc, ::LinphoneProxyConfig *cfg, 
 		RefToPtrProxy<ProxyConfig^> *proxy = reinterpret_cast< RefToPtrProxy<ProxyConfig^> *>(linphone_proxy_config_get_user_data(cfg));
 		ProxyConfig^ config = (proxy) ? proxy->Ref() : nullptr;
 		listener->RegistrationStateChanged(config, state, Utils::cctops(msg));
+	}
+}
+
+void transfer_state_changed(::LinphoneCore *lc, ::LinphoneCall *ctransfered, ::LinphoneCallState new_call_state)
+{
+	Core^ lCore = (Core^)Utils::GetCore(lc);
+	CoreListener^ listener = lCore->CoreListener;
+	if (listener != nullptr) {
+		CallState newCallState = (CallState)new_call_state;
+		RefToPtrProxy<Call^> *proxy = reinterpret_cast< RefToPtrProxy<Call^> *>(linphone_call_get_user_data(ctransfered));
+		Call^ transfered = (proxy) ? proxy->Ref() : nullptr;
+		listener->TransferStateChanged(transfered, newCallState);
 	}
 }
 
@@ -1471,6 +1505,7 @@ void Core::Init()
 	memset (vtable, 0, sizeof(LinphoneCoreVTable));
 	vtable->global_state_changed = global_state_changed;
 	vtable->registration_state_changed = registration_state_changed;
+	vtable->transfer_state_changed = transfer_state_changed;
 	vtable->call_state_changed = call_state_changed;
 	vtable->auth_info_requested = auth_info_requested;
 	vtable->message_received = message_received;

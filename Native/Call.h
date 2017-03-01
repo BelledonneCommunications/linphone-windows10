@@ -157,6 +157,16 @@ namespace BelledonneCommunications
 				}
 
 				/// <summary>
+				/// Returns true if this calls has received a transfer that has not been executed yet.
+				/// Pending transfers are executed when this call is being paused or closed, locally or by remote endpoint.
+				/// If the call is already paused while receiving the transfer request, the transfer immediately occurs.
+				/// </summary>
+				property Platform::Boolean HasTransferPending
+				{
+					Platform::Boolean get();
+				}
+
+				/// <summary>
 				/// Tells whether the call is in conference or not.
 				/// </summary>
 				property Platform::Boolean IsInConference
@@ -199,6 +209,14 @@ namespace BelledonneCommunications
 				}
 
 				/// <summary>
+				/// Gets the refer-to uri (if the call was transfered)
+				/// </summary>
+				property Platform::String^ ReferTo
+				{
+					Platform::String^ get();
+				}
+
+				/// <summary>
 				/// Gets the remote Address.
 				/// </summary>
 				property Address^ RemoteAddress
@@ -233,11 +251,47 @@ namespace BelledonneCommunications
 				}
 
 				/// <summary>
+				/// Returns the call object this call is replacing, if any.
+				/// Call replacement can occur during call transfers.
+				/// By default, the core automatically terminates the replaced call and accept the new one.
+				/// This function allows the application to know whether a new incoming call is a one that replaces another one.
+				/// </summary>
+				property Call^ ReplacedCall
+				{
+					Call^ get();
+				}
+
+				/// <summary>
 				/// Gets the CallState of the call (StreamRunning, IncomingReceived, OutgoingProgress, ...).
 				/// </summary>
 				property CallState State
 				{
 					CallState get();
+				}
+
+				/// <summary>
+				/// Gets the transferer if this call was started automatically as a result of an incoming transfer request.
+				/// The call in which the transfer request was received is returned in this case.
+				/// </summary>
+				property Call^ TransfererCall
+				{
+					Call^ get();
+				}
+
+				/// <summary>
+				/// Returns the current transfer state, if a transfer has been initiated from this call.
+				/// </summary>
+				property CallState TransferState
+				{
+					CallState get();
+				}
+
+				/// <summary>
+				/// When this call has received a transfer request, returns the new call that was automatically created as a result of the transfer.
+				/// </summary>
+				property Call^ TransferTargetCall
+				{
+					Call^ get();
 				}
 
 				/// <summary>

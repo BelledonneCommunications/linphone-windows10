@@ -122,6 +122,12 @@ void Call::EchoLimiterEnabled::set(Platform::Boolean enable)
 	linphone_call_enable_echo_limiter(this->call, enable);
 }
 
+Platform::Boolean Call::HasTransferPending::get()
+{
+	API_LOCK;
+	return (linphone_call_has_transfer_pending(this->call) == TRUE);
+}
+
 Platform::Boolean Call::IsInConference::get()
 {
 	API_LOCK;
@@ -163,6 +169,12 @@ Reason Call::Reason::get()
 	return (BelledonneCommunications::Linphone::Native::Reason)linphone_call_get_reason(this->call);
 }
 
+Platform::String^ Call::ReferTo::get()
+{
+	API_LOCK;
+	return Utils::cctops(linphone_call_get_refer_to(this->call));
+}
+
 Platform::String^ Call::RemoteContact::get()
 {
 	API_LOCK;
@@ -188,10 +200,34 @@ Platform::String^ Call::RemoteUserAgent::get()
 	return Utils::cctops(linphone_call_get_remote_user_agent(this->call));
 }
 
+Call^ Call::ReplacedCall::get()
+{
+	API_LOCK;
+	return (Call^)Utils::GetCall((void *)linphone_call_get_replaced_call(this->call));
+}
+
 CallState Call::State::get()
 {
 	API_LOCK;
 	return (CallState)linphone_call_get_state(this->call);
+}
+
+Call^ Call::TransfererCall::get()
+{
+	API_LOCK;
+	return (Call^)Utils::GetCall((void *)linphone_call_get_transferer_call(this->call));
+}
+
+CallState Call::TransferState::get()
+{
+	API_LOCK;
+	return (CallState)linphone_call_get_transfer_state(this->call);
+}
+
+Call^ Call::TransferTargetCall::get()
+{
+	API_LOCK;
+	return (Call^)Utils::GetCall((void *)linphone_call_get_transfer_target_call(this->call));
 }
 
 CallStats^ Call::VideoStats::get()

@@ -1025,6 +1025,15 @@ namespace BelledonneCommunications
 				void SetUserAgent(Platform::String^ name, Platform::String^ version);
 
 				/// <summary>
+				/// Start a new call as a consequence of a transfer request received from a call.
+				/// This function is for advanced usage: the execution of transfers is automatically managed by the LinphoneCore. However if an application
+				/// wants to have control over the call parameters for the new call, it should call this function immediately during the LinphoneCallRefered notification.
+				/// </summary>
+				/// <param name="call">A call that has just been notified about LinphoneCallRefered state event</param>
+				/// <param name="params">The call parameters to be applied to the new call</param>
+				Call^ StartReferedCall(Call^ call, CallParams^ params);
+
+				/// <summary>
 				/// Stops the current playing DTMF.
 				/// </summary>
 				void StopDtmf();
@@ -1045,6 +1054,35 @@ namespace BelledonneCommunications
 				/// All the calls that were merged to the conference are terminated, and the conference resources are destroyed.
 				/// </summary>
 				void TerminateConference();
+
+				/// <summary>
+				/// Performs a simple call transfer to the specified destination.
+				/// The remote endpoint is expected to issue a new call to the specified destination.
+				/// The current call remains active and thus can be later paused or terminated.
+				/// It is possible to follow the progress of the transfer provided that transferee sends notification about it.
+				/// In this case, the transfer_state_changed callback of the LinphoneCoreVTable is invoked to notify of the state of the new call at the other party.
+				/// The notified states are LinphoneCallOutgoingInit, LinphoneCallOutgoingProgress, LinphoneCallOutgoingRinging and LinphoneCallConnected.
+				/// </summary>
+				/// <param name="call">The call to be transfered</param>
+				/// <param name="referTo">The destination the call is to be refered to</param>
+				/// <returns>0 on success, -1 on failure</returns>
+				int TransferCall(Call^ call, Platform::String^ referTo);
+
+				/// <summary>
+				/// Transfers a call to destination of another running call. This is used for "attended transfer" scenarios.
+				/// The transfered call is supposed to be in paused state, so that it is able to accept the transfer immediately.
+				/// The destination call is a call previously established to introduce the transfered person.
+				/// This method will send a transfer request to the transfered person.The phone of the transfered is then
+				/// expected to automatically call to the destination of the transfer.The receiver of the transfer will then automatically
+				/// close the call with us(the 'dest' call).
+				/// It is possible to follow the progress of the transfer provided that transferee sends notification about it.
+				/// In this case, the transfer_state_changed callback of the LinphoneCoreVTable is invoked to notify of the state of the new call at the other party.
+				/// The notified states are LinphoneCallOutgoingInit, LinphoneCallOutgoingProgress, LinphoneCallOutgoingRinging and LinphoneCallConnected.
+				/// </summary>
+				/// <param name="call">A running call you want to transfer</param>
+				/// <param name="dest">A running call whose remote person will receive the transfer</param>
+				/// <returns>0 on success, -1 on failure</returns>
+				int TransferCallToAnother(Call^ call, Call^ dest);
 
 				/// <summary>
 				/// Updates the given call with the given params if the remote agrees.

@@ -120,6 +120,13 @@ namespace BelledonneCommunications
 				/// <param name="state">The new registration state for the proxy config</param>
 				/// <param name="message">A message describing the new registration state</param>
 				void RegistrationStateChanged(ProxyConfig^ config, RegistrationState state, Platform::String^ message);
+
+				/// <summary>
+				/// Callback for notifying progresses of transfers.
+				/// </summary>
+				/// <param name="transfered">The call that was transfered</param>
+				/// <param name="newCallState">The state of the call to transfer target at the far end</param>
+				void TransferStateChanged(Call^ transfered, CallState newCallState);
 			};
 		}
 	}
