@@ -646,6 +646,10 @@ namespace Linphone.Model {
             });
         }
 
+        void CoreListener.TransferStateChanged(Call call, CallState state) {
+            //throw new NotImplementedException();
+        }
+
         public EchoCalibratorListener ECListener {
             get; set;
         }
