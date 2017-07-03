@@ -124,6 +124,8 @@ class Windows10Preparator(prepare.Preparator):
             self.additional_args += ["-DENABLE_OPENH264=YES"]
             self.additional_args += ["-DENABLE_VPX=YES"]
             self.additional_args += ["-DENABLE_X264=NO"]
+        
+        self.additional_args += ["-DENABLE_CSHARP_WRAPPER=YES"]
 
         self.linphone_builder_target = self.args.component
         if self.linphone_builder_target == 'ms2':
