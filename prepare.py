@@ -43,14 +43,16 @@ except Exception as e:
 
 class Win10Target(prepare.Target):
 
-    def __init__(self, arch, generator_suffix = ''):
+    def __init__(self, arch, generator_platform = None):
         prepare.Target.__init__(self, 'win10-' + arch)
         current_path = os.path.dirname(os.path.realpath(__file__))
         current_path = current_path.replace('\\', '/')
-        self.generator = 'Visual Studio 14 2015' + generator_suffix
+        self.generator = 'Visual Studio 14 2015'
+        self.platform_name = generator_platform
         self.config_file = 'configs/config-win10.cmake'
         self.output = 'OUTPUT/win10-' + arch
         self.external_source_path = os.path.join(current_path, 'submodules')
+        self.additional_args += ['-DCMAKE_CROSSCOMPILING=YES']
         self.additional_args += ['-DCMAKE_SYSTEM_NAME=WindowsStore']
         self.additional_args += ['-DCMAKE_SYSTEM_VERSION=10.0']
         self.additional_args += ['-DCMAKE_SYSTEM_PROCESSOR=' + arch]
@@ -66,13 +68,13 @@ class Win10X86Target(Win10Target):
 class Win10X64Target(Win10Target):
 
     def __init__(self):
-        Win10Target.__init__(self, 'x64', ' Win64')
+        Win10Target.__init__(self, 'x64', 'x64')
 
 
 class Win10ARMTarget(Win10Target):
 
     def __init__(self):
-        Win10Target.__init__(self, 'ARM', ' ARM')
+        Win10Target.__init__(self, 'ARM', 'ARM')
 
 
 windows10_targets = {
