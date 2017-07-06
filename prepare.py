@@ -24,6 +24,7 @@
 
 import argparse
 import os
+import re
 import subprocess
 import sys
 import urllib
@@ -211,8 +212,19 @@ class Windows10Preparator(prepare.Preparator):
         for platform in self.args.target:
             guid = '{' + str(uuid.uuid4()).upper() + '}'
             guids[platform] = guid
+            f = open("WORK/win10-{0}/cmake/ALL_BUILD.vcxproj".format(platform), 'r')
+            all_build_content = f.read()
+            f.close()
+            m = re.search("ToolsVersion=\"(.*)\" xmlns", all_build_content)
+            tools_version = m.group(1)
+            m = re.search("<WindowsTargetPlatformVersion>(.*)</WindowsTargetPlatformVersion>", all_build_content)
+            target_platform_version = m.group(1)
+            m = re.search("<WindowsTargetPlatformMinVersion>(.*)</WindowsTargetPlatformMinVersion>", all_build_content)
+            target_platform_min_version = m.group(1)
+            m = re.search("<PlatformToolset>(.*)</PlatformToolset>", all_build_content)
+            platform_toolset = m.group(1)
             vcxproj = """<?xml version="1.0" encoding="UTF-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="{tools_version}" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="{build_type}|{vcxproj_platform}">
       <Configuration>{build_type}</Configuration>
@@ -225,8 +237,8 @@ class Windows10Preparator(prepare.Preparator):
     <DefaultLanguage>en-US</DefaultLanguage>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
-    <WindowsTargetPlatformVersion>10.0.10586.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformMinVersion>10.0.10586.0</WindowsTargetPlatformMinVersion>
+    <WindowsTargetPlatformVersion>{target_platform_version}</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>{target_platform_min_version}</WindowsTargetPlatformMinVersion>
     <Keyword>Win32Proj</Keyword>
     <Platform>{vcxproj_platform}</Platform>
     <ProjectName>SDK_{platform}</ProjectName>
@@ -236,7 +248,7 @@ class Windows10Preparator(prepare.Preparator):
     <ConfigurationType>Utility</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>{platform_toolset}</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -273,7 +285,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
 </Project>
-""".format(platform=platform, build_type=build_type, vcxproj_platform=vcxproj_platforms[platform], current_path=current_path, guid=guid)
+""".format(platform=platform, build_type=build_type, vcxproj_platform=vcxproj_platforms[platform], current_path=current_path, guid=guid, tools_version=tools_version, target_platform_version=target_platform_version, target_platform_min_version=target_platform_min_version, platform_toolset=platform_toolset)
             f = open("WORK/win10-{0}/SDK_{0}.vcxproj".format(platform), 'w')
             f.write(vcxproj)
             f.close()
@@ -291,7 +303,7 @@ EndProject
         for target, version in builder_target:
             guid = '{' + str(uuid.uuid4()).upper() + '}'
             vcxproj = """<?xml version="1.0" encoding="UTF-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="{tools_version}" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="{build_type}|Win32">
       <Configuration>{build_type}</Configuration>
@@ -304,8 +316,8 @@ EndProject
     <DefaultLanguage>en-US</DefaultLanguage>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
-    <WindowsTargetPlatformVersion>10.0.10586.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformMinVersion>10.0.10586.0</WindowsTargetPlatformMinVersion>
+    <WindowsTargetPlatformVersion>{target_platform_version}</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>{target_platform_min_version}</WindowsTargetPlatformMinVersion>
     <Keyword>Win32Proj</Keyword>
     <Platform>Win32</Platform>
     <ProjectName>Nuget{target}</ProjectName>
@@ -315,7 +327,7 @@ EndProject
     <ConfigurationType>Utility</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>{platform_toolset}</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -355,7 +367,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
 </Project>
-""".format(platforms=' '.join(self.args.target), target=target, build_type=build_type, version=version, current_path=current_path, guid=guid)
+""".format(platforms=' '.join(self.args.target), target=target, build_type=build_type, version=version, current_path=current_path, guid=guid, tools_version=tools_version, target_platform_version=target_platform_version, target_platform_min_version=target_platform_min_version, platform_toolset=platform_toolset)
             f = open("WORK/NuGet{target}.vcxproj".format(target=target), 'w')
             f.write(vcxproj)
             f.close()
@@ -383,8 +395,6 @@ EndProject
 
         # Generate Visual Studio solution to build the SDK
         sln = """Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 {sln_projects}Global
 \tGlobalSection(SolutionConfigurationPlatforms) = preSolution
