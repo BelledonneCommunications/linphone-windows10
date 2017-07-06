@@ -41,9 +41,9 @@ install(FILES ${HEADER_FILES}
 )
 
 set(arch "x86")
-if(CMAKE_GENERATOR MATCHES "^.* ARM$")
+if(CMAKE_GENERATOR_PLATFORM MATCHES "ARM")
 	set(arch "ARM")
-elseif(CMAKE_GENERATOR MATCHES "^.* Win64$")
+elseif(CMAKE_GENERATOR_PLATFORM MATCHES "x64")
 	set(arch "x64")
 endif()
 
