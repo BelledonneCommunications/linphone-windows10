@@ -145,27 +145,7 @@ namespace BelledonneCommunications
 				CallStats(::LinphoneCallStats *callStats);
 				~CallStats();
 
-				float GetSenderLossRate(const ::LinphoneCallStats *stats);
-				float GetReceiverLossRate(const ::LinphoneCallStats *stats);
-				float GetSenderInterarrivalJitter(const ::LinphoneCallStats *stats);
-				float GetReceiverInterarrivalJitter(const ::LinphoneCallStats *stats);
-				int64 GetLatePacketsCumulativeNumber(const ::LinphoneCallStats *stats);
-				void FillStats(const ::LinphoneCallStats *stats);
-
-				::LinphoneCall *call;
-				BelledonneCommunications::Linphone::Native::MediaType mediaType;
-				BelledonneCommunications::Linphone::Native::IceState iceState;
-				float downloadBandwidth;
-				float uploadBandwidth;
-				float senderLossRate;
-				float receiverLossRate;
-				float senderInterarrivalJitter;
-				float receiverInterarrivalJitter;
-				float roundTripDelay;
-				int64 cumulativeLatePackets;
-				float jitterBufferSize;
-				float localLossRate;
-				float localLateRate;
+				::LinphoneCallStats *stats;
 			};
 		}
 	}

@@ -24,11 +24,17 @@ cmake_minimum_required(VERSION 3.0)
 project(NATIVE CXX)
 
 
+find_package(ORTP REQUIRED)
+find_package(Mediastreamer2 REQUIRED)
+find_package(BelleSIP REQUIRED)
 find_package(Linphone REQUIRED)
 
 
 include_directories(
 	${LINPHONE_INCLUDE_DIRS}
+	${BELLESIP_INCLUDE_DIRS}
+	${MEDIASTREAMER2_INCLUDE_DIRS}
+	${ORTP_INCLUDE_DIRS}
 )
 
 set(SOURCE_FILES
@@ -76,7 +82,7 @@ set(SOURCE_FILES
 	VoipCallController.cpp
 	VoipCallController.h
 )
-set(LIBS ${LINPHONE_LIBRARIES})
+set(LIBS ${LINPHONE_LIBRARIES} ${BELLESIP_LIBRARIES} ${MEDIASTREAMER2_LIBRARIES} ${ORTP_LIBRARIES})
 
 add_library(linphone_native MODULE ${SOURCE_FILES})
 set_target_properties(linphone_native PROPERTIES VERSION 0)
