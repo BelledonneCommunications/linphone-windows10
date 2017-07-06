@@ -127,8 +127,6 @@ class Windows10Preparator(prepare.Preparator):
             self.additional_args += ["-DENABLE_OPENH264=YES"]
             self.additional_args += ["-DENABLE_VPX=YES"]
             self.additional_args += ["-DENABLE_X264=NO"]
-        
-        self.additional_args += ["-DENABLE_CSHARP_WRAPPER=YES"]
 
         self.linphone_builder_target = self.args.component
         if self.linphone_builder_target == 'ms2':
@@ -189,7 +187,7 @@ class Windows10Preparator(prepare.Preparator):
                 ('LinphoneSDK', linphone_version),
             ]
         elif self.linphone_builder_target == 'ms2plugins':
-            ms2_version = self.git_version('submodules/linphone/mediastreamer2')
+            ms2_version = self.git_version('submodules/mediastreamer2')
             builder_target = [
                 ('MS2TesterSDK', ms2_version),
             ]
