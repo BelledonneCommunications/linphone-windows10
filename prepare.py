@@ -290,7 +290,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
             f = open("WORK/win10-{0}/SDK_{0}.rule".format(platform), 'w')
             f.close()
             sln_projects += \
-"""Project("{{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}}") = "SDK_{platform}", "WORK\win10-{platform}\SDK_{platform}.vcxproj", "{project_guid}"
+"""Project("{{E8FB6309-B31E-4380-992C-BB1609B3EA00}}") = "SDK_{platform}", "WORK\win10-{platform}\SDK_{platform}.vcxproj", "{project_guid}"
 EndProject
 """.format(platform=platform, project_guid=guids[platform])
             sln_confs += """\t\t{project_guid}.{build_type}|Win32.ActiveCfg = {build_type}|{vcxproj_platform}
@@ -381,7 +381,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
             other_sdks += [target]
             guids[target] = guid
             sln_projects += \
-"""Project("{{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}}") = "Nuget{target}", "WORK\Nuget{target}.vcxproj", "{project_guid}"
+"""Project("{{E8FB6309-B31E-4380-992C-BB1609B3EA00}}") = "Nuget{target}", "WORK\Nuget{target}.vcxproj", "{project_guid}"
 \tProjectSection(ProjectDependencies) = postProject
 {project_dependencies}\tEndProjectSection
 EndProject

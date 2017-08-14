@@ -14,7 +14,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using BelledonneCommunications.Linphone.Native;
+using Linphone;
 using Linphone.Model;
 using System;
 using System.Collections.Generic;
@@ -126,12 +126,12 @@ namespace Linphone.Views {
             foreach (ChatRoom conversation in LinphoneManager.Instance.Core.ChatRooms) {
                 if (conversation.HistorySize > 0) {
                     Address peerAddress = conversation.PeerAddress;
-                    string address = String.Format("{0}@{1}", peerAddress.UserName, peerAddress.Domain);
+                    string address = String.Format("{0}@{1}", peerAddress.Username, peerAddress.Domain);
                     string name = peerAddress.DisplayName;
                     if (name == null || name.Length <= 0) {
-                        name = peerAddress.UserName;
+                        name = peerAddress.Username;
                     }
-                    _conversations.Add(new Conversation(address, name, conversation.History));
+                    _conversations.Add(new Conversation(address, name, conversation.GetHistory(conversation.HistorySize)));
                     //ContactManager.Instance.FindContact(address);
                 }
             }

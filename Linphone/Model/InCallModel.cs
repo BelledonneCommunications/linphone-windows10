@@ -14,7 +14,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using BelledonneCommunications.Linphone.Native;
+using Linphone;
 using Linphone.Model;
 using System;
 using System.Diagnostics;
@@ -63,7 +63,7 @@ namespace Linphone.Views {
             Call call = LinphoneManager.Instance.Core.CurrentCall;
             if (call == null) {
                 if (LinphoneManager.Instance.Core.CallsNb > 0) {
-                    call = (Call)LinphoneManager.Instance.Core.Calls[0];
+                    call = (Call)LinphoneManager.Instance.Core.Calls.GetEnumerator();
                 }
             }
             return call;
@@ -168,7 +168,7 @@ namespace Linphone.Views {
         public void ShowVideo() {
             Debug.WriteLine("[InCall] ShowVideo");
             ShowRemoteVideo();
-            if (LinphoneManager.Instance.Core.IsSelfViewEnabled) {
+            if (LinphoneManager.Instance.Core.SelfViewEnabled) {
                 ShowLocalVideo();
             }
         }

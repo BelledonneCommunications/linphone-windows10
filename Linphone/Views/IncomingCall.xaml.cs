@@ -32,7 +32,7 @@ namespace Linphone.Views {
         public IncomingCall() {
             this.InitializeComponent();
             SystemNavigationManager.GetForCurrentView().BackRequested += Back_requested;
-            if (!LinphoneManager.Instance.Core.IsVideoSupported || !LinphoneManager.Instance.Core.IsVideoCaptureEnabled) {
+            if (!LinphoneManager.Instance.Core.VideoSupported() || !LinphoneManager.Instance.Core.VideoCaptureEnabled) {
                 //AnswerVideo.Visibility = Visibility.Collapsed;
             }
         }

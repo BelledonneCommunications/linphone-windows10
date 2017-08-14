@@ -24,7 +24,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Windows.Storage;
-using BelledonneCommunications.Linphone.Native;
+using Linphone;
 using Windows.ApplicationModel.Email;
 
 namespace Linphone.Model {

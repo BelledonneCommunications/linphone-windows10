@@ -64,8 +64,8 @@
 
                             <ToggleSwitch
                                 Grid.Row="6"
-                                x:Name="G722" 
-                                x:Uid="G722Codec">
+                                x:Name="G729" 
+                                x:Uid="G729Codec">
                             </ToggleSwitch>
 
                             <ToggleSwitch

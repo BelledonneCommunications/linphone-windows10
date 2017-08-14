@@ -16,11 +16,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 using System;
 using Linphone.Model;
-using BelledonneCommunications.Linphone.Native;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Input;
+using Linphone;
 
 namespace Linphone.Controls {
     public partial class IncomingChatBubble : UserControl {
@@ -45,8 +45,8 @@ namespace Linphone.Controls {
             Timestamp.Text = HumanFriendlyTimeStamp;
 
             this.Holding += Bubble_Holding;
-            string fileName = message.FileTransferName;
-            string filePath = message.AppData;
+            string fileName = (message.FileTransferInformation != null) ? message.FileTransferInformation.Name : null;
+            string filePath = message.FileTransferFilepath;
             bool isImageMessage = fileName != null && fileName.Length > 0;
             if (isImageMessage) {
                 Message.Visibility = Visibility.Collapsed;
@@ -142,7 +142,7 @@ namespace Linphone.Controls {
         /// Displays the image in the bubble
         /// </summary>
         public async void RefreshImage() {
-            string filePath = ChatMessage.AppData;
+            string filePath = ChatMessage.FileTransferFilepath;
             ProgressBar.Visibility = Visibility.Collapsed;
             if (filePath != null && filePath.Length > 0) {
                 Download.Visibility = Visibility.Collapsed;
@@ -157,7 +157,7 @@ namespace Linphone.Controls {
         }
 
         private void Image_Tap(object sender, TappedRoutedEventArgs e) {
-            ImageTapped(this, ChatMessage.AppData);
+            ImageTapped(this, ChatMessage.FileTransferFilepath);
         }
     }
 }

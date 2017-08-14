@@ -14,7 +14,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using BelledonneCommunications.Linphone.Native;
+using Linphone;
 using Linphone.Model;
 using System.Collections.Generic;
 using Windows.ApplicationModel.Resources;
@@ -39,14 +39,14 @@ namespace Linphone.Views {
             SystemNavigationManager.GetForCurrentView().BackRequested += back_Click;
 
             _settings.Load();
-            Username.Text = _settings.Username;
-            UserId.Text = _settings.UserId;
-            Password.Password = _settings.Password;
-            Domain.Text = _settings.Domain;
-            Proxy.Text = _settings.Proxy;
-            OutboundProxy.IsOn = (bool)_settings.OutboundProxy;
-            DisplayName.Text = _settings.DisplayName;
-            Expires.Text = _settings.Expires;
+            Username.Text = (_settings.Username != null) ? _settings.Username : "";
+            UserId.Text = (_settings.UserId != null) ? _settings.UserId : "";
+            Password.Password = (_settings.Password != null) ? _settings.Password : "";
+            Domain.Text = (_settings.Domain != null) ? _settings.Domain : "";
+            Proxy.Text = (_settings.Proxy != null) ? _settings.Proxy : "";
+            OutboundProxy.IsOn = (_settings.OutboundProxy != null) ? (bool)_settings.OutboundProxy : false;
+            DisplayName.Text = (_settings.DisplayName != null) ? _settings.DisplayName : "";
+            Expires.Text = (_settings.Expires != null) ? _settings.Expires : "";
 
             List<string> transports = new List<string>
             {
@@ -55,9 +55,9 @@ namespace Linphone.Views {
                 ResourceLoader.GetForCurrentView().GetString("TransportTLS")
             };
             Transport.ItemsSource = transports;
-            Transport.SelectedItem = _settings.Transports;
+            Transport.SelectedItem = (_settings.Transports != null) ? _settings.Transports : transports[0];
 
-            AVPF.IsOn = (bool)_settings.AVPF;
+            AVPF.IsOn = (_settings.AVPF != null) ? (bool)_settings.AVPF : false;
         }
 
         private void Save() {
@@ -85,7 +85,7 @@ namespace Linphone.Views {
                 NetworkSettingsManager networkSettings = new NetworkSettingsManager();
                 networkSettings.Load();
                 networkSettings.MEncryption = "SRTP";
-                networkSettings.FWPolicy = networkSettings.EnumToFirewallPolicy[FirewallPolicy.UseIce];
+                //networkSettings.FWPolicy = networkSettings.EnumToFirewallPolicy[FirewallPolicy.UseIce];
                 networkSettings.StunServer = "stun.linphone.org";
                 networkSettings.Save();
             }

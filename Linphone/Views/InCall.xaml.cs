@@ -14,7 +14,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using BelledonneCommunications.Linphone.Native;
+using Linphone;
 using Linphone.Model;
 using System;
 using System.Collections.Generic;
@@ -82,12 +82,12 @@ namespace Linphone.Views {
         private void buttons_VideoClick(object sender, bool isVideoOn) {
             Call call = LinphoneManager.Instance.Core.CurrentCall;
             CallParams param = call.CurrentParams.Copy();
-            param.IsVideoEnabled = isVideoOn;
+            param.VideoEnabled = isVideoOn;
             LinphoneManager.Instance.Core.UpdateCall(call, param);
         }
 
         private void buttons_MuteClick(object sender, bool isMuteOn) {
-            LinphoneManager.Instance.Core.IsMicEnabled = isMuteOn;
+            LinphoneManager.Instance.Core.MicEnabled = isMuteOn;
         }
 
         private void buttons_BluetoothClick(object sender, bool isBluetoothOn) {
@@ -149,8 +149,8 @@ namespace Linphone.Views {
 
             if (parameters.Count >= 1 && parameters[0].Contains("sip")) {
                 String calledNumber = parameters[0];
-                Address address = LinphoneManager.Instance.Core.InterpretURL(calledNumber);
-                calledNumber = String.Format("{0}@{1}", address.UserName, address.Domain);
+                Address address = LinphoneManager.Instance.Core.InterpretUrl(calledNumber);
+                calledNumber = String.Format("{0}@{1}", address.Username, address.Domain);
                 Contact.Text = calledNumber;
 
                 if (calledNumber != null && calledNumber.Length > 0) {
@@ -205,26 +205,26 @@ namespace Linphone.Views {
             }
             if (state == CallState.StreamsRunning) {
                 statusIcon.Glyph = "\uE768";
-                if (!call.MediaInProgress) {
+                if (!call.MediaInProgress()) {
                     buttons.enabledPause(true);
                     if (LinphoneManager.Instance.IsVideoAvailable) {
                         buttons.enabledVideo(true);
                     }
                 }
-                if (call.CurrentParams.IsVideoEnabled) {
+                if (call.CurrentParams.VideoEnabled) {
                     displayVideo(true);
                     buttons.checkedVideo(true);
                 } else {
                     displayVideo(false);
                 }
             } else if (state == CallState.PausedByRemote) {
-                if (call.CurrentParams.IsVideoEnabled) {
+                if (call.CurrentParams.VideoEnabled) {
                     displayVideo(false);
                 }
                 buttons.enabledVideo(false);
                 statusIcon.Glyph = "\uE769";
             } else if (state == CallState.Paused) {
-                if (call.CurrentParams.IsVideoEnabled) {
+                if (call.CurrentParams.VideoEnabled) {
                     displayVideo(false);
                 }
                 buttons.enabledVideo(false);
@@ -238,9 +238,9 @@ namespace Linphone.Views {
                     CallParams parameters = call.CurrentParams.Copy();
                     LinphoneManager.Instance.Core.AcceptCallUpdate(call, parameters);
                 } else {
-                    bool remoteVideo = call.RemoteParams.IsVideoEnabled;
-                    bool localVideo = call.CurrentParams.IsVideoEnabled;
-                    bool autoAcceptCameraPolicy = LinphoneManager.Instance.Core.VideoPolicy.AutomaticallyAccept;
+                    bool remoteVideo = call.RemoteParams.VideoEnabled;
+                    bool localVideo = call.CurrentParams.VideoEnabled;
+                    bool autoAcceptCameraPolicy = LinphoneManager.Instance.Core.VideoActivationPolicy.AutomaticallyAccept;
                     if (remoteVideo && !localVideo && !autoAcceptCameraPolicy) {
                         AskVideoPopup(call);
                     }
@@ -253,7 +253,7 @@ namespace Linphone.Views {
             if (!LinphoneManager.Instance.IsVideoAvailable) {
                 buttons.enabledVideo(false);
             } else {
-                if (LinphoneManager.Instance.Core.CurrentCall != null && LinphoneManager.Instance.Core.CurrentCall.CurrentParams.IsVideoEnabled) {
+                if (LinphoneManager.Instance.Core.CurrentCall != null && LinphoneManager.Instance.Core.CurrentCall.CurrentParams.VideoEnabled) {
                     buttons.checkedVideo(true);
                 } else {
                     buttons.checkedVideo(false);
@@ -270,7 +270,7 @@ namespace Linphone.Views {
             var res = await dialog.ShowAsync();
             CallParams parameters = LinphoneManager.Instance.Core.CreateCallParams(call);
             if ((int)res.Id == 0) {
-                parameters.IsVideoEnabled = true;
+                parameters.VideoEnabled = true;
             }
             LinphoneManager.Instance.Core.AcceptCallUpdate(call, parameters);
         }
@@ -327,8 +327,8 @@ namespace Linphone.Views {
                 _previewSource = new MSWinRTVideo.SwapChainPanelSource();
                 _previewSource.Start(PreviewSwapChainPanel);
 
-                LinphoneManager.Instance.Core.NativeVideoWindowId = VideoSwapChainPanel.Name;
-                LinphoneManager.Instance.Core.NativePreviewWindowId = PreviewSwapChainPanel.Name;
+                /*LinphoneManager.Instance.Core.NativeVideoWindowId = VideoSwapChainPanel.Name; TODO
+                LinphoneManager.Instance.Core.NativePreviewWindowId = PreviewSwapChainPanel.Name;*/
             } catch (Exception e) {
                 Debug.WriteLine(String.Format("StartVideoStream: Exception {0}", e.Message));
             }
@@ -445,7 +445,7 @@ namespace Linphone.Views {
 
             CallStats audioStats = null;
             try {
-                audioStats = call.AudioStats;
+                audioStats = call.GetStats(StreamType.Audio);
             } catch { }
 
             if (audioStats != null) {
@@ -454,23 +454,23 @@ namespace Linphone.Views {
                 ((InCallModel)this.DataContext).ICE = audioStats.IceState.ToString();
             }
 
-            PayloadType audiopt = param.UsedAudioCodec;
+            PayloadType audiopt = param.UsedAudioPayloadType;
             if (audiopt != null) {
                 audioPayloadType = audiopt.MimeType + "/" + audiopt.ClockRate;
             }
 
-            if (param.IsVideoEnabled) {
-                CallStats videoStats = call.VideoStats;
+            if (param.VideoEnabled) {
+                CallStats videoStats = call.GetStats(StreamType.Video);
                 if (videoStats != null) {
                     videoDownloadBandwidth = String.Format("{0:0.00}", videoStats.DownloadBandwidth);
                     videoUploadBandwidth = String.Format("{0:0.00}", videoStats.UploadBandwidth);
                 }
 
-                PayloadType videopt = param.UsedVideoCodec;
+                PayloadType videopt = param.UsedVideoPayloadType;
                 if (videopt != null) {
                     videoPayloadType = videopt.MimeType;
                 }
-                VideoSize receivedVideoSize = param.ReceivedVideoSize;
+                VideoDefinition receivedVideoSize = param.ReceivedVideoDefinition;
                 String NewReceivedVideoSize = String.Format("{0}x{1}", receivedVideoSize.Width, receivedVideoSize.Height);
                 String OldReceivedVideoSize = ((InCallModel)this.DataContext).ReceivedVideoSize;
                 if (OldReceivedVideoSize != NewReceivedVideoSize) {
@@ -480,7 +480,7 @@ namespace Linphone.Views {
                         ((InCallModel)this.DataContext).IsVideoActive = true;
                     }
                 }
-                VideoSize sentVideoSize = param.SentVideoSize;
+                VideoDefinition sentVideoSize = param.SentVideoDefinition;
                 ((InCallModel)this.DataContext).SentVideoSize = String.Format("{0}x{1}", sentVideoSize.Width, sentVideoSize.Height);
                 ((InCallModel)this.DataContext).VideoStatsVisibility = Visibility.Visible;
             } else {

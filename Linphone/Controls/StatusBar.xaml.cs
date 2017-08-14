@@ -17,7 +17,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 using Linphone.Model;
 using System;
 using Windows.UI.Xaml.Controls;
-using BelledonneCommunications.Linphone.Native;
+using Linphone;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.ApplicationModel.Resources;
 

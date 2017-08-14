@@ -15,14 +15,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 using Linphone.Model;
-using BelledonneCommunications.Linphone.Native;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Linphone;
 
 namespace Linphone.Controls {
-    public partial class OutgoingChatBubble : UserControl, ChatMessageListener {
+    public partial class OutgoingChatBubble : UserControl {
         private ChatMessage _message;
 
         public ChatMessage ChatMessage {
@@ -39,7 +39,7 @@ namespace Linphone.Controls {
 
             ChatMessage = message;
             this.Holding += Bubble_Holding;
-            string filePath = message.AppData;
+            string filePath = message.Appdata;
             bool isImageMessage = filePath != null && filePath.Length > 0;
             if (isImageMessage) {
                 Message.Visibility = Visibility.Collapsed;

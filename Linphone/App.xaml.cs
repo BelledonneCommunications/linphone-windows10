@@ -20,7 +20,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using BelledonneCommunications.Linphone.Native;
+using Linphone;
 using Linphone.Model;
 using System.Diagnostics;
 using Windows.UI.Core;
@@ -227,7 +227,7 @@ namespace Linphone
             {
                 if (sipAddress != "")
                 {
-                    Address addr = LinphoneManager.Instance.Core.InterpretURL(sipAddress);
+                    Address addr = LinphoneManager.Instance.Core.InterpretUrl(sipAddress);
                     if (addr != null && addr.AsStringUriOnly().Equals(call.RemoteAddress.AsStringUriOnly()))
                     {
                         LinphoneManager.Instance.Core.AcceptCall(call);

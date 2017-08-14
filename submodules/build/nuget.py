@@ -61,6 +61,8 @@ def main(argv=None):
     argparser.add_argument(
         '-s', '--sdk_dir', default="OUTPUT", help="The path where to find the built SDK", dest='sdk_dir')
     argparser.add_argument(
+        '-cs', '--cswrapper_dir', default="CsWrapper", help="The path where to find the built C# wrapper", dest='cswrapper_dir')
+    argparser.add_argument(
         '-t', '--target', default="Linphone", help="The target to package (the windows runtime whose metadata will be exported)", dest='target')
     argparser.add_argument(
         '-v', '--version', default='1.0.0', help="The version of the nuget package to generate", dest='version')
@@ -71,7 +73,7 @@ def main(argv=None):
 
     args, additional_args2 = argparser.parse_known_args()
 
-    target_winmd = "BelledonneCommunications.Linphone.Native"
+    target_winmd = "Belledonne.Linphone"
     target_id = "LinphoneSDK"
     target_desc = "Linphone SDK"
     if args.target == "LinphoneTesterSDK":
@@ -110,6 +112,9 @@ def main(argv=None):
         pdbs = glob.glob(os.path.join(sdk_dir, platform_dir, 'bin', '*.pdb'))
         pdbs += glob.glob(os.path.join(sdk_dir, platform_dir, 'lib', '*.pdb'))
         pdbs += glob.glob(os.path.join(sdk_dir, platform_dir, 'lib', 'mediastreamer', 'plugins', '*.pdb'))
+        if target_id == "LinphoneSDK":
+            dlls += glob.glob(os.path.join(args.cswrapper_dir, 'bin', platform.lower(), '*', 'CsWrapper.dll'))
+            pdbs += glob.glob(os.path.join(args.cswrapper_dir, 'bin', platform.lower(), '*', 'CsWrapper.pdb'))
 
         if not winmds_installed:
             for winmd in winmds:

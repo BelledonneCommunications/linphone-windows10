@@ -18,7 +18,7 @@ using Windows.UI.Xaml.Controls;
 using Linphone.Model;
 using Windows.UI.Xaml.Navigation;
 using System;
-using BelledonneCommunications.Linphone.Native;
+using Linphone;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
 using System.ComponentModel;
@@ -164,7 +164,7 @@ namespace Linphone.Views {
                 String arguments = e.Parameter as String;
                 addressBox.Text = arguments;
                 try {
-                    Address address = LinphoneManager.Instance.Core.InterpretURL(e.Parameter as String);
+                    Address address = LinphoneManager.Instance.Core.InterpretUrl(e.Parameter as String);
                     String sipAddressToCall = address.AsStringUriOnly();
                     addressBox.Text = sipAddressToCall;
                 } catch (Exception exception) {
@@ -194,7 +194,7 @@ namespace Linphone.Views {
         private void numpad_Click(object sender, RoutedEventArgs e) {
             Button button = sender as Button;
             String tag = button.Tag as String;
-            LinphoneManager.Instance.Core.PlayDtmf(Convert.ToChar(tag), 1000);
+            LinphoneManager.Instance.Core.PlayDtmf(Convert.ToSByte(tag), 1000);
 
             addressBox.Text += tag;
         }
@@ -242,7 +242,7 @@ namespace Linphone.Views {
             ProxyConfig cfg = lc.DefaultProxyConfig;
             if (cfg != null) {
                 cfg.Edit();
-                cfg.IsRegisterEnabled = enable;
+                cfg.RegisterEnabled = enable;
                 cfg.Done();
             }
         }

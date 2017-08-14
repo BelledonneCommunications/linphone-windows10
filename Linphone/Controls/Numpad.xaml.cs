@@ -34,7 +34,7 @@ namespace Linphone.Controls
         {
             Button button = sender as Button;
             String tag = button.Tag as String;
-            LinphoneManager.Instance.Core.SendDtmf(Convert.ToChar(tag));
+            LinphoneManager.Instance.Core.PlayDtmf(Convert.ToSByte(tag), 1000);
         }
     }
 }

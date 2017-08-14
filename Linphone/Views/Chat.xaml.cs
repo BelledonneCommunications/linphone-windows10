@@ -21,7 +21,6 @@ using Linphone.Model;
 using System.Diagnostics;
 using Linphone.Controls;
 using System.Net.Http;
-using BelledonneCommunications.Linphone.Native;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -34,6 +33,7 @@ using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Imaging;
 using System.Threading.Tasks;
+using Linphone;
 
 namespace Linphone.Views {
     public interface MessageReceivedListener {
@@ -46,7 +46,7 @@ namespace Linphone.Views {
         string GetSipAddressAssociatedWithDisplayConversation();
     }
 
-    public partial class Chat : Page, ChatMessageListener, MessageReceivedListener, ComposingReceivedListener {
+    public partial class Chat : Page {
         private const int SENT_IMAGES_QUALITY = 50;
 
         private HttpClient _httpPostClient {
@@ -60,10 +60,19 @@ namespace Linphone.Views {
 
         public Chat() {
             this.InitializeComponent();
+            chatListenerInit();
             MessageBox.SendFileClick += send_file;
             MessageBox.SendMessageClick += send_message;
 
             SystemNavigationManager.GetForCurrentView().BackRequested += Back_requested;
+        }
+
+        private void chatListenerInit() {
+            CoreListener listener = LinphoneManager.Instance.getCoreListener();
+            if (listener == null)
+                return;
+            listener.OnMessageReceived = this.MessageReceived;
+            listener.OnIsComposingReceived = this.ComposeReceived;
         }
 
         private void Back_requested(object sender, BackRequestedEventArgs e) {
@@ -77,8 +86,7 @@ namespace Linphone.Views {
 
         protected override void OnNavigatedTo(NavigationEventArgs e) {
             base.OnNavigatedTo(e);
-            LinphoneManager.Instance.MessageListener = this;
-            LinphoneManager.Instance.ComposingListener = this;
+            
 
             //ContactManager cm = ContactManager.Instance;
             //cm.ContactFound += cm_ContactFound;
@@ -88,11 +96,11 @@ namespace Linphone.Views {
             NewChat.Visibility = Visibility.Collapsed;
             ContactName.Visibility = Visibility.Visible;
             if (e.Parameter is String) {
-                sipAddress = LinphoneManager.Instance.Core.InterpretURL(e.Parameter as String);
+                sipAddress = LinphoneManager.Instance.Core.InterpretUrl(e.Parameter as String);
                 CreateChatRoom(sipAddress);
                 UpdateComposingMessage();
                 chatRoom.MarkAsRead();
-                DisplayPastMessages(chatRoom.History);
+                DisplayPastMessages(chatRoom.GetHistory(chatRoom.HistorySize));
             }
             if (sipAddress == null) {
                 ContactName.Visibility = Visibility.Collapsed;
@@ -109,7 +117,7 @@ namespace Linphone.Views {
 
         private void Call_Click(object sender, RoutedEventArgs e) {
             if (chatRoom == null) {
-                LinphoneManager.Instance.NewOutgoingCall(LinphoneManager.Instance.Core.InterpretURL(NewChatSipAddress.Text).AsStringUriOnly());
+                LinphoneManager.Instance.NewOutgoingCall(LinphoneManager.Instance.Core.InterpretUrl(NewChatSipAddress.Text).AsStringUriOnly());
             } else {
                 LinphoneManager.Instance.NewOutgoingCall(chatRoom.PeerAddress.AsStringUriOnly());
             }
@@ -123,7 +131,7 @@ namespace Linphone.Views {
         private void SendMessage(string message) {
             if (chatRoom != null) {
                 ChatMessage chatMessage = chatRoom.CreateMessage(message);
-                chatRoom.SendMessage(chatMessage, this);
+                chatRoom.SendChatMessage(chatMessage);
             }
         }
 
@@ -133,7 +141,7 @@ namespace Linphone.Views {
 
         #endregion
 
-        private void DisplayPastMessages(IList<ChatMessage> messages) {
+        private void DisplayPastMessages(IEnumerable<ChatMessage> messages) {
             foreach (ChatMessage message in messages) {
                 if (!message.IsOutgoing) {
                     IncomingChatBubble bubble = new IncomingChatBubble(message);
@@ -208,7 +216,7 @@ namespace Linphone.Views {
 
                 if (state == ChatMessageState.InProgress && message.IsOutgoing && messageUploading == null) {
                     // Create the chat bubble for both text or image messages
-                    if (message.AppData != null && messageUploading == null) {
+                    if (message.Appdata != null && messageUploading == null) {
                         messageUploading = message;
                     }
                     OutgoingChatBubble bubble = new OutgoingChatBubble(message);
@@ -217,7 +225,7 @@ namespace Linphone.Views {
                     scrollToBottom();
                 } else if (state == ChatMessageState.FileTransferDone && !message.IsOutgoing) {
                     try {
-                        message.AppData = upload_filename;
+                        message.Appdata = upload_filename;
                         IncomingChatBubble bubble = (IncomingChatBubble)MessagesList.Children.OfType<IncomingChatBubble>().Where(b => message.Equals(((IncomingChatBubble)b).ChatMessage)).Last();
                         if (bubble != null) {
                             ((IncomingChatBubble)bubble).RefreshImage();
@@ -243,7 +251,7 @@ namespace Linphone.Views {
         private void CreateChatRoom(Address sipAddress) {
             this.sipAddress = sipAddress;
             //ContactManager.Instance.FindContact(String.Format("{0}@{1}", sipAddress.UserName, sipAddress.Domain));
-            ContactName.Text = sipAddress.UserName;
+            ContactName.Text = sipAddress.Username;
             ContactName.Visibility = Visibility.Visible;
             NewChat.Visibility = Visibility.Collapsed;
 
@@ -258,7 +266,7 @@ namespace Linphone.Views {
         private void send_message(object sender) {
             if (NewChatSipAddress.Text != null || NewChatSipAddress.Visibility == Visibility.Collapsed) {
                 if (chatRoom == null) {
-                    CreateChatRoom(LinphoneManager.Instance.Core.InterpretURL(NewChatSipAddress.Text));
+                    CreateChatRoom(LinphoneManager.Instance.Core.InterpretUrl(NewChatSipAddress.Text));
                 }
 
                 if (chatRoom != null) {
@@ -302,7 +310,7 @@ namespace Linphone.Views {
 
             if (chatRoom == null) //This code will be executed only in case of new conversation
             {
-                CreateChatRoom(LinphoneManager.Instance.Core.InterpretURL(NewChatSipAddress.Text));
+                CreateChatRoom(LinphoneManager.Instance.Core.InterpretUrl(NewChatSipAddress.Text));
             }
             if (chatRoom != null) {
                 ProgressPopup.Visibility = Visibility.Visible;
@@ -312,9 +320,14 @@ namespace Linphone.Views {
                     FileInfo fileInfo;
                     try {
                         fileInfo = new FileInfo(filePath);
-                        ChatMessage msg = chatRoom.CreateFileTransferMessage("application", "octet-stream", fileName, (int)fileInfo.Length, filePath);
-                        msg.AppData = fileName;
-                        chatRoom.SendMessage(msg, this);
+                        Content content = LinphoneManager.Instance.Core.CreateContent();
+                        content.Type = "application";
+                        content.Subtype = "octet-stream";
+                        content.Name = fileName;
+                        content.Size = (int)fileInfo.Length;
+                        ChatMessage msg = chatRoom.CreateFileTransferMessage(content);
+                        msg.Appdata = fileName;
+                        chatRoom.SendChatMessage(msg);
                     } catch (Exception e) {
 
                     }
@@ -371,7 +384,7 @@ namespace Linphone.Views {
             // RefreshSendMessageButtonEnabledState();
         }
 
-        public void MessageReceived(ChatMessage message) {
+        public void MessageReceived(Core lc, ChatRoom room, ChatMessage message) {
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
             MessagesList.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
                 IncomingChatBubble bubble = new IncomingChatBubble(message);
@@ -388,7 +401,7 @@ namespace Linphone.Views {
 #pragma warning restore CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
         }
 
-        public void ComposeReceived() {
+        public void ComposeReceived(Core lc, ChatRoom room) {
             UpdateComposingMessage();
         }
 
@@ -400,28 +413,26 @@ namespace Linphone.Views {
             RemoteComposing.Visibility = isRemoteComposing ? Visibility.Visible : Visibility.Collapsed;
 
             string remoteName = chatRoom.PeerAddress.DisplayName;
-            if (remoteName.Length <= 0)
-                remoteName = chatRoom.PeerAddress.UserName;
+            if (remoteName == null || remoteName.Length <= 0)
+                remoteName = chatRoom.PeerAddress.Username;
             var loader = new Windows.ApplicationModel.Resources.ResourceLoader();
             RemoteComposing.Text = remoteName + loader.GetString("RemoteComposing");
         }
 
         public string GetSipAddressAssociatedWithDisplayConversation() {
-            return String.Format("{0}@{1}", sipAddress.UserName, sipAddress.Domain);
+            return String.Format("{0}@{1}", sipAddress.Username, sipAddress.Domain);
         }
 
         private void scrollToBottom() {
             MessagesScroll.UpdateLayout();
-            MessagesScroll.ScrollToVerticalOffset(MessagesScroll.ScrollableHeight);
+            MessagesScroll.ChangeView(1, MessagesScroll.ScrollableHeight, 1);
         }
 
         public async void bubble_DownloadImage(object sender, ChatMessage message) {
             EnableDownloadButtons(false);
             var tempFolder = ApplicationData.Current.LocalFolder;
             string name = await Utils.GetImageTempFileName();
-            StorageFile tempFile = await tempFolder.GetFileAsync(name);
-            upload_filename = name;
-            message.StartFileDownload(this, tempFile.Path);
+            message.DownloadFile();
         }
 
         private void EnableDownloadButtons(bool enable) {

@@ -14,7 +14,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using BelledonneCommunications.Linphone.Native;
+using Linphone;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -120,8 +120,8 @@ namespace Linphone.Model {
             if (addr.DisplayName != null && addr.DisplayName.Length > 0) {
                 return addr.DisplayName;
             } else {
-                if (addr.UserName != null && addr.UserName.Length > 0) {
-                    return addr.UserName;
+                if (addr.Username != null && addr.Username.Length > 0) {
+                    return addr.Username;
                 } else {
                     return addr.AsStringUriOnly();
                 }

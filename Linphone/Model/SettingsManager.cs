@@ -14,7 +14,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using BelledonneCommunications.Linphone.Native;
+using Linphone;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -139,7 +139,7 @@ namespace Linphone.Model {
         /// </summary>
         public ApplicationSettingsManager() {
             if (LinphoneManager.Instance.Core == null) {
-                Config = new Config(LinphoneManager.Instance.GetConfigPath(), LinphoneManager.Instance.GetFactoryConfigPath());
+                Config = LinphoneManager.Instance.Core.CreateConfig(LinphoneManager.Instance.GetConfigPath());
             } else {
                 Config = LinphoneManager.Instance.Core.Config;
             }
@@ -150,9 +150,9 @@ namespace Linphone.Model {
         /// Load the application settings.
         /// </summary>
         public void Load() {
-            dict[LogLevelKeyName] = Config.GetInt(ApplicationSection, LogLevelKeyName, (int)OutputTraceLevel.Message).ToString();
-            dict[VideoActiveWhenGoingToBackgroundKeyName] = Config.GetBool(ApplicationSection, VideoActiveWhenGoingToBackgroundKeyName, false).ToString();
-            dict[VideoAutoAcceptWhenGoingToBackgroundKeyName] = Config.GetBool(ApplicationSection, VideoAutoAcceptWhenGoingToBackgroundKeyName, true).ToString();
+            //dict[LogLevelKeyName] = Config.GetInt(ApplicationSection, LogLevelKeyName, (int)OutputTraceLevel.Message).ToString();
+            dict[VideoActiveWhenGoingToBackgroundKeyName] = Config.GetInt(ApplicationSection, VideoActiveWhenGoingToBackgroundKeyName, 0).ToString();
+            dict[VideoAutoAcceptWhenGoingToBackgroundKeyName] = Config.GetInt(ApplicationSection, VideoAutoAcceptWhenGoingToBackgroundKeyName, 1).ToString();
         }
 
         /// <summary>
@@ -162,16 +162,16 @@ namespace Linphone.Model {
             if (ValueChanged(LogLevelKeyName)) {
                 try {
                     Config.SetInt(ApplicationSection, LogLevelKeyName, Convert.ToInt32(GetNew(LogLevelKeyName)));
-                    LinphoneManager.Instance.ConfigureLog(LogLevel);
+                    //LinphoneManager.Instance.ConfigureLog(LogLevel);
                 } catch {
                     // Core.LogLevel.Warn("Failed setting the log level name {0}", Get(LogLevelKeyName));
                 }
             }
             if (ValueChanged(VideoActiveWhenGoingToBackgroundKeyName)) {
-                Config.SetBool(ApplicationSection, VideoActiveWhenGoingToBackgroundKeyName, Convert.ToBoolean(GetNew(VideoActiveWhenGoingToBackgroundKeyName)));
+                Config.SetInt(ApplicationSection, VideoActiveWhenGoingToBackgroundKeyName, Convert.ToInt32(GetNew(VideoActiveWhenGoingToBackgroundKeyName)));
             }
             if (ValueChanged(VideoAutoAcceptWhenGoingToBackgroundKeyName)) {
-                Config.SetBool(ApplicationSection, VideoAutoAcceptWhenGoingToBackgroundKeyName, Convert.ToBoolean(GetNew(VideoAutoAcceptWhenGoingToBackgroundKeyName)));
+                Config.SetInt(ApplicationSection, VideoAutoAcceptWhenGoingToBackgroundKeyName, Convert.ToInt32(GetNew(VideoAutoAcceptWhenGoingToBackgroundKeyName)));
             }
         }
         #endregion
@@ -182,28 +182,29 @@ namespace Linphone.Model {
         /// </summary>
         public bool DebugEnabled {
             get {
-                return Convert.ToInt32(Get(LogLevelKeyName)) == (int)OutputTraceLevel.Message;
+                return false;
+                //return Convert.ToInt32(Get(LogLevelKeyName)) == (int)OutputTraceLevel.Message;
             }
             set {
-                if (value) {
+                /*if (value) {
                     Set(LogLevelKeyName, ((int)OutputTraceLevel.Message).ToString());
                 } else {
                     Set(LogLevelKeyName, ((int)OutputTraceLevel.None).ToString());
-                }
+                }*/
             }
         }
 
         /// <summary>
         /// Log level (OutputTraceLevel).
         /// </summary>
-        public OutputTraceLevel LogLevel {
+        /*public OutputTraceLevel LogLevel {
             get {
                 return (OutputTraceLevel)Convert.ToInt32(Get(LogLevelKeyName));
             }
             set {
                 Set(LogLevelKeyName, ((int)value).ToString());
             }
-        }
+        }*/
 
         /// <summary>
         /// Save if the video was active when going to background.
@@ -247,23 +248,23 @@ namespace Linphone.Model {
         private const string ExpireKeyName = "Expire";
         private const string AVPFKeyName = "AVPF";
 
-        private Dictionary<Transport, string> EnumToTransport;
-        private Dictionary<string, Transport> TransportToEnum;
+        private Dictionary<TransportType, string> EnumToTransport;
+        private Dictionary<string, TransportType> TransportToEnum;
         #endregion
 
         public SIPAccountSettingsManager() {
-            EnumToTransport = new Dictionary<Transport, string>()
+            EnumToTransport = new Dictionary<TransportType, string>()
              {
-                { Transport.UDP,  ResourceLoader.GetForCurrentView().GetString("TransportUDP") },
-                { Transport.TCP, ResourceLoader.GetForCurrentView().GetString("TransportTCP") },
-                { Transport.TLS, ResourceLoader.GetForCurrentView().GetString("TransportTLS") }
+                { TransportType.Udp,  ResourceLoader.GetForCurrentView().GetString("TransportUDP") },
+                { TransportType.Tcp, ResourceLoader.GetForCurrentView().GetString("TransportTCP") },
+                { TransportType.Tls, ResourceLoader.GetForCurrentView().GetString("TransportTLS") }
             };
 
-            TransportToEnum = new Dictionary<string, Transport>()
+            TransportToEnum = new Dictionary<string, TransportType>()
             {
-                { ResourceLoader.GetForCurrentView().GetString("TransportUDP"), Transport.UDP },
-                { ResourceLoader.GetForCurrentView().GetString("TransportTCP"), Transport.TCP },
-                { ResourceLoader.GetForCurrentView().GetString("TransportTLS"), Transport.TLS }
+                { ResourceLoader.GetForCurrentView().GetString("TransportUDP"), TransportType.Udp },
+                { ResourceLoader.GetForCurrentView().GetString("TransportTCP"), TransportType.Tcp },
+                { ResourceLoader.GetForCurrentView().GetString("TransportTLS"), TransportType.Tls }
             };
         }
 
@@ -285,23 +286,22 @@ namespace Linphone.Model {
 
             ProxyConfig cfg = LinphoneManager.Instance.Core.DefaultProxyConfig;
             if (cfg != null) {
-                Address address = LinphoneManager.Instance.Core.CreateAddress(cfg.Identity);
+                Address address = LinphoneManager.Instance.Core.CreateAddress(cfg.IdentityAddress.AsStringUriOnly());
                 if (address != null) {
                     Address proxyAddress = LinphoneManager.Instance.Core.CreateAddress(cfg.ServerAddr);
                     dict[ProxyKeyName] = proxyAddress.AsStringUriOnly();
                     dict[TransportKeyName] = EnumToTransport[proxyAddress.Transport];
-                    dict[UsernameKeyName] = address.UserName;
+                    dict[UsernameKeyName] = address.Username;
                     dict[DomainKeyName] = address.Domain;
                     dict[OutboundProxyKeyName] = (cfg.Route.Length > 0).ToString();
                     dict[ExpireKeyName] = String.Format("{0}", cfg.Expires);
-                    var authInfos = LinphoneManager.Instance.Core.AuthInfoList;
-                    if (authInfos.Count > 0) {
-                        AuthInfo info = ((AuthInfo)authInfos[0]);
-                        dict[PasswordKeyName] = info.Passwd;
-                        dict[UserIdKeyName] = info.Userid;
+                    AuthInfo authInfo = LinphoneManager.Instance.Core.FindAuthInfo(address.Domain, address.Username, address.Domain);
+                    if (authInfo != null) {
+                        dict[PasswordKeyName] = authInfo.Passwd;
+                        dict[UserIdKeyName] = authInfo.Userid;
                     }
                     dict[DisplayNameKeyName] = address.DisplayName;
-                    dict[AVPFKeyName] = cfg.IsAvpfEnabled.ToString();
+                    dict[AVPFKeyName] = cfg.AvpfEnabled.ToString();
                 }
             }
         }
@@ -318,7 +318,7 @@ namespace Linphone.Model {
                 ProxyConfig cfg = lc.DefaultProxyConfig;
                 if (cfg != null) {
                     cfg.Edit();
-                    cfg.IsRegisterEnabled = false;
+                    cfg.RegisterEnabled = false;
                     cfg.Done();
 
                     //Wait for unregister to complete
@@ -349,9 +349,9 @@ namespace Linphone.Model {
                     cfg = lc.CreateProxyConfig();
                     cfg.Edit();
                     if (displayname != null && displayname.Length > 0) {
-                        cfg.Identity = "\"" + displayname + "\" " + "<sip:" + username + "@" + domain + ">";
+                        cfg.IdentityAddress = Factory.Instance.CreateAddress("\"" + displayname + "\" " + "<sip:" + username + "@" + domain + ">");
                     } else {
-                        cfg.Identity = "<sip:" + username + "@" + domain + ">";
+                        cfg.IdentityAddress = Factory.Instance.CreateAddress("<sip:" + username + "@" + domain + ">");
                     }
 
                     if ((proxy == null) || (proxy.Length <= 0)) {
@@ -383,19 +383,14 @@ namespace Linphone.Model {
                         cfg.Expires = result;
                     }
 
-                    // Can't set string to null: http://stackoverflow.com/questions/12980915/exception-when-trying-to-read-null-string-in-c-sharp-winrt-component-from-winjs
-                    if (userid == null)
-                        userid = "";
-                    if (password == null)
-                        password = "";
                     var auth = lc.CreateAuthInfo(username, userid, password, "", "", domain);
                     lc.AddAuthInfo(auth);
 
                     lc.AddProxyConfig(cfg);
                     lc.DefaultProxyConfig = cfg;
                     LinphoneManager.Instance.AddPushInformationsToContactParams();
-                    cfg.IsAvpfEnabled = avpf;
-                    cfg.IsRegisterEnabled = true;
+                    //cfg.AvpfEnabled = avpf;
+                    cfg.RegisterEnabled = true;
                     cfg.Done();
                 }
             }
@@ -583,14 +578,16 @@ namespace Linphone.Model {
         }
 
         #region Implementation of the ISettingsManager interface
-        private void LoadCodecs(IList<PayloadType> ptlist) {
+        private void LoadCodecs(IEnumerable<PayloadType> ptlist) {
             foreach (PayloadType pt in ptlist) {
                 String keyname = GetKeyNameForCodec(pt.MimeType, pt.ClockRate);
                 if (keyname != null) {
-                    dict[keyname] = LinphoneManager.Instance.Core.PayloadTypeEnabled(pt).ToString();
+                    dict[keyname] = LinphoneManager.Instance.Core.AudioPayloadTypes.ToString();
+                    dict[keyname] += LinphoneManager.Instance.Core.VideoPayloadTypes.ToString();
+                    dict[keyname] += LinphoneManager.Instance.Core.TextPayloadTypes.ToString();
                 } else {
                     //Logger.Warn("Codec {0}/{1} supported by core is not shown in the settings view, disable it", pt.MimeType, pt.ClockRate);
-                    LinphoneManager.Instance.Core.EnablePayloadType(pt, false);
+                    pt.Enable(false);
                 }
             }
         }
@@ -599,15 +596,15 @@ namespace Linphone.Model {
         /// Load the codecs settings.
         /// </summary>
         public void Load() {
-            LoadCodecs(LinphoneManager.Instance.Core.AudioCodecs);
-            LoadCodecs(LinphoneManager.Instance.Core.VideoCodecs);
+            LoadCodecs(LinphoneManager.Instance.Core.AudioPayloadTypes);
+            LoadCodecs(LinphoneManager.Instance.Core.VideoPayloadTypes);
         }
 
-        private void SaveCodecs(IList<PayloadType> ptlist) {
+        private void SaveCodecs(IEnumerable<PayloadType> ptlist) {
             foreach (PayloadType pt in ptlist) {
                 String keyname = GetKeyNameForCodec(pt.MimeType, pt.ClockRate);
                 if ((keyname != null) && ValueChanged(keyname)) {
-                    LinphoneManager.Instance.Core.EnablePayloadType(pt, Convert.ToBoolean(GetNew(keyname)));
+                    pt.Enable(Convert.ToBoolean(GetNew(keyname)));
                 }
             }
         }
@@ -616,8 +613,8 @@ namespace Linphone.Model {
         /// Save the codecs settings.
         /// </summary>
         public void Save() {
-            SaveCodecs(LinphoneManager.Instance.Core.AudioCodecs);
-            SaveCodecs(LinphoneManager.Instance.Core.VideoCodecs);
+            SaveCodecs(LinphoneManager.Instance.Core.AudioPayloadTypes);
+            SaveCodecs(LinphoneManager.Instance.Core.VideoPayloadTypes);
         }
         #endregion
 
@@ -827,12 +824,12 @@ namespace Linphone.Model {
         public void Load() {
             dict[SendDTMFsRFC2833KeyName] = LinphoneManager.Instance.Core.UseRfc2833ForDtmf.ToString();
             dict[SendDTMFsSIPInfoKeyName] = LinphoneManager.Instance.Core.UseInfoForDtmf.ToString();
-            dict[VideoEnabledKeyName] = LinphoneManager.Instance.Core.IsVideoCaptureEnabled.ToString();
-            VideoPolicy policy = LinphoneManager.Instance.Core.VideoPolicy;
+            dict[VideoEnabledKeyName] = LinphoneManager.Instance.Core.VideoCaptureEnabled.ToString();
+            VideoActivationPolicy policy = LinphoneManager.Instance.Core.VideoActivationPolicy;
             dict[AutomaticallyInitiateVideoKeyName] = policy.AutomaticallyInitiate.ToString();
             dict[AutomaticallyAcceptVideoKeyName] = policy.AutomaticallyAccept.ToString();
-            dict[SelfViewEnabledKeyName] = LinphoneManager.Instance.Core.IsSelfViewEnabled.ToString();
-            dict[PreferredVideoSizeKeyName] = LinphoneManager.Instance.Core.PreferredVideoSizeName;
+            dict[SelfViewEnabledKeyName] = LinphoneManager.Instance.Core.SelfViewEnabled.ToString();
+            dict[PreferredVideoSizeKeyName] = (LinphoneManager.Instance.Core.PreviewVideoDefinition != null) ? LinphoneManager.Instance.Core.PreviewVideoDefinition.ToString() : null;
             dict[DownloadBandwidthKeyName] = LinphoneManager.Instance.Core.DownloadBandwidth.ToString();
             dict[UploadBandwidthKeyName] = LinphoneManager.Instance.Core.UploadBandwidth.ToString();
         }
@@ -849,18 +846,19 @@ namespace Linphone.Model {
             }
             if (ValueChanged(VideoEnabledKeyName)) {
                 bool isVideoEnabled = Convert.ToBoolean(GetNew(VideoEnabledKeyName));
-                LinphoneManager.Instance.Core.IsVideoCaptureEnabled = isVideoEnabled;
-                LinphoneManager.Instance.Core.IsVideoDisplayEnabled = isVideoEnabled;
+                LinphoneManager.Instance.Core.VideoCaptureEnabled = isVideoEnabled;
+                LinphoneManager.Instance.Core.VideoDisplayEnabled = isVideoEnabled;
             }
             if (ValueChanged(AutomaticallyInitiateVideoKeyName) || ValueChanged(AutomaticallyAcceptVideoKeyName)) {
-                VideoPolicy policy = new VideoPolicy(Convert.ToBoolean(GetNew(AutomaticallyInitiateVideoKeyName)), Convert.ToBoolean(GetNew(AutomaticallyAcceptVideoKeyName)));
-                LinphoneManager.Instance.Core.VideoPolicy = policy;
+                VideoActivationPolicy policy = Factory.Instance.CreateVideoActivationPolicy();
+
+                LinphoneManager.Instance.Core.VideoActivationPolicy = policy;
             }
             if (ValueChanged(SelfViewEnabledKeyName)) {
-                LinphoneManager.Instance.Core.IsSelfViewEnabled = Convert.ToBoolean(GetNew(SelfViewEnabledKeyName));
+                LinphoneManager.Instance.Core.SelfViewEnabled = Convert.ToBoolean(GetNew(SelfViewEnabledKeyName));
             }
             if (ValueChanged(PreferredVideoSizeKeyName)) {
-                LinphoneManager.Instance.Core.SetPreferredVideoSizeByName(GetNew(PreferredVideoSizeKeyName));
+                LinphoneManager.Instance.Core.PreviewVideoDefinition = Factory.Instance.CreateVideoDefinitionFromName(GetNew(PreferredVideoSizeKeyName));
             }
             if (ValueChanged(DownloadBandwidthKeyName)) {
                 LinphoneManager.Instance.Core.DownloadBandwidth = Convert.ToInt32(GetNew(DownloadBandwidthKeyName));
@@ -988,11 +986,9 @@ namespace Linphone.Model {
     public class NetworkSettingsManager : SettingsManager, ISettingsManager {
         private Config Config;
         private Dictionary<string, string> TunnelModeToString;
-        private Dictionary<string, FirewallPolicy> FirewallPolicyToEnum;
         private Dictionary<string, MediaEncryption> MediaEncryptionToEnum;
         private Dictionary<string, string> StringToTunnelMode;
         private Boolean IPV6Enabled;
-        public Dictionary<FirewallPolicy, string> EnumToFirewallPolicy;
         public Dictionary<MediaEncryption, string> EnumToMediaEncryption;
 
         #region Constants settings names
@@ -1031,21 +1027,6 @@ namespace Linphone.Model {
                 TunnelModeToString = new Dictionary<string, string>() { };
                 StringToTunnelMode = new Dictionary<string, string>() { };
             }
-
-            FirewallPolicyToEnum = new Dictionary<string, FirewallPolicy>()
-            {
-                { "None", FirewallPolicy.NoFirewall },
-                { "NAT", FirewallPolicy.UseNatAddress },
-                { "STUN", FirewallPolicy.UseStun },
-                { "ICE", FirewallPolicy.UseIce }
-            };
-            EnumToFirewallPolicy = new Dictionary<FirewallPolicy, string>()
-            {
-                { FirewallPolicy.NoFirewall, "None" },
-                { FirewallPolicy.UseNatAddress, "NAT" },
-                { FirewallPolicy.UseStun, "STUN" },
-                { FirewallPolicy.UseIce, "ICE" }
-            };
             MediaEncryptionToEnum = new Dictionary<string, MediaEncryption>()
             {
                 { "None", MediaEncryption.None },
@@ -1068,9 +1049,8 @@ namespace Linphone.Model {
         /// </summary>
         public void Load() {
             dict[StunServerKeyName] = LinphoneManager.Instance.Core.StunServer;
-            dict[FirewallPolicyKeyName] = EnumToFirewallPolicy[LinphoneManager.Instance.Core.FirewallPolicy];
             dict[MediaEncryptionKeyName] = EnumToMediaEncryption[LinphoneManager.Instance.Core.MediaEncryption];
-            IPV6Enabled = LinphoneManager.Instance.Core.IsIpv6Enabled;
+            IPV6Enabled = LinphoneManager.Instance.Core.Ipv6Enabled;
             // Load tunnel configuration
             //  dict[TunnelModeKeyName] = AppResources.TunnelModeDisabled;
             dict[TunnelServerKeyName] = "";
@@ -1099,7 +1079,6 @@ namespace Linphone.Model {
         public void Save() {
             if (ValueChanged(FirewallPolicyKeyName)) {
                 string firewallPolicy = GetNew(FirewallPolicyKeyName);
-                LinphoneManager.Instance.Core.FirewallPolicy = FirewallPolicyToEnum[firewallPolicy];
             }
 
             if (ValueChanged(StunServerKeyName))
@@ -1110,7 +1089,7 @@ namespace Linphone.Model {
                 LinphoneManager.Instance.Core.MediaEncryption = MediaEncryptionToEnum[mediaEncryption];
             }
 
-            LinphoneManager.Instance.Core.IsIpv6Enabled = IPV6Enabled;
+            LinphoneManager.Instance.Core.Ipv6Enabled = IPV6Enabled;
 
             // Save tunnel configuration
             /* if (LinphoneManager.Instance.Core.TunnelAvailable && Customs.IsTunnelEnabled)

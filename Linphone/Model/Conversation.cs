@@ -14,7 +14,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-using BelledonneCommunications.Linphone.Native;
+using Linphone;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +46,7 @@ namespace Linphone.Model {
         public string LatestMessage {
             get {
                 string lastText = Messages.Last().Text;
-                if (lastText == null || lastText.Length <= 0 || Messages.Last().AppData != "") {
+                if (lastText == null || lastText.Length <= 0 || Messages.Last().Appdata != "") {
                     return null;
                 }
                 return lastText;
@@ -73,7 +73,7 @@ namespace Linphone.Model {
 
         public Visibility IsLastMessageImage {
             get {
-                if (Messages.Last().FileTransferFilepath != "" || Messages.Last().AppData != "") {
+                if (Messages.Last().FileTransferFilepath != "" || Messages.Last().Appdata != "") {
                     return Visibility.Visible;
                 } else {
                     return Visibility.Collapsed;
@@ -92,7 +92,7 @@ namespace Linphone.Model {
         /// <summary>
         /// Public constructor.
         /// </summary>
-        public Conversation(string sipAddress, string displayName, IList<ChatMessage> messages) {
+        public Conversation(string sipAddress, string displayName, IEnumerable<ChatMessage> messages) {
             SipAddress = sipAddress;
             DisplayedName = displayName;
             Messages = new List<ChatMessage>();

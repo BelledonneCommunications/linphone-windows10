@@ -21,7 +21,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
-using BelledonneCommunications.Linphone.Native;
+using Linphone;
 using Windows.UI.Core;
 
 namespace Linphone.Views {
@@ -51,7 +51,7 @@ namespace Linphone.Views {
                 ResourceLoader.GetForCurrentView().GetString("MediaEncryptionNone")
             };
 
-            if (LinphoneManager.Instance.Core.IsMediaEncryptionSupported(MediaEncryption.SRTP))
+            if (LinphoneManager.Instance.Core.MediaEncryptionSupported(MediaEncryption.SRTP))
                 mediaEncryptions.Add(ResourceLoader.GetForCurrentView().GetString("MediaEncryptionSRTP"));
 
             mediaEncryption.ItemsSource = mediaEncryptions;
@@ -79,7 +79,7 @@ namespace Linphone.Views {
             tunnelMode.SelectedItem = _networkSettings.TunnelMode;
             tunnelPort.Text = _networkSettings.TunnelPort;
             tunnelServer.Text = _networkSettings.TunnelServer;
-            IPV6.IsOn = LinphoneManager.Instance.Core.IsIpv6Enabled;
+            IPV6.IsOn = LinphoneManager.Instance.Core.Ipv6Enabled;
 
             TunnelPanel.Visibility = LinphoneManager.Instance.Core.Tunnel != null ? Visibility.Visible : Visibility.Collapsed; //Hidden properties for now
 
@@ -93,8 +93,10 @@ namespace Linphone.Views {
             _callSettings.SendDTFMsSIPInfo = sipInfo.IsOn;
             _callSettings.Save();
 
-            _networkSettings.MEncryption = mediaEncryption.SelectedItem.ToString();
-            _networkSettings.FWPolicy = firewallPolicy.SelectedItem.ToString();
+            if (mediaEncryption.SelectedItem != null)
+                _networkSettings.MEncryption = mediaEncryption.SelectedItem.ToString();
+            if (firewallPolicy.SelectedItem != null)
+                _networkSettings.FWPolicy = firewallPolicy.SelectedItem.ToString();
             _networkSettings.StunServer = Stun.Text;
             _networkSettings.IPV6 = IPV6.IsOn;
 
@@ -158,13 +160,13 @@ namespace Linphone.Views {
         }
 
         private void Debug_Checked(object sender, RoutedEventArgs e) {
-            _settings.LogLevel = OutputTraceLevel.Message;
+            //_settings.LogLevel = OutputTraceLevel.Message;
             SendLogs.IsEnabled = true;
             ResetLogs.IsEnabled = true;
         }
 
         private void Debug_Unchecked(object sender, RoutedEventArgs e) {
-            _settings.LogLevel = OutputTraceLevel.None;
+            //_settings.LogLevel = OutputTraceLevel.None;
             SendLogs.IsEnabled = false;
             ResetLogs.IsEnabled = false;
         }

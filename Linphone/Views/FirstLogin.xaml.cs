@@ -44,7 +44,7 @@ namespace Linphone.Views {
         protected override void OnNavigatedTo(NavigationEventArgs e) {
             base.OnNavigatedTo(e);
 
-            if (LinphoneManager.Instance.Core.ProxyConfigList.Count > 0) {
+            if (LinphoneManager.Instance.Core.ProxyConfigList.Count() > 0) {
                 // NavigationService.Navigate(new Uri("/Views/Dialer.xaml", UriKind.RelativeOrAbsolute));
                 // NavigationService.RemoveBackEntry(); // Prevent a back to this screen from the dialer
             }
