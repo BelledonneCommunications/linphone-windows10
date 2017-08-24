@@ -57,14 +57,7 @@ namespace Linphone.Views {
             mediaEncryption.ItemsSource = mediaEncryptions;
             mediaEncryption.SelectedItem = _networkSettings.MEncryption;
 
-            List<string> firewallPolicies = new List<string>
-            {
-                ResourceLoader.GetForCurrentView().GetString("FirewallPolicyNone"),
-                ResourceLoader.GetForCurrentView().GetString("FirewallPolicyStun"),
-                ResourceLoader.GetForCurrentView().GetString("FirewallPolicyIce")
-            };
-            firewallPolicy.ItemsSource = firewallPolicies;
-            firewallPolicy.SelectedItem = _networkSettings.FWPolicy;
+            ICE.IsOn = LinphoneManager.Instance.Core.NatPolicy.IceEnabled;
 
             Stun.Text = _networkSettings.StunServer;
 
@@ -84,8 +77,8 @@ namespace Linphone.Views {
             TunnelPanel.Visibility = LinphoneManager.Instance.Core.Tunnel != null ? Visibility.Visible : Visibility.Collapsed; //Hidden properties for now
 
             Debug.IsOn = _settings.DebugEnabled;
-            SendLogs.IsEnabled = _settings.DebugEnabled;
-            ResetLogs.IsEnabled = _settings.DebugEnabled;
+            SendLogs.IsEnabled = true;//_settings.DebugEnabled;
+            ResetLogs.IsEnabled = true;//_settings.DebugEnabled;
         }
 
         private void Save() {
@@ -95,8 +88,7 @@ namespace Linphone.Views {
 
             if (mediaEncryption.SelectedItem != null)
                 _networkSettings.MEncryption = mediaEncryption.SelectedItem.ToString();
-            if (firewallPolicy.SelectedItem != null)
-                _networkSettings.FWPolicy = firewallPolicy.SelectedItem.ToString();
+            _networkSettings.FWPolicy = ICE.IsOn;
             _networkSettings.StunServer = Stun.Text;
             _networkSettings.IPV6 = IPV6.IsOn;
 
@@ -129,7 +121,8 @@ namespace Linphone.Views {
         /// </summary>
         protected override void OnNavigatedFrom(NavigationEventArgs nee) {
             base.OnNavigatedFrom(nee);
-            LinphoneManager.Instance.LogUploadProgressIndicationEH -= LogUploadProgressIndication;
+            LinphoneManager.Instance.getCoreListener().OnLogCollectionUploadProgressIndication -= LogUploadProgressIndication;
+            LinphoneManager.Instance.getCoreListener().OnLogCollectionUploadStateChanged -= LogUploadStateChanged;
             BugReportUploadPopup.Visibility = Visibility.Collapsed;
         }
 
@@ -143,7 +136,7 @@ namespace Linphone.Views {
             base.OnNavigatingFrom(e);
         }
 
-        private void LogUploadProgressIndication(int offset, int total) {
+        private void LogUploadProgressIndication(Core lc, long offset, long total) {
             BugReportUploadProgressBar.Maximum = total;
             if (offset < total) {
                 BugReportUploadProgressBar.Value = offset;
@@ -152,10 +145,17 @@ namespace Linphone.Views {
             }
         }
 
+        private void LogUploadStateChanged(Core lc, CoreLogCollectionUploadState state, string info) {
+            if (state.Equals(CoreLogCollectionUploadState.NotDelivered)) {
+                BugReportUploadPopup.Visibility = Visibility.Collapsed;
+            }
+        }
+
         private void SendLogs_Click(object sender, RoutedEventArgs e) {
             saveSettingsOnLeave = false;
             BugReportUploadPopup.Visibility = Visibility.Visible;
-            LinphoneManager.Instance.LogUploadProgressIndicationEH += LogUploadProgressIndication;
+            LinphoneManager.Instance.getCoreListener().OnLogCollectionUploadProgressIndication += LogUploadProgressIndication;
+            LinphoneManager.Instance.getCoreListener().OnLogCollectionUploadStateChanged += LogUploadStateChanged;
             LinphoneManager.Instance.Core.UploadLogCollection();
         }
 

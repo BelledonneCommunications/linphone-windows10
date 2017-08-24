@@ -112,9 +112,12 @@ def main(argv=None):
         pdbs = glob.glob(os.path.join(sdk_dir, platform_dir, 'bin', '*.pdb'))
         pdbs += glob.glob(os.path.join(sdk_dir, platform_dir, 'lib', '*.pdb'))
         pdbs += glob.glob(os.path.join(sdk_dir, platform_dir, 'lib', 'mediastreamer', 'plugins', '*.pdb'))
+        wrappers = []
         if target_id == "LinphoneSDK":
-            dlls += glob.glob(os.path.join(args.cswrapper_dir, 'bin', platform.lower(), '*', 'CsWrapper.dll'))
-            pdbs += glob.glob(os.path.join(args.cswrapper_dir, 'bin', platform.lower(), '*', 'CsWrapper.pdb'))
+            wrappers += glob.glob(os.path.join(args.cswrapper_dir, 'bin', '*', 'CsWrapper.dll'))
+            wrappers += glob.glob(os.path.join(args.cswrapper_dir, 'bin', '*', 'CsWrapper.pdb'))
+            wrappers += glob.glob(os.path.join(args.cswrapper_dir, 'bin', '*', 'CsWrapper.XML'))
+
 
         if not winmds_installed:
             for winmd in winmds:
@@ -144,6 +147,10 @@ def main(argv=None):
                 shutil.copy(pdb, os.path.join(work_dir, 'runtimes', platform_dir, 'native'))
             elif not basename_noext in ignored_winmds:
                 shutil.copy(pdb, os.path.join(work_dir, 'build', 'uap10.0', platform))
+        for wrap in wrappers:
+            if not os.path.exists(os.path.join(work_dir, 'lib', 'uap10.0')):
+                os.makedirs(os.path.join(work_dir, 'lib', 'uap10.0'))
+            shutil.copy(wrap, os.path.join(work_dir, 'lib', 'uap10.0'))
 
     # Write targets file
     targets = """<?xml version="1.0" encoding="utf-8"?>

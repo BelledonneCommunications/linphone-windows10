@@ -59,10 +59,7 @@ namespace Linphone.Views {
 
         protected override void OnNavigatedTo(NavigationEventArgs e) {
             /*ContactManager cm = ContactManager.Instance;
-            cm.ContactFound += cm_ContactFound;
-
-            
-            */
+            cm.ContactFound += cm_ContactFound;*/
 
             LinphoneManager.Instance.MessageReceived += MessageReceived;
             GetMessagesAndDisplayConversationsList();
@@ -81,8 +78,6 @@ namespace Linphone.Views {
         private void MessageReceived(ChatRoom room, ChatMessage message) {
             GetMessagesAndDisplayConversationsList();
         }
-
-
 
         /// <summary>
         /// Callback called when the search on a phone number or an email for a contact has a match
@@ -150,7 +145,7 @@ namespace Linphone.Views {
             foreach (var i in _conversations.OrderByDescending(g => g.Messages.Last().Time).ToList()) {
                 _sortedConversations.Add(i);
             }
-            //  ((ChatsModel)ViewModel).Conversations = _sortedConversations;*/
+            //((ChatsModel)ViewModel).Conversations = _sortedConversations;*/
 
             SetCommandsVisibility(Conversations);
         }

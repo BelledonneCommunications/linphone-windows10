@@ -19,12 +19,12 @@
                             Header="MediaEncryptionSetting">
                         </ComboBox>
 
-                        <ComboBox
+                        <ToggleSwitch
                             Margin="0,10,0,0"
-                            x:Name="firewallPolicy"
+                            x:Name="ICE"
                             x:Uid="FirewallPolicySetting"
-                            Header="FirewallPolicySetting">
-                        </ComboBox>
+                            Header="ICE">
+                        </ToggleSwitch>
 
                         <ToggleSwitch
                             Margin="0,10,0,0"

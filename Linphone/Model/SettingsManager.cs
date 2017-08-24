@@ -161,7 +161,7 @@ namespace Linphone.Model {
         public async void Save() {
             if (ValueChanged(LogLevelKeyName)) {
                 try {
-                    Config.SetInt(ApplicationSection, LogLevelKeyName, Convert.ToInt32(GetNew(LogLevelKeyName)));
+                    //Config.SetInt(ApplicationSection, LogLevelKeyName, Convert.ToInt32(GetNew(LogLevelKeyName)));
                     //LinphoneManager.Instance.ConfigureLog(LogLevel);
                 } catch {
                     // Core.LogLevel.Warn("Failed setting the log level name {0}", Get(LogLevelKeyName));
@@ -247,6 +247,7 @@ namespace Linphone.Model {
         private const string TransportKeyName = "Transport";
         private const string ExpireKeyName = "Expire";
         private const string AVPFKeyName = "AVPF";
+        private const string Ice = "ICE";
 
         private Dictionary<TransportType, string> EnumToTransport;
         private Dictionary<string, TransportType> TransportToEnum;
@@ -283,6 +284,7 @@ namespace Linphone.Model {
             dict[TransportKeyName] = "UDP";
             dict[ExpireKeyName] = "";
             dict[AVPFKeyName] = false.ToString();
+            dict[Ice] = false.ToString();
 
             ProxyConfig cfg = LinphoneManager.Instance.Core.DefaultProxyConfig;
             if (cfg != null) {
@@ -300,6 +302,8 @@ namespace Linphone.Model {
                         dict[PasswordKeyName] = authInfo.Passwd;
                         dict[UserIdKeyName] = authInfo.Userid;
                     }
+                    if (cfg.NatPolicy == null) cfg.NatPolicy = LinphoneManager.Instance.Core.CreateNatPolicy();
+                    dict[Ice] = cfg.NatPolicy.IceEnabled.ToString();
                     dict[DisplayNameKeyName] = address.DisplayName;
                     dict[AVPFKeyName] = cfg.AvpfEnabled.ToString();
                 }
@@ -341,6 +345,7 @@ namespace Linphone.Model {
                 String transport = GetNew(TransportKeyName);
                 String expires = GetNew(ExpireKeyName);
                 bool avpf = Convert.ToBoolean(GetNew(AVPFKeyName));
+                bool ice = Convert.ToBoolean(GetNew(Ice));
 
                 bool outboundProxy = Convert.ToBoolean(GetNew(OutboundProxyKeyName));
                 lc.ClearAllAuthInfo();
@@ -375,6 +380,10 @@ namespace Linphone.Model {
                     }
                     if (outboundProxy) {
                         cfg.Route = cfg.ServerAddr;
+                    }
+
+                    if (cfg.NatPolicy != null) {
+                        cfg.NatPolicy.IceEnabled = ice;
                     }
 
                     int result = 0;
@@ -525,6 +534,18 @@ namespace Linphone.Model {
                 Set(AVPFKeyName, value.ToString());
             }
         }
+
+        /// <summary>
+        /// Ice activated for SIP account (Boolean).
+        /// </summary>
+        public bool? ICE {
+            get {
+                return Convert.ToBoolean(Get(Ice));
+            }
+            set {
+                Set(Ice, value.ToString());
+            }
+        }
         #endregion
     }
 
@@ -582,9 +603,7 @@ namespace Linphone.Model {
             foreach (PayloadType pt in ptlist) {
                 String keyname = GetKeyNameForCodec(pt.MimeType, pt.ClockRate);
                 if (keyname != null) {
-                    dict[keyname] = LinphoneManager.Instance.Core.AudioPayloadTypes.ToString();
-                    dict[keyname] += LinphoneManager.Instance.Core.VideoPayloadTypes.ToString();
-                    dict[keyname] += LinphoneManager.Instance.Core.TextPayloadTypes.ToString();
+                    dict[keyname] = Convert.ToString(pt.Enabled());
                 } else {
                     //Logger.Warn("Codec {0}/{1} supported by core is not shown in the settings view, disable it", pt.MimeType, pt.ClockRate);
                     pt.Enable(false);
@@ -989,6 +1008,7 @@ namespace Linphone.Model {
         private Dictionary<string, MediaEncryption> MediaEncryptionToEnum;
         private Dictionary<string, string> StringToTunnelMode;
         private Boolean IPV6Enabled;
+        private Boolean Ice;
         public Dictionary<MediaEncryption, string> EnumToMediaEncryption;
 
         #region Constants settings names
@@ -1077,10 +1097,6 @@ namespace Linphone.Model {
         /// Save the network settings.
         /// </summary>
         public void Save() {
-            if (ValueChanged(FirewallPolicyKeyName)) {
-                string firewallPolicy = GetNew(FirewallPolicyKeyName);
-            }
-
             if (ValueChanged(StunServerKeyName))
                 LinphoneManager.Instance.Core.StunServer = GetNew(StunServerKeyName);
 
@@ -1090,6 +1106,8 @@ namespace Linphone.Model {
             }
 
             LinphoneManager.Instance.Core.Ipv6Enabled = IPV6Enabled;
+            if (LinphoneManager.Instance.Core.NatPolicy != null)
+                LinphoneManager.Instance.Core.NatPolicy.IceEnabled = Ice;
 
             // Save tunnel configuration
             /* if (LinphoneManager.Instance.Core.TunnelAvailable && Customs.IsTunnelEnabled)
@@ -1141,14 +1159,14 @@ namespace Linphone.Model {
         }
 
         /// <summary>
-        /// Firewall policy setting (String).
+        /// Firewall policy setting (Boolean).
         /// </summary>
-        public string FWPolicy {
+        public Boolean FWPolicy {
             get {
-                return Get(FirewallPolicyKeyName);
+                return Ice;
             }
             set {
-                Set(FirewallPolicyKeyName, value);
+                Ice = value;
             }
         }
 

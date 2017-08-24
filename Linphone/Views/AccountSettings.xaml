@@ -116,6 +116,12 @@
                     </ToggleSwitch>
                 </StackPanel>
 
+                <!--<StackPanel Orientation="Vertical" Grid.Row="7" Margin="0,10,0,0">
+                    <ToggleSwitch  
+                        x:Name="IceSwitch" x:Uid="ICESwitch" Header="Ice">
+                    </ToggleSwitch>
+                </StackPanel>-->
+
                 <StackPanel Orientation="Vertical" Grid.Row="7" Margin="0,10,0,0">
                     <ToggleSwitch
                         x:Name="AVPF" x:Uid="AVPF" Header="AVPF">

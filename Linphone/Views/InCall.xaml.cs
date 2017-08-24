@@ -19,6 +19,7 @@ using Linphone.Model;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Threading;
 using Windows.ApplicationModel.Resources;
 using Windows.Devices.Sensors;
@@ -327,8 +328,8 @@ namespace Linphone.Views {
                 _previewSource = new MSWinRTVideo.SwapChainPanelSource();
                 _previewSource.Start(PreviewSwapChainPanel);
 
-                /*LinphoneManager.Instance.Core.NativeVideoWindowId = VideoSwapChainPanel.Name; TODO
-                LinphoneManager.Instance.Core.NativePreviewWindowId = PreviewSwapChainPanel.Name;*/
+                LinphoneManager.Instance.Core.NativeVideoWindowId = VideoSwapChainPanel.Name;
+                LinphoneManager.Instance.Core.NativePreviewWindowId = PreviewSwapChainPanel.Name;
             } catch (Exception e) {
                 Debug.WriteLine(String.Format("StartVideoStream: Exception {0}", e.Message));
             }

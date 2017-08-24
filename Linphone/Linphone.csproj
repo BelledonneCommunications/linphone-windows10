@@ -94,8 +94,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <Content Include="antlr3c.dll" />
-    <Content Include="antlr3c.pdb" />
     <Content Include="Assets\nowebcamCIF.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -106,43 +104,6 @@
     <Content Include="Assets\linphone_user.png" />
     <Content Include="Assets\notes_of_the_optimistic.mkv" />
     <Content Include="Assets\rootca.pem" />
-    <Content Include="bctoolbox-tester.dll" />
-    <Content Include="bctoolbox-tester.pdb" />
-    <Content Include="bctoolbox.dll" />
-    <Content Include="bctoolbox.pdb" />
-    <Content Include="bcunit.dll" />
-    <Content Include="bcunit.pdb" />
-    <Content Include="belcard.dll" />
-    <Content Include="belcard.pdb" />
-    <Content Include="bellesip.dll" />
-    <Content Include="bellesip.pdb" />
-    <Content Include="belr.dll" />
-    <Content Include="belr.pdb" />
-    <Content Include="bzrtp.dll" />
-    <Content Include="bzrtp.pdb" />
-    <Content Include="gsm.dll" />
-    <Content Include="gsm.pdb" />
-    <Content Include="libmswasapi.dll" />
-    <Content Include="libmswasapi.pdb" />
-    <Content Include="libmswebrtc.dll" />
-    <Content Include="libmswebrtc.pdb" />
-    <Content Include="libmswinrtvid.dll" />
-    <Content Include="libmswinrtvid.pdb" />
-    <Content Include="linphone.dll" />
-    <Content Include="linphone.pdb" />
-    <Content Include="mbedcrypto.dll" />
-    <Content Include="mbedtls.dll" />
-    <Content Include="speex.dll" />
-    <Content Include="speex.pdb" />
-    <Content Include="speexdsp.dll" />
-    <Content Include="speexdsp.pdb" />
-    <Content Include="sqlite3.dll" />
-    <Content Include="sqlite3.pdb" />
-    <Content Include="srtp.dll" />
-    <Content Include="srtp.pdb" />
-    <Content Include="xml2.dll" />
-    <Content Include="xml2.pdb" />
-    <Content Include="zlibd.dll" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -282,13 +243,6 @@
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-200.png" />
-    <Content Include="mbedx509.dll" />
-    <Content Include="mediastreamer_base.dll" />
-    <Content Include="mediastreamer_base.pdb" />
-    <Content Include="mediastreamer_voip.dll" />
-    <Content Include="mediastreamer_voip.pdb" />
-    <Content Include="ortp.dll" />
-    <Content Include="ortp.pdb" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -414,10 +368,6 @@
     <PRIResource Include="String\en-US\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CsWrapper\CsWrapper.csproj">
-      <Project>{e8fb6309-b31e-4380-992c-bb1609b3ea00}</Project>
-      <Name>CsWrapper</Name>
-    </ProjectReference>
     <ProjectReference Include="..\submodules\mswinrtvid\MSWinRTVideo.vcxproj">
       <Project>{2d0e44c4-e51d-4911-b876-345d1e5e5209}</Project>
       <Name>MSWinRTVideo</Name>
@@ -446,6 +396,7 @@
       <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

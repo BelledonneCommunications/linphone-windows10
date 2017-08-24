@@ -48,7 +48,7 @@ class Win10Target(prepare.Target):
         prepare.Target.__init__(self, 'win10-' + arch)
         current_path = os.path.dirname(os.path.realpath(__file__))
         current_path = current_path.replace('\\', '/')
-        self.generator = 'Visual Studio 14 2015'
+        self.generator = 'Visual Studio 15 2017'
         self.platform_name = generator_platform
         self.config_file = 'configs/config-win10.cmake'
         self.output = 'OUTPUT/win10-' + arch
@@ -345,7 +345,7 @@ cd {current_path}
 if %errorlevel% neq 0 goto :cmEnd
 C:
 if %errorlevel% neq 0 goto :cmEnd
-python.exe submodules/build/nuget.py -s OUTPUT -w WORK/NuGet{target} -v {version} -t {target} {platforms}
+python.exe submodules/build/nuget.py -s OUTPUT -w WORK/NuGet{target} -cs CsWrapper -v {version} -t {target} {platforms}
 if %errorlevel% neq 0 goto :cmEnd
 cd {current_path}/OUTPUT
 if %errorlevel% neq 0 goto :cmEnd
@@ -375,6 +375,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
             for platform in self.args.target:
                 project_dependencies += """\t\t{project_guid} = {project_guid}
 """.format(project_guid=guids[platform])
+            project_dependencies += """\t\t{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC} = {FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}
+"""
             for sdk in other_sdks:
                 project_dependencies += """\t\t{project_guid} = {project_guid}
 """.format(project_guid=guids[sdk])
@@ -390,11 +392,17 @@ EndProject
 """\t\t{project_guid}.{build_type}|Win32.ActiveCfg = {build_type}|Win32
 \t\t{project_guid}.{build_type}|Win32.Build.0 = {build_type}|Win32
 """.format(project_guid=guid, build_type=build_type)
+            sln_confs += \
+"""\t\t{project_guid}.{build_type}|Win32.ActiveCfg = {build_type}|Any CPU
+\t\t{project_guid}.{build_type}|Win32.Build.0 = {build_type}|Any CPU
+""".format(project_guid="{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}", build_type=build_type)
 
         # Generate Visual Studio solution to build the SDK
         sln = """Microsoft Visual Studio Solution File, Format Version 12.00
 MinimumVisualStudioVersion = 10.0.40219.1
-{sln_projects}Global
+{sln_projects}Project("{{E8FB6309-B31E-4380-992C-BB1609B3EA00}}") = "CsWrapper", "CsWrapper\CsWrapper.csproj", "{{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}}"
+EndProject
+Global
 \tGlobalSection(SolutionConfigurationPlatforms) = preSolution
 \t\t{build_type}|Win32 = {build_type}|Win32
 \tEndGlobalSection

@@ -38,17 +38,17 @@ namespace Linphone.Views {
             SystemNavigationManager.GetForCurrentView().BackRequested += back_Click;
 
             _settings.Load();
-            Speex16.Visibility = Visibility.Collapsed;//.IsOn = _settings.Speex16;
-            Speex8.Visibility = Visibility.Collapsed;//.IsOn = _settings.Speex8;
-            PCMU.Visibility = Visibility.Collapsed;//.IsOn = _settings.PCMU;
-            PCMA.Visibility = Visibility.Collapsed;//.IsOn = _settings.PCMA;
+            Speex16.IsOn = _settings.Speex16;
+            Speex8.IsOn = _settings.Speex8;
+            PCMU.IsOn = _settings.PCMU;
+            PCMA.IsOn = _settings.PCMA;
             //G722.IsOn = _settings.G722;
             G729.IsOn = _settings.G729;
             //G729.IsEnabled = Customs.EnableG729;
             ILBC.IsOn = _settings.ILBC;
             SILK16.IsOn = _settings.SILK16;
-            GSM.Visibility = Visibility.Collapsed;//.IsOn = _settings.GSM;
-            OPUS.Visibility = Visibility.Collapsed;//.IsOn = _settings.OPUS;
+            GSM.IsOn = _settings.GSM;
+            OPUS.IsOn = _settings.OPUS;
             ISAC.IsOn = _settings.Isac;
         }
 
@@ -71,16 +71,16 @@ namespace Linphone.Views {
         }
 
         private void Save() {
-            //_settings.Speex16 = ToBool(Speex16.IsOn);
-            //_settings.Speex8 = ToBool(Speex8.IsOn);
-            //_settings.PCMU = ToBool(PCMU.IsOn);
-            //_settings.PCMA = ToBool(PCMA.IsOn);
+            _settings.Speex16 = ToBool(Speex16.IsOn);
+            _settings.Speex8 = ToBool(Speex8.IsOn);
+            _settings.PCMU = ToBool(PCMU.IsOn);
+            _settings.PCMA = ToBool(PCMA.IsOn);
             //_settings.G722 = ToBool(G722.IsOn);
             _settings.G729 = ToBool(G729.IsEnabled);
             _settings.ILBC = ToBool(ILBC.IsOn);
             _settings.SILK16 = ToBool(SILK16.IsOn);
-            //_settings.GSM = ToBool(GSM.IsOn);
-            //_settings.OPUS = ToBool(OPUS.IsOn);
+            _settings.GSM = ToBool(GSM.IsOn);
+            _settings.OPUS = ToBool(OPUS.IsOn);
             _settings.Isac = ToBool(ISAC.IsOn);
             _settings.Save();
         }

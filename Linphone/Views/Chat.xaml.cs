@@ -131,6 +131,7 @@ namespace Linphone.Views {
         private void SendMessage(string message) {
             if (chatRoom != null) {
                 ChatMessage chatMessage = chatRoom.CreateMessage(message);
+                chatMessage.Listener.OnMsgStateChanged = MessageStateChanged;
                 chatRoom.SendChatMessage(chatMessage);
             }
         }

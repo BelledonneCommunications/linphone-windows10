@@ -52,7 +52,7 @@ namespace Linphone.Views {
                 "qvga"
             };
             PreferredVideoSize.ItemsSource = videoSizes;
-            PreferredVideoSize.SelectedItem = _callSettings.PreferredVideoSize;
+            PreferredVideoSize.SelectedItem = (_callSettings.PreferredVideoSize != null) ? _callSettings.PreferredVideoSize : "vga";
 
             _codecsSettings.Load();
             foreach (PayloadType p in LinphoneManager.Instance.Core.VideoPayloadTypes) {
@@ -61,7 +61,7 @@ namespace Linphone.Views {
                 }
             }
             H264.IsOn = _codecsSettings.H264;
-            //VP8.IsOn = _codecsSettings.VP8;
+            VP8.IsOn = _codecsSettings.VP8;
         }
 
         /// <summary>
@@ -76,15 +76,15 @@ namespace Linphone.Views {
 
         private void Save() {
             _codecsSettings.H264 = ToBool(H264.IsOn);
-            //_codecsSettings.VP8 = ToBool(VP8.IsOn);
+            _codecsSettings.VP8 = ToBool(VP8.IsOn);
             _codecsSettings.Save();
 
             _callSettings.VideoEnabled = ToBool(VideoEnabled.IsOn);
             _callSettings.AutomaticallyInitiateVideo = ToBool(AutomaticallyInitiateVideo.IsOn);
             _callSettings.AutomaticallyAcceptVideo = ToBool(AutomaticallyAcceptVideo.IsOn);
             _callSettings.SelfViewEnabled = ToBool(SelfViewEnabled.IsOn);
-            _callSettings.PreferredVideoSize = PreferredVideoSize.SelectedItem.ToString();
-            if (PreferredVideoSize.SelectedItem.ToString() == "vga") {
+            _callSettings.PreferredVideoSize = (PreferredVideoSize.SelectedItem != null) ? PreferredVideoSize.SelectedItem.ToString() : "vga";
+            if (_callSettings.PreferredVideoSize == "vga") {
                 _callSettings.DownloadBandwidth = _callSettings.UploadBandwidth = 512;
             } else {
                 _callSettings.DownloadBandwidth = _callSettings.UploadBandwidth = 380;
