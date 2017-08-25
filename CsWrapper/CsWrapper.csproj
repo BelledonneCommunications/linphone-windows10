@@ -114,9 +114,9 @@
   </ItemGroup>
   <PropertyGroup>
     <PreBuildEvent>
-      XCopy /C /Y $(SolutionDir)OUTPUT\win10-x64\share\linphonecs\LinphoneWrapper.cs $(SolutionDir)CsWrapper\
-      XCopy /C /Y $(SolutionDir)OUTPUT\win10-ARM\share\linphonecs\LinphoneWrapper.cs $(SolutionDir)CsWrapper\
-      XCopy /C /Y $(SolutionDir)OUTPUT\win10-x86\share\linphonecs\LinphoneWrapper.cs $(SolutionDir)CsWrapper\
+      IF EXIST "$(SolutionDir)OUTPUT\win10-x64\share\linphonecs\LinphoneWrapper.cs" (copy $(SolutionDir)OUTPUT\win10-x64\share\linphonecs\LinphoneWrapper.cs $(SolutionDir)CsWrapper\ /Y)
+      IF EXIST "$(SolutionDir)OUTPUT\win10-ARM\share\linphonecs\LinphoneWrapper.cs" (copy $(SolutionDir)OUTPUT\win10-ARM\share\linphonecs\LinphoneWrapper.cs $(SolutionDir)CsWrapper\ /Y)
+      IF EXIST "$(SolutionDir)OUTPUT\win10-x86\share\linphonecs\LinphoneWrapper.cs" (copy $(SolutionDir)OUTPUT\win10-x86\share\linphonecs\LinphoneWrapper.cs $(SolutionDir)CsWrapper\ /Y)
     </PreBuildEvent>
   </PropertyGroup>
   <ItemGroup>
