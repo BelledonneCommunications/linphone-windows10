@@ -179,7 +179,7 @@ def main(argv=None):
     <owners>Belledonne Communications</owners>
     <licenseUrl>http://www.gnu.org/licenses/old-licenses/gpl-2.0.html</licenseUrl>
     <projectUrl>https://linphone.org/</projectUrl>
-    <iconUrl>http://www.linphone.org/img/linphone-open-source-voip-projectX2.png</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/BelledonneCommunications/linphone-windows10/master/Linphone/Assets/logo-BC.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>{target_desc}</description>
     <releaseNotes>Nothing new</releaseNotes>
