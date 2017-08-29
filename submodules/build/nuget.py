@@ -183,7 +183,7 @@ def main(argv=None):
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>{target_desc}</description>
     <releaseNotes>Nothing new</releaseNotes>
-    <copyright>Copyright 2016 Belledonne Communications</copyright>
+    <copyright>Copyright 2017 Belledonne Communications</copyright>
     <tags>SIP</tags>
     <dependencies>
     </dependencies>
