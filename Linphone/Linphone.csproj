@@ -378,6 +378,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="LinphoneSDK">
+      <Version>3.12.0.85</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.ApplicationInsights">
       <Version>2.0.1</Version>
     </PackageReference>
