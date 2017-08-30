@@ -5,8 +5,8 @@ Linphone is a free VoIP and video softphone based on the SIP protocol.
 Here's how to launch Linphone for Windows 10 (more details below):
 
 1. Make sure you are using a Windows 10 computer.
-2. Install Visual Studio 14 (2015) from Microsoft.
-3. Install CMake (version 3.4 is required at least).
+2. Install Visual Studio 15 (2017) from Microsoft.
+3. Install CMake (version 3.7 is required at least).
 4. Install Python 2.7 (the version 2.7 is required).
 5. You also need to have the following tools in the PATH (install them if they're not installed already):
 	* The Java Runtime Environment (JRE). The 'java' command must be in your PATH environment variable.
@@ -62,7 +62,7 @@ You can for instance enable OpenH264 by using:
 - 32 bits x86 for 32 bits desktop systems.
 
  Note: The 3 architectures are built by default but you can build only one by passing its name (ARM, x64 or x86) to the `prepare.py` script.
- 
+
 ## Upgrading your SDK
 
 Simply re-building the SDK.sln Visual Studio solution should update your SDK.
