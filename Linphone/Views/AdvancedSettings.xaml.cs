@@ -77,8 +77,8 @@ namespace Linphone.Views {
             TunnelPanel.Visibility = LinphoneManager.Instance.Core.Tunnel != null ? Visibility.Visible : Visibility.Collapsed; //Hidden properties for now
 
             Debug.IsOn = _settings.DebugEnabled;
-            SendLogs.IsEnabled = true;//_settings.DebugEnabled;
-            ResetLogs.IsEnabled = true;//_settings.DebugEnabled;
+            SendLogs.IsEnabled = _settings.DebugEnabled;
+            ResetLogs.IsEnabled = _settings.DebugEnabled;
         }
 
         private void Save() {
@@ -160,13 +160,15 @@ namespace Linphone.Views {
         }
 
         private void Debug_Checked(object sender, RoutedEventArgs e) {
-            //_settings.LogLevel = OutputTraceLevel.Message;
+            _settings.DebugEnabled = true;
+            _settings.LogLevelSetting = LogCollectionState.Enabled;
             SendLogs.IsEnabled = true;
             ResetLogs.IsEnabled = true;
         }
 
         private void Debug_Unchecked(object sender, RoutedEventArgs e) {
-            //_settings.LogLevel = OutputTraceLevel.None;
+            _settings.DebugEnabled = false;
+            _settings.LogLevelSetting = LogCollectionState.Disabled;
             SendLogs.IsEnabled = false;
             ResetLogs.IsEnabled = false;
         }
@@ -179,6 +181,14 @@ namespace Linphone.Views {
             if (Frame.CanGoBack) {
                 e.Handled = true;
                 Frame.GoBack();
+            }
+        }
+
+        private void Debug_Toggled(object sender, RoutedEventArgs e) {
+            if (Debug.IsOn) {
+                Debug_Checked(sender, e);
+            } else {
+                Debug_Unchecked(sender, e);
             }
         }
     }

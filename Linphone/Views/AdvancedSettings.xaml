@@ -130,7 +130,8 @@
                     <ToggleSwitch
                         x:Name="Debug"
                         x:Uid="DebugSetting"
-                        Header="DebugSetting">
+                        Header="DebugSetting"
+                        Toggled="Debug_Toggled">
                     </ToggleSwitch>
 
                     <Grid>

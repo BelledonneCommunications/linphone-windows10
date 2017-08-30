@@ -127,9 +127,9 @@ namespace Linphone.Model {
     /// </summary>
     public class ApplicationSettingsManager : SettingsManager, ISettingsManager {
         private Config Config;
-
+        private LogCollectionState LogLevel;
         #region Constants settings names
-        private const string LogLevelKeyName = "LogLevel";
+        private const String LogLevelKeyName = "LogLevel";
         private const string VideoActiveWhenGoingToBackgroundKeyName = "VideoActiveWhenGoingToBackground";
         private const string VideoAutoAcceptWhenGoingToBackgroundKeyName = "VideoAutoAcceptWhenGoingToBackground";
         #endregion
@@ -150,7 +150,7 @@ namespace Linphone.Model {
         /// Load the application settings.
         /// </summary>
         public void Load() {
-            //dict[LogLevelKeyName] = Config.GetInt(ApplicationSection, LogLevelKeyName, (int)OutputTraceLevel.Message).ToString();
+            LogLevelSetting = (LogCollectionState)(Config.GetInt(ApplicationSection, LogLevelKeyName, (int)LogCollectionState.Disabled));
             dict[VideoActiveWhenGoingToBackgroundKeyName] = Config.GetInt(ApplicationSection, VideoActiveWhenGoingToBackgroundKeyName, 0).ToString();
             dict[VideoAutoAcceptWhenGoingToBackgroundKeyName] = Config.GetInt(ApplicationSection, VideoAutoAcceptWhenGoingToBackgroundKeyName, 1).ToString();
         }
@@ -161,7 +161,10 @@ namespace Linphone.Model {
         public async void Save() {
             if (ValueChanged(LogLevelKeyName)) {
                 try {
-                    //Config.SetInt(ApplicationSection, LogLevelKeyName, Convert.ToInt32(GetNew(LogLevelKeyName)));
+                    Config.SetInt(ApplicationSection, LogLevelKeyName, (int)LogLevel);
+                    LinphoneManager.Instance.EnableLogCollection((LogLevelSetting == LogCollectionState.Enabled) ? true: false);
+                    Linphone.Core.EnableLogCollection(LogLevelSetting);
+                    Linphone.Core.SetLogLevelMask((LogLevelSetting == LogCollectionState.Enabled) ? (uint)0xFF: 0x0);
                     //LinphoneManager.Instance.ConfigureLog(LogLevel);
                 } catch {
                     // Core.LogLevel.Warn("Failed setting the log level name {0}", Get(LogLevelKeyName));
@@ -182,29 +185,29 @@ namespace Linphone.Model {
         /// </summary>
         public bool DebugEnabled {
             get {
-                return false;
-                //return Convert.ToInt32(Get(LogLevelKeyName)) == (int)OutputTraceLevel.Message;
+                return LogLevelSetting == LogCollectionState.Enabled;
             }
             set {
-                /*if (value) {
-                    Set(LogLevelKeyName, ((int)OutputTraceLevel.Message).ToString());
+                if (value) {
+                    LogLevelSetting = LogCollectionState.Enabled;
                 } else {
-                    Set(LogLevelKeyName, ((int)OutputTraceLevel.None).ToString());
-                }*/
+                    LogLevelSetting = LogCollectionState.Disabled;
+                }
             }
         }
 
         /// <summary>
         /// Log level (OutputTraceLevel).
         /// </summary>
-        /*public OutputTraceLevel LogLevel {
+        public LogCollectionState LogLevelSetting {
             get {
-                return (OutputTraceLevel)Convert.ToInt32(Get(LogLevelKeyName));
+                return LogLevel;
             }
             set {
+                LogLevel = value;
                 Set(LogLevelKeyName, ((int)value).ToString());
             }
-        }*/
+        }
 
         /// <summary>
         /// Save if the video was active when going to background.

@@ -55,12 +55,9 @@ namespace Linphone.Model {
             get {
                 if (_core == null) {
                     ConfigurePaths();
-                    EnableLogCollection(true);
                     _coreListener = Factory.Instance.CreateCoreListener();
                     coreListenerInit();
                     _core = Factory.Instance.CreateCore(_coreListener, GetConfigPath(), GetFactoryConfigPath());
-                    Linphone.Core.EnableLogCollection(LogCollectionState.Enabled);
-                    Linphone.Core.SetLogLevelMask(0xFF);
                 }
                 return _core;
             }
@@ -109,7 +106,7 @@ namespace Linphone.Model {
             }
         }
         public String GetChatDatabasePath() {
-            return Path.Combine(ApplicationData.Current.LocalFolder.Path, "chat.db");
+            return (ApplicationData.Current.LocalFolder.Path + "chat.db");
         }
 
         public String GetDefaultConfigPath() {
@@ -134,7 +131,6 @@ namespace Linphone.Model {
         }
 
         public void InitLinphoneCore() {
-
             LinphoneManager.Instance.Core.ChatDatabasePath = GetChatDatabasePath();
             LinphoneManager.Instance.Core.RootCa = GetRootCaPath();
 
@@ -147,6 +143,10 @@ namespace Linphone.Model {
             }
             LinphoneManager.Instance.Core.UsePreviewWindow(true);
             LinphoneManager.Instance.Core.SetUserAgent("LinphoneW10", Core.Version);
+            if (LinphoneManager.Instance.Core.Config != null) {
+                EnableLogCollection(
+                    (LinphoneManager.Instance.Core.Config.GetInt("app", "LogLevel", (int)LogCollectionState.Disabled) == 1) ? true : false);
+            }
             InitPushNotifications();
             isLinphoneRunning = true;
             TimeSpan period = TimeSpan.FromMilliseconds(20);
@@ -170,6 +170,7 @@ namespace Linphone.Model {
 
         public void EnableLogCollection(bool enable) {
             Linphone.Core.EnableLogCollection(enable ? LogCollectionState.EnabledWithoutPreviousLogHandler : LogCollectionState.Disabled);
+            if (enable) Linphone.Core.SetLogLevelMask(0xFF);
             Linphone.Core.SetLogCollectionPath(ApplicationData.Current.LocalFolder.Path);
         }
 
