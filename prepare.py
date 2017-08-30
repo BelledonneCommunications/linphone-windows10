@@ -401,6 +401,8 @@ EndProject
         sln = """Microsoft Visual Studio Solution File, Format Version 12.00
 MinimumVisualStudioVersion = 10.0.40219.1
 {sln_projects}Project("{{E8FB6309-B31E-4380-992C-BB1609B3EA00}}") = "CsWrapper", "CsWrapper\CsWrapper.csproj", "{{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}}"
+\tProjectSection(ProjectDependencies) = postProject
+{project_dependencies}\tEndProjectSection
 EndProject
 Global
 \tGlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -412,7 +414,7 @@ Global
 \t\tHideSolutionNode = FALSE
 \tEndGlobalSection
 EndGlobal
-""".format(sln_projects=sln_projects, sln_confs=sln_confs, build_type=build_type)
+""".format(sln_projects=sln_projects, sln_confs=sln_confs, build_type=build_type, project_dependencies=project_dependencies)
         f = open('SDK.sln', 'w')
         f.write(sln)
         f.close()
