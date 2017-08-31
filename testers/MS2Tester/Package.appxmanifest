@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="BelledonneCommunications.MS2Tester" Publisher="CN=belledonne communications, O=belledonne communications, L=Grenoble, C=FR" Version="1.0.0.0" />
+  <Identity Name="BelledonneCommunications.MS2Tester" Publisher="CN=Belledonne Communications, O=Belledonne Communications, L=Grenoble, C=FR" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="95abc830-0c12-41c0-ab5c-2992525992c4" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>MS2Tester</DisplayName>
