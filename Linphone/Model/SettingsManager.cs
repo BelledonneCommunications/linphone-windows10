@@ -851,7 +851,7 @@ namespace Linphone.Model {
             dict[AutomaticallyInitiateVideoKeyName] = policy.AutomaticallyInitiate.ToString();
             dict[AutomaticallyAcceptVideoKeyName] = policy.AutomaticallyAccept.ToString();
             dict[SelfViewEnabledKeyName] = LinphoneManager.Instance.Core.SelfViewEnabled.ToString();
-            dict[PreferredVideoSizeKeyName] = (LinphoneManager.Instance.Core.PreviewVideoDefinition != null) ? LinphoneManager.Instance.Core.PreviewVideoDefinition.ToString() : null;
+            dict[PreferredVideoSizeKeyName] = LinphoneManager.Instance.Core.PreviewVideoDefinition.Name;
             dict[DownloadBandwidthKeyName] = LinphoneManager.Instance.Core.DownloadBandwidth.ToString();
             dict[UploadBandwidthKeyName] = LinphoneManager.Instance.Core.UploadBandwidth.ToString();
         }
@@ -1154,7 +1154,7 @@ namespace Linphone.Model {
         /// </summary>
         public string MEncryption {
             get {
-                return Get(MediaEncryptionKeyName);
+                return (Get(MediaEncryptionKeyName) != null) ? Get(MediaEncryptionKeyName) : "";
             }
             set {
                 Set(MediaEncryptionKeyName, value);
@@ -1178,7 +1178,7 @@ namespace Linphone.Model {
         /// </summary>
         public string StunServer {
             get {
-                return Get(StunServerKeyName);
+                return (Get(StunServerKeyName) != null) ? Get(StunServerKeyName) : "";
             }
             set {
                 Set(StunServerKeyName, value);
@@ -1190,7 +1190,7 @@ namespace Linphone.Model {
         /// </summary>
         public string TunnelServer {
             get {
-                return Get(TunnelServerKeyName);
+                return (Get(TunnelServerKeyName) != null) ? Get(TunnelServerKeyName) : "";
             }
             set {
                 Set(TunnelServerKeyName, value);
@@ -1202,7 +1202,7 @@ namespace Linphone.Model {
         /// </summary>
         public string TunnelPort {
             get {
-                return Get(TunnelPortKeyName);
+                return (Get(TunnelPortKeyName) != null) ? Get(TunnelPortKeyName) : "";
             }
             set {
                 Set(TunnelPortKeyName, value);
@@ -1214,7 +1214,7 @@ namespace Linphone.Model {
         /// </summary>
         public string TunnelMode {
             get {
-                return Get(TunnelModeKeyName);
+                return (Get(TunnelModeKeyName) != null) ? Get(TunnelModeKeyName) : "";
             }
             set {
                 Set(TunnelModeKeyName, value);
