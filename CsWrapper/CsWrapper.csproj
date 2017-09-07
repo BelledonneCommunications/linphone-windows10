@@ -114,9 +114,9 @@
   </ItemGroup>
   <PropertyGroup>
     <PreBuildEvent>
-      IF EXIST "$(SolutionDir)OUTPUT\win10-x64\share\linphonecs\LinphoneWrapper.cs" (copy $(SolutionDir)OUTPUT\win10-x64\share\linphonecs\LinphoneWrapper.cs $(SolutionDir)CsWrapper\ /Y)
-      IF EXIST "$(SolutionDir)OUTPUT\win10-ARM\share\linphonecs\LinphoneWrapper.cs" (copy $(SolutionDir)OUTPUT\win10-ARM\share\linphonecs\LinphoneWrapper.cs $(SolutionDir)CsWrapper\ /Y)
-      IF EXIST "$(SolutionDir)OUTPUT\win10-x86\share\linphonecs\LinphoneWrapper.cs" (copy $(SolutionDir)OUTPUT\win10-x86\share\linphonecs\LinphoneWrapper.cs $(SolutionDir)CsWrapper\ /Y)
+      IF EXIST "$(MSBuildProjectDirectory)\..\OUTPUT\win10-x64\share\linphonecs\LinphoneWrapper.cs" (copy $(MSBuildProjectDirectory)\..\OUTPUT\win10-x64\share\linphonecs\LinphoneWrapper.cs $(MSBuildProjectDirectory)\ /Y)
+      IF EXIST "$(MSBuildProjectDirectory)\..\OUTPUT\win10-ARM\share\linphonecs\LinphoneWrapper.cs" (copy $(MSBuildProjectDirectory)\..\OUTPUT\win10-ARM\share\linphonecs\LinphoneWrapper.cs $(MSBuildProjectDirectory)\ /Y)
+      IF EXIST "$(MSBuildProjectDirectory)\..\OUTPUT\win10-x86\share\linphonecs\LinphoneWrapper.cs" (copy $(MSBuildProjectDirectory)\..\OUTPUT\win10-x86\share\linphonecs\LinphoneWrapper.cs $(MSBuildProjectDirectory)\ /Y)
     </PreBuildEvent>
   </PropertyGroup>
   <ItemGroup>
