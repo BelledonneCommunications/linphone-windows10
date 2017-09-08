@@ -298,7 +298,7 @@ namespace Linphone.Model {
                     dict[TransportKeyName] = EnumToTransport[proxyAddress.Transport];
                     dict[UsernameKeyName] = address.Username;
                     dict[DomainKeyName] = address.Domain;
-                    dict[OutboundProxyKeyName] = (cfg.Route.Length > 0).ToString();
+                    dict[OutboundProxyKeyName] = (cfg.Route != null && cfg.Route.Length > 0).ToString();
                     dict[ExpireKeyName] = String.Format("{0}", cfg.Expires);
                     AuthInfo authInfo = LinphoneManager.Instance.Core.FindAuthInfo(address.Domain, address.Username, address.Domain);
                     if (authInfo != null) {
@@ -851,7 +851,7 @@ namespace Linphone.Model {
             dict[AutomaticallyInitiateVideoKeyName] = policy.AutomaticallyInitiate.ToString();
             dict[AutomaticallyAcceptVideoKeyName] = policy.AutomaticallyAccept.ToString();
             dict[SelfViewEnabledKeyName] = LinphoneManager.Instance.Core.SelfViewEnabled.ToString();
-            dict[PreferredVideoSizeKeyName] = LinphoneManager.Instance.Core.PreviewVideoDefinition.Name;
+            dict[PreferredVideoSizeKeyName] = (LinphoneManager.Instance.Core.PreviewVideoDefinition != null) ? LinphoneManager.Instance.Core.PreviewVideoDefinition.Name : "vga";
             dict[DownloadBandwidthKeyName] = LinphoneManager.Instance.Core.DownloadBandwidth.ToString();
             dict[UploadBandwidthKeyName] = LinphoneManager.Instance.Core.UploadBandwidth.ToString();
         }
