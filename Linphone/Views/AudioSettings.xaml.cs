@@ -76,7 +76,7 @@ namespace Linphone.Views {
             _settings.PCMU = ToBool(PCMU.IsOn);
             _settings.PCMA = ToBool(PCMA.IsOn);
             //_settings.G722 = ToBool(G722.IsOn);
-            _settings.G729 = ToBool(G729.IsEnabled);
+            _settings.G729 = ToBool(G729.IsOn);
             _settings.ILBC = ToBool(ILBC.IsOn);
             _settings.SILK16 = ToBool(SILK16.IsOn);
             _settings.GSM = ToBool(GSM.IsOn);
