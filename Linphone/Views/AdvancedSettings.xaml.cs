@@ -53,6 +53,11 @@ namespace Linphone.Views {
 
             if (LinphoneManager.Instance.Core.MediaEncryptionSupported(MediaEncryption.SRTP))
                 mediaEncryptions.Add(ResourceLoader.GetForCurrentView().GetString("MediaEncryptionSRTP"));
+            if (LinphoneManager.Instance.Core.MediaEncryptionSupported(MediaEncryption.DTLS))
+                mediaEncryptions.Add(ResourceLoader.GetForCurrentView().GetString("MediaEncryptionDTLS"));
+            if (LinphoneManager.Instance.Core.MediaEncryptionSupported(MediaEncryption.ZRTP))
+                mediaEncryptions.Add(ResourceLoader.GetForCurrentView().GetString("MediaEncryptionZRTP"));
+
 
             mediaEncryption.ItemsSource = mediaEncryptions;
             mediaEncryption.SelectedItem = _networkSettings.MEncryption;
