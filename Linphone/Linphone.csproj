@@ -379,7 +379,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="LinphoneSDK">
-      <Version>3.12.0.86</Version>
+      <Version>3.12.0.87</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.ApplicationInsights">
       <Version>2.0.1</Version>

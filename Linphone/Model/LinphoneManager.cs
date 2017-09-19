@@ -130,9 +130,14 @@ namespace Linphone.Model {
             return Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "Assets", "rootca.pem");
         }
 
+        public String GetCertificatesPath() {
+            return ApplicationData.Current.LocalFolder.Path;
+        }
+
         public void InitLinphoneCore() {
             LinphoneManager.Instance.Core.ChatDatabasePath = GetChatDatabasePath();
             LinphoneManager.Instance.Core.RootCa = GetRootCaPath();
+            LinphoneManager.Instance.Core.UserCertificatesPath = GetCertificatesPath();
 
             if (ApiInformation.IsApiContractPresent("Windows.Phone.PhoneContract", 1)) {
                 AudioRoutingManager.GetDefault().AudioEndpointChanged += AudioEndpointChanged;
