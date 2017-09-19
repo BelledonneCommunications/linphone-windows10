@@ -832,7 +832,8 @@ namespace Linphone.Model {
         private const string SendDTMFsSIPInfoKeyName = "SendDTMFsSIPInfo";
         private const string VideoEnabledKeyName = "VideoEnabled";
         private const string AutomaticallyInitiateVideoKeyName = "AutomaticallyInitiateVideo";
-        private const string AutomaticallyAcceptVideoKeyName = "AutomaticallyAcceptVideo";
+        private bool? AutomaticallyAcceptVideoBool;
+        private bool? AutomaticallyInitiateVideoBool;
         private const string SelfViewEnabledKeyName = "SelfViewEnabled";
         private const string PreferredVideoSizeKeyName = "PreferredVideoSize";
         private const string DownloadBandwidthKeyName = "DownloadBandwidth";
@@ -848,8 +849,8 @@ namespace Linphone.Model {
             dict[SendDTMFsSIPInfoKeyName] = LinphoneManager.Instance.Core.UseInfoForDtmf.ToString();
             dict[VideoEnabledKeyName] = LinphoneManager.Instance.Core.VideoCaptureEnabled.ToString();
             VideoActivationPolicy policy = LinphoneManager.Instance.Core.VideoActivationPolicy;
-            dict[AutomaticallyInitiateVideoKeyName] = policy.AutomaticallyInitiate.ToString();
-            dict[AutomaticallyAcceptVideoKeyName] = policy.AutomaticallyAccept.ToString();
+            AutomaticallyInitiateVideoBool = policy.AutomaticallyInitiate;
+            AutomaticallyAcceptVideoBool = policy.AutomaticallyAccept;
             dict[SelfViewEnabledKeyName] = LinphoneManager.Instance.Core.SelfViewEnabled.ToString();
             dict[PreferredVideoSizeKeyName] = (LinphoneManager.Instance.Core.PreviewVideoDefinition != null) ? LinphoneManager.Instance.Core.PreviewVideoDefinition.Name : "vga";
             dict[DownloadBandwidthKeyName] = LinphoneManager.Instance.Core.DownloadBandwidth.ToString();
@@ -871,11 +872,11 @@ namespace Linphone.Model {
                 LinphoneManager.Instance.Core.VideoCaptureEnabled = isVideoEnabled;
                 LinphoneManager.Instance.Core.VideoDisplayEnabled = isVideoEnabled;
             }
-            if (ValueChanged(AutomaticallyInitiateVideoKeyName) || ValueChanged(AutomaticallyAcceptVideoKeyName)) {
-                VideoActivationPolicy policy = Factory.Instance.CreateVideoActivationPolicy();
+            VideoActivationPolicy policy = Factory.Instance.CreateVideoActivationPolicy();
 
-                LinphoneManager.Instance.Core.VideoActivationPolicy = policy;
-            }
+            policy.AutomaticallyInitiate = Convert.ToBoolean(AutomaticallyInitiateVideoBool);
+            policy.AutomaticallyAccept = Convert.ToBoolean(AutomaticallyAcceptVideoBool);
+            LinphoneManager.Instance.Core.VideoActivationPolicy = policy;
             if (ValueChanged(SelfViewEnabledKeyName)) {
                 LinphoneManager.Instance.Core.SelfViewEnabled = Convert.ToBoolean(GetNew(SelfViewEnabledKeyName));
             }
@@ -933,10 +934,10 @@ namespace Linphone.Model {
         /// </summary>
         public bool? AutomaticallyInitiateVideo {
             get {
-                return Convert.ToBoolean(Get(AutomaticallyInitiateVideoKeyName));
+                return AutomaticallyInitiateVideoBool;
             }
             set {
-                Set(AutomaticallyInitiateVideoKeyName, value.ToString());
+                AutomaticallyInitiateVideoBool = value;
             }
         }
 
@@ -945,10 +946,10 @@ namespace Linphone.Model {
         /// </summary>
         public bool? AutomaticallyAcceptVideo {
             get {
-                return Convert.ToBoolean(Get(AutomaticallyAcceptVideoKeyName));
+                return AutomaticallyAcceptVideoBool;
             }
             set {
-                Set(AutomaticallyAcceptVideoKeyName, value.ToString());
+                AutomaticallyAcceptVideoBool = value;
             }
         }
 

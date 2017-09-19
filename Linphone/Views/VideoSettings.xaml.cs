@@ -80,8 +80,8 @@ namespace Linphone.Views {
             _codecsSettings.Save();
 
             _callSettings.VideoEnabled = ToBool(VideoEnabled.IsOn);
-            _callSettings.AutomaticallyInitiateVideo = ToBool(AutomaticallyInitiateVideo.IsOn);
-            _callSettings.AutomaticallyAcceptVideo = ToBool(AutomaticallyAcceptVideo.IsOn);
+            _callSettings.AutomaticallyInitiateVideo = AutomaticallyInitiateVideo.IsOn;
+            _callSettings.AutomaticallyAcceptVideo = AutomaticallyAcceptVideo.IsOn;
             _callSettings.SelfViewEnabled = ToBool(SelfViewEnabled.IsOn);
             _callSettings.PreferredVideoSize = (PreferredVideoSize.SelectedItem != null) ? PreferredVideoSize.SelectedItem.ToString() : "vga";
             if (_callSettings.PreferredVideoSize == "vga") {
