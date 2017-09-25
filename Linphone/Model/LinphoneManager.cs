@@ -106,7 +106,7 @@ namespace Linphone.Model {
             }
         }
         public String GetChatDatabasePath() {
-            return ApplicationData.Current.LocalFolder.Path + "chat.db";
+            return Path.Combine(ApplicationData.Current.LocalFolder.Path, "chat.db");
         }
 
         public String GetDefaultConfigPath() {
