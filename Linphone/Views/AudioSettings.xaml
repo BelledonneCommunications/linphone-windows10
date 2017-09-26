@@ -73,24 +73,6 @@
                                 x:Name="GSM" 
                                 x:Uid="GSMCodec">
                             </ToggleSwitch>
-
-                            <ToggleSwitch
-                                Grid.Row="8"
-                                x:Name="ILBC" 
-                                x:Uid="ILBCCodec">
-                            </ToggleSwitch>
-
-                            <ToggleSwitch
-                                Grid.Row="9"
-                                x:Name="ISAC" 
-                                x:Uid="ISACCodec">
-                            </ToggleSwitch>
-
-                            <ToggleSwitch
-                                Grid.Row="10"
-                                x:Name="SILK16" 
-                                x:Uid="SILK16Codec">
-                            </ToggleSwitch>
                         </Grid>
                     </ScrollViewer.Content>
                 </ScrollViewer>

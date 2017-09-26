@@ -45,11 +45,8 @@ namespace Linphone.Views {
             //G722.IsOn = _settings.G722;
             G729.IsOn = _settings.G729;
             //G729.IsEnabled = Customs.EnableG729;
-            ILBC.IsOn = _settings.ILBC;
-            SILK16.IsOn = _settings.SILK16;
             GSM.IsOn = _settings.GSM;
             OPUS.IsOn = _settings.OPUS;
-            ISAC.IsOn = _settings.Isac;
         }
 
         /// <summary>
@@ -77,11 +74,8 @@ namespace Linphone.Views {
             _settings.PCMA = ToBool(PCMA.IsOn);
             //_settings.G722 = ToBool(G722.IsOn);
             _settings.G729 = ToBool(G729.IsOn);
-            _settings.ILBC = ToBool(ILBC.IsOn);
-            _settings.SILK16 = ToBool(SILK16.IsOn);
             _settings.GSM = ToBool(GSM.IsOn);
             _settings.OPUS = ToBool(OPUS.IsOn);
-            _settings.Isac = ToBool(ISAC.IsOn);
             _settings.Save();
         }
 
