@@ -332,10 +332,9 @@ namespace Linphone.Model {
                     int timeout = 2000;
                     Stopwatch stopwatch = Stopwatch.StartNew();
                     while (true) {
-                        if (stopwatch.ElapsedMilliseconds >= timeout || cfg.State == RegistrationState.Cleared || cfg.State == RegistrationState.None) {
+                        if (stopwatch.ElapsedMilliseconds >= timeout || cfg != null || cfg.State == RegistrationState.Cleared || cfg.State == RegistrationState.None) {
                             break;
                         }
-                        // Thread.Sleep(1);
                     }
                 }
 
