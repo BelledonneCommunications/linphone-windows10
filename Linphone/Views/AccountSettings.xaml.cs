@@ -99,7 +99,9 @@ namespace Linphone.Views {
         /// </summary>
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e) {
             if (saveSettingsOnLeave) {
-                Save();
+                LinphoneManager.Instance.CoreDispatcher.RunIdleAsync((args) => {
+                    Save();
+                });
             }
             base.OnNavigatingFrom(e);
         }
