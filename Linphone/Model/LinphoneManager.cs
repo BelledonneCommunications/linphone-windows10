@@ -174,7 +174,7 @@ namespace Linphone.Model {
         }
 
         public void EnableLogCollection(bool enable) {
-            Linphone.Core.EnableLogCollection(enable ? LogCollectionState.EnabledWithoutPreviousLogHandler : LogCollectionState.Disabled);
+            Linphone.Core.EnableLogCollection(enable ? LogCollectionState.Enabled : LogCollectionState.Disabled);
             if (enable) Linphone.Core.SetLogLevelMask(0xFF);
             Linphone.Core.SetLogCollectionPath(ApplicationData.Current.LocalFolder.Path);
         }
