@@ -268,8 +268,7 @@
                             Text="{Binding MissedCallCount, Mode = TwoWay}"
                             HorizontalAlignment="Right"
                             Style="{StaticResource TextStyle}"
-                            FontSize="12"
-                            Padding="2,5,10,0"  Margin="-18,0,19,0"/>
+                            FontSize="12"/>
                     </Grid>
                 </AppBarButton.Content>
             </AppBarButton>
@@ -286,8 +285,7 @@
                             Text="{Binding UnreadMessageCount, Mode = TwoWay}" 
                             HorizontalAlignment="Right"
                             Style="{StaticResource TextStyle}"
-                            FontSize="12"
-                            Padding="2,5,10,0" Margin="-18,0,19,0"/>
+                            FontSize="12" Padding="4,0,0,0"/>
                     </Grid>
                 </AppBarButton.Content>
             </AppBarButton>

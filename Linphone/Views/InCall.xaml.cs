@@ -200,11 +200,14 @@ namespace Linphone.Views {
                 oneSecondTimer.Interval = TimeSpan.FromSeconds(1);
                 oneSecondTimer.Tick += timerTick;
                 oneSecondTimer.Start();
-
                 statusIcon.Visibility = Visibility.Visible;
                 buttons.enabledVideo(false);
-            }
-            if (state == CallState.StreamsRunning) {
+            } else if (state == CallState.Resuming) {
+                oneSecondTimer = new DispatcherTimer();
+                oneSecondTimer.Interval = TimeSpan.FromSeconds(1);
+                oneSecondTimer.Tick += timerTick;
+                oneSecondTimer.Start();
+            } else if (state == CallState.StreamsRunning) {
                 statusIcon.Glyph = "\uE768";
                 if (!call.MediaInProgress()) {
                     buttons.enabledPause(true);
