@@ -386,6 +386,8 @@ namespace Linphone.Views {
         }
 
         public void MessageReceived(Core lc, ChatRoom room, ChatMessage message) {
+            if (room != chatRoom)
+                return;
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
             MessagesList.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
                 IncomingChatBubble bubble = new IncomingChatBubble(message);
