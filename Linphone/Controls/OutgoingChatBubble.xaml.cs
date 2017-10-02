@@ -57,7 +57,7 @@ namespace Linphone.Controls {
         }
 
         private async void SetImage(string name) {
-            BitmapImage image = await Utils.ReadImageFromTempStoragePath(name);
+            BitmapImage image = await Utils.ReadImageFromTempStorage(name);
             Image.Source = image;
         }
 
