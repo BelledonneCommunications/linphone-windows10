@@ -39,7 +39,7 @@ namespace Linphone.Controls {
 
             ChatMessage = message;
             this.Holding += Bubble_Holding;
-            string filePath = message.Appdata;
+            string filePath = message.FileTransferFilepath;
             bool isImageMessage = filePath != null && filePath.Length > 0;
             if (isImageMessage) {
                 Message.Visibility = Visibility.Collapsed;
@@ -57,7 +57,7 @@ namespace Linphone.Controls {
         }
 
         private async void SetImage(string name) {
-            BitmapImage image = await Utils.ReadImageFromTempStorage(name);
+            BitmapImage image = await Utils.ReadImageFromTempStoragePath(name);
             Image.Source = image;
         }
 

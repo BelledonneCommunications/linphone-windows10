@@ -193,8 +193,10 @@ namespace Linphone.Model {
                     await bitmapImage.SetSourceAsync(fileStream);
                     return bitmapImage;
                 } catch (Exception e) {
+                    Debug.WriteLine("Cannot read image " + name + ": " + e);
                 }
             } catch (Exception e) {
+                Debug.WriteLine("Cannot open file " + name + ": " + e);
             }
             return null;
         }
@@ -215,7 +217,7 @@ namespace Linphone.Model {
             return null;
         }
 
-        private static string GetFileName() {
+        public static string GetFileName() {
             long ticks = DateTime.UtcNow.Ticks - DateTime.Parse("01/01/1970 00:00:00").Ticks;
             ticks /= 10000000; //Convert windows ticks to seconds
             String timestamp = ticks.ToString();

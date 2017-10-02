@@ -203,7 +203,7 @@ namespace Linphone.Views {
             if (LinphoneManager.Instance.CoreDispatcher == null)
                 return;
 #pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
-            LinphoneManager.Instance.CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
+            LinphoneManager.Instance.CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => {
                 if (ProgressPopup.Visibility == Visibility.Visible) {
                     ProgressPopup.Visibility = Visibility.Collapsed;
                     MessageBox.Visibility = Visibility.Visible;
@@ -226,13 +226,15 @@ namespace Linphone.Views {
                     scrollToBottom();
                 } else if (state == ChatMessageState.FileTransferDone && !message.IsOutgoing) {
                     try {
-                        message.Appdata = upload_filename;
                         IncomingChatBubble bubble = (IncomingChatBubble)MessagesList.Children.OfType<IncomingChatBubble>().Where(b => message.Equals(((IncomingChatBubble)b).ChatMessage)).Last();
                         if (bubble != null) {
+                            ((IncomingChatBubble)bubble).ChatMessage.FileTransferFilepath = message.FileTransferFilepath;
                             ((IncomingChatBubble)bubble).RefreshImage();
                         }
                         EnableDownloadButtons(true);
-                    } catch { }
+                    } catch {
+                        Debug.WriteLine("Cannot create load download image");
+                    }
                 } else {
                     try {
                         foreach (OutgoingChatBubble bubble in MessagesList.Children.OfType<OutgoingChatBubble>()) {
@@ -240,7 +242,9 @@ namespace Linphone.Views {
                                 bubble.UpdateStatus(state);
                             }
                         }
-                    } catch { }
+                    } catch {
+                        Debug.WriteLine("Cannot update message state");
+                    }
                 }
 
                 if (chatRoom != null) {
@@ -274,7 +278,7 @@ namespace Linphone.Views {
                     if (MessageBox.Text != null && MessageBox.Text.Length > 0) {
                         SendMessage(MessageBox.Text);
                     } else if (MessageBox.ImageName != null && MessageBox.ImageLocalPath != null) {
-                        InitiateImageUpload(MessageBox.ImageLocalPath, MessageBox.ImageName);
+                        InitiateImageUpload(MessageBox.ImageLocalPath, MessageBox.ImageName, MessageBox.ImageType);
                     } else {
                         Debug.WriteLine("No text :)");
                     }
@@ -307,7 +311,7 @@ namespace Linphone.Views {
             }
         }
 
-        private async void InitiateImageUpload(string filePath, string fileName) {
+        private async void InitiateImageUpload(string filePath, string fileName, string fileType) {
 
             if (chatRoom == null) //This code will be executed only in case of new conversation
             {
@@ -322,15 +326,16 @@ namespace Linphone.Views {
                     try {
                         fileInfo = new FileInfo(filePath);
                         Content content = LinphoneManager.Instance.Core.CreateContent();
-                        content.Type = "application";
-                        content.Subtype = "octet-stream";
-                        content.Name = fileName;
+                        content.Type = "image";
+                        content.Subtype = fileType;
+                        content.Name = fileName+ "." + fileType;
                         content.Size = (int)fileInfo.Length;
                         ChatMessage msg = chatRoom.CreateFileTransferMessage(content);
                         msg.Appdata = fileName;
+                        msg.FileTransferFilepath = filePath;
                         chatRoom.SendChatMessage(msg);
                     } catch (Exception e) {
-
+                        Debug.WriteLine("Cannot upload image: " + e);
                     }
                 });
 
@@ -379,6 +384,7 @@ namespace Linphone.Views {
             string filename = await Utils.SaveImageInLocalFolder(file);
             MessageBox.SetImage(image);
             MessageBox.ImageName = filename;
+            MessageBox.ImageType = file.FileType.Substring(1);
             var tempFolder = ApplicationData.Current.LocalFolder;
             StorageFile tempFile = await tempFolder.GetFileAsync(filename);
             MessageBox.ImageLocalPath = tempFile.Path;
@@ -433,8 +439,10 @@ namespace Linphone.Views {
 
         public async void bubble_DownloadImage(object sender, ChatMessage message) {
             EnableDownloadButtons(false);
-            var tempFolder = ApplicationData.Current.LocalFolder;
-            string name = await Utils.GetImageTempFileName();
+            string fileName = Utils.GetFileName();
+            message.FileTransferFilepath = Path.Combine(ApplicationData.Current.LocalFolder.Path, fileName);
+            message.Appdata = fileName;
+            message.Listener.OnMsgStateChanged = MessageStateChanged;
             message.DownloadFile();
         }
 

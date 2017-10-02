@@ -32,6 +32,10 @@ namespace Linphone.Controls {
             get; set;
         }
 
+        public string ImageType {
+            get; set;
+        }
+
         public delegate void SendFileClickEventHandler(object sender);
         public event SendFileClickEventHandler SendFileClick;
 

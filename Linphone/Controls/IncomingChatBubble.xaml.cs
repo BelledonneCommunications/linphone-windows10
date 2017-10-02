@@ -141,16 +141,14 @@ namespace Linphone.Controls {
         /// <summary>
         /// Displays the image in the bubble
         /// </summary>
-        public async void RefreshImage() {
+        public void RefreshImage() {
             string filePath = ChatMessage.FileTransferFilepath;
             ProgressBar.Visibility = Visibility.Collapsed;
             if (filePath != null && filePath.Length > 0) {
                 Download.Visibility = Visibility.Collapsed;
                 Image.Visibility = Visibility.Visible;
                 // Save.Visibility = Visibility.Visible;
-
-                BitmapImage image = await Utils.ReadImageFromTempStorage(filePath);
-                Image.Source = image;
+                SetImage(ChatMessage.Appdata);
             } else {
                 Download.Visibility = Visibility.Visible;
             }
