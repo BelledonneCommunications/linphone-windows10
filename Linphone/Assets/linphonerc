@@ -1,7 +1,3 @@
-[net]
-download_bw=380
-upload_bw=380
-
 [sip]
 default_proxy=0
 media_encryption=none
@@ -18,7 +14,7 @@ automatically_accept=0
 automatically_initiate=0
 capture=1
 display=1
-size=qvga
+size=vga
 
 [proxy_default_values]
 reg_expires=28800

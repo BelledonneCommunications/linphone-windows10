@@ -1,5 +1,7 @@
 [net]
 mtu=1300
+download_bw=0
+upload_bw=0
 
 [sip]
 guess_hostname=1

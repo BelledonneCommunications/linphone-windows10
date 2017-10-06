@@ -84,11 +84,6 @@ namespace Linphone.Views {
             _callSettings.AutomaticallyAcceptVideo = AutomaticallyAcceptVideo.IsOn;
             _callSettings.SelfViewEnabled = ToBool(SelfViewEnabled.IsOn);
             _callSettings.PreferredVideoSize = (PreferredVideoSize.SelectedItem != null) ? PreferredVideoSize.SelectedItem.ToString() : "vga";
-            if (_callSettings.PreferredVideoSize == "vga") {
-                _callSettings.DownloadBandwidth = _callSettings.UploadBandwidth = 512;
-            } else {
-                _callSettings.DownloadBandwidth = _callSettings.UploadBandwidth = 380;
-            }
             _callSettings.Save();
         }
 
