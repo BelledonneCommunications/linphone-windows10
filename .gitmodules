@@ -85,3 +85,6 @@
 [submodule "submodules/ortp"]
 	path = submodules/ortp
 	url = git://git.linphone.org/ortp.git
+[submodule "submodules\\bcmatroska2"]
+	path = submodules\\bcmatroska2
+	url = git://git.linphone.org/bcmatroska2.git
