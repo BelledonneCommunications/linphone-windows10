@@ -58,7 +58,7 @@ namespace Linphone.Views {
             Transport.SelectedItem = (_settings.Transports != null) ? _settings.Transports : transports[0];
 
             AVPF.IsOn = (_settings.AVPF != null) ? (bool)_settings.AVPF : false;
-            //IceSwitch.IsOn = (_settings.ICE != null) ? (bool)_settings.ICE : false;
+            IceSwitch.IsOn = (_settings.ICE != null) ? (bool)_settings.ICE : false;
         }
 
         private void Save() {
@@ -79,7 +79,7 @@ namespace Linphone.Views {
             _settings.Transports = Transport.SelectedItem.ToString();
             _settings.Expires = Expires.Text;
             _settings.AVPF = AVPF.IsOn;
-            //_settings.ICE = IceSwitch.IsOn;
+            _settings.ICE = IceSwitch.IsOn;
 
             _settings.Save();
 
@@ -88,7 +88,7 @@ namespace Linphone.Views {
                 networkSettings.Load();
                 networkSettings.MEncryption = "SRTP";
 
-                //networkSettings.FWPolicy = networkSettings.EnumToFirewallPolicy[FirewallPolicy.UseIce];
+                networkSettings.FWPolicy = true;
                 networkSettings.StunServer = "stun.linphone.org";
                 networkSettings.Save();
             }
@@ -111,7 +111,6 @@ namespace Linphone.Views {
             if (Frame.CanGoBack) {
                 Frame.GoBack();
             }
-
         }
 
         private void save_Click_1(object sender, RoutedEventArgs e) {
@@ -128,6 +127,7 @@ namespace Linphone.Views {
             OutboundProxy.IsOn = true;
             Expires.Text = "28800";
             AVPF.IsOn = true;
+            IceSwitch.IsOn = true;
             linphoneAccount = true;
         }
 

@@ -37,6 +37,7 @@ namespace Linphone.Views {
             this.InitializeComponent();
             SystemNavigationManager.GetForCurrentView().BackRequested += back_Click;
 
+            //ECCalibratorButton.IsEnabled = false;
             _settings.Load();
             Speex16.IsOn = _settings.Speex16;
             Speex8.IsOn = _settings.Speex8;
@@ -100,9 +101,10 @@ namespace Linphone.Views {
 
         private void ECCalibratorButton_Click_1(object sender, RoutedEventArgs e) {
             var loader = new Windows.ApplicationModel.Resources.ResourceLoader();
-            ECCalibratorButton.IsEnabled = false;
-            ECCalibratorStatusButton.Text = loader.GetString("ECCalibrationInProgress");
-            //LinphoneManager.Instance.Core.StartEchoCalibration(); TODO
+            //ECCalibratorButton.IsEnabled = false;
+            //ECCalibratorStatusButton.Text = loader.GetString("ECCalibrationInProgress");
+
+            //LinphoneManager.Instance.Core.StartEchoCalibration();
         }
 
         /// <summary>
@@ -119,7 +121,7 @@ namespace Linphone.Views {
         /// <param name="delayMs">The echo delay in milliseconds if the status is EcCalibratorStatus.Done</param>
         public void ECStatusNotified(EcCalibratorStatus status, int delayMs) {
 
-            var loader = new Windows.ApplicationModel.Resources.ResourceLoader();
+           /* var loader = new Windows.ApplicationModel.Resources.ResourceLoader();
             if (status == EcCalibratorStatus.Done) {
                 ECCalibratorStatusButton.Text = String.Format(loader.GetString("ECCalibrationDone"), delayMs);
             } else if (status == EcCalibratorStatus.DoneNoEcho) {
@@ -129,7 +131,7 @@ namespace Linphone.Views {
             } else if (status == EcCalibratorStatus.InProgress) {
                 ECCalibratorStatusButton.Text = loader.GetString("ECCalibrationInProgress");
             }
-            ECCalibratorButton.IsEnabled = true;
+            ECCalibratorButton.IsEnabled = true;*/
         }
 
         private void back_Click(object sender, BackRequestedEventArgs e) {

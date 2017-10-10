@@ -194,7 +194,7 @@ namespace Linphone.Views {
         private void numpad_Click(object sender, RoutedEventArgs e) {
             Button button = sender as Button;
             String tag = button.Tag as String;
-            LinphoneManager.Instance.Core.PlayDtmf(Convert.ToSByte(tag), 1000);
+            LinphoneManager.Instance.Core.PlayDtmf(Convert.ToSByte(tag.ToCharArray()[0]), 1000);
 
             addressBox.Text += tag;
         }

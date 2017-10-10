@@ -33,6 +33,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 
                 <StackPanel Orientation="Vertical" Grid.Row="0" Margin="0,10,0,0">
@@ -116,19 +117,19 @@
                     </ToggleSwitch>
                 </StackPanel>
 
-                <!--<StackPanel Orientation="Vertical" Grid.Row="7" Margin="0,10,0,0">
-                    <ToggleSwitch  
-                        x:Name="IceSwitch" x:Uid="ICESwitch" Header="Ice">
-                    </ToggleSwitch>
-                </StackPanel>-->
-
                 <StackPanel Orientation="Vertical" Grid.Row="7" Margin="0,10,0,0">
+                    <ToggleSwitch  
+                        x:Name="IceSwitch" x:Uid="ICESwitch" Header="ICE">
+                    </ToggleSwitch>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Grid.Row="8" Margin="0,10,0,0">
                     <ToggleSwitch
                         x:Name="AVPF" x:Uid="AVPF" Header="AVPF">
                     </ToggleSwitch>
                 </StackPanel>
 
-                <StackPanel Orientation="Vertical" Grid.Row="8" Margin="0,10,0,0">
+                <StackPanel Orientation="Vertical" Grid.Row="9" Margin="0,10,0,0">
                     <TextBlock
                        Text="Expire" x:Uid="Expire">
                     </TextBlock>
@@ -144,7 +145,7 @@
                     </TextBox>
                 </StackPanel>
 
-                <StackPanel Orientation="Vertical" Grid.Row="9" Margin="0,10,0,0">
+                <StackPanel Orientation="Vertical" Grid.Row="10" Margin="0,10,0,0">
                     <TextBlock
                         Text="DisplayName" x:Uid="DisplayName">
                     </TextBlock>

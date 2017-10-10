@@ -196,5 +196,9 @@ namespace Linphone.Views {
                 Debug_Unchecked(sender, e);
             }
         }
+
+        private void ICE_Toggled(object sender, RoutedEventArgs e) {
+
+        }
     }
 }

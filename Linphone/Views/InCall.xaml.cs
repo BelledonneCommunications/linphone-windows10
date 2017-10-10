@@ -100,6 +100,7 @@ namespace Linphone.Views {
         }
 
         private void buttons_DialpadClick(object sender, bool isBluetoothOn) {
+
         }
 
         private bool buttons_SpeakerClick(object sender, bool isSpeakerOn) {
@@ -126,7 +127,6 @@ namespace Linphone.Views {
             } else {
                 PreviewRender.ScaleX = 1;
             }
-
         }
 
         private void buttons_StatsClick(object sender, bool areStatsVisible) {
@@ -174,7 +174,7 @@ namespace Linphone.Views {
         protected override void OnNavigatedFrom(NavigationEventArgs nee) {
             StopVideoStream();
             if (oneSecondTimer != null) {
-                oneSecondTimer.Stop();
+                oneSecondTimer.Start();
             }
 
             if (LinphoneManager.Instance.isMobileVersion()) {
@@ -188,7 +188,7 @@ namespace Linphone.Views {
             Frame.BackStack.Clear();
             base.OnNavigatedFrom(nee);
 
-            LinphoneManager.Instance.CallStateChangedEvent -= CallStateChanged;
+            //LinphoneManager.Instance.CallStateChangedEvent -= CallStateChanged;
         }
 
         public void CallStateChanged(Call call, CallState state) {

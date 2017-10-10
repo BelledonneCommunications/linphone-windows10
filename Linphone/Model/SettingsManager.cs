@@ -291,7 +291,7 @@ namespace Linphone.Model {
 
             ProxyConfig cfg = LinphoneManager.Instance.Core.DefaultProxyConfig;
             if (cfg != null) {
-                Address address = LinphoneManager.Instance.Core.CreateAddress(cfg.IdentityAddress.AsStringUriOnly());
+                Address address = cfg.IdentityAddress;
                 if (address != null) {
                     Address proxyAddress = LinphoneManager.Instance.Core.CreateAddress(cfg.ServerAddr);
                     dict[ProxyKeyName] = proxyAddress.AsStringUriOnly();
@@ -308,7 +308,7 @@ namespace Linphone.Model {
                     if (cfg.NatPolicy == null) cfg.NatPolicy = LinphoneManager.Instance.Core.CreateNatPolicy();
                     dict[Ice] = cfg.NatPolicy.IceEnabled.ToString();
                     dict[DisplayNameKeyName] = address.DisplayName;
-                    dict[AVPFKeyName] = cfg.AvpfEnabled.ToString();
+                    dict[AVPFKeyName] = (cfg.AvpfMode == AVPFMode.Enabled) ? true.ToString() : false.ToString();
                 }
             }
         }
@@ -362,7 +362,6 @@ namespace Linphone.Model {
                     } else {
                         cfg.IdentityAddress = Factory.Instance.CreateAddress("<sip:" + username + "@" + domain + ">");
                     }
-
                     if ((proxy == null) || (proxy.Length <= 0)) {
                         proxy = "sip:" + domain;
                     } else {
@@ -386,9 +385,11 @@ namespace Linphone.Model {
                         cfg.Route = cfg.ServerAddr;
                     }
 
-                    if (cfg.NatPolicy != null) {
+                    if (cfg.NatPolicy == null)
+                        cfg.NatPolicy = cfg.Core.CreateNatPolicy();
+
+                    if (cfg.NatPolicy != null)
                         cfg.NatPolicy.IceEnabled = ice;
-                    }
 
                     int result = 0;
                     int.TryParse(expires, out result);
@@ -402,7 +403,7 @@ namespace Linphone.Model {
                     lc.AddProxyConfig(cfg);
                     lc.DefaultProxyConfig = cfg;
                     LinphoneManager.Instance.AddPushInformationsToContactParams();
-                    //cfg.AvpfEnabled = avpf;
+                    cfg.AvpfMode = (avpf) ? AVPFMode.Enabled : AVPFMode.Disabled;
                     cfg.RegisterEnabled = true;
                     cfg.Done();
                 }

@@ -23,7 +23,8 @@
                             Margin="0,10,0,0"
                             x:Name="ICE"
                             x:Uid="FirewallPolicySetting"
-                            Header="ICE">
+                            Header="ICE" Toggled="ICE_Toggled"
+                            Visibility="Collapsed">
                         </ToggleSwitch>
 
                         <ToggleSwitch
@@ -103,7 +104,8 @@
                     <ToggleSwitch  
                         x:Name="sipInfo"
                         x:Uid="SIPInfoSetting"
-                        Header="SIPInfoSetting">
+                        Header="SIPInfoSetting"
+                        Visibility="Collapsed">
                     </ToggleSwitch>
                 </StackPanel>
             </PivotItem>
@@ -127,6 +129,7 @@
             <!--Pivot item Debug-->
             <PivotItem  Header="DebugMenu" x:Uid="DebugMenu">
                 <StackPanel Orientation="Vertical">
+                    <TextBlock x:Uid="Information" FontStyle="Oblique" Text="Requires mail software configured on this device"/>
                     <ToggleSwitch
                         x:Name="Debug"
                         x:Uid="DebugSetting"

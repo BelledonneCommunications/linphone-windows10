@@ -79,7 +79,7 @@
             </PivotItem>
 
             <!--Pivot item two-->
-            <PivotItem Header="OptionsMenu" x:Uid="OptionsMenu">
+            <!--<PivotItem Header="OptionsMenu" x:Uid="OptionsMenu" Visibility="Collapsed">
                 <StackPanel Orientation="Vertical">
                     <Button
                         Grid.Row="3"
@@ -98,7 +98,7 @@
                         x:Uid="ECCalibrationNotRun"
                         Text="ECCalibrationNotRun" />
                 </StackPanel>
-            </PivotItem>
+            </PivotItem>-->
         </Pivot>
     </Grid>
 
