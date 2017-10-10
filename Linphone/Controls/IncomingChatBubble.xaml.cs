@@ -54,7 +54,7 @@ namespace Linphone.Controls {
                 if (message.Appdata != null && message.Appdata.Length > 0) {
                     // Image already downloaded
                     Image.Visibility = Visibility.Visible;
-                    //Save.Visibility = Visibility.Visible;
+                    Download.Visibility = Visibility.Collapsed;
                     SetImage(message.Appdata);
                 } else {
                     // Image needs to be downloaded
@@ -63,6 +63,7 @@ namespace Linphone.Controls {
             } else {
                 Message.Visibility = Visibility.Visible;
                 Image.Visibility = Visibility.Collapsed;
+                Download.Visibility = Visibility.Collapsed;
                 Message.Blocks.Add(Utils.FormatText(message.Text));
             }
         }
@@ -140,15 +141,19 @@ namespace Linphone.Controls {
         /// Displays the image in the bubble
         /// </summary>
         public void RefreshImage() {
-            string filePath = ChatMessage.FileTransferFilepath;
-            ProgressBar.Visibility = Visibility.Collapsed;
-            if (filePath != null && filePath.Length > 0) {
-                Download.Visibility = Visibility.Collapsed;
-                Image.Visibility = Visibility.Visible;
-                // Save.Visibility = Visibility.Visible;
-                SetImage(ChatMessage.Appdata);
-            } else {
-                Download.Visibility = Visibility.Visible;
+            string fileName = (ChatMessage.FileTransferInformation != null) ? ChatMessage.FileTransferInformation.Name : null;
+            bool isImageMessage = fileName != null && fileName.Length > 0;
+            if (isImageMessage) {
+                string filePath = ChatMessage.FileTransferFilepath;
+                ProgressBar.Visibility = Visibility.Collapsed;
+                if (ChatMessage.Appdata != null && ChatMessage.Appdata.Length > 0) {
+                    Download.Visibility = Visibility.Collapsed;
+                    Image.Visibility = Visibility.Visible;
+                    // Save.Visibility = Visibility.Visible;
+                    SetImage(ChatMessage.Appdata);
+                } else {
+                    Download.Visibility = Visibility.Visible;
+                }
             }
         }
 

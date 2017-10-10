@@ -73,12 +73,18 @@ namespace Linphone.Model {
 
         public Visibility IsLastMessageImage {
             get {
-                if (Messages.Last().FileTransferFilepath != null || Messages.Last().Appdata != null) {
+                if (Messages.Last().FileTransferFilepath != null || Messages.Last().Appdata != null || 
+                    (Messages.Last().FileTransferInformation != null && Messages.Last().FileTransferInformation.Name != null)) {
                     return Visibility.Visible;
                 } else {
                     return Visibility.Collapsed;
                 }
+            }
+        }
 
+        public Visibility IsLastMessageText {
+            get {
+                return (IsLastMessageImage == Visibility.Visible) ? Visibility.Collapsed : Visibility.Visible;
             }
         }
 

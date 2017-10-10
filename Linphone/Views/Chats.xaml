@@ -67,7 +67,8 @@
                                     Style="{StaticResource ListItemStyle}"
                                     Foreground="{Binding IsLastMessageUnread, Converter={StaticResource BoolToAccentBrushConverter}}"   
                                     MaxLines="2"
-                                    TextWrapping="Wrap"/>
+                                    TextWrapping="Wrap"
+                                    Visibility="{Binding IsLastMessageText}"/>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

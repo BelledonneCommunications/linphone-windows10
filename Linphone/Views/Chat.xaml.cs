@@ -63,7 +63,7 @@ namespace Linphone.Views {
             chatListenerInit();
             MessageBox.SendFileClick += send_file;
             MessageBox.SendMessageClick += send_message;
-
+            scrollToBottom();
             SystemNavigationManager.GetForCurrentView().BackRequested += Back_requested;
         }
 
@@ -165,7 +165,6 @@ namespace Linphone.Views {
                     MessagesList.Children.Add(bubble);
                 }
             }
-            scrollToBottom();
         }
 
         private void Bubble_ImageTapped(object sender, string appData) {
@@ -453,7 +452,7 @@ namespace Linphone.Views {
 
         private void scrollToBottom() {
             MessagesScroll.UpdateLayout();
-            MessagesScroll.ChangeView(1, MessagesScroll.ScrollableHeight, 1);
+            MessagesScroll.ChangeView(1, MessagesScroll.ExtentHeight, 1);
         }
 
         public async void bubble_DownloadImage(object sender, ChatMessage message) {

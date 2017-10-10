@@ -110,10 +110,14 @@ namespace Linphone.Controls {
         /// Displays the image in the bubble
         /// </summary>
         public void RefreshImage() {
-            string filePath = ChatMessage.FileTransferFilepath;
-            if (filePath != null && filePath.Length > 0) {
-                Image.Visibility = Visibility.Visible;
-                SetImage(ChatMessage.Appdata);
+            string fileName = (ChatMessage.FileTransferInformation != null) ? ChatMessage.FileTransferInformation.Name : null;
+            bool isImageMessage = fileName != null && fileName.Length > 0;
+            if (isImageMessage) {
+                string filePath = ChatMessage.FileTransferFilepath;
+                if (filePath != null && filePath.Length > 0) {
+                    Image.Visibility = Visibility.Visible;
+                    SetImage(ChatMessage.Appdata);
+                }
             }
         }
 
