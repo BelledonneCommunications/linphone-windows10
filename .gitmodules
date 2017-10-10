@@ -58,9 +58,6 @@
 [submodule "submodules/cmake-builder"]
 	path = submodules/cmake-builder
 	url = git://git.linphone.org/linphone-cmake-builder.git
-[submodule "submodules/externals/libmatroska-c"]
-	path = submodules/externals/libmatroska-c
-	url = git://git.linphone.org/libmatroska-c.git
 [submodule "submodules/bctoolbox"]
 	path = submodules/bctoolbox
 	url = git://git.linphone.org/bctoolbox.git
@@ -85,6 +82,6 @@
 [submodule "submodules/ortp"]
 	path = submodules/ortp
 	url = git://git.linphone.org/ortp.git
-[submodule "submodules\\bcmatroska2"]
-	path = submodules\\bcmatroska2
+[submodule "submodules/bcmatroska2"]
+	path = submodules/bcmatroska2
 	url = git://git.linphone.org/bcmatroska2.git
