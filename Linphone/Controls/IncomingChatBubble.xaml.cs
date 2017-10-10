@@ -51,13 +51,11 @@ namespace Linphone.Controls {
             if (isImageMessage) {
                 Message.Visibility = Visibility.Collapsed;
                 //Copy.Visibility = Visibility.Collapsed;
-                if (filePath != null && filePath.Length > 0) {
+                if (message.Appdata != null && message.Appdata.Length > 0) {
                     // Image already downloaded
                     Image.Visibility = Visibility.Visible;
-                    //                  Save.Visibility = Visibility.Visible;
-
-                    SetImage(filePath);
-
+                    //Save.Visibility = Visibility.Visible;
+                    SetImage(message.Appdata);
                 } else {
                     // Image needs to be downloaded
                     Download.Visibility = Visibility.Visible;

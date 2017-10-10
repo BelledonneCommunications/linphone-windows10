@@ -39,14 +39,20 @@ namespace Linphone.Controls {
 
             ChatMessage = message;
             this.Holding += Bubble_Holding;
-            string filePath = message.FileTransferFilepath;
-            bool isImageMessage = filePath != null && filePath.Length > 0;
+            string fileName = null;
+            if (message.FileTransferInformation != null && message.FileTransferInformation.Name != null) {
+                fileName = message.FileTransferInformation.Name;
+                int end = message.FileTransferInformation.Name.IndexOf('.');
+                if (end > 0)
+                    fileName = fileName.Substring(0, end);
+            }
+            bool isImageMessage = fileName != null && fileName.Length > 0;
             if (isImageMessage) {
                 Message.Visibility = Visibility.Collapsed;
                 //Copy.Visibility = Visibility.Collapsed;
                 Image.Visibility = Visibility.Visible;
                 //Save.Visibility = Visibility.Visible;
-                SetImage(filePath);
+                SetImage(fileName);
             } else {
                 Message.Visibility = Visibility.Visible;
                 Message.Blocks.Add(Utils.FormatText(message.Text));
@@ -98,6 +104,17 @@ namespace Linphone.Controls {
         }
 
         public void MessageStateChanged(ChatMessage message, ChatMessageState state) {
+        }
+
+        /// <summary>
+        /// Displays the image in the bubble
+        /// </summary>
+        public void RefreshImage() {
+            string filePath = ChatMessage.FileTransferFilepath;
+            if (filePath != null && filePath.Length > 0) {
+                Image.Visibility = Visibility.Visible;
+                SetImage(ChatMessage.Appdata);
+            }
         }
 
         public delegate void MessageDeletedEventHandler(object sender, ChatMessage message);

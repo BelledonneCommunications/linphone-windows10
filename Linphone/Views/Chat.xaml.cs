@@ -100,7 +100,7 @@ namespace Linphone.Views {
                 CreateChatRoom(sipAddress);
                 UpdateComposingMessage();
                 chatRoom.MarkAsRead();
-                DisplayPastMessages(chatRoom.GetHistory(chatRoom.HistorySize));
+                DisplayPastMessagesAsync(chatRoom.GetHistory(chatRoom.HistorySize));
             }
             if (sipAddress == null) {
                 ContactName.Visibility = Visibility.Collapsed;
@@ -142,18 +142,26 @@ namespace Linphone.Views {
 
         #endregion
 
-        private void DisplayPastMessages(IEnumerable<ChatMessage> messages) {
+        private async void DisplayPastMessagesAsync(IEnumerable<ChatMessage> messages) {
             foreach (ChatMessage message in messages) {
                 if (!message.IsOutgoing) {
                     IncomingChatBubble bubble = new IncomingChatBubble(message);
                     bubble.MessageDeleted += bubble_MessageDeleted;
                     bubble.DownloadImage += bubble_DownloadImage;
                     bubble.ImageTapped += Bubble_ImageTapped;
+                    bubble.RefreshImage();
                     MessagesList.Children.Add(bubble);
                 } else {
+                    if (!message.IsText && message.FileTransferInformation != null) {
+                        var tempFolder = ApplicationData.Current.LocalFolder;
+                        string name = message.FileTransferInformation.Name;
+                        StorageFile tempFile = await tempFolder.GetFileAsync(name.Substring(0, name.IndexOf('.')));
+                        message.FileTransferFilepath = tempFile.Path;
+                    }
                     OutgoingChatBubble bubble = new OutgoingChatBubble(message);
                     bubble.MessageDeleted += bubble_MessageDeleted;
                     bubble.UpdateStatus(message.State);
+                    bubble.RefreshImage();
                     MessagesList.Children.Add(bubble);
                 }
             }
@@ -234,6 +242,16 @@ namespace Linphone.Views {
                         EnableDownloadButtons(true);
                     } catch {
                         Debug.WriteLine("Cannot create load download image");
+                    }
+                } else if (state == ChatMessageState.FileTransferDone && message.IsOutgoing) {
+                    try {
+                        OutgoingChatBubble bubble = (OutgoingChatBubble)MessagesList.Children.OfType<OutgoingChatBubble>().Where(b => message.Equals(((OutgoingChatBubble)b).ChatMessage)).Last();
+                        if (bubble != null) {
+                            ((OutgoingChatBubble)bubble).ChatMessage.FileTransferFilepath = message.FileTransferFilepath;
+                            ((OutgoingChatBubble)bubble).RefreshImage();
+                        }
+                    } catch {
+                        Debug.WriteLine("Cannot load uploaded image");
                     }
                 } else {
                     try {
@@ -333,6 +351,7 @@ namespace Linphone.Views {
                         ChatMessage msg = chatRoom.CreateFileTransferMessage(content);
                         msg.Appdata = fileName;
                         msg.FileTransferFilepath = filePath;
+                        msg.Listener.OnMsgStateChanged = MessageStateChanged;
                         chatRoom.SendChatMessage(msg);
                     } catch (Exception e) {
                         Debug.WriteLine("Cannot upload image: " + e);
