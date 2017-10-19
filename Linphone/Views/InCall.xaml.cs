@@ -38,6 +38,7 @@ namespace Linphone.Views {
         private DispatcherTimer oneSecondTimer;
         private Timer fadeTimer;
         private DateTimeOffset startTime;
+        private Boolean askingVideo;
 
         private bool statsVisible = false;
 
@@ -49,6 +50,7 @@ namespace Linphone.Views {
         public InCall() {
             this.InitializeComponent();
             this.DataContext = new InCallModel();
+            askingVideo = false;
 
             if (LinphoneManager.Instance.IsVideoAvailable) {
                 StartVideoStream();
@@ -266,6 +268,8 @@ namespace Linphone.Views {
         }
 
         public async void AskVideoPopup(Call call) {
+            if (askingVideo) return;
+            askingVideo = true;
             MessageDialog dialog = new MessageDialog(ResourceLoader.GetForCurrentView().GetString("VideoActivationPopupContent"), ResourceLoader.GetForCurrentView().GetString("VideoActivationPopupCaption"));
             dialog.Commands.Clear();
             dialog.Commands.Add(new UICommand { Label = ResourceLoader.GetForCurrentView().GetString("Accept"), Id = 0 });
@@ -277,6 +281,7 @@ namespace Linphone.Views {
                 parameters.VideoEnabled = true;
             }
             LinphoneManager.Instance.Core.AcceptCallUpdate(call, parameters);
+            askingVideo = false;
         }
 
         #region Video
