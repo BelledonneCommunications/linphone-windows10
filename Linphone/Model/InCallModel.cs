@@ -63,7 +63,7 @@ namespace Linphone.Views {
             Call call = LinphoneManager.Instance.Core.CurrentCall;
             if (call == null) {
                 if (LinphoneManager.Instance.Core.CallsNb > 0) {
-                    call = (Call)LinphoneManager.Instance.Core.Calls.GetEnumerator();
+                    call = (Call)LinphoneManager.Instance.Core.Calls.GetEnumerator().Current;
                 }
             }
             return call;
