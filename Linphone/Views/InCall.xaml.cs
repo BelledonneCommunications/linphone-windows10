@@ -21,9 +21,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
 using Windows.Devices.Sensors;
 using Windows.Graphics.Display;
+using Windows.Media.Capture;
 using Windows.Phone.Media.Devices;
 using Windows.UI.Core;
 using Windows.UI.Popups;
@@ -82,7 +84,10 @@ namespace Linphone.Views {
         }
 
         #region Buttons
-        private void buttons_VideoClick(object sender, bool isVideoOn) {
+        private async void buttons_VideoClick(object sender, bool isVideoOn) {
+            // Workaround to pop the camera permission window
+            await openCameraPopup();
+
             Call call = LinphoneManager.Instance.Core.CurrentCall;
             CallParams param = call.CurrentParams.Copy();
             param.VideoEnabled = isVideoOn;
@@ -267,6 +272,12 @@ namespace Linphone.Views {
             }
         }
 
+        private async Task openCameraPopup() {
+            MediaCapture mediaCapture = new Windows.Media.Capture.MediaCapture();
+            await mediaCapture.InitializeAsync();
+            mediaCapture.Dispose();
+        }
+
         public async void AskVideoPopup(Call call) {
             if (askingVideo) return;
             askingVideo = true;
@@ -278,6 +289,8 @@ namespace Linphone.Views {
             var res = await dialog.ShowAsync();
             CallParams parameters = LinphoneManager.Instance.Core.CreateCallParams(call);
             if ((int)res.Id == 0) {
+                // Workaround to pop the camera permission window
+                await openCameraPopup();
                 parameters.VideoEnabled = true;
             }
             LinphoneManager.Instance.Core.AcceptCallUpdate(call, parameters);

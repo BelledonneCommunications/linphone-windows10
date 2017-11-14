@@ -33,6 +33,8 @@ using Windows.UI.Notifications;
 using Windows.Data.Xml.Dom;
 using Windows.System.Threading;
 using Linphone.Views;
+using Windows.Media.Audio;
+using System.Threading.Tasks;
 
 namespace Linphone.Model {
     class LinphoneManager{
@@ -288,7 +290,10 @@ namespace Linphone.Model {
             }
         }
 
-        public void NewOutgoingCall(String sipAddress) {
+        public async void NewOutgoingCall(String sipAddress) {
+            // Workaround to pop the microphone permission window
+            await openMicrophonePopup();
+
             Call LCall = Core.Invite(sipAddress);
         }
 
@@ -508,9 +513,26 @@ namespace Linphone.Model {
         public delegate void CallStateChangedEventHandler(Call call, CallState state);
         public event CallStateChangedEventHandler CallStateChangedEvent;
 
+        private async Task openMicrophonePopup() {
+            AudioGraphSettings settings = new AudioGraphSettings(Windows.Media.Render.AudioRenderCategory.Media);
+            CreateAudioGraphResult result = await AudioGraph.CreateAsync(settings);
+            AudioGraph audioGraph = result.Graph;
+
+            CreateAudioDeviceInputNodeResult resultNode = await audioGraph.CreateDeviceInputNodeAsync(Windows.Media.Capture.MediaCategory.Media);
+            AudioDeviceInputNode deviceInputNode = resultNode.DeviceInputNode;
+
+            deviceInputNode.Dispose();
+            audioGraph.Dispose();
+        }
+
         void CallStateChanged(Core lc, Call call, CallState state, string message) {
             if (CallStateChangedEvent != null) {
                 CallStateChangedEvent(call, state);
+            }
+
+            // Workaround to make windows pop the microphone permission window
+            if (state == CallState.IncomingReceived) {
+                openMicrophonePopup();
             }
 
             if (state == CallState.OutgoingProgress) {
