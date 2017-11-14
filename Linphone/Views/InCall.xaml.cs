@@ -49,6 +49,8 @@ namespace Linphone.Views {
         private SimpleOrientationSensor orientationSensor;
         private SimpleOrientation deviceOrientation;
 
+        private readonly object popupLock = new Object();
+
         public InCall() {
             this.InitializeComponent();
             this.DataContext = new InCallModel();
@@ -279,8 +281,12 @@ namespace Linphone.Views {
         }
 
         public async void AskVideoPopup(Call call) {
-            if (askingVideo) return;
-            askingVideo = true;
+            lock (popupLock)
+            {
+                if (askingVideo) return;
+                askingVideo = true;
+            }
+
             MessageDialog dialog = new MessageDialog(ResourceLoader.GetForCurrentView().GetString("VideoActivationPopupContent"), ResourceLoader.GetForCurrentView().GetString("VideoActivationPopupCaption"));
             dialog.Commands.Clear();
             dialog.Commands.Add(new UICommand { Label = ResourceLoader.GetForCurrentView().GetString("Accept"), Id = 0 });
@@ -291,10 +297,14 @@ namespace Linphone.Views {
             if ((int)res.Id == 0) {
                 // Workaround to pop the camera permission window
                 await openCameraPopup();
+
                 parameters.VideoEnabled = true;
             }
             LinphoneManager.Instance.Core.AcceptCallUpdate(call, parameters);
-            askingVideo = false;
+
+            lock(popupLock) {
+                askingVideo = false;
+            }
         }
 
         #region Video
