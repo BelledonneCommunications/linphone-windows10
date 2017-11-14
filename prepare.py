@@ -221,6 +221,7 @@ class Windows10Preparator(prepare.Preparator):
             target_platform_min_version = m.group(1)
             m = re.search("<PlatformToolset>(.*)</PlatformToolset>", all_build_content)
             platform_toolset = m.group(1)
+            arm = '\n    <WindowsSDKDesktopARMSupport>true</WindowsSDKDesktopARMSupport>' if platform == 'ARM' else ''
             vcxproj = """<?xml version="1.0" encoding="UTF-8"?>
 <Project DefaultTargets="Build" ToolsVersion="{tools_version}" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
@@ -234,7 +235,7 @@ class Windows10Preparator(prepare.Preparator):
     <ApplicationType>Windows Store</ApplicationType>
     <DefaultLanguage>en-US</DefaultLanguage>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
-    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>{arm}
     <WindowsTargetPlatformVersion>{target_platform_version}</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>{target_platform_min_version}</WindowsTargetPlatformMinVersion>
     <Keyword>Win32Proj</Keyword>
@@ -283,7 +284,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
 </Project>
-""".format(platform=platform, build_type=build_type, vcxproj_platform=vcxproj_platforms[platform], current_path=current_path, guid=guid, tools_version=tools_version, target_platform_version=target_platform_version, target_platform_min_version=target_platform_min_version, platform_toolset=platform_toolset)
+""".format(platform=platform, build_type=build_type, vcxproj_platform=vcxproj_platforms[platform], current_path=current_path, guid=guid, tools_version=tools_version, target_platform_version=target_platform_version, target_platform_min_version=target_platform_min_version, platform_toolset=platform_toolset, arm=arm)
             f = open("WORK/win10-{0}/SDK_{0}.vcxproj".format(platform), 'w')
             f.write(vcxproj)
             f.close()
