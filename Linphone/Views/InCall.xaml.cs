@@ -255,7 +255,11 @@ namespace Linphone.Views {
                     bool localVideo = call.CurrentParams.VideoEnabled;
                     bool autoAcceptCameraPolicy = LinphoneManager.Instance.Core.VideoActivationPolicy.AutomaticallyAccept;
                     if (remoteVideo && !localVideo && !autoAcceptCameraPolicy) {
-                        AskVideoPopup(call);
+                        lock (popupLock) {
+                            if (askingVideo) return;
+                            askingVideo = true;
+                            AskVideoPopup(call);
+                        }
                     }
                 }
             }
@@ -270,6 +274,7 @@ namespace Linphone.Views {
                     buttons.checkedVideo(true);
                 } else {
                     buttons.checkedVideo(false);
+                    askingVideo = false;
                 }
             }
         }
@@ -281,12 +286,6 @@ namespace Linphone.Views {
         }
 
         public async void AskVideoPopup(Call call) {
-            lock (popupLock)
-            {
-                if (askingVideo) return;
-                askingVideo = true;
-            }
-
             MessageDialog dialog = new MessageDialog(ResourceLoader.GetForCurrentView().GetString("VideoActivationPopupContent"), ResourceLoader.GetForCurrentView().GetString("VideoActivationPopupCaption"));
             dialog.Commands.Clear();
             dialog.Commands.Add(new UICommand { Label = ResourceLoader.GetForCurrentView().GetString("Accept"), Id = 0 });
@@ -301,10 +300,6 @@ namespace Linphone.Views {
                 parameters.VideoEnabled = true;
             }
             LinphoneManager.Instance.Core.AcceptCallUpdate(call, parameters);
-
-            lock(popupLock) {
-                askingVideo = false;
-            }
         }
 
         #region Video
