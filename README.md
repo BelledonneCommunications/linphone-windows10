@@ -98,3 +98,13 @@ Sometime it can be useful to step into liblinphone SDK functions. To allow Visua
 
 YOU CAN'T PASS A NULL STRING FROM C# TO C++/CX (it has to be empty) AND YOU CAN'T RECEIVE A NULL STRING FROM C++/CX (It will always be an empty string).
 See http://stackoverflow.com/questions/12980915/exception-when-trying-to-read-null-string-in-c-sharp-winrt-component-from-winjs
+
+# Application permissions
+
+Since Windows Fall Creator update, at the first use, Linphone will require your permission before it can access your contacts, your microphone and your camera which you can accept or not.
+But sometimes you might want to run automatic tests on Linphone and can't be around to manually accept these permissions.
+If that's the case, you can force authorizations of applications. To do so, you have to open `gpedit.msc` and go to:
+
+        Computer Configuration\Administrative Templates\Windows Components\App Privacy
+
+In the right pane, double click on the concerned permissions (camera, contacts and microphone for Linphone), select **Enabled** and select **Force authorization** in options.
