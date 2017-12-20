@@ -41,6 +41,7 @@ namespace Linphone.Views {
         private Timer fadeTimer;
         private DateTimeOffset startTime;
         private Boolean askingVideo;
+        private Call pausedCall;
 
         private bool statsVisible = false;
 
@@ -83,6 +84,11 @@ namespace Linphone.Views {
             buttons.VideoClick += buttons_VideoClick;
             buttons.BluetoothClick += buttons_BluetoothClick;
             buttons.DialpadClick += buttons_DialpadClick;
+
+            // Handling event when app will be suspended
+            Application.Current.Suspending += new SuspendingEventHandler(App_Suspended);
+            Application.Current.Resuming += new EventHandler<object>(App_Resumed);
+            pausedCall = null;
         }
 
         #region Buttons
@@ -303,6 +309,26 @@ namespace Linphone.Views {
         }
 
         #region Video
+        private async void App_Suspended(Object sender, Windows.ApplicationModel.SuspendingEventArgs e) {
+            var deferral = e.SuspendingOperation.GetDeferral();
+            // Pause the call when the application is about to be in background
+            if (LinphoneManager.Instance.Core.CurrentCall != null && LinphoneManager.Instance.Core.CurrentCall.State != CallState.Paused) {
+                pausedCall = LinphoneManager.Instance.Core.CurrentCall;
+                pausedCall.Pause();
+
+                // Wait for the Call to pass from Pausing to Paused
+                await Task.Delay(1000);
+            }
+            deferral.Complete();
+        }
+
+        private void App_Resumed(Object sender, Object e) {
+            if (pausedCall != null && pausedCall.State == CallState.Paused) {
+                pausedCall.Resume();
+                pausedCall = null;
+            }
+        }
+
         private void AdaptVideoSize() {
             if (ActualWidth > 640) {
                 VideoGrid.Width = 640;
@@ -372,7 +398,7 @@ namespace Linphone.Views {
                     _previewSource = null;
                 }
             } catch (Exception e) {
-                Debug.WriteLine(String.Format("StartVideoStream: Exception {0}", e.Message));
+                Debug.WriteLine(String.Format("StopVideoStream: Exception {0}", e.Message));
             }
 
         }
