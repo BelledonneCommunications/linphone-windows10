@@ -1,6 +1,3 @@
-[submodule "submodules/externals/antlr3"]
-	path = submodules/externals/antlr3
-	url = git://git.linphone.org/antlr3.git
 [submodule "submodules/belle-sip"]
 	path = submodules/belle-sip
 	url = git://git.linphone.org/belle-sip.git
