@@ -380,8 +380,8 @@ namespace Linphone.Views {
                 _previewSource = new MSWinRTVideo.SwapChainPanelSource();
                 _previewSource.Start(PreviewSwapChainPanel);
 
-                LinphoneManager.Instance.Core.NativeVideoWindowId = VideoSwapChainPanel.Name;
-                LinphoneManager.Instance.Core.NativePreviewWindowId = PreviewSwapChainPanel.Name;
+                LinphoneManager.Instance.Core.NativeVideoWindowIdString = VideoSwapChainPanel.Name;
+                LinphoneManager.Instance.Core.NativePreviewWindowIdString = PreviewSwapChainPanel.Name;
             } catch (Exception e) {
                 Debug.WriteLine(String.Format("StartVideoStream: Exception {0}", e.Message));
             }
