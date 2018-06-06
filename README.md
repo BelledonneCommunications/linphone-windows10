@@ -1,3 +1,5 @@
+[![pipeline status](https://gitlab.linphone.org/BC/public/linphone-windows10/badges/master/pipeline.svg)](https://gitlab.linphone.org/BC/public/linphone-windows10/commits/master)
+
 Linphone is a free VoIP and video softphone based on the SIP protocol.
 
 # Getting started
