@@ -32,12 +32,12 @@ import uuid
 from logging import error, warning, info
 from subprocess import Popen, PIPE
 sys.dont_write_bytecode = True
-sys.path.insert(0, 'submodules/cmake-builder')
+sys.path.insert(0, 'linphone-sdk/cmake-builder')
 try:
     import prepare
 except Exception as e:
     error(
-        "Could not find prepare module: {}, probably missing submodules/cmake-builder? Try running:\n"
+        "Could not find prepare module: {}, probably missing linphone-sdk/cmake-builder? Try running:\n"
         "git submodule sync && git submodule update --init --recursive".format(e))
     exit(1)
 
@@ -52,7 +52,7 @@ class Win10Target(prepare.Target):
         self.platform_name = generator_platform
         self.config_file = 'configs/config-win10.cmake'
         self.output = 'OUTPUT/win10-' + arch
-        self.external_source_path = os.path.join(current_path, 'submodules')
+        self.external_source_path = os.path.join(current_path, 'linphone-sdk')
         external_builders_path = os.path.join(current_path, 'cmake_builder')
         self.additional_args = [
                 "-DLINPHONE_BUILDER_EXTERNAL_BUILDERS_PATH=" + external_builders_path
@@ -185,18 +185,18 @@ class Windows10Preparator(prepare.Preparator):
         build_type = 'Debug' if self.args.debug else 'Release'
         builder_target = []
         if self.linphone_builder_target == 'linphone':
-            linphone_version = self.git_version('submodules/linphone')
+            linphone_version = self.git_version('linphone-sdk/linphone')
             builder_target = [
                 ('LinphoneTesterSDK', linphone_version),
                 ('LinphoneSDK', linphone_version),
             ]
         elif self.linphone_builder_target == 'ms2plugins':
-            ms2_version = self.git_version('submodules/mediastreamer2')
+            ms2_version = self.git_version('linphone-sdk/mediastreamer2')
             builder_target = [
                 ('MS2TesterSDK', ms2_version),
             ]
         elif self.linphone_builder_target == 'bellesip':
-            bellesip_version = self.git_version('submodules/belle-sip')
+            bellesip_version = self.git_version('linphone-sdk/belle-sip')
             builder_target = [
                 ('BelleSipTesterSDK', bellesip_version),
             ]
@@ -350,7 +350,7 @@ cd {current_path}
 if %errorlevel% neq 0 goto :cmEnd
 C:
 if %errorlevel% neq 0 goto :cmEnd
-python.exe submodules/build/nuget.py -s OUTPUT -w WORK/NuGet{target} -cs CsWrapper -v {version} -t {target} {platforms}
+python.exe linphone-sdk/build/nuget.py -s OUTPUT -w WORK/NuGet{target} -cs CsWrapper -v {version} -t {target} {platforms}
 if %errorlevel% neq 0 goto :cmEnd
 cd {current_path}/OUTPUT
 if %errorlevel% neq 0 goto :cmEnd
