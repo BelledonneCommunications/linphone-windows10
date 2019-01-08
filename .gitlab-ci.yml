@@ -12,7 +12,7 @@ variables:
 # Visual Studio 2017
 #################################################
 
-.job-windows-vs2017-sdk:
+.job-windows10-vs2017-sdk:
 
   before_script:
     - 'call "%VS15COMMONTOOLS%\VsDevCmd.bat"'
@@ -23,31 +23,31 @@ variables:
   tags: [ "windows" ]
 
   script:
-    - 'msbuild.exe /p:MDILCompile=true /p:Platform=%PROJECT_ARCHITECTURE% /m /t:build /p:Configuration=%BUILD_TYPE% "%SOLUTION%"'
+    - 'msbuild.exe /p:MDILCompile=true /p:Platform=%PROJECT_ARCHITECTURE% /t:build /p:Configuration=%BUILD_TYPE% "%SOLUTION%"'
 
-job-windows-vs2017-sdk-ARM:
+job-windows10-sdk-ARM:
   variables:
     PROJECT_ARCHITECTURE: ARM
     SOLUTION: WORK\win10-ARM\cmake\Project.sln
     BUILD_TARGET: ARM
 
-  extends: .job-windows-vs2017-sdk
+  extends: .job-windows10-vs2017-sdk
 
-#job-windows-vs2017-sdk-X86:
+#job-windows10-sdk-X86:
 #  variables:
 #    PROJECT_ARCHITECTURE: Win32
 #    SOLUTION: WORK\win10-x86\cmake\Project.sln
 #    BUILD_TARGET: x86
 #
-#  extends: .job-windows-vs2017-sdk
+#  extends: .job-windows10-vs2017-sdk
 #
-#job-windows-vs2017-sdk-X64:
+#job-windows10-sdk-X64:
 #  variables:
 #    PROJECT_ARCHITECTURE: x64
 #    SOLUTION: WORK\win10-x64\cmake\Project.sln
 #    BUILD_TARGET: x64
 #
-#  extends: .job-windows-vs2017-sdk
+#  extends: .job-windows10-vs2017-sdk
 
 #  artifacts:
 #    paths:
