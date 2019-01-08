@@ -30,4 +30,4 @@
 	url = https://gitlab.linphone.org/BC/public/external/zlib.git
 [submodule "linphone-sdk"]
 	path = linphone-sdk
-	url = git@gitlab.linphone.org:BC/public/linphone-sdk.git
+	url = https://gitlab.linphone.org/BC/public/linphone-sdk.git
