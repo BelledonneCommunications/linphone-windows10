@@ -12,18 +12,11 @@ variables:
 # Visual Studio 2017
 #################################################
 
-job-windows-prepapre:
-  stage: prepare
-
-  tags: [ "windows" ]
-
-  script:
-    - python prepare.py %DEFAULT_WINDOWS_CMAKE_OPTIONS% %CMAKE_OPTIONS%
-
 .job-windows-vs2017:
 
   before_script:
     - 'call %VS14COMMONTOOLS%\vsvars32.bat'
+    - python prepare.py %DEFAULT_WINDOWS_CMAKE_OPTIONS% %CMAKE_OPTIONS%
 
   stage: build
 
@@ -98,7 +91,6 @@ job-windows-vs2017-X64:
 #    - scp WORK/desktop/Build/linphone_package/$PACKAGE_NAME-*-win32.exe $DEPLOY_SERVER:$WINDOWS_UPLOAD_DIRECTORY/
 
 stages:
-  - prepare
   - build
 #  - package
 #  - deploy
