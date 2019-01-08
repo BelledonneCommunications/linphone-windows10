@@ -15,7 +15,7 @@ variables:
 .job-windows-vs2017:
 
   before_script:
-    - 'call %VS14COMMONTOOLS%\vsvars32.bat'
+    - 'call "%VS14COMMONTOOLS%\vsvars32.bat"'
     - python prepare.py %DEFAULT_WINDOWS_CMAKE_OPTIONS% %CMAKE_OPTIONS%
 
   stage: build
@@ -32,19 +32,19 @@ job-windows-vs2017-ARM:
 
   extends: .job-windows-vs2017
 
-job-windows-vs2017-X86:
-  variables:
-    PROJECT_ARCHITECTURE: x64
-    SOLUTION: WORK\win10-x86\cmake\Project.sln
-
-  extends: .job-windows-vs2017
-
-job-windows-vs2017-X64:
-  variables:
-    PROJECT_ARCHITECTURE: Win32
-    SOLUTION: WORK\win10-x64\cmake\Project.sln
-
-  extends: .job-windows-vs2017
+#job-windows-vs2017-X86:
+#  variables:
+#    PROJECT_ARCHITECTURE: x64
+#    SOLUTION: WORK\win10-x86\cmake\Project.sln
+#
+#  extends: .job-windows-vs2017
+#
+#job-windows-vs2017-X64:
+#  variables:
+#    PROJECT_ARCHITECTURE: Win32
+#    SOLUTION: WORK\win10-x64\cmake\Project.sln
+#
+#  extends: .job-windows-vs2017
 
 #  artifacts:
 #    paths:
