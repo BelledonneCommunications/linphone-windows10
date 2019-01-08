@@ -15,7 +15,7 @@ variables:
 .job-windows-vs2017-sdk:
 
   before_script:
-    - 'call "%VS14COMMONTOOLS%\vsvars32.bat"'
+    - 'call "%VS15COMMONTOOLS%\VsDevCmd.bat"'
     - python prepare.py %DEFAULT_WINDOWS_CMAKE_OPTIONS% %CMAKE_OPTIONS% %BUILD_TARGET%
 
   stage: build-sdk
