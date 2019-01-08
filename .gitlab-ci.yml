@@ -12,20 +12,20 @@ variables:
 # Visual Studio 2017
 #################################################
 
-.job-windows10-vs2017-sdk:
-
+.job-windows10-prepare:
   before_script:
     - 'call "%VS15COMMONTOOLS%\VsDevCmd.bat"'
     - python prepare.py %DEFAULT_WINDOWS_CMAKE_OPTIONS% %CMAKE_OPTIONS% %BUILD_TARGET%
 
+.job-windows10-vs2017-sdk:
   stage: build-sdk
 
   tags: [ "windows" ]
 
+  extends: .job-windows10-prepare
+
   script:
     - 'msbuild.exe /p:MDILCompile=true /p:Platform=%PROJECT_ARCHITECTURE% /m /t:build /p:Configuration=%BUILD_TYPE% "%SOLUTION%"'
-    - 'WORK\nuget.exe restore CsWrapper\CsWrapper.sln -NonInteractive -Verbosity detailed'
-    - 'msbuild.exe /p:MDILCompile=true /p:Platform="Any CPU" /m /t:build /p:Configuration=%BUILD_TYPE% CsWrapper\CsWrapper.sln' #Move this after
 #    - 'msbuild.exe /p:MDILCompile=true /p:Platform=Win32 /m /t:build /p:Configuration=%BUILD_TYPE% WORK\NuGetLinphoneSDK.vcxproj' #Move this after
 #    - WORK\nuget.exe sources remove -Name BelledonneCommunications #Move this after
 #    - WORK\nuget.exe sources add -Name BelledonneCommunications -Source OUTPUT #Move this after
@@ -35,6 +35,28 @@ variables:
       - WORK/win10-%BUILD_TARGET%/*
     expire_in: 1 day
 
+job-windows10-wrapper:
+
+  stage: build-wrapper
+
+  tags: [ "windows" ]
+
+  extends: .job-windows10-prepare
+
+  dependencies:
+    - job-windows10-sdk-ARM
+#    - job-windows10-sdk-x86
+#    - job-windows10-sdk-x64
+
+  script:
+    - 'WORK\nuget.exe restore CsWrapper\CsWrapper.sln -NonInteractive -Verbosity detailed'
+    - 'WORK\nugget.exe install System.Net.WebSockets.Client -Version 4.0.0  -SolutionDirectory CsWrapper'
+    - 'msbuild.exe /p:MDILCompile=true /p:Platform="Any CPU" /m /t:build /p:Configuration=%BUILD_TYPE% CsWrapper\CsWrapper.sln'
+
+#################################################
+# ARM
+#################################################
+
 job-windows10-sdk-ARM:
   variables:
     PROJECT_ARCHITECTURE: ARM
@@ -43,7 +65,11 @@ job-windows10-sdk-ARM:
 
   extends: .job-windows10-vs2017-sdk
 
-#job-windows10-sdk-X86:
+#################################################
+# x86
+#################################################
+
+#job-windows10-sdk-x86:
 #  variables:
 #    PROJECT_ARCHITECTURE: Win32
 #    SOLUTION: WORK\win10-x86\cmake\Project.sln
@@ -51,18 +77,18 @@ job-windows10-sdk-ARM:
 #
 #  extends: .job-windows10-vs2017-sdk
 #
-#job-windows10-sdk-X64:
+
+#################################################
+# x64
+#################################################
+
+#job-windows10-sdk-x64:
 #  variables:
 #    PROJECT_ARCHITECTURE: x64
 #    SOLUTION: WORK\win10-x64\cmake\Project.sln
 #    BUILD_TARGET: x64
 #
 #  extends: .job-windows10-vs2017-sdk
-
-#  artifacts:
-#    paths:
-#      - WORK/desktop/Build/linphone_package/%PACKAGE_NAME%-*-win32.exe
-#    expire_in: 1 week
 
 #################################################
 # Deploy
@@ -81,5 +107,6 @@ job-windows10-sdk-ARM:
 
 stages:
   - build-sdk
+  - build-wrapper
 #  - package
 #  - deploy
