@@ -25,8 +25,8 @@ variables:
   script:
     - 'msbuild.exe /p:MDILCompile=true /p:Platform=%PROJECT_ARCHITECTURE% /m /t:build /p:Configuration=%BUILD_TYPE% "%SOLUTION%"'
     - 'WORK\nuget.exe restore CsWrapper\CsWrapper.sln -NonInteractive -Verbosity detailed'
-    - 'msbuild.exe /p:MDILCompile=true /p:Platform=\"Any CPU\" /m /t:build /p:Configuration=Release CsWrapper\CsWrapper.sln' #Move this after
-    - 'msbuild.exe /p:MDILCompile=true /p:Platform=Win32 /m /t:build /p:Configuration=Release WORK\NuGetLinphoneSDK.vcxproj' #Move this after
+    - 'msbuild.exe /p:MDILCompile=true /p:Platform="Any CPU" /m /t:build /p:Configuration=%BUILD_TYPE% CsWrapper\CsWrapper.sln' #Move this after
+#    - 'msbuild.exe /p:MDILCompile=true /p:Platform=Win32 /m /t:build /p:Configuration=%BUILD_TYPE% WORK\NuGetLinphoneSDK.vcxproj' #Move this after
 #    - WORK\nuget.exe sources remove -Name BelledonneCommunications #Move this after
 #    - WORK\nuget.exe sources add -Name BelledonneCommunications -Source OUTPUT #Move this after
 #    - WORK\nuget.exe restore Linphone.sln -NonInteractive -Verbosity detailed #Move this after
