@@ -26,14 +26,6 @@ variables:
     - 'msbuild.exe /p:MDILCompile=true /p:Platform=%PROJECT_ARCHITECTURE% /t:build /p:Configuration=%BUILD_TYPE% "%SOLUTION%"'
 
 job-windows-vs2017-ARM:
-
-  stage: build
-
-  tags: [ "windows" ]
-
-  dependencies:
-    - job-windows-prepapre
-
   variables:
     PROJECT_ARCHITECTURE: ARM
     SOLUTION: WORK\win10-ARM\cmake\Project.sln
@@ -41,14 +33,6 @@ job-windows-vs2017-ARM:
   extends: .job-windows-vs2017
 
 job-windows-vs2017-X86:
-
-  stage: build
-
-  tags: [ "windows" ]
-
-  dependencies:
-    - job-windows-prepapre
-
   variables:
     PROJECT_ARCHITECTURE: x64
     SOLUTION: WORK\win10-x86\cmake\Project.sln
@@ -56,14 +40,6 @@ job-windows-vs2017-X86:
   extends: .job-windows-vs2017
 
 job-windows-vs2017-X64:
-
-  stage: build
-
-  tags: [ "windows" ]
-
-  dependencies:
-    - job-windows-prepapre
-
   variables:
     PROJECT_ARCHITECTURE: Win32
     SOLUTION: WORK\win10-x64\cmake\Project.sln
