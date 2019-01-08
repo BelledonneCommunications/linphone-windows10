@@ -15,7 +15,7 @@ variables:
 .job-windows10-prepare:
   before_script:
     - 'call "%VS15COMMONTOOLS%\VsDevCmd.bat"'
-    - python prepare.py %DEFAULT_WINDOWS_CMAKE_OPTIONS% %CMAKE_OPTIONS% %BUILD_TARGET%
+    - python prepare.py -f %DEFAULT_WINDOWS_CMAKE_OPTIONS% %CMAKE_OPTIONS% %BUILD_TARGET%
 
 .job-windows10-vs2017-sdk:
   stage: build-sdk
@@ -50,7 +50,7 @@ job-windows10-wrapper:
 
   script:
     - 'WORK\nuget.exe restore CsWrapper\CsWrapper.sln -NonInteractive -Verbosity detailed'
-    - 'WORK\nugget.exe install System.Net.WebSockets.Client -Version 4.0.0  -SolutionDirectory CsWrapper'
+    - 'WORK\nuget.exe install System.Net.WebSockets.Client -Version 4.0.0  -SolutionDirectory CsWrapper'
     - 'msbuild.exe /p:MDILCompile=true /p:Platform="Any CPU" /m /t:build /p:Configuration=%BUILD_TYPE% CsWrapper\CsWrapper.sln'
 
 #################################################
