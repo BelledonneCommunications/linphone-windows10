@@ -5,7 +5,7 @@
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
   BUILD_TYPE: Release
-  DEFAULT_WINDOWS_CMAKE_OPTIONS: -DENABLE_NON_FREE_CODECS=YES -DENABLE_UPDATE_CHECK=YES
+  DEFAULT_WINDOWS_CMAKE_OPTIONS: -DENABLE_NON_FREE_CODECS=YES -DENABLE_OPENH264=YES -DENABLE_UPDATE_CHECK=YES
 
 
 #################################################
@@ -49,8 +49,8 @@ job-windows10-wrapper:
 #    - job-windows10-sdk-x64
 
   script:
+    - 'WORK\nuget.exe restore CsWrapper'
     - 'WORK\nuget.exe restore CsWrapper\CsWrapper.sln -NonInteractive -Verbosity detailed'
-    - 'WORK\nuget.exe install System.Net.WebSockets.Client -Version 4.0.0  -SolutionDirectory CsWrapper'
     - 'msbuild.exe /p:MDILCompile=true /p:Platform="Any CPU" /m /t:build /p:Configuration=%BUILD_TYPE% CsWrapper\CsWrapper.sln'
 
 #################################################
