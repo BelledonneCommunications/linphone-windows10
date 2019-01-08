@@ -50,7 +50,7 @@ class Win10Target(prepare.Target):
         current_path = current_path.replace('\\', '/')
         self.generator = 'Visual Studio 15 2017'
         self.platform_name = generator_platform
-        self.config_file = 'configs/config-win10.cmake'
+        self.config_file = 'configs/config-uwp.cmake'
         self.output = 'OUTPUT/win10-' + arch
         self.external_source_path = os.path.join(current_path, 'linphone-sdk')
         external_builders_path = os.path.join(current_path, 'cmake_builder')
