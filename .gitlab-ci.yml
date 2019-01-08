@@ -23,7 +23,7 @@ variables:
   tags: [ "windows" ]
 
   script:
-    - 'msbuild.exe /p:MDILCompile=true /p:Platform=%PROJECT_ARCHITECTURE% /t:build /p:Configuration=%BUILD_TYPE% "%SOLUTION%"'
+    - 'msbuild.exe /p:MDILCompile=true /p:Platform=%PROJECT_ARCHITECTURE% /m /t:build /p:Configuration=%BUILD_TYPE% "%SOLUTION%"'
 
 job-windows10-sdk-ARM:
   variables:
