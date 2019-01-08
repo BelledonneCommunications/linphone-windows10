@@ -25,9 +25,6 @@
 [submodule "submodules/externals/libjpeg-turbo"]
 	path = submodules/externals/libjpeg-turbo
 	url = https://gitlab.linphone.org/BC/public/external/libjpeg-turbo.git
-[submodule "external/libvpx"]
-	path = external/libvpx
-	url = https://gitlab.linphone.org/BC/public/external/libvpx.git
 [submodule "submodules/zlib"]
 	path = submodules/externals/zlib
 	url = https://gitlab.linphone.org/BC/public/external/zlib.git

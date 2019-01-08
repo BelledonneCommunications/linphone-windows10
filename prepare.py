@@ -53,7 +53,7 @@ class Win10Target(prepare.Target):
         self.config_file = 'configs/config-uwp.cmake'
         self.output = 'OUTPUT/win10-' + arch
         self.external_source_path = os.path.join(current_path, 'linphone-sdk')
-        external_builders_path = os.path.join(current_path, 'cmake_builder')
+        external_builders_path = os.path.join(current_path, 'linphone-sdk/cmake_builder')
         self.additional_args = [
                 "-DLINPHONE_BUILDER_EXTERNAL_BUILDERS_PATH=" + external_builders_path
                 ]
