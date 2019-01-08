@@ -1,0 +1,75 @@
+#################################################
+# Base configuration
+#################################################
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  BUILD_TYPE: Release
+  DEFAULT_WINDOWS_CMAKE_OPTIONS: -DENABLE_NON_FREE_CODECS=YES -DENABLE_UPDATE_CHECK=YES
+
+
+#################################################
+# Visual Studio 2017
+#################################################
+
+.job-windows10-vs2017-sdk:
+
+  before_script:
+    - 'call "%VS15COMMONTOOLS%\VsDevCmd.bat"'
+    - python prepare.py %DEFAULT_WINDOWS_CMAKE_OPTIONS% %CMAKE_OPTIONS% %BUILD_TARGET%
+
+  stage: build-sdk
+
+  tags: [ "windows" ]
+
+  script:
+    - 'msbuild.exe /p:MDILCompile=true /p:Platform=%PROJECT_ARCHITECTURE% /m /t:build /p:Configuration=%BUILD_TYPE% "%SOLUTION%"'
+
+job-windows10-sdk-ARM:
+  variables:
+    PROJECT_ARCHITECTURE: ARM
+    SOLUTION: WORK\win10-ARM\cmake\Project.sln
+    BUILD_TARGET: ARM
+
+  extends: .job-windows10-vs2017-sdk
+
+#job-windows10-sdk-X86:
+#  variables:
+#    PROJECT_ARCHITECTURE: Win32
+#    SOLUTION: WORK\win10-x86\cmake\Project.sln
+#    BUILD_TARGET: x86
+#
+#  extends: .job-windows10-vs2017-sdk
+#
+#job-windows10-sdk-X64:
+#  variables:
+#    PROJECT_ARCHITECTURE: x64
+#    SOLUTION: WORK\win10-x64\cmake\Project.sln
+#    BUILD_TARGET: x64
+#
+#  extends: .job-windows10-vs2017-sdk
+
+#  artifacts:
+#    paths:
+#      - WORK/desktop/Build/linphone_package/%PACKAGE_NAME%-*-win32.exe
+#    expire_in: 1 week
+
+#################################################
+# Deploy
+#################################################
+
+#job-windows-deploy:
+#
+#  stage: deploy
+#  tags: [ "deploy" ]
+#
+#  dependencies:
+#    - job-windows-vs2015
+#
+#  script:
+#    - scp WORK/desktop/Build/linphone_package/$PACKAGE_NAME-*-win32.exe $DEPLOY_SERVER:$WINDOWS_UPLOAD_DIRECTORY/
+
+stages:
+  - build-sdk
+#  - package
+#  - deploy
