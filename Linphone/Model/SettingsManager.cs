@@ -162,10 +162,9 @@ namespace Linphone.Model {
             if (ValueChanged(LogLevelKeyName)) {
                 try {
                     Config.SetInt(ApplicationSection, LogLevelKeyName, (int)LogLevel);
-                    //LinphoneManager.Instance.EnableLogCollection((LogLevelSetting == LogCollectionState.Enabled) ? true: false);
-                    //Linphone.Core.EnableLogCollection(LogLevelSetting);
-                    Linphone.Core.SetLogLevelMask((LogLevelSetting == LogCollectionState.Enabled) ? (uint)0xFF: 0x0);
-                    //LinphoneManager.Instance.ConfigureLog(LogLevel);
+                    LinphoneManager.Instance.EnableLogCollection((LogLevelSetting == LogCollectionState.Enabled) ? true: false);
+                    Linphone.Core.EnableLogCollection(LogLevelSetting);
+                    Linphone.LoggingService.Instance.LogLevel =  (LogLevelSetting == LogCollectionState.Enabled) ? Linphone.LogLevel.Debug : Linphone.LogLevel.Message ;
                 } catch {
                     // Core.LogLevel.Warn("Failed setting the log level name {0}", Get(LogLevelKeyName));
                 }

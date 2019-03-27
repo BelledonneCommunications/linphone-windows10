@@ -112,7 +112,7 @@ namespace Linphone.Views {
                       break;
               }*/
             RemoteVideoRotation = rotation;
-            Object id = LinphoneManager.Instance.Core.NativeVideoWindowIdString;
+            //Object id = LinphoneManager.Instance.Core.NativeVideoWindowIdString;
             //RemoteVideoUri = Mediastreamer2.WP8Video.VideoRenderer.StreamUri(id);
 
             if (RemoteVideoVisibility == Visibility.Collapsed) {

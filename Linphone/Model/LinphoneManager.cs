@@ -56,6 +56,7 @@ namespace Linphone.Model {
         public Core Core {
             get {
                 if (_core == null) {
+                    Linphone.LoggingService.Instance.LogLevel = Linphone.LogLevel.Debug;
                     ConfigurePaths();
                     _coreListener = Factory.Instance.CreateCoreListener();
                     coreListenerInit();
@@ -177,7 +178,7 @@ namespace Linphone.Model {
 
         public void EnableLogCollection(bool enable) {
             Linphone.Core.EnableLogCollection(enable ? LogCollectionState.Enabled : LogCollectionState.Disabled);
-            if (enable) Linphone.Core.SetLogLevelMask(0xFF);
+            if (enable) Linphone.LoggingService.Instance.LogLevel = Linphone.LogLevel.Debug;
             Linphone.Core.SetLogCollectionPath(ApplicationData.Current.LocalFolder.Path);
         }
 
@@ -477,7 +478,7 @@ namespace Linphone.Model {
         private void DetectCameras() {
             int nbCameras = 0;
             _cameras = new List<string>();
-            foreach (String device in LinphoneManager.Instance.Core.VideoDevices) {
+            foreach (string device in LinphoneManager.Instance.Core.VideoDevicesList) {
                 if (!device.Contains("StaticImage")) {
                     _cameras.Add(device);
                     nbCameras++;
