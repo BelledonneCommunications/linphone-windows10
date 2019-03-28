@@ -1,4 +1,0 @@
-See README.txt file for an explanation about how the project is working and how to compile it.
-
-07-2015:
-* Initial Windows 10 support based on previous work done for Windows Phone 8
