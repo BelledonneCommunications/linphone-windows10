@@ -58,9 +58,11 @@ namespace Linphone.Model {
                 if (_core == null) {
                     Linphone.LoggingService.Instance.LogLevel = Linphone.LogLevel.Debug;
                     ConfigurePaths();
-                    _coreListener = Factory.Instance.CreateCoreListener();
+                   
+                    _core = Factory.Instance.CreateCore(GetConfigPath(), GetFactoryConfigPath(), IntPtr.Zero);
+                    _coreListener = _core.Listener;
                     coreListenerInit();
-                    _core = Factory.Instance.CreateCore(_coreListener, GetConfigPath(), GetFactoryConfigPath());
+                    _core.Start();
                 }
                 return _core;
             }

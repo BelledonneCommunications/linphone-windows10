@@ -391,7 +391,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="LinphoneSDK">
-      <Version>4.1.0-269-g7b2c566</Version>
+      <Version>4.2.0-78-g77d23c3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.ApplicationInsights">
       <Version>2.4.0</Version>
