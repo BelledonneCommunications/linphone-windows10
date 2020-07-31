@@ -26,6 +26,7 @@
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
     <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
+    <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -213,12 +214,6 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <Content Include="Assets\belr\grammars\cpim_grammar">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\belr\grammars\vcard_grammar">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="Linphone_StoreKey.pfx" />
     <None Include="Linphone_TemporaryKey.pfx" />
   </ItemGroup>
@@ -380,7 +375,7 @@
     <PRIResource Include="String\en-US\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\submodules\mswinrtvid\MSWinRTVideo.vcxproj">
+    <ProjectReference Include="..\MSWinRTVideo\MSWinRTVideo.vcxproj">
       <Project>{2d0e44c4-e51d-4911-b876-345d1e5e5209}</Project>
       <Name>MSWinRTVideo</Name>
     </ProjectReference>
@@ -390,9 +385,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="LinphoneSDK">
-      <Version>4.2.0-78-g77d23c3</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.ApplicationInsights">
       <Version>2.4.0</Version>
     </PackageReference>
@@ -411,17 +403,17 @@
       <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
-      XCopy /I /Y $(ProjectDir)..\submodules\mediastreamer2\src\voip\nowebcamCIF.jpg $(ProjectDir)Assets
-      XCopy /I /Y $(ProjectDir)..\submodules\linphone\share\incoming_chat.wav $(ProjectDir)Assets
-      XCopy /I /Y $(ProjectDir)..\submodules\linphone\share\dont_wait_too_long.mkv $(ProjectDir)Assets
-      XCopy /I /Y $(ProjectDir)..\submodules\linphone\share\ringback.wav $(ProjectDir)Assets
-      XCopy /I /Y $(ProjectDir)..\submodules\linphone\share\rings\notes_of_the_optimistic.mkv $(ProjectDir)Assets</PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

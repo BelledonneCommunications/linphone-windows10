@@ -4,12 +4,20 @@ Linphone is a free VoIP and video softphone based on the SIP protocol.
 
 # Get Linphone SDK
 
+## From packages
+
 Get LinphoneSDK from nuget packager or directly from our website https://www.linphone.org
+
+## From Source
+
+Build the Nuget package from  https://gitlab.linphone.org/BC/public/linphone-sdk by following the readme in Windows UWP section.
 
 # Building the application
 
 Just open the Linphone.sln Visual Studio solution.
 Install the nuget package on the linphone project.
+
+In the Solution, you may have to replace the existing project `MsWinRTVideo` with the one inside linphone-sdk sources for an updated version, and update References in Linphone project.
 
 # Limitations and known bugs
 

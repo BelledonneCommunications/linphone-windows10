@@ -29,6 +29,7 @@
   </Applications>
   <Capabilities>
     <Capability Name="internetClient" />
+    <Capability Name="codeGeneration" />
     <uap:Capability Name="voipCall" />
     <uap:Capability Name="picturesLibrary" />
     <uap:Capability Name="contacts" />

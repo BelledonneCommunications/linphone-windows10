@@ -19,18 +19,19 @@
         <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#444444" />
       </uap:VisualElements>
       <Extensions>
+        <uap:Extension Category="windows.voipCall">
+        </uap:Extension>
         <Extension Category="windows.backgroundTasks" EntryPoint="LinphoneTasks.PhoneCallTask">
           <BackgroundTasks>
             <uap:Task Type="phoneCall" />
           </BackgroundTasks>
         </Extension>
-        <uap:Extension Category="windows.voipCall">
-        </uap:Extension>
       </Extensions>
     </Application>
   </Applications>
   <Capabilities>
     <Capability Name="internetClient" />
+    <Capability Name="codeGeneration" />
     <uap:Capability Name="contacts" />
     <uap:Capability Name="voipCall" />
     <uap:Capability Name="picturesLibrary" />
