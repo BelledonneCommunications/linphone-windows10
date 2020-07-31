@@ -11,13 +11,15 @@ Get LinphoneSDK from nuget packager or directly from our website https://www.lin
 ## From Source
 
 Build the Nuget package from  https://gitlab.linphone.org/BC/public/linphone-sdk by following the readme in Windows UWP section.
+The build options for this Windows10 project is:
+`cmake.exe .. -G "Visual Studio 15 2017" -DLINPHONESDK_PLATFORM=Desktop -DENABLE_CSHARP_WRAPPER=YES -DCMAKE_BUILD_TYPE=Release -DENABLE_LIME_X3DH=NO -DENABLE_GPL_THIRD_PARTIES=YES -DENABLE_NON_FREE_CODECS=YES -DENABLE_OPENH264=YES -DCMAKE_TOOLCHAIN_FILE=../cmake-builder/toolchains/toolchain-windows-store.cmake`
 
 # Building the application
 
 Just open the Linphone.sln Visual Studio solution.
 Install the nuget package on the linphone project.
+Build for x86.
 
-In the Solution, you may have to replace the existing project `MsWinRTVideo` with the one inside linphone-sdk sources for an updated version, and update References in Linphone project.
 
 # Limitations and known bugs
 
