@@ -35,6 +35,10 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 
+//using MSWinRTVideo;
+
+
+
 namespace Linphone.Views {
     public partial class InCall : Page {
         private DispatcherTimer oneSecondTimer;
@@ -95,11 +99,10 @@ namespace Linphone.Views {
         private async void buttons_VideoClick(object sender, bool isVideoOn) {
             // Workaround to pop the camera permission window
             await openCameraPopup();
-
             Call call = LinphoneManager.Instance.Core.CurrentCall;
             CallParams param = call.CurrentParams.Copy();
             param.VideoEnabled = isVideoOn;
-            LinphoneManager.Instance.Core.UpdateCall(call, param);
+            call.Update(param);
         }
 
         private void buttons_MuteClick(object sender, bool isMuteOn) {
@@ -177,7 +180,7 @@ namespace Linphone.Views {
             }
             if (parameters.Count >= 2 && parameters[1].Contains("incomingCall")) {
                 if (LinphoneManager.Instance.Core.CurrentCall != null) {
-                    LinphoneManager.Instance.Core.AcceptCall(LinphoneManager.Instance.Core.CurrentCall);
+                    LinphoneManager.Instance.Core.CurrentCall.Accept();
                 } else {
                     if (Frame.CanGoBack) {
                         Frame.GoBack();
@@ -255,7 +258,7 @@ namespace Linphone.Views {
             } else if (state == CallState.UpdatedByRemote) {
                 if (!LinphoneManager.Instance.IsVideoAvailable) {
                     CallParams parameters = call.CurrentParams.Copy();
-                    LinphoneManager.Instance.Core.AcceptCallUpdate(call, parameters);
+                    call.AcceptUpdate(parameters);
                 } else {
                     bool remoteVideo = call.RemoteParams.VideoEnabled;
                     bool localVideo = call.CurrentParams.VideoEnabled;
@@ -305,7 +308,7 @@ namespace Linphone.Views {
 
                 parameters.VideoEnabled = true;
             }
-            LinphoneManager.Instance.Core.AcceptCallUpdate(call, parameters);
+            call.AcceptUpdate(parameters);
         }
 
         #region Video
@@ -369,9 +372,31 @@ namespace Linphone.Views {
                 ContactHeader.Visibility = Visibility.Visible;
             }
         }
+        /*
+        [DllImport("MSWinRTVideo.dll", EntryPoint = "Init", ExactSpelling = true)]
+        public static extern System.Object Init(System.Object swapChainPanel);
 
+        [DllImport("MSWinRTVideo.dll", EntryPoint = "Stop", ExactSpelling = true)]
+        public static extern void Stop(System.Object panelSource);
+
+        [DllImport("MSWinRTVideo.dll")]
+        public static extern void Use(System.Object swapChainPanel);
+
+        [DllImport("MSWinRTVideo.dll")]
+        public static extern void Test();
+
+        [DllImport("MSWinRTVideo.dll")]
+        public static extern void Test2();
+
+        [DllImport("MSWinRTVideo.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void Test3();
+        */
         private MSWinRTVideo.SwapChainPanelSource _videoSource;
         private MSWinRTVideo.SwapChainPanelSource _previewSource;
+        //private System.Object _videoSource;
+        //private System.IntPtr _previewSource;
+        //private SwapChainPanelSource toto;
+
 
         private void StartVideoStream() {
             try {
@@ -379,6 +404,10 @@ namespace Linphone.Views {
                 _videoSource.Start(VideoSwapChainPanel);
                 _previewSource = new MSWinRTVideo.SwapChainPanelSource();
                 _previewSource.Start(PreviewSwapChainPanel);
+                //Test3();
+                //Use(VideoSwapChainPanel);
+                //_videoSource = Init(VideoSwapChainPanel);
+                //_previewSource = Init(PreviewSwapChainPanel);
 
                 LinphoneManager.Instance.Core.NativeVideoWindowIdString = VideoSwapChainPanel.Name;
                 LinphoneManager.Instance.Core.NativePreviewWindowIdString = PreviewSwapChainPanel.Name;

@@ -230,7 +230,7 @@ namespace Linphone
                     Address addr = LinphoneManager.Instance.Core.InterpretUrl(sipAddress);
                     if (addr != null && addr.AsStringUriOnly().Equals(call.RemoteAddress.AsStringUriOnly()))
                     {
-                        LinphoneManager.Instance.Core.AcceptCall(call);
+                        call.Accept();
                         List<String> parameters = new List<String>();
                         parameters.Add(call.RemoteAddress.AsString());
                         rootFrame.Navigate(typeof(Views.InCall), parameters);

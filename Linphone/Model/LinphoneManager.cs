@@ -140,7 +140,6 @@ namespace Linphone.Model {
         }
 
         public void InitLinphoneCore() {
-            LinphoneManager.Instance.Core.ChatDatabasePath = GetChatDatabasePath();
             LinphoneManager.Instance.Core.RootCa = GetRootCaPath();
             LinphoneManager.Instance.Core.UserCertificatesPath = GetCertificatesPath();
 
@@ -149,6 +148,8 @@ namespace Linphone.Model {
             }
 
             if (LinphoneManager.Instance.Core.VideoSupported()) {
+                LinphoneManager.Instance.Core.VideoDisplayFilter = "MSWinRTBackgroundDis";// "MSWinRTDis";
+                LinphoneManager.Instance.Core.VideoCaptureEnabled = true;
                 DetectCameras();
             }
             LinphoneManager.Instance.Core.UsePreviewWindow(true);
@@ -281,14 +282,14 @@ namespace Linphone.Model {
         public void PauseCurrentCall() {
             if (Core.CallsNb > 0) {
                 Call call = Core.CurrentCall;
-                Core.PauseCall(call);
+                call.Pause();
             }
         }
 
         public void ResumeCurrentCall() {
             foreach (Call call in Core.Calls) {
                 if (call.State == CallState.Paused) {
-                    Core.ResumeCall(call);
+                    call.Resume();
                 }
             }
         }
@@ -303,11 +304,11 @@ namespace Linphone.Model {
         public void EndCurrentCall() {
             Call call = Core.CurrentCall;
             if (call != null) {
-                Core.TerminateCall(call);
+                call.Terminate();
             } else {
                 foreach (Call lCall in Core.Calls) {
                     if (lCall.State == CallState.Paused) {
-                        Core.TerminateCall(lCall);
+                        lCall.Terminate();
                     }
                 }
             }
@@ -409,7 +410,7 @@ namespace Linphone.Model {
                 XmlNodeList toastTextElements = toastXml.GetElementsByTagName("text");
 
                 toastTextElements[0].AppendChild(toastXml.CreateTextNode(sipAddress));
-                toastTextElements[1].AppendChild(toastXml.CreateTextNode(message.Text));
+                toastTextElements[1].AppendChild(toastXml.CreateTextNode(message.TextContent));
 
                 IXmlNode toastNode = toastXml.SelectSingleNode("/toast");
                 ((XmlElement)toastNode).SetAttribute("launch", "chat ? sip = " + sipAddress);
@@ -464,7 +465,7 @@ namespace Linphone.Model {
                     if (enable) {
                         // TODO: Handle bandwidth limitation
                     }
-                    Core.UpdateCall(call, parameters);
+                    call.Update(parameters);
                     return true;
                 }
             }
@@ -496,7 +497,7 @@ namespace Linphone.Model {
 
                 if (Core.InCall()) {
                     Call call = Core.CurrentCall;
-                    Core.UpdateCall(call, null);
+                    call.Update(null);
                 }
             }
         }
@@ -562,7 +563,7 @@ namespace Linphone.Model {
                 bool localVideo = call.CurrentParams.VideoEnabled;
                 bool autoAcceptCameraPolicy = Core.VideoActivationPolicy.AutomaticallyAccept;
                 if (remoteVideo && !localVideo && !autoAcceptCameraPolicy) {
-                    Core.DeferCallUpdate(call);
+                    call.DeferUpdate();
                 }
                 Debug.WriteLine("[LinphoneManager] Update call\r\n");
             } else if (state == CallState.End || state == CallState.Error) {

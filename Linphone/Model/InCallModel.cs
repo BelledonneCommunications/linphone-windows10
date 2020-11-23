@@ -392,7 +392,7 @@ namespace Linphone.Views {
                     LinphoneManager.Instance.Core.DeviceRotation = this.remoteVideoRotation;
                     Call call = GetCurrentCall();
                     if (call != null)
-                        LinphoneManager.Instance.Core.UpdateCall(call, null);
+                        call.Update(null);
                     this.OnPropertyChanged();
                 }
             }

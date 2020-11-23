@@ -51,7 +51,7 @@ namespace Linphone.Controls
         {
             get
             {
-                return Utils.FormatText(ChatMessage.Text);
+                return Utils.FormatText(ChatMessage.TextContent);
             }
         }
 
