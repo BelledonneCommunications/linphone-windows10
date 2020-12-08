@@ -1,4 +1,4 @@
-﻿/*
+/*
 InCall.xaml.cs
 Copyright (C) 2015  Belledonne Communications, Grenoble, France
 This program is free software; you can redistribute it and/or
@@ -35,15 +35,10 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 
-//using MSWinRTVideo;
-
-
-
 namespace Linphone.Views {
     public partial class InCall : Page {
         private DispatcherTimer oneSecondTimer;
         private Timer fadeTimer;
-        private DateTimeOffset startTime;
         private Boolean askingVideo;
         private Call pausedCall;
 
@@ -56,17 +51,19 @@ namespace Linphone.Views {
 
         private readonly object popupLock = new Object();
 
+
         public InCall() {
             this.InitializeComponent();
             this.DataContext = new InCallModel();
             askingVideo = false;
-
+            //------------------------------------------------------------------------
+            Loaded += OnPageLoaded;
             if (LinphoneManager.Instance.IsVideoAvailable) {
                 StartVideoStream();
                 VideoGrid.Visibility = Visibility.Collapsed;
             }
 
-                if (LinphoneManager.Instance.Core.CurrentCall.State == CallState.StreamsRunning)
+            if (LinphoneManager.Instance.Core.CurrentCall.State == CallState.StreamsRunning)
                 Status.Text = "00:00:00";
 
             displayOrientation = ApplicationView.GetForCurrentView().Orientation;
@@ -94,7 +91,11 @@ namespace Linphone.Views {
             Application.Current.Resuming += new EventHandler<object>(App_Resumed);
             pausedCall = null;
         }
-
+        //----------------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------------
         #region Buttons
         private async void buttons_VideoClick(object sender, bool isVideoOn) {
             // Workaround to pop the camera permission window
@@ -372,66 +373,27 @@ namespace Linphone.Views {
                 ContactHeader.Visibility = Visibility.Visible;
             }
         }
-        /*
-        [DllImport("MSWinRTVideo.dll", EntryPoint = "Init", ExactSpelling = true)]
-        public static extern System.Object Init(System.Object swapChainPanel);
 
-        [DllImport("MSWinRTVideo.dll", EntryPoint = "Stop", ExactSpelling = true)]
-        public static extern void Stop(System.Object panelSource);
+        //-----------------------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------------
 
-        [DllImport("MSWinRTVideo.dll")]
-        public static extern void Use(System.Object swapChainPanel);
-
-        [DllImport("MSWinRTVideo.dll")]
-        public static extern void Test();
-
-        [DllImport("MSWinRTVideo.dll")]
-        public static extern void Test2();
-
-        [DllImport("MSWinRTVideo.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void Test3();
-        */
-        private MSWinRTVideo.SwapChainPanelSource _videoSource;
-        private MSWinRTVideo.SwapChainPanelSource _previewSource;
-        //private System.Object _videoSource;
-        //private System.IntPtr _previewSource;
-        //private SwapChainPanelSource toto;
-
-
+        // Create a task for rendering that will be run on a background thread. 
+        private void OnPageLoaded(object sender, RoutedEventArgs e)
+        {
+            // The SwapChainPanel has been created and arranged in the page layout, so EGL can be initialized. 
+            //CreateRenderSurface();
+        }
         private void StartVideoStream() {
-            try {
-                _videoSource = new MSWinRTVideo.SwapChainPanelSource();
-                _videoSource.Start(VideoSwapChainPanel);
-                _previewSource = new MSWinRTVideo.SwapChainPanelSource();
-                _previewSource.Start(PreviewSwapChainPanel);
-                //Test3();
-                //Use(VideoSwapChainPanel);
-                //_videoSource = Init(VideoSwapChainPanel);
-                //_previewSource = Init(PreviewSwapChainPanel);
-
-                LinphoneManager.Instance.Core.NativeVideoWindowIdString = VideoSwapChainPanel.Name;
-                LinphoneManager.Instance.Core.NativePreviewWindowIdString = PreviewSwapChainPanel.Name;
-            } catch (Exception e) {
-                Debug.WriteLine(String.Format("StartVideoStream: Exception {0}", e.Message));
-            }
+            LinphoneManager.StartVideoStream(VideoSwapChainPanel, PreviewSwapChainPanel);
         }
 
-        private void StopVideoStream() {
-            try {
-                if (_videoSource != null) {
-                    _videoSource.Stop();
-                    _videoSource = null;
-                }
-                if (_previewSource != null) {
-                    _previewSource.Stop();
-                    _previewSource = null;
-                }
-            } catch (Exception e) {
-                Debug.WriteLine(String.Format("StopVideoStream: Exception {0}", e.Message));
-            }
-
+        private void StopVideoStream()
+        {
+            LinphoneManager.StopVideoStream();
         }
-        #endregion
+
+            #endregion
 
         #region Orientation
         private async void OrientationSensor_OrientationChanged(SimpleOrientationSensor sender, SimpleOrientationSensorOrientationChangedEventArgs args) {

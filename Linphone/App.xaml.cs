@@ -1,4 +1,4 @@
-﻿/*
+/*
 App.xaml.cs
 Copyright (C) 2015  Belledonne Communications, Grenoble, France
 This program is free software; you can redistribute it and/or
@@ -44,13 +44,13 @@ namespace Linphone
         public App()
         {
             this.InitializeComponent();
-            this.UnhandledException += App_UnhandledException; ;
+            this.UnhandledException += App_UnhandledException;
             this.Suspending += OnSuspending;
             SettingsManager.InstallConfigFile();
             acceptCall = false;
         }
 
-        private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
             e.Handled = true;
         }

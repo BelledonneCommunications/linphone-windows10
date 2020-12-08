@@ -1,4 +1,4 @@
-﻿/*
+/*
 LinphoneManager.cs
 Copyright (C) 2015  Belledonne Communications, Grenoble, France
 This program is free software; you can redistribute it and/or
@@ -35,6 +35,13 @@ using Windows.System.Threading;
 using Linphone.Views;
 using Windows.Media.Audio;
 using System.Threading.Tasks;
+using System.Threading;// Mutex
+using Windows.UI.Xaml.Controls;//SwapChainPanel
+
+
+using System.Runtime.InteropServices;
+using EGLNativeWindowType = System.IntPtr;
+using OpenGlFunctions = System.IntPtr;
 
 namespace Linphone.Model {
     class LinphoneManager{
@@ -48,7 +55,23 @@ namespace Linphone.Model {
         private Core _core;
         private CoreListener _coreListener;
         public bool isLinphoneRunning = false;
+        public static bool mRequestShowVideo = false;
+        public static SwapChainPanel mainVideoPanel = null;
+        public static SwapChainPanel previewVideoPanel = null;
 
+
+
+        public static void StartVideoStream(SwapChainPanel main, SwapChainPanel preview) {
+            mainVideoPanel = main;
+            previewVideoPanel = preview;
+            mRequestShowVideo = true;// Use to initialize surface in Iterate thread
+        }
+        public static void StopVideoStream()
+        {
+            mainVideoPanel = null;
+            previewVideoPanel = null;
+            mRequestShowVideo = true;// Use to initialize surface in Iterate thread
+        }
         private PushNotificationChannel channel;
 
         #region LinphoneCore and initialization
@@ -138,7 +161,46 @@ namespace Linphone.Model {
         public String GetCertificatesPath() {
             return ApplicationData.Current.LocalFolder.Path;
         }
-
+        public struct ContextInfo
+        {
+            public EGLNativeWindowType window;
+            public OpenGlFunctions functions;
+        };
+        public void CleanMemory(IntPtr context)
+        {
+            if (context != null)
+                Marshal.Release(context);
+        }
+        public void CreateRenderSurface(SwapChainPanel panel, bool isPreview)
+        {// Need to convert C# object into C++. Warning to memory leak
+            IntPtr oldData;// Used to release memory after assignation
+            ContextInfo c;
+            if (panel != null)
+                c.window = Marshal.GetIUnknownForObject(panel);
+            else
+                c.window = IntPtr.Zero;
+            c.functions = IntPtr.Zero;
+            IntPtr pnt = Marshal.AllocHGlobal(Marshal.SizeOf(c));
+            Marshal.StructureToPtr(c, pnt, false);
+            if (isPreview)
+            {
+                oldData = LinphoneManager.Instance.Core.NativePreviewWindowId;
+                LinphoneManager.Instance.Core.NativePreviewWindowId = pnt;
+                CleanMemory(oldData);
+            }
+            else
+            {
+                oldData = LinphoneManager.Instance.Core.NativeVideoWindowId;
+                LinphoneManager.Instance.Core.NativeVideoWindowId = pnt;
+                CleanMemory(oldData);
+                if (LinphoneManager.Instance.Core.CurrentCall != null)
+                {
+                    oldData = LinphoneManager.Instance.Core.CurrentCall.NativeVideoWindowId;
+                    LinphoneManager.Instance.Core.CurrentCall.NativeVideoWindowId = pnt;
+                    CleanMemory(oldData);
+                }
+            }
+        }
         public void InitLinphoneCore() {
             LinphoneManager.Instance.Core.RootCa = GetRootCaPath();
             LinphoneManager.Instance.Core.UserCertificatesPath = GetCertificatesPath();
@@ -148,8 +210,11 @@ namespace Linphone.Model {
             }
 
             if (LinphoneManager.Instance.Core.VideoSupported()) {
-                LinphoneManager.Instance.Core.VideoDisplayFilter = "MSWinRTBackgroundDis";// "MSWinRTDis";
+                //LinphoneManager.Instance.Core.VideoDisplayFilter = "MSWinRTBackgroundDis";// "MSWinRTDis";
+                LinphoneManager.Instance.Core.VideoDisplayFilter = "MSOGL";
                 LinphoneManager.Instance.Core.VideoCaptureEnabled = true;
+                CreateRenderSurface(null, true);
+                CreateRenderSurface(null, false);
                 DetectCameras();
             }
             LinphoneManager.Instance.Core.UsePreviewWindow(true);
@@ -160,10 +225,20 @@ namespace Linphone.Model {
             }
             InitPushNotifications();
             isLinphoneRunning = true;
-            TimeSpan period = TimeSpan.FromMilliseconds(20);
+            TimeSpan period = TimeSpan.FromMilliseconds(40);
             ThreadPoolTimer.CreatePeriodicTimer((source) => {
-                CoreDispatcher.RunIdleAsync((args) => {
+            CoreDispatcher.RunIdleAsync((args) =>
+              {
                     Core.Iterate();
+                        if(mRequestShowVideo)
+                        {
+                          CreateRenderSurface(previewVideoPanel, true);
+                          CreateRenderSurface(mainVideoPanel, false);
+                          mRequestShowVideo = false;
+                        }
+                        LinphoneManager.Instance.Core.PreviewOglRender();
+                        if (LinphoneManager.Instance.Core.CurrentCall != null)
+                            LinphoneManager.Instance.Core.CurrentCall.OglRender();
                 });
             }, period);
         }
