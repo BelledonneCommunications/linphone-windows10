@@ -168,10 +168,10 @@ namespace Linphone.Model {
         };
         public void CleanMemory(IntPtr context)
         {
-            if (context != null)
-                Marshal.Release(context);
+            if (context != IntPtr.Zero)
+                Marshal.FreeHGlobal(context);
         }
-        public void CreateRenderSurface(SwapChainPanel panel, bool isPreview)
+        public void CreateRenderSurface(SwapChainPanel panel, bool isPreview, bool freeOldMemory)
         {// Need to convert C# object into C++. Warning to memory leak
             IntPtr oldData;// Used to release memory after assignation
             ContextInfo c;
@@ -186,19 +186,22 @@ namespace Linphone.Model {
             {
                 oldData = LinphoneManager.Instance.Core.NativePreviewWindowId;
                 LinphoneManager.Instance.Core.NativePreviewWindowId = pnt;
-                CleanMemory(oldData);
+                if(freeOldMemory)
+                    CleanMemory(oldData);
             }
             else
             {
                 oldData = LinphoneManager.Instance.Core.NativeVideoWindowId;
                 LinphoneManager.Instance.Core.NativeVideoWindowId = pnt;
-                CleanMemory(oldData);
                 if (LinphoneManager.Instance.Core.CurrentCall != null)
                 {
-                    oldData = LinphoneManager.Instance.Core.CurrentCall.NativeVideoWindowId;
+                    IntPtr oldData2 = LinphoneManager.Instance.Core.CurrentCall.NativeVideoWindowId;
                     LinphoneManager.Instance.Core.CurrentCall.NativeVideoWindowId = pnt;
-                    CleanMemory(oldData);
+                    if (freeOldMemory && oldData2 != oldData)
+                        CleanMemory(oldData2);
                 }
+                if (freeOldMemory)
+                    CleanMemory(oldData);
             }
         }
         public void InitLinphoneCore() {
@@ -213,8 +216,8 @@ namespace Linphone.Model {
                 //LinphoneManager.Instance.Core.VideoDisplayFilter = "MSWinRTBackgroundDis";// "MSWinRTDis";
                 LinphoneManager.Instance.Core.VideoDisplayFilter = "MSOGL";
                 LinphoneManager.Instance.Core.VideoCaptureEnabled = true;
-                CreateRenderSurface(null, true);
-                CreateRenderSurface(null, false);
+                CreateRenderSurface(null, true, false);
+                CreateRenderSurface(null, false, false);
                 DetectCameras();
             }
             LinphoneManager.Instance.Core.UsePreviewWindow(true);
@@ -232,8 +235,8 @@ namespace Linphone.Model {
                     Core.Iterate();
                         if(mRequestShowVideo)
                         {
-                          CreateRenderSurface(previewVideoPanel, true);
-                          CreateRenderSurface(mainVideoPanel, false);
+                          CreateRenderSurface(previewVideoPanel, true, true);
+                          CreateRenderSurface(mainVideoPanel, false, true);
                           mRequestShowVideo = false;
                         }
                         LinphoneManager.Instance.Core.PreviewOglRender();
