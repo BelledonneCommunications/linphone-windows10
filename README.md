@@ -6,24 +6,28 @@ Linphone is a free VoIP and video softphone based on the SIP protocol.
 
 ## From packages
 
-Get LinphoneSDK from nuget packager or directly from our website https://www.linphone.org
+Get LinphoneSDK from releases folder : https://www.linphone.org/releases/windows/sdk  
+Or snapshots for nighlty versions : https://www.linphone.org/snapshots/windows/sdk
 
 ## From Source
 
-Build the Nuget package from  https://gitlab.linphone.org/BC/public/linphone-sdk by following the readme in Windows UWP section.
+Build the Nuget package from  https://gitlab.linphone.org/BC/public/linphone-sdk
 The build options for this Windows10 project is:
-`cmake.exe .. -G "Visual Studio 15 2017" -DLINPHONESDK_PLATFORM=Desktop -DENABLE_CSHARP_WRAPPER=YES -DCMAKE_BUILD_TYPE=Release -DENABLE_LIME_X3DH=NO -DENABLE_GPL_THIRD_PARTIES=YES -DENABLE_NON_FREE_CODECS=YES -DENABLE_OPENH264=YES -DCMAKE_TOOLCHAIN_FILE=../cmake-builder/toolchains/toolchain-windows-store.cmake`
+`cmake.exe .. -G "Visual Studio 15 2017" -DLINPHONESDK_PLATFORM=UWP -DCMAKE_BUILD_TYPE=RelWithDebInfo
 
 # Building the application
 
 Just open the Linphone.sln Visual Studio solution.
 Install the nuget package on the linphone project.
-Build for x86.
+Build for **x64**. The nuget for UWP doesn't support x86.
+
+In your solution options and if it is not the case, set *Mixed* for the debugger type in the Debug section.
 
 
 # Limitations and known bugs
 
 * The Linphone application is not a full feature application yet and the SDK is fully functional.
+If you have an error from missing grammar at the first time you start the application from Visual, please try another one start. These files may not have been installed correctly when deployment.
 
 # Note for developpers
 
