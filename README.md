@@ -13,21 +13,19 @@ Or snapshots for nighlty versions : https://www.linphone.org/snapshots/windows/s
 
 Build the Nuget package from  https://gitlab.linphone.org/BC/public/linphone-sdk
 The build options for this Windows10 project is:
-`cmake.exe .. -G "Visual Studio 15 2017" -DLINPHONESDK_PLATFORM=UWP -DCMAKE_BUILD_TYPE=RelWithDebInfo
+`cmake.exe .. -G "Visual Studio 15 2017" -DLINPHONESDK_PLATFORM=UWP -DCMAKE_BUILD_TYPE=RelWithDebInfo`
 
 # Building the application
 
-Just open the Linphone.sln Visual Studio solution.
-Install the nuget package on the linphone project.
-Build for **x64**. The nuget for UWP doesn't support x86.
-
-In your solution options and if it is not the case, set *Mixed* for the debugger type in the Debug section.
-
+* Just open the Linphone.sln Visual Studio solution.
+* Install the nuget package on the linphone project.
+* Build for **x64**. The nuget for UWP doesn't support x86.
+* In your solution options and if it is not the case, set *Mixed* for the debugger type in the Debug section.
 
 # Limitations and known bugs
 
 * The Linphone application is not a full feature application yet and the SDK is fully functional.
-If you have an error from missing grammar at the first time you start the application from Visual, please try another one start. These files may not have been installed correctly when deployment.
+* If you have an error from missing grammar at the first time you start the application from Visual, please try another one start. These files may not have been installed correctly when deployment.
 
 # Note for developpers
 
