@@ -101,7 +101,7 @@ namespace Linphone.Views {
             // Workaround to pop the camera permission window
             await openCameraPopup();
             Call call = LinphoneManager.Instance.Core.CurrentCall;
-            CallParams param = call.CurrentParams.Copy();
+            CallParams param = LinphoneManager.Instance.Core.CreateCallParams(call);
             param.VideoEnabled = isVideoOn;
             call.Update(param);
         }
@@ -258,19 +258,20 @@ namespace Linphone.Views {
                 }
             } else if (state == CallState.UpdatedByRemote) {
                 if (!LinphoneManager.Instance.IsVideoAvailable) {
-                    CallParams parameters = call.CurrentParams.Copy();
+                    CallParams parameters = LinphoneManager.Instance.Core.CreateCallParams(call);
                     call.AcceptUpdate(parameters);
                 } else {
                     bool remoteVideo = call.RemoteParams.VideoEnabled;
                     bool localVideo = call.CurrentParams.VideoEnabled;
                     bool autoAcceptCameraPolicy = LinphoneManager.Instance.Core.VideoActivationPolicy.AutomaticallyAccept;
                     if (remoteVideo && !localVideo && !autoAcceptCameraPolicy) {
-                        lock (popupLock) {
+                        //lock (popupLock) {
                             if (askingVideo) return;
                             askingVideo = true;
                             AskVideoPopup(call);
-                        }
-                    }
+                        //}
+                    }else if(!remoteVideo)
+                        askingVideo = false;
                 }
             }
             refreshUI();
@@ -284,7 +285,8 @@ namespace Linphone.Views {
                     buttons.checkedVideo(true);
                 } else {
                     buttons.checkedVideo(false);
-                    askingVideo = false;
+                    if(LinphoneManager.Instance.Core.CurrentCall == null)
+                        askingVideo = false;
                 }
             }
         }
@@ -296,20 +298,25 @@ namespace Linphone.Views {
         }
 
         public async void AskVideoPopup(Call call) {
-            MessageDialog dialog = new MessageDialog(ResourceLoader.GetForCurrentView().GetString("VideoActivationPopupContent"), ResourceLoader.GetForCurrentView().GetString("VideoActivationPopupCaption"));
-            dialog.Commands.Clear();
-            dialog.Commands.Add(new UICommand { Label = ResourceLoader.GetForCurrentView().GetString("Accept"), Id = 0 });
-            dialog.Commands.Add(new UICommand { Label = ResourceLoader.GetForCurrentView().GetString("Dismiss"), Id = 1 });
+            if (call != null)
+            {
+                CallParams parameters = LinphoneManager.Instance.Core.CreateCallParams(call);
+                bool isEnabled = parameters.VideoEnabled;
+                MessageDialog dialog = new MessageDialog(ResourceLoader.GetForCurrentView().GetString("VideoActivationPopupContent"), ResourceLoader.GetForCurrentView().GetString("VideoActivationPopupCaption"));
+                dialog.Commands.Clear();
+                dialog.Commands.Add(new UICommand { Label = ResourceLoader.GetForCurrentView().GetString("Accept"), Id = 0 });
+                dialog.Commands.Add(new UICommand { Label = ResourceLoader.GetForCurrentView().GetString("Dismiss"), Id = 1 });
 
-            var res = await dialog.ShowAsync();
-            CallParams parameters = LinphoneManager.Instance.Core.CreateCallParams(call);
-            if ((int)res.Id == 0) {
-                // Workaround to pop the camera permission window
-                await openCameraPopup();
+                var res = await dialog.ShowAsync();
 
-                parameters.VideoEnabled = true;
+                if ((int)res.Id == 0)
+                {
+                    // Workaround to pop the camera permission window
+                    //await openCameraPopup();
+                    parameters.VideoEnabled = true;
+                }
+                call.AcceptUpdate(parameters);
             }
-            call.AcceptUpdate(parameters);
         }
 
         #region Video

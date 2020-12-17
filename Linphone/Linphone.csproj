@@ -381,7 +381,7 @@
       <Version>2.1.13</Version>
     </PackageReference>
     <PackageReference Include="LinphoneSDK">
-      <Version>4.5.0-alpha.277</Version>
+      <Version>4.5.0-alpha.290</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.ApplicationInsights">
       <Version>2.16.0</Version>
