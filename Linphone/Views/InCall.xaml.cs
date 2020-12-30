@@ -96,11 +96,29 @@ namespace Linphone.Views {
         //----------------------------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------------------------
-        #region Buttons
-        private async void buttons_VideoClick(object sender, bool isVideoOn) {
+
+#region Buttons
+private async void buttons_VideoClick(object sender, bool isVideoOn) {
             // Workaround to pop the camera permission window
             await openCameraPopup();
+
+            Core core = LinphoneManager.Instance.Core;
+            if (!core.VideoSupported())
+            {
+                Debug.WriteLine("Unable to update video call property. (Video not supported.)");
+                return;
+            }
             Call call = LinphoneManager.Instance.Core.CurrentCall;
+            switch (call.State)
+            {
+                case CallState.Connected:
+                case CallState.StreamsRunning:
+                    break;
+                default: return;
+            }
+            CallParams p = call.CurrentParams;
+            if (isVideoOn == (p!=null && p.VideoEnabled))
+                return;
             CallParams param = LinphoneManager.Instance.Core.CreateCallParams(call);
             param.VideoEnabled = isVideoOn;
             call.Update(param);

@@ -43,6 +43,7 @@ using System.Runtime.InteropServices;
 using EGLNativeWindowType = System.IntPtr;
 using OpenGlFunctions = System.IntPtr;
 
+
 namespace Linphone.Model {
     class LinphoneManager{
         private static LinphoneManager _instance = new LinphoneManager();
@@ -155,25 +156,69 @@ namespace Linphone.Model {
         }
 
         public String GetRootCaPath() {
-            return Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "Assets", "rootca.pem");
+            return Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "Assets", "Linphone", "rootca.pem");
         }
 
         public String GetCertificatesPath() {
             return ApplicationData.Current.LocalFolder.Path;
         }
-        public struct ContextInfo
-        {
-            public EGLNativeWindowType window;
-            public OpenGlFunctions functions;
-        };
+
+        
         public void CleanMemory(IntPtr context)
         {
             if (context != IntPtr.Zero)
                 Marshal.FreeHGlobal(context);
         }
+
+
+#if WIN32
+        private MSWinRTVideo.SwapChainPanelSource _videoSource;
+        private MSWinRTVideo.SwapChainPanelSource _previewSource;
+
+#else
+        [StructLayout(LayoutKind.Sequential)]
+        public struct ContextInfo
+        {
+            public EGLNativeWindowType window;
+            public OpenGlFunctions functions;
+        };
+#endif
+
         public void CreateRenderSurface(SwapChainPanel panel, bool isPreview, bool freeOldMemory)
         {// Need to convert C# object into C++. Warning to memory leak
-            IntPtr oldData;// Used to release memory after assignation
+
+#if WIN32
+            if (isPreview)
+            {
+                if (panel != null)
+                {
+                    _previewSource = new MSWinRTVideo.SwapChainPanelSource();
+                    _previewSource.Start(panel);
+                    LinphoneManager.Instance.Core.NativePreviewWindowIdString = panel.Name;
+                }
+                else if(_previewSource != null)
+                {
+                    _previewSource.Stop();
+                    _previewSource = null;
+                }
+            }
+            else
+            {
+                if(panel != null)
+                {
+                    _videoSource = new MSWinRTVideo.SwapChainPanelSource();
+                    _videoSource.Start(panel);
+                    LinphoneManager.Instance.Core.NativeVideoWindowIdString = panel.Name;
+                }
+                else if(_videoSource != null)
+                {
+                    _videoSource.Stop();
+                    _videoSource = null;
+                }
+            }
+    
+#else
+            IntPtr oldData = IntPtr.Zero;// Used to release memory after assignation
             ContextInfo c;
             if (panel != null)
                 c.window = Marshal.GetIUnknownForObject(panel);
@@ -186,24 +231,17 @@ namespace Linphone.Model {
             {
                 oldData = LinphoneManager.Instance.Core.NativePreviewWindowId;
                 LinphoneManager.Instance.Core.NativePreviewWindowId = pnt;
-                if(freeOldMemory)
-                    CleanMemory(oldData);
             }
             else
             {
                 oldData = LinphoneManager.Instance.Core.NativeVideoWindowId;
                 LinphoneManager.Instance.Core.NativeVideoWindowId = pnt;
-                if (LinphoneManager.Instance.Core.CurrentCall != null)
-                {
-                    IntPtr oldData2 = LinphoneManager.Instance.Core.CurrentCall.NativeVideoWindowId;
-                    LinphoneManager.Instance.Core.CurrentCall.NativeVideoWindowId = pnt;
-                    if (freeOldMemory && oldData2 != oldData)
-                        CleanMemory(oldData2);
-                }
-                if (freeOldMemory)
-                    CleanMemory(oldData);
             }
+            if (freeOldMemory && oldData != IntPtr.Zero)
+                CleanMemory(oldData);
+#endif
         }
+        private object renderLock = new Object();
         public void InitLinphoneCore() {
             LinphoneManager.Instance.Core.RootCa = GetRootCaPath();
             LinphoneManager.Instance.Core.UserCertificatesPath = GetCertificatesPath();
@@ -213,8 +251,11 @@ namespace Linphone.Model {
             }
 
             if (LinphoneManager.Instance.Core.VideoSupported()) {
-                //LinphoneManager.Instance.Core.VideoDisplayFilter = "MSWinRTBackgroundDis";// "MSWinRTDis";
+#if WIN32
+                LinphoneManager.Instance.Core.VideoDisplayFilter = "MSWinRTBackgroundDis";
+#else
                 LinphoneManager.Instance.Core.VideoDisplayFilter = "MSOGL";
+#endif
                 LinphoneManager.Instance.Core.VideoCaptureEnabled = true;
                 CreateRenderSurface(null, true, false);
                 CreateRenderSurface(null, false, false);
@@ -239,9 +280,12 @@ namespace Linphone.Model {
                           CreateRenderSurface(mainVideoPanel, false, true);
                           mRequestShowVideo = false;
                         }
-                        LinphoneManager.Instance.Core.PreviewOglRender();
-                        if (LinphoneManager.Instance.Core.CurrentCall != null)
-                            LinphoneManager.Instance.Core.CurrentCall.OglRender();
+                        lock (renderLock)
+                        {
+                            LinphoneManager.Instance.Core.PreviewOglRender();
+                            if (LinphoneManager.Instance.Core.CurrentCall != null)
+                                LinphoneManager.Instance.Core.CurrentCall.OglRender();
+                        }
                 });
             }, period);
         }
@@ -251,9 +295,9 @@ namespace Linphone.Model {
             string assetsPath = packagePath + "\\Assets";
             Factory.Instance.TopResourcesDir = assetsPath;
             Factory.Instance.DataResourcesDir = assetsPath;
-            Factory.Instance.SoundResourcesDir = assetsPath;
-            Factory.Instance.RingResourcesDir = assetsPath;
-            Factory.Instance.ImageResourcesDir = assetsPath;
+            Factory.Instance.SoundResourcesDir = assetsPath + "\\sounds\\linphone";
+            Factory.Instance.RingResourcesDir = Factory.Instance.SoundResourcesDir + "\\rings";
+            Factory.Instance.ImageResourcesDir = assetsPath + "\\images";
             Factory.Instance.MspluginsDir = ".";
         }
 
@@ -303,9 +347,9 @@ namespace Linphone.Model {
             return ApiInformation.IsApiContractPresent("Windows.Phone.PhoneContract", 1);
         }
 
-        #endregion
+#endregion
 
-        #region CallLogs
+#region CallLogs
         private List<CallLogModel> _history;
 
         public List<CallLogModel> GetCallsHistory() {
@@ -354,9 +398,9 @@ namespace Linphone.Model {
         public void ClearCallLogs() {
             Core.ClearCallLogs();
         }
-        #endregion
+#endregion
 
-        #region Call Management
+#region Call Management
         public void PauseCurrentCall() {
             if (Core.CallsNb > 0) {
                 Call call = Core.CurrentCall;
@@ -405,9 +449,9 @@ namespace Linphone.Model {
             };
             CallErrorNotification.Show();*/
         }
-        #endregion
+#endregion
 
-        #region Audio Management
+#region Audio Management
 
         private void AudioEndpointChanged(AudioRoutingManager sender, object args) {
             Debug.WriteLine("[LinphoneManager] AudioEndpointChanged:" + sender.GetAudioEndpoint().ToString() + "\r\n");
@@ -445,9 +489,9 @@ namespace Linphone.Model {
         }
 
 
-        #endregion
+#endregion
 
-        #region Chat
+#region Chat
         public int GetUnreadMessageCount() {
             int nbUnreadMessages = 0;
             foreach (ChatRoom chatroom in Core.ChatRooms) {
@@ -522,9 +566,9 @@ namespace Linphone.Model {
                 }
             }
         }
-        #endregion
+#endregion
 
-        #region Video Management
+#region Video Management
         private List<String> _cameras;
         private int numberOfCameras = 0;
 
@@ -579,9 +623,9 @@ namespace Linphone.Model {
                 }
             }
         }
-        #endregion
+#endregion
 
-        #region Listeners
+#region Listeners
         public CallControllerListener CallListener {
             get; set;
         }
@@ -736,9 +780,9 @@ namespace Linphone.Model {
             }
         }
 
-        #endregion
+#endregion
 
-        #region Tunnel
+#region Tunnel
         public static void ConfigureTunnel(String mode) {
             if (LinphoneManager.Instance.Core.Tunnel != null) {
                 Tunnel tunnel = LinphoneManager.Instance.Core.Tunnel;
@@ -780,9 +824,9 @@ namespace Linphone.Model {
             settings.Load();
             ConfigureTunnel(settings.TunnelMode);
         }
-        #endregion
+#endregion
 
-        #region Contact Lookup
+#region Contact Lookup
         private ContactsManager ContactManager {
             get {
                 return ContactsManager.Instance;
@@ -815,7 +859,7 @@ namespace Linphone.Model {
             }
             ContactManager.ContactFound -= OnContactFound;
         }
-        #endregion
+#endregion
     }
 
     public interface EchoCalibratorListener {

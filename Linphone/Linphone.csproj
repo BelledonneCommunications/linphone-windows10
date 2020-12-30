@@ -82,7 +82,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS;CODE_ANALYSIS;WIN32</DefineConstants>
     <NoWarn>;2008</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -102,6 +102,12 @@
     <Prefer32Bit>true</Prefer32Bit>
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)' == 'x86'">
+    <ApplicationManifest>Package_x86.appxmanifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)' != 'x86'">
+    <ApplicationManifest>Package.appxmanifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
     <Content Include="Assets\linphonerc" />
@@ -109,7 +115,6 @@
     <Content Include="Assets\avatar.png" />
     <Content Include="Assets\avatar2.png" />
     <Content Include="Assets\linphone_user.png" />
-    <Content Include="Assets\rootca.pem" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -212,7 +217,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <AppxManifest Include="Package.appxmanifest">
+    <AppxManifest Include="$(ApplicationManifest)">
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="Linphone_StoreKey.pfx" />
@@ -381,7 +386,7 @@
       <Version>2.1.13</Version>
     </PackageReference>
     <PackageReference Include="LinphoneSDK">
-      <Version>4.5.0-alpha.290</Version>
+      <Version>4.5.0-alpha.291</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.ApplicationInsights">
       <Version>2.16.0</Version>
@@ -401,6 +406,9 @@
       <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
+  <PropertyGroup>
+    <LinphoneSDK-Content>Appx\Assets</LinphoneSDK-Content>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
