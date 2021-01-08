@@ -42,7 +42,7 @@ using Windows.UI.Xaml.Controls;//SwapChainPanel
 using System.Runtime.InteropServices;
 using EGLNativeWindowType = System.IntPtr;
 using OpenGlFunctions = System.IntPtr;
-
+using GLuint = System.UInt32;
 
 namespace Linphone.Model {
     class LinphoneManager{
@@ -130,8 +130,13 @@ namespace Linphone.Model {
         public async void InitPushNotifications() {
             var internetProfile = NetworkInformation.GetInternetConnectionProfile();
             if (internetProfile != null) {
-                channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
-                AddPushInformationsToContactParams();
+                try
+                {
+                    channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
+                    AddPushInformationsToContactParams();
+                } catch{
+                    Debug.WriteLine("[LinphoneManager] Cannot use Notification \r\n");
+                }
             }
         }
         public String GetChatDatabasePath() {
@@ -169,55 +174,17 @@ namespace Linphone.Model {
             if (context != IntPtr.Zero)
                 Marshal.FreeHGlobal(context);
         }
-
-
-#if WIN32
-        private MSWinRTVideo.SwapChainPanelSource _videoSource;
-        private MSWinRTVideo.SwapChainPanelSource _previewSource;
-
-#else
         [StructLayout(LayoutKind.Sequential)]
         public struct ContextInfo
         {
             public EGLNativeWindowType window;
+            public GLuint width;
+            public GLuint height;
             public OpenGlFunctions functions;
         };
-#endif
 
         public void CreateRenderSurface(SwapChainPanel panel, bool isPreview, bool freeOldMemory)
         {// Need to convert C# object into C++. Warning to memory leak
-
-#if WIN32
-            if (isPreview)
-            {
-                if (panel != null)
-                {
-                    _previewSource = new MSWinRTVideo.SwapChainPanelSource();
-                    _previewSource.Start(panel);
-                    LinphoneManager.Instance.Core.NativePreviewWindowIdString = panel.Name;
-                }
-                else if(_previewSource != null)
-                {
-                    _previewSource.Stop();
-                    _previewSource = null;
-                }
-            }
-            else
-            {
-                if(panel != null)
-                {
-                    _videoSource = new MSWinRTVideo.SwapChainPanelSource();
-                    _videoSource.Start(panel);
-                    LinphoneManager.Instance.Core.NativeVideoWindowIdString = panel.Name;
-                }
-                else if(_videoSource != null)
-                {
-                    _videoSource.Stop();
-                    _videoSource = null;
-                }
-            }
-    
-#else
             IntPtr oldData = IntPtr.Zero;// Used to release memory after assignation
             ContextInfo c;
             if (panel != null)
@@ -225,6 +192,8 @@ namespace Linphone.Model {
             else
                 c.window = IntPtr.Zero;
             c.functions = IntPtr.Zero;
+            c.width = 0;
+            c.height = 0;
             IntPtr pnt = Marshal.AllocHGlobal(Marshal.SizeOf(c));
             Marshal.StructureToPtr(c, pnt, false);
             if (isPreview)
@@ -239,7 +208,6 @@ namespace Linphone.Model {
             }
             if (freeOldMemory && oldData != IntPtr.Zero)
                 CleanMemory(oldData);
-#endif
         }
         private object renderLock = new Object();
         public void InitLinphoneCore() {
@@ -251,11 +219,7 @@ namespace Linphone.Model {
             }
 
             if (LinphoneManager.Instance.Core.VideoSupported()) {
-#if WIN32
-                LinphoneManager.Instance.Core.VideoDisplayFilter = "MSWinRTBackgroundDis";
-#else
                 LinphoneManager.Instance.Core.VideoDisplayFilter = "MSOGL";
-#endif
                 LinphoneManager.Instance.Core.VideoCaptureEnabled = true;
                 CreateRenderSurface(null, true, false);
                 CreateRenderSurface(null, false, false);
