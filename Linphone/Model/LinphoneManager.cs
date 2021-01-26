@@ -40,9 +40,6 @@ using Windows.UI.Xaml.Controls;//SwapChainPanel
 
 
 using System.Runtime.InteropServices;
-using EGLNativeWindowType = System.IntPtr;
-using OpenGlFunctions = System.IntPtr;
-using GLuint = System.UInt32;
 
 namespace Linphone.Model {
     class LinphoneManager{
@@ -56,22 +53,14 @@ namespace Linphone.Model {
         private Core _core;
         private CoreListener _coreListener;
         public bool isLinphoneRunning = false;
-        public static bool mRequestShowVideo = false;
-        public static SwapChainPanel mainVideoPanel = null;
-        public static SwapChainPanel previewVideoPanel = null;
-
 
 
         public static void StartVideoStream(SwapChainPanel main, SwapChainPanel preview) {
-            mainVideoPanel = main;
-            previewVideoPanel = preview;
-            mRequestShowVideo = true;// Use to initialize surface in Iterate thread
+            LinphoneManager.Instance.Core.NativePreviewWindowId = preview;
+            LinphoneManager.Instance.Core.NativeVideoWindowId = main;
         }
         public static void StopVideoStream()
         {
-            mainVideoPanel = null;
-            previewVideoPanel = null;
-            mRequestShowVideo = true;// Use to initialize surface in Iterate thread
         }
         private PushNotificationChannel channel;
 
@@ -174,41 +163,7 @@ namespace Linphone.Model {
             if (context != IntPtr.Zero)
                 Marshal.FreeHGlobal(context);
         }
-        [StructLayout(LayoutKind.Sequential)]
-        public struct ContextInfo
-        {
-            public EGLNativeWindowType window;
-            public GLuint width;
-            public GLuint height;
-            public OpenGlFunctions functions;
-        };
 
-        public void CreateRenderSurface(SwapChainPanel panel, bool isPreview, bool freeOldMemory)
-        {// Need to convert C# object into C++. Warning to memory leak
-            IntPtr oldData = IntPtr.Zero;// Used to release memory after assignation
-            ContextInfo c;
-            if (panel != null)
-                c.window = Marshal.GetIUnknownForObject(panel);
-            else
-                c.window = IntPtr.Zero;
-            c.functions = IntPtr.Zero;
-            c.width = 0;
-            c.height = 0;
-            IntPtr pnt = Marshal.AllocHGlobal(Marshal.SizeOf(c));
-            Marshal.StructureToPtr(c, pnt, false);
-            if (isPreview)
-            {
-                oldData = LinphoneManager.Instance.Core.NativePreviewWindowId;
-                LinphoneManager.Instance.Core.NativePreviewWindowId = pnt;
-            }
-            else
-            {
-                oldData = LinphoneManager.Instance.Core.NativeVideoWindowId;
-                LinphoneManager.Instance.Core.NativeVideoWindowId = pnt;
-            }
-            if (freeOldMemory && oldData != IntPtr.Zero)
-                CleanMemory(oldData);
-        }
         private object renderLock = new Object();
         public void InitLinphoneCore() {
             LinphoneManager.Instance.Core.RootCa = GetRootCaPath();
@@ -219,10 +174,7 @@ namespace Linphone.Model {
             }
 
             if (LinphoneManager.Instance.Core.VideoSupported()) {
-                LinphoneManager.Instance.Core.VideoDisplayFilter = "MSOGL";
                 LinphoneManager.Instance.Core.VideoCaptureEnabled = true;
-                CreateRenderSurface(null, true, false);
-                CreateRenderSurface(null, false, false);
                 DetectCameras();
             }
             LinphoneManager.Instance.Core.UsePreviewWindow(true);
@@ -238,18 +190,6 @@ namespace Linphone.Model {
             CoreDispatcher.RunIdleAsync((args) =>
               {
                     Core.Iterate();
-                        if(mRequestShowVideo)
-                        {
-                          CreateRenderSurface(previewVideoPanel, true, true);
-                          CreateRenderSurface(mainVideoPanel, false, true);
-                          mRequestShowVideo = false;
-                        }
-                        lock (renderLock)
-                        {
-                            LinphoneManager.Instance.Core.PreviewOglRender();
-                            if (LinphoneManager.Instance.Core.CurrentCall != null)
-                                LinphoneManager.Instance.Core.CurrentCall.OglRender();
-                        }
                 });
             }, period);
         }

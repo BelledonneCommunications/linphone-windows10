@@ -114,6 +114,7 @@
     <Content Include="Assets\avatar.png" />
     <Content Include="Assets\avatar2.png" />
     <Content Include="Assets\linphone_user.png" />
+    <Content Include="WindowsPhoneReservedAppInfo.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -385,7 +386,7 @@
       <Version>2.1.13</Version>
     </PackageReference>
     <PackageReference Include="LinphoneSDK">
-      <Version>4.5.0-alpha.307</Version>
+      <Version>4.5.0-alpha.316</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.ApplicationInsights">
       <Version>2.16.0</Version>

@@ -59,7 +59,6 @@ namespace Linphone.Views {
             //------------------------------------------------------------------------
             Loaded += OnPageLoaded;
             if (LinphoneManager.Instance.IsVideoAvailable) {
-                StartVideoStream();
                 VideoGrid.Visibility = Visibility.Collapsed;
             }
 
@@ -122,6 +121,10 @@ private async void buttons_VideoClick(object sender, bool isVideoOn) {
             CallParams param = LinphoneManager.Instance.Core.CreateCallParams(call);
             param.VideoEnabled = isVideoOn;
             call.Update(param);
+            if(isVideoOn)
+                StartVideoStream();
+            else
+                StopVideoStream();
         }
 
         private void buttons_MuteClick(object sender, bool isMuteOn) {

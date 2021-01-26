@@ -52,7 +52,6 @@ namespace Linphone.Controls
 
             this.Holding += Bubble_Holding;
             string fileName = (message.FileTransferInformation != null) ? message.FileTransferInformation.Name : null;
-            string filePath = message.Contents.GetEnumerator().Current.FilePath;
             bool isImageMessage = fileName != null && fileName.Length > 0;
             if (isImageMessage)
             {
