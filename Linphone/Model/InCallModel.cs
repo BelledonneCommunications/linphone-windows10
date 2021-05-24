@@ -1,4 +1,4 @@
-﻿/*
+/*
 InCallModel.cs
 Copyright (C) 2015  Belledonne Communications, Grenoble, France
 This program is free software; you can redistribute it and/or
@@ -112,7 +112,7 @@ namespace Linphone.Views {
                       break;
               }*/
             RemoteVideoRotation = rotation;
-            Object id = LinphoneManager.Instance.Core.NativeVideoWindowIdString;
+            //Object id = LinphoneManager.Instance.Core.NativeVideoWindowIdString;
             //RemoteVideoUri = Mediastreamer2.WP8Video.VideoRenderer.StreamUri(id);
 
             if (RemoteVideoVisibility == Visibility.Collapsed) {
@@ -392,7 +392,7 @@ namespace Linphone.Views {
                     LinphoneManager.Instance.Core.DeviceRotation = this.remoteVideoRotation;
                     Call call = GetCurrentCall();
                     if (call != null)
-                        LinphoneManager.Instance.Core.UpdateCall(call, null);
+                        call.Update(null);
                     this.OnPropertyChanged();
                 }
             }

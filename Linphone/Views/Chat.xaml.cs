@@ -132,7 +132,7 @@ namespace Linphone.Views {
             if (chatRoom != null) {
                 ChatMessage chatMessage = chatRoom.CreateMessage(message);
                 chatMessage.Listener.OnMsgStateChanged = MessageStateChanged;
-                chatRoom.SendChatMessage(chatMessage);
+                chatMessage.Send();
             }
         }
 
@@ -156,7 +156,7 @@ namespace Linphone.Views {
                         var tempFolder = ApplicationData.Current.LocalFolder;
                         string name = message.FileTransferInformation.Name;
                         StorageFile tempFile = await tempFolder.GetFileAsync(name.Substring(0, name.IndexOf('.')));
-                        message.FileTransferFilepath = tempFile.Path;
+                        message.Contents.GetEnumerator().Current.FilePath = tempFile.Path;
                     }
                     OutgoingChatBubble bubble = new OutgoingChatBubble(message);
                     bubble.MessageDeleted += bubble_MessageDeleted;
@@ -235,7 +235,7 @@ namespace Linphone.Views {
                     try {
                         IncomingChatBubble bubble = (IncomingChatBubble)MessagesList.Children.OfType<IncomingChatBubble>().Where(b => message.Equals(((IncomingChatBubble)b).ChatMessage)).Last();
                         if (bubble != null) {
-                            ((IncomingChatBubble)bubble).ChatMessage.FileTransferFilepath = message.FileTransferFilepath;
+                            ((IncomingChatBubble)bubble).ChatMessage.Contents.GetEnumerator().Current.FilePath = message.Contents.GetEnumerator().Current.FilePath;
                             ((IncomingChatBubble)bubble).RefreshImage();
                         }
                         EnableDownloadButtons(true);
@@ -246,7 +246,7 @@ namespace Linphone.Views {
                     try {
                         OutgoingChatBubble bubble = (OutgoingChatBubble)MessagesList.Children.OfType<OutgoingChatBubble>().Where(b => message.Equals(((OutgoingChatBubble)b).ChatMessage)).Last();
                         if (bubble != null) {
-                            ((OutgoingChatBubble)bubble).ChatMessage.FileTransferFilepath = message.FileTransferFilepath;
+                            ((OutgoingChatBubble)bubble).ChatMessage.Contents.GetEnumerator().Current.FilePath = message.Contents.GetEnumerator().Current.FilePath;
                             ((OutgoingChatBubble)bubble).RefreshImage();
                         }
                     } catch {
@@ -349,9 +349,9 @@ namespace Linphone.Views {
                         content.Size = (int)fileInfo.Length;
                         ChatMessage msg = chatRoom.CreateFileTransferMessage(content);
                         msg.Appdata = fileName;
-                        msg.FileTransferFilepath = filePath;
+                        msg.Contents.GetEnumerator().Current.FilePath = filePath;
                         msg.Listener.OnMsgStateChanged = MessageStateChanged;
-                        chatRoom.SendChatMessage(msg);
+                        msg.Send();
                     } catch (Exception e) {
                         Debug.WriteLine("Cannot upload image: " + e);
                     }
@@ -458,10 +458,10 @@ namespace Linphone.Views {
         public async void bubble_DownloadImage(object sender, ChatMessage message) {
             EnableDownloadButtons(false);
             string fileName = Utils.GetFileName();
-            message.FileTransferFilepath = Path.Combine(ApplicationData.Current.LocalFolder.Path, fileName);
+            message.Contents.GetEnumerator().Current.FilePath = Path.Combine(ApplicationData.Current.LocalFolder.Path, fileName);
             message.Appdata = fileName;
             message.Listener.OnMsgStateChanged = MessageStateChanged;
-            message.DownloadFile();
+            message.DownloadContent(message.Contents.GetEnumerator().Current);
         }
 
         private void EnableDownloadButtons(bool enable) {

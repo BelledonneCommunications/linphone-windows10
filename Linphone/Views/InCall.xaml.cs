@@ -1,4 +1,4 @@
-﻿/*
+/*
 InCall.xaml.cs
 Copyright (C) 2015  Belledonne Communications, Grenoble, France
 This program is free software; you can redistribute it and/or
@@ -39,7 +39,6 @@ namespace Linphone.Views {
     public partial class InCall : Page {
         private DispatcherTimer oneSecondTimer;
         private Timer fadeTimer;
-        private DateTimeOffset startTime;
         private Boolean askingVideo;
         private Call pausedCall;
 
@@ -52,17 +51,18 @@ namespace Linphone.Views {
 
         private readonly object popupLock = new Object();
 
+
         public InCall() {
             this.InitializeComponent();
             this.DataContext = new InCallModel();
             askingVideo = false;
-
+            //------------------------------------------------------------------------
+            Loaded += OnPageLoaded;
             if (LinphoneManager.Instance.IsVideoAvailable) {
-                StartVideoStream();
                 VideoGrid.Visibility = Visibility.Collapsed;
             }
 
-                if (LinphoneManager.Instance.Core.CurrentCall.State == CallState.StreamsRunning)
+            if (LinphoneManager.Instance.Core.CurrentCall.State == CallState.StreamsRunning)
                 Status.Text = "00:00:00";
 
             displayOrientation = ApplicationView.GetForCurrentView().Orientation;
@@ -90,16 +90,41 @@ namespace Linphone.Views {
             Application.Current.Resuming += new EventHandler<object>(App_Resumed);
             pausedCall = null;
         }
+        //----------------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------------
 
-        #region Buttons
-        private async void buttons_VideoClick(object sender, bool isVideoOn) {
+#region Buttons
+private async void buttons_VideoClick(object sender, bool isVideoOn) {
             // Workaround to pop the camera permission window
             await openCameraPopup();
 
+            Core core = LinphoneManager.Instance.Core;
+            if (!core.VideoSupported())
+            {
+                Debug.WriteLine("Unable to update video call property. (Video not supported.)");
+                return;
+            }
             Call call = LinphoneManager.Instance.Core.CurrentCall;
-            CallParams param = call.CurrentParams.Copy();
+            switch (call.State)
+            {
+                case CallState.Connected:
+                case CallState.StreamsRunning:
+                    break;
+                default: return;
+            }
+            CallParams p = call.CurrentParams;
+            if (isVideoOn == (p!=null && p.VideoEnabled))
+                return;
+            CallParams param = LinphoneManager.Instance.Core.CreateCallParams(call);
             param.VideoEnabled = isVideoOn;
-            LinphoneManager.Instance.Core.UpdateCall(call, param);
+            call.Update(param);
+            if(isVideoOn)
+                StartVideoStream();
+            else
+                StopVideoStream();
         }
 
         private void buttons_MuteClick(object sender, bool isMuteOn) {
@@ -177,7 +202,7 @@ namespace Linphone.Views {
             }
             if (parameters.Count >= 2 && parameters[1].Contains("incomingCall")) {
                 if (LinphoneManager.Instance.Core.CurrentCall != null) {
-                    LinphoneManager.Instance.Core.AcceptCall(LinphoneManager.Instance.Core.CurrentCall);
+                    LinphoneManager.Instance.Core.CurrentCall.Accept();
                 } else {
                     if (Frame.CanGoBack) {
                         Frame.GoBack();
@@ -254,19 +279,20 @@ namespace Linphone.Views {
                 }
             } else if (state == CallState.UpdatedByRemote) {
                 if (!LinphoneManager.Instance.IsVideoAvailable) {
-                    CallParams parameters = call.CurrentParams.Copy();
-                    LinphoneManager.Instance.Core.AcceptCallUpdate(call, parameters);
+                    CallParams parameters = LinphoneManager.Instance.Core.CreateCallParams(call);
+                    call.AcceptUpdate(parameters);
                 } else {
                     bool remoteVideo = call.RemoteParams.VideoEnabled;
                     bool localVideo = call.CurrentParams.VideoEnabled;
                     bool autoAcceptCameraPolicy = LinphoneManager.Instance.Core.VideoActivationPolicy.AutomaticallyAccept;
                     if (remoteVideo && !localVideo && !autoAcceptCameraPolicy) {
-                        lock (popupLock) {
+                        //lock (popupLock) {
                             if (askingVideo) return;
                             askingVideo = true;
                             AskVideoPopup(call);
-                        }
-                    }
+                        //}
+                    }else if(!remoteVideo)
+                        askingVideo = false;
                 }
             }
             refreshUI();
@@ -280,7 +306,8 @@ namespace Linphone.Views {
                     buttons.checkedVideo(true);
                 } else {
                     buttons.checkedVideo(false);
-                    askingVideo = false;
+                    if(LinphoneManager.Instance.Core.CurrentCall == null)
+                        askingVideo = false;
                 }
             }
         }
@@ -292,20 +319,25 @@ namespace Linphone.Views {
         }
 
         public async void AskVideoPopup(Call call) {
-            MessageDialog dialog = new MessageDialog(ResourceLoader.GetForCurrentView().GetString("VideoActivationPopupContent"), ResourceLoader.GetForCurrentView().GetString("VideoActivationPopupCaption"));
-            dialog.Commands.Clear();
-            dialog.Commands.Add(new UICommand { Label = ResourceLoader.GetForCurrentView().GetString("Accept"), Id = 0 });
-            dialog.Commands.Add(new UICommand { Label = ResourceLoader.GetForCurrentView().GetString("Dismiss"), Id = 1 });
+            if (call != null)
+            {
+                CallParams parameters = LinphoneManager.Instance.Core.CreateCallParams(call);
+                bool isEnabled = parameters.VideoEnabled;
+                MessageDialog dialog = new MessageDialog(ResourceLoader.GetForCurrentView().GetString("VideoActivationPopupContent"), ResourceLoader.GetForCurrentView().GetString("VideoActivationPopupCaption"));
+                dialog.Commands.Clear();
+                dialog.Commands.Add(new UICommand { Label = ResourceLoader.GetForCurrentView().GetString("Accept"), Id = 0 });
+                dialog.Commands.Add(new UICommand { Label = ResourceLoader.GetForCurrentView().GetString("Dismiss"), Id = 1 });
 
-            var res = await dialog.ShowAsync();
-            CallParams parameters = LinphoneManager.Instance.Core.CreateCallParams(call);
-            if ((int)res.Id == 0) {
-                // Workaround to pop the camera permission window
-                await openCameraPopup();
+                var res = await dialog.ShowAsync();
 
-                parameters.VideoEnabled = true;
+                if ((int)res.Id == 0)
+                {
+                    // Workaround to pop the camera permission window
+                    //await openCameraPopup();
+                    parameters.VideoEnabled = true;
+                }
+                call.AcceptUpdate(parameters);
             }
-            LinphoneManager.Instance.Core.AcceptCallUpdate(call, parameters);
         }
 
         #region Video
@@ -370,39 +402,26 @@ namespace Linphone.Views {
             }
         }
 
-        private MSWinRTVideo.SwapChainPanelSource _videoSource;
-        private MSWinRTVideo.SwapChainPanelSource _previewSource;
+        //-----------------------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------------
 
+        // Create a task for rendering that will be run on a background thread. 
+        private void OnPageLoaded(object sender, RoutedEventArgs e)
+        {
+            // The SwapChainPanel has been created and arranged in the page layout, so EGL can be initialized. 
+            //CreateRenderSurface();
+        }
         private void StartVideoStream() {
-            try {
-                _videoSource = new MSWinRTVideo.SwapChainPanelSource();
-                _videoSource.Start(VideoSwapChainPanel);
-                _previewSource = new MSWinRTVideo.SwapChainPanelSource();
-                _previewSource.Start(PreviewSwapChainPanel);
-
-                LinphoneManager.Instance.Core.NativeVideoWindowIdString = VideoSwapChainPanel.Name;
-                LinphoneManager.Instance.Core.NativePreviewWindowIdString = PreviewSwapChainPanel.Name;
-            } catch (Exception e) {
-                Debug.WriteLine(String.Format("StartVideoStream: Exception {0}", e.Message));
-            }
+            LinphoneManager.StartVideoStream(VideoSwapChainPanel, PreviewSwapChainPanel);
         }
 
-        private void StopVideoStream() {
-            try {
-                if (_videoSource != null) {
-                    _videoSource.Stop();
-                    _videoSource = null;
-                }
-                if (_previewSource != null) {
-                    _previewSource.Stop();
-                    _previewSource = null;
-                }
-            } catch (Exception e) {
-                Debug.WriteLine(String.Format("StopVideoStream: Exception {0}", e.Message));
-            }
-
+        private void StopVideoStream()
+        {
+            LinphoneManager.StopVideoStream();
         }
-        #endregion
+
+            #endregion
 
         #region Orientation
         private async void OrientationSensor_OrientationChanged(SimpleOrientationSensor sender, SimpleOrientationSensorOrientationChangedEventArgs args) {

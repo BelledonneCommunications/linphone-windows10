@@ -55,7 +55,7 @@ namespace Linphone.Controls {
                 SetImage(fileName);
             } else {
                 Message.Visibility = Visibility.Visible;
-                Message.Blocks.Add(Utils.FormatText(message.Text));
+                Message.Blocks.Add(Utils.FormatText(message.TextContent));
                 Image.Visibility = Visibility.Collapsed;
             }
 
@@ -113,7 +113,7 @@ namespace Linphone.Controls {
             string fileName = (ChatMessage.FileTransferInformation != null) ? ChatMessage.FileTransferInformation.Name : null;
             bool isImageMessage = fileName != null && fileName.Length > 0;
             if (isImageMessage) {
-                string filePath = ChatMessage.FileTransferFilepath;
+                string filePath = ChatMessage.Contents.GetEnumerator().Current.FilePath;
                 if (filePath != null && filePath.Length > 0) {
                     Image.Visibility = Visibility.Visible;
                     SetImage(ChatMessage.Appdata);
