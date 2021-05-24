@@ -1,4 +1,4 @@
-﻿/*
+/*
 LinphoneManager.cs
 Copyright (C) 2015  Belledonne Communications, Grenoble, France
 This program is free software; you can redistribute it and/or
@@ -35,6 +35,11 @@ using Windows.System.Threading;
 using Linphone.Views;
 using Windows.Media.Audio;
 using System.Threading.Tasks;
+using System.Threading;// Mutex
+using Windows.UI.Xaml.Controls;//SwapChainPanel
+
+
+using System.Runtime.InteropServices;
 
 namespace Linphone.Model {
     class LinphoneManager{
@@ -49,6 +54,14 @@ namespace Linphone.Model {
         private CoreListener _coreListener;
         public bool isLinphoneRunning = false;
 
+
+        public static void StartVideoStream(SwapChainPanel main, SwapChainPanel preview) {
+            LinphoneManager.Instance.Core.NativePreviewWindowId = preview;
+            LinphoneManager.Instance.Core.NativeVideoWindowId = main;
+        }
+        public static void StopVideoStream()
+        {
+        }
         private PushNotificationChannel channel;
 
         #region LinphoneCore and initialization
@@ -56,10 +69,13 @@ namespace Linphone.Model {
         public Core Core {
             get {
                 if (_core == null) {
+                    Linphone.LoggingService.Instance.LogLevel = Linphone.LogLevel.Debug;
                     ConfigurePaths();
-                    _coreListener = Factory.Instance.CreateCoreListener();
+                   
+                    _core = Factory.Instance.CreateCore(GetConfigPath(), GetFactoryConfigPath(), IntPtr.Zero);
+                    _coreListener = _core.Listener;
                     coreListenerInit();
-                    _core = Factory.Instance.CreateCore(_coreListener, GetConfigPath(), GetFactoryConfigPath());
+                    _core.Start();
                 }
                 return _core;
             }
@@ -103,8 +119,13 @@ namespace Linphone.Model {
         public async void InitPushNotifications() {
             var internetProfile = NetworkInformation.GetInternetConnectionProfile();
             if (internetProfile != null) {
-                channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
-                AddPushInformationsToContactParams();
+                try
+                {
+                    channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
+                    AddPushInformationsToContactParams();
+                } catch{
+                    Debug.WriteLine("[LinphoneManager] Cannot use Notification \r\n");
+                }
             }
         }
         public String GetChatDatabasePath() {
@@ -129,15 +150,22 @@ namespace Linphone.Model {
         }
 
         public String GetRootCaPath() {
-            return Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "Assets", "rootca.pem");
+            return Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "Assets", "Linphone", "rootca.pem");
         }
 
         public String GetCertificatesPath() {
             return ApplicationData.Current.LocalFolder.Path;
         }
 
+        
+        public void CleanMemory(IntPtr context)
+        {
+            if (context != IntPtr.Zero)
+                Marshal.FreeHGlobal(context);
+        }
+
+        private object renderLock = new Object();
         public void InitLinphoneCore() {
-            LinphoneManager.Instance.Core.ChatDatabasePath = GetChatDatabasePath();
             LinphoneManager.Instance.Core.RootCa = GetRootCaPath();
             LinphoneManager.Instance.Core.UserCertificatesPath = GetCertificatesPath();
 
@@ -146,6 +174,7 @@ namespace Linphone.Model {
             }
 
             if (LinphoneManager.Instance.Core.VideoSupported()) {
+                LinphoneManager.Instance.Core.VideoCaptureEnabled = true;
                 DetectCameras();
             }
             LinphoneManager.Instance.Core.UsePreviewWindow(true);
@@ -156,9 +185,10 @@ namespace Linphone.Model {
             }
             InitPushNotifications();
             isLinphoneRunning = true;
-            TimeSpan period = TimeSpan.FromMilliseconds(20);
+            TimeSpan period = TimeSpan.FromMilliseconds(40);
             ThreadPoolTimer.CreatePeriodicTimer((source) => {
-                CoreDispatcher.RunIdleAsync((args) => {
+            CoreDispatcher.RunIdleAsync((args) =>
+              {
                     Core.Iterate();
                 });
             }, period);
@@ -169,15 +199,15 @@ namespace Linphone.Model {
             string assetsPath = packagePath + "\\Assets";
             Factory.Instance.TopResourcesDir = assetsPath;
             Factory.Instance.DataResourcesDir = assetsPath;
-            Factory.Instance.SoundResourcesDir = assetsPath;
-            Factory.Instance.RingResourcesDir = assetsPath;
-            Factory.Instance.ImageResourcesDir = assetsPath;
+            Factory.Instance.SoundResourcesDir = assetsPath + "\\sounds\\linphone";
+            Factory.Instance.RingResourcesDir = Factory.Instance.SoundResourcesDir + "\\rings";
+            Factory.Instance.ImageResourcesDir = assetsPath + "\\images";
             Factory.Instance.MspluginsDir = ".";
         }
 
         public void EnableLogCollection(bool enable) {
             Linphone.Core.EnableLogCollection(enable ? LogCollectionState.Enabled : LogCollectionState.Disabled);
-            if (enable) Linphone.Core.SetLogLevelMask(0xFF);
+            if (enable) Linphone.LoggingService.Instance.LogLevel = Linphone.LogLevel.Debug;
             Linphone.Core.SetLogCollectionPath(ApplicationData.Current.LocalFolder.Path);
         }
 
@@ -221,9 +251,9 @@ namespace Linphone.Model {
             return ApiInformation.IsApiContractPresent("Windows.Phone.PhoneContract", 1);
         }
 
-        #endregion
+#endregion
 
-        #region CallLogs
+#region CallLogs
         private List<CallLogModel> _history;
 
         public List<CallLogModel> GetCallsHistory() {
@@ -272,20 +302,20 @@ namespace Linphone.Model {
         public void ClearCallLogs() {
             Core.ClearCallLogs();
         }
-        #endregion
+#endregion
 
-        #region Call Management
+#region Call Management
         public void PauseCurrentCall() {
             if (Core.CallsNb > 0) {
                 Call call = Core.CurrentCall;
-                Core.PauseCall(call);
+                call.Pause();
             }
         }
 
         public void ResumeCurrentCall() {
             foreach (Call call in Core.Calls) {
                 if (call.State == CallState.Paused) {
-                    Core.ResumeCall(call);
+                    call.Resume();
                 }
             }
         }
@@ -300,11 +330,11 @@ namespace Linphone.Model {
         public void EndCurrentCall() {
             Call call = Core.CurrentCall;
             if (call != null) {
-                Core.TerminateCall(call);
+                call.Terminate();
             } else {
                 foreach (Call lCall in Core.Calls) {
                     if (lCall.State == CallState.Paused) {
-                        Core.TerminateCall(lCall);
+                        lCall.Terminate();
                     }
                 }
             }
@@ -323,9 +353,9 @@ namespace Linphone.Model {
             };
             CallErrorNotification.Show();*/
         }
-        #endregion
+#endregion
 
-        #region Audio Management
+#region Audio Management
 
         private void AudioEndpointChanged(AudioRoutingManager sender, object args) {
             Debug.WriteLine("[LinphoneManager] AudioEndpointChanged:" + sender.GetAudioEndpoint().ToString() + "\r\n");
@@ -363,9 +393,9 @@ namespace Linphone.Model {
         }
 
 
-        #endregion
+#endregion
 
-        #region Chat
+#region Chat
         public int GetUnreadMessageCount() {
             int nbUnreadMessages = 0;
             foreach (ChatRoom chatroom in Core.ChatRooms) {
@@ -406,7 +436,7 @@ namespace Linphone.Model {
                 XmlNodeList toastTextElements = toastXml.GetElementsByTagName("text");
 
                 toastTextElements[0].AppendChild(toastXml.CreateTextNode(sipAddress));
-                toastTextElements[1].AppendChild(toastXml.CreateTextNode(message.Text));
+                toastTextElements[1].AppendChild(toastXml.CreateTextNode(message.TextContent));
 
                 IXmlNode toastNode = toastXml.SelectSingleNode("/toast");
                 ((XmlElement)toastNode).SetAttribute("launch", "chat ? sip = " + sipAddress);
@@ -440,9 +470,9 @@ namespace Linphone.Model {
                 }
             }
         }
-        #endregion
+#endregion
 
-        #region Video Management
+#region Video Management
         private List<String> _cameras;
         private int numberOfCameras = 0;
 
@@ -461,7 +491,7 @@ namespace Linphone.Model {
                     if (enable) {
                         // TODO: Handle bandwidth limitation
                     }
-                    Core.UpdateCall(call, parameters);
+                    call.Update(parameters);
                     return true;
                 }
             }
@@ -477,7 +507,7 @@ namespace Linphone.Model {
         private void DetectCameras() {
             int nbCameras = 0;
             _cameras = new List<string>();
-            foreach (String device in LinphoneManager.Instance.Core.VideoDevices) {
+            foreach (string device in LinphoneManager.Instance.Core.VideoDevicesList) {
                 if (!device.Contains("StaticImage")) {
                     _cameras.Add(device);
                     nbCameras++;
@@ -493,13 +523,13 @@ namespace Linphone.Model {
 
                 if (Core.InCall()) {
                     Call call = Core.CurrentCall;
-                    Core.UpdateCall(call, null);
+                    call.Update(null);
                 }
             }
         }
-        #endregion
+#endregion
 
-        #region Listeners
+#region Listeners
         public CallControllerListener CallListener {
             get; set;
         }
@@ -559,7 +589,7 @@ namespace Linphone.Model {
                 bool localVideo = call.CurrentParams.VideoEnabled;
                 bool autoAcceptCameraPolicy = Core.VideoActivationPolicy.AutomaticallyAccept;
                 if (remoteVideo && !localVideo && !autoAcceptCameraPolicy) {
-                    Core.DeferCallUpdate(call);
+                    call.DeferUpdate();
                 }
                 Debug.WriteLine("[LinphoneManager] Update call\r\n");
             } else if (state == CallState.End || state == CallState.Error) {
@@ -654,9 +684,9 @@ namespace Linphone.Model {
             }
         }
 
-        #endregion
+#endregion
 
-        #region Tunnel
+#region Tunnel
         public static void ConfigureTunnel(String mode) {
             if (LinphoneManager.Instance.Core.Tunnel != null) {
                 Tunnel tunnel = LinphoneManager.Instance.Core.Tunnel;
@@ -698,9 +728,9 @@ namespace Linphone.Model {
             settings.Load();
             ConfigureTunnel(settings.TunnelMode);
         }
-        #endregion
+#endregion
 
-        #region Contact Lookup
+#region Contact Lookup
         private ContactsManager ContactManager {
             get {
                 return ContactsManager.Instance;
@@ -733,7 +763,7 @@ namespace Linphone.Model {
             }
             ContactManager.ContactFound -= OnContactFound;
         }
-        #endregion
+#endregion
     }
 
     public interface EchoCalibratorListener {
