@@ -1,6 +1,10 @@
 [![pipeline status](https://gitlab.linphone.org/BC/public/linphone-windows10/badges/master/pipeline.svg)](https://gitlab.linphone.org/BC/public/linphone-windows10/commits/master)
 
-Linphone is a free VoIP and video softphone based on the SIP protocol.
+This project is a code sample application demonstrating the use of liblinphone in C# within a Windows UWP application.
+Initially, this project was running on UWP phone devices, but is no longer maintained for this target since these devices disapeared.
+This project is still maintained with low activity as a way to demonstrate and validate the UWP mode of linphone-sdk NuPkg.
+It has no objective of becoming a complete and production ready softphone.
+For the full Linphone application for desktop (Windows, Linux, Mac OS), please visit https://gitlab.linphone.org/BC/public/linphone-desktop instead.
 
 # Get Linphone SDK
 
