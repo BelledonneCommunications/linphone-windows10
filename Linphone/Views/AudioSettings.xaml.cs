@@ -48,6 +48,9 @@ namespace Linphone.Views {
             //G729.IsEnabled = Customs.EnableG729;
             GSM.IsOn = _settings.GSM;
             OPUS.IsOn = _settings.OPUS;
+            AMRWB.IsOn = _settings.AMRWB;
+            AMRNB.IsOn = _settings.AMRNB;
+
         }
 
         /// <summary>
@@ -77,6 +80,8 @@ namespace Linphone.Views {
             _settings.G729 = ToBool(G729.IsOn);
             _settings.GSM = ToBool(GSM.IsOn);
             _settings.OPUS = ToBool(OPUS.IsOn);
+            _settings.AMRWB = ToBool(AMRWB.IsOn);
+            _settings.AMRNB = ToBool(AMRNB.IsOn);
             _settings.Save();
         }
 

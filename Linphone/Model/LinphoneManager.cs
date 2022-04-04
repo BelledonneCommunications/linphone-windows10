@@ -61,6 +61,8 @@ namespace Linphone.Model {
         }
         public static void StopVideoStream()
         {
+            LinphoneManager.Instance.Core.NativePreviewWindowId = null;
+            LinphoneManager.Instance.Core.NativeVideoWindowId = null;
         }
         private PushNotificationChannel channel;
 
@@ -550,8 +552,9 @@ namespace Linphone.Model {
 
             CreateAudioDeviceInputNodeResult resultNode = await audioGraph.CreateDeviceInputNodeAsync(Windows.Media.Capture.MediaCategory.Media);
             AudioDeviceInputNode deviceInputNode = resultNode.DeviceInputNode;
-
-            deviceInputNode.Dispose();
+            if(deviceInputNode != null)
+                deviceInputNode.Dispose();
+            if(audioGraph != null)
             audioGraph.Dispose();
         }
 
