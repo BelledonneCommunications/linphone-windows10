@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1321
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linphone", "Linphone\Linphone.csproj", "{6122CCBD-FB37-48CE-9C50-0C8A35003AE6}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -28,8 +28,8 @@ Global
 		{6122CCBD-FB37-48CE-9C50-0C8A35003AE6}.Debug|x64.ActiveCfg = Debug|x64
 		{6122CCBD-FB37-48CE-9C50-0C8A35003AE6}.Debug|x64.Build.0 = Debug|x64
 		{6122CCBD-FB37-48CE-9C50-0C8A35003AE6}.Debug|x64.Deploy.0 = Debug|x64
-		{6122CCBD-FB37-48CE-9C50-0C8A35003AE6}.Debug|x86.ActiveCfg = Release|x64
-		{6122CCBD-FB37-48CE-9C50-0C8A35003AE6}.Debug|x86.Build.0 = Release|x64
+		{6122CCBD-FB37-48CE-9C50-0C8A35003AE6}.Debug|x86.ActiveCfg = Debug|x86
+		{6122CCBD-FB37-48CE-9C50-0C8A35003AE6}.Debug|x86.Build.0 = Debug|x86
 		{6122CCBD-FB37-48CE-9C50-0C8A35003AE6}.Release|Any CPU.ActiveCfg = Release|x64
 		{6122CCBD-FB37-48CE-9C50-0C8A35003AE6}.Release|ARM.ActiveCfg = Release|x64
 		{6122CCBD-FB37-48CE-9C50-0C8A35003AE6}.Release|x64.ActiveCfg = Release|x64

@@ -60,7 +60,10 @@ namespace Linphone.Views {
             Loaded += OnPageLoaded;
             if (LinphoneManager.Instance.IsVideoAvailable) {
                 VideoGrid.Visibility = Visibility.Collapsed;
+                StartVideoStream();// Initialize to avoid create new windows.
             }
+            else
+                StopVideoStream();
 
             if (LinphoneManager.Instance.Core.CurrentCall.State == CallState.StreamsRunning)
                 Status.Text = "00:00:00";
@@ -120,6 +123,7 @@ private async void buttons_VideoClick(object sender, bool isVideoOn) {
                 return;
             CallParams param = LinphoneManager.Instance.Core.CreateCallParams(call);
             param.VideoEnabled = isVideoOn;
+            param.VideoDirection = MediaDirection.SendRecv;
             call.Update(param);
             if(isVideoOn)
                 StartVideoStream();
