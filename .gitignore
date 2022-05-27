@@ -1,5 +1,6 @@
 */Bin/
 */obj/
+**/obj/
 */Thumbs.db
 */*/Thumbs.db
 */*/*/Thumbs.db
@@ -11,6 +12,8 @@ x64/
 x86/
 Debug/
 Release/
+AppPackages/
+BundleArtifacts/
 CoreProxyStub/Linphone.Core*
 CoreProxyStub/Mediastreamer2.WP8Video*
 CoreProxyStub/dlldata.c
@@ -26,3 +29,4 @@ WORK/
 SDK.sln
 prepare.conf
 .vscode
+*.nupkg
