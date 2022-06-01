@@ -23,4 +23,4 @@ dtmf_player_amp=0.1
 
 [misc]
 history_max_size=30
-max_calls=1
+max_calls=2

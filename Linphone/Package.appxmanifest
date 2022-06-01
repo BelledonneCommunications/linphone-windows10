@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="BelledonneCommunications.Linphone" Publisher="CN=2D80E0B6-DE43-45FF-97F7-D17E115F1D12" Version="1.3.0.0" />
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" IgnorableNamespaces="uap mp rescap">
+  <Identity Name="BelledonneCommunications.Linphone" Publisher="CN=Julien Wadel" Version="1.3.0.0" />
   <mp:PhoneIdentity PhoneProductId="ed47fa26-a45b-4bda-82e1-cdc792d1d9bd" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Linphone</DisplayName>
@@ -30,6 +30,7 @@
     </Application>
   </Applications>
   <Capabilities>
+    <rescap:Capability Name="broadFileSystemAccess" />
     <Capability Name="internetClient" />
     <Capability Name="codeGeneration" />
     <uap:Capability Name="contacts" />
