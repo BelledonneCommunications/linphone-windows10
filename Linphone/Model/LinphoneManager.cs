@@ -54,15 +54,70 @@ namespace Linphone.Model {
         private CoreListener _coreListener;
         public bool isLinphoneRunning = false;
 
-
+#if !WINDOWS_UWP
+        [StructLayout(LayoutKind.Sequential)]
+        public struct MSOglContextInfo
+        {
+            public System.IntPtr window;
+            public System.UInt32 width;
+            public System.UInt32 height;
+            public System.IntPtr getProcAddress;
+        };
+#endif
         public static void StartVideoStream(SwapChainPanel main, SwapChainPanel preview) {
+#if WINDOWS_UWP
             LinphoneManager.Instance.Core.NativePreviewWindowId = preview;
             LinphoneManager.Instance.Core.NativeVideoWindowId = main;
+#else
+            MSOglContextInfo c;
+            if (main != null)
+                c.window = Marshal.GetIUnknownForObject(main);
+            else
+                c.window = IntPtr.Zero;
+            c.getProcAddress = IntPtr.Zero;
+            c.width = 0;
+            c.height = 0;
+            IntPtr pnt = Marshal.AllocHGlobal(Marshal.SizeOf(c));
+            Marshal.StructureToPtr(c, pnt, false);
+            IntPtr oldData = LinphoneManager.Instance.Core.NativeVideoWindowId;
+            LinphoneManager.Instance.Core.NativeVideoWindowId = pnt;
+            if (oldData != IntPtr.Zero)
+            {
+                IntPtr window = ((MSOglContextInfo)Marshal.PtrToStructure<MSOglContextInfo>(oldData)).window;
+                if (window != IntPtr.Zero)
+                    Marshal.Release(window);
+                Marshal.FreeHGlobal(oldData);
+            }
+            //---------------------
+            if (preview != null)
+                c.window = Marshal.GetIUnknownForObject(preview);
+            else
+                c.window = IntPtr.Zero;
+            c.getProcAddress = IntPtr.Zero;
+            c.width = 0;
+            c.height = 0;
+            pnt = Marshal.AllocHGlobal(Marshal.SizeOf(c));
+            Marshal.StructureToPtr(c, pnt, false);
+            oldData = LinphoneManager.Instance.Core.NativePreviewWindowId;
+            LinphoneManager.Instance.Core.NativePreviewWindowId = pnt;
+            if (oldData != IntPtr.Zero)
+            {
+                IntPtr window = ((MSOglContextInfo)Marshal.PtrToStructure<MSOglContextInfo>(oldData)).window;
+                if (window != IntPtr.Zero)
+                    Marshal.Release(window);
+                Marshal.FreeHGlobal(oldData);
+            }
+#endif
         }
         public static void StopVideoStream()
         {
+#if WINDOWS_UWP
             LinphoneManager.Instance.Core.NativePreviewWindowId = null;
             LinphoneManager.Instance.Core.NativeVideoWindowId = null;
+#else
+            LinphoneManager.Instance.Core.NativePreviewWindowId = IntPtr.Zero;
+            LinphoneManager.Instance.Core.NativeVideoWindowId = IntPtr.Zero;
+#endif
         }
         private PushNotificationChannel channel;
 
