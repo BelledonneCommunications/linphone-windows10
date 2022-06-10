@@ -147,9 +147,11 @@ namespace Linphone.Views {
 
             if (LinphoneManager.Instance.Core.CallsNb > 0) {
                 Call call = LinphoneManager.Instance.Core.CurrentCall;
-                List<String> parameters = new List<String>();
-                parameters.Add(call.RemoteAddress.AsStringUriOnly());
-                Frame.Navigate(typeof(Views.InCall), parameters);
+                if( call != null){
+                    List<String> parameters = new List<String>();
+                    parameters.Add(call.RemoteAddress.AsStringUriOnly());
+                    Frame.Navigate(typeof(Views.InCall), parameters);
+                }
             }
 
             if (LinphoneManager.Instance.GetUnreadMessageCount() > 0) {
