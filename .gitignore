@@ -21,6 +21,8 @@ Linphone.sdf
 Linphone.opensdf
 Agents/RegistrationHelper.cs
 Linphone/Linphone.csproj.user
+Linphone/AppPackages
+Linphone/Tasks/obj
 *.vcxproj.filters
 *.sdf
 **/packages/*
@@ -30,3 +32,5 @@ SDK.sln
 prepare.conf
 .vscode
 *.nupkg
+*.un~
+*~
