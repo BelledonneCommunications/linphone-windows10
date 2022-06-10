@@ -220,6 +220,9 @@
     <AppxManifest Include="$(ApplicationManifest)">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <None Include="App.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Linphone_StoreKey.pfx" />
     <None Include="Linphone_TemporaryKey.pfx" />
   </ItemGroup>
@@ -384,6 +387,9 @@
   <ItemGroup>
     <PackageReference Include="ANGLE.WindowsStore">
       <Version>2.1.13</Version>
+    </PackageReference>
+    <PackageReference Include="BSN.Common.PCLAppConfig">
+      <Version>1.0.2</Version>
     </PackageReference>
     <PackageReference Include="LinphoneSDK">
       <Version>5.1.36</Version>
