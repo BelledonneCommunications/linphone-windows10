@@ -381,7 +381,7 @@ namespace Linphone.Model {
             // Workaround to pop the microphone permission window
             await openMicrophonePopup();
 
-            Call LCall = Core.Invite(sipAddress);
+            Call call = Core.Invite(sipAddress);
         }
 
         public void EndCurrentCall() {

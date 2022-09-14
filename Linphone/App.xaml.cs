@@ -26,6 +26,8 @@ using System.Diagnostics;
 using Windows.UI.Core;
 using System.Collections.Generic;
 
+using PCLAppConfig;
+
 namespace Linphone
 {
     /// <summary>
@@ -46,6 +48,7 @@ namespace Linphone
             this.InitializeComponent();
             this.UnhandledException += App_UnhandledException;
             this.Suspending += OnSuspending;
+            ConfigurationManager.Initialise(PCLAppConfig.FileSystemStream.PortableStream.Current);
             SettingsManager.InstallConfigFile();
             acceptCall = false;
         }

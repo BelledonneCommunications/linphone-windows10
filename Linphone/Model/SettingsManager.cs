@@ -22,6 +22,8 @@ using System.IO;
 using Windows.ApplicationModel.Resources;
 using Windows.Storage;
 
+using PCLAppConfig;
+
 namespace Linphone.Model {
     /// <summary>
     /// Interface describing the methods that each setting manager must implement.
@@ -276,17 +278,17 @@ namespace Linphone.Model {
         /// Load the SIP account settings.
         /// </summary>
         public void Load() {
-            dict[UsernameKeyName] = "";
-            dict[UserIdKeyName] = "";
-            dict[PasswordKeyName] = "";
-            dict[DisplayNameKeyName] = "";
-            dict[DomainKeyName] = "";
-            dict[ProxyKeyName] = "";
-            dict[OutboundProxyKeyName] = false.ToString();
-            dict[TransportKeyName] = "UDP";
-            dict[ExpireKeyName] = "";
-            dict[AVPFKeyName] = false.ToString();
-            dict[Ice] = false.ToString();
+            dict[UsernameKeyName] = string.IsNullOrEmpty(ConfigurationManager.AppSettings[UsernameKeyName]) ? "" : ConfigurationManager.AppSettings[UsernameKeyName];
+            dict[UserIdKeyName] = string.IsNullOrEmpty(ConfigurationManager.AppSettings[UserIdKeyName]) ? "" : ConfigurationManager.AppSettings[UserIdKeyName];
+            dict[PasswordKeyName] = string.IsNullOrEmpty(ConfigurationManager.AppSettings[PasswordKeyName]) ? "" : ConfigurationManager.AppSettings[PasswordKeyName];
+            dict[DisplayNameKeyName] = string.IsNullOrEmpty(ConfigurationManager.AppSettings[DisplayNameKeyName]) ? "" : ConfigurationManager.AppSettings[DisplayNameKeyName];
+            dict[DomainKeyName] = string.IsNullOrEmpty(ConfigurationManager.AppSettings[DomainKeyName]) ? "" : ConfigurationManager.AppSettings[DomainKeyName];
+            dict[ProxyKeyName] = string.IsNullOrEmpty(ConfigurationManager.AppSettings[ProxyKeyName]) ? "" : ConfigurationManager.AppSettings[ProxyKeyName];
+            dict[OutboundProxyKeyName] = string.IsNullOrEmpty(ConfigurationManager.AppSettings[OutboundProxyKeyName]) ? false.ToString() : ConfigurationManager.AppSettings[OutboundProxyKeyName];
+            dict[TransportKeyName] = string.IsNullOrEmpty(ConfigurationManager.AppSettings[TransportKeyName]) ? "UDP" : ConfigurationManager.AppSettings[TransportKeyName];
+            dict[ExpireKeyName] = string.IsNullOrEmpty(ConfigurationManager.AppSettings[ExpireKeyName]) ? "" : ConfigurationManager.AppSettings[ExpireKeyName];
+            dict[AVPFKeyName] = string.IsNullOrEmpty(ConfigurationManager.AppSettings[AVPFKeyName]) ? false.ToString() : ConfigurationManager.AppSettings[AVPFKeyName];
+            dict[Ice] = string.IsNullOrEmpty(ConfigurationManager.AppSettings[Ice]) ? false.ToString() : ConfigurationManager.AppSettings[Ice];
 
             ProxyConfig cfg = LinphoneManager.Instance.Core.DefaultProxyConfig;
             if (cfg != null) {
