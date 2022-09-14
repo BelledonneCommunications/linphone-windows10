@@ -297,8 +297,7 @@ namespace Linphone.Model {
                     dict[TransportKeyName] = EnumToTransport[proxyAddress.Transport];
                     dict[UsernameKeyName] = address.Username;
                     dict[DomainKeyName] = address.Domain;
-                    if(cfg.Routes.GetEnumerator().Current != null)
-                        dict[OutboundProxyKeyName] = cfg.Routes.GetEnumerator().Current.ToString();
+                    dict[OutboundProxyKeyName] = cfg.Routes.GetEnumerator().Current?.ToString() ?? false.ToString();
                     dict[ExpireKeyName] = String.Format("{0}", cfg.Expires);
                     AuthInfo authInfo = LinphoneManager.Instance.Core.FindAuthInfo(address.Domain, address.Username, address.Domain);
                     if (authInfo != null) {
